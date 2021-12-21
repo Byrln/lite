@@ -1,15 +1,30 @@
-import Typography from "@mui/material/Typography";
+import { Box, Grid, Container, Typography } from "@mui/material";
+import Head from "next/head";
+
+import Page from "components/page";
 import MiniBarItemList from "components/mini-bar/item/list";
 
-const Index = (props: any) => {
-    return (
-        <>
-            <Typography id="modal-modal-title" variant="h1" className="mb-3">
-                Мини бар бүтээгдэхүүн
-            </Typography>
-            <MiniBarItemList />
-        </>
-    );
-};
+const title = "Мини бар бүтээгдэхүүн";
+
+const Index = () => (
+    <>
+        <Head>
+            <title>{title}</title>
+        </Head>
+
+        <Page>
+            <Container maxWidth="xl">
+                <Box sx={{ pb: 5 }}>
+                    <Typography variant="h4">{title}</Typography>
+                </Box>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <MiniBarItemList />
+                    </Grid>
+                </Grid>
+            </Container>
+        </Page>
+    </>
+);
 
 export default Index;

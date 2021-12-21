@@ -1,15 +1,17 @@
+import { useState } from "react";
+import {
+    InputLabel,
+    Checkbox,
+    Typography,
+    Tabs,
+    Tab,
+    Box,
+    Grid,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import InputLabel from "@mui/material/InputLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import { useState } from "react";
 
 import NewEditForm from "components/common/new-edit-form";
 import RoomAmenitySelect from "components/select/room-amenity";

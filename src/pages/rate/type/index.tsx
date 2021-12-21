@@ -1,15 +1,30 @@
-import Typography from "@mui/material/Typography";
-import RateTypeList from "../../../components/rate/type/list";
+import { Box, Grid, Container, Typography } from "@mui/material";
+import Head from "next/head";
 
-const Index = (props: any) => {
-    return (
-        <>
-            <Typography id="modal-modal-title" variant="h1" className="mb-3">
-                Үнийн төрөл
-            </Typography>
-            <RateTypeList />
-        </>
-    );
-};
+import Page from "components/page";
+import RateTypeList from "components/rate/type/list";
+
+const title = "Үнийн төрөл";
+
+const Index = () => (
+    <>
+        <Head>
+            <title>{title}</title>
+        </Head>
+
+        <Page>
+            <Container maxWidth="xl">
+                <Box sx={{ pb: 5 }}>
+                    <Typography variant="h4">{title}</Typography>
+                </Box>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <RateTypeList />
+                    </Grid>
+                </Grid>
+            </Container>
+        </Page>
+    </>
+);
 
 export default Index;

@@ -1,13 +1,10 @@
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
 import { EmailAPI, listUrl } from "lib/api/email-conf";
-import ChargeTypeGroupSelect from "components/select/charge-type-group";
 
 const NewEdit = ({ entity }: any) => {
     const validationSchema = yup.object().shape({
