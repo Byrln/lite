@@ -1,0 +1,62 @@
+import useSWR from "swr";
+
+import axios from "lib/utils/axios";
+
+const urlPrefix = "/api/FrontOffice";
+export const listUrl = `${urlPrefix}/ReservationDetailsByDate`;
+
+export const FrontOfficeSWR = (date: any) => {
+    const values = {
+        CurrDate: date,
+        NumberOfDays: 30,
+        RoomTypeID: 0,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, values).then((res: any) => {
+            let rates = JSON.parse(res.data.JsonData);
+            return rates;
+        });
+
+    return useSWR(listUrl, fetcher);
+};
+
+export const FrontOfficeAPI = {
+    workingDate: async () => {
+        const { data, status } = await axios.get(`${urlPrefix}/WorkingDate`);
+        let workingDate = JSON.parse(data.JsonData);
+        return {
+            workingDate,
+            status,
+        };
+    },
+
+    new: async (values: any) => {
+        const { data, status } = await axios.post(urlPrefix, values);
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    update: async (id: any, values: any) => {
+        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    delete: async (id: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
+            RoomId: id,
+        });
+
+        return {
+            data,
+            status,
+        };
+    },
+};

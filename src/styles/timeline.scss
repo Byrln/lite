@@ -1,0 +1,50 @@
+.timeline_main {
+    .timeline_header {
+        .sidebar_header {
+            background-color: white;
+            border: 1px solid #efefef;
+            padding: 20px;
+        }
+
+        .date_header {
+            background-color: white !important;
+            color: black !important;
+
+            .rct-dateHeader {
+                background-color: white !important;
+                color: black !important;
+            }
+        }
+
+        .calendar_header {
+            border: 1px solid #efefef !important;
+        }
+    }
+
+    .custom_group {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        &.nest_level_1 {
+            padding-left: 25px;
+        }
+
+        &.nest_level_2 {
+            padding-left: 50px;
+        }
+
+        .toggle_icon {
+            transition: all 0.2s;
+
+            &.open {
+                transform: rotate(90deg) !important;
+            }
+        }
+    }
+
+    .rct-item-content {
+        line-height: auto;
+    }
+}
