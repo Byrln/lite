@@ -1,5 +1,5 @@
 import useSWR from "swr";
-
+import { ApiResponseModel } from "models/response/ApiResponseModel";
 import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/RoomType";
@@ -22,6 +22,36 @@ export const RoomTypeSWR = () => {
 };
 
 export const RoomTypeAPI = {
+    list: async (values: any) => {
+        let vals = values
+            ? values
+            : {
+                  RoomTypeID: 0,
+                  SearchStr: "",
+                  EmptyRow: "0",
+              };
+
+        const result: ApiResponseModel = await axios
+            .post(listUrl, vals)
+            .then(({ data, status }: any) => {
+                var res: ApiResponseModel;
+                if (status != 200) {
+                    res = {
+                        status: status,
+                        msg: "",
+                        data: null,
+                    };
+                    return res;
+                }
+                res = {
+                    status: 200,
+                    msg: "",
+                    data: JSON.parse(data.JsonData),
+                };
+                return res;
+            });
+        return result;
+    },
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 

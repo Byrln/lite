@@ -2,37 +2,41 @@ import useSWR from "swr";
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Room";
+const urlPrefix = "/api/Guest";
 export const listUrl = `${urlPrefix}/List`;
 
-export const RoomSWR = () => {
+export const GuestSWR = () => {
     const values = {
-        RoomID: 0,
-        RoomTypeID: 0,
-        FloorID: 0,
-        SearchStr: "",
-        EmptyRow: false,
+        GuestID: 0,
+        GuestName: "",
+        CountryID: "0",
+        IdentityValue: "",
+        Phone: "",
+        TransactionID: "",
+        IsMainOnly: false,
     };
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let rooms = JSON.parse(res.data.JsonData);
-            return rooms;
+            let roomTypes = JSON.parse(res.data.JsonData);
+            return roomTypes;
         });
 
     return useSWR(listUrl, fetcher);
 };
 
-export const RoomAPI = {
+export const GuestAPI = {
     list: async (values: any) => {
-        const vals = values
+        let vals = values
             ? values
             : {
-                  RoomID: 0,
-                  RoomTypeID: 0,
-                  FloorID: 0,
-                  SearchStr: "",
-                  EmptyRow: false,
+                  GuestID: 0,
+                  GuestName: "",
+                  CountryID: "0",
+                  IdentityValue: "",
+                  Phone: "",
+                  TransactionID: "",
+                  IsMainOnly: false,
               };
 
         const result: ApiResponseModel = await axios
@@ -56,16 +60,6 @@ export const RoomAPI = {
             });
         return result;
     },
-    get: async (id: any) => {
-        const values = {
-            RoomID: id,
-        };
-
-        const res = await axios.post(listUrl, values);
-
-        return JSON.parse(res.data.JsonData);
-    },
-
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 
@@ -86,7 +80,7 @@ export const RoomAPI = {
 
     delete: async (id: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
-            RoomId: id,
+            RoomTypeId: id,
         });
 
         return {

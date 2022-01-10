@@ -2,9 +2,9 @@ import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
 
 import Page from "components/page";
-import RoomList from "components/room/list";
+import GuestList from "components/guest/list";
 
-const title = "Өрөө";
+const title = "Зочин бүртгэл";
 
 const Index = () => (
     <>
@@ -19,7 +19,7 @@ const Index = () => (
                 </Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <RoomList />
+                        <GuestList />
                     </Grid>
                 </Grid>
             </Container>

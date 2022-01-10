@@ -24,7 +24,7 @@ const NewEditForm = ({
                 values = Object.assign(values, additionalValues);
             }
 
-            if (entity) {
+            if (entity && entity.id) {
                 await api?.update(entity.id, values);
             } else {
                 await api?.new(values);

@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next";
-import { withAuthServerSideProps } from "lib/utils/withAuthServerSideProps";
+import { withAuthServerSideProps } from "lib/utils/with-auth-server-side-props";
 
-import { MainTimeline } from "../../components/timeline/main";
 import TimelinePms from "../../components/timeline/pms";
 import "react-calendar-timeline/lib/Timeline.css";
 

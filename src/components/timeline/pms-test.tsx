@@ -8,14 +8,12 @@ import {
 import "react-calendar-timeline/lib/Timeline.css";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 import moment from "moment";
-import { RoomSWR } from "lib/api/room";
-import { RoomTypeSWR } from "lib/api/room-type";
-import { FrontOfficeSWR, FrontOfficeAPI } from "lib/api/front-office";
-import { ModalContext } from "lib/context/modal";
-import { useState, useEffect, useContext } from "react";
+import { RoomAPI } from "../../lib/api/room";
+import { RoomTypeAPI } from "../../lib/api/room-type";
+import { FrontOfficeSWR, FrontOfficeAPI } from "../../lib/api/front-office";
+import { ApiResponseModel } from "models/response/ApiResponseModel";
+import { useState, useEffect } from "react";
 import useSWR from "swr";
-import { ClickNav } from "components/timeline/_click-nav";
-import ItemDetail from "components/reservation/item-detail";
 
 const filterGroups = (props: any) => {
     for (var i = 0; i < 3; i++) {
@@ -38,14 +36,16 @@ const filterGroups = (props: any) => {
  * TimelinePMS component
  */
 const TimelinePms = ({ props, workingDate }: any) => {
-    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR();
-    const { data: rooms, error: roomSwrError } = RoomSWR();
-    const { data: items, error: itemsError } = FrontOfficeSWR(workingDate);
-    const { handleModal }: any = useContext(ModalContext);
+    // const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR();
+    // const { data: rooms, error: roomSwrError } = RoomSWR();
+    // const { data: items, error: itemsError } = FrontOfficeSWR(workingDate);
 
     let timeStart = new Date(workingDate);
-    let timeEnd = new Date(workingDate);
-    timeEnd.setDate(timeEnd.getDate() + 30);
+    let timeEnd = new Date(
+        timeStart.getFullYear(),
+        timeStart.getMonth() + 1,
+        timeStart.getDate()
+    );
 
     const [timelineData, setTimelineData] = useState({
         openGroups: {} as any,
@@ -53,13 +53,24 @@ const TimelinePms = ({ props, workingDate }: any) => {
         groupsRender: [] as any,
         items: [] as any,
     });
-    console.log("items", items);
+    // console.log("items", items);
     useEffect(() => {
         createGroups();
-    }, [roomTypes, rooms, items]);
-    const createGroups = () => {
+    }, []);
+    const createGroups = async () => {
+        let response: ApiResponseModel = await RoomTypeAPI.list(null);
+        let roomTypes: any = [];
+        if (response.status == 200) {
+            roomTypes = response.data;
+        }
+        response = await RoomAPI.list(null);
+        let rooms: any = [];
+        if (response.status == 200) {
+            rooms = response.data;
+        }
+
         let gs = [];
-        let itemData: any = [];
+        let itemData = [];
         var i, j;
         for (i in roomTypes) {
             gs.push({
@@ -89,28 +100,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
             }
         }
 
-        var itemIds: Array<String> = [];
-        var itemId;
-
-        for (i in items) {
-            itemId = items[i].TransactionID + "_" + items[i].RoomID;
-            if (itemIds.includes(itemId)) {
-                continue;
-            }
-            itemData.push({
-                id: itemId,
-                group: "" + items[i].RoomTypeID + "_" + items[i].RoomID,
-                title: items[i].GuestName,
-                description: items[i].GuestName,
-                transactionId: items[i].TransactionID,
-                start_time: new Date(items[i].StartDate),
-                end_time: new Date(items[i].EndDate),
-                colorCode: items[i].GroupColor,
-            });
-            itemIds.push(itemId);
-        }
-
-        console.log("====== ITEM Data ======", itemData);
         let renderGroups = filterGroups({
             groups: gs,
             openGroups: {},
@@ -119,7 +108,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
             ...timelineData,
             groups: gs,
             groupsRender: renderGroups,
-            items: itemData,
         });
     };
     const toggleGroup = (groupToggling: any) => {
@@ -170,11 +158,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
         ) : null;
     };
 
-    const onCanvasContextMenu = (groupId: any, time: Date, e: any) => {
-        console.log(groupId);
-        handleModal(true, "Timeline menu", <ClickNav />);
-    };
-
     const renderItem = ({
         item,
         itemContext,
@@ -183,13 +166,8 @@ const TimelinePms = ({ props, workingDate }: any) => {
     }: any) => {
         const { left: leftResizeProps, right: rightResizeProps } =
             getResizeProps();
-
-        console.log("Item props: ", getItemProps());
-
         return (
             <div {...getItemProps(item.itemProps)}>
-                {/* {...getItemProps(item.itemProps)} */}
-
                 {itemContext.useResizeHandle ? (
                     <div {...leftResizeProps} />
                 ) : (
@@ -198,24 +176,14 @@ const TimelinePms = ({ props, workingDate }: any) => {
 
                 <div
                     className="rct-item-content"
-                    style={{
-                        maxHeight: `${itemContext.dimensions.height}`,
-                        width: `100%`,
-                        backgroundColor: `#${item.colorCode}`,
-                    }}
-                    // onClick={(evt: any) => {
-                    //     console.log(evt);
-                    // }}
-                    onDoubleClick={(evt: any) => {
-                        handleModal(
-                            true,
-                            "Timeline menu",
-                            <ItemDetail itemInfo={item} />
-                        );
+                    style={{ maxHeight: `${itemContext.dimensions.height}` }}
+                    onClick={() => {
+                        // console.log(item);
                     }}
                     title={item.description}
                 >
                     <div>{item.title}</div>
+                    <div>{item.description}</div>
                 </div>
 
                 {itemContext.useResizeHandle ? (
@@ -227,35 +195,30 @@ const TimelinePms = ({ props, workingDate }: any) => {
         );
     };
 
-    useEffect(() => {}, []);
-
     console.log("Time start: ", timeStart);
     console.log("Time end: ", timeEnd);
 
     return (
         <>
+            <h4>Хянах самбар тест</h4>
             <div className="timeline_main">
                 <Timeline
                     groups={timelineData.groupsRender}
                     items={timelineData.items}
-                    visibleTimeStart={timeStart}
-                    visibleTimeEnd={timeEnd}
-                    // defaultTimeStart={moment().add(-12, "hour")}
-                    // defaultTimeEnd={moment().add(12, "hour")}
+                    defaultTimeStart={moment().add(-12, "hour")}
+                    defaultTimeEnd={moment().add(12, "hour")}
+                    // defaultTimeStart={timeStart}
+                    // defaultTimeEnd={timeEnd}
                     groupRenderer={renderGroup}
                     itemRenderer={renderItem}
                     itemHeightRatio={0.8}
-                    sidebarWidth={300}
-                    minZoom={10 * 24 * 60 * 60 * 1000}
-                    maxZoom={10 * 24 * 60 * 60 * 1000}
-                    onCanvasContextMenu={onCanvasContextMenu}
                 >
                     <TimelineHeaders
                         className={"timeline_header"}
                         calendarHeaderClassName={"calendar_header"}
                     >
                         <SidebarHeader>
-                            {({ getRootProps }: any) => {
+                            {({ getRootProps }) => {
                                 return (
                                     <div
                                         {...getRootProps()}
