@@ -73,13 +73,6 @@ const NewEdit = (props: any) => {
                         const labelProps: {
                             optional?: React.ReactNode;
                         } = {};
-                        if (isStepOptional(index)) {
-                            labelProps.optional = (
-                                <Typography variant="caption">
-                                    Optional
-                                </Typography>
-                            );
-                        }
 
                         return (
                             <Step key={label} {...stepProps}>
@@ -109,13 +102,14 @@ const NewEdit = (props: any) => {
                             entity={entity}
                             setEntity={setEntity}
                         />
-
+                        {console.log("entity", entity)}
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
                                 <TextField
                                     id="Adult"
                                     label="Adult"
                                     type="number"
+                                    defaultValue={entity?.BaseAdult}
                                     {...register("Adult")}
                                     margin="dense"
                                     error={errors.Adult?.message}
