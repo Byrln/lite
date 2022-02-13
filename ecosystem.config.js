@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
         {
-            name: "horeca-pwa",
+            name: "horeca-pms",
             mode: "cluster",
             script: "/usr/bin/yarn",
             args: "start",
