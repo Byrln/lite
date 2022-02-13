@@ -39,6 +39,10 @@ const RoomTypeSelect = ({ register, errors, entity, setEntity }: any) => {
             error={errors.RoomTypeID?.message}
             helperText={errors.RoomTypeID?.message}
             onChange={onChange}
+            value={entity && entity.RoomTypeID}
+            InputLabelProps={{
+                shrink: entity && entity.RoomTypeID,
+            }}
         >
             {data.map((element: any) => (
                 <MenuItem key={element.RoomTypeID} value={element.RoomTypeID}>

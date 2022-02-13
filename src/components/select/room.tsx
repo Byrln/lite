@@ -15,6 +15,15 @@ const RoomSelect = ({ register, errors, entity, setEntity }: any) => {
         console.log("==== entity ====", entity);
     }, [entity]);
 
+    const onChange = (event: any) => {
+        if (setEntity) {
+            setEntity({
+                ...entity,
+                RoomID: event.target.value,
+            });
+        }
+    };
+
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
     if (!error && !data)
@@ -35,6 +44,11 @@ const RoomSelect = ({ register, errors, entity, setEntity }: any) => {
             margin="dense"
             error={errors.RoomID?.message}
             helperText={errors.RoomID?.message}
+            value={entity && entity.RoomID}
+            InputLabelProps={{
+                shrink: entity && entity.RoomID,
+            }}
+            onChange={onChange}
         >
             {data.map((element: any) => {
                 return (

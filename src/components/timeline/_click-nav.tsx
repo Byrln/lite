@@ -2,7 +2,8 @@ import { useContext } from "react";
 import { Button } from "@mui/material";
 import { ModalContext } from "lib/context/modal";
 import NewEdit from "components/reservation/new-edit";
-export const ClickNav = (props: any) => {
+
+export const ClickNav = ({ timelineCoord }: any) => {
     const { handleModal }: any = useContext(ModalContext);
 
     return (
@@ -10,7 +11,11 @@ export const ClickNav = (props: any) => {
             <Button
                 variant={"text"}
                 onClick={() => {
-                    handleModal(true, "New Reservation", <NewEdit />);
+                    handleModal(
+                        true,
+                        "New Reservation",
+                        <NewEdit timelineCoord={timelineCoord} />
+                    );
                 }}
             >
                 New Reservation

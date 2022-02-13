@@ -16,6 +16,10 @@ import { useState, useEffect, useContext } from "react";
 import useSWR from "swr";
 import { ClickNav } from "components/timeline/_click-nav";
 import ItemDetail from "components/reservation/item-detail";
+import {
+    TimelineCoordModel,
+    createTimelineCoord,
+} from "models/data/TimelineCoordModel";
 
 const filterGroups = (props: any) => {
     for (var i = 0; i < 3; i++) {
@@ -53,7 +57,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
         groupsRender: [] as any,
         items: [] as any,
     });
-    console.log("items", items);
     useEffect(() => {
         createGroups();
     }, [roomTypes, rooms, items]);
@@ -63,7 +66,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
         var i, j;
         for (i in roomTypes) {
             gs.push({
-                id: roomTypes[i].RoomTypeID,
+                id: "" + roomTypes[i].RoomTypeID,
                 title: roomTypes[i].RoomTypeName,
                 parent: null,
                 hasChild: true,
@@ -109,8 +112,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
             });
             itemIds.push(itemId);
         }
-
-        console.log("====== ITEM Data ======", itemData);
         let renderGroups = filterGroups({
             groups: gs,
             openGroups: {},
@@ -129,10 +130,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
         let newOpenGroups = Object.assign({}, openGroups, {
             [groupToggling.id]: !openGroups[groupToggling.id],
         });
-
-        // console.log(groupToggling);
-        // console.log(newOpenGroups);
-
         let newGroups = filterGroups({
             groups: groups,
             openGroups: newOpenGroups,
@@ -170,9 +167,18 @@ const TimelinePms = ({ props, workingDate }: any) => {
         ) : null;
     };
 
-    const onCanvasContextMenu = (groupId: any, time: Date, e: any) => {
-        console.log(groupId);
-        handleModal(true, "Timeline menu", <ClickNav />);
+    const onCanvasContextMenu = (groupId: any, time: any, e: any) => {
+        console.log("Group ID: ", groupId);
+        console.log("========= Time: ========= ", time);
+        var timeObj = new Date(time);
+
+        var timelineCoord = createTimelineCoord(groupId, timeObj);
+
+        handleModal(
+            true,
+            "Timeline menu",
+            <ClickNav timelineCoord={timelineCoord} />
+        );
     };
 
     const renderItem = ({
@@ -183,8 +189,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
     }: any) => {
         const { left: leftResizeProps, right: rightResizeProps } =
             getResizeProps();
-
-        console.log("Item props: ", getItemProps());
 
         return (
             <div {...getItemProps(item.itemProps)}>
@@ -228,9 +232,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
     };
 
     useEffect(() => {}, []);
-
-    console.log("Time start: ", timeStart);
-    console.log("Time end: ", timeEnd);
 
     return (
         <>

@@ -15,7 +15,8 @@ const style = {
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
-    maxHeight: "80%",
+    maxHeight: "90%",
+    width: "80%",
     overflow: "auto",
 };
 

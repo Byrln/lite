@@ -1,5 +1,10 @@
 import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 const GenderSelect = ({ register, errors, entity, setEntity }: any) => {
     const data = [
@@ -13,27 +18,35 @@ const GenderSelect = ({ register, errors, entity, setEntity }: any) => {
                 ...entity,
                 GenderID: event.target.value,
             });
+
+            console.log(entity);
         }
     };
 
     return (
-        <TextField
-            fullWidth
-            id="GenderID"
-            label="Хүйс сонгох"
-            {...register("GenderID")}
-            select
-            margin="dense"
-            error={errors.GenderID?.message}
-            helperText={errors.GenderID?.message}
-            onChange={onChange}
-        >
-            {data.map((element: any) => (
-                <MenuItem key={element.GenderID} value={element.GenderID}>
-                    {element.name}
-                </MenuItem>
-            ))}
-        </TextField>
+        <>
+            <FormControl component="fieldset">
+                <RadioGroup
+                    row
+                    id="GenderID"
+                    aria-label="Gender"
+                    {...register("GenderID")}
+                    error={errors.GenderID?.message}
+                    helperText={errors.GenderID?.message}
+                    value={entity && entity.GenderID}
+                    onChange={onChange}
+                >
+                    {data.map((element: any, index: number) => (
+                        <FormControlLabel
+                            key={index}
+                            value={element.GenderID}
+                            control={<Radio />}
+                            label={element.name}
+                        />
+                    ))}
+                </RadioGroup>
+            </FormControl>
+        </>
     );
 };
 

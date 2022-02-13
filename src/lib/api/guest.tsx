@@ -60,6 +60,38 @@ export const GuestAPI = {
             });
         return result;
     },
+    get: async (id: any) => {
+        let vals = {
+            GuestID: id,
+            GuestName: "",
+            CountryID: "0",
+            IdentityValue: "",
+            Phone: "",
+            TransactionID: "",
+            IsMainOnly: false,
+        };
+
+        const result: ApiResponseModel = await axios
+            .post(listUrl, vals)
+            .then(({ data, status }: any) => {
+                var res: ApiResponseModel;
+                if (status != 200) {
+                    res = {
+                        status: status,
+                        msg: "",
+                        data: null,
+                    };
+                    return res;
+                }
+                res = {
+                    status: 200,
+                    msg: "",
+                    data: JSON.parse(data.JsonData),
+                };
+                return res;
+            });
+        return result;
+    },
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 
@@ -70,8 +102,10 @@ export const GuestAPI = {
     },
 
     update: async (id: any, values: any) => {
-        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
-
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
         return {
             data,
             status,

@@ -17,3 +17,12 @@ export function fToNow(date: any) {
         addSuffix: true,
     });
 }
+
+export function toSimpleFormat(date: Date) {
+    var month: number = date.getMonth();
+    month = month + 1;
+    var monthStr: string = month < 10 ? "0" + month : "" + month;
+    var dayStr: string =
+        date.getDay() < 10 ? "0" + date.getDay() : "" + date.getDay();
+    return date.getFullYear() + "-" + monthStr + "-" + dayStr;
+}
