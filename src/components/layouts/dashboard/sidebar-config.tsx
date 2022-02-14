@@ -11,6 +11,11 @@ const sidebarConfig = [
         icon: getIcon(pieChart2Fill),
     },
     {
+        title: "Calendar PMS",
+        path: "/timeline",
+        icon: getIcon(pieChart2Fill),
+    },
+    {
         title: "room",
         path: "/room",
         icon: getIcon(peopleFill),
