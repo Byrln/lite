@@ -4,10 +4,36 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
-import { RoomTypeSWR } from "lib/api/room-type";
+import { RoomTypeSWR, RoomTypeAPI } from "lib/api/room-type";
+import { useEffect } from "react";
 
-const RoomTypeSelect = ({ register, errors, entity, setEntity }: any) => {
-    const { data, error } = RoomTypeSWR();
+const RoomTypeSelect = ({
+    register,
+    errors,
+    entity,
+    setEntity,
+    onRoomTypeChange,
+}: any) => {
+    const { data, error }: any = RoomTypeSWR();
+
+    const eventRoomTypeChange = (val: any) => {
+        if (onRoomTypeChange) {
+            var rt;
+            var roomType = null;
+            for (rt of data) {
+                if (rt.RoomTypeID === val) {
+                    roomType = rt;
+                }
+            }
+            onRoomTypeChange(roomType);
+        }
+    };
+
+    useEffect(() => {
+        if (data && data.length > 0 && entity?.RoomTypeID) {
+            eventRoomTypeChange(entity.RoomTypeID);
+        }
+    }, [data, entity]);
 
     const onChange = (event: any) => {
         if (setEntity) {
@@ -16,6 +42,7 @@ const RoomTypeSelect = ({ register, errors, entity, setEntity }: any) => {
                 RoomTypeID: event.target.value,
             });
         }
+        eventRoomTypeChange(event.target.value);
     };
 
     if (error) return <Alert severity="error">{error.message}</Alert>;

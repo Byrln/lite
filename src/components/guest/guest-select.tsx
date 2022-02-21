@@ -16,8 +16,10 @@ const GuestSelect = ({ guestSelected }: any) => {
     });
 
     const setGuest = (guest: any) => {
+        console.log(guest);
         setIdEditing(guest.GuestID);
         if (typeof guestSelected == "function") {
+            console.log("==========guestSelected is function ==========");
             guestSelected(guest);
         }
     };

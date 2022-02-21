@@ -1,9 +1,8 @@
-import Timeline from "react-calendar-timeline";
-import {
+import Timeline, {
     TimelineHeaders,
     SidebarHeader,
     DateHeader,
-} from "react-calendar-timeline";
+} from "react-calendar-timeline/lib";
 // make sure you include the timeline stylesheet or the timeline will not be styled
 import "react-calendar-timeline/lib/Timeline.css";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
@@ -100,21 +99,39 @@ const TimelinePms = ({ props, workingDate }: any) => {
             if (itemIds.includes(itemId)) {
                 continue;
             }
+
+            var startTime = new Date(items[i].StartDate);
+            startTime.setHours(14);
+            startTime.setMinutes(0);
+            startTime.setSeconds(0);
+
+            var endTime = new Date(items[i].EndDate);
+            endTime.setDate(endTime.getDate() + 1);
+            endTime.setHours(12);
+            endTime.setMinutes(0);
+            endTime.setSeconds(0);
+
             itemData.push({
                 id: itemId,
                 group: "" + items[i].RoomTypeID + "_" + items[i].RoomID,
-                title: items[i].GuestName,
-                description: items[i].GuestName,
+                title: items[i].GuestID + " " + items[i].GuestName,
+                description: items[i].GuestID + " " + items[i].GuestName,
                 transactionId: items[i].TransactionID,
-                start_time: new Date(items[i].StartDate),
-                end_time: new Date(items[i].EndDate),
+                start_time: startTime,
+                end_time: endTime,
                 colorCode: items[i].GroupColor,
             });
             itemIds.push(itemId);
         }
+
+        var openGroups =
+            typeof timelineData.openGroups != "undefined"
+                ? timelineData.openGroups
+                : {};
+
         let renderGroups = filterGroups({
             groups: gs,
-            openGroups: {},
+            openGroups: openGroups,
         });
         setTimelineData({
             ...timelineData,

@@ -11,17 +11,18 @@ import {
     Button,
     InputLabel,
     Checkbox,
-    Radio,
-    RadioGroup,
     FormControlLabel,
 } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import RoomTypeSelect from "components/select/room-type";
 import RoomSelect from "components/select/room";
+import ReservationTypeSelect from "components/select/reservation-type";
 import RateTypeSelect from "components/select/rate-type";
+import NumberSelect from "components/select/number-select";
 import CurrencySelect from "components/select/currency";
 import CustomerSelect from "components/select/customer";
+import { RateModeSelect, RoomChargeDurationSelect } from "components/select";
 
 import PaymentMethodGroupSelect from "components/select/payment-method-group";
 import PaymentMethodSelect from "components/select/payment-method";
@@ -31,13 +32,77 @@ import GuestSelect from "components/guest/guest-select";
 import NewEditForm from "components/common/new-edit-form";
 import { ReservationApi } from "lib/api/reservation";
 import { TimelineCoordModel } from "models/data/TimelineCoordModel";
-import { toSimpleFormat } from "lib/utils/format-time";
+import { toSimpleFormat, fToUniversal } from "lib/utils/format-time";
+import { listUrl } from "lib/api/front-office";
 
 const steps = ["Guest Information", "Stay Information", "Billing and Payment"];
 
 const NewEdit = ({ timelineCoord }: any) => {
     const [entity, setEntity]: any = useState(null);
-    const [activeStep, setActiveStep] = useState(0);
+    const [activeStep, setActiveStep]: any = useState(0);
+    const [roomType, setRoomType]: any = useState(null);
+
+    const isStepOptional = (step: number) => {
+        return step === 1;
+    };
+
+    const onRoomTypeChange = (rt: any) => {
+        console.log("====== RoomType selected: ", rt);
+        setRoomType(rt);
+        console.log(roomType?.MaxAdult ? roomType?.MaxAdult : 0);
+        console.log(roomType?.BaseAdult ? roomType?.BaseAdult : 0);
+    };
+
+    const handleNext = () => {
+        var step = activeStep;
+        step = step + 1;
+        setActiveStep(step);
+    };
+
+    const handleBack = () => {
+        var step = activeStep;
+        step = step - 1;
+        setActiveStep(step);
+    };
+
+    const validationSchema = yup.object().shape({
+        RoomTypeID: yup.number().required("Сонгоно уу"),
+        Adult: yup.number().required("Сонгоно уу"),
+        RateTypeID: yup.number().required("Сонгоно уу"),
+        Nights: yup.number().required("Сонгоно уу"),
+        ReservationTypeID: yup.number().required("Сонгоно уу"),
+        CurrencyID: yup.number().required("Сонгоно уу"),
+        Amount: yup.number().required("Сонгоно уу"),
+    });
+    const formOptions = { resolver: yupResolver(validationSchema) };
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm(formOptions);
+
+    const guestSelected = (guest: any) => {
+        console.log("===== Guest Selected =====", guest);
+        setEntity({
+            ...entity,
+            GuestID: guest.GuestID,
+        });
+        reset(
+            {
+                GuestID: guest.GuestID,
+            },
+            {
+                keepErrors: false,
+                keepDirty: true,
+                keepIsSubmitted: false,
+                keepTouched: false,
+                keepIsValid: false,
+                keepSubmitCount: false,
+            }
+        );
+    };
 
     useEffect(() => {
         console.log(
@@ -51,38 +116,26 @@ const NewEdit = ({ timelineCoord }: any) => {
             ArrivalDate: toSimpleFormat(timelineCoord.TimeStart),
             DepartureDate: toSimpleFormat(timelineCoord.TimeEnd),
         });
+
+        reset(
+            {
+                RoomTypeID: timelineCoord.RoomTypeID,
+                RoomID: timelineCoord.RoomID,
+                ArrivalDate: toSimpleFormat(timelineCoord.TimeStart),
+                DepartureDate: toSimpleFormat(timelineCoord.TimeEnd),
+                ArrivalTime: "14:00",
+                DepartureTime: "12:00",
+            },
+            {
+                keepErrors: false,
+                keepDirty: true,
+                keepIsSubmitted: false,
+                keepTouched: false,
+                keepIsValid: false,
+                keepSubmitCount: false,
+            }
+        );
     }, []);
-
-    const isStepOptional = (step: number) => {
-        return step === 1;
-    };
-
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const guestSelected = (guest: any) => {
-        setEntity({
-            ...entity,
-            GuestID: guest.GuestID,
-        });
-    };
-
-    const validationSchema = yup.object().shape({
-        RoomTypeID: yup.number().required("Сонгоно уу"),
-        RoomID: yup.number().required("Сонгоно уу"),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm(formOptions);
 
     return (
         <>
@@ -114,6 +167,7 @@ const NewEdit = ({ timelineCoord }: any) => {
                 api={ReservationApi}
                 entity={entity}
                 handleSubmit={handleSubmit}
+                listUrl={listUrl}
             >
                 <input
                     type="Hidden"
@@ -127,100 +181,163 @@ const NewEdit = ({ timelineCoord }: any) => {
                         display: activeStep === 1 ? "inline" : "none",
                     }}
                 >
-                    <RoomTypeSelect
-                        register={register}
-                        errors={errors}
-                        entity={entity}
-                        setEntity={setEntity}
-                    />
-                    <RoomSelect
-                        register={register}
-                        errors={errors}
-                        entity={entity}
-                        setEntity={setEntity}
-                    />
-
-                    <RateTypeSelect
-                        register={register}
-                        errors={errors}
-                        entity={entity}
-                        setEntity={setEntity}
-                    />
-
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
-                            <TextField
-                                id="Adult"
-                                label="Adult"
-                                type="number"
-                                {...register("Adult")}
-                                margin="dense"
-                                error={errors.Adult?.message}
-                                helperText={errors.Adult?.message}
+                            <RoomTypeSelect
+                                register={register}
+                                errors={errors}
+                                entity={entity}
+                                setEntity={setEntity}
+                                onRoomTypeChange={onRoomTypeChange}
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                id="Child"
-                                label="Child"
-                                type="number"
-                                {...register("Child")}
-                                margin="dense"
-                                error={errors.Child?.message}
-                                helperText={errors.Child?.message}
+                            <RoomSelect
+                                register={register}
+                                errors={errors}
+                                entity={entity}
+                                setEntity={setEntity}
+                            />
+                        </Grid>
+                    </Grid>
+
+                    <Grid container spacing={2}>
+                        <Grid item xs={3}>
+                            <NumberSelect
+                                numberMin={
+                                    roomType?.BaseAdult
+                                        ? roomType?.BaseAdult
+                                        : 0
+                                }
+                                numberMax={
+                                    roomType?.MaxAdult ? roomType?.MaxAdult : 0
+                                }
+                                nameKey={"Adult"}
+                                register={register}
+                                errors={errors}
+                                label={"Adult"}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <NumberSelect
+                                numberMin={
+                                    roomType?.BaseChild
+                                        ? roomType?.BaseChild
+                                        : 0
+                                }
+                                numberMax={
+                                    roomType?.MaxChild ? roomType?.MaxChild : 0
+                                }
+                                nameKey={"Child"}
+                                register={register}
+                                errors={errors}
+                                label={"Child"}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <RateTypeSelect
+                                register={register}
+                                errors={errors}
+                                entity={entity}
+                                setEntity={setEntity}
                             />
                         </Grid>
                     </Grid>
 
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
-                            <TextField
-                                type="date"
-                                fullWidth
-                                id="ArrivalDate"
-                                label="Эхлэх огноо"
-                                {...register("ArrivalDate")}
-                                margin="dense"
-                                error={errors.ArrivalDate?.message}
-                                helperText={errors.ArrivalDate?.message}
-                                InputLabelProps={{ shrink: true }}
-                                value={
-                                    entity?.ArrivalDate && entity.ArrivalDate
-                                }
-                                onChange={(evt: any) => {
-                                    console.log(entity);
-                                    setEntity({
-                                        ...entity,
-                                        ArrivalDate: evt.target.value,
-                                    });
-                                }}
-                            />
+                            <Grid container spacing={2}>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        type="date"
+                                        fullWidth
+                                        id="ArrivalDate"
+                                        label="Эхлэх огноо"
+                                        {...register("ArrivalDate")}
+                                        margin="dense"
+                                        error={errors.ArrivalDate?.message}
+                                        helperText={errors.ArrivalDate?.message}
+                                        InputLabelProps={{ shrink: true }}
+                                        value={
+                                            entity?.ArrivalDate &&
+                                            entity.ArrivalDate
+                                        }
+                                        onChange={(evt: any) => {
+                                            setEntity({
+                                                ...entity,
+                                                ArrivalDate: evt.target.value,
+                                            });
+                                            reset({
+                                                ArrivalDate: evt.target.value,
+                                            });
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <TextField
+                                        id="ArrivalTime"
+                                        label="Ирэх цаг"
+                                        type="time"
+                                        margin="dense"
+                                        {...register("ArrivalTime")}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        inputProps={{
+                                            step: 600, // 5 min
+                                        }}
+                                        sx={{ width: 150 }}
+                                    />
+                                </Grid>
+                            </Grid>
+
+                            <Grid container spacing={2}>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        type="date"
+                                        fullWidth
+                                        id="DepartureDate"
+                                        label="Гарах огноо"
+                                        {...register("DepartureDate")}
+                                        margin="dense"
+                                        error={errors.DepartureDate?.message}
+                                        helperText={
+                                            errors.DepartureDate?.message
+                                        }
+                                        InputLabelProps={{ shrink: true }}
+                                        value={
+                                            entity?.DepartureDate &&
+                                            entity.DepartureDate
+                                        }
+                                        onChange={(evt: any) => {
+                                            setEntity({
+                                                ...entity,
+                                                DepartureDate: evt.target.value,
+                                            });
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <TextField
+                                        id="DepartureTime"
+                                        label="Гарах цаг"
+                                        type="time"
+                                        margin="dense"
+                                        {...register("DepartureTime")}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        inputProps={{
+                                            step: 600, // 5 min
+                                        }}
+                                        sx={{ width: 150 }}
+                                        onChange={(evt: any) => {
+                                            console.log(evt.target.value);
+                                        }}
+                                    />
+                                </Grid>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                type="date"
-                                fullWidth
-                                id="DepartureDate"
-                                label="Гарах огноо"
-                                {...register("DepartureDate")}
-                                margin="dense"
-                                error={errors.DepartureDate?.message}
-                                helperText={errors.DepartureDate?.message}
-                                InputLabelProps={{ shrink: true }}
-                                value={
-                                    entity?.DepartureDate &&
-                                    entity.DepartureDate
-                                }
-                                onChange={(evt: any) => {
-                                    setEntity({
-                                        ...entity,
-                                        DepartureDate: evt.target.value,
-                                    });
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <TextField
                                 id="Nights"
@@ -230,6 +347,26 @@ const NewEdit = ({ timelineCoord }: any) => {
                                 margin="dense"
                                 error={errors.Nights?.message}
                                 helperText={errors.Nights?.message}
+                            />
+
+                            <ReservationTypeSelect
+                                register={register}
+                                errors={errors}
+                                reset={reset}
+                            />
+                        </Grid>
+                    </Grid>
+
+                    <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        id={"BreakfastIncluded"}
+                                        {...register("BreakfastIncluded")}
+                                    />
+                                }
+                                label="BreakFast Included"
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -244,11 +381,6 @@ const NewEdit = ({ timelineCoord }: any) => {
                             />
                         </Grid>
                     </Grid>
-
-                    <InputLabel htmlFor="my-input" className="mt-3">
-                        BreakFast Included
-                    </InputLabel>
-                    <Checkbox {...register("BreakfastIncluded")} />
                 </Box>
 
                 <Box
@@ -256,54 +388,36 @@ const NewEdit = ({ timelineCoord }: any) => {
                         display: activeStep === 2 ? "inline" : "none",
                     }}
                 >
-                    <RadioGroup
-                        row
-                        {...register("BreakfastIncluded")}
-                        aria-label="gender"
-                        name="row-radio-buttons-group"
-                    >
-                        <FormControlLabel
-                            value="normal"
-                            control={<Radio />}
-                            label="Normal"
-                        />
-                        <FormControlLabel
-                            value="manual"
-                            control={<Radio />}
-                            label="Manual"
-                        />
-                        <FormControlLabel
-                            value="contactRate"
-                            control={<Radio />}
-                            label="Contact Rate"
-                        />
-                    </RadioGroup>
-                    <RadioGroup
-                        row
-                        {...register("BreakfastIncluded")}
-                        aria-label="gender"
-                        name="row-radio-buttons-group"
-                    >
-                        <FormControlLabel
-                            value="daily"
-                            control={<Radio />}
-                            label="Daily"
-                        />
-                        <FormControlLabel
-                            value="weekly"
-                            control={<Radio />}
-                            label="Weekly"
-                        />
-                        <FormControlLabel
-                            value="monthly"
-                            control={<Radio />}
-                            label="Monthly"
-                        />
-                    </RadioGroup>
-                    <InputLabel htmlFor="my-input" className="mt-3">
-                        Tax Included
-                    </InputLabel>
-                    <Checkbox {...register("TaxIncluded")} />
+                    <Grid container spacing={2}>
+                        <Grid item xs={2}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        defaultChecked
+                                        id={"TaxIncluded"}
+                                        {...register("TaxIncluded")}
+                                    />
+                                }
+                                label="Tax Included"
+                            />
+                        </Grid>
+                        <Grid item xs={5}>
+                            <RateModeSelect
+                                register={register}
+                                errors={errors}
+                                entity={entity}
+                                setEntity={setEntity}
+                            />
+                        </Grid>
+                        <Grid item xs={5}>
+                            <RoomChargeDurationSelect
+                                register={register}
+                                errors={errors}
+                                entity={entity}
+                                setEntity={setEntity}
+                            />
+                        </Grid>
+                    </Grid>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <CurrencySelect
@@ -311,6 +425,7 @@ const NewEdit = ({ timelineCoord }: any) => {
                                 errors={errors}
                                 entity={entity}
                                 setEntity={setEntity}
+                                nameKey={"CurrencyID"}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -341,17 +456,18 @@ const NewEdit = ({ timelineCoord }: any) => {
                                 errors={errors}
                                 entity={entity}
                                 setEntity={setEntity}
+                                nameKey={"PayCurrencyID"}
                             />
                         </Grid>
                         <Grid item xs={5}>
                             <TextField
-                                id="Amount"
-                                label="Amount"
+                                id="PayAmount"
+                                label="PayAmount"
                                 type="number"
-                                {...register("Amount")}
+                                {...register("PayAmount")}
                                 margin="dense"
-                                error={errors.Amount?.message}
-                                helperText={errors.Amount?.message}
+                                error={errors.PayAmount?.message}
+                                helperText={errors.PayAmount?.message}
                             />
                         </Grid>
                     </Grid>

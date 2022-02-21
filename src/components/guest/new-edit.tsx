@@ -7,6 +7,8 @@ import MenuItem from "@mui/material/MenuItem";
 import NewEditForm from "components/common/new-edit-form";
 import { GuestAPI, listUrl } from "lib/api/guest";
 import GenderSelect from "components/select/gender";
+import CountrySelect from "components/select/country";
+import GuestTitleSelect from "components/select/guest-title";
 import Grid from "@mui/material/Grid";
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import Button from "@mui/material/Button";
@@ -90,6 +92,7 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm(formOptions);
 
     return (
@@ -99,6 +102,23 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                     variant="text"
                     onClick={(evt: any) => {
                         setEntity({});
+                        reset(
+                            {
+                                Surname: null,
+                                Name: null,
+                                GenderID: null,
+                                Mobile: null,
+                                Address: null,
+                            },
+                            {
+                                keepErrors: false,
+                                keepDirty: true,
+                                keepIsSubmitted: false,
+                                keepTouched: false,
+                                keepIsValid: false,
+                                keepSubmitCount: false,
+                            }
+                        );
                     }}
                 >
                     RESET
@@ -111,7 +131,15 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                 handleSubmit={handleSubmit}
             >
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={2}>
+                        <GuestTitleSelect
+                            register={register}
+                            errors={errors}
+                            entity={entity}
+                            setEntity={setEntity}
+                        />
+                    </Grid>
+                    <Grid item xs={5}>
                         <TextField
                             fullWidth
                             id="Surname"
@@ -133,7 +161,7 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                         />
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={5}>
                         <TextField
                             fullWidth
                             id="Name"
@@ -257,6 +285,13 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                     </Grid>
                 </Grid>
                 <GenderSelect
+                    register={register}
+                    errors={errors}
+                    entity={entity}
+                    setEntity={setEntity}
+                />
+
+                <CountrySelect
                     register={register}
                     errors={errors}
                     entity={entity}

@@ -1,9 +1,8 @@
-import Timeline from "react-calendar-timeline";
-import {
+import Timeline, {
     TimelineHeaders,
     SidebarHeader,
     DateHeader,
-} from "react-calendar-timeline";
+} from "react-calendar-timeline/lib";
 // make sure you include the timeline stylesheet or the timeline will not be styled
 import "react-calendar-timeline/lib/Timeline.css";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
@@ -157,7 +156,7 @@ const MainTimeline = (props: any) => {
                         calendarHeaderClassName={"calendar_header"}
                     >
                         <SidebarHeader>
-                            {({ getRootProps }) => {
+                            {({ getRootProps }: any) => {
                                 return (
                                     <div
                                         {...getRootProps()}

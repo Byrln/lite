@@ -4,16 +4,12 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { useEffect } from "react";
-
 import { RoomSWR } from "lib/api/room";
-import { elementAcceptingRef } from "@mui/utils";
 
 const RoomSelect = ({ register, errors, entity, setEntity }: any) => {
     const { data, error } = RoomSWR();
 
-    useEffect(() => {
-        console.log("==== entity ====", entity);
-    }, [entity]);
+    useEffect(() => {}, [entity]);
 
     const onChange = (event: any) => {
         if (setEntity) {
@@ -50,11 +46,11 @@ const RoomSelect = ({ register, errors, entity, setEntity }: any) => {
             }}
             onChange={onChange}
         >
-            {data.map((element: any) => {
+            {data.map((room: any) => {
                 return (
-                    entity?.RoomTypeID === element.RoomTypeID && (
-                        <MenuItem key={element.RoomID} value={element.RoomID}>
-                            {`${element.RoomTypeName}  ${element.RoomNo}`}
+                    entity?.RoomTypeID === room.RoomTypeID && (
+                        <MenuItem key={room.RoomID} value={room.RoomID}>
+                            {`${room.RoomTypeName}  ${room.RoomNo}`}
                         </MenuItem>
                     )
                 );
