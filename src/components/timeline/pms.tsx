@@ -184,7 +184,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
         ) : null;
     };
 
-    const onCanvasContextMenu = (groupId: any, time: any, e: any) => {
+    const onCanvasEvent = (groupId: any, time: any, e: any) => {
         console.log("Group ID: ", groupId);
         console.log("========= Time: ========= ", time);
         var timeObj = new Date(time);
@@ -266,7 +266,8 @@ const TimelinePms = ({ props, workingDate }: any) => {
                     sidebarWidth={300}
                     minZoom={10 * 24 * 60 * 60 * 1000}
                     maxZoom={10 * 24 * 60 * 60 * 1000}
-                    onCanvasContextMenu={onCanvasContextMenu}
+                    onCanvasContextMenu={onCanvasEvent}
+                    onCanvasDoubleClick={onCanvasEvent}
                 >
                     <TimelineHeaders
                         className={"timeline_header"}
