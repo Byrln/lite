@@ -228,9 +228,10 @@ const TimelinePms = ({ props, workingDate }: any) => {
                     //     console.log(evt);
                     // }}
                     onDoubleClick={(evt: any) => {
+                        console.log("===== Event ======", evt);
                         handleModal(
                             true,
-                            "Timeline menu",
+                            "Reservation Detail",
                             <ItemDetail itemInfo={item} />
                         );
                     }}

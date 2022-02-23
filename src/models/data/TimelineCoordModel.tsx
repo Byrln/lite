@@ -8,12 +8,14 @@ interface TimelineCoordModel {
 
 const createTimelineCoord = (timelineGroupId: any, timeStart: Date) => {
     var ids = timelineGroupId.split("_");
+    var timeEnd = new Date(timeStart.getTime());
+    timeEnd.setDate(timeEnd.getDate() + 1);
     var result: TimelineCoordModel = {
         RoomTypeID: parseInt(ids[0]),
         RoomID: typeof ids[1] !== "undefined" ? parseInt(ids[1]) : 0,
         TimelineGroupId: timelineGroupId,
         TimeStart: timeStart,
-        TimeEnd: timeStart,
+        TimeEnd: timeEnd,
     };
     return result;
 };

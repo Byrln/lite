@@ -17,12 +17,16 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import RoomTypeSelect from "components/select/room-type";
 import RoomSelect from "components/select/room";
-import ReservationTypeSelect from "components/select/reservation-type";
 import RateTypeSelect from "components/select/rate-type";
 import NumberSelect from "components/select/number-select";
 import CurrencySelect from "components/select/currency";
 import CustomerSelect from "components/select/customer";
-import { RateModeSelect, RoomChargeDurationSelect } from "components/select";
+import {
+    RateModeSelect,
+    RoomChargeDurationSelect,
+    ReservationTypeSelect,
+    ReservationChannelSelect,
+} from "components/select";
 
 import PaymentMethodGroupSelect from "components/select/payment-method-group";
 import PaymentMethodSelect from "components/select/payment-method";
@@ -370,14 +374,10 @@ const NewEdit = ({ timelineCoord }: any) => {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                id="ReservationSourceID"
-                                label="ReservationSourceID"
-                                type="number"
-                                {...register("ReservationSourceID")}
-                                margin="dense"
-                                error={errors.ReservationSourceID?.message}
-                                helperText={errors.ReservationSourceID?.message}
+                            <ReservationChannelSelect
+                                register={register}
+                                errors={errors}
+                                reset={reset}
                             />
                         </Grid>
                     </Grid>
@@ -495,7 +495,6 @@ const NewEdit = ({ timelineCoord }: any) => {
                         label="Set Message"
                         multiline
                         maxRows={4}
-                        {...register("Amount")}
                         margin="dense"
                         error={errors.setMessage?.message}
                         helperText={errors.setMessage?.message}

@@ -22,6 +22,10 @@ export function fToUniversal(date: any) {
     return format(new Date(date), "yyyy MMM dd");
 }
 
+export function fToCustom(date: any, formatStr: string) {
+    return format(new Date(date), formatStr);
+}
+
 export function toSimpleFormat(date: Date) {
     var month: number = date.getMonth();
     month = month + 1;
