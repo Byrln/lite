@@ -26,11 +26,18 @@ export function fToCustom(date: any, formatStr: string) {
     return format(new Date(date), formatStr);
 }
 
-export function toSimpleFormat(date: Date) {
-    var month: number = date.getMonth();
-    month = month + 1;
-    var monthStr: string = month < 10 ? "0" + month : "" + month;
-    var dayStr: string =
-        date.getDay() < 10 ? "0" + date.getDay() : "" + date.getDay();
-    return date.getFullYear() + "-" + monthStr + "-" + dayStr;
+export function dateToSimpleFormat(date: Date) {
+    return format(date, "yyyy-MM-dd");
+}
+
+export function dateToCustomFormat(date: Date, formatStr: string) {
+    return format(date, formatStr);
+}
+
+export function countNights(d1: any, d2: any) {
+    var date1 = new Date(d1);
+    var date2 = new Date(d2);
+    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    var numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return numberOfNights;
 }

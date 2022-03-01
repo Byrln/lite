@@ -3,13 +3,32 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { useEffect } from "react";
-import { RoomSWR } from "lib/api/room";
+import { useEffect, useState } from "react";
+import { RoomSWR, RoomAPI } from "lib/api/room";
+import { dateToSimpleFormat } from "lib/utils/format-time";
 
-const RoomSelect = ({ register, errors, entity, setEntity }: any) => {
-    const { data, error } = RoomSWR();
+const RoomSelect = ({ register, errors, entity, setEntity, baseStay }: any) => {
+    // const { data, error } = RoomSWR();
+    const [data, setData]: any = useState([]);
 
-    useEffect(() => {}, [entity]);
+    const fetchRooms = async () => {
+        if (!(baseStay.roomType && baseStay.dateStart && baseStay.dateEnd)) {
+            return;
+        }
+        var values = {
+            TransactionID: baseStay.TransactionID,
+            RoomTypeID: baseStay.roomType?.RoomTypeID,
+            StartDate: dateToSimpleFormat(baseStay.dateStart),
+            EndDate: dateToSimpleFormat(baseStay.dateEnd),
+        };
+        var d = await RoomAPI.listAvailable(values);
+        console.log(d);
+        setData(d);
+    };
+
+    useEffect(() => {
+        fetchRooms();
+    }, [baseStay]);
 
     const onChange = (event: any) => {
         if (setEntity) {
@@ -20,15 +39,15 @@ const RoomSelect = ({ register, errors, entity, setEntity }: any) => {
         }
     };
 
-    if (error) return <Alert severity="error">{error.message}</Alert>;
+    // if (error) return <Alert severity="error">{error.message}</Alert>;
 
-    if (!error && !data)
-        return (
-            <Box sx={{ width: "100%" }}>
-                <Skeleton />
-                <Skeleton animation="wave" />
-            </Box>
-        );
+    // if (!error && !data)
+    //     return (
+    //         <Box sx={{ width: "100%" }}>
+    //             <Skeleton />
+    //             <Skeleton animation="wave" />
+    //         </Box>
+    //     );
 
     return (
         <TextField

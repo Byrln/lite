@@ -22,6 +22,22 @@ export const FrontOfficeSWR = (date: any) => {
 };
 
 export const FrontOfficeAPI = {
+    transactionInfo: async (id: any) => {
+        const values = {
+            TransactionID: id,
+        };
+        const res = await axios.post(`${urlPrefix}/TransactionInfo`, values);
+        var list = JSON.parse(res.data.JsonData);
+        console.log(list);
+        var item;
+        if (list.length === 1) {
+            item = list[0];
+        } else {
+            item = null;
+        }
+        return item;
+    },
+
     workingDate: async () => {
         const { data, status } = await axios.get(`${urlPrefix}/WorkingDate`);
         let workingDate = JSON.parse(data.JsonData);

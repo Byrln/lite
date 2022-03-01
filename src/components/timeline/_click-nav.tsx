@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { ModalContext } from "lib/context/modal";
 import NewEdit from "components/reservation/new-edit";
 
-export const ClickNav = ({ timelineCoord }: any) => {
+export const ClickNav = ({ timelineCoord, workingDate }: any) => {
     const { handleModal }: any = useContext(ModalContext);
 
     return (
@@ -14,7 +14,10 @@ export const ClickNav = ({ timelineCoord }: any) => {
                     handleModal(
                         true,
                         "New Reservation",
-                        <NewEdit timelineCoord={timelineCoord} />
+                        <NewEdit
+                            timelineCoord={timelineCoord}
+                            workingDate={workingDate}
+                        />
                     );
                 }}
             >

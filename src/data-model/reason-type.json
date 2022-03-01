@@ -1,0 +1,20 @@
+[
+    {
+        "ReasonTypeID": 1,
+        "ReasonTypeCode": "TextCancelReason",
+        "ReasonTypeName": "Cancel Reason",
+        "RoomStatusID": 6
+    },
+    {
+        "ReasonTypeID": 2,
+        "ReasonTypeCode": "TextVoidReason",
+        "ReasonTypeName": "Void Reason",
+        "RoomStatusID": 5
+    },
+    {
+        "ReasonTypeID": 3,
+        "ReasonTypeCode": "TextRoomBlockReason",
+        "ReasonTypeName": "Room Block Reason",
+        "RoomStatusID": 8
+    }
+]

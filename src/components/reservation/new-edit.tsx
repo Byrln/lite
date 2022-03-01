@@ -36,25 +36,37 @@ import GuestSelect from "components/guest/guest-select";
 import NewEditForm from "components/common/new-edit-form";
 import { ReservationApi } from "lib/api/reservation";
 import { TimelineCoordModel } from "models/data/TimelineCoordModel";
-import { toSimpleFormat, fToUniversal } from "lib/utils/format-time";
+import {
+    dateToSimpleFormat,
+    fToUniversal,
+    fToCustom,
+    dateToCustomFormat,
+} from "lib/utils/format-time";
 import { listUrl } from "lib/api/front-office";
 
 const steps = ["Guest Information", "Stay Information", "Billing and Payment"];
 
-const NewEdit = ({ timelineCoord }: any) => {
+const NewEdit = ({ timelineCoord, workingDate }: any) => {
     const [entity, setEntity]: any = useState(null);
     const [activeStep, setActiveStep]: any = useState(0);
-    const [roomType, setRoomType]: any = useState(null);
+    // const [roomType, setRoomType]: any = useState(null);
+
+    const [baseStay, setBaseStay]: any = useState({
+        TransactionID: 0,
+        roomType: null,
+        dateStart: null,
+        dateEnd: null,
+    });
 
     const isStepOptional = (step: number) => {
         return step === 1;
     };
 
     const onRoomTypeChange = (rt: any) => {
-        console.log("====== RoomType selected: ", rt);
-        setRoomType(rt);
-        console.log(roomType?.MaxAdult ? roomType?.MaxAdult : 0);
-        console.log(roomType?.BaseAdult ? roomType?.BaseAdult : 0);
+        setBaseStay({
+            ...baseStay,
+            roomType: rt,
+        });
     };
 
     const handleNext = () => {
@@ -117,16 +129,22 @@ const NewEdit = ({ timelineCoord }: any) => {
             ...entity,
             RoomTypeID: timelineCoord.RoomTypeID,
             RoomID: timelineCoord.RoomID,
-            ArrivalDate: toSimpleFormat(timelineCoord.TimeStart),
-            DepartureDate: toSimpleFormat(timelineCoord.TimeEnd),
+            ArrivalDate: dateToSimpleFormat(timelineCoord.TimeStart),
+            DepartureDate: dateToSimpleFormat(timelineCoord.TimeEnd),
+        });
+
+        setBaseStay({
+            ...baseStay,
+            dateStart: timelineCoord.TimeStart,
+            dateEnd: timelineCoord.TimeEnd,
         });
 
         reset(
             {
                 RoomTypeID: timelineCoord.RoomTypeID,
                 RoomID: timelineCoord.RoomID,
-                ArrivalDate: toSimpleFormat(timelineCoord.TimeStart),
-                DepartureDate: toSimpleFormat(timelineCoord.TimeEnd),
+                ArrivalDate: dateToSimpleFormat(timelineCoord.TimeStart),
+                DepartureDate: dateToSimpleFormat(timelineCoord.TimeEnd),
                 ArrivalTime: "14:00",
                 DepartureTime: "12:00",
             },
@@ -140,6 +158,60 @@ const NewEdit = ({ timelineCoord }: any) => {
             }
         );
     }, []);
+
+    const onArrivalDateChange = (evt: any) => {
+        var dateStart = new Date(evt.target.value);
+        var dateEnd = new Date(baseStay.dateEnd.getTime());
+
+        if (
+            dateToCustomFormat(dateStart, "yyyyMMdd") >
+            dateToCustomFormat(dateEnd, "yyyyMMdd")
+        ) {
+            dateEnd = new Date(dateStart.getTime());
+            dateEnd.setDate(dateEnd.getDate() + 1);
+        }
+        setEntity({
+            ...entity,
+            ArrivalDate: dateToSimpleFormat(dateStart),
+            DepartureDate: dateToSimpleFormat(dateEnd),
+        });
+        reset({
+            ArrivalDate: dateToSimpleFormat(dateStart),
+            DepartureDate: dateToSimpleFormat(dateEnd),
+        });
+        setBaseStay({
+            ...baseStay,
+            dateStart: dateStart,
+            dateEnd: dateEnd,
+        });
+    };
+
+    const onDepartureDateChange = (evt: any) => {
+        var dateStart = new Date(baseStay.dateStart.getTime());
+        var dateEnd = new Date(evt.target.value);
+
+        if (
+            dateToCustomFormat(dateStart, "yyyyMMdd") >
+            dateToCustomFormat(dateEnd, "yyyyMMdd")
+        ) {
+            dateStart = new Date(dateEnd.getTime());
+            dateStart.setDate(dateStart.getDate() - 1);
+        }
+        setEntity({
+            ...entity,
+            ArrivalDate: dateToSimpleFormat(dateStart),
+            DepartureDate: dateToSimpleFormat(dateEnd),
+        });
+        reset({
+            ArrivalDate: dateToSimpleFormat(dateStart),
+            DepartureDate: dateToSimpleFormat(dateEnd),
+        });
+        setBaseStay({
+            ...baseStay,
+            dateStart: dateStart,
+            dateEnd: dateEnd,
+        });
+    };
 
     return (
         <>
@@ -201,6 +273,7 @@ const NewEdit = ({ timelineCoord }: any) => {
                                 errors={errors}
                                 entity={entity}
                                 setEntity={setEntity}
+                                baseStay={baseStay}
                             />
                         </Grid>
                     </Grid>
@@ -209,12 +282,14 @@ const NewEdit = ({ timelineCoord }: any) => {
                         <Grid item xs={3}>
                             <NumberSelect
                                 numberMin={
-                                    roomType?.BaseAdult
-                                        ? roomType?.BaseAdult
+                                    baseStay.roomType?.BaseAdult
+                                        ? baseStay.roomType?.BaseAdult
                                         : 0
                                 }
                                 numberMax={
-                                    roomType?.MaxAdult ? roomType?.MaxAdult : 0
+                                    baseStay.roomType?.MaxAdult
+                                        ? baseStay.roomType?.MaxAdult
+                                        : 0
                                 }
                                 nameKey={"Adult"}
                                 register={register}
@@ -225,12 +300,14 @@ const NewEdit = ({ timelineCoord }: any) => {
                         <Grid item xs={3}>
                             <NumberSelect
                                 numberMin={
-                                    roomType?.BaseChild
-                                        ? roomType?.BaseChild
+                                    baseStay.roomType?.BaseChild
+                                        ? baseStay.roomType?.BaseChild
                                         : 0
                                 }
                                 numberMax={
-                                    roomType?.MaxChild ? roomType?.MaxChild : 0
+                                    baseStay.roomType?.MaxChild
+                                        ? baseStay.roomType?.MaxChild
+                                        : 0
                                 }
                                 nameKey={"Child"}
                                 register={register}
@@ -267,13 +344,7 @@ const NewEdit = ({ timelineCoord }: any) => {
                                             entity.ArrivalDate
                                         }
                                         onChange={(evt: any) => {
-                                            setEntity({
-                                                ...entity,
-                                                ArrivalDate: evt.target.value,
-                                            });
-                                            reset({
-                                                ArrivalDate: evt.target.value,
-                                            });
+                                            onArrivalDateChange(evt);
                                         }}
                                     />
                                 </Grid>
@@ -314,10 +385,7 @@ const NewEdit = ({ timelineCoord }: any) => {
                                             entity.DepartureDate
                                         }
                                         onChange={(evt: any) => {
-                                            setEntity({
-                                                ...entity,
-                                                DepartureDate: evt.target.value,
-                                            });
+                                            onDepartureDateChange(evt);
                                         }}
                                     />
                                 </Grid>

@@ -1,7 +1,7 @@
 import { ReservationApi } from "lib/api/reservation";
 import { useState, useEffect } from "react";
 import { Grid, Box, Paper, Typography } from "@mui/material";
-import { fToCustom } from "lib/utils/format-time";
+import { fToCustom, countNights } from "lib/utils/format-time";
 import ReservationNav from "./_reservation-nav";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,6 +9,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { FrontOfficeAPI } from "lib/api/front-office";
 
 const styleTime = {
     backgroundColor: "#00008B",
@@ -36,25 +37,29 @@ const styleNight = {
 
 const ItemDetail = ({ itemInfo }: any) => {
     const [reservation, setReservation]: any = useState(null);
+    const [transactionInfo, setTransactionInfo]: any = useState(null);
 
-    const fetchDatas = async () => {
-        console.log("====== Item Detail =======", itemInfo.transactionId);
+    const reloadDetailInfo = async () => {
         var res = await ReservationApi.get(itemInfo.transactionId);
-        console.log(res);
+        var trs = await FrontOfficeAPI.transactionInfo(itemInfo.transactionId);
+
+        console.log(trs);
+
         setReservation(res);
+        setTransactionInfo(trs);
     };
 
     useEffect(() => {
-        fetchDatas();
+        reloadDetailInfo();
     }, [itemInfo]);
 
     return (
         <>
-            {reservation && (
+            {transactionInfo && (
                 <Box>
                     <Grid container spacing={2} sx={{ mb: 2 }}>
                         <Grid item xs={6}>
-                            <h4>{reservation.GuestName}</h4>
+                            <h4>{reservation?.GuestName}</h4>
                         </Grid>
                         <Grid item xs={6}>
                             <Box
@@ -67,12 +72,14 @@ const ItemDetail = ({ itemInfo }: any) => {
                                     elevation={2}
                                     sx={{
                                         px: 1,
-                                        backgroundColor: "success.main",
+                                        backgroundColor:
+                                            "#" + transactionInfo.StatusColor,
                                         color: "white",
                                     }}
                                 >
                                     <Typography>
-                                        {reservation.ReservationTypeName}
+                                        {reservation &&
+                                            reservation.ReservationTypeName}
                                     </Typography>
                                 </Paper>
                             </Box>
@@ -84,31 +91,31 @@ const ItemDetail = ({ itemInfo }: any) => {
                             <Box sx={styleTime}>
                                 <p>
                                     {fToCustom(
-                                        reservation.ArrivalDate,
+                                        transactionInfo.ArrivalDate,
                                         "MMM dd"
                                     )}
                                 </p>
                                 <p>
                                     {fToCustom(
-                                        reservation.ArrivalDate,
+                                        transactionInfo.ArrivalDate,
                                         "kk:mm:ss"
                                     )}
                                 </p>
                             </Box>
                             <Box sx={styleNight}>
-                                <p>1</p>
+                                <p>{countNights(transactionInfo.ArrivalDate, transactionInfo.DepartureDate)}</p>
                                 <p>Night</p>
                             </Box>
                             <Box sx={styleTime}>
                                 <p>
                                     {fToCustom(
-                                        reservation.DepartureDate,
+                                        transactionInfo.DepartureDate,
                                         "MMM dd"
                                     )}
                                 </p>
                                 <p>
                                     {fToCustom(
-                                        reservation.DepartureDate,
+                                        transactionInfo.DepartureDate,
                                         "kk:mm:ss"
                                     )}
                                 </p>
@@ -125,7 +132,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                             <b>ReservationNo</b>
                                         </TableCell>
                                         <TableCell>
-                                            {reservation.ReservationNo}
+                                            {transactionInfo.ReservationNo}
                                         </TableCell>
                                     </TableRow>
 
@@ -133,7 +140,9 @@ const ItemDetail = ({ itemInfo }: any) => {
                                         <TableCell>
                                             <b>Group Code</b>
                                         </TableCell>
-                                        <TableCell></TableCell>
+                                        <TableCell>
+                                            {transactionInfo.GroupCode}
+                                        </TableCell>
                                     </TableRow>
 
                                     <TableRow>
@@ -141,7 +150,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                             <b>Booker Name</b>
                                         </TableCell>
                                         <TableCell>
-                                            {reservation.UserName}
+                                            {reservation?.UserName}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -151,6 +160,8 @@ const ItemDetail = ({ itemInfo }: any) => {
                             <ReservationNav
                                 reservation={reservation}
                                 itemInfo={itemInfo}
+                                transactionInfo={transactionInfo}
+                                reloadDetailInfo={reloadDetailInfo}
                             />
                         </Grid>
                     </Grid>

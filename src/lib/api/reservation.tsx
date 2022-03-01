@@ -40,7 +40,7 @@ export const ReservationApi = {
             fToUniversal(values.ArrivalDate) + " " + values.ArrivalTime;
         vals.DepartureDate =
             fToUniversal(values.DepartureDate) + " " + values.DepartureTime;
-        vals.ReservationTypeID = 1;
+        // vals.ReservationTypeID = 1;
         vals.RateModeID = 1;
         vals.IsReserved = true;
         vals.IsCheckIn = false;
@@ -53,5 +53,65 @@ export const ReservationApi = {
             data,
             status,
         };
+    },
+    checkIn: async (TransactionID: any) => {
+        const values = {
+            TransactionID: TransactionID,
+        };
+        const res = await axios.post(`${urlPrefix}/CheckIn`, values);
+    },
+    checkOut: async (TransactionID: any) => {
+        const values = {
+            TransactionID: TransactionID,
+        };
+        const res = await axios.post(`${urlPrefix}/CheckOut`, values);
+    },
+    amendStay: async (values: any) => {
+        const res = await axios.post(`${urlPrefix}/AmendStay`, values);
+        console.log(res);
+        return res;
+    },
+    cancel: async (TransactionID: any) => {
+        const values = {
+            TransactionID: TransactionID,
+        };
+        const res = await axios.post(`${urlPrefix}/CheckOut`, values);
+    },
+    noShow: async (TransactionID: any) => {
+        const values = {
+            TransactionID: TransactionID,
+        };
+        const res = await axios.post(`${urlPrefix}/NoShow`, values);
+    },
+    void: async (values: any) => {
+        const res = await axios.post(`${urlPrefix}/Void`, values);
+        return res;
+    },
+    roomAssign: async (TransactionID: any) => {
+        const values = {
+            TransactionID: TransactionID,
+        };
+        const res = await axios.post(`${urlPrefix}/RoomAssign`, values);
+    },
+    roomUnassign: async (TransactionID: any) => {
+        const values = {
+            TransactionID: TransactionID,
+        };
+        const res = await axios.post(`${urlPrefix}/RoomUnassign`, values);
+    },
+    roomMove: async (TransactionID: any) => {
+        const values = {
+            TransactionID: TransactionID,
+        };
+        const res = await axios.post(`${urlPrefix}/RoomMove`, values);
+    },
+    updateReservationType: async (TransactionID: any) => {
+        const values = {
+            TransactionID: TransactionID,
+        };
+        const res = await axios.post(
+            `${urlPrefix}/UpdateReservationType`,
+            values
+        );
     },
 };

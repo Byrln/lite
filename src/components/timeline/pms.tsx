@@ -6,7 +6,6 @@ import Timeline, {
 // make sure you include the timeline stylesheet or the timeline will not be styled
 import "react-calendar-timeline/lib/Timeline.css";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
-import moment from "moment";
 import { RoomSWR } from "lib/api/room";
 import { RoomTypeSWR } from "lib/api/room-type";
 import { FrontOfficeSWR, FrontOfficeAPI } from "lib/api/front-office";
@@ -119,7 +118,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
                 transactionId: items[i].TransactionID,
                 start_time: startTime,
                 end_time: endTime,
-                colorCode: items[i].GroupColor,
+                colorCode: items[i].StatusColor,
             });
             itemIds.push(itemId);
         }
@@ -194,7 +193,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
         handleModal(
             true,
             "Timeline menu",
-            <ClickNav timelineCoord={timelineCoord} />
+            <ClickNav timelineCoord={timelineCoord} workingDate={workingDate} />
         );
     };
 

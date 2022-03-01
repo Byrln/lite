@@ -1,34 +1,175 @@
-import { ReservationApi } from "lib/api/reservation";
-import { useState, useEffect } from "react";
-import { Grid, Box, Paper, Typography, Button } from "@mui/material";
-import { fToCustom } from "lib/utils/format-time";
+import {ReservationApi} from "lib/api/reservation";
+import {useState, useEffect, useContext} from "react";
+import {Grid, Box, Paper, Typography, Button} from "@mui/material";
+import {fToCustom} from "lib/utils/format-time";
+import {listUrl as calendarItemsURL} from "lib/api/front-office";
+import {mutate} from "swr";
+import {ModalContext} from "lib/context/modal";
+import {toast} from "react-toastify";
+import AmendStayForm from "components/reservation/amend-stay";
+import VoidTransactionForm from "components/reservation/void-transaction";
 
-const sx = {
-    display: "flex",
-    flexDirection: "column",
-    border: "1px solid #efefef",
-    Button: {
-        fontWeight: "700",
-        borderBottom: "1px solid #efefef",
-    },
+const buttonStyle = {
+    borderBottom: "1px solid #efefef",
 };
 
-const ReservationNav = ({ reservation, itemInfo }: any) => {
+const ReservationNav = ({
+                            reservation,
+                            itemInfo,
+                            transactionInfo,
+                            reloadDetailInfo,
+                        }: any) => {
+    const {handleModal}: any = useContext(ModalContext);
+
+    const finishCall = async (msg: string) => {
+        await mutate(calendarItemsURL);
+        if (reloadDetailInfo) {
+            reloadDetailInfo();
+        }
+        toast(msg, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    };
+
+    const onCheckInClick = async (evt: any) => {
+        if (!confirm("Are you sure?")) {
+            return;
+        }
+        var res = await ReservationApi.checkIn(
+            transactionInfo.TransactionID
+        );
+        finishCall("Амжилттай");
+    };
+
     return (
-        <Box sx={sx}>
-            <Button variant={"text"}>Card</Button>
-            <Button variant={"text"}>Check In</Button>
-            <Button variant={"text"}>Mark No Show</Button>
-            <Button variant={"text"}>Edit Transaction</Button>
-            <Button variant={"text"}>Extra Charge</Button>
-            <Button variant={"text"}>Edit Group</Button>
-            <Button variant={"text"}>Room Move</Button>
-            <Button variant={"text"}>Amend Stay</Button>
-            <Button variant={"text"}>Set Message</Button>
-            <Button variant={"text"}>Void Transaction</Button>
-            <Button variant={"text"}>Cancel Reservation</Button>
-            <Button variant={"text"}>Unassign Room</Button>
-            <Button variant={"text"}>Audit Trail</Button>
+        <Box sx={{ display: "flex", flexDirection: "column", border: "1px solid #efefef"}}>
+            <Button
+                variant={"text"}
+                size="small"
+                sx={buttonStyle}
+            >Card</Button>
+            {transactionInfo.CheckIn && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    onClick={onCheckInClick}
+                    sx={buttonStyle}
+                >Check In</Button>
+            )}
+            {transactionInfo.NoShow && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >Mark No Show</Button>
+            )}
+            {transactionInfo.IsEdit && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >Edit Transaction</Button>
+            )}
+            {transactionInfo.GroupOperation && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >
+                    Extra Charge
+                </Button>
+            )}
+            {transactionInfo.GroupOperation && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >Edit Group</Button>
+            )}
+            {transactionInfo.MoveRoom && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >Room Move</Button>
+            )}
+            {transactionInfo.AmendStay && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    onClick={() => {
+                        handleModal(
+                            true,
+                            "Amend Stay",
+                            <AmendStayForm
+                                transactionInfo={transactionInfo}
+                                reservation={reservation}
+                            />
+                        );
+                    }}
+                    sx={buttonStyle}
+                >
+                    Amend Stay
+                </Button>
+            )}
+            {transactionInfo.SetMessage && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >Set Message</Button>
+            )}
+            {transactionInfo.Void && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    onClick={(evt: any) => {
+                        handleModal(
+                            true,
+                            "Void Transaction",
+                            <VoidTransactionForm
+                                transactionInfo={transactionInfo}
+                                reservation={reservation}
+                            />
+                        );
+                    }}
+                    sx={buttonStyle}
+                >Void Transaction</Button>
+            )}
+            {transactionInfo.Cancel && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >Cancel Reservation</Button>
+            )}
+            {transactionInfo.Assign && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >Assign Room</Button>
+            )}
+            {transactionInfo.Unassign && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >Unassign Room</Button>
+            )}
+            {transactionInfo.AuditTrail && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                >AuditTrail</Button>
+            )}
         </Box>
     );
 };
