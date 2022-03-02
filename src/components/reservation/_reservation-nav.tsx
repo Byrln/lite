@@ -8,6 +8,7 @@ import {ModalContext} from "lib/context/modal";
 import {toast} from "react-toastify";
 import AmendStayForm from "components/reservation/amend-stay";
 import VoidTransactionForm from "components/reservation/void-transaction";
+import CancelReservationForm from "components/reservation/cancel-reservation";
 
 const buttonStyle = {
     borderBottom: "1px solid #efefef",
@@ -147,6 +148,16 @@ const ReservationNav = ({
                     variant={"text"}
                     size="small"
                     sx={buttonStyle}
+                    onClick={(evt: any) => {
+                        handleModal(
+                            true,
+                            "Cancel Reservation",
+                            <CancelReservationForm
+                                transactionInfo={transactionInfo}
+                                reservation={reservation}
+                            />
+                        );
+                    }}
                 >Cancel Reservation</Button>
             )}
             {transactionInfo.Assign && (

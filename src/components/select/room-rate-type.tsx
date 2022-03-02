@@ -1,25 +1,30 @@
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
+import {RateTypeSWR} from "lib/api/rate-type";
+import {RateAPI} from "lib/api/rate";
+import {elementAcceptingRef} from "@mui/utils";
 
-import { RateTypeSWR } from "lib/api/rate-type";
-import { elementAcceptingRef } from "@mui/utils";
+const RoomRateTypeSelect = ({register, errors, roomType}: any) => {
+    const [data, setData]: any = useState([]);
 
-const RateTypeSelect = ({ register, errors }: any) => {
-    const { data, error } = RateTypeSWR();
+    useEffect(() => {
 
-    if (error) return <Alert severity="error">{error.message}</Alert>;
+        let d = RateAPI.list({
+            RoomTypeID: roomType.RoomTypeID,
+            RateTypeID: 0,
+            ChannelID: 0,
+            SourceID: 0,
+            CustomerID: 0,
+            TaxIncluded: true,
+            RoomChargeDurationID: 1
+        });
+        setData(d);
 
-    if (!error && !data)
-        return (
-            <Box sx={{ width: "100%" }}>
-                <Skeleton />
-                <Skeleton animation="wave" />
-            </Box>
-        );
+    }, [roomType]);
 
     return (
         <TextField
@@ -46,4 +51,4 @@ const RateTypeSelect = ({ register, errors }: any) => {
     );
 };
 
-export default RateTypeSelect;
+export default RoomRateTypeSelect;

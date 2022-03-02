@@ -184,12 +184,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
     };
 
     const onCanvasEvent = (groupId: any, time: any, e: any) => {
-        console.log("Group ID: ", groupId);
-        console.log("========= Time: ========= ", time);
-        var timeObj = new Date(time);
-
-        var timelineCoord = createTimelineCoord(groupId, timeObj);
-
+        var timelineCoord = createTimelineCoord(groupId, time);
         handleModal(
             true,
             "Timeline menu",

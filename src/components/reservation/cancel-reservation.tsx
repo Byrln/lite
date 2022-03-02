@@ -11,7 +11,7 @@ import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
 import ReasonSelect from "../select/reason";
 
-const RoomMoveForm = ({transactionInfo, reservation}: any) => {
+const CancelReservationForm = ({transactionInfo, reservation}: any) => {
     const {handleModal}: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
 
@@ -107,4 +107,4 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
     );
 };
 
-export default RoomMoveForm;
+export default CancelReservationForm;

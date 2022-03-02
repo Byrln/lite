@@ -17,7 +17,8 @@ export const ClickNav = ({ timelineCoord, workingDate }: any) => {
                         <NewEdit
                             timelineCoord={timelineCoord}
                             workingDate={workingDate}
-                        />
+                        />,
+                        true
                     );
                 }}
             >

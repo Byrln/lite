@@ -71,11 +71,9 @@ export const ReservationApi = {
         console.log(res);
         return res;
     },
-    cancel: async (TransactionID: any) => {
-        const values = {
-            TransactionID: TransactionID,
-        };
-        const res = await axios.post(`${urlPrefix}/CheckOut`, values);
+    cancel: async (values: any) => {
+        const res = await axios.post(`${urlPrefix}/Cancel`, values);
+        return res;
     },
     noShow: async (TransactionID: any) => {
         const values = {

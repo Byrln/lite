@@ -1,5 +1,5 @@
-import { useState, useEffect, Fragment } from "react";
-import { useForm } from "react-hook-form";
+import {useState, useEffect, Fragment, useContext} from "react";
+import {useForm} from "react-hook-form";
 import {
     TextField,
     Grid,
@@ -14,7 +14,7 @@ import {
     FormControlLabel,
 } from "@mui/material";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {yupResolver} from "@hookform/resolvers/yup";
 import RoomTypeSelect from "components/select/room-type";
 import RoomSelect from "components/select/room";
 import RateTypeSelect from "components/select/rate-type";
@@ -34,28 +34,37 @@ import CustomerGroupSelect from "components/select/customer-group";
 import GuestSelect from "components/guest/guest-select";
 
 import NewEditForm from "components/common/new-edit-form";
-import { ReservationApi } from "lib/api/reservation";
-import { TimelineCoordModel } from "models/data/TimelineCoordModel";
+import {ReservationApi} from "lib/api/reservation";
+import {TimelineCoordModel} from "models/data/TimelineCoordModel";
 import {
     dateToSimpleFormat,
-    fToUniversal,
-    fToCustom,
     dateToCustomFormat,
+    countNights
 } from "lib/utils/format-time";
-import { listUrl } from "lib/api/front-office";
+import {listUrl} from "lib/api/front-office";
+import {LoadingButton} from "@mui/lab";
+import {mutate} from "swr";
+import {toast} from "react-toastify";
+import {ModalContext} from "../../lib/context/modal";
+import timeline from "../../pages/test/timeline";
 
 const steps = ["Guest Information", "Stay Information", "Billing and Payment"];
 
-const NewEdit = ({ timelineCoord, workingDate }: any) => {
-    const [entity, setEntity]: any = useState(null);
+const NewEdit = ({timelineCoord, workingDate}: any) => {
+    const {handleModal}: any = useContext(ModalContext);
+    const [loading, setLoading] = useState(false);
     const [activeStep, setActiveStep]: any = useState(0);
-    // const [roomType, setRoomType]: any = useState(null);
-
     const [baseStay, setBaseStay]: any = useState({
         TransactionID: 0,
-        roomType: null,
+        roomType: {
+            RoomTypeID: timelineCoord.RoomTypeID,
+        },
+        room: {
+            RoomID: timelineCoord.RoomID,
+        },
         dateStart: null,
         dateEnd: null,
+        Nights: 0
     });
 
     const isStepOptional = (step: number) => {
@@ -66,6 +75,13 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
         setBaseStay({
             ...baseStay,
             roomType: rt,
+        });
+    };
+
+    const onRoomChange = (r: any) => {
+        setBaseStay({
+            ...baseStay,
+            room: r,
         });
     };
 
@@ -90,79 +106,47 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
         CurrencyID: yup.number().required("Сонгоно уу"),
         Amount: yup.number().required("Сонгоно уу"),
     });
-    const formOptions = { resolver: yupResolver(validationSchema) };
+    const formOptions = {resolver: yupResolver(validationSchema)};
 
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: {errors},
         reset,
     } = useForm(formOptions);
 
     const guestSelected = (guest: any) => {
         console.log("===== Guest Selected =====", guest);
-        setEntity({
-            ...entity,
+        reset({
             GuestID: guest.GuestID,
         });
-        reset(
-            {
-                GuestID: guest.GuestID,
-            },
-            {
-                keepErrors: false,
-                keepDirty: true,
-                keepIsSubmitted: false,
-                keepTouched: false,
-                keepIsValid: false,
-                keepSubmitCount: false,
-            }
-        );
+    };
+
+    const setRange = (dateStart: Date, dateEnd: Date) => {
+        var nights: number;
+        nights = countNights(dateStart, dateEnd);
+        reset({
+            ArrivalDate: dateToSimpleFormat(dateStart),
+            DepartureDate: dateToSimpleFormat(dateEnd),
+            Nights: nights,
+            ArrivalTime: dateToCustomFormat(dateStart, "kk:mm"),
+            DepartureTime: dateToCustomFormat(dateEnd, "kk:mm"),
+        });
+        setBaseStay({
+            ...baseStay,
+            dateStart: dateStart,
+            dateEnd: dateEnd,
+            Nights: nights,
+        });
     };
 
     useEffect(() => {
-        console.log(
-            "======== timelineCoord =======",
-            typeof timelineCoord.TimeStart
-        );
-        setEntity({
-            ...entity,
-            RoomTypeID: timelineCoord.RoomTypeID,
-            RoomID: timelineCoord.RoomID,
-            ArrivalDate: dateToSimpleFormat(timelineCoord.TimeStart),
-            DepartureDate: dateToSimpleFormat(timelineCoord.TimeEnd),
-        });
-
-        setBaseStay({
-            ...baseStay,
-            dateStart: timelineCoord.TimeStart,
-            dateEnd: timelineCoord.TimeEnd,
-        });
-
-        reset(
-            {
-                RoomTypeID: timelineCoord.RoomTypeID,
-                RoomID: timelineCoord.RoomID,
-                ArrivalDate: dateToSimpleFormat(timelineCoord.TimeStart),
-                DepartureDate: dateToSimpleFormat(timelineCoord.TimeEnd),
-                ArrivalTime: "14:00",
-                DepartureTime: "12:00",
-            },
-            {
-                keepErrors: false,
-                keepDirty: true,
-                keepIsSubmitted: false,
-                keepTouched: false,
-                keepIsValid: false,
-                keepSubmitCount: false,
-            }
-        );
+        setRange(timelineCoord.TimeStart, timelineCoord.TimeEnd);
     }, []);
 
     const onArrivalDateChange = (evt: any) => {
         var dateStart = new Date(evt.target.value);
         var dateEnd = new Date(baseStay.dateEnd.getTime());
-
         if (
             dateToCustomFormat(dateStart, "yyyyMMdd") >
             dateToCustomFormat(dateEnd, "yyyyMMdd")
@@ -170,26 +154,12 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
             dateEnd = new Date(dateStart.getTime());
             dateEnd.setDate(dateEnd.getDate() + 1);
         }
-        setEntity({
-            ...entity,
-            ArrivalDate: dateToSimpleFormat(dateStart),
-            DepartureDate: dateToSimpleFormat(dateEnd),
-        });
-        reset({
-            ArrivalDate: dateToSimpleFormat(dateStart),
-            DepartureDate: dateToSimpleFormat(dateEnd),
-        });
-        setBaseStay({
-            ...baseStay,
-            dateStart: dateStart,
-            dateEnd: dateEnd,
-        });
+        setRange(dateStart, dateEnd);
     };
 
     const onDepartureDateChange = (evt: any) => {
         var dateStart = new Date(baseStay.dateStart.getTime());
         var dateEnd = new Date(evt.target.value);
-
         if (
             dateToCustomFormat(dateStart, "yyyyMMdd") >
             dateToCustomFormat(dateEnd, "yyyyMMdd")
@@ -197,20 +167,36 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
             dateStart = new Date(dateEnd.getTime());
             dateStart.setDate(dateStart.getDate() - 1);
         }
-        setEntity({
-            ...entity,
-            ArrivalDate: dateToSimpleFormat(dateStart),
-            DepartureDate: dateToSimpleFormat(dateEnd),
-        });
-        reset({
-            ArrivalDate: dateToSimpleFormat(dateStart),
-            DepartureDate: dateToSimpleFormat(dateEnd),
-        });
-        setBaseStay({
-            ...baseStay,
-            dateStart: dateStart,
-            dateEnd: dateEnd,
-        });
+        setRange(dateStart, dateEnd);
+    };
+
+    const onSubmit = async (values: any) => {
+
+        setLoading(true);
+
+        try {
+
+            //Api calls
+            let res = ReservationApi.new(values);
+
+            await mutate(listUrl);
+
+            toast("Амжилттай.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+
+            setLoading(false);
+            handleModal();
+        } catch (error) {
+            setLoading(false);
+            handleModal();
+        }
     };
 
     return (
@@ -235,21 +221,17 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                 })}
             </Stepper>
 
-            <Box sx={{ display: activeStep === 0 ? "inline" : "none" }}>
-                <GuestSelect guestSelected={guestSelected} />
+            <Box sx={{display: activeStep === 0 ? "inline" : "none"}}>
+                <GuestSelect guestSelected={guestSelected}/>
             </Box>
 
-            <NewEditForm
-                api={ReservationApi}
-                entity={entity}
-                handleSubmit={handleSubmit}
-                listUrl={listUrl}
-            >
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+
                 <input
-                    type="Hidden"
+                    type="hidden"
                     {...register("GuestID")}
                     name="GuestID"
-                    value={entity?.GuestID}
                 />
 
                 <Box
@@ -262,18 +244,16 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                             <RoomTypeSelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                                 onRoomTypeChange={onRoomTypeChange}
+                                entity={baseStay}
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <RoomSelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                                 baseStay={baseStay}
+                                onRoomChange={onRoomChange}
                             />
                         </Grid>
                     </Grid>
@@ -319,8 +299,6 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                             <RateTypeSelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                             />
                         </Grid>
                     </Grid>
@@ -338,11 +316,7 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                                         margin="dense"
                                         error={errors.ArrivalDate?.message}
                                         helperText={errors.ArrivalDate?.message}
-                                        InputLabelProps={{ shrink: true }}
-                                        value={
-                                            entity?.ArrivalDate &&
-                                            entity.ArrivalDate
-                                        }
+                                        InputLabelProps={{shrink: true}}
                                         onChange={(evt: any) => {
                                             onArrivalDateChange(evt);
                                         }}
@@ -361,7 +335,7 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                                         inputProps={{
                                             step: 600, // 5 min
                                         }}
-                                        sx={{ width: 150 }}
+                                        sx={{width: 150}}
                                     />
                                 </Grid>
                             </Grid>
@@ -379,11 +353,7 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                                         helperText={
                                             errors.DepartureDate?.message
                                         }
-                                        InputLabelProps={{ shrink: true }}
-                                        value={
-                                            entity?.DepartureDate &&
-                                            entity.DepartureDate
-                                        }
+                                        InputLabelProps={{shrink: true}}
                                         onChange={(evt: any) => {
                                             onDepartureDateChange(evt);
                                         }}
@@ -402,7 +372,7 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                                         inputProps={{
                                             step: 600, // 5 min
                                         }}
-                                        sx={{ width: 150 }}
+                                        sx={{width: 150}}
                                         onChange={(evt: any) => {
                                             console.log(evt.target.value);
                                         }}
@@ -419,6 +389,8 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                                 margin="dense"
                                 error={errors.Nights?.message}
                                 helperText={errors.Nights?.message}
+                                InputLabelProps={{shrink: true}}
+                                disabled
                             />
 
                             <ReservationTypeSelect
@@ -473,16 +445,12 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                             <RateModeSelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                             />
                         </Grid>
                         <Grid item xs={5}>
                             <RoomChargeDurationSelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                             />
                         </Grid>
                     </Grid>
@@ -491,8 +459,6 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                             <CurrencySelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                                 nameKey={"CurrencyID"}
                             />
                         </Grid>
@@ -514,16 +480,12 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                             <PaymentMethodSelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                             />
                         </Grid>
                         <Grid item xs={3}>
                             <CurrencySelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                                 nameKey={"PayCurrencyID"}
                             />
                         </Grid>
@@ -544,8 +506,6 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                             <CustomerGroupSelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                             />
                         </Grid>
 
@@ -553,8 +513,6 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                             <CustomerSelect
                                 register={register}
                                 errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
                             />
                         </Grid>
                     </Grid>
@@ -570,8 +528,6 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                     <PaymentMethodGroupSelect
                         register={register}
                         errors={errors}
-                        entity={entity}
-                        setEntity={setEntity}
                     />
                 </Box>
 
@@ -585,12 +541,12 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                     <Button
                         color="inherit"
                         onClick={handleBack}
-                        sx={{ mr: 1 }}
+                        sx={{mr: 1}}
                         disabled={activeStep === 0}
                     >
                         Back
                     </Button>
-                    <Box sx={{ flex: "1 1 auto" }} />
+                    <Box sx={{flex: "1 1 auto"}}/>
 
                     <Button
                         onClick={handleNext}
@@ -599,7 +555,17 @@ const NewEdit = ({ timelineCoord, workingDate }: any) => {
                         Next
                     </Button>
                 </Box>
-            </NewEditForm>
+
+                <LoadingButton
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    loading={loading}
+                    className="mt-3"
+                >Submit</LoadingButton>
+
+            </form>
+
         </>
     );
 };

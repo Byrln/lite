@@ -27,8 +27,18 @@ export const RateSWR = () => {
 };
 
 export const RateAPI = {
+    list: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/List`,
+            values
+        );
+        if (status != 200) {
+            return [];
+        }
+        var list = JSON.parse(data.JsonData);
+        return list;
+    },
     get: (id: any) => axios.get(`${urlPrefix}/${id}`),
-
     new: async (values: any) => {
         const { data, status } = await axios.post(urlPrefix, values);
 

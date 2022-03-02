@@ -1,15 +1,37 @@
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { useEffect, useState } from "react";
-import { RoomSWR, RoomAPI } from "lib/api/room";
-import { dateToSimpleFormat } from "lib/utils/format-time";
+import {useEffect, useState} from "react";
+import {RoomSWR, RoomAPI} from "lib/api/room";
+import {dateToSimpleFormat} from "lib/utils/format-time";
 
-const RoomSelect = ({ register, errors, entity, setEntity, baseStay }: any) => {
+const RoomSelect = (
+    {
+        register,
+        errors,
+        baseStay,
+        onRoomChange,
+    }: any
+) => {
     // const { data, error } = RoomSWR();
     const [data, setData]: any = useState([]);
+
+    const eventRoomChange = (val: any) => {
+        if (onRoomChange) {
+            var r;
+            var room = null;
+            for (r of data) {
+                if (r.RoomID === val) {
+                    room = r;
+                }
+            }
+            if (room) {
+                onRoomChange(room);
+            }
+        }
+    };
 
     const fetchRooms = async () => {
         if (!(baseStay.roomType && baseStay.dateStart && baseStay.dateEnd)) {
@@ -27,17 +49,15 @@ const RoomSelect = ({ register, errors, entity, setEntity, baseStay }: any) => {
     };
 
     useEffect(() => {
-        fetchRooms();
-    }, [baseStay]);
-
-    const onChange = (event: any) => {
-        if (setEntity) {
-            setEntity({
-                ...entity,
-                RoomID: event.target.value,
-            });
+        console.log("======= Room Data Change ======");
+        if (data && data.length > 0 && baseStay?.room) {
+            eventRoomChange(baseStay.room?.RoomID);
         }
-    };
+    }, [data]);
+
+    useEffect(() => {
+        fetchRooms();
+    }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);
 
     // if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -59,15 +79,14 @@ const RoomSelect = ({ register, errors, entity, setEntity, baseStay }: any) => {
             margin="dense"
             error={errors.RoomID?.message}
             helperText={errors.RoomID?.message}
-            value={entity && entity.RoomID}
-            InputLabelProps={{
-                shrink: entity && entity.RoomID,
+            onChange={(evt: any) => {
+                eventRoomChange(evt.target.value);
             }}
-            onChange={onChange}
+            value={baseStay?.room?.RoomID}
         >
             {data.map((room: any) => {
                 return (
-                    entity?.RoomTypeID === room.RoomTypeID && (
+                    baseStay?.roomType?.RoomTypeID === room.RoomTypeID && (
                         <MenuItem key={room.RoomID} value={room.RoomID}>
                             {`${room.RoomTypeName}  ${room.RoomNo}`}
                         </MenuItem>

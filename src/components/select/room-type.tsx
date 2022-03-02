@@ -1,20 +1,23 @@
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
+import { RoomTypeAPI} from "lib/api/room-type";
+import {useState, useEffect} from "react";
 
-import { RoomTypeSWR, RoomTypeAPI } from "lib/api/room-type";
-import { useEffect } from "react";
+const RoomTypeSelect = ({register, errors, onRoomTypeChange, entity}: any) => {
+    const [data, setData]: any = useState([]);
 
-const RoomTypeSelect = ({
-    register,
-    errors,
-    entity,
-    setEntity,
-    onRoomTypeChange,
-}: any) => {
-    const { data, error }: any = RoomTypeSWR();
+    const fetchRoomTypes = async () => {
+        var values = {
+            RoomTypeID: 0,
+            SearchStr: "",
+            EmptyRow: 0
+        };
+        var d = await RoomTypeAPI.list(values);
+        setData(d);
+    };
 
     const eventRoomTypeChange = (val: any) => {
         if (onRoomTypeChange) {
@@ -25,35 +28,31 @@ const RoomTypeSelect = ({
                     roomType = rt;
                 }
             }
-            onRoomTypeChange(roomType);
+            if (roomType) {
+                onRoomTypeChange(roomType);
+            }
         }
     };
 
     useEffect(() => {
-        if (data && data.length > 0 && entity?.RoomTypeID) {
-            eventRoomTypeChange(entity.RoomTypeID);
+        fetchRoomTypes();
+    }, []);
+
+    useEffect(() => {
+        if (data && data.length > 0 && entity?.roomType?.RoomTypeID) {
+            eventRoomTypeChange(entity?.roomType?.RoomTypeID);
         }
-    }, [data, entity]);
+    }, [data]);
 
-    const onChange = (event: any) => {
-        if (setEntity) {
-            setEntity({
-                ...entity,
-                RoomTypeID: event.target.value,
-            });
-        }
-        eventRoomTypeChange(event.target.value);
-    };
-
-    if (error) return <Alert severity="error">{error.message}</Alert>;
-
-    if (!error && !data)
-        return (
-            <Box sx={{ width: "100%" }}>
-                <Skeleton />
-                <Skeleton animation="wave" />
-            </Box>
-        );
+    // if (error) return <Alert severity="error">{error.message}</Alert>;
+    //
+    // if (!error && !data)
+    //     return (
+    //         <Box sx={{width: "100%"}}>
+    //             <Skeleton/>
+    //             <Skeleton animation="wave"/>
+    //         </Box>
+    //     );
 
     return (
         <TextField
@@ -65,11 +64,10 @@ const RoomTypeSelect = ({
             margin="dense"
             error={errors.RoomTypeID?.message}
             helperText={errors.RoomTypeID?.message}
-            onChange={onChange}
-            value={entity && entity.RoomTypeID}
-            InputLabelProps={{
-                shrink: entity && entity.RoomTypeID,
+            onChange={(evt: any) => {
+                eventRoomTypeChange(evt.target.value);
             }}
+            value={entity?.roomType?.RoomTypeID}
         >
             {data.map((element: any) => (
                 <MenuItem key={element.RoomTypeID} value={element.RoomTypeID}>
