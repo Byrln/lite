@@ -1,0 +1,65 @@
+[
+    {
+        "CurrencyID": 154,
+        "CountryID": 146,
+        "CountryName": "MONGOLIA",
+        "CurrencyName": "Tugriks",
+        "CurrencyCode": "MNT",
+        "CurrencySymbol": "₮",
+        "IsCurrent": true
+    },
+    {
+        "CurrencyID": 47,
+        "CountryID": 45,
+        "CountryName": "CHINA",
+        "CurrencyName": "Yuan Renminbi",
+        "CurrencyCode": "CNY",
+        "CurrencySymbol": "¥",
+        "IsCurrent": false
+    },
+    {
+        "CurrencyID": 1,
+        "CountryID": 247,
+        "CountryName": "EUROPEAN UNION",
+        "CurrencyName": "Euro",
+        "CurrencyCode": "EUR",
+        "CurrencySymbol": "€",
+        "IsCurrent": false
+    },
+    {
+        "CurrencyID": 116,
+        "CountryID": 110,
+        "CountryName": "JAPAN",
+        "CurrencyName": "Yen",
+        "CurrencyCode": "JPY",
+        "CurrencySymbol": "¥",
+        "IsCurrent": false
+    },
+    {
+        "CurrencyID": 123,
+        "CountryID": 117,
+        "CountryName": "KOREA (REP)",
+        "CurrencyName": "Won",
+        "CurrencyCode": "KRW",
+        "CurrencySymbol": "₩",
+        "IsCurrent": false
+    },
+    {
+        "CurrencyID": 190,
+        "CountryID": 182,
+        "CountryName": "RUSSIAN FEDERATION",
+        "CurrencyName": "Rubles",
+        "CurrencyCode": "RUB",
+        "CurrencySymbol": "руб",
+        "IsCurrent": false
+    },
+    {
+        "CurrencyID": 242,
+        "CountryID": 233,
+        "CountryName": "UNITED STATES",
+        "CurrencyName": "US Dollars",
+        "CurrencyCode": "USD",
+        "CurrencySymbol": "$",
+        "IsCurrent": false
+    }
+]

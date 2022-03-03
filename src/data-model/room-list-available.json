@@ -1,0 +1,72 @@
+[
+    {
+        "RoomID": 10,
+        "RoomNo": "305",
+        "RoomTypeID": 2,
+        "RoomTypeName": "Deluxe Single Room",
+        "RoomPhone": "305",
+        "Description": "305",
+        "SortOrder": 0,
+        "Status": true,
+        "TRRoomID": "10,",
+        "RoomFullName": "305 (DSR)",
+        "FloorID": 2,
+        "FloorNo": 3
+    },
+    {
+        "RoomID": 11,
+        "RoomNo": "405",
+        "RoomTypeID": 2,
+        "RoomTypeName": "Deluxe Single Room",
+        "RoomPhone": "405",
+        "Description": "405",
+        "SortOrder": 0,
+        "Status": true,
+        "TRRoomID": "11,",
+        "RoomFullName": "405 (DSR)",
+        "FloorID": 3,
+        "FloorNo": 4
+    },
+    {
+        "RoomID": 13,
+        "RoomNo": "505",
+        "RoomTypeID": 2,
+        "RoomTypeName": "Deluxe Single Room",
+        "RoomPhone": "505",
+        "Description": "505",
+        "SortOrder": 0,
+        "Status": true,
+        "TRRoomID": "13,",
+        "RoomFullName": "505 (DSR)",
+        "FloorID": 4,
+        "FloorNo": 5
+    },
+    {
+        "RoomID": 14,
+        "RoomNo": "604",
+        "RoomTypeID": 2,
+        "RoomTypeName": "Deluxe Single Room",
+        "RoomPhone": "604",
+        "Description": "604",
+        "SortOrder": 0,
+        "Status": true,
+        "TRRoomID": "14,",
+        "RoomFullName": "604 (DSR)",
+        "FloorID": 5,
+        "FloorNo": 6
+    },
+    {
+        "RoomID": 15,
+        "RoomNo": "605",
+        "RoomTypeID": 2,
+        "RoomTypeName": "Deluxe Single Room",
+        "RoomPhone": "",
+        "Description": "",
+        "SortOrder": 0,
+        "Status": true,
+        "TRRoomID": "15,",
+        "RoomFullName": "605 (DSR)",
+        "FloorID": 5,
+        "FloorNo": 6
+    }
+]
