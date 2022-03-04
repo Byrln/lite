@@ -4,7 +4,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-const RateModeSelect = ({ register, errors, entity, setEntity }: any) => {
+const RateModeSelect = ({ register, errors, entity, setEntity, reset }: any) => {
     const data = [
         {
             RateModeID: 1,
@@ -26,8 +26,11 @@ const RateModeSelect = ({ register, errors, entity, setEntity }: any) => {
                 ...entity,
                 RateModeID: event.target.value,
             });
-
-            console.log(entity);
+        }
+        if(reset) {
+            reset({
+                RateModeID: event.target.value,
+            });
         }
     };
 

@@ -2,9 +2,14 @@ import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import SelectList from "components/guest/select-list";
 import NewEdit from "./new-edit";
+import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
+import {Box} from "@mui/material";
+import Button from "@mui/material/Button";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const GuestSelect = ({ guestSelected }: any) => {
     const [idEditing, setIdEditing]: any = useState(null);
+    const [guestCurrent, setGuestCurrent]: any = useState(null);
     const [filterValues, setFilterValues]: any = useState({
         GuestID: 0,
         GuestName: "",
@@ -16,12 +21,8 @@ const GuestSelect = ({ guestSelected }: any) => {
     });
 
     const setGuest = (guest: any) => {
-        console.log(guest);
         setIdEditing(guest.GuestID);
-        if (typeof guestSelected == "function") {
-            console.log("==========guestSelected is function ==========");
-            guestSelected(guest);
-        }
+        setGuestCurrent(guest);
     };
 
     const onFilterValueChange = ({ key, value }: any) => {
@@ -61,6 +62,22 @@ const GuestSelect = ({ guestSelected }: any) => {
                     />
                 </Grid>
             </Grid>
+
+            <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+                <Button
+                    variant="contained"
+                    onClick={(evt: any) => {
+                        if (typeof guestSelected == "function") {
+                            guestSelected(guestCurrent);
+                        }
+                    }}
+                >
+                    Үргэлжлүүлэх <ArrowForwardIcon/>
+                </Button>
+            </Box>
+
+
+
         </>
     );
 };

@@ -6,13 +6,13 @@ import Timeline, {
 // make sure you include the timeline stylesheet or the timeline will not be styled
 import "react-calendar-timeline/lib/Timeline.css";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
-import { RoomSWR } from "lib/api/room";
-import { RoomTypeSWR } from "lib/api/room-type";
-import { FrontOfficeSWR, FrontOfficeAPI } from "lib/api/front-office";
-import { ModalContext } from "lib/context/modal";
-import { useState, useEffect, useContext } from "react";
+import {RoomSWR} from "lib/api/room";
+import {RoomTypeSWR} from "lib/api/room-type";
+import {FrontOfficeSWR, FrontOfficeAPI, listUrl as reservationListUrl} from "lib/api/front-office";
+import {ModalContext} from "lib/context/modal";
+import {useState, useEffect, useContext} from "react";
 import useSWR from "swr";
-import { ClickNav } from "components/timeline/_click-nav";
+import {ClickNav} from "components/timeline/_click-nav";
 import ItemDetail from "components/reservation/item-detail";
 import {
     TimelineCoordModel,
@@ -24,7 +24,7 @@ const filterGroups = (props: any) => {
         props.groups.map((group: any) => {
             if (group.parent != null) {
                 if (!props.openGroups[group.parent]) {
-                    Object.assign(props.openGroups, { [group.id]: false });
+                    Object.assign(props.openGroups, {[group.id]: false});
                 }
             }
             return group;
@@ -39,11 +39,11 @@ const filterGroups = (props: any) => {
 /*
  * TimelinePMS component
  */
-const TimelinePms = ({ props, workingDate }: any) => {
-    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR();
-    const { data: rooms, error: roomSwrError } = RoomSWR();
-    const { data: items, error: itemsError } = FrontOfficeSWR(workingDate);
-    const { handleModal }: any = useContext(ModalContext);
+const TimelinePms = ({props, workingDate}: any) => {
+    const {data: roomTypes, error: roomTypeSwrError} = RoomTypeSWR();
+    const {data: rooms, error: roomSwrError} = RoomSWR();
+    const {data: items, error: itemsError} = FrontOfficeSWR(workingDate);
+    const {handleModal}: any = useContext(ModalContext);
 
     let timeStart = new Date(workingDate);
     let timeEnd = new Date(workingDate);
@@ -55,9 +55,17 @@ const TimelinePms = ({ props, workingDate }: any) => {
         groupsRender: [] as any,
         items: [] as any,
     });
+
+    useEffect(() => {
+        console.log(items);
+        createGroups();
+    }, []);
+
     useEffect(() => {
         createGroups();
     }, [roomTypes, rooms, items]);
+
+
     const createGroups = () => {
         let gs = [];
         let itemData: any = [];
@@ -92,6 +100,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
 
         var itemIds: Array<String> = [];
         var itemId;
+        var groupKey;
 
         for (i in items) {
             itemId = items[i].TransactionID + "_" + items[i].RoomID;
@@ -100,19 +109,24 @@ const TimelinePms = ({ props, workingDate }: any) => {
             }
 
             var startTime = new Date(items[i].StartDate);
-            startTime.setHours(14);
-            startTime.setMinutes(0);
-            startTime.setSeconds(0);
+            // startTime.setHours(14);
+            // startTime.setMinutes(0);
+            // startTime.setSeconds(0);
 
             var endTime = new Date(items[i].EndDate);
             endTime.setDate(endTime.getDate() + 1);
-            endTime.setHours(12);
-            endTime.setMinutes(0);
-            endTime.setSeconds(0);
+            // endTime.setHours(12);
+            // endTime.setMinutes(0);
+            // endTime.setSeconds(0);
+
+            groupKey = "" + items[i].RoomTypeID;
+            if (items[i].RoomID != 0) {
+                groupKey = groupKey + "_" + items[i].RoomID;
+            }
 
             itemData.push({
                 id: itemId,
-                group: "" + items[i].RoomTypeID + "_" + items[i].RoomID,
+                group: groupKey,
                 title: items[i].GuestID + " " + items[i].GuestName,
                 description: items[i].GuestID + " " + items[i].GuestName,
                 transactionId: items[i].TransactionID,
@@ -139,6 +153,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
             items: itemData,
         });
     };
+
     const toggleGroup = (groupToggling: any) => {
         const groups = timelineData.groups;
         const openGroups = timelineData.openGroups;
@@ -158,7 +173,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
         });
     };
 
-    const renderGroup = ({ group }: any) => {
+    const renderGroup = ({group}: any) => {
         return (
             <div className={"custom_group nest_level_" + group.nestLevel}>
                 {toggleIcon(group)}
@@ -169,7 +184,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
     };
 
     const toggleIcon = (group: any) => {
-        const { openGroups }: any = timelineData;
+        const {openGroups}: any = timelineData;
 
         return group.hasChild ? (
             <KeyboardArrowRightOutlinedIcon
@@ -188,17 +203,17 @@ const TimelinePms = ({ props, workingDate }: any) => {
         handleModal(
             true,
             "Timeline menu",
-            <ClickNav timelineCoord={timelineCoord} workingDate={workingDate} />
+            <ClickNav timelineCoord={timelineCoord} workingDate={workingDate}/>
         );
     };
 
     const renderItem = ({
-        item,
-        itemContext,
-        getItemProps,
-        getResizeProps,
-    }: any) => {
-        const { left: leftResizeProps, right: rightResizeProps } =
+                            item,
+                            itemContext,
+                            getItemProps,
+                            getResizeProps,
+                        }: any) => {
+        const {left: leftResizeProps, right: rightResizeProps} =
             getResizeProps();
 
         return (
@@ -226,7 +241,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
                         handleModal(
                             true,
                             "Reservation Detail",
-                            <ItemDetail itemInfo={item} />
+                            <ItemDetail itemInfo={item}/>
                         );
                     }}
                     title={item.description}
@@ -242,8 +257,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
             </div>
         );
     };
-
-    useEffect(() => {}, []);
 
     return (
         <>
@@ -269,7 +282,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
                         calendarHeaderClassName={"calendar_header"}
                     >
                         <SidebarHeader>
-                            {({ getRootProps }: any) => {
+                            {({getRootProps}: any) => {
                                 return (
                                     <div
                                         {...getRootProps()}
@@ -282,7 +295,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
                             unit="primaryHeader"
                             className={"date_header"}
                         />
-                        <DateHeader />
+                        <DateHeader/>
                     </TimelineHeaders>
                 </Timeline>
             </div>

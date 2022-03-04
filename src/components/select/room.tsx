@@ -44,13 +44,12 @@ const RoomSelect = (
             EndDate: dateToSimpleFormat(baseStay.dateEnd),
         };
         var d = await RoomAPI.listAvailable(values);
-        console.log(d);
         setData(d);
     };
 
     useEffect(() => {
         console.log("======= Room Data Change ======");
-        if (data && data.length > 0 && baseStay?.room) {
+        if (data && data.length > 0 && baseStay.room) {
             eventRoomChange(baseStay.room?.RoomID);
         }
     }, [data]);
@@ -88,7 +87,7 @@ const RoomSelect = (
                 return (
                     baseStay?.roomType?.RoomTypeID === room.RoomTypeID && (
                         <MenuItem key={room.RoomID} value={room.RoomID}>
-                            {`${room.RoomTypeName}  ${room.RoomNo}`}
+                            {`${room.RoomFullName}`}
                         </MenuItem>
                     )
                 );

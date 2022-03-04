@@ -38,6 +38,17 @@ export const RateAPI = {
         var list = JSON.parse(data.JsonData);
         return list;
     },
+    listByDate: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/ListByDate`,
+            values
+        );
+        if (status != 200) {
+            return [];
+        }
+        var list = JSON.parse(data.JsonData);
+        return list;
+    },
     get: (id: any) => axios.get(`${urlPrefix}/${id}`),
     new: async (values: any) => {
         const { data, status } = await axios.post(urlPrefix, values);

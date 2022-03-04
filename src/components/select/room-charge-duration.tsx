@@ -9,6 +9,7 @@ const RoomChargeDurationSelect = ({
     errors,
     entity,
     setEntity,
+    reset
 }: any) => {
     const data = [
         {
@@ -25,14 +26,17 @@ const RoomChargeDurationSelect = ({
         },
     ];
 
-    const onChange = (event: any) => {
+    const onChange = (evt: any) => {
         if (setEntity) {
             setEntity({
                 ...entity,
-                RoomChargeDurationID: event.target.value,
+                RoomChargeDurationID: evt.target.value,
             });
-
-            console.log(entity);
+        }
+        if(reset) {
+            reset({
+                RoomChargeDurationID: evt.target.value,
+            });
         }
     };
 

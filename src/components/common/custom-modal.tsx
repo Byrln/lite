@@ -18,7 +18,7 @@ const style = {
     px: 4,
     pb: 3,
     maxHeight: "90%",
-    width: "80%",
+    width: "90%",
     overflow: "auto",
 };
 

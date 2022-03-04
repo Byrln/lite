@@ -8,23 +8,50 @@ import {RateTypeSWR} from "lib/api/rate-type";
 import {RateAPI} from "lib/api/rate";
 import {elementAcceptingRef} from "@mui/utils";
 
-const RoomRateTypeSelect = ({register, errors, roomType}: any) => {
+const RoomRateTypeSelect = ({register, errors, reservationModel, setReservationModel, reset}: any) => {
     const [data, setData]: any = useState([]);
 
-    useEffect(() => {
-
-        let d = RateAPI.list({
-            RoomTypeID: roomType.RoomTypeID,
+    const fetchRoomTypeRates = async () => {
+        let d = await RateAPI.list({
+            RoomTypeID: reservationModel.roomType.RoomTypeID,
             RateTypeID: 0,
             ChannelID: 0,
             SourceID: 0,
             CustomerID: 0,
             TaxIncluded: true,
-            RoomChargeDurationID: 1
+            RoomChargeDurationID: 0,
         });
+        console.log("========== Room Rate Types ==============", d);
         setData(d);
+    };
 
-    }, [roomType]);
+    useEffect(() => {
+
+        fetchRoomTypeRates();
+
+    }, [reservationModel.roomType]);
+
+    const onChange = (evt: any) => {
+
+        console.log(evt);
+
+        var rate = null;
+        for (var r of data) {
+            if (r.RateTypeID === evt.target.value) {
+                rate = r;
+                break;
+            }
+        }
+        if (rate) {
+            console.log("===== Rate Changing: ");
+            console.log(rate);
+            setReservationModel({
+                ...reservationModel,
+                rate: rate
+            });
+        }
+
+    };
 
     return (
         <TextField
@@ -36,6 +63,7 @@ const RoomRateTypeSelect = ({register, errors, roomType}: any) => {
             margin="dense"
             error={errors.RateTypeID?.message}
             helperText={errors.RateTypeID?.message}
+            onChange={onChange}
         >
             {data.map((element: any) => {
                 return (

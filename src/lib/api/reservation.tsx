@@ -40,13 +40,13 @@ export const ReservationApi = {
             fToUniversal(values.ArrivalDate) + " " + values.ArrivalTime;
         vals.DepartureDate =
             fToUniversal(values.DepartureDate) + " " + values.DepartureTime;
-        // vals.ReservationTypeID = 1;
         vals.RateModeID = 1;
         vals.IsReserved = true;
         vals.IsCheckIn = false;
         vals.CustomerID = values.CustomerID > 0 ? values.CustomerID : 0;
         vals.IsGroup = false;
         vals.DurationEnabled = true;
+        vals.ReservationSourceID = 1;
 
         const { data, status } = await axios.post(`${urlPrefix}/New`, vals);
         return {
