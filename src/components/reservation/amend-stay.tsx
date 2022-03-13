@@ -66,9 +66,6 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
     }
 
     useEffect(() => {
-
-        console.log(transactionInfo);
-
         reset({
             TransactionID: transactionInfo.TransactionID,
         });
@@ -122,8 +119,6 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
         setLoading(true);
         try {
 
-            console.log(values);
-
             var vals: any = {
                 TransactionID: values.TransactionID,
                 ArrivalDate: null,
@@ -136,8 +131,6 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
             vals.DepartureDate = fToCustom(values.DepartureDate.getTime(), "yyyy MMM dd") + " " + values.DepartureTime + ":00";
 
             const res = await ReservationApi.amendStay(vals);
-
-            console.log(res);
 
             await mutate(listUrl);
 
@@ -236,7 +229,6 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
                             }}
                             sx={{width: 150}}
                             onChange={(evt: any) => {
-                                console.log(evt.target.value);
                             }}
                         />
                     </Grid>

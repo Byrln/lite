@@ -18,13 +18,8 @@ export const ReservationApi = {
             ],
         };
         const res = await axios.post(listUrl, values);
-
-        console.log(res);
-
         var list = JSON.parse(res.data.JsonData);
         var item;
-
-        console.log(list);
 
         if (list.length === 1) {
             item = list[0];
@@ -36,22 +31,20 @@ export const ReservationApi = {
 
     new: async (values: any) => {
         var vals = values;
-        vals.ArrivalDate =
-            fToUniversal(values.ArrivalDate) + " " + values.ArrivalTime;
-        vals.DepartureDate =
-            fToUniversal(values.DepartureDate) + " " + values.DepartureTime;
-        vals.RateModeID = 1;
+        vals.ArrivalDate = fToUniversal(values.ArrivalDate) + " " + values.ArrivalTime;
+        vals.DepartureDate = fToUniversal(values.DepartureDate) + " " + values.DepartureTime;
         vals.IsReserved = true;
         vals.IsCheckIn = false;
         vals.CustomerID = values.CustomerID > 0 ? values.CustomerID : 0;
-        vals.IsGroup = false;
         vals.DurationEnabled = true;
         vals.ReservationSourceID = 1;
-
         const { data, status } = await axios.post(`${urlPrefix}/New`, vals);
+
         return {
-            data,
-            status,
+            status: status,
+            code: data.Code,
+            msg: data.Message,
+            data: JSON.parse(data.JsonData)
         };
     },
     checkIn: async (TransactionID: any) => {

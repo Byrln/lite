@@ -18,8 +18,6 @@ const GenderSelect = ({ register, errors, entity, setEntity }: any) => {
                 ...entity,
                 GenderID: event.target.value,
             });
-
-            console.log(entity);
         }
     };
 

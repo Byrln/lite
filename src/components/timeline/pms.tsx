@@ -11,13 +11,15 @@ import {RoomTypeSWR} from "lib/api/room-type";
 import {FrontOfficeSWR, FrontOfficeAPI, listUrl as reservationListUrl} from "lib/api/front-office";
 import {ModalContext} from "lib/context/modal";
 import {useState, useEffect, useContext} from "react";
-import useSWR from "swr";
+import {mutate} from "swr";
 import {ClickNav} from "components/timeline/_click-nav";
 import ItemDetail from "components/reservation/item-detail";
 import {
     TimelineCoordModel,
     createTimelineCoord,
 } from "models/data/TimelineCoordModel";
+import {Box, IconButton} from "@mui/material";
+import ReplayIcon from '@mui/icons-material/Replay';
 
 const filterGroups = (props: any) => {
     for (var i = 0; i < 3; i++) {
@@ -56,9 +58,13 @@ const TimelinePms = ({props, workingDate}: any) => {
         items: [] as any,
     });
 
-    useEffect(() => {
-        console.log(items);
+    const refreshReservations = async () => {
+        await mutate(reservationListUrl);
         createGroups();
+    };
+
+    useEffect(() => {
+        refreshReservations();
     }, []);
 
     useEffect(() => {
@@ -81,7 +87,6 @@ const TimelinePms = ({props, workingDate}: any) => {
             });
             for (j in rooms) {
                 if (rooms[j].RoomTypeID == roomTypes[i].RoomTypeID) {
-                    // console.log(rooms[j]);
                     gs.push({
                         id:
                             "" +
@@ -132,7 +137,7 @@ const TimelinePms = ({props, workingDate}: any) => {
                 transactionId: items[i].TransactionID,
                 start_time: startTime,
                 end_time: endTime,
-                colorCode: items[i].StatusColor,
+                colorCode: items[i].GroupID > 0 ? items[i].GroupColor : items[i].StatusColor,
             });
             itemIds.push(itemId);
         }
@@ -234,10 +239,8 @@ const TimelinePms = ({props, workingDate}: any) => {
                         backgroundColor: `#${item.colorCode}`,
                     }}
                     // onClick={(evt: any) => {
-                    //     console.log(evt);
                     // }}
                     onDoubleClick={(evt: any) => {
-                        console.log("===== Event ======", evt);
                         handleModal(
                             true,
                             "Reservation Detail",
@@ -258,8 +261,25 @@ const TimelinePms = ({props, workingDate}: any) => {
         );
     };
 
+    const reloadTimeline = async () => {
+        await mutate(reservationListUrl);
+    };
+
     return (
         <>
+
+            <Box>
+                <IconButton
+                    color={"secondary"}
+                    onClick={(evt: any) => {
+                        reloadTimeline();
+                    }}
+                >
+                    <ReplayIcon/>
+                </IconButton>
+
+            </Box>
+
             <div className="timeline_main">
                 <Timeline
                     groups={timelineData.groupsRender}

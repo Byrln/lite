@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext} from "react";
+import {useState, useEffect, useContext, createRef} from "react";
 import {useForm} from "react-hook-form";
 import {TextField, Grid, Box, Checkbox, FormControlLabel, Button, Alert, Typography} from "@mui/material";
 import * as yup from "yup";
@@ -37,15 +37,23 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import ColorPicker from "../select/color";
+import GroupAdd from "components/reservation/group-add";
+import PositionedMenu from "components/reservation/dropdown-menu";
 
 const styleAccordion = {
     boxShadow: "none",
-    borderTop: "1px solid #d9d9d9",
-    borderBottom: "1px solid #d9d9d9",
+};
+
+const styleAccordionHeader = {
+    mx: -4,
+    px: 2,
+    backgroundColor: "#efefef",
 };
 
 const styleAccordionContent = {
-    px: 0,
+    mx: -4,
+    px: 2,
 };
 
 const NewEdit = (
@@ -55,30 +63,58 @@ const NewEdit = (
         addReservations,
         keyIndex,
         isMain,
-        defaultData
+        defaultData,
+        onAccordionChange,
+        openIndex,
+        onSingleSubmit,
+        submitting,
+        onColorChange
     }: any
 ) => {
-    const {handleModal}: any = useContext(ModalContext);
-    const [loading, setLoading] = useState(false);
-    const [activeStep, setActiveStep]: any = useState("guest");
-    const [baseStay, setBaseStay]: any = useState({
-        TransactionID: 0,
-        guest: null,
-        roomType: {
-            RoomTypeID: timelineCoord.RoomTypeID,
-        },
-        room: {
-            RoomID: timelineCoord.RoomID,
-        },
-        rate: null,
-        dateStart: null,
-        dateEnd: null,
-        Nights: 1,
-        RateModeID: 1,
-        RoomChargeDurationID: 1,
-        TaxIncluded: true,
-        CurrencyAmount: null,
-    });
+    const [activeStep, setActiveStep]: any = useState(defaultData?.guest ? "main" : "guest");
+    const formRef = createRef<HTMLButtonElement>();
+
+    const baseStayDefault = isMain ?
+        {
+            TransactionID: 0,
+            guest: defaultData ? defaultData.guest : null,
+            roomType: {
+                RoomTypeID: timelineCoord.RoomTypeID,
+            },
+            room: {
+                RoomID: timelineCoord.RoomID,
+            },
+            rate: null,
+            dateStart: null,
+            dateEnd: null,
+            Nights: 1,
+            RateModeID: 1,
+            RoomChargeDurationID: 1,
+            TaxIncluded: true,
+            CurrencyAmount: null,
+            Adult: 0,
+            Child: 0,
+        } :
+        {
+            TransactionID: 0,
+            guest: defaultData ? defaultData.guest : null,
+            roomType: {
+                RoomTypeID: timelineCoord.RoomTypeID,
+            },
+            room: null,
+            rate: null,
+            dateStart: defaultData.dateStart,
+            dateEnd: defaultData.dateEnd,
+            Nights: defaultData.Nights,
+            RateModeID: 1,
+            RoomChargeDurationID: 1,
+            TaxIncluded: true,
+            CurrencyAmount: null,
+            Adult: 0,
+            Child: 0,
+        };
+
+    const [baseStay, setBaseStay]: any = useState(baseStayDefault);
 
     const onRoomTypeChange = (rt: any) => {
         setBaseStay({
@@ -158,6 +194,12 @@ const NewEdit = (
     };
 
     useEffect(() => {
+        if (submitting == true) {
+            formRef.current?.click();
+        }
+    }, [submitting]);
+
+    useEffect(() => {
         setRange(timelineCoord.TimeStart, timelineCoord.TimeEnd);
     }, []);
 
@@ -187,52 +229,32 @@ const NewEdit = (
         setRange(dateStart, dateEnd);
     };
 
-    const onSubmit = async (values: any) => {
-
-        setLoading(true);
-
-        try {
-
-            if (!values.Nights) {
-                values.Nights = countNights(baseStay.dateStart, baseStay.dateEnd);
-            }
-
-            if (!values.CurrencyAmount) {
-                values.CurrencyAmount = baseStay.CurrencyAmount;
-            }
-            console.log(values);
-
-            //Api calls
-            let res = await ReservationApi.new(values);
-
-            await mutate(listUrl);
-
-            toast("Амжилттай.", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-
-            setLoading(false);
-            handleModal();
-        } catch (error) {
-            setLoading(false);
-            handleModal();
+    const onSubmit = (values: any) => {
+        if (!values.Nights) {
+            values.Nights = countNights(baseStay.dateStart, baseStay.dateEnd);
         }
+        if (!values.CurrencyAmount) {
+            values.CurrencyAmount = baseStay.CurrencyAmount;
+        }
+        onSingleSubmit(values, keyIndex);
     };
 
     return (
         <>
-            <Accordion sx={styleAccordion} defaultExpanded={isMain}>
+            <Accordion
+                sx={styleAccordion}
+                expanded={openIndex === keyIndex}
+                onChange={() => {
+                    if (onAccordionChange) {
+                        onAccordionChange(keyIndex);
+                    }
+                }}
+            >
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon/>}
+                    // expandIcon={<ExpandMoreIcon/>}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
-                    sx={styleAccordionContent}
+                    sx={styleAccordionHeader}
                 >
                     <Box
                         sx={{
@@ -240,14 +262,19 @@ const NewEdit = (
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            mb: 2
+                            width: "100%",
                         }}
                     >
 
                         <Typography
-                            variant="h6"
+                            variant="subtitle1"
                             component="div"
-                        >{`${keyIndex + 1}. ${baseStay.guest?.GuestFullName} /${baseStay.guest?.IdentityValue}/`}</Typography>
+                        >{`${keyIndex + 1}. ${baseStay.guest?.GuestFullName}`}</Typography>
+
+                        <Typography
+                            variant="subtitle1"
+                            component="div"
+                        >{`${baseStay.roomType?.RoomTypeName}(${baseStay.room?.RoomNo})`}</Typography>
 
                     </Box>
                 </AccordionSummary>
@@ -440,7 +467,6 @@ const NewEdit = (
                                                 }}
                                                 sx={{width: 150}}
                                                 onChange={(evt: any) => {
-                                                    console.log(evt.target.value);
                                                 }}
                                             />
                                         </Grid>
@@ -535,20 +561,12 @@ const NewEdit = (
                                 </Grid>
                             </Grid>
 
-                            <Box sx={{display: "flex", justifyContent: "end", mt: 2}}>
-
-                                {/*<LoadingButton*/}
-                                {/*    type="submit"*/}
-                                {/*    variant="outlined"*/}
-                                {/*    loading={loading}*/}
-                                {/*>Walk In</LoadingButton>*/}
-
-                                <LoadingButton
+                            <Box sx={{display: "none"}}>
+                                <Button
                                     type="submit"
                                     variant="contained"
-                                    loading={loading}
-                                >Reservation</LoadingButton>
-
+                                    ref={formRef}
+                                >Submit</Button>
                             </Box>
 
                         </Box>
@@ -626,7 +644,27 @@ const NewEdit = (
                     </form>
 
 
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "end",
+                            alignItems: "center"
+                        }}
+                    >
 
+                        {
+                            (isMain && activeStep == "main") &&
+                            <ColorPicker onColorChange={onColorChange}/>
+                        }
+
+                        {
+                            (isMain && activeStep == "main") &&
+                            <GroupAdd
+                                baseStay={baseStay}
+                                addReservations={addReservations}
+                            />
+                        }
+                    </Box>
 
 
                 </AccordionDetails>

@@ -23,16 +23,13 @@ const SelectList = ({ filterValues, setGuest }: any) => {
             filterValues.Phone.length > 3
         ) {
             let response: ApiResponseModel = await GuestAPI.list(filterValues);
-            console.log(response);
             if (response.status == 200) {
-                console.log(response.data);
                 setGuestList(response.data);
             }
         }
     };
 
     const guestSelect = (guestID: number) => {
-        console.log(guestID);
     };
 
     return (

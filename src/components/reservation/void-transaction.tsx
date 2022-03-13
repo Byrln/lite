@@ -39,10 +39,7 @@ const VoidTransactionForm = ({transactionInfo, reservation}: any) => {
         setLoading(true);
         try {
 
-            console.log(values);
-
             const res = await ReservationApi.void(values);
-            console.log("======= Void result: ", res);
 
             await mutate(listUrl);
 

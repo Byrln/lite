@@ -29,7 +29,6 @@ const NewEdit = ({idEditing, onFilterValueChange}: any) => {
     useEffect(() => {
         if (idEditing) {
             const fetchDatas = async () => {
-                console.log("FetchDatas: ", idEditing);
                 const response: ApiResponseModel = await GuestAPI.get(
                     idEditing
                 );
@@ -53,7 +52,6 @@ const NewEdit = ({idEditing, onFilterValueChange}: any) => {
             IdentityTypeID: evt.target.value,
         });
         setIdentityType(evt.target.value);
-        console.log(identityType);
     };
 
     const validationSchema = yup.object().shape(
@@ -323,8 +321,6 @@ const NewEdit = ({idEditing, onFilterValueChange}: any) => {
                                 shrink: entity && entity.Email,
                             }}
                             onChange={(evt: any) => {
-                                console.log("=======Email on change======");
-
                                 setEntity({
                                     ...entity,
                                     Email: evt.target.value,

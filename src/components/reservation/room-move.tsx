@@ -41,10 +41,7 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
         setLoading(true);
         try {
 
-            console.log(values);
-
             const res = await ReservationApi.cancel(values);
-            console.log("======= Cancel result: ", res);
 
             await mutate(listUrl);
 

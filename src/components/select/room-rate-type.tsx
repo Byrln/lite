@@ -21,7 +21,6 @@ const RoomRateTypeSelect = ({register, errors, reservationModel, setReservationM
             TaxIncluded: true,
             RoomChargeDurationID: 0,
         });
-        console.log("========== Room Rate Types ==============", d);
         setData(d);
     };
 
@@ -32,9 +31,6 @@ const RoomRateTypeSelect = ({register, errors, reservationModel, setReservationM
     }, [reservationModel.roomType]);
 
     const onChange = (evt: any) => {
-
-        console.log(evt);
-
         var rate = null;
         for (var r of data) {
             if (r.RateTypeID === evt.target.value) {
@@ -43,8 +39,6 @@ const RoomRateTypeSelect = ({register, errors, reservationModel, setReservationM
             }
         }
         if (rate) {
-            console.log("===== Rate Changing: ");
-            console.log(rate);
             setReservationModel({
                 ...reservationModel,
                 rate: rate

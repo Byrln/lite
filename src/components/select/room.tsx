@@ -48,7 +48,6 @@ const RoomSelect = (
     };
 
     useEffect(() => {
-        console.log("======= Room Data Change ======");
         if (data && data.length > 0 && baseStay.room) {
             eventRoomChange(baseStay.room?.RoomID);
         }

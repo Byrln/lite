@@ -42,9 +42,6 @@ const ItemDetail = ({ itemInfo }: any) => {
     const reloadDetailInfo = async () => {
         var res = await ReservationApi.get(itemInfo.transactionId);
         var trs = await FrontOfficeAPI.transactionInfo(itemInfo.transactionId);
-
-        console.log(trs);
-
         setReservation(res);
         setTransactionInfo(trs);
     };

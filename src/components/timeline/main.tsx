@@ -122,7 +122,6 @@ const MainTimeline = (props: any) => {
                     className="rct-item-content"
                     style={{ maxHeight: `${itemContext.dimensions.height}` }}
                     onClick={() => {
-                        console.log(item);
                     }}
                     title={item.description}
                 >

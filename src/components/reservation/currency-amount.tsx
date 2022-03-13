@@ -11,7 +11,6 @@ const CurrencyAmount = ({register, errors, reservationModel, setReservationModel
         if (!(reservationModel.roomType && reservationModel.rate && reservationModel.dateStart)) {
             return;
         }
-        console.log("====== Calculating Amount =======");
         var values = {
             "CurrDate": dateToCustomFormat(reservationModel.dateStart, "yyyy MMM dd"),
             "RoomTypeID": reservationModel.roomType.RoomTypeID,
@@ -28,12 +27,10 @@ const CurrencyAmount = ({register, errors, reservationModel, setReservationModel
         try {
 
             var rates = await RateAPI.listByDate(values);
-            console.log("===== Rates on Calculation =====", rates);
 
             var amount;
             if (rates.length > 0) {
                 amount = rates[0].BaseRate * reservationModel.Nights;
-                console.log("Amount: ", amount);
             } else {
                 return;
             }
