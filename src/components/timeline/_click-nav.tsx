@@ -14,21 +14,6 @@ export const ClickNav = ({ timelineCoord, workingDate }: any) => {
                 onClick={() => {
                     handleModal(
                         true,
-                        "New Reservation",
-                        <NewEdit
-                            timelineCoord={timelineCoord}
-                            workingDate={workingDate}
-                        />,
-                        true
-                    );
-                }}
-            >New Reservation</Button>
-
-            <Button
-                variant={"text"}
-                onClick={() => {
-                    handleModal(
-                        true,
                         "Make Reservation",
                         <ReservationMake
                             timelineCoord={timelineCoord}

@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import {SketchPicker} from "react-color";
 import {Box, hexToRgb} from "@mui/material";
+import styles1 from "styles/select/color.module.scss";
 
 const hexToRGBA = (h: string) => {
     let r: any = 0, g: any = 0, b: any = 0;
@@ -105,7 +106,7 @@ const ColorPicker = ({onColorChange}: any) => {
                 <Box sx={styles.color}/>
             </Box>
             {state.displayColorPicker ?
-                <Box sx={styles.popover}>
+                <Box className={styles1.popover}>
                     <Box onClick={handleClose}/>
                     <SketchPicker color={state.color} onChange={handleChange}/>
                 </Box> : null}

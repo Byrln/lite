@@ -1,0 +1,30 @@
+.color {
+    width: 50px;
+    height: 40px;
+    border-radius: 2px;
+    //background: `rgba(${state.color.r}, ${state.color.g}, ${state.color.b}, ${state.color.a})`,
+}
+
+.swatch {
+    padding: 5px;
+    background: #fff;
+    border-radius: 1px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 1.5px;
+}
+
+.popover {
+    position: absolute;
+    //z-index: 2;
+    bottom: 80px;
+}
+
+.cover {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

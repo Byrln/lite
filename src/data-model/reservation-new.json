@@ -1,16 +1,9 @@
 {
-    "status": 200,
-    "code": "",
-    "msg": "",
-    "data": [
-        {
-            "TransactionID": 1432,
-            "FolioID": 0,
-            "ReservationID": 1153,
-            "CurrentBalance": 0,
-            "RegisterNo": "",
-            "RegisterDate": "2022-03-09T18:49:41.09",
-            "GroupID": 0
-        }
-    ]
+    "TransactionID": 1462,
+    "FolioID": 0,
+    "ReservationID": 1180,
+    "CurrentBalance": 0.00,
+    "RegisterNo": "309-1",
+    "RegisterDate": "2022-03-15T11:23:34.437",
+    "GroupID": 309
 }

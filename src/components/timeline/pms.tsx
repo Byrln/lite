@@ -9,6 +9,7 @@ import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRig
 import {RoomSWR} from "lib/api/room";
 import {RoomTypeSWR} from "lib/api/room-type";
 import {FrontOfficeSWR, FrontOfficeAPI, listUrl as reservationListUrl} from "lib/api/front-office";
+import {RoomBlockSWR} from "lib/api/room-block";
 import {ModalContext} from "lib/context/modal";
 import {useState, useEffect, useContext} from "react";
 import {mutate} from "swr";
@@ -20,6 +21,7 @@ import {
 } from "models/data/TimelineCoordModel";
 import {Box, IconButton} from "@mui/material";
 import ReplayIcon from '@mui/icons-material/Replay';
+import {dateToCustomFormat} from "../../lib/utils/format-time";
 
 const filterGroups = (props: any) => {
     for (var i = 0; i < 3; i++) {
@@ -42,14 +44,19 @@ const filterGroups = (props: any) => {
  * TimelinePMS component
  */
 const TimelinePms = ({props, workingDate}: any) => {
-    const {data: roomTypes, error: roomTypeSwrError} = RoomTypeSWR();
-    const {data: rooms, error: roomSwrError} = RoomSWR();
-    const {data: items, error: itemsError} = FrontOfficeSWR(workingDate);
-    const {handleModal}: any = useContext(ModalContext);
 
     let timeStart = new Date(workingDate);
     let timeEnd = new Date(workingDate);
     timeEnd.setDate(timeEnd.getDate() + 30);
+
+    const {data: roomTypes, error: roomTypeSwrError} = RoomTypeSWR();
+    const {data: rooms, error: roomSwrError} = RoomSWR();
+    const {data: items, error: itemsError} = FrontOfficeSWR(workingDate);
+    const {data: roomBlocks, error: roomBlocksError} = RoomBlockSWR(
+        dateToCustomFormat(timeStart, "yyyy MMM dd"),
+        dateToCustomFormat(timeEnd, "yyyy MMM dd")
+    );
+    const {handleModal}: any = useContext(ModalContext);
 
     const [timelineData, setTimelineData] = useState({
         openGroups: {} as any,
@@ -64,13 +71,8 @@ const TimelinePms = ({props, workingDate}: any) => {
     };
 
     useEffect(() => {
-        refreshReservations();
-    }, []);
-
-    useEffect(() => {
         createGroups();
     }, [roomTypes, rooms, items]);
-
 
     const createGroups = () => {
         let gs = [];
@@ -212,14 +214,15 @@ const TimelinePms = ({props, workingDate}: any) => {
         );
     };
 
-    const renderItem = ({
-                            item,
-                            itemContext,
-                            getItemProps,
-                            getResizeProps,
-                        }: any) => {
-        const {left: leftResizeProps, right: rightResizeProps} =
-            getResizeProps();
+    const renderItem = (
+        {
+            item,
+            itemContext,
+            getItemProps,
+            getResizeProps,
+        }: any
+    ) => {
+        const {left: leftResizeProps, right: rightResizeProps} = getResizeProps();
 
         return (
             <div {...getItemProps(item.itemProps)}>

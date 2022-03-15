@@ -61,22 +61,19 @@ const ReservationMake = ({timelineCoord, workingDate}: any) => {
         try {
             var res;
             var isGroup = (reservations.length > 1);
+            var groupId = 0;
             var values = {...reservations[0].submitValues};
 
             values.isGroup = isGroup;
-
+            values.GroupID = groupId;
             if (isGroup) {
-                values.GroupID = 0;
                 values.GroupColor = commonValues.GroupColor;
             }
 
             res = await ReservationApi.new(values);
 
-            if (res.data.length > 0) {
-                setCommonValues({
-                    ...commonValues,
-                    GroupID: res.data[0].GroupID,
-                });
+            if (isGroup && res.data.length > 0) {
+                groupId = res.data[0].GroupID;
             }
 
             var i;
@@ -84,11 +81,10 @@ const ReservationMake = ({timelineCoord, workingDate}: any) => {
                 if (!reservations[i].submitValues) {
                     continue;
                 }
-
                 values = {...reservations[i].submitValues};
                 values.isGroup = isGroup;
                 if (isGroup) {
-                    values.GroupID = commonValues.GroupID;
+                    values.GroupID = groupId;
                     values.GroupColor = commonValues.GroupColor;
                 }
                 res = await ReservationApi.new(values);

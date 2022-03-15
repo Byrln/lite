@@ -13,7 +13,7 @@ const NumberSelect = ({
     numberMin,
     numberMax,
 }: any) => {
-    const [data, setData] = useState([]);
+    const [data, setData]: any = useState([]);
     useEffect(() => {
         var d = [];
         var i;
