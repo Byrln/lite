@@ -194,14 +194,14 @@ const NewEdit = (
     };
 
     useEffect(() => {
+        setRange(timelineCoord.TimeStart, timelineCoord.TimeEnd);
+    }, []);
+
+    useEffect(() => {
         if (submitting == true) {
             formRef.current?.click();
         }
     }, [submitting]);
-
-    useEffect(() => {
-        setRange(timelineCoord.TimeStart, timelineCoord.TimeEnd);
-    }, []);
 
     const onArrivalDateChange = (evt: any) => {
         var dateStart = new Date(evt.target.value);
@@ -289,6 +289,7 @@ const NewEdit = (
                             type="hidden"
                             {...register("GuestID")}
                             name="GuestID"
+                            value={baseStay.guest?.GuestID}
                         />
 
                         <Box sx={{display: activeStep === "main" ? "inline" : "none"}}>
@@ -327,7 +328,7 @@ const NewEdit = (
                                                 register={register}
                                                 errors={errors}
                                                 onRoomTypeChange={onRoomTypeChange}
-                                                entity={baseStay}
+                                                baseStay={baseStay}
                                             />
                                         </Grid>
                                         <Grid item xs={4}>

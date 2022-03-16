@@ -28,7 +28,6 @@ export const FrontOfficeAPI = {
         };
         const res = await axios.post(`${urlPrefix}/TransactionInfo`, values);
         var list = JSON.parse(res.data.JsonData);
-        console.log(list);
         var item;
         if (list.length === 1) {
             item = list[0];

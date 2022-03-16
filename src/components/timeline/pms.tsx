@@ -9,18 +9,20 @@ import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRig
 import {RoomSWR} from "lib/api/room";
 import {RoomTypeSWR} from "lib/api/room-type";
 import {FrontOfficeSWR, FrontOfficeAPI, listUrl as reservationListUrl} from "lib/api/front-office";
-import {RoomBlockSWR} from "lib/api/room-block";
+import {RoomBlockSWR, listUrl as roomBlockListUrl} from "lib/api/room-block";
 import {ModalContext} from "lib/context/modal";
 import {useState, useEffect, useContext} from "react";
 import {mutate} from "swr";
 import {ClickNav} from "components/timeline/_click-nav";
-import ItemDetail from "components/reservation/item-detail";
+import ReservationDetail from "components/reservation/item-detail";
+import RoomBlockDetail from "components/room/block/item-detail";
 import {
     TimelineCoordModel,
     createTimelineCoord,
 } from "models/data/TimelineCoordModel";
 import {Box, IconButton} from "@mui/material";
 import ReplayIcon from '@mui/icons-material/Replay';
+import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import {dateToCustomFormat} from "../../lib/utils/format-time";
 
 const filterGroups = (props: any) => {
@@ -65,14 +67,9 @@ const TimelinePms = ({props, workingDate}: any) => {
         items: [] as any,
     });
 
-    const refreshReservations = async () => {
-        await mutate(reservationListUrl);
-        createGroups();
-    };
-
     useEffect(() => {
         createGroups();
-    }, [roomTypes, rooms, items]);
+    }, [roomTypes, rooms, items, roomBlocks]);
 
     const createGroups = () => {
         let gs = [];
@@ -108,23 +105,18 @@ const TimelinePms = ({props, workingDate}: any) => {
         var itemIds: Array<String> = [];
         var itemId;
         var groupKey;
+        var startTime;
+        var endTime;
 
         for (i in items) {
-            itemId = items[i].TransactionID + "_" + items[i].RoomID;
+            itemId = items[i].TransactionID;
             if (itemIds.includes(itemId)) {
                 continue;
             }
 
-            var startTime = new Date(items[i].StartDate);
-            // startTime.setHours(14);
-            // startTime.setMinutes(0);
-            // startTime.setSeconds(0);
-
-            var endTime = new Date(items[i].EndDate);
-            endTime.setDate(endTime.getDate() + 1);
-            // endTime.setHours(12);
-            // endTime.setMinutes(0);
-            // endTime.setSeconds(0);
+            startTime = new Date(items[i].StartDate); // startTime.setHours(14); startTime.setMinutes(0); startTime.setSeconds(0);
+            endTime = new Date(items[i].EndDate);
+            endTime.setDate(endTime.getDate() + 1); // endTime.setHours(12); endTime.setMinutes(0); endTime.setSeconds(0);
 
             groupKey = "" + items[i].RoomTypeID;
             if (items[i].RoomID != 0) {
@@ -134,14 +126,29 @@ const TimelinePms = ({props, workingDate}: any) => {
             itemData.push({
                 id: itemId,
                 group: groupKey,
-                title: items[i].GuestID + " " + items[i].GuestName,
-                description: items[i].GuestID + " " + items[i].GuestName,
-                transactionId: items[i].TransactionID,
                 start_time: startTime,
                 end_time: endTime,
-                colorCode: items[i].GroupID > 0 ? items[i].GroupColor : items[i].StatusColor,
+                itemType: "reservation",
+                detail: items[i],
             });
             itemIds.push(itemId);
+        }
+
+        for (i in roomBlocks) {
+
+            itemId = "block_" + roomBlocks[i].RoomBlockID;
+            startTime = new Date(roomBlocks[i].BeginDate); // startTime.setHours(14); startTime.setMinutes(0); startTime.setSeconds(0);
+            endTime = new Date(roomBlocks[i].EndDate); // endTime.setDate(endTime.getDate() + 1);
+            groupKey = "" + roomBlocks[i].RoomTypeID + "_" + roomBlocks[i].RoomID;
+
+            itemData.push({
+                id: itemId,
+                group: groupKey,
+                start_time: startTime,
+                end_time: endTime,
+                itemType: "room_block",
+                detail: roomBlocks[i],
+            });
         }
 
         var openGroups =
@@ -226,33 +233,45 @@ const TimelinePms = ({props, workingDate}: any) => {
 
         return (
             <div {...getItemProps(item.itemProps)}>
-                {/* {...getItemProps(item.itemProps)} */}
 
-                {itemContext.useResizeHandle ? (
-                    <div {...leftResizeProps} />
-                ) : (
-                    ""
-                )}
+                {itemContext.useResizeHandle ? (<div {...leftResizeProps} />) : ("")}
 
                 <div
-                    className="rct-item-content"
+                    className="rct_item_content"
                     style={{
-                        maxHeight: `${itemContext.dimensions.height}`,
-                        width: `100%`,
-                        backgroundColor: `#${item.colorCode}`,
+                        backgroundColor: item.itemType === "room_block" ? "#505050" : `#${item.detail.StatusColor}`,
                     }}
-                    // onClick={(evt: any) => {
-                    // }}
                     onDoubleClick={(evt: any) => {
-                        handleModal(
-                            true,
-                            "Reservation Detail",
-                            <ItemDetail itemInfo={item}/>
-                        );
+
+                        if (item.itemType === "reservation") {
+                            handleModal(
+                                true,
+                                "Reservation Detail",
+                                <ReservationDetail itemInfo={item}/>
+                            );
+                        } else if (item.itemType === "room_block") {
+                            handleModal(
+                                true,
+                                "Room block",
+                                <RoomBlockDetail itemInfo={item}/>
+                            );
+                        }
+
                     }}
                     title={item.description}
                 >
-                    <div>{item.title}</div>
+
+                    {
+                        item.detail.GroupID > 0 &&
+                        <div className={"item_icon"}>
+                            <AutoAwesomeMosaicIcon style={{fill: item.detail.GroupColor}}/>
+                        </div>
+                    }
+                    <div>
+                        {
+                            item.itemType === "room_block" ? `${item.detail.UserName}` : `${item.detail.GuestID} ${item.detail.GuestName}`
+                        }
+                    </div>
                 </div>
 
                 {itemContext.useResizeHandle ? (
@@ -266,6 +285,7 @@ const TimelinePms = ({props, workingDate}: any) => {
 
     const reloadTimeline = async () => {
         await mutate(reservationListUrl);
+        await mutate(roomBlockListUrl);
     };
 
     return (
@@ -283,7 +303,7 @@ const TimelinePms = ({props, workingDate}: any) => {
 
             </Box>
 
-            <div className="timeline_main">
+            <div className={"timeline_main"}>
                 <Timeline
                     groups={timelineData.groupsRender}
                     items={timelineData.items}
@@ -293,6 +313,7 @@ const TimelinePms = ({props, workingDate}: any) => {
                     // defaultTimeEnd={moment().add(12, "hour")}
                     groupRenderer={renderGroup}
                     itemRenderer={renderItem}
+                    lineHeight={50}
                     itemHeightRatio={0.8}
                     sidebarWidth={300}
                     minZoom={10 * 24 * 60 * 60 * 1000}

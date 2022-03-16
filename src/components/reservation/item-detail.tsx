@@ -36,12 +36,15 @@ const styleNight = {
 };
 
 const ItemDetail = ({ itemInfo }: any) => {
+
+    console.log(itemInfo);
+
     const [reservation, setReservation]: any = useState(null);
     const [transactionInfo, setTransactionInfo]: any = useState(null);
 
     const reloadDetailInfo = async () => {
-        var res = await ReservationApi.get(itemInfo.transactionId);
-        var trs = await FrontOfficeAPI.transactionInfo(itemInfo.transactionId);
+        var res = await ReservationApi.get(itemInfo.detail.TransactionID);
+        var trs = await FrontOfficeAPI.transactionInfo(itemInfo.detail.TransactionID);
         setReservation(res);
         setTransactionInfo(trs);
     };

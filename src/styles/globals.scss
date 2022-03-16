@@ -1,7 +1,7 @@
 @import "nprogress/nprogress.css";
 @import "react-toastify/dist/ReactToastify.css";
 @import "simplebar/src/simplebar.css";
-@import "./timeline.scss";
+@import "timeline/timeline.module";
 
 @media print {
     .print-hide-buttons {

@@ -6,7 +6,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { RoomTypeAPI} from "lib/api/room-type";
 import {useState, useEffect} from "react";
 
-const RoomTypeSelect = ({register, errors, onRoomTypeChange, entity}: any) => {
+const RoomTypeSelect = ({register, errors, onRoomTypeChange, baseStay}: any) => {
     const [data, setData]: any = useState([]);
 
     const fetchRoomTypes = async () => {
@@ -39,8 +39,8 @@ const RoomTypeSelect = ({register, errors, onRoomTypeChange, entity}: any) => {
     }, []);
 
     useEffect(() => {
-        if (data && data.length > 0 && entity?.roomType?.RoomTypeID) {
-            eventRoomTypeChange(entity?.roomType?.RoomTypeID);
+        if (data && data.length > 0 && baseStay?.roomType?.RoomTypeID) {
+            eventRoomTypeChange(baseStay?.roomType?.RoomTypeID);
         }
     }, [data]);
 
@@ -67,7 +67,7 @@ const RoomTypeSelect = ({register, errors, onRoomTypeChange, entity}: any) => {
             onChange={(evt: any) => {
                 eventRoomTypeChange(evt.target.value);
             }}
-            value={entity?.roomType?.RoomTypeID}
+            value={baseStay?.roomType?.RoomTypeID}
         >
             {data.map((element: any) => (
                 <MenuItem key={element.RoomTypeID} value={element.RoomTypeID}>
