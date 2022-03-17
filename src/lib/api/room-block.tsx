@@ -43,8 +43,16 @@ export const RoomBlockAPI = {
         };
     },
 
+    updateStatus: async (id: any, values: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/UpdateStatus`, values);
+        return {
+            data,
+            status,
+        };
+    },
+
     update: async (id: any, values: any) => {
-        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
+        const { data, status } = await axios.post(`${urlPrefix}/Update`, values);
 
         return {
             data,
