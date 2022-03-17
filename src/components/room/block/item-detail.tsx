@@ -7,22 +7,31 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import {fToCustom} from "lib/utils/format-time";
 import Button from "@mui/material/Button";
-import {RoomBlockAPI} from "lib/api/room-block";
+import {RoomBlockAPI, listUrl} from "lib/api/room-block";
 import RoomBlockForm from "components/room/block/new-edit";
+import {mutate} from "swr";
 
-const ItemDetail = ({itemInfo}: any) => {
+const ItemDetail = ({itemInfo, getRoomBlockDetail}: any) => {
+    const [roomBlock, setRoomBlock] = useState({...itemInfo.detail});
     const [actionMode, setActionMode] = useState("view");
 
     const updateStatus = async (evt: any) => {
         if (!confirm("Are you sure?")) {
             return;
         }
+        let newStatus = !roomBlock.Status;
         let values = {
-            RoomBlockID: itemInfo.RoomBlockID,
-            Status: !itemInfo.Status,
+            RoomBlockID: itemInfo.detail.RoomBlockID,
+            Status: newStatus,
         };
         let res = await RoomBlockAPI.updateStatus(itemInfo.RoomBlockID, values);
-        console.log(res);
+        await mutate(listUrl);
+
+        setRoomBlock({
+            ...roomBlock,
+            Status: newStatus,
+        });
+
     };
 
 
@@ -34,23 +43,23 @@ const ItemDetail = ({itemInfo}: any) => {
                         <TableBody>
                             <TableRow>
                                 <TableCell>ID</TableCell>
-                                <TableCell>{itemInfo.detail.RoomBlockID}</TableCell>
+                                <TableCell>{roomBlock.RoomBlockID}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Room</TableCell>
-                                <TableCell>{`${itemInfo.detail.RoomTypeName} (${itemInfo.detail.RoomFullName})`}</TableCell>
+                                <TableCell>{`${roomBlock.RoomTypeName} (${roomBlock.RoomFullName})`}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Status</TableCell>
-                                <TableCell>{itemInfo.detail.Status ? "active" : "inactive"}</TableCell>
+                                <TableCell>{roomBlock.Status ? "active" : "inactive"}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Duration</TableCell>
-                                <TableCell>{`${fToCustom(itemInfo.detail.BeginDate, 'yyyy-MM-dd')} ~ ${fToCustom(itemInfo.detail.EndDate, 'yyyy-MM-dd')}`}</TableCell>
+                                <TableCell>{`${fToCustom(roomBlock.BeginDate, 'yyyy-MM-dd')} ~ ${fToCustom(roomBlock.EndDate, 'yyyy-MM-dd')}`}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Created</TableCell>
-                                <TableCell>{`${itemInfo.detail.UserName} (${fToCustom(itemInfo.detail.CreatedDate, 'yyyy-MM-dd hh:kk')})`}</TableCell>
+                                <TableCell>{`${roomBlock.UserName} (${fToCustom(roomBlock.CreatedDate, 'yyyy-MM-dd hh:kk')})`}</TableCell>
                             </TableRow>
 
                         </TableBody>
@@ -61,7 +70,7 @@ const ItemDetail = ({itemInfo}: any) => {
                     <Button
                         variant={"text"}
                         onClick={updateStatus}
-                    >{itemInfo.detail.Status ? "disable" : "enable"}</Button>
+                    >{roomBlock.Status ? "disable" : "enable"}</Button>
 
                     <Button
                         variant={"text"}

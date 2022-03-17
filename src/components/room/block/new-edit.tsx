@@ -115,10 +115,15 @@ const NewEdit = ({timelineCoord, defaultEntity}: any) => {
 
         try {
 
+            let vals = {...values};
+            vals.BeginDate = fToCustom(values.BeginDate, "yyyy MMM dd");
+            vals.EndDate = fToCustom(values.EndDate, "yyyy MMM dd");
+
             if (defaultEntity) {
-                await RoomBlockAPI?.update(defaultEntity.RoomBlockID, values);
+                vals.RoomBlockID = defaultEntity.RoomBlockID;
+                await RoomBlockAPI?.update(defaultEntity.RoomBlockID, vals);
             } else {
-                await RoomBlockAPI?.new(values);
+                await RoomBlockAPI?.new(vals);
             }
 
             await mutate(listUrl);

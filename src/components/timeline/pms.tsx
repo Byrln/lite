@@ -16,10 +16,7 @@ import {mutate} from "swr";
 import {ClickNav} from "components/timeline/_click-nav";
 import ReservationDetail from "components/reservation/item-detail";
 import RoomBlockDetail from "components/room/block/item-detail";
-import {
-    TimelineCoordModel,
-    createTimelineCoord,
-} from "models/data/TimelineCoordModel";
+import {TimelineCoordModel, createTimelineCoord} from "models/data/TimelineCoordModel";
 import {Box, IconButton} from "@mui/material";
 import ReplayIcon from '@mui/icons-material/Replay';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
@@ -36,7 +33,7 @@ const filterGroups = (props: any) => {
             return group;
         });
     }
-    const newGroups = props.groups.filter(
+    const newGroups: any = props.groups.filter(
         (g: any) => g.parent == null || props.openGroups[g.parent]
     );
     return newGroups;
@@ -253,7 +250,10 @@ const TimelinePms = ({props, workingDate}: any) => {
                             handleModal(
                                 true,
                                 "Room block",
-                                <RoomBlockDetail itemInfo={item}/>
+                                <RoomBlockDetail
+                                    itemInfo={item}
+                                    getRoomBlockDetail={getRoomBlockDetail}
+                                />
                             );
                         }
 
@@ -287,6 +287,18 @@ const TimelinePms = ({props, workingDate}: any) => {
         await mutate(reservationListUrl);
         await mutate(roomBlockListUrl);
     };
+
+    const getRoomBlockDetail = (id: number) => {
+        let result = null;
+        let rb;
+        for (rb of roomBlocks) {
+            if (rb.RoomBlockID === id) {
+                result = rb;
+                break;
+            }
+        }
+        return result;
+    }
 
     return (
         <>
