@@ -34,6 +34,9 @@ const RoomSelect = (
     };
 
     const fetchRooms = async () => {
+
+        console.log(baseStay);
+
         if (!(baseStay.roomType && baseStay.dateStart && baseStay.dateEnd)) {
             return;
         }
@@ -54,6 +57,9 @@ const RoomSelect = (
     }, [data]);
 
     useEffect(() => {
+
+        console.log("===== baseStay change =====");
+
         fetchRooms();
     }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);
 

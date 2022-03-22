@@ -12,16 +12,16 @@ const CurrencyAmount = ({register, errors, reservationModel, setReservationModel
             return;
         }
         var values = {
-            "CurrDate": dateToCustomFormat(reservationModel.dateStart, "yyyy MMM dd"),
-            "RoomTypeID": reservationModel.roomType.RoomTypeID,
-            "RateTypeID": reservationModel.rate.RateTypeID,
-            "ChannelID": 0,
-            "SourceID": 0,
-            "CustomerID": 0,
-            "TaxIncluded": reservationModel.TaxIncluded,
-            "RoomChargeDuration": 1,
-            "ContractRate": false,
-            "EmptyRow": false
+            CurrDate: dateToCustomFormat(reservationModel.dateStart, "yyyy MMM dd"),
+            RoomTypeID: reservationModel.roomType.RoomTypeID,
+            RateTypeID: reservationModel.rate.RateTypeID,
+            ChannelID: 0,
+            SourceID: 0,
+            CustomerID: 0,
+            TaxIncluded: reservationModel.TaxIncluded,
+            RoomChargeDuration: 1,
+            ContractRate: false,
+            EmptyRow: false
         };
 
         try {

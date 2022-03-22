@@ -9,17 +9,20 @@ import {toast} from "react-toastify";
 import AmendStayForm from "components/reservation/amend-stay";
 import VoidTransactionForm from "components/reservation/void-transaction";
 import CancelReservationForm from "components/reservation/cancel-reservation";
+import RoomMoveForm from "components/reservation/room-move";
 
 const buttonStyle = {
     borderBottom: "1px solid #efefef",
 };
 
-const ReservationNav = ({
-                            reservation,
-                            itemInfo,
-                            transactionInfo,
-                            reloadDetailInfo,
-                        }: any) => {
+const ReservationNav = (
+    {
+        reservation,
+        itemInfo,
+        transactionInfo,
+        reloadDetailInfo,
+    }: any
+) => {
     const {handleModal}: any = useContext(ModalContext);
 
     const finishCall = async (msg: string) => {
@@ -42,14 +45,22 @@ const ReservationNav = ({
         if (!confirm("Are you sure?")) {
             return;
         }
-        var res = await ReservationApi.checkIn(
-            transactionInfo.TransactionID
-        );
+        var res = await ReservationApi.checkIn(transactionInfo.TransactionID);
+        await mutate(calendarItemsURL);
+        finishCall("Амжилттай");
+    };
+
+    const unassignRoom = async (evt: any) => {
+        if (!confirm("Are you sure?")) {
+            return;
+        }
+        var res = await ReservationApi.roomUnassign(transactionInfo.TransactionID);
+        await mutate(calendarItemsURL);
         finishCall("Амжилттай");
     };
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", border: "1px solid #efefef"}}>
+        <Box sx={{display: "flex", flexDirection: "column", border: "1px solid #efefef"}}>
             <Button
                 variant={"text"}
                 size="small"
@@ -98,6 +109,16 @@ const ReservationNav = ({
                     variant={"text"}
                     size="small"
                     sx={buttonStyle}
+                    onClick={() => {
+                        handleModal(
+                            true,
+                            "Room Move",
+                            <RoomMoveForm
+                                transactionInfo={transactionInfo}
+                                reservation={reservation}
+                            />
+                        );
+                    }}
                 >Room Move</Button>
             )}
             {transactionInfo.AmendStay && (
@@ -119,13 +140,13 @@ const ReservationNav = ({
                     Amend Stay
                 </Button>
             )}
-            {transactionInfo.SetMessage && (
-                <Button
-                    variant={"text"}
-                    size="small"
-                    sx={buttonStyle}
-                >Set Message</Button>
-            )}
+            {/*{transactionInfo.SetMessage && (*/}
+            {/*    <Button*/}
+            {/*        variant={"text"}*/}
+            {/*        size="small"*/}
+            {/*        sx={buttonStyle}*/}
+            {/*    >Set Message</Button>*/}
+            {/*)}*/}
             {transactionInfo.Void && (
                 <Button
                     variant={"text"}
@@ -172,6 +193,7 @@ const ReservationNav = ({
                     variant={"text"}
                     size="small"
                     sx={buttonStyle}
+                    onClick={unassignRoom}
                 >Unassign Room</Button>
             )}
             {transactionInfo.AuditTrail && (

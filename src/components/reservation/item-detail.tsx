@@ -1,7 +1,7 @@
-import { ReservationApi } from "lib/api/reservation";
-import { useState, useEffect } from "react";
-import { Grid, Box, Paper, Typography } from "@mui/material";
-import { fToCustom, countNights } from "lib/utils/format-time";
+import {ReservationApi} from "lib/api/reservation";
+import {useState, useEffect} from "react";
+import {Grid, Box, Paper, Typography} from "@mui/material";
+import {fToCustom, countNights} from "lib/utils/format-time";
 import ReservationNav from "./_reservation-nav";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,7 +9,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { FrontOfficeAPI } from "lib/api/front-office";
+import {FrontOfficeAPI} from "lib/api/front-office";
+import RemarkList from "./remark/list";
+
 
 const styleTime = {
     backgroundColor: "#00008B",
@@ -35,10 +37,7 @@ const styleNight = {
     },
 };
 
-const ItemDetail = ({ itemInfo }: any) => {
-
-    console.log(itemInfo);
-
+const ItemDetail = ({itemInfo}: any) => {
     const [reservation, setReservation]: any = useState(null);
     const [transactionInfo, setTransactionInfo]: any = useState(null);
 
@@ -57,7 +56,7 @@ const ItemDetail = ({ itemInfo }: any) => {
         <>
             {transactionInfo && (
                 <Box>
-                    <Grid container spacing={2} sx={{ mb: 2 }}>
+                    <Grid container spacing={2} sx={{mb: 2}}>
                         <Grid item xs={6}>
                             <h4>{reservation?.GuestName}</h4>
                         </Grid>
@@ -79,7 +78,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                 >
                                     <Typography>
                                         {reservation &&
-                                            reservation.ReservationTypeName}
+                                        reservation.ReservationTypeName}
                                     </Typography>
                                 </Paper>
                             </Box>
@@ -123,7 +122,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                         </Grid>
                         <Grid item xs={8}>
                             <Table
-                                sx={{ minWidth: 650 }}
+                                sx={{minWidth: 650, mb: 3}}
                                 aria-label="simple table"
                             >
                                 <TableBody>
@@ -155,6 +154,11 @@ const ItemDetail = ({ itemInfo }: any) => {
                                     </TableRow>
                                 </TableBody>
                             </Table>
+
+                            <RemarkList
+                                TransactionID={transactionInfo.TransactionID}
+                            />
+
                         </Grid>
                         <Grid item xs={2}>
                             <ReservationNav
