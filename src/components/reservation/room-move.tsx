@@ -40,11 +40,19 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
         newRateMode: "normal"
     });
 
+    const isManualRate = () => {
+        return (rateCondition.overrideRate && rateCondition.newRateMode === "manual");
+    };
+
     const onRoomTypeChange = (rt: any) => {
         setBaseStay({
             ...baseStay,
             roomType: rt,
         });
+
+        if (!isManualRate()) {
+            calculateAmount();
+        }
     };
 
     const onRoomChange = (r: any) => {
@@ -69,14 +77,6 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
         formState: {errors},
         reset,
     } = useForm(formOptions);
-
-    useEffect(() => {
-        reset({
-            TransactionID: transactionInfo.TransactionID,
-            Fee: 0,
-        });
-    }, []);
-
 
     const onSubmit = async (values: any) => {
         setLoading(true);
@@ -161,10 +161,6 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
 
     };
 
-    useEffect(() => {
-        calculateAmount();
-    }, [baseStay.roomType]);
-
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -241,7 +237,7 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
                             margin="dense"
                             error={errors.NewRate?.message}
                             helperText={errors.NewRate?.message}
-                            disabled={!(rateCondition.overrideRate && rateCondition.newRateMode === "manual")}
+                            disabled={!isManualRate()}
                             InputLabelProps={{
                                 shrink: true
                             }}

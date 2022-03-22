@@ -27,16 +27,16 @@ const RoomSelect = (
                     room = r;
                 }
             }
-            if (room) {
+            if (
+                baseStay.room?.RoomID != room?.RoomID ||
+                typeof baseStay.room.RoomName != "string"
+            ) {
                 onRoomChange(room);
             }
         }
     };
 
     const fetchRooms = async () => {
-
-        console.log(baseStay);
-
         if (!(baseStay.roomType && baseStay.dateStart && baseStay.dateEnd)) {
             return;
         }

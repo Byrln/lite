@@ -3,7 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { RoomTypeAPI} from "lib/api/room-type";
+import {RoomTypeAPI} from "lib/api/room-type";
 import {useState, useEffect} from "react";
 
 const RoomTypeSelect = ({register, errors, onRoomTypeChange, baseStay}: any) => {
@@ -29,7 +29,9 @@ const RoomTypeSelect = ({register, errors, onRoomTypeChange, baseStay}: any) => 
                 }
             }
             if (roomType) {
-                onRoomTypeChange(roomType);
+                if (typeof baseStay.roomType.RoomTypeName != "string" || roomType.RoomTypeID != baseStay.roomType.RoomTypeID) {
+                    onRoomTypeChange(roomType);
+                }
             }
         }
     };

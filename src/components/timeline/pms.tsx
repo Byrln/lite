@@ -319,10 +319,10 @@ const TimelinePms = ({props, workingDate}: any) => {
                 <Timeline
                     groups={timelineData.groupsRender}
                     items={timelineData.items}
-                    // visibleTimeStart={timeStart}
-                    // visibleTimeEnd={timeEnd}
-                    defaultTimeStart={timeStart}
-                    defaultTimeEnd={timeEnd}
+                    visibleTimeStart={timeStart}
+                    visibleTimeEnd={timeEnd}
+                    // defaultTimeStart={timeStart}
+                    // defaultTimeEnd={timeEnd}
                     // defaultTimeStart={moment().add(-12, "hour")}
                     // defaultTimeEnd={moment().add(12, "hour")}
                     groupRenderer={renderGroup}
@@ -330,8 +330,8 @@ const TimelinePms = ({props, workingDate}: any) => {
                     lineHeight={50}
                     itemHeightRatio={0.8}
                     sidebarWidth={300}
-                    // minZoom={10 * 24 * 60 * 60 * 1000}
-                    // maxZoom={10 * 24 * 60 * 60 * 1000}
+                    minZoom={10 * 24 * 60 * 60 * 1000}
+                    maxZoom={10 * 24 * 60 * 60 * 1000}
                     onCanvasContextMenu={onCanvasEvent}
                     onCanvasDoubleClick={onCanvasEvent}
                 >
