@@ -165,7 +165,11 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
 
-                <input type="text" {...register("TransactionID")}/>
+                <input
+                    type="text"
+                    {...register("TransactionID")}
+                    value={transactionInfo.TransactionID}
+                />
 
                 <Grid container spacing={2}>
                     <Grid item xs={8}>
