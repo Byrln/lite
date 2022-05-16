@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { RateTypeSWR } from "lib/api/rate-type";
 import { elementAcceptingRef } from "@mui/utils";
 
-const RateTypeSelect = ({ register, errors, entity, setEntity }: any) => {
+const RateTypeSelect = ({ register, errors }: any) => {
     const { data, error } = RateTypeSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;

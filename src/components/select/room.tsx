@@ -1,29 +1,77 @@
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
+import {RoomSWR, RoomAPI} from "lib/api/room";
+import {dateToSimpleFormat} from "lib/utils/format-time";
 
-import { RoomSWR } from "lib/api/room";
-import { elementAcceptingRef } from "@mui/utils";
+const RoomSelect = (
+    {
+        register,
+        errors,
+        baseStay,
+        onRoomChange,
+    }: any
+) => {
+    // const { data, error } = RoomSWR();
+    const [data, setData]: any = useState([]);
 
-const RoomSelect = ({ register, errors, entity, setEntity }: any) => {
-    const { data, error } = RoomSWR();
+    const eventRoomChange = (val: any) => {
+        if (onRoomChange) {
+            var r;
+            var room = null;
+            for (r of data) {
+                if (r.RoomID === val) {
+                    room = r;
+                }
+            }
+            if (
+                baseStay.room?.RoomID != room?.RoomID ||
+                typeof baseStay.room.RoomName != "string"
+            ) {
+                onRoomChange(room);
+            }
+        }
+    };
+
+    const fetchRooms = async () => {
+        if (!(baseStay.roomType && baseStay.dateStart && baseStay.dateEnd)) {
+            return;
+        }
+        var values = {
+            TransactionID: baseStay.TransactionID,
+            RoomTypeID: baseStay.roomType?.RoomTypeID,
+            StartDate: dateToSimpleFormat(baseStay.dateStart),
+            EndDate: dateToSimpleFormat(baseStay.dateEnd),
+        };
+        var d = await RoomAPI.listAvailable(values);
+        setData(d);
+    };
 
     useEffect(() => {
-        console.log("==== entity ====", entity);
-    }, [entity]);
+        if (data && data.length > 0 && baseStay.room) {
+            eventRoomChange(baseStay.room?.RoomID);
+        }
+    }, [data]);
 
-    if (error) return <Alert severity="error">{error.message}</Alert>;
+    useEffect(() => {
 
-    if (!error && !data)
-        return (
-            <Box sx={{ width: "100%" }}>
-                <Skeleton />
-                <Skeleton animation="wave" />
-            </Box>
-        );
+        console.log("===== baseStay change =====");
+
+        fetchRooms();
+    }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);
+
+    // if (error) return <Alert severity="error">{error.message}</Alert>;
+
+    // if (!error && !data)
+    //     return (
+    //         <Box sx={{ width: "100%" }}>
+    //             <Skeleton />
+    //             <Skeleton animation="wave" />
+    //         </Box>
+    //     );
 
     return (
         <TextField
@@ -35,12 +83,16 @@ const RoomSelect = ({ register, errors, entity, setEntity }: any) => {
             margin="dense"
             error={errors.RoomID?.message}
             helperText={errors.RoomID?.message}
+            onChange={(evt: any) => {
+                eventRoomChange(evt.target.value);
+            }}
+            value={baseStay?.room?.RoomID}
         >
-            {data.map((element: any) => {
+            {data.map((room: any) => {
                 return (
-                    entity?.RoomTypeID === element.RoomTypeID && (
-                        <MenuItem key={element.RoomID} value={element.RoomID}>
-                            {`${element.RoomTypeName}  ${element.RoomNo}`}
+                    baseStay?.roomType?.RoomTypeID === room.RoomTypeID && (
+                        <MenuItem key={room.RoomID} value={room.RoomID}>
+                            {`${room.RoomFullName}`}
                         </MenuItem>
                     )
                 );

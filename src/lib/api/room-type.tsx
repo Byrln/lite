@@ -23,6 +23,17 @@ export const RoomTypeSWR = () => {
 
 export const RoomTypeAPI = {
     list: async (values: any) => {
+        const { data, status } = await axios.post(
+            listUrl,
+            values
+        );
+        if (status != 200) {
+            return [];
+        }
+        var list = JSON.parse(data.JsonData);
+        return list;
+    },
+    list2: async (values: any) => {
         let vals = values
             ? values
             : {

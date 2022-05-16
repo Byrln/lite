@@ -17,3 +17,27 @@ export function fToNow(date: any) {
         addSuffix: true,
     });
 }
+
+export function fToUniversal(date: any) {
+    return format(new Date(date), "yyyy MMM dd");
+}
+
+export function fToCustom(date: any, formatStr: string) {
+    return format(new Date(date), formatStr);
+}
+
+export function dateToSimpleFormat(date: Date) {
+    return format(date, "yyyy-MM-dd");
+}
+
+export function dateToCustomFormat(date: Date, formatStr: string) {
+    return format(date, formatStr);
+}
+
+export function countNights(d1: any, d2: any) {
+    var date1 = new Date(d1);
+    var date2 = new Date(d2);
+    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    var numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return numberOfNights;
+}

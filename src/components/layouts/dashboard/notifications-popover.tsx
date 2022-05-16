@@ -1,4 +1,3 @@
-import faker from "faker";
 import { noCase } from "change-case";
 import { useRef, useState } from "react";
 import Link from "next/link";
@@ -30,7 +29,7 @@ import MenuPopover from "components/menu-popover";
 
 const NOTIFICATIONS = [
     {
-        id: faker.datatype.uuid(),
+        id: 1,
         title: "Your order is placed",
         description: "waiting for shipping",
         avatar: null,
@@ -39,8 +38,8 @@ const NOTIFICATIONS = [
         isUnRead: true,
     },
     {
-        id: faker.datatype.uuid(),
-        title: faker.name.findName(),
+        id: 2,
+        title: "Bilegsaikhan",
         description: "answered to your comment on the Horeca",
         avatar: mockImgAvatar(2),
         type: "friend_interactive",
@@ -48,7 +47,7 @@ const NOTIFICATIONS = [
         isUnRead: true,
     },
     {
-        id: faker.datatype.uuid(),
+        id: 3,
         title: "You have new message",
         description: "5 unread messages",
         avatar: null,
@@ -57,7 +56,7 @@ const NOTIFICATIONS = [
         isUnRead: false,
     },
     {
-        id: faker.datatype.uuid(),
+        id: 4,
         title: "You have new mail",
         description: "sent from Guido Padberg",
         avatar: null,
@@ -66,7 +65,7 @@ const NOTIFICATIONS = [
         isUnRead: false,
     },
     {
-        id: faker.datatype.uuid(),
+        id: 5,
         title: "Delivery processing",
         description: "Your order is being shipped",
         avatar: null,

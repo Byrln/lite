@@ -8,7 +8,13 @@ import { useEffect } from "react";
 import { CurrencySWR } from "lib/api/currency";
 import { elementAcceptingRef } from "@mui/utils";
 
-const CurrencySelect = ({ register, errors, entity, setEntity }: any) => {
+const CurrencySelect = ({
+    register,
+    errors,
+    entity,
+    setEntity,
+    nameKey,
+}: any) => {
     const { data, error } = CurrencySWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -26,18 +32,15 @@ const CurrencySelect = ({ register, errors, entity, setEntity }: any) => {
             fullWidth
             id="CurrencyID"
             label="Currency"
-            {...register("CurrencyID")}
+            {...register(nameKey)}
             select
             margin="dense"
-            error={errors.CurrencyID?.message}
-            helperText={errors.CurrencyID?.message}
+            error={errors[nameKey]?.message}
+            helperText={errors[nameKey]?.message}
         >
             {data.map((element: any) => {
                 return (
-                    <MenuItem
-                        key={element.CurrencyID}
-                        value={element.CurrencyID}
-                    >
+                    <MenuItem key={nameKey} value={element.CurrencyID}>
                         {`${element.CurrencySymbol}`}
                     </MenuItem>
                 );

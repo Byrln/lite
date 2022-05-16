@@ -1,0 +1,80 @@
+[
+    {
+        "ReasonID": 1,
+        "ReasonName": "Guest cancelled",
+        "ReasonTypeID": 1,
+        "ReasonTypeCode": "TextCancelReason",
+        "ReasonTypeName": "Cancel Reason",
+        "RoomStatusID": 6,
+        "Status": true,
+        "UserID": 1,
+        "UserName": "admin",
+        "CreatedDate": "2019-08-22T15:44:21.413",
+        "IPAddress": ""
+    },
+    {
+        "ReasonID": 4,
+        "ReasonName": "Cancelled by OTA",
+        "ReasonTypeID": 1,
+        "ReasonTypeCode": "TextCancelReason",
+        "ReasonTypeName": "Cancel Reason",
+        "RoomStatusID": 6,
+        "Status": true,
+        "UserID": 1,
+        "UserName": "admin",
+        "CreatedDate": "2019-08-26T13:12:25",
+        "IPAddress": "103.229.120.130"
+    },
+    {
+        "ReasonID": 2,
+        "ReasonName": "Testing",
+        "ReasonTypeID": 2,
+        "ReasonTypeCode": "TextVoidReason",
+        "ReasonTypeName": "Void Reason",
+        "RoomStatusID": 5,
+        "Status": true,
+        "UserID": 1,
+        "UserName": "admin",
+        "CreatedDate": "2019-08-22T15:44:38.367",
+        "IPAddress": ""
+    },
+    {
+        "ReasonID": 5,
+        "ReasonName": "Буруу шивэлт",
+        "ReasonTypeID": 2,
+        "ReasonTypeCode": "TextVoidReason",
+        "ReasonTypeName": "Void Reason",
+        "RoomStatusID": 5,
+        "Status": true,
+        "UserID": 1,
+        "UserName": "admin",
+        "CreatedDate": "2019-08-26T13:12:51.143",
+        "IPAddress": "103.229.120.130"
+    },
+    {
+        "ReasonID": 3,
+        "ReasonName": "Testing",
+        "ReasonTypeID": 3,
+        "ReasonTypeCode": "TextRoomBlockReason",
+        "ReasonTypeName": "Room Block Reason",
+        "RoomStatusID": 8,
+        "Status": true,
+        "UserID": 1,
+        "UserName": "admin",
+        "CreatedDate": "2019-08-22T15:44:50.13",
+        "IPAddress": ""
+    },
+    {
+        "ReasonID": 6,
+        "ReasonName": "Stop Sell",
+        "ReasonTypeID": 3,
+        "ReasonTypeCode": "TextRoomBlockReason",
+        "ReasonTypeName": "Room Block Reason",
+        "RoomStatusID": 8,
+        "Status": true,
+        "UserID": 1,
+        "UserName": "admin",
+        "CreatedDate": "2019-08-26T13:13:10.627",
+        "IPAddress": "103.229.120.130"
+    }
+]

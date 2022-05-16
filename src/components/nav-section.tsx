@@ -75,13 +75,16 @@ function NavItem({ item, active }: any) {
         return (
             <>
                 <ListItemStyle
-                    onClick={handleOpen}
                     sx={{
                         ...(isActiveRoot && activeRootStyle),
                     }}
                 >
                     <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-                    <ListItemText disableTypography primary={title} />
+                    <ListItemText
+                        disableTypography
+                        primary={title}
+                        onClick={handleOpen}
+                    />
                     {info && info}
                     <Box
                         component={Icon}

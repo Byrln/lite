@@ -56,6 +56,18 @@ export const RoomAPI = {
             });
         return result;
     },
+    listAvailable: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Available`,
+            values
+        );
+        if (status != 200) {
+            return [];
+        }
+        var list = JSON.parse(data.JsonData);
+        return list;
+    },
+
     get: async (id: any) => {
         const values = {
             RoomID: id,

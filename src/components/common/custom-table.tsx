@@ -36,6 +36,7 @@ const CustomTable = ({
     hasPrint = true,
     hasExcel = true,
     id,
+    setIdEditing,
     listUrl,
     modalTitle,
     modalContent,
@@ -103,6 +104,7 @@ const CustomTable = ({
                                     `${modalTitle} нэмэх`,
                                     modalContent
                                 );
+                                setIdEditing(null);
                             }}
                             startIcon={<Icon icon={plusFill} />}
                         >
@@ -204,6 +206,11 @@ const CustomTable = ({
                                                                                           true,
                                                                                           `${modalTitle} засах`,
                                                                                           modalContent
+                                                                                      );
+                                                                                      setIdEditing(
+                                                                                          element[
+                                                                                              id
+                                                                                          ]
                                                                                       );
                                                                                   }}
                                                                               >

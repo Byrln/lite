@@ -24,8 +24,8 @@ const NewEditForm = ({
                 values = Object.assign(values, additionalValues);
             }
 
-            if (entity && entity.id) {
-                await api?.update(entity.id, values);
+            if (entity && entity._id) {
+                await api?.update(entity._id, values);
             } else {
                 await api?.new(values);
             }
@@ -52,6 +52,8 @@ const NewEditForm = ({
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+
+
             {children}
 
             <SubmitButton loading={loading} />

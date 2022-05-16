@@ -7,6 +7,7 @@ export default NextAuth({
     providers: [
         CredentialProvider({
             name: "credentials",
+            credentials: {} as any,
             authorize: async (credentials: any) => {
                 const params = new URLSearchParams();
                 params.append("username", credentials.username);
@@ -63,14 +64,12 @@ export default NextAuth({
     secret: "9/fJVE4kGYxv16NSgHHcqmhTLgp9DYY92v3fLE4Rm8A=",
     jwt: {
         secret: "9/fJVE4kGYxv16NSgHHcqmhTLgp9DYY92v3fLE4Rm8A=",
-        encryption: true,
     },
     session: {
-        jwt: true,
+        strategy: "jwt",
         maxAge: 24 * 60 * 60,
     },
     pages: {
         signIn: "auth/login",
     },
-    site: process.env.NEXTAUTH_URL,
 });

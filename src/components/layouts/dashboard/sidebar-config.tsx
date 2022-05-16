@@ -11,34 +11,51 @@ const sidebarConfig = [
         icon: getIcon(pieChart2Fill),
     },
     {
+        title: "Calendar PMS",
+        path: "/timeline",
+        icon: getIcon(pieChart2Fill),
+    },
+    {
         title: "room",
-        path: "/room",
         icon: getIcon(peopleFill),
-    },
-    {
-        title: "room type",
-        path: "/room/type",
-        icon: getIcon(peopleFill),
-    },
-    {
-        title: "room status",
-        path: "/room/status",
-        icon: getIcon(peopleFill),
-    },
-    {
-        title: "room amenities",
-        path: "/room/amenities",
-        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "room",
+                path: "/room",
+                icon: getIcon(peopleFill),
+            },
+            {
+                title: "room type",
+                path: "/room/type",
+                icon: getIcon(peopleFill),
+            },
+            {
+                title: "room status",
+                path: "/room/status",
+                icon: getIcon(peopleFill),
+            },
+            {
+                title: "room amenities",
+                path: "/room/amenities",
+                icon: getIcon(peopleFill),
+            },
+        ],
     },
     {
         title: "rate",
-        path: "/rate",
         icon: getIcon(peopleFill),
-    },
-    {
-        title: "rate type",
-        path: "/rate/type",
-        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "rate",
+                path: "/rate",
+                icon: getIcon(peopleFill),
+            },
+            {
+                title: "rate type",
+                path: "/rate/type",
+                icon: getIcon(peopleFill),
+            },
+        ],
     },
     {
         title: "tax",

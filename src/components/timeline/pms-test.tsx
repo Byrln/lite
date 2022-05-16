@@ -1,9 +1,8 @@
-import Timeline from "react-calendar-timeline";
-import {
+import Timeline, {
     TimelineHeaders,
     SidebarHeader,
     DateHeader,
-} from "react-calendar-timeline";
+} from "react-calendar-timeline/lib";
 // make sure you include the timeline stylesheet or the timeline will not be styled
 import "react-calendar-timeline/lib/Timeline.css";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
@@ -53,7 +52,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
         groupsRender: [] as any,
         items: [] as any,
     });
-    // console.log("items", items);
     useEffect(() => {
         createGroups();
     }, []);
@@ -83,7 +81,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
             });
             for (j in rooms) {
                 if (rooms[j].RoomTypeID == roomTypes[i].RoomTypeID) {
-                    // console.log(rooms[j]);
                     gs.push({
                         id:
                             "" +
@@ -117,9 +114,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
         let newOpenGroups = Object.assign({}, openGroups, {
             [groupToggling.id]: !openGroups[groupToggling.id],
         });
-
-        // console.log(groupToggling);
-        // console.log(newOpenGroups);
 
         let newGroups = filterGroups({
             groups: groups,
@@ -178,7 +172,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
                     className="rct-item-content"
                     style={{ maxHeight: `${itemContext.dimensions.height}` }}
                     onClick={() => {
-                        // console.log(item);
                     }}
                     title={item.description}
                 >
@@ -194,9 +187,6 @@ const TimelinePms = ({ props, workingDate }: any) => {
             </div>
         );
     };
-
-    console.log("Time start: ", timeStart);
-    console.log("Time end: ", timeEnd);
 
     return (
         <>
@@ -218,7 +208,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
                         calendarHeaderClassName={"calendar_header"}
                     >
                         <SidebarHeader>
-                            {({ getRootProps }) => {
+                            {({ getRootProps }: any) => {
                                 return (
                                     <div
                                         {...getRootProps()}

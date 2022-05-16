@@ -1,21 +1,41 @@
-import { useContext } from "react";
-import { Button } from "@mui/material";
-import { ModalContext } from "lib/context/modal";
-import NewEdit from "components/reservation/new-edit";
-export const ClickNav = (props: any) => {
-    const { handleModal }: any = useContext(ModalContext);
+import {useContext} from "react";
+import {Button} from "@mui/material";
+import {ModalContext} from "lib/context/modal";
+import ReservationMake from "components/reservation/make";
+import RoomBlockForm from "components/room/block/new-edit";
+
+export const ClickNav = ({timelineCoord, workingDate}: any) => {
+    const {handleModal}: any = useContext(ModalContext);
 
     return (
         <>
             <Button
                 variant={"text"}
                 onClick={() => {
-                    handleModal(true, "New Reservation", <NewEdit />);
+                    handleModal(
+                        true,
+                        "Make Reservation",
+                        <ReservationMake
+                            timelineCoord={timelineCoord}
+                            workingDate={workingDate}
+                        />,
+                        true
+                    );
                 }}
-            >
-                New Reservation
-            </Button>
-            <Button variant={"text"}>Block</Button>
+            >Make Reservation</Button>
+
+            <Button
+                variant={"text"}
+                onClick={() => {
+                    handleModal(
+                        true,
+                        "Block Room",
+                        <RoomBlockForm
+                            timelineCoord={timelineCoord}
+                        />
+                    );
+                }}
+            >Block</Button>
         </>
     );
 };

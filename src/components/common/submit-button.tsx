@@ -1,6 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 
-const SubmitButton = ({ loading }: any) => (
+const SubmitButton = ({ loading, title }: any) => (
     <LoadingButton
         fullWidth
         size="large"
@@ -8,9 +8,7 @@ const SubmitButton = ({ loading }: any) => (
         variant="contained"
         loading={loading}
         className="mt-3"
-    >
-        Хадгалах
-    </LoadingButton>
+    >{ title ? title : "Хадгалах"}</LoadingButton>
 );
 
 export default SubmitButton;

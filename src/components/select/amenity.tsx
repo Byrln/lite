@@ -7,30 +7,30 @@ import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-import { RoomTypeAmenitySWR } from "lib/api/amenity";
+import {RoomTypeAmenitySWR} from "lib/api/amenity";
 
-const AmenitySelect = ({ register, errors }: any) => {
-    const { data, error } = RoomTypeAmenitySWR();
+const AmenitySelect = ({register, errors}: any) => {
+    const {data, error} = RoomTypeAmenitySWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
     if (!error && !data)
         return (
-            <Box sx={{ width: "100%" }}>
-                <Skeleton />
-                <Skeleton animation="wave" />
+            <Box sx={{width: "100%"}}>
+                <Skeleton/>
+                <Skeleton animation="wave"/>
             </Box>
         );
 
     return (
-        <Paper sx={{ padding: 2, marginTop: 3 }}>
+        <Paper sx={{padding: 2, marginTop: 3}}>
             <Typography variant="body1" gutterBottom>
                 Amenities
             </Typography>
 
             <Grid container spacing={2}>
-                {data.map((element: any) => (
-                    <Grid item xs={5}>
+                {data.map((element: any, index: number) => (
+                    <Grid item xs={5} key={index}>
                         <InputLabel htmlFor="my-input" className="mt-3">
                             {element.AmenityName}
                         </InputLabel>

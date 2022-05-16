@@ -44,7 +44,14 @@
         }
     }
 
-    .rct-item-content {
-        line-height: auto;
+    .rct_item_content {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: nowrap;
+        height: 100%;
+        overflow: hidden;
+        line-height: 1;
     }
 }
