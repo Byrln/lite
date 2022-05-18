@@ -6,7 +6,6 @@ import Skeleton from "@mui/material/Skeleton";
 import {fToCustom} from "../../../lib/utils/format-time";
 import {IconButton} from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import EditIcon from '@mui/icons-material/Edit';
 import RemarkNew from "./new";
 
 const RemarkList = ({TransactionID}: any) => {
@@ -27,29 +26,21 @@ const RemarkList = ({TransactionID}: any) => {
     return (
         <>
             <div>
-                Reservation Remark List
+                Remarks
                 <IconButton
                     onClick={() => {
-                        setEditMode(true);
+                        setEditMode(!editMode);
                     }}
-                ><AddCircleOutlineIcon/></IconButton>
+                >
+                    <AddCircleOutlineIcon
+                        style={{
+                            transform: editMode ? "rotate(45deg)" : "rotate(0deg)",
+                            transition: "transform 0.8s",
+                        }}
+                    />
+                </IconButton>
             </div>
-            {
-                !editMode &&
-                <>
-                    {data.map((remark: any, index: number) => {
-                        return (
-                            <div key={index}>
-                                <p>
-                                    <span style={{marginRight: 5}}>{remark.UserName}:</span>
-                                    <span>{remark.Remarks}</span>
-                                </p>
-                                <p style={{textAlign: "right"}}>{fToCustom(remark.CreatedDate, "dd/MMM hh:kk")}</p>
-                            </div>
-                        )
-                    })}
-                </>
-            }
+
             {
                 editMode &&
                 <RemarkNew
@@ -57,6 +48,29 @@ const RemarkList = ({TransactionID}: any) => {
                     setEditMode={setEditMode}
                 />
             }
+
+            {data.map((remark: any, index: number) => {
+                return (
+                    <div key={index} style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                        <p style={{
+                            marginRight: 20,
+                            color: "#a0a0a0",
+                            fontSize: "0.8rem"
+                        }}>{remark.UserName}:</p>
+                        <p style={{
+                            flexGrow: "1",
+                            fontSize: "0.9rem",
+                        }}>{remark.Remarks}</p>
+                        <p style={{
+                            fontSize: "0.8rem",
+                            textAlign: "right",
+                            color: "#a0a0a0",
+                            marginLeft: 20
+                        }}>{fToCustom(remark.CreatedDate, "dd/MMM hh:kk")}</p>
+                    </div>
+                )
+            })}
+
         </>
     );
 };

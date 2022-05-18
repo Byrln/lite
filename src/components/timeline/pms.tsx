@@ -244,7 +244,9 @@ const TimelinePms = ({props, workingDate}: any) => {
                             handleModal(
                                 true,
                                 "Reservation Detail",
-                                <ReservationDetail itemInfo={item}/>
+                                <ReservationDetail itemInfo={item}/>,
+                                true,
+                                "large"
                             );
                         } else if (item.itemType === "room_block") {
                             handleModal(

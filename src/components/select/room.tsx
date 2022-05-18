@@ -13,6 +13,7 @@ const RoomSelect = (
         errors,
         baseStay,
         onRoomChange,
+        roomAutoAssign,
     }: any
 ) => {
     // const { data, error } = RoomSWR();
@@ -62,6 +63,14 @@ const RoomSelect = (
 
         fetchRooms();
     }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);
+
+    useEffect(() => {
+
+        if (roomAutoAssign && data.length > 0) {
+            onRoomChange(data[0])
+        }
+
+    }, [roomAutoAssign]);
 
     // if (error) return <Alert severity="error">{error.message}</Alert>;
 

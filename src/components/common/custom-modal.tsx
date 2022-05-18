@@ -7,24 +7,72 @@ import Divider from "@mui/material/Divider";
 
 import {ModalContext} from "lib/context/modal";
 
-const style = {
-    position: "absolute" as "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    py: 1,
-    px: 4,
-    pb: 3,
-    maxHeight: "90%",
-    width: "90%",
-    overflow: "auto",
+const styles = {
+    small: {
+        position: "absolute" as "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        py: 1,
+        px: 4,
+        pb: 3,
+        maxHeight: "90%",
+        width: "30%",
+        overflow: "auto",
+    },
+    medium: {
+        position: "absolute" as "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        py: 1,
+        px: 4,
+        pb: 3,
+        maxHeight: "90%",
+        width: "60%",
+        overflow: "auto",
+    },
+    large: {
+        position: "absolute" as "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        py: 1,
+        px: 4,
+        pb: 3,
+        maxHeight: "90%",
+        width: "90%",
+        overflow: "auto",
+    }
 };
 
 const CustomModal = () => {
-    const {visible, modalTitle, modalContent, emptyModal, handleModal}: any =
-        useContext(ModalContext);
+    const {
+        visible,
+        modalTitle,
+        modalContent,
+        emptyModal,
+        handleModal,
+        modalType
+    }: any = useContext(ModalContext);
+
+    const getStyle = () => {
+        let result: any = null;
+        if (modalType === "large") {
+            result = styles.large;
+        } else if (modalType === "medium") {
+            result = styles.medium;
+        } else if (modalType === "small") {
+            result = styles.small;
+        }
+        return result;
+    };
 
     return (
         <Modal
@@ -33,10 +81,11 @@ const CustomModal = () => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+            <Box sx={getStyle()}>
 
                 {
-                    (!emptyModal && modalTitle.length > 0) && <Typography
+                    !emptyModal &&
+                    <Typography
                         id="modal-modal-title"
                         variant="h4"
                         gutterBottom
@@ -51,23 +100,24 @@ const CustomModal = () => {
 
                     {modalContent}
 
-                    {!emptyModal && <>
-                        <Divider className="mt-3 mb-3"/>
-                        <Box
-                            sx={{
-                                mx: "auto",
-                                textAlign: "right",
-                            }}
-                        >
-                            <Button
-                                variant="outlined"
-                                key="back"
-                                onClick={() => handleModal()}
+                    {
+                        !emptyModal &&
+                        <>
+                            <Divider className="mt-3 mb-3"/>
+                            <Box
+                                sx={{
+                                    mx: "auto",
+                                    textAlign: "right",
+                                }}
                             >
-                                Хаах
-                            </Button>
-                        </Box>
-                    </>}
+                                <Button
+                                    variant="outlined"
+                                    key="back"
+                                    onClick={() => handleModal()}
+                                >Хаах</Button>
+                            </Box>
+                        </>
+                    }
 
                 </Typography>
             </Box>

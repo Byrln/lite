@@ -3,9 +3,7 @@ import { getSession } from "next-auth/react";
 
 import axios from "lib/utils/axios";
 
-export function withAuthServerSideProps(
-    getServerSidePropsFunc: GetServerSideProps
-) {
+export function withAuthServerSideProps(getServerSidePropsFunc: GetServerSideProps) {
     return async (context: any) => {
         const session = await getSession(context);
 

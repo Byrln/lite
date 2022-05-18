@@ -67,108 +67,217 @@ const ItemDetail = ({itemInfo}: any) => {
                                     justifyContent: "flex-end",
                                 }}
                             >
-                                <Paper
-                                    elevation={2}
-                                    sx={{
-                                        px: 1,
-                                        backgroundColor:
-                                            "#" + transactionInfo.StatusColor,
-                                        color: "white",
-                                    }}
-                                >
-                                    <Typography>
-                                        {reservation &&
-                                        reservation.ReservationTypeName}
-                                    </Typography>
-                                </Paper>
+
+                                <div>
+                                    <Paper
+                                        elevation={2}
+                                        sx={{
+                                            px: 1,
+                                            backgroundColor:
+                                                "#" + transactionInfo.StatusColor,
+                                            color: "white",
+                                            mb: 1
+                                        }}
+                                    >
+                                        <Typography>
+                                            {reservation &&
+                                            reservation.ReservationTypeName}
+                                        </Typography>
+                                    </Paper>
+                                </div>
+
                             </Box>
                         </Grid>
                     </Grid>
 
+
                     <Grid container spacing={2}>
-                        <Grid item xs={2}>
-                            <Box sx={styleTime}>
-                                <p>
-                                    {fToCustom(
-                                        transactionInfo.ArrivalDate,
-                                        "MMM dd"
-                                    )}
-                                </p>
-                                <p>
-                                    {fToCustom(
-                                        transactionInfo.ArrivalDate,
-                                        "kk:mm:ss"
-                                    )}
-                                </p>
-                            </Box>
-                            <Box sx={styleNight}>
-                                <p>{countNights(transactionInfo.ArrivalDate, transactionInfo.DepartureDate)}</p>
-                                <p>Night</p>
-                            </Box>
-                            <Box sx={styleTime}>
-                                <p>
-                                    {fToCustom(
-                                        transactionInfo.DepartureDate,
-                                        "MMM dd"
-                                    )}
-                                </p>
-                                <p>
-                                    {fToCustom(
-                                        transactionInfo.DepartureDate,
-                                        "kk:mm:ss"
-                                    )}
-                                </p>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <Table
-                                sx={{minWidth: 650, mb: 3}}
-                                aria-label="simple table"
-                            >
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell>
-                                            <b>ReservationNo</b>
-                                        </TableCell>
-                                        <TableCell>
-                                            {transactionInfo.ReservationNo}
-                                        </TableCell>
-                                    </TableRow>
+                        <Grid item xs={6}>
 
-                                    <TableRow>
-                                        <TableCell>
-                                            <b>Group Code</b>
-                                        </TableCell>
-                                        <TableCell>
-                                            {transactionInfo.GroupCode}
-                                        </TableCell>
-                                    </TableRow>
+                            <Grid container spacing={0}>
+                                <Grid item xs={3}>
 
-                                    <TableRow>
-                                        <TableCell>
-                                            <b>Booker Name</b>
-                                        </TableCell>
-                                        <TableCell>
-                                            {reservation?.UserName}
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
+                                    <Box sx={styleTime}>
+                                        <p>
+                                            {fToCustom(
+                                                transactionInfo.ArrivalDate,
+                                                "MMM dd"
+                                            )}
+                                        </p>
+                                        <p>
+                                            {fToCustom(
+                                                transactionInfo.ArrivalDate,
+                                                "kk:mm:ss"
+                                            )}
+                                        </p>
+                                    </Box>
+                                    <Box sx={styleNight}>
+                                        <p>{countNights(transactionInfo.ArrivalDate, transactionInfo.DepartureDate)}</p>
+                                        <p>Night</p>
+                                    </Box>
+                                    <Box sx={styleTime}>
+                                        <p>
+                                            {fToCustom(
+                                                transactionInfo.DepartureDate,
+                                                "MMM dd"
+                                            )}
+                                        </p>
+                                        <p>
+                                            {fToCustom(
+                                                transactionInfo.DepartureDate,
+                                                "kk:mm:ss"
+                                            )}
+                                        </p>
+                                    </Box>
+
+                                </Grid>
+                                <Grid item xs={9}>
+
+                                    <Table aria-label="simple table">
+                                        <TableBody>
+
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>ReservationNo</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.ReservationNo}
+                                                </TableCell>
+                                            </TableRow>
+
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>GroupCode</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.GroupCode}
+                                                </TableCell>
+                                            </TableRow>
+
+
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>Folio No</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.FolioNo}
+                                                </TableCell>
+                                            </TableRow>
+
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>VoucherNo</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.VoucherNo}
+                                                </TableCell>
+                                            </TableRow>
+
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>Room No/Room Type</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.RoomFullNo}
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+
+
+                                </Grid>
+                            </Grid>
 
                             <RemarkList
                                 TransactionID={transactionInfo.TransactionID}
                             />
 
                         </Grid>
-                        <Grid item xs={2}>
-                            <ReservationNav
-                                reservation={reservation}
-                                itemInfo={itemInfo}
-                                transactionInfo={transactionInfo}
-                                reloadDetailInfo={reloadDetailInfo}
-                            />
+                        <Grid item xs={6}>
+
+                            <Grid container spacing={2}>
+                                <Grid item xs={9}>
+
+                                    <Table aria-label="simple table">
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>Room Charge</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.FolioNo}
+                                                </TableCell>
+                                            </TableRow>
+
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>Extra Charge</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.VoucherNo}
+                                                </TableCell>
+                                            </TableRow>
+
+                                            <TableRow>
+                                                <TableCell sx={{textAlign: "right"}}>
+                                                    Mini bar
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.VoucherNo}
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell sx={{textAlign: "right"}}>
+                                                    Restaurant
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.VoucherNo}
+                                                </TableCell>
+                                            </TableRow>
+
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>Total Amount</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.RoomFullNo}
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>Deposit</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.RoomFullNo}
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>
+                                                    <b>Balance</b>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {transactionInfo.RoomFullNo}
+                                                </TableCell>
+                                            </TableRow>
+
+                                        </TableBody>
+                                    </Table>
+
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <ReservationNav
+                                        reservation={reservation}
+                                        itemInfo={itemInfo}
+                                        transactionInfo={transactionInfo}
+                                        reloadDetailInfo={reloadDetailInfo}
+                                    />
+                                </Grid>
+                            </Grid>
+
                         </Grid>
                     </Grid>
+
+
                 </Box>
             )}
         </>
