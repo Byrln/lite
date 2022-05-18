@@ -1,19 +1,12 @@
-import {useContext, useState} from "react";
-import RoomTypeSelect from "../../select/room-type";
-import RoomSelect from "../../select/room";
+import {useState} from "react";
 import {TextField} from "@mui/material";
-import ReasonSelect from "../../select/reason";
-import SubmitButton from "../../common/submit-button";
-import {LoadingButton} from "@mui/lab";
-import {fToCustom} from "../../../lib/utils/format-time";
 import {listUrl, ReservationRemarkAPI} from "../../../lib/api/reservation-remark";
 import {mutate} from "swr";
-import {toast} from "react-toastify";
-import {ModalContext} from "../../../lib/context/modal";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useForm} from "react-hook-form";
-import TextareaAutosize from '@mui/material/TextareaAutosize';
+import SendIcon from '@mui/icons-material/Send';
+import IconButton from '@mui/material/IconButton';
 
 const RemarkNew = ({TransactionID, setEditMode}: any) => {
     const [loading, setLoading] = useState(false);
@@ -57,30 +50,28 @@ const RemarkNew = ({TransactionID, setEditMode}: any) => {
                 {...register('TransactionID')}
             />
 
-            <div className={"mb-1"}>
-
-                <TextField
-                    id="Remarks"
-                    label="Remarks"
-                    multiline
-                    minRows={4}
-                    maxRows={4}
-                    variant="standard"
-                    {...register('Remarks')}
-                    error={errors.Remarks?.message}
-                    helperText={errors.Remarks?.message}
-                />
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    marginBottom: 5,
+                    alignItems: "center",
+                }}
+            >
+                <div style={{flexGrow: "1"}}>
+                    <TextField
+                        id={"Remarks"}
+                        label="Remark text"
+                        size="small"
+                        {...register('Remarks')}
+                        error={errors.Remarks?.message}
+                        fullWidth
+                    />
+                </div>
+                <div>
+                    <IconButton type="submit" color="primary"><SendIcon/></IconButton>
+                </div>
             </div>
-
-            <div className={"mb-1"}>
-                <LoadingButton
-                    size="small"
-                    type="submit"
-                    variant="outlined"
-                    loading={loading}
-                >Submit</LoadingButton>
-            </div>
-
         </form>
     );
 

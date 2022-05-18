@@ -10,6 +10,7 @@ import AmendStayForm from "components/reservation/amend-stay";
 import VoidTransactionForm from "components/reservation/void-transaction";
 import CancelReservationForm from "components/reservation/cancel-reservation";
 import RoomMoveForm from "components/reservation/room-move";
+import RoomAssign from "components/reservation/room-assign";
 
 const buttonStyle = {
     borderBottom: "1px solid #efefef",
@@ -186,6 +187,16 @@ const ReservationNav = (
                     variant={"text"}
                     size="small"
                     sx={buttonStyle}
+                    onClick={(evt: any) => {
+                        handleModal(
+                            true,
+                            "Assign Room",
+                            <RoomAssign
+                                transactionInfo={transactionInfo}
+                                reservation={reservation}
+                            />
+                        );
+                    }}
                 >Assign Room</Button>
             )}
             {transactionInfo.Unassign && (
