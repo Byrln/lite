@@ -1,7 +1,7 @@
-import {ReservationApi} from "lib/api/reservation";
-import {useState, useEffect} from "react";
-import {Grid, Box, Paper, Typography} from "@mui/material";
-import {fToCustom, countNights} from "lib/utils/format-time";
+import { ReservationApi } from "lib/api/reservation";
+import { useState, useEffect } from "react";
+import { Grid, Box, Paper, Typography } from "@mui/material";
+import { fToCustom, countNights } from "lib/utils/format-time";
 import ReservationNav from "./_reservation-nav";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,9 +9,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {FrontOfficeAPI} from "lib/api/front-office";
+import { FrontOfficeAPI } from "lib/api/front-office";
 import RemarkList from "./remark/list";
-
+import CircularProgress from "@mui/material/CircularProgress";
 
 const styleTime = {
     backgroundColor: "#00008B",
@@ -37,13 +37,15 @@ const styleNight = {
     },
 };
 
-const ItemDetail = ({itemInfo}: any) => {
+const ItemDetail = ({ itemInfo }: any) => {
     const [reservation, setReservation]: any = useState(null);
     const [transactionInfo, setTransactionInfo]: any = useState(null);
 
     const reloadDetailInfo = async () => {
         var res = await ReservationApi.get(itemInfo.detail.TransactionID);
-        var trs = await FrontOfficeAPI.transactionInfo(itemInfo.detail.TransactionID);
+        var trs = await FrontOfficeAPI.transactionInfo(
+            itemInfo.detail.TransactionID
+        );
         setReservation(res);
         setTransactionInfo(trs);
     };
@@ -54,9 +56,9 @@ const ItemDetail = ({itemInfo}: any) => {
 
     return (
         <>
-            {transactionInfo && (
+            {transactionInfo ? (
                 <Box>
-                    <Grid container spacing={2} sx={{mb: 2}}>
+                    <Grid container spacing={2} sx={{ mb: 2 }}>
                         <Grid item xs={6}>
                             <h4>{reservation?.GuestName}</h4>
                         </Grid>
@@ -67,36 +69,32 @@ const ItemDetail = ({itemInfo}: any) => {
                                     justifyContent: "flex-end",
                                 }}
                             >
-
                                 <div>
                                     <Paper
                                         elevation={2}
                                         sx={{
                                             px: 1,
                                             backgroundColor:
-                                                "#" + transactionInfo.StatusColor,
+                                                "#" +
+                                                transactionInfo.StatusColor,
                                             color: "white",
-                                            mb: 1
+                                            mb: 1,
                                         }}
                                     >
                                         <Typography>
                                             {reservation &&
-                                            reservation.ReservationTypeName}
+                                                reservation.ReservationTypeName}
                                         </Typography>
                                     </Paper>
                                 </div>
-
                             </Box>
                         </Grid>
                     </Grid>
 
-
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
-
                             <Grid container spacing={0}>
                                 <Grid item xs={3}>
-
                                     <Box sx={styleTime}>
                                         <p>
                                             {fToCustom(
@@ -112,7 +110,12 @@ const ItemDetail = ({itemInfo}: any) => {
                                         </p>
                                     </Box>
                                     <Box sx={styleNight}>
-                                        <p>{countNights(transactionInfo.ArrivalDate, transactionInfo.DepartureDate)}</p>
+                                        <p>
+                                            {countNights(
+                                                transactionInfo.ArrivalDate,
+                                                transactionInfo.DepartureDate
+                                            )}
+                                        </p>
                                         <p>Night</p>
                                     </Box>
                                     <Box sx={styleTime}>
@@ -129,19 +132,18 @@ const ItemDetail = ({itemInfo}: any) => {
                                             )}
                                         </p>
                                     </Box>
-
                                 </Grid>
                                 <Grid item xs={9}>
-
                                     <Table aria-label="simple table">
                                         <TableBody>
-
                                             <TableRow>
                                                 <TableCell>
                                                     <b>ReservationNo</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.ReservationNo}
+                                                    {
+                                                        transactionInfo.ReservationNo
+                                                    }
                                                 </TableCell>
                                             </TableRow>
 
@@ -153,7 +155,6 @@ const ItemDetail = ({itemInfo}: any) => {
                                                     {transactionInfo.GroupCode}
                                                 </TableCell>
                                             </TableRow>
-
 
                                             <TableRow>
                                                 <TableCell>
@@ -183,21 +184,16 @@ const ItemDetail = ({itemInfo}: any) => {
                                             </TableRow>
                                         </TableBody>
                                     </Table>
-
-
                                 </Grid>
                             </Grid>
 
                             <RemarkList
                                 TransactionID={transactionInfo.TransactionID}
                             />
-
                         </Grid>
                         <Grid item xs={6}>
-
                             <Grid container spacing={2}>
                                 <Grid item xs={9}>
-
                                     <Table aria-label="simple table">
                                         <TableBody>
                                             <TableRow>
@@ -219,7 +215,9 @@ const ItemDetail = ({itemInfo}: any) => {
                                             </TableRow>
 
                                             <TableRow>
-                                                <TableCell sx={{textAlign: "right"}}>
+                                                <TableCell
+                                                    sx={{ textAlign: "right" }}
+                                                >
                                                     Mini bar
                                                 </TableCell>
                                                 <TableCell>
@@ -227,7 +225,9 @@ const ItemDetail = ({itemInfo}: any) => {
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow>
-                                                <TableCell sx={{textAlign: "right"}}>
+                                                <TableCell
+                                                    sx={{ textAlign: "right" }}
+                                                >
                                                     Restaurant
                                                 </TableCell>
                                                 <TableCell>
@@ -259,10 +259,8 @@ const ItemDetail = ({itemInfo}: any) => {
                                                     {transactionInfo.RoomFullNo}
                                                 </TableCell>
                                             </TableRow>
-
                                         </TableBody>
                                     </Table>
-
                                 </Grid>
                                 <Grid item xs={3}>
                                     <ReservationNav
@@ -273,12 +271,18 @@ const ItemDetail = ({itemInfo}: any) => {
                                     />
                                 </Grid>
                             </Grid>
-
                         </Grid>
                     </Grid>
-
-
                 </Box>
+            ) : (
+                <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <CircularProgress color="primary" />
+                </Grid>
             )}
         </>
     );

@@ -5,6 +5,20 @@ import { fToUniversal } from "lib/utils/format-time";
 const urlPrefix = "/api/FrontOffice/TransactionInfo";
 export const listUrl = `${urlPrefix}`;
 
+export const TransactionSWR = (transactionID: any) => {
+    const values = {
+        TransactionID: transactionID,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, values).then((res: any) => {
+            let transaction = JSON.parse(res.data.JsonData);
+            return transaction[0] ? transaction[0] : transaction;
+        });
+
+    return useSWR(listUrl, fetcher);
+};
+
 export const TransactionAPI = {
     get: async (id: any) => {
         const values = {

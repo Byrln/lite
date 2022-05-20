@@ -52,8 +52,6 @@ const NewEditForm = ({
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-
-
             {children}
 
             <SubmitButton loading={loading} />

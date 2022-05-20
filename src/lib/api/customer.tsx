@@ -25,5 +25,26 @@ export const CustomerSWR = () => {
 };
 
 export const CustomerAPI = {
-    get: (id: any) => axios.get(`${urlPrefix}/${id}`),
+    // get: (id: any) => axios.get(`${urlPrefix}/${id}`),
+
+    get: async (id: any) => {
+        const values = {
+            TransactionID: id,
+        };
+        const res = await axios.post(listUrl, values);
+
+        console.log(res);
+
+        var list = JSON.parse(res.data.JsonData);
+        var item;
+
+        console.log(list);
+
+        if (list.length === 1) {
+            item = list[0];
+        } else {
+            item = null;
+        }
+        return item;
+    },
 };
