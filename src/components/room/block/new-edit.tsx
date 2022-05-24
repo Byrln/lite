@@ -1,29 +1,29 @@
-import {useState, useEffect, useContext} from "react";
-import {useForm} from "react-hook-form";
-import {TextField} from "@mui/material";
+import { useState, useEffect, useContext } from "react";
+import { useForm } from "react-hook-form";
+import { TextField } from "@mui/material";
 import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
-import {RoomBlockAPI, listUrl} from "lib/api/room-block";
+import { RoomBlockAPI, listUrl } from "lib/api/room-block";
 import RoomTypeSelect from "components/select/room-type";
 import RoomSelect from "components/select/room";
 import ReasonSelect from "../../select/reason";
-import {dateToSimpleFormat, fToCustom} from "lib/utils/format-time";
-import {mutate} from "swr";
-import {toast} from "react-toastify";
-import {ModalContext} from "lib/context/modal";
+import { dateToSimpleFormat, fToCustom } from "lib/utils/format-time";
+import { mutate } from "swr";
+import { toast } from "react-toastify";
+import { ModalContext } from "lib/context/modal";
 import SubmitButton from "../../common/submit-button";
 
-
-const NewEdit = ({timelineCoord, defaultEntity}: any) => {
-
-    const {handleModal}: any = useContext(ModalContext);
+const NewEdit = ({ timelineCoord, defaultEntity }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
 
     const [baseStay, setBaseStay]: any = useState({
         roomType: {
-            RoomTypeID: defaultEntity ? defaultEntity.RoomTypeID : timelineCoord.RoomTypeID,
+            RoomTypeID: defaultEntity
+                ? defaultEntity.RoomTypeID
+                : timelineCoord.RoomTypeID,
         },
         room: {
             RoomID: defaultEntity ? defaultEntity.RoomID : timelineCoord.RoomID,
@@ -32,7 +32,9 @@ const NewEdit = ({timelineCoord, defaultEntity}: any) => {
         dateEnd: defaultEntity ? defaultEntity.EndDate : null,
     });
 
-    const [entity, setEntity]: any = useState(defaultEntity ? {...defaultEntity} : null);
+    const [entity, setEntity]: any = useState(
+        defaultEntity ? { ...defaultEntity } : null
+    );
 
     // useEffect(() => {
     //     if (rowId) {
@@ -46,28 +48,26 @@ const NewEdit = ({timelineCoord, defaultEntity}: any) => {
     //     }
     // }, [rowId]);
 
-
     const validationSchema = yup.object().shape({
         RoomTypeID: yup.number().required("Бөглөнө үү"),
         BeginDate: yup.date().required("Бөглөнө үү"),
         EndDate: yup.date().required("Бөглөнө үү"),
         ReasonID: yup.number().required("Бөглөнө үү"),
     });
-    const formOptions = {resolver: yupResolver(validationSchema)};
+    const formOptions = { resolver: yupResolver(validationSchema) };
 
     const {
         reset,
         register,
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
     } = useForm(formOptions);
-
 
     const onRoomTypeChange = (roomType: any) => {
         console.log(roomType);
         setBaseStay({
             ...baseStay,
-            roomType: roomType
+            roomType: roomType,
         });
     };
 
@@ -106,16 +106,13 @@ const NewEdit = ({timelineCoord, defaultEntity}: any) => {
                 ReasonID: defaultEntity.ReasonID,
             });
         }
-
     }, []);
-
 
     const onSubmit = async (values: any) => {
         setLoading(true);
 
         try {
-
-            let vals = {...values};
+            let vals = { ...values };
             vals.BeginDate = fToCustom(values.BeginDate, "yyyy MMM dd");
             vals.EndDate = fToCustom(values.EndDate, "yyyy MMM dd");
 
@@ -128,15 +125,7 @@ const NewEdit = ({timelineCoord, defaultEntity}: any) => {
 
             await mutate(listUrl);
 
-            toast("Амжилттай.", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            toast("Амжилттай.");
 
             setLoading(false);
             handleModal();
@@ -148,36 +137,35 @@ const NewEdit = ({timelineCoord, defaultEntity}: any) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            {defaultEntity ? (
+                <input
+                    type={"hidden"}
+                    {...register("RoomTypeID")}
+                    value={defaultEntity.RoomTypeID}
+                />
+            ) : (
+                <RoomTypeSelect
+                    register={register}
+                    errors={errors}
+                    onRoomTypeChange={onRoomTypeChange}
+                    baseStay={baseStay}
+                />
+            )}
 
-            {
-                defaultEntity ?
-                    <input
-                        type={"hidden"}
-                        {...register("RoomTypeID")}
-                        value={defaultEntity.RoomTypeID}
-                    /> :
-                    <RoomTypeSelect
-                        register={register}
-                        errors={errors}
-                        onRoomTypeChange={onRoomTypeChange}
-                        baseStay={baseStay}
-                    />
-            }
-
-            {
-                defaultEntity ?
-                    <input
-                        type={"hidden"}
-                        {...register("RoomID")}
-                        value={defaultEntity.RoomID}
-                    /> :
-                    <RoomSelect
-                        register={register}
-                        errors={errors}
-                        baseStay={baseStay}
-                        onRoomChange={onRoomChange}
-                    />
-            }
+            {defaultEntity ? (
+                <input
+                    type={"hidden"}
+                    {...register("RoomID")}
+                    value={defaultEntity.RoomID}
+                />
+            ) : (
+                <RoomSelect
+                    register={register}
+                    errors={errors}
+                    baseStay={baseStay}
+                    onRoomChange={onRoomChange}
+                />
+            )}
 
             <TextField
                 type="date"
@@ -188,7 +176,7 @@ const NewEdit = ({timelineCoord, defaultEntity}: any) => {
                 margin="dense"
                 error={errors.BeginDate?.message}
                 helperText={errors.BeginDate?.message}
-                InputLabelProps={{shrink: true}}
+                InputLabelProps={{ shrink: true }}
             />
 
             <TextField
@@ -200,7 +188,7 @@ const NewEdit = ({timelineCoord, defaultEntity}: any) => {
                 margin="dense"
                 error={errors.EndDate?.message}
                 helperText={errors.EndDate?.message}
-                InputLabelProps={{shrink: true}}
+                InputLabelProps={{ shrink: true }}
             />
 
             <ReasonSelect
@@ -210,8 +198,7 @@ const NewEdit = ({timelineCoord, defaultEntity}: any) => {
                 nameKey={"ReasonID"}
             />
 
-            <SubmitButton loading={loading}/>
-
+            <SubmitButton loading={loading} />
         </form>
     );
 };

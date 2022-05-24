@@ -1,19 +1,24 @@
-import {TextField} from "@mui/material";
+import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import {RoomTypeAPI} from "lib/api/room-type";
-import {useState, useEffect} from "react";
+import { RoomTypeAPI } from "lib/api/room-type";
+import { useState, useEffect } from "react";
 
-const RoomTypeSelect = ({register, errors, onRoomTypeChange, baseStay}: any) => {
+const RoomTypeSelect = ({
+    register,
+    errors,
+    onRoomTypeChange,
+    baseStay,
+}: any) => {
     const [data, setData]: any = useState([]);
 
     const fetchRoomTypes = async () => {
         var values = {
             RoomTypeID: 0,
             SearchStr: "",
-            EmptyRow: 0
+            EmptyRow: 0,
         };
         var d = await RoomTypeAPI.list(values);
         setData(d);
@@ -29,7 +34,10 @@ const RoomTypeSelect = ({register, errors, onRoomTypeChange, baseStay}: any) => 
                 }
             }
             if (roomType) {
-                if (typeof baseStay.roomType.RoomTypeName != "string" || roomType.RoomTypeID != baseStay.roomType.RoomTypeID) {
+                if (
+                    typeof baseStay.roomType.RoomTypeName != "string" ||
+                    roomType.RoomTypeID != baseStay.roomType.RoomTypeID
+                ) {
                     onRoomTypeChange(roomType);
                 }
             }

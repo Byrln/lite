@@ -1,11 +1,11 @@
-import {useContext} from "react";
+import { useContext } from "react";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
-import {ModalContext} from "lib/context/modal";
+import { ModalContext } from "lib/context/modal";
 
 const styles = {
     small: {
@@ -49,7 +49,7 @@ const styles = {
         maxHeight: "90%",
         width: "90%",
         overflow: "auto",
-    }
+    },
 };
 
 const CustomModal = () => {
@@ -59,7 +59,7 @@ const CustomModal = () => {
         modalContent,
         emptyModal,
         handleModal,
-        modalType
+        modalType,
     }: any = useContext(ModalContext);
 
     const getStyle = () => {
@@ -82,28 +82,25 @@ const CustomModal = () => {
             aria-describedby="modal-modal-description"
         >
             <Box sx={getStyle()}>
+                {!emptyModal && (
+                    <>
+                        <Typography
+                            id="modal-modal-title"
+                            variant="h5"
+                            gutterBottom
+                            className="mb-3 mt-2"
+                        >
+                            {modalTitle}
+                        </Typography>
+                    </>
+                )}
 
-                {
-                    !emptyModal &&
-                    <Typography
-                        id="modal-modal-title"
-                        variant="h4"
-                        gutterBottom
-                        className="mb-3 mt-2"
-                    >
-                        {modalTitle}
-                    </Typography>
-                }
-
-
-                <Typography id="modal-modal-description" sx={{mt: 2}}>
-
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     {modalContent}
 
-                    {
-                        !emptyModal &&
+                    {!emptyModal && (
                         <>
-                            <Divider className="mt-3 mb-3"/>
+                            <Divider className="mt-3 mb-3" />
                             <Box
                                 sx={{
                                     mx: "auto",
@@ -114,11 +111,12 @@ const CustomModal = () => {
                                     variant="outlined"
                                     key="back"
                                     onClick={() => handleModal()}
-                                >Хаах</Button>
+                                >
+                                    Хаах
+                                </Button>
                             </Box>
                         </>
-                    }
-
+                    )}
                 </Typography>
             </Box>
         </Modal>

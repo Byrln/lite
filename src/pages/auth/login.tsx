@@ -44,7 +44,7 @@ export default function Login() {
         <RootStyle title="Login | Horeca">
             <AuthLayout>
                 Don’t have an account? &nbsp;
-                <Link href="/register" passHref>
+                <Link href="#" passHref>
                     <MaterialLink underline="none" variant="subtitle2">
                         Get started
                     </MaterialLink>
@@ -85,7 +85,7 @@ export default function Login() {
                             sx={{ mt: 3 }}
                         >
                             Don’t have an account?&nbsp;
-                            <Link href="/register" passHref>
+                            <Link href="#" passHref>
                                 <MaterialLink variant="subtitle2">
                                     Get started
                                 </MaterialLink>

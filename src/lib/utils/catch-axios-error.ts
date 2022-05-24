@@ -41,15 +41,7 @@ const catchAxiosError = (error: any) => {
     console.log("Message", message);
 
     if (typeof window !== "undefined") {
-        toast(message, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
+        toast(message);
     }
 
     throw new Error(message);

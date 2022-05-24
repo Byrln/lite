@@ -8,7 +8,9 @@ const SubmitButton = ({ loading, title }: any) => (
         variant="contained"
         loading={loading}
         className="mt-3"
-    >{ title ? title : "Хадгалах"}</LoadingButton>
+    >
+        {title ? title : "Хадгалах"}
+    </LoadingButton>
 );
 
 export default SubmitButton;

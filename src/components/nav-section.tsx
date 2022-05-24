@@ -14,7 +14,7 @@ import {
     ListItemButton,
 } from "@mui/material";
 
-const ListItemStyle = styled((props) => (
+const ListItemStyle: any = styled((props) => (
     <ListItemButton disableGutters {...props} />
 ))(({ theme }) => ({
     ...theme.typography.body2,

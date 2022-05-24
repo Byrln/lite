@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { noCase } from "change-case";
 import { useRef, useState } from "react";
 import Link from "next/link";

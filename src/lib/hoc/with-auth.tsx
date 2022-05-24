@@ -7,14 +7,13 @@ import Grid from "@mui/material/Grid";
 import axios from "lib/utils/axios";
 
 const login = "/auth/login";
+const unprotectedRoutes = ["/auth/login"];
 
 const WithAuth = ({ children }: any) => {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const unprotectedRoutes = ["/auth/login"];
-
         getSession().then((session) => {
             if (!session) {
                 axios.defaults.headers.common["Authorization"] = "";

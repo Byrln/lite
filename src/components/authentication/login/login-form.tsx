@@ -1,4 +1,3 @@
-import * as Yup from "yup";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -43,9 +42,12 @@ export default function LoginForm() {
     }, [router]);
 
     const validationSchema = yup.object().shape({
-        username: Yup.string().required("Username is required"),
-        password: Yup.string().required("Password is required"),
-        hotel: Yup.number().required("Hotel is required"),
+        username: yup.string().required("Username is required"),
+        password: yup.string().required("Password is required"),
+        hotel: yup
+            .number()
+            .required("Hotel is required")
+            .typeError("Hotel must be a number"),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -111,7 +113,7 @@ export default function LoginForm() {
                     <TextField
                         fullWidth
                         autoComplete="username"
-                        label="Хэрэглэгчийн нэр"
+                        label="Username"
                         {...register("username")}
                         margin="dense"
                         error={errors.username?.message}
@@ -122,7 +124,7 @@ export default function LoginForm() {
                         fullWidth
                         autoComplete="current-password"
                         type={showPassword ? "text" : "password"}
-                        label="Нууц үг"
+                        label="Password"
                         {...register("password")}
                         margin="dense"
                         InputProps={{
@@ -149,7 +151,7 @@ export default function LoginForm() {
 
                     <TextField
                         fullWidth
-                        label="Буудал"
+                        label="Hotel"
                         {...register("hotel")}
                         margin="dense"
                         error={errors.hotel?.message}

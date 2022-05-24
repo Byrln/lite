@@ -98,7 +98,7 @@ export default function DashboardSidebar({
 
             <Box sx={{ flexGrow: 1 }} />
 
-            {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+            <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
                 <Stack
                     alignItems="center"
                     spacing={3}
@@ -137,7 +137,7 @@ export default function DashboardSidebar({
                         Upgrade to Pro
                     </Button>
                 </Stack>
-            </Box> */}
+            </Box>
         </Scrollbar>
     );
 

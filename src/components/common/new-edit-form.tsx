@@ -32,15 +32,7 @@ const NewEditForm = ({
 
             await mutate(listUrl);
 
-            toast("Амжилттай.", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            toast("Амжилттай.");
 
             setLoading(false);
             handleModal();

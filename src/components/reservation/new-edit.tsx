@@ -1,8 +1,17 @@
-import {useState, useEffect, useContext, createRef} from "react";
-import {useForm} from "react-hook-form";
-import {TextField, Grid, Box, Checkbox, FormControlLabel, Button, Alert, Typography} from "@mui/material";
+import { useState, useEffect, useContext, createRef } from "react";
+import { useForm } from "react-hook-form";
+import {
+    TextField,
+    Grid,
+    Box,
+    Checkbox,
+    FormControlLabel,
+    Button,
+    Alert,
+    Typography,
+} from "@mui/material";
 import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import RoomTypeSelect from "components/select/room-type";
 import RoomSelect from "components/select/room";
 import NumberSelect from "components/select/number-select";
@@ -21,18 +30,18 @@ import GuestSelect from "components/guest/guest-select";
 import {
     dateToSimpleFormat,
     dateToCustomFormat,
-    countNights
+    countNights,
 } from "lib/utils/format-time";
-import {listUrl} from "lib/api/front-office";
-import {LoadingButton} from "@mui/lab";
-import {mutate} from "swr";
-import {toast} from "react-toastify";
-import {ModalContext} from "../../lib/context/modal";
+import { listUrl } from "lib/api/front-office";
+import { LoadingButton } from "@mui/lab";
+import { mutate } from "swr";
+import { toast } from "react-toastify";
+import { ModalContext } from "../../lib/context/modal";
 import RoomRateTypeSelect from "../select/room-rate-type";
-import ReplayIcon from '@mui/icons-material/Replay';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ReplayIcon from "@mui/icons-material/Replay";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CurrencyAmount from "./currency-amount";
-import {ReservationApi} from "../../lib/api/reservation";
+import { ReservationApi } from "../../lib/api/reservation";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -56,63 +65,63 @@ const styleAccordionContent = {
     px: 2,
 };
 
-const NewEdit = (
-    {
-        timelineCoord,
-        workingDate,
-        addReservations,
-        keyIndex,
-        isMain,
-        defaultData,
-        onAccordionChange,
-        openIndex,
-        onSingleSubmit,
-        submitting,
-        onColorChange
-    }: any
-) => {
-    const [activeStep, setActiveStep]: any = useState(defaultData?.guest ? "main" : "guest");
+const NewEdit = ({
+    timelineCoord,
+    workingDate,
+    addReservations,
+    keyIndex,
+    isMain,
+    defaultData,
+    onAccordionChange,
+    openIndex,
+    onSingleSubmit,
+    submitting,
+    onColorChange,
+}: any) => {
+    const [activeStep, setActiveStep]: any = useState(
+        defaultData?.guest ? "main" : "guest"
+    );
     const formRef = createRef<HTMLButtonElement>();
 
-    const baseStayDefault = isMain ?
-        {
-            TransactionID: 0,
-            guest: defaultData ? defaultData.guest : null,
-            roomType: {
-                RoomTypeID: timelineCoord.RoomTypeID,
-            },
-            room: {
-                RoomID: timelineCoord.RoomID,
-            },
-            rate: null,
-            dateStart: null,
-            dateEnd: null,
-            Nights: 1,
-            RateModeID: 1,
-            RoomChargeDurationID: 1,
-            TaxIncluded: true,
-            CurrencyAmount: null,
-            Adult: 0,
-            Child: 0,
-        } :
-        {
-            TransactionID: 0,
-            guest: defaultData ? defaultData.guest : null,
-            roomType: {
-                RoomTypeID: timelineCoord.RoomTypeID,
-            },
-            room: null,
-            rate: null,
-            dateStart: defaultData.dateStart,
-            dateEnd: defaultData.dateEnd,
-            Nights: defaultData.Nights,
-            RateModeID: 1,
-            RoomChargeDurationID: 1,
-            TaxIncluded: true,
-            CurrencyAmount: null,
-            Adult: 0,
-            Child: 0,
-        };
+    const baseStayDefault = isMain
+        ? {
+              TransactionID: 0,
+              guest: defaultData ? defaultData.guest : null,
+              roomType: {
+                  RoomTypeID: timelineCoord.RoomTypeID,
+              },
+              room: {
+                  RoomID: timelineCoord.RoomID,
+              },
+              rate: null,
+              dateStart: null,
+              dateEnd: null,
+              Nights: 1,
+              RateModeID: 1,
+              RoomChargeDurationID: 1,
+              TaxIncluded: true,
+              CurrencyAmount: null,
+              Adult: 0,
+              Child: 0,
+          }
+        : {
+              TransactionID: 0,
+              guest: defaultData ? defaultData.guest : null,
+              roomType: {
+                  RoomTypeID: timelineCoord.RoomTypeID,
+              },
+              room: null,
+              rate: null,
+              dateStart: defaultData.dateStart,
+              dateEnd: defaultData.dateEnd,
+              Nights: defaultData.Nights,
+              RateModeID: 1,
+              RoomChargeDurationID: 1,
+              TaxIncluded: true,
+              CurrencyAmount: null,
+              Adult: 0,
+              Child: 0,
+          };
 
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
 
@@ -139,33 +148,24 @@ const NewEdit = (
         RateModeID: yup.number().required("Сонгоно уу"),
         RoomChargeDurationID: yup.number().required("Сонгоно уу"),
     });
-    const formOptions = {resolver: yupResolver(validationSchema)};
+    const formOptions = { resolver: yupResolver(validationSchema) };
 
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
         reset,
     } = useForm(formOptions);
 
     const guestSelected = (guest: any) => {
-
         if (!guest) {
-            toast(<Alert severity="error">Зочин сонгоно уу!</Alert>, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            toast(<Alert severity="error">Зочин сонгоно уу!</Alert>);
             return;
         }
 
         setBaseStay({
             ...baseStay,
-            guest: guest
+            guest: guest,
         });
         reset({
             GuestID: guest.GuestID,
@@ -265,26 +265,25 @@ const NewEdit = (
                             width: "100%",
                         }}
                     >
-
-                        <Typography
-                            variant="subtitle1"
-                            component="div"
-                        >{`${keyIndex + 1}. ${baseStay.guest?.GuestFullName}`}</Typography>
+                        <Typography variant="subtitle1" component="div">{`${
+                            keyIndex + 1
+                        }. ${baseStay.guest?.GuestFullName}`}</Typography>
 
                         <Typography
                             variant="subtitle1"
                             component="div"
                         >{`${baseStay.roomType?.RoomTypeName}(${baseStay.room?.RoomNo})`}</Typography>
-
                     </Box>
                 </AccordionSummary>
                 <AccordionDetails sx={styleAccordionContent}>
-
-                    <Box sx={{display: activeStep === "guest" ? "inline" : "none"}}>
-                        <GuestSelect guestSelected={guestSelected}/>
+                    <Box
+                        sx={{
+                            display: activeStep === "guest" ? "inline" : "none",
+                        }}
+                    >
+                        <GuestSelect guestSelected={guestSelected} />
                     </Box>
                     <form onSubmit={handleSubmit(onSubmit)}>
-
                         <input
                             type="hidden"
                             {...register("GuestID")}
@@ -292,21 +291,23 @@ const NewEdit = (
                             value={baseStay.guest?.GuestID}
                         />
 
-                        <Box sx={{display: activeStep === "main" ? "inline" : "none"}}>
-
+                        <Box
+                            sx={{
+                                display:
+                                    activeStep === "main" ? "inline" : "none",
+                            }}
+                        >
                             <Grid container spacing={4}>
                                 <Grid item xs={6}>
-
                                     <Box
                                         sx={{
                                             display: "flex",
                                             flexDirection: "row",
                                             alignItems: "center",
                                             justifyContent: "space-between",
-                                            mb: 2
+                                            mb: 2,
                                         }}
                                     >
-
                                         <Typography
                                             variant="h6"
                                             component="div"
@@ -318,7 +319,7 @@ const NewEdit = (
                                                 setActiveStep("guest");
                                             }}
                                         >
-                                            <ReplayIcon/>
+                                            <ReplayIcon />
                                         </Button>
                                     </Box>
 
@@ -327,7 +328,9 @@ const NewEdit = (
                                             <RoomTypeSelect
                                                 register={register}
                                                 errors={errors}
-                                                onRoomTypeChange={onRoomTypeChange}
+                                                onRoomTypeChange={
+                                                    onRoomTypeChange
+                                                }
                                                 baseStay={baseStay}
                                             />
                                         </Grid>
@@ -346,12 +349,14 @@ const NewEdit = (
                                             <NumberSelect
                                                 numberMin={
                                                     baseStay.roomType?.BaseAdult
-                                                        ? baseStay.roomType?.BaseAdult
+                                                        ? baseStay.roomType
+                                                              ?.BaseAdult
                                                         : 0
                                                 }
                                                 numberMax={
                                                     baseStay.roomType?.MaxAdult
-                                                        ? baseStay.roomType?.MaxAdult
+                                                        ? baseStay.roomType
+                                                              ?.MaxAdult
                                                         : 0
                                                 }
                                                 nameKey={"Adult"}
@@ -364,12 +369,14 @@ const NewEdit = (
                                             <NumberSelect
                                                 numberMin={
                                                     baseStay.roomType?.BaseChild
-                                                        ? baseStay.roomType?.BaseChild
+                                                        ? baseStay.roomType
+                                                              ?.BaseChild
                                                         : 0
                                                 }
                                                 numberMax={
                                                     baseStay.roomType?.MaxChild
-                                                        ? baseStay.roomType?.MaxChild
+                                                        ? baseStay.roomType
+                                                              ?.MaxChild
                                                         : 0
                                                 }
                                                 nameKey={"Child"}
@@ -386,17 +393,23 @@ const NewEdit = (
                                                 {...register("Nights")}
                                                 margin="dense"
                                                 error={errors.Nights?.message}
-                                                helperText={errors.Nights?.message}
-                                                InputLabelProps={{shrink: true}}
+                                                helperText={
+                                                    errors.Nights?.message
+                                                }
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                                 value={baseStay.Nights}
                                                 onChange={(evt: any) => {
-                                                    reset({Nights: evt.target.value});
+                                                    reset({
+                                                        Nights: evt.target
+                                                            .value,
+                                                    });
                                                 }}
                                                 disabled
                                             />
                                         </Grid>
                                     </Grid>
-
 
                                     <Grid container spacing={2}>
                                         <Grid item xs={6}>
@@ -407,9 +420,15 @@ const NewEdit = (
                                                 label="Эхлэх огноо"
                                                 {...register("ArrivalDate")}
                                                 margin="dense"
-                                                error={errors.ArrivalDate?.message}
-                                                helperText={errors.ArrivalDate?.message}
-                                                InputLabelProps={{shrink: true}}
+                                                error={
+                                                    errors.ArrivalDate?.message
+                                                }
+                                                helperText={
+                                                    errors.ArrivalDate?.message
+                                                }
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                                 onChange={(evt: any) => {
                                                     onArrivalDateChange(evt);
                                                 }}
@@ -429,7 +448,7 @@ const NewEdit = (
                                                 inputProps={{
                                                     step: 600, // 5 min
                                                 }}
-                                                sx={{width: 150}}
+                                                sx={{ width: 150 }}
                                             />
                                         </Grid>
                                     </Grid>
@@ -443,11 +462,17 @@ const NewEdit = (
                                                 label="Гарах огноо"
                                                 {...register("DepartureDate")}
                                                 margin="dense"
-                                                error={errors.DepartureDate?.message}
-                                                helperText={
-                                                    errors.DepartureDate?.message
+                                                error={
+                                                    errors.DepartureDate
+                                                        ?.message
                                                 }
-                                                InputLabelProps={{shrink: true}}
+                                                helperText={
+                                                    errors.DepartureDate
+                                                        ?.message
+                                                }
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                                 onChange={(evt: any) => {
                                                     onDepartureDateChange(evt);
                                                 }}
@@ -466,9 +491,8 @@ const NewEdit = (
                                                 inputProps={{
                                                     step: 600, // 5 min
                                                 }}
-                                                sx={{width: 150}}
-                                                onChange={(evt: any) => {
-                                                }}
+                                                sx={{ width: 150 }}
+                                                onChange={(evt: any) => {}}
                                             />
                                         </Grid>
                                     </Grid>
@@ -476,11 +500,13 @@ const NewEdit = (
                                     <Grid container spacing={2}>
                                         <Grid item xs={6}>
                                             <FormControlLabel
-                                                sx={{my: 2}}
+                                                sx={{ my: 2 }}
                                                 control={
                                                     <Checkbox
                                                         id={"BreakfastIncluded"}
-                                                        {...register("BreakfastIncluded")}
+                                                        {...register(
+                                                            "BreakfastIncluded"
+                                                        )}
                                                     />
                                                 }
                                                 label="BreakFast Included"
@@ -494,11 +520,8 @@ const NewEdit = (
                                             />
                                         </Grid>
                                     </Grid>
-
-
                                 </Grid>
                                 <Grid item xs={6}>
-
                                     <Box>
                                         <RateModeSelect
                                             register={register}
@@ -520,7 +543,7 @@ const NewEdit = (
                                         label="Tax Included"
                                     />
 
-                                    <Box sx={{mt: 1.5}}>
+                                    <Box sx={{ mt: 1.5 }}>
                                         <RoomRateTypeSelect
                                             register={register}
                                             errors={errors}
@@ -530,7 +553,7 @@ const NewEdit = (
                                         />
                                     </Box>
 
-                                    <Box sx={{mb: 2}}>
+                                    <Box sx={{ mb: 2 }}>
                                         <CurrencyAmount
                                             register={register}
                                             errors={errors}
@@ -548,32 +571,38 @@ const NewEdit = (
                                         reset={reset}
                                     />
 
-                                    <Box sx={{mt: 4}}>
-
+                                    <Box sx={{ mt: 4 }}>
                                         <Button
                                             variant={"text"}
                                             onClick={() => {
                                                 setActiveStep("deposit");
                                             }}
-                                        >Deposit</Button>
-
+                                        >
+                                            Deposit
+                                        </Button>
                                     </Box>
-
                                 </Grid>
                             </Grid>
 
-                            <Box sx={{display: "none"}}>
+                            <Box sx={{ display: "none" }}>
                                 <Button
                                     type="submit"
                                     variant="contained"
                                     ref={formRef}
-                                >Submit</Button>
+                                >
+                                    Submit
+                                </Button>
                             </Box>
-
                         </Box>
 
-                        <Box sx={{display: activeStep === "deposit" ? "inline" : "none"}}>
-
+                        <Box
+                            sx={{
+                                display:
+                                    activeStep === "deposit"
+                                        ? "inline"
+                                        : "none",
+                            }}
+                        >
                             Deposit
                             <Grid container spacing={2}>
                                 <Grid item xs={4}>
@@ -629,45 +658,37 @@ const NewEdit = (
                                 register={register}
                                 errors={errors}
                             />
-
                             <Box>
                                 <Button
                                     variant={"text"}
                                     onClick={() => {
                                         setActiveStep("main");
                                     }}
-                                ><ArrowBackIcon/> Back to main</Button>
+                                >
+                                    <ArrowBackIcon /> Back to main
+                                </Button>
                             </Box>
-
-
                         </Box>
-
                     </form>
-
 
                     <Box
                         sx={{
                             display: "flex",
                             justifyContent: "end",
-                            alignItems: "center"
+                            alignItems: "center",
                         }}
                     >
+                        {isMain && activeStep == "main" && (
+                            <ColorPicker onColorChange={onColorChange} />
+                        )}
 
-                        {
-                            (isMain && activeStep == "main") &&
-                            <ColorPicker onColorChange={onColorChange}/>
-                        }
-
-                        {
-                            (isMain && activeStep == "main") &&
+                        {isMain && activeStep == "main" && (
                             <GroupAdd
                                 baseStay={baseStay}
                                 addReservations={addReservations}
                             />
-                        }
+                        )}
                     </Box>
-
-
                 </AccordionDetails>
             </Accordion>
         </>

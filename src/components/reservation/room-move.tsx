@@ -1,25 +1,31 @@
-import {TextField, Grid, Checkbox, FormControlLabel, Box} from "@mui/material";
+import {
+    TextField,
+    Grid,
+    Checkbox,
+    FormControlLabel,
+    Box,
+} from "@mui/material";
 import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {useForm} from "react-hook-form";
-import {useState, useContext, useEffect} from "react";
-import {mutate} from "swr";
-import {toast} from "react-toastify";
-import {ReservationApi} from "lib/api/reservation";
-import {ModalContext} from "lib/context/modal";
-import {listUrl} from "lib/api/front-office";
-import {LoadingButton} from "@mui/lab";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { useState, useContext, useEffect } from "react";
+import { mutate } from "swr";
+import { toast } from "react-toastify";
+import { ReservationApi } from "lib/api/reservation";
+import { ModalContext } from "lib/context/modal";
+import { listUrl } from "lib/api/front-office";
+import { LoadingButton } from "@mui/lab";
 import ReasonSelect from "../select/reason";
 import RoomTypeSelect from "../select/room-type";
 import RoomSelect from "../select/room";
-import {dateToCustomFormat, fToCustom} from "lib/utils/format-time";
+import { dateToCustomFormat, fToCustom } from "lib/utils/format-time";
 import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
-import {RateAPI} from "../../lib/api/rate";
+import { RateAPI } from "../../lib/api/rate";
 
-const RoomMoveForm = ({transactionInfo, reservation}: any) => {
-    const {handleModal}: any = useContext(ModalContext);
+const RoomMoveForm = ({ transactionInfo, reservation }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [baseStay, setBaseStay]: any = useState({
         roomType: {
@@ -37,11 +43,13 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
 
     const [rateCondition, setRateCondition] = useState({
         overrideRate: false,
-        newRateMode: "normal"
+        newRateMode: "normal",
     });
 
     const isManualRate = () => {
-        return (rateCondition.overrideRate && rateCondition.newRateMode === "manual");
+        return (
+            rateCondition.overrideRate && rateCondition.newRateMode === "manual"
+        );
     };
 
     const onRoomTypeChange = (rt: any) => {
@@ -69,32 +77,23 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
         OverrideRate: yup.boolean().notRequired(),
         NewRate: yup.number().required(""),
     });
-    const formOptions = {resolver: yupResolver(validationSchema)};
+    const formOptions = { resolver: yupResolver(validationSchema) };
 
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
         reset,
     } = useForm(formOptions);
 
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-
             const res = await ReservationApi.roomMove(values);
 
             await mutate(listUrl);
 
-            toast("Амжилттай.", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            toast("Амжилттай.");
 
             setLoading(false);
             handleModal();
@@ -107,7 +106,7 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
     const onOverrideRateChange = (evt: any) => {
         setRateCondition({
             ...rateCondition,
-            overrideRate: evt.target.value
+            overrideRate: evt.target.value,
         });
     };
 
@@ -119,7 +118,6 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
     };
 
     const calculateAmount = async () => {
-
         var values = {
             CurrDate: dateToCustomFormat(baseStay.dateStart, "yyyy MMM dd"),
             RoomTypeID: baseStay.roomType.RoomTypeID,
@@ -131,11 +129,10 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
             TaxIncluded: true,
             RoomChargeDuration: 1,
             ContractRate: false,
-            EmptyRow: false
+            EmptyRow: false,
         };
 
         try {
-
             var rates = await RateAPI.listByDate(values);
 
             var amount;
@@ -153,18 +150,12 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
                 ...baseStay,
                 NewRate: amount,
             });
-
-        } catch (exp) {
-
-        }
-
-
+        } catch (exp) {}
     };
 
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
-
                 <input
                     type="text"
                     {...register("TransactionID")}
@@ -192,10 +183,9 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-
                         <div>
                             <FormControlLabel
-                                sx={{my: 2}}
+                                sx={{ my: 2 }}
                                 control={
                                     <Checkbox
                                         id={"OverrideRate"}
@@ -216,19 +206,24 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
                                     onChange={onNewRateModeChange}
                                 >
                                     <FormControlLabel
-                                        value={'normal'}
-                                        control={<Radio/>}
-                                        label={'Normal'}
-                                        checked={rateCondition.newRateMode === "normal"}
+                                        value={"normal"}
+                                        control={<Radio />}
+                                        label={"Normal"}
+                                        checked={
+                                            rateCondition.newRateMode ===
+                                            "normal"
+                                        }
                                     />
 
                                     <FormControlLabel
-                                        value={'manual'}
-                                        control={<Radio/>}
-                                        label={'manual'}
-                                        checked={rateCondition.newRateMode === "manual"}
+                                        value={"manual"}
+                                        control={<Radio />}
+                                        label={"manual"}
+                                        checked={
+                                            rateCondition.newRateMode ===
+                                            "manual"
+                                        }
                                     />
-
                                 </RadioGroup>
                             </FormControl>
                         </div>
@@ -243,10 +238,9 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
                             helperText={errors.NewRate?.message}
                             disabled={!isManualRate()}
                             InputLabelProps={{
-                                shrink: true
+                                shrink: true,
                             }}
                         />
-
                     </Grid>
                 </Grid>
 
@@ -256,7 +250,9 @@ const RoomMoveForm = ({transactionInfo, reservation}: any) => {
                     variant="contained"
                     loading={loading}
                     className="mt-3"
-                >Room move</LoadingButton>
+                >
+                    Room move
+                </LoadingButton>
             </form>
         </>
     );

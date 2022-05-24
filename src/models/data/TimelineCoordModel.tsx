@@ -1,4 +1,4 @@
-import {dateToCustomFormat, fToCustom} from "lib/utils/format-time";
+import { dateToCustomFormat, fToCustom } from "lib/utils/format-time";
 
 interface TimelineCoordModel {
     RoomTypeID: number;

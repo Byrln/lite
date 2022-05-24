@@ -12,7 +12,7 @@ const useModal = () => {
         title: string = "",
         content: any = "",
         empty: boolean = false,
-        modalKind: string = "medium",
+        modalKind: string = "medium"
     ) => {
         setVisible(visible);
         setModalTitle(title);
@@ -21,7 +21,14 @@ const useModal = () => {
         setModalType(modalKind);
     };
 
-    return { visible, modalTitle, modalContent, emptyModal, modalType, handleModal };
+    return {
+        visible,
+        modalTitle,
+        modalContent,
+        emptyModal,
+        modalType,
+        handleModal,
+    };
 };
 
 export default useModal;

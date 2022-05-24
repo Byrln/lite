@@ -9,6 +9,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { toast } from "react-toastify";
 
 const DeleteButton = ({ api, id, listUrl }: any) => {
@@ -30,15 +32,7 @@ const DeleteButton = ({ api, id, listUrl }: any) => {
             await api.delete(id);
             await mutate(listUrl);
 
-            toast("Амжилттай устгагдлаа.", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            toast("Амжилттай устгагдлаа.");
 
             setLoading(false);
             handleClose();
@@ -65,12 +59,15 @@ const DeleteButton = ({ api, id, listUrl }: any) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
-                    <HelpOutlineIcon />
-                </DialogTitle>
+                <DialogTitle id="alert-dialog-title" className=""></DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Та устгахдаа итгэлтэй байна уу?
+                        <Stack direction="row" alignItems="center" gap={1}>
+                            <HelpOutlineIcon />
+                            <Typography>
+                                Та устгахдаа итгэлтэй байна уу?
+                            </Typography>
+                        </Stack>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

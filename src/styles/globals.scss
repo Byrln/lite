@@ -3,6 +3,33 @@
 @import "simplebar/src/simplebar.css";
 @import "timeline/timeline.module";
 
+.MuiLoadingButton-loadingIndicator {
+    color: #804fe6;
+}
+
+.MuiCircularProgress-colorPrimary {
+    color: #804fe6 !important;
+}
+
+#nprogress {
+    position: relative;
+    z-index: 9999999;
+}
+
+#nprogress .bar {
+    background: #804fe6;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+    box-shadow: 0 0 10px #804fe6, 0 0 5px #804fe6;
+}
+
+#nprogress .spinner-icon {
+    border-top-color: #804fe6;
+    border-left-color: #804fe6;
+}
+
 @media print {
     .print-hide-buttons {
         display: none;

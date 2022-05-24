@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useRef, useState } from "react";
 import { alpha } from "@mui/material/styles";
 import {

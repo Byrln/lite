@@ -1,15 +1,14 @@
-import {TextField, Grid, Checkbox, FormControlLabel} from "@mui/material";
+import { TextField, Grid, Checkbox, FormControlLabel } from "@mui/material";
 import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {useForm} from "react-hook-form";
-import {useState, useContext, useEffect} from "react";
-import {mutate} from "swr";
-import {toast} from "react-toastify";
-import {ReservationApi} from "lib/api/reservation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { useState, useContext, useEffect } from "react";
+import { mutate } from "swr";
+import { toast } from "react-toastify";
+import { ReservationApi } from "lib/api/reservation";
 import SubmitButton from "components/common/submit-button";
-import {ModalContext} from "lib/context/modal";
+import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
-
 
 import {
     dateToSimpleFormat,
@@ -19,8 +18,8 @@ import {
     countNights,
 } from "lib/utils/format-time";
 
-const AmendStayForm = ({transactionInfo, reservation}: any) => {
-    const {handleModal}: any = useContext(ModalContext);
+const AmendStayForm = ({ transactionInfo, reservation }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [baseStay, setBaseStay]: any = useState({
         TransactionID: 0,
@@ -38,12 +37,12 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
         OverrideRate: yup.bool().notRequired(),
         NewNights: yup.number().required(),
     });
-    const formOptions = {resolver: yupResolver(validationSchema)};
+    const formOptions = { resolver: yupResolver(validationSchema) };
 
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
         reset,
     } = useForm(formOptions);
 
@@ -53,8 +52,8 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
             TransactionID: transactionInfo.TransactionID,
             ArrivalDate: dateToSimpleFormat(dateStart),
             DepartureDate: dateToSimpleFormat(dateEnd),
-            ArrivalTime: fToCustom(dateStart,"kk:mm"),
-            DepartureTime: fToCustom(dateEnd,"kk:mm"),
+            ArrivalTime: fToCustom(dateStart, "kk:mm"),
+            DepartureTime: fToCustom(dateEnd, "kk:mm"),
             NewNights: nights,
         });
         setBaseStay({
@@ -63,7 +62,7 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
             dateEnd: dateEnd,
             nights: nights,
         });
-    }
+    };
 
     useEffect(() => {
         reset({
@@ -90,7 +89,9 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
     };
 
     const onArrivalTimeChange = (evt: any) => {
-        var dateStart = new Date(dateToSimpleFormat(baseStay.dateStart) + " " + evt.target.value);
+        var dateStart = new Date(
+            dateToSimpleFormat(baseStay.dateStart) + " " + evt.target.value
+        );
         var dateEnd = new Date(baseStay.dateEnd.getTime());
         setRange(dateStart, dateEnd);
     };
@@ -111,14 +112,15 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
 
     const onDepartureTimeChange = (evt: any) => {
         var dateStart = new Date(baseStay.dateStart.getTime());
-        var dateEnd = new Date(dateToSimpleFormat(baseStay.dateEnd) + " " + evt.target.value);
+        var dateEnd = new Date(
+            dateToSimpleFormat(baseStay.dateEnd) + " " + evt.target.value
+        );
         setRange(dateStart, dateEnd);
     };
 
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-
             var vals: any = {
                 TransactionID: values.TransactionID,
                 ArrivalDate: null,
@@ -127,22 +129,22 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
                 NewNights: values.NewNights,
             };
 
-            vals.ArrivalDate = fToCustom(values.ArrivalDate.getTime(), "yyyy MMM dd") + " " + values.ArrivalTime + ":00";
-            vals.DepartureDate = fToCustom(values.DepartureDate.getTime(), "yyyy MMM dd") + " " + values.DepartureTime + ":00";
+            vals.ArrivalDate =
+                fToCustom(values.ArrivalDate.getTime(), "yyyy MMM dd") +
+                " " +
+                values.ArrivalTime +
+                ":00";
+            vals.DepartureDate =
+                fToCustom(values.DepartureDate.getTime(), "yyyy MMM dd") +
+                " " +
+                values.DepartureTime +
+                ":00";
 
             const res = await ReservationApi.amendStay(vals);
 
             await mutate(listUrl);
 
-            toast("Амжилттай.", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            toast("Амжилттай.");
 
             setLoading(false);
             handleModal();
@@ -155,9 +157,8 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
-
-                <input type="text" {...register("TransactionID")}/>
-                <input type="text" {...register("NewNights")}/>
+                <input type="text" {...register("TransactionID")} />
+                <input type="text" {...register("NewNights")} />
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -170,7 +171,7 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
                             margin="dense"
                             error={errors.ArrivalDate?.message}
                             helperText={errors.ArrivalDate?.message}
-                            InputLabelProps={{shrink: true}}
+                            InputLabelProps={{ shrink: true }}
                             // value={entity?.ArrivalDate && entity.ArrivalDate}
                             onChange={(evt: any) => {
                                 onArrivalDateChange(evt);
@@ -190,7 +191,7 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
                             inputProps={{
                                 step: 600, // 5 min
                             }}
-                            sx={{width: 150}}
+                            sx={{ width: 150 }}
                             onChange={onArrivalTimeChange}
                         />
                     </Grid>
@@ -207,7 +208,7 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
                             margin="dense"
                             error={errors.DepartureDate?.message}
                             helperText={errors.DepartureDate?.message}
-                            InputLabelProps={{shrink: true}}
+                            InputLabelProps={{ shrink: true }}
                             // value={entity?.DepartureDate && entity.DepartureDate}
                             onChange={(evt: any) => {
                                 onDepartureDateChange(evt);
@@ -227,9 +228,8 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
                             inputProps={{
                                 step: 600, // 5 min
                             }}
-                            sx={{width: 150}}
-                            onChange={(evt: any) => {
-                            }}
+                            sx={{ width: 150 }}
+                            onChange={(evt: any) => {}}
                         />
                     </Grid>
                 </Grid>
@@ -244,7 +244,7 @@ const AmendStayForm = ({transactionInfo, reservation}: any) => {
                     label="Override  Rate"
                 />
 
-                <SubmitButton loading={loading}/>
+                <SubmitButton loading={loading} />
             </form>
         </>
     );

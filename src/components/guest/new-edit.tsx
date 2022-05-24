@@ -1,30 +1,28 @@
-import {useState, useEffect, useContext} from "react";
-import {useForm} from "react-hook-form";
-import {TextField, Box} from "@mui/material";
+import { useState, useEffect, useContext } from "react";
+import { useForm } from "react-hook-form";
+import { TextField, Box } from "@mui/material";
 import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import MenuItem from "@mui/material/MenuItem";
 import NewEditForm from "components/common/new-edit-form";
-import {GuestAPI, listUrl} from "lib/api/guest";
+import { GuestAPI, listUrl } from "lib/api/guest";
 import GenderSelect from "components/select/gender";
 import CountrySelect from "components/select/country";
 import GuestTitleSelect from "components/select/guest-title";
 import Grid from "@mui/material/Grid";
-import {ApiResponseModel} from "models/response/ApiResponseModel";
+import { ApiResponseModel } from "models/response/ApiResponseModel";
 import Button from "@mui/material/Button";
-import {mutate} from "swr";
-import {toast} from "react-toastify";
-import {ModalContext} from "../../lib/context/modal";
-import {LoadingButton} from "@mui/lab";
-import SaveIcon from '@mui/icons-material/Save';
+import { mutate } from "swr";
+import { toast } from "react-toastify";
+import { ModalContext } from "../../lib/context/modal";
+import { LoadingButton } from "@mui/lab";
+import SaveIcon from "@mui/icons-material/Save";
 
-const NewEdit = ({idEditing, onFilterValueChange}: any) => {
-
+const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
     const [entity, setEntity]: any = useState(null);
     const [identityType, setIdentityType] = useState(1);
     const [loading, setLoading] = useState(false);
-    const {handleModal}: any = useContext(ModalContext);
-
+    const { handleModal }: any = useContext(ModalContext);
 
     useEffect(() => {
         if (idEditing) {
@@ -93,21 +91,19 @@ const NewEdit = ({idEditing, onFilterValueChange}: any) => {
         },
         [["RegistryNo", "DriverLicenseNo"]]
     );
-    const formOptions = {resolver: yupResolver(validationSchema)};
+    const formOptions = { resolver: yupResolver(validationSchema) };
 
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
         reset,
     } = useForm(formOptions);
-
 
     const onSubmit = async (values: any) => {
         setLoading(true);
 
         try {
-
             // if (entity && entity._id) {
             //     await api?.update(entity._id, values);
             // } else {
@@ -116,15 +112,7 @@ const NewEdit = ({idEditing, onFilterValueChange}: any) => {
 
             await mutate(listUrl);
 
-            toast("Амжилттай.", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            toast("Амжилттай.");
 
             setLoading(false);
             handleModal();
@@ -136,7 +124,6 @@ const NewEdit = ({idEditing, onFilterValueChange}: any) => {
 
     return (
         <>
-
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2}>
                     <Grid item xs={2}>
@@ -377,23 +364,27 @@ const NewEdit = ({idEditing, onFilterValueChange}: any) => {
                     }}
                 />
 
-
-                <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "end", mt: 2}}>
-
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "end",
+                        mt: 2,
+                    }}
+                >
                     {onFilterValueChange && (
                         <Button
                             variant="text"
                             onClick={(evt: any) => {
                                 setEntity({});
-                                reset(
-                                    {
-                                        Surname: null,
-                                        Name: null,
-                                        GenderID: null,
-                                        Mobile: null,
-                                        Address: null,
-                                    }
-                                );
+                                reset({
+                                    Surname: null,
+                                    Name: null,
+                                    GenderID: null,
+                                    Mobile: null,
+                                    Address: null,
+                                });
                             }}
                         >
                             RESET
@@ -404,10 +395,10 @@ const NewEdit = ({idEditing, onFilterValueChange}: any) => {
                         type="submit"
                         variant="outlined"
                         loading={loading}
-                    ><SaveIcon/></LoadingButton>
-
+                    >
+                        <SaveIcon />
+                    </LoadingButton>
                 </Box>
-
             </form>
         </>
     );
