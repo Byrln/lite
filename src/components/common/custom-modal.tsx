@@ -4,6 +4,9 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import Grid from "@mui/material/Grid";
 
 import { ModalContext } from "lib/context/modal";
 
@@ -83,7 +86,12 @@ const CustomModal = () => {
         >
             <Box sx={getStyle()}>
                 {!emptyModal && (
-                    <>
+                    <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                    >
                         <Typography
                             id="modal-modal-title"
                             variant="h5"
@@ -92,8 +100,16 @@ const CustomModal = () => {
                         >
                             {modalTitle}
                         </Typography>
-                    </>
+                        <IconButton
+                            aria-label="close"
+                            onClick={() => handleModal()}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                    </Grid>
                 )}
+
+                <Divider />
 
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     {modalContent}
@@ -108,6 +124,7 @@ const CustomModal = () => {
                                 }}
                             >
                                 <Button
+                                    size="medium"
                                     variant="outlined"
                                     key="back"
                                     onClick={() => handleModal()}

@@ -45,6 +45,7 @@ const DeleteButton = ({ api, id, listUrl }: any) => {
     return (
         <div>
             <LoadingButton
+                size="small"
                 loading={loading}
                 variant="outlined"
                 onClick={handleClickOpen}
@@ -59,7 +60,7 @@ const DeleteButton = ({ api, id, listUrl }: any) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title" className=""></DialogTitle>
+                {/*<DialogTitle id="alert-dialog-title" className=""></DialogTitle>*/}
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         <Stack direction="row" alignItems="center" gap={1}>

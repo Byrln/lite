@@ -100,48 +100,40 @@ function NavItem({ item, active }: any) {
                             const isActiveSub = active(path);
 
                             return (
-                                <>
-                                    <Link href={path} passHref>
-                                        <ListItemStyle
-                                            key={title}
-                                            sx={{
-                                                ...(isActiveSub &&
-                                                    activeSubStyle),
-                                            }}
-                                        >
-                                            <ListItemIconStyle>
-                                                <Box
-                                                    component="span"
-                                                    sx={{
-                                                        width: 4,
-                                                        height: 4,
-                                                        display: "flex",
-                                                        borderRadius: "50%",
-                                                        alignItems: "center",
-                                                        justifyContent:
-                                                            "center",
-                                                        bgcolor:
-                                                            "text.disabled",
-                                                        transition: (theme) =>
-                                                            theme.transitions.create(
-                                                                "transform"
-                                                            ),
-                                                        ...(isActiveSub && {
-                                                            transform:
-                                                                "scale(2)",
-                                                            bgcolor:
-                                                                "primary.main",
-                                                        }),
-                                                    }}
-                                                />
-                                            </ListItemIconStyle>
-                                            <ListItemText
-                                                disableTypography
-                                                primary={title}
+                                <Link key={title} href={path} passHref>
+                                    <ListItemStyle
+                                        sx={{
+                                            ...(isActiveSub && activeSubStyle),
+                                        }}
+                                    >
+                                        <ListItemIconStyle>
+                                            <Box
+                                                component="span"
+                                                sx={{
+                                                    width: 4,
+                                                    height: 4,
+                                                    display: "flex",
+                                                    borderRadius: "50%",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    bgcolor: "text.disabled",
+                                                    transition: (theme) =>
+                                                        theme.transitions.create(
+                                                            "transform"
+                                                        ),
+                                                    ...(isActiveSub && {
+                                                        transform: "scale(2)",
+                                                        bgcolor: "primary.main",
+                                                    }),
+                                                }}
                                             />
-                                        </ListItemStyle>
-                                    </Link>
-                                </>
+                                        </ListItemIconStyle>
+                                        <ListItemText
+                                            disableTypography
+                                            primary={title}
+                                        />
+                                    </ListItemStyle>
+                                </Link>
                             );
                         })}
                     </List>

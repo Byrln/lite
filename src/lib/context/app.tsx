@@ -9,12 +9,19 @@ const saveToLocal = (state: any) => {
 
 const initialState = {
     themeColor: "#ffffff",
+    editId: null,
 };
 
 const reducer = (state: any, action: any) => {
     switch (action.type) {
         case "themeColor": {
             const newState = { ...state, themeColor: action.brandColor };
+            saveToLocal(newState);
+
+            return newState;
+        }
+        case "editId": {
+            const newState = { ...state, editId: action.editId };
             saveToLocal(newState);
 
             return newState;

@@ -98,27 +98,24 @@ export default function AccountPopover() {
                 <Divider sx={{ my: 1 }} />
 
                 {MENU_OPTIONS.map((option) => (
-                    <>
-                        <Link href={option.linkTo} passHref>
-                            <MenuItem
-                                key={option.label}
-                                onClick={handleClose}
-                                sx={{ typography: "body2", py: 1, px: 2.5 }}
-                            >
-                                <Box
-                                    component={Icon}
-                                    icon={option.icon}
-                                    sx={{
-                                        mr: 2,
-                                        width: 24,
-                                        height: 24,
-                                    }}
-                                />
+                    <Link key={option.label} href={option.linkTo} passHref>
+                        <MenuItem
+                            onClick={handleClose}
+                            sx={{ typography: "body2", py: 1, px: 2.5 }}
+                        >
+                            <Box
+                                component={Icon}
+                                icon={option.icon}
+                                sx={{
+                                    mr: 2,
+                                    width: 24,
+                                    height: 24,
+                                }}
+                            />
 
-                                {option.label}
-                            </MenuItem>
-                        </Link>
-                    </>
+                            {option.label}
+                        </MenuItem>
+                    </Link>
                 ))}
 
                 <Box sx={{ p: 2, pt: 1.5 }}>
