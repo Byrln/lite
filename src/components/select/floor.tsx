@@ -1,5 +1,10 @@
-import { TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
+import {
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    NativeSelect,
+    OutlinedInput,
+} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -20,22 +25,35 @@ const FloorSelect = ({ register, errors }: any) => {
         );
 
     return (
-        <TextField
+        <FormControl
             fullWidth
-            id="FloorID"
-            label="Давхар"
-            {...register("FloorID")}
-            select
+            variant="outlined"
+            size="small"
             margin="dense"
+            {...register("FloorID")}
             error={errors.FloorID?.message}
-            helperText={errors.FloorID?.message}
         >
-            {data.map((element: any) => (
-                <MenuItem key={element.FloorID} value={element.FloorID}>
-                    {element.FloorNo}
-                </MenuItem>
-            ))}
-        </TextField>
+            <InputLabel variant="outlined" htmlFor="FloorID">
+                Давхар
+            </InputLabel>
+            <NativeSelect
+                input={<OutlinedInput label="Давхар" />}
+                inputProps={{
+                    name: "FloorID",
+                    id: "FloorID",
+                }}
+            >
+                <option></option>
+                {data.map((element: any) => (
+                    <option key={element.FloorID} value={element.FloorID}>
+                        {element.FloorNo}
+                    </option>
+                ))}
+            </NativeSelect>
+            {errors.FloorID?.message && (
+                <FormHelperText error>{errors.FloorID?.message}</FormHelperText>
+            )}
+        </FormControl>
     );
 };
 

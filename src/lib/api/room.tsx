@@ -1,4 +1,5 @@
 import useSWR from "swr";
+
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import axios from "lib/utils/axios";
 
@@ -38,34 +39,41 @@ export const RoomAPI = {
         const result: ApiResponseModel = await axios
             .post(listUrl, vals)
             .then(({ data, status }: any) => {
-                var res: ApiResponseModel;
-                if (status != 200) {
+                let res: ApiResponseModel;
+
+                if (status !== 200) {
                     res = {
                         status: status,
                         msg: "",
                         data: null,
                     };
+
                     return res;
                 }
+
                 res = {
                     status: 200,
                     msg: "",
                     data: JSON.parse(data.JsonData),
                 };
+
                 return res;
             });
+
         return result;
     },
+
     listAvailable: async (values: any) => {
         const { data, status } = await axios.post(
             `${urlPrefix}/Available`,
             values
         );
-        if (status != 200) {
+
+        if (status !== 200) {
             return [];
         }
-        var list = JSON.parse(data.JsonData);
-        return list;
+
+        return JSON.parse(data.JsonData);
     },
 
     get: async (id: any) => {
@@ -87,8 +95,11 @@ export const RoomAPI = {
         };
     },
 
-    update: async (id: any, values: any) => {
-        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
+    update: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
 
         return {
             data,

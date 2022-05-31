@@ -24,6 +24,7 @@ import { getCurrentDate } from "lib/utils/helpers";
 import EmptyAlert from "./empty-alert";
 import DeleteButton from "components/common/delete-button";
 import { ModalContext } from "lib/context/modal";
+import { useAppState } from "lib/context/app";
 
 const CustomTable = ({
     columns,
@@ -36,11 +37,12 @@ const CustomTable = ({
     hasPrint = true,
     hasExcel = true,
     id,
-    setIdEditing,
     listUrl,
     modalTitle,
     modalContent,
+    excelName,
 }: any) => {
+    const [state, dispatch]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
     const componentRef: any = useRef<HTMLDivElement>(null);
     const customizedColumns: any = [
@@ -60,7 +62,7 @@ const CustomTable = ({
 
     (hasUpdate || hasDelete) &&
         customizedColumns.push({
-            title: "",
+            title: "Action",
             key: "actionButtons",
             dataIndex: "actionButtons",
         });
@@ -76,7 +78,11 @@ const CustomTable = ({
             .addSheet("Жагсаалт")
             .addColumns(customizedColumns)
             .addDataSource(data)
-            .saveAs(`Excel - ${getCurrentDate()}.xlsx`);
+            .saveAs(
+                `${
+                    excelName ? excelName : "Жагсаалт"
+                } - ${getCurrentDate()}.xlsx`
+            );
     };
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -104,7 +110,10 @@ const CustomTable = ({
                                     `${modalTitle} нэмэх`,
                                     modalContent
                                 );
-                                setIdEditing(null);
+                                dispatch({
+                                    type: "editId",
+                                    editId: null,
+                                });
                             }}
                             startIcon={<Icon icon={plusFill} />}
                         >
@@ -183,91 +192,65 @@ const CustomTable = ({
                                                                     : ""
                                                             }
                                                         >
-                                                            {index == 0
-                                                                ? dataIndex + 1
-                                                                : column.key ===
-                                                                  "actionButtons"
-                                                                ? (hasUpdate &&
-                                                                      hasDelete && (
-                                                                          <Stack
-                                                                              direction="row"
-                                                                              spacing={
-                                                                                  1
-                                                                              }
-                                                                          >
-                                                                              <Button
-                                                                                  variant="outlined"
-                                                                                  color="secondary"
-                                                                                  startIcon={
-                                                                                      <EditIcon />
-                                                                                  }
-                                                                                  onClick={() => {
-                                                                                      handleModal(
-                                                                                          true,
-                                                                                          `${modalTitle} засах`,
-                                                                                          modalContent
-                                                                                      );
-                                                                                      setIdEditing(
-                                                                                          element[
-                                                                                              id
-                                                                                          ]
-                                                                                      );
-                                                                                  }}
-                                                                              >
-                                                                                  Засах
-                                                                              </Button>
+                                                            {index == 0 ? (
+                                                                dataIndex + 1
+                                                            ) : column.key ===
+                                                                  "actionButtons" &&
+                                                              (hasUpdate ||
+                                                                  hasDelete) ? (
+                                                                <Stack
+                                                                    direction="row"
+                                                                    spacing={1}
+                                                                >
+                                                                    {hasUpdate && (
+                                                                        <Button
+                                                                            size="small"
+                                                                            variant="outlined"
+                                                                            color="secondary"
+                                                                            startIcon={
+                                                                                <EditIcon />
+                                                                            }
+                                                                            onClick={() => {
+                                                                                handleModal(
+                                                                                    true,
+                                                                                    `${modalTitle} засах`,
+                                                                                    modalContent
+                                                                                );
+                                                                                dispatch(
+                                                                                    {
+                                                                                        type: "editId",
+                                                                                        editId: element[
+                                                                                            id
+                                                                                        ],
+                                                                                    }
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            Засах
+                                                                        </Button>
+                                                                    )}
 
-                                                                              <DeleteButton
-                                                                                  api={
-                                                                                      api
-                                                                                  }
-                                                                                  id={
-                                                                                      element[
-                                                                                          id
-                                                                                      ]
-                                                                                  }
-                                                                                  listUrl={
-                                                                                      listUrl
-                                                                                  }
-                                                                              />
-                                                                          </Stack>
-                                                                      )) ||
-                                                                  (hasUpdate && (
-                                                                      <Button
-                                                                          variant="outlined"
-                                                                          color="secondary"
-                                                                          startIcon={
-                                                                              <EditIcon />
-                                                                          }
-                                                                          onClick={() => {
-                                                                              handleModal(
-                                                                                  true,
-                                                                                  `${modalTitle} засах`,
-                                                                                  modalContent
-                                                                              );
-                                                                          }}
-                                                                      >
-                                                                          Засах
-                                                                      </Button>
-                                                                  )) ||
-                                                                  (hasDelete && (
-                                                                      <DeleteButton
-                                                                          api={
-                                                                              api
-                                                                          }
-                                                                          id={
-                                                                              element[
-                                                                                  id
-                                                                              ]
-                                                                          }
-                                                                          listUrl={
-                                                                              listUrl
-                                                                          }
-                                                                      />
-                                                                  ))
-                                                                : element[
-                                                                      column.key
-                                                                  ]}
+                                                                    {hasDelete && (
+                                                                        <DeleteButton
+                                                                            api={
+                                                                                api
+                                                                            }
+                                                                            id={
+                                                                                element[
+                                                                                    id
+                                                                                ]
+                                                                            }
+                                                                            listUrl={
+                                                                                listUrl
+                                                                            }
+                                                                        />
+                                                                    )}
+                                                                </Stack>
+                                                            ) : (
+                                                                element[
+                                                                    column.key
+                                                                ]
+                                                            )}
                                                         </TableCell>
                                                     )
                                                 )}

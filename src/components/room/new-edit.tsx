@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import * as yup from "yup";
@@ -8,46 +7,38 @@ import NewEditForm from "components/common/new-edit-form";
 import { RoomAPI, listUrl } from "lib/api/room";
 import RoomTypeSelect from "components/select/room-type";
 import FloorSelect from "components/select/floor";
+import { useAppState } from "lib/context/app";
 
-const NewEdit = ({ rowId }: any) => {
-    const [entity, setEntity]: any = useState(null);
+const validationSchema = yup.object().shape({
+    RoomNo: yup.string().required("Бөглөнө үү"),
+    RoomTypeID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    FloorID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    RoomPhone: yup.string().required("Бөглөнө үү"),
+    Description: yup.string().required("Бөглөнө үү"),
+    SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+});
 
-    useEffect(() => {
-        if (rowId) {
-            const fetchDatas = async () => {
-                const entity: any = await RoomAPI.get(rowId);
-
-                setEntity(entity);
-            };
-
-            fetchDatas();
-        }
-    }, [rowId]);
-
-    const validationSchema = yup.object().shape({
-        RoomNo: yup.string().required("Бөглөнө үү"),
-        RoomTypeID: yup.number().required("Бөглөнө үү"),
-        FloorID: yup.number().required("Бөглөнө үү"),
-        RoomPhone: yup.string().required("Бөглөнө үү"),
-        Description: yup.string().required("Бөглөнө үү"),
-        SortOrder: yup.number().required("Бөглөнө үү"),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
-
+const NewEdit = () => {
+    const [state]: any = useAppState();
     const {
         register,
+        reset,
         handleSubmit,
         formState: { errors },
-    } = useForm(formOptions);
+    } = useForm({
+        resolver: yupResolver(validationSchema),
+    });
 
     return (
         <NewEditForm
             api={RoomAPI}
-            entity={entity}
             listUrl={listUrl}
+            additionalValues={{ RoomID: state.editId }}
+            reset={reset}
             handleSubmit={handleSubmit}
         >
             <TextField
+                size="small"
                 fullWidth
                 id="RoomNo"
                 label="Өрөөний дугаар"
@@ -55,7 +46,6 @@ const NewEdit = ({ rowId }: any) => {
                 margin="dense"
                 error={errors.RoomNo?.message}
                 helperText={errors.RoomNo?.message}
-                value={entity && entity[0].RoomNo}
             />
 
             <RoomTypeSelect register={register} errors={errors} />
@@ -63,6 +53,7 @@ const NewEdit = ({ rowId }: any) => {
             <FloorSelect register={register} errors={errors} />
 
             <TextField
+                size="small"
                 fullWidth
                 id="RoomPhone"
                 label="Өрөөний утас"
@@ -73,6 +64,7 @@ const NewEdit = ({ rowId }: any) => {
             />
 
             <TextField
+                size="small"
                 fullWidth
                 id="Description"
                 label="Тайлбар"
@@ -83,6 +75,7 @@ const NewEdit = ({ rowId }: any) => {
             />
 
             <TextField
+                size="small"
                 type="number"
                 fullWidth
                 id="SortOrder"
