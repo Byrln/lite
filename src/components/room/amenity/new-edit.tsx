@@ -6,32 +6,36 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import NewEditForm from "components/common/new-edit-form";
 import { AmenityAPI, listUrl } from "lib/api/amenity";
 import AmenityTypeSelect from "components/select/amenity-type";
+import { useAppState } from "lib/context/app";
+
+const validationSchema = yup.object().shape({
+    AmenityTypeID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    AmenityShortName: yup.string().required("Бөглөнө үү"),
+    AmenityName: yup.string().required("Бөглөнө үү"),
+    SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+});
 
 const NewEdit = ({ entity }: any) => {
-    const validationSchema = yup.object().shape({
-        AmenityTypeID: yup.number().required("Бөглөнө үү"),
-        AmenityShortName: yup.string().required("Бөглөнө үү"),
-        AmenityName: yup.string().required("Бөглөнө үү"),
-        SortOrder: yup.number().required("Бөглөнө үү"),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
-
+    const [state]: any = useAppState();
     const {
         register,
+        reset,
         handleSubmit,
         formState: { errors },
-    } = useForm(formOptions);
+    } = useForm({ resolver: yupResolver(validationSchema) });
 
     return (
         <NewEditForm
             api={AmenityAPI}
-            entity={entity}
             listUrl={listUrl}
+            additionalValues={{ AmenityID: state.editId }}
+            reset={reset}
             handleSubmit={handleSubmit}
         >
             <AmenityTypeSelect register={register} errors={errors} />
 
             <TextField
+                size="small"
                 fullWidth
                 id="AmenityShortName"
                 label="Богино нэр"
@@ -42,6 +46,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 fullWidth
                 id="AmenityName"
                 label="Нэр"
@@ -52,6 +57,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 type="number"
                 fullWidth
                 id="SortOrder"

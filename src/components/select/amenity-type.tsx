@@ -1,5 +1,10 @@
-import { TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
+import {
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    NativeSelect,
+    OutlinedInput,
+} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -20,25 +25,40 @@ const AmenityTypeSelect = ({ register, errors }: any) => {
         );
 
     return (
-        <TextField
+        <FormControl
             fullWidth
-            id="AmenityTypeID"
-            label="Онцлогийн төрөл"
-            {...register("AmenityTypeID")}
-            select
+            variant="outlined"
+            size="small"
             margin="dense"
+            {...register("AmenityTypeID")}
             error={errors.AmenityTypeID?.message}
-            helperText={errors.AmenityTypeID?.message}
         >
-            {data.map((element: any) => (
-                <MenuItem
-                    key={element.AmenityTypeID}
-                    value={element.AmenityTypeID}
-                >
-                    {element.AmenityTypeName}
-                </MenuItem>
-            ))}
-        </TextField>
+            <InputLabel variant="outlined" htmlFor="AmenityTypeID">
+                Онцлогийн төрөл
+            </InputLabel>
+            <NativeSelect
+                input={<OutlinedInput label="Онцлогийн төрөл" />}
+                inputProps={{
+                    name: "AmenityTypeID",
+                    id: "AmenityTypeID",
+                }}
+            >
+                <option></option>
+                {data.map((element: any) => (
+                    <option
+                        key={element.AmenityTypeID}
+                        value={element.AmenityTypeID}
+                    >
+                        {element.AmenityTypeName}
+                    </option>
+                ))}
+            </NativeSelect>
+            {errors.AmenityTypeID?.message && (
+                <FormHelperText error>
+                    {errors.AmenityTypeID?.message}
+                </FormHelperText>
+            )}
+        </FormControl>
     );
 };
 

@@ -37,7 +37,15 @@ export const RoomTypeAmenitySWR = () => {
 };
 
 export const AmenityAPI = {
-    get: (id: any) => axios.get(`${urlPrefix}/${id}`),
+    get: async (id: any) => {
+        const values = {
+            AmenityID: id,
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return JSON.parse(res.data.JsonData);
+    },
 
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
@@ -48,8 +56,11 @@ export const AmenityAPI = {
         };
     },
 
-    update: async (id: any, values: any) => {
-        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
+    update: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
 
         return {
             data,
