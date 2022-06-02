@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { styled } from "@mui/material/styles";
 import {
     Card,
