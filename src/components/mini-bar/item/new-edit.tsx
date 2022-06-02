@@ -6,30 +6,38 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import NewEditForm from "components/common/new-edit-form";
 import { ChargeTypeAPI, listUrl } from "lib/api/charge-type";
 import ChargeTypeGroupSelect from "components/select/charge-type-group";
+import { useAppState } from "lib/context/app";
 
-const NewEdit = ({ entity }: any) => {
-    const validationSchema = yup.object().shape({
-        RoomChargeTypeGroupID: yup.number().required("Бөглөнө үү"),
-        RoomChargeTypeName: yup.string().required("Бөглөнө үү"),
-        RoomChargeTypeNameCustom: yup.string().required("Бөглөнө үү"),
-        RoomChargeTypeRate: yup.number().required("Бөглөнө үү"),
-        SortOrder: yup.number().required("Бөглөнө үү"),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
+const validationSchema = yup.object().shape({
+    RoomChargeTypeGroupID: yup.number().required("Бөглөнө үү"),
+    RoomChargeTypeName: yup.string().required("Бөглөнө үү"),
+    RoomChargeTypeNameCustom: yup.string().required("Бөглөнө үү"),
+    RoomChargeTypeRate: yup.number().required("Бөглөнө үү"),
+    SortOrder: yup.number().required("Бөглөнө үү"),
+});
 
+const NewEdit = () => {
+    const [state]: any = useAppState();
     const {
         register,
+        reset,
         handleSubmit,
         formState: { errors },
-    } = useForm(formOptions);
+    } = useForm({
+        resolver: yupResolver(validationSchema),
+    });
 
     return (
         <NewEditForm
             api={ChargeTypeAPI}
-            entity={entity}
             listUrl={listUrl}
+            additionalValues={{
+                RoomChargeTypeID: state.editId,
+                IsInclusion: false,
+                IsEditable: true,
+            }}
+            reset={reset}
             handleSubmit={handleSubmit}
-            additionalValues={{ IsInclusion: false, IsEditable: true }}
         >
             <ChargeTypeGroupSelect
                 register={register}
@@ -38,6 +46,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 fullWidth
                 id="RoomChargeTypeName"
                 label="Нэр"
@@ -48,6 +57,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 fullWidth
                 id="RoomChargeTypeNameCustom"
                 label="Кустом нэр"
@@ -58,6 +68,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 type="number"
                 fullWidth
                 id="RoomChargeTypeRate"
@@ -69,6 +80,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 type="number"
                 fullWidth
                 id="SortOrder"

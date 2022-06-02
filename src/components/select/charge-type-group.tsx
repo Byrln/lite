@@ -1,5 +1,10 @@
-import { TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
+import {
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    NativeSelect,
+    OutlinedInput,
+} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
@@ -20,25 +25,40 @@ const ChargeTypeGroupSelect = ({ register, errors, listType }: any) => {
         );
 
     return (
-        <TextField
+        <FormControl
             fullWidth
-            id="RoomChargeTypeGroupID"
-            label="Нэмэлт тооцооны бүлгүүд"
-            {...register("RoomChargeTypeGroupID")}
-            select
+            variant="outlined"
+            size="small"
             margin="dense"
+            {...register("RoomChargeTypeGroupID")}
             error={errors.RoomChargeTypeGroupID?.message}
-            helperText={errors.RoomChargeTypeGroupID?.message}
         >
-            {data.map((element: any) => (
-                <MenuItem
-                    key={element.RoomChargeTypeGroupID}
-                    value={element.RoomChargeTypeGroupID}
-                >
-                    {element.RoomChargeTypeGroupName}
-                </MenuItem>
-            ))}
-        </TextField>
+            <InputLabel variant="outlined" htmlFor="RoomChargeTypeGroupID">
+                Нэмэлт тооцооны бүлгүүд
+            </InputLabel>
+            <NativeSelect
+                input={<OutlinedInput label="Нэмэлт тооцооны бүлгүүд" />}
+                inputProps={{
+                    name: "RoomChargeTypeGroupID",
+                    id: "RoomChargeTypeGroupID",
+                }}
+            >
+                <option></option>
+                {data.map((element: any) => (
+                    <option
+                        key={element.RoomChargeTypeGroupID}
+                        value={element.RoomChargeTypeGroupID}
+                    >
+                        {element.RoomChargeTypeGroupName}
+                    </option>
+                ))}
+            </NativeSelect>
+            {errors.RoomChargeTypeGroupID?.message && (
+                <FormHelperText error>
+                    {errors.RoomChargeTypeGroupID?.message}
+                </FormHelperText>
+            )}
+        </FormControl>
     );
 };
 
