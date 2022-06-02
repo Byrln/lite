@@ -6,23 +6,23 @@ import {
 } from "lib/api/charge-type-group";
 import NewEdit from "./new-edit";
 
-const MiniBarGroupList = () => {
-    const listType = "miniBar";
+const listType = "miniBar";
+const columns = [
+    {
+        title: "Group Name",
+        key: "RoomChargeTypeGroupName",
+        dataIndex: "RoomChargeTypeGroupName",
+    },
+
+    {
+        title: "Sort Order",
+        key: "SortOrder",
+        dataIndex: "SortOrder",
+    },
+];
+
+const MiniBarGroupList = ({ title }: any) => {
     const { data, error } = ChargeTypeGroupSWR(listType);
-
-    const columns = [
-        {
-            title: "Group Name",
-            key: "RoomChargeTypeGroupName",
-            dataIndex: "RoomChargeTypeGroupName",
-        },
-
-        {
-            title: "Sort Order",
-            key: "SortOrder",
-            dataIndex: "SortOrder",
-        },
-    ];
 
     return (
         <CustomTable
@@ -37,6 +37,7 @@ const MiniBarGroupList = () => {
             listUrl={listUrl}
             modalTitle="Нэмэлт тооцооны бүлгүүд"
             modalContent={<NewEdit />}
+            excelName={title}
         />
     );
 };

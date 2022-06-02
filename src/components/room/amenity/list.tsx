@@ -26,7 +26,7 @@ const columns = [
     },
 ];
 
-const AmenityList = () => {
+const AmenityList = ({ title }: any) => {
     const { data, error } = AmenitySWR();
 
     return (
@@ -40,9 +40,9 @@ const AmenityList = () => {
             hasDelete={true}
             id="AmenityID"
             listUrl={listUrl}
-            modalTitle="Өрөөний онцлог"
+            modalTitle={title}
             modalContent={<NewEdit />}
-            excelName="Өрөөний онцлог"
+            excelName={title}
         />
     );
 };

@@ -5,34 +5,38 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
 import { ChargeTypeGroupAPI, listUrl } from "lib/api/charge-type-group";
+import { useAppState } from "lib/context/app";
 
-const NewEdit = ({ entity }: any) => {
-    const validationSchema = yup.object().shape({
-        RoomChargeTypeGroupName: yup.string().required("Бөглөнө үү"),
-        SortOrder: yup.number().required("Бөглөнө үү"),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
+const validationSchema = yup.object().shape({
+    RoomChargeTypeGroupName: yup.string().required("Бөглөнө үү"),
+    SortOrder: yup.number().required("Бөглөнө үү"),
+});
 
+const NewEdit = () => {
+    const [state]: any = useAppState();
     const {
         register,
+        reset,
         handleSubmit,
         formState: { errors },
-    } = useForm(formOptions);
+    } = useForm({ resolver: yupResolver(validationSchema) });
 
     return (
         <NewEditForm
             api={ChargeTypeGroupAPI}
-            entity={entity}
             listUrl={listUrl}
-            handleSubmit={handleSubmit}
             additionalValues={{
+                ChargeTypeGroupID: state.editId,
                 IsRoomCharge: false,
                 IsExtraCharge: false,
                 IsMiniBar: true,
                 IsDiscount: false,
             }}
+            reset={reset}
+            handleSubmit={handleSubmit}
         >
             <TextField
+                size="small"
                 fullWidth
                 id="RoomChargeTypeGroupName"
                 label="Бүлгийн нэр"
@@ -43,6 +47,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 type="number"
                 fullWidth
                 id="SortOrder"

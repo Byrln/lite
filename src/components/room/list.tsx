@@ -17,7 +17,7 @@ const columns = [
     { title: "FloorNo", key: "FloorNo", dataIndex: "FloorNo" },
 ];
 
-const RoomList = () => {
+const RoomList = ({ title }: any) => {
     const { data, error } = RoomSWR();
 
     return (
@@ -31,9 +31,9 @@ const RoomList = () => {
             hasDelete={true}
             id="RoomID"
             listUrl={listUrl}
-            modalTitle="Өрөө"
+            modalTitle={title}
             modalContent={<NewEdit />}
-            excelName="Өрөө"
+            excelName={title}
         />
     );
 };

@@ -15,7 +15,7 @@ const validationSchema = yup.object().shape({
     SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
-const NewEdit = ({ entity }: any) => {
+const NewEdit = () => {
     const [state]: any = useAppState();
     const {
         register,

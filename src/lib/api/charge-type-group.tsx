@@ -27,7 +27,19 @@ export const ChargeTypeGroupSWR = (listType: any) => {
 };
 
 export const ChargeTypeGroupAPI = {
-    get: (id: any) => axios.get(`${urlPrefix}/${id}`),
+    get: async (id: any) => {
+        const values = {
+            ChargeTypeGroupID: id,
+            IsRoomCharge: false,
+            IsExtraCharge: false,
+            IsMiniBar: true,
+            IsDiscount: false,
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return JSON.parse(res.data.JsonData);
+    },
 
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
@@ -38,8 +50,11 @@ export const ChargeTypeGroupAPI = {
         };
     },
 
-    update: async (id: any, values: any) => {
-        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
+    update: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
 
         return {
             data,
