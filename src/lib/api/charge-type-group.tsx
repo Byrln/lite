@@ -72,4 +72,21 @@ export const ChargeTypeGroupAPI = {
             status,
         };
     },
+
+    toggleChecked: async (id: any, checked: boolean, apiUrl: string) => {
+        const values = {
+            RoomChargeTypeGroupID: id,
+            Status: checked,
+        };
+
+        const { data, status } = await axios.post(
+            `${urlPrefix}/${apiUrl}`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
 };

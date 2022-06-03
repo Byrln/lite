@@ -1,44 +1,56 @@
+import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { ChargeTypeSWR, ChargeTypeAPI, listUrl } from "lib/api/charge-type";
 import NewEdit from "./new-edit";
 
-const ExtraChargeList = () => {
-    const listType = "extraCharge";
+const listType = "extraCharge";
+const columns = [
+    {
+        title: "Extra Charge Group",
+        key: "RoomChargeTypeGroupName",
+        dataIndex: "RoomChargeTypeGroupName",
+    },
+
+    {
+        title: "Extra Charge",
+        key: "RoomChargeTypeName",
+        dataIndex: "RoomChargeTypeName",
+    },
+    {
+        title: "Rate",
+        key: "RoomChargeTypeRate",
+        dataIndex: "RoomChargeTypeRate",
+    },
+    {
+        title: "Editable",
+        key: "EdiableRate",
+        dataIndex: "EdiableRate",
+    },
+    {
+        title: "Sort Order",
+        key: "SortOrder",
+        dataIndex: "SortOrder",
+    },
+    {
+        title: "Status",
+        key: "Status",
+        dataIndex: "Status",
+        render: function renderAction(id: any, checked: boolean) {
+            return (
+                <ToggleChecked
+                    id={id}
+                    checked={checked}
+                    api={ChargeTypeAPI}
+                    apiUrl="UpdateStatus"
+                    mutateUrl={`${listUrl}`}
+                />
+            );
+        },
+    },
+];
+
+const ExtraChargeList = ({ title }: any) => {
     const { data, error } = ChargeTypeSWR(listType);
-
-    const columns = [
-        {
-            title: "Extra Charge Group",
-            key: "RoomChargeTypeGroupName",
-            dataIndex: "RoomChargeTypeGroupName",
-        },
-
-        {
-            title: "Extra Charge",
-            key: "RoomChargeTypeName",
-            dataIndex: "RoomChargeTypeName",
-        },
-        {
-            title: "Rate",
-            key: "RoomChargeTypeRate",
-            dataIndex: "RoomChargeTypeRate",
-        },
-        {
-            title: "Editable",
-            key: "EdiableRate",
-            dataIndex: "EdiableRate",
-        },
-        {
-            title: "Sort Order",
-            key: "SortOrder",
-            dataIndex: "SortOrder",
-        },
-        {
-            title: "Status",
-            key: "Status",
-            dataIndex: "Status",
-        },
-    ];
 
     return (
         <CustomTable
@@ -51,8 +63,9 @@ const ExtraChargeList = () => {
             hasDelete={true}
             id="RoomChargeTypeID"
             listUrl={listUrl}
-            modalTitle="Нэмэлт тооцооны төрлүүд"
+            modalTitle={title}
             modalContent={<NewEdit />}
+            excelName={title}
         />
     );
 };

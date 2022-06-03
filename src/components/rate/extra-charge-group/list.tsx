@@ -1,3 +1,4 @@
+import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import {
     ChargeTypeGroupSWR,
@@ -6,28 +7,39 @@ import {
 } from "lib/api/charge-type-group";
 import NewEdit from "./new-edit";
 
-const ExtraChargeGroupList = () => {
-    const listType = "extraCharge";
+const listType = "extraCharge";
+const columns = [
+    {
+        title: "Group Name",
+        key: "RoomChargeTypeGroupName",
+        dataIndex: "RoomChargeTypeGroupName",
+    },
+
+    {
+        title: "Sort Order",
+        key: "SortOrder",
+        dataIndex: "SortOrder",
+    },
+    {
+        title: "Status",
+        key: "Status",
+        dataIndex: "Status",
+        render: function renderAction(id: any, checked: boolean) {
+            return (
+                <ToggleChecked
+                    id={id}
+                    checked={checked}
+                    api={ChargeTypeGroupAPI}
+                    apiUrl="UpdateStatus"
+                    mutateUrl={`${listUrl}`}
+                />
+            );
+        },
+    },
+];
+
+const ExtraChargeGroupList = ({ title }: any) => {
     const { data, error } = ChargeTypeGroupSWR(listType);
-
-    const columns = [
-        {
-            title: "Group Name",
-            key: "RoomChargeTypeGroupName",
-            dataIndex: "RoomChargeTypeGroupName",
-        },
-
-        {
-            title: "Sort Order",
-            key: "SortOrder",
-            dataIndex: "SortOrder",
-        },
-        {
-            title: "Status",
-            key: "Status",
-            dataIndex: "Status",
-        },
-    ];
 
     return (
         <CustomTable
@@ -40,8 +52,9 @@ const ExtraChargeGroupList = () => {
             hasDelete={true}
             id="RoomChargeTypeGroupID"
             listUrl={listUrl}
-            modalTitle="Нэмэлт тооцооны бүлгүүд"
+            modalTitle={title}
             modalContent={<NewEdit />}
+            excelName={title}
         />
     );
 };
