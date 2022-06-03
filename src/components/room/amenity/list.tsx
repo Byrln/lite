@@ -1,3 +1,4 @@
+import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { AmenitySWR, AmenityAPI, listUrl } from "lib/api/amenity";
 import NewEdit from "./new-edit";
@@ -23,6 +24,17 @@ const columns = [
         title: "Status",
         key: "Status",
         dataIndex: "Status",
+        render: function renderAction(id: any, checked: boolean) {
+            return (
+                <ToggleChecked
+                    id={id}
+                    checked={checked}
+                    api={AmenityAPI}
+                    apiUrl="UpdateStatus"
+                    mutateUrl={`${listUrl}`}
+                />
+            );
+        },
     },
 ];
 

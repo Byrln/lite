@@ -246,6 +246,17 @@ const CustomTable = ({
                                                                         />
                                                                     )}
                                                                 </Stack>
+                                                            ) : typeof element[
+                                                                  column.key
+                                                              ] ===
+                                                              "boolean" ? (
+                                                                column.render(
+                                                                    element[id],
+                                                                    element[
+                                                                        column
+                                                                            .key
+                                                                    ]
+                                                                )
                                                             ) : (
                                                                 element[
                                                                     column.key

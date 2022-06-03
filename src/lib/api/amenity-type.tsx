@@ -11,14 +11,21 @@ export const AmenityTypeSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let amenityTypes = JSON.parse(res.data.JsonData);
-            return amenityTypes;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
 
 export const AmenityTypeAPI = {
-    get: (id: any) => axios.get(`${urlPrefix}/${id}`),
+    get: async (id: any) => {
+        const values = {
+            AmenityTypeID: id,
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return JSON.parse(res.data.JsonData);
+    },
 };

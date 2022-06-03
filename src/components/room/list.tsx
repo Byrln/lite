@@ -1,3 +1,4 @@
+import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { RoomSWR, RoomAPI, listUrl } from "lib/api/room";
 import NewEdit from "./new-edit";
@@ -12,7 +13,22 @@ const columns = [
     { title: "RoomID", key: "RoomID", dataIndex: "RoomID" },
     { title: "RoomNo", key: "RoomNo", dataIndex: "RoomNo" },
     { title: "RoomPhone", key: "RoomPhone", dataIndex: "RoomPhone" },
-    { title: "Status", key: "Status", dataIndex: "Status" },
+    {
+        title: "Status",
+        key: "Status",
+        dataIndex: "Status",
+        render: function renderAction(id: any, checked: boolean) {
+            return (
+                <ToggleChecked
+                    id={id}
+                    checked={checked}
+                    api={RoomAPI}
+                    apiUrl="UpdateStatus"
+                    mutateUrl={`${listUrl}`}
+                />
+            );
+        },
+    },
     { title: "FloorID", key: "FloorID", dataIndex: "FloorID" },
     { title: "FloorNo", key: "FloorNo", dataIndex: "FloorNo" },
 ];

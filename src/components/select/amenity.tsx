@@ -1,44 +1,50 @@
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Skeleton from "@mui/material/Skeleton";
-import InputLabel from "@mui/material/InputLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import {
+    Box,
+    Skeleton,
+    Checkbox,
+    Alert,
+    FormControl,
+    FormLabel,
+    FormGroup,
+    FormControlLabel,
+    FormHelperText,
+} from "@mui/material";
 
-import {RoomTypeAmenitySWR} from "lib/api/amenity";
+import { RoomTypeAmenitySWR } from "lib/api/amenity";
 
-const AmenitySelect = ({register, errors}: any) => {
-    const {data, error} = RoomTypeAmenitySWR();
+const AmenitySelect = ({ register, errors }: any) => {
+    const { data, error } = RoomTypeAmenitySWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
     if (!error && !data)
         return (
-            <Box sx={{width: "100%"}}>
-                <Skeleton/>
-                <Skeleton animation="wave"/>
+            <Box sx={{ width: "100%" }}>
+                <Skeleton />
+                <Skeleton animation="wave" />
             </Box>
         );
 
     return (
-        <Paper sx={{padding: 2, marginTop: 3}}>
-            <Typography variant="body1" gutterBottom>
-                Amenities
-            </Typography>
+        <FormControl sx={{ mt: 2 }} component="fieldset" variant="standard">
+            <FormLabel component="legend">Amenities</FormLabel>
 
-            <Grid container spacing={2}>
-                {data.map((element: any, index: number) => (
-                    <Grid item xs={5} key={index}>
-                        <InputLabel htmlFor="my-input" className="mt-3">
-                            {element.AmenityName}
-                        </InputLabel>
-                        <Checkbox {...register("AmenityID")} />
-                    </Grid>
-                ))}
-            </Grid>
-        </Paper>
+            <FormGroup>
+                <Box display="flex" flexWrap="wrap">
+                    {data.map((element: any, index: number) => (
+                        <Box key={index}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox {...register("AmenityID")} />
+                                }
+                                label={element.AmenityName}
+                            />
+                        </Box>
+                    ))}
+                </Box>
+            </FormGroup>
+            <FormHelperText error>{errors.AmenityID?.message}</FormHelperText>
+        </FormControl>
     );
 };
 

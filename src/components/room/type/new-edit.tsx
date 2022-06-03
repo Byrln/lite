@@ -1,12 +1,13 @@
 import { useState } from "react";
 import {
-    InputLabel,
     Checkbox,
     Typography,
     Tabs,
     Tab,
     Box,
     Grid,
+    FormControlLabel,
+    FormGroup,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
@@ -18,6 +19,7 @@ import RoomAmenitySelect from "components/select/room-amenity";
 import AmenitySelect from "components/select/amenity";
 
 import { RoomTypeAPI, listUrl } from "lib/api/room-type";
+import { useAppState } from "lib/context/app";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -52,60 +54,65 @@ function a11yProps(index: number) {
     };
 }
 
-const NewEdit = ({ entity }: any) => {
+const validationSchema = yup.object().shape({
+    RoomTypeShortName: yup.string().required("Бөглөнө үү"),
+    RoomTypeName: yup.string().required("Бөглөнө үү"),
+    BaseAdult: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    BaseChild: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    MaxAdult: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    MaxChild: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    BookingDescription: yup.string(),
+});
+
+const NewEdit = () => {
     const [value, setValue] = useState(0);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
-
-    const validationSchema = yup.object().shape({
-        RoomTypeShortName: yup.string().required("Бөглөнө үү"),
-        RoomTypeName: yup.string().required("Бөглөнө үү"),
-        BaseAdult: yup.number().required("Бөглөнө үү"),
-        BaseChild: yup.number().required("Бөглөнө үү"),
-        MaxAdult: yup.number().required("Бөглөнө үү"),
-        MaxChild: yup.number().required("Бөглөнө үү"),
-        SortOrder: yup.number(),
-        BookingDescription: yup.string(),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
-
+    const [state]: any = useAppState();
     const {
         register,
+        reset,
         handleSubmit,
         formState: { errors },
-    } = useForm(formOptions);
+    } = useForm({
+        resolver: yupResolver(validationSchema),
+    });
 
     return (
         <NewEditForm
             api={RoomTypeAPI}
-            entity={entity}
             listUrl={listUrl}
+            additionalValues={{ RoomTypeID: state.editId }}
+            reset={reset}
             handleSubmit={handleSubmit}
         >
             <Box sx={{ width: "100%" }}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                    <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        aria-label="basic tabs example"
-                    >
-                        <Tab label="General" {...a11yProps(0)} />
-                        <Tab label="Booking Engine" {...a11yProps(1)} />
-                    </Tabs>
-                </Box>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="basic tabs"
+                    sx={{ pb: 2 }}
+                >
+                    <Tab label="General" {...a11yProps(0)} />
+                    <Tab label="Booking Engine" {...a11yProps(1)} />
+                </Tabs>
+
                 <TabPanel value={value} index={0}>
                     <TextField
+                        size="small"
                         fullWidth
                         id="RoomTypeShortName"
                         label="Товч нэр"
                         {...register("RoomTypeShortName")}
                         margin="dense"
                         error={errors.RoomTypeShortName?.message}
-                        helperText={errors.RoRoomTypeShortNameomNo?.message}
+                        helperText={errors.RoomTypeShortName?.message}
                     />
 
                     <TextField
+                        size="small"
                         fullWidth
                         id="RoomTypeName"
                         label="Нэр"
@@ -114,9 +121,11 @@ const NewEdit = ({ entity }: any) => {
                         error={errors.RoomTypeName?.message}
                         helperText={errors.RoomTypeName?.message}
                     />
-                    <Grid container spacing={2}>
+
+                    <Grid container spacing={1}>
                         <Grid item xs={6}>
                             <TextField
+                                size="small"
                                 type="number"
                                 fullWidth
                                 id="BaseAdult"
@@ -129,18 +138,7 @@ const NewEdit = ({ entity }: any) => {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                type="number"
-                                fullWidth
-                                id="BaseChild"
-                                label="Хүүхэд - үндсэн"
-                                {...register("BaseChild")}
-                                margin="dense"
-                                error={errors.BaseChild?.message}
-                                helperText={errors.BaseChild?.message}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
+                                size="small"
                                 type="number"
                                 fullWidth
                                 id="MaxAdult"
@@ -153,23 +151,60 @@ const NewEdit = ({ entity }: any) => {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
+                                size="small"
+                                type="number"
+                                fullWidth
+                                id="BaseChild"
+                                label="Хүүхэд - үндсэн"
+                                {...register("BaseChild")}
+                                error={errors.BaseChild?.message}
+                                helperText={errors.BaseChild?.message}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                size="small"
                                 type="number"
                                 fullWidth
                                 id="MaxChild"
                                 label="Хүүхдийн тоо - дээд хязгаар"
                                 {...register("MaxChild")}
-                                margin="dense"
                                 error={errors.MaxChild?.message}
                                 helperText={errors.MaxChild?.message}
                             />
                         </Grid>
                     </Grid>
 
+                    <TextField
+                        size="small"
+                        type="number"
+                        fullWidth
+                        id="SortOrder"
+                        label="Дараалал"
+                        {...register("SortOrder")}
+                        margin="dense"
+                        error={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message}
+                        sx={{ mt: 2 }}
+                    />
+
                     <RoomAmenitySelect register={register} errors={errors} />
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
                     <TextField
+                        size="small"
+                        fullWidth
+                        id="BookingDescription"
+                        label="Товч тайлбар (Онлайн захиалга)"
+                        {...register("BookingDescription")}
+                        margin="dense"
+                        error={errors.BookingDescription?.message}
+                        helperText={errors.BookingDescription?.message}
+                    />
+
+                    <TextField
+                        size="small"
                         type="number"
                         fullWidth
                         id="SortOrder"
@@ -180,20 +215,13 @@ const NewEdit = ({ entity }: any) => {
                         helperText={errors.SortOrder?.message}
                     />
 
-                    <TextField
-                        fullWidth
-                        id="BookingDescription"
-                        label="Товч тайлбар (Онлайн захиалга)"
-                        {...register("BookingDescription")}
-                        margin="dense"
-                        error={errors.BookingDescription?.message}
-                        helperText={errors.BookingDescription?.message}
-                    />
-
-                    <InputLabel htmlFor="my-input" className="mt-3">
-                        Онлайн захиалга дээр харуулах эсэх
-                    </InputLabel>
-                    <Checkbox {...register("Booking")} />
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            label="Онлайн захиалга дээр харуулах эсэх"
+                            {...register("Booking")}
+                        />
+                    </FormGroup>
 
                     <AmenitySelect register={register} errors={errors} />
                 </TabPanel>

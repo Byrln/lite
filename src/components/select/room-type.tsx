@@ -1,10 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect } from "react";
 import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
+
 import { RoomTypeAPI } from "lib/api/room-type";
-import { useState, useEffect } from "react";
 
 const RoomTypeSelect = ({
     register,
@@ -15,24 +14,27 @@ const RoomTypeSelect = ({
     const [data, setData]: any = useState([]);
 
     const fetchRoomTypes = async () => {
-        var values = {
+        const values = {
             RoomTypeID: 0,
             SearchStr: "",
             EmptyRow: 0,
         };
-        var d = await RoomTypeAPI.list(values);
-        setData(d);
+        const response = await RoomTypeAPI.list(values);
+
+        setData(response);
     };
 
     const eventRoomTypeChange = (val: any) => {
         if (onRoomTypeChange) {
-            var rt;
-            var roomType = null;
+            let rt;
+            let roomType = null;
+
             for (rt of data) {
                 if (rt.RoomTypeID === val) {
                     roomType = rt;
                 }
             }
+
             if (roomType) {
                 if (
                     typeof baseStay.roomType.RoomTypeName != "string" ||
@@ -54,18 +56,9 @@ const RoomTypeSelect = ({
         }
     }, [data]);
 
-    // if (error) return <Alert severity="error">{error.message}</Alert>;
-    //
-    // if (!error && !data)
-    //     return (
-    //         <Box sx={{width: "100%"}}>
-    //             <Skeleton/>
-    //             <Skeleton animation="wave"/>
-    //         </Box>
-    //     );
-
     return (
         <TextField
+            size="small"
             fullWidth
             id="RoomTypeID"
             label="Өрөөний төрөл"

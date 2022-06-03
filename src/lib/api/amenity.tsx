@@ -13,10 +13,9 @@ export const AmenitySWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let amenities = JSON.parse(res.data.JsonData);
-            return amenities;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
@@ -28,10 +27,9 @@ export const RoomTypeAmenitySWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let amenities = JSON.parse(res.data.JsonData);
-            return amenities;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(roomTypeAmenityUrl, fetcher);
 };
@@ -72,6 +70,23 @@ export const AmenityAPI = {
         const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
             AmenityID: id,
         });
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    toggleChecked: async (id: any, checked: boolean, apiUrl: string) => {
+        const values = {
+            AmenityID: id,
+            Status: checked,
+        };
+
+        const { data, status } = await axios.post(
+            `${urlPrefix}/${apiUrl}`,
+            values
+        );
 
         return {
             data,

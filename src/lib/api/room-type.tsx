@@ -1,4 +1,5 @@
 import useSWR from "swr";
+
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import axios from "lib/utils/axios";
 
@@ -13,26 +14,33 @@ export const RoomTypeSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let roomTypes = JSON.parse(res.data.JsonData);
-            return roomTypes;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
 
 export const RoomTypeAPI = {
+    get: async (id: any) => {
+        const values = {
+            RoomTypeID: id,
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return JSON.parse(res.data.JsonData);
+    },
+
     list: async (values: any) => {
-        const { data, status } = await axios.post(
-            listUrl,
-            values
-        );
+        const { data, status } = await axios.post(listUrl, values);
         if (status != 200) {
             return [];
         }
         var list = JSON.parse(data.JsonData);
         return list;
     },
+
     list2: async (values: any) => {
         let vals = values
             ? values
@@ -63,6 +71,7 @@ export const RoomTypeAPI = {
             });
         return result;
     },
+
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 
@@ -73,7 +82,10 @@ export const RoomTypeAPI = {
     },
 
     update: async (id: any, values: any) => {
-        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
 
         return {
             data,
@@ -85,6 +97,23 @@ export const RoomTypeAPI = {
         const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
             RoomTypeId: id,
         });
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    toggleChecked: async (id: any, checked: boolean, apiUrl: string) => {
+        const values = {
+            RoomTypeID: id,
+            Status: checked,
+        };
+
+        const { data, status } = await axios.post(
+            `${urlPrefix}/${apiUrl}`,
+            values
+        );
 
         return {
             data,
