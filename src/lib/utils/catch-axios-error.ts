@@ -24,7 +24,7 @@ const catchAxiosError = (error: any) => {
             response.config &&
             !response.__isRetryRequest
         ) {
-            signOut({ callbackUrl: "/" });
+            signOut({ callbackUrl: "/auth/login" });
         }
     } else if (error.request) {
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

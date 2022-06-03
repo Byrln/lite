@@ -11,7 +11,7 @@ export function withAuthServerSideProps(
 
         if (!session) {
             context.res.writeHead(302, {
-                Location: "/",
+                Location: "/auth/login",
             });
 
             context.res.end();
