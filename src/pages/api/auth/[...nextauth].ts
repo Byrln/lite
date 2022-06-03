@@ -70,6 +70,8 @@ export default NextAuth({
         maxAge: 24 * 60 * 60,
     },
     pages: {
-        signIn: "auth/login",
+        signIn: "/auth/login",
+        signOut: "/auth/login",
+        error: "/auth/login",
     },
 });
