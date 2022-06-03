@@ -250,6 +250,7 @@ const CustomTable = ({
                                                                   column.key
                                                               ] ===
                                                               "boolean" ? (
+                                                                column.render &&
                                                                 column.render(
                                                                     element[id],
                                                                     element[

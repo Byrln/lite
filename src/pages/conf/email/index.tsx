@@ -2,7 +2,7 @@ import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
 
 import Page from "components/page";
-import EmailList from "components/conf/email-conf/list";
+import EmailList from "components/conf/email/list";
 
 const title = "И-мэйл тохиргоо";
 

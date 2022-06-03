@@ -9,7 +9,7 @@ import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
     RoomChargeTypeGroupName: yup.string().required("Бөглөнө үү"),
-    SortOrder: yup.number().required("Бөглөнө үү"),
+    SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
 const NewEdit = () => {

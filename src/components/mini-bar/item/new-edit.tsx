@@ -9,11 +9,17 @@ import ChargeTypeGroupSelect from "components/select/charge-type-group";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
-    RoomChargeTypeGroupID: yup.number().required("Бөглөнө үү"),
+    RoomChargeTypeGroupID: yup
+        .number()
+        .required("Бөглөнө үү")
+        .typeError("Бөглөнө үү"),
     RoomChargeTypeName: yup.string().required("Бөглөнө үү"),
     RoomChargeTypeNameCustom: yup.string().required("Бөглөнө үү"),
-    RoomChargeTypeRate: yup.number().required("Бөглөнө үү"),
-    SortOrder: yup.number().required("Бөглөнө үү"),
+    RoomChargeTypeRate: yup
+        .number()
+        .required("Бөглөнө үү")
+        .typeError("Бөглөнө үү"),
+    SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
 const NewEdit = () => {

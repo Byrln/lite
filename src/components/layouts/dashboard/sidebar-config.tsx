@@ -16,91 +16,144 @@ const sidebarConfig = [
         icon: getIcon(pieChart2Fill),
     },
     {
-        title: "room",
+        title: "reports",
         icon: getIcon(peopleFill),
         children: [
             {
-                title: "room",
-                path: "/room",
-                icon: getIcon(peopleFill),
+                title: "accounting",
+                path: "/integration/accounting",
             },
+        ],
+    },
+    {
+        title: "integration",
+        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "accounting",
+                path: "/integration/accounting",
+            },
+        ],
+    },
+    {
+        title: "configuration",
+        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "hotel information",
+                path: "/conf/hotel",
+            },
+            {
+                title: "e-mail configuration",
+                path: "/conf/email",
+            },
+            {
+                title: "user role",
+                path: "/conf/role",
+            },
+            {
+                title: "user",
+                path: "/conf/user",
+            },
+            {
+                title: "reasons",
+                path: "/conf/reason",
+            },
+            {
+                title: "reservation source",
+                path: "/conf/reservation-source",
+            },
+            {
+                title: "post api config",
+                path: "/conf/post-api",
+            },
+            {
+                title: "vip status",
+                path: "/conf/vip status",
+            },
+            {
+                title: "customer group",
+                path: "/conf/customer-group",
+            },
+        ],
+    },
+    {
+        title: "rooms",
+        icon: getIcon(peopleFill),
+        children: [
             {
                 title: "room type",
                 path: "/room/type",
-                icon: getIcon(peopleFill),
-            },
-            {
-                title: "room status",
-                path: "/room/status",
-                icon: getIcon(peopleFill),
             },
             {
                 title: "room amenities",
                 path: "/room/amenities",
-                icon: getIcon(peopleFill),
+            },
+            {
+                title: "room status",
+                path: "/room/status",
+            },
+            {
+                title: "rooms",
+                path: "/room",
+            },
+            {
+                title: "door lock",
+                path: "/room/door-lock",
             },
         ],
     },
     {
-        title: "rate",
+        title: "rates",
         icon: getIcon(peopleFill),
         children: [
             {
-                title: "rate",
-                path: "/rate",
-                icon: getIcon(peopleFill),
-            },
-            {
                 title: "rate type",
                 path: "/rate/type",
-                icon: getIcon(peopleFill),
+            },
+            {
+                title: "season",
+                path: "/rate/season",
+            },
+            {
+                title: "rates",
+                path: "/rate",
+            },
+            {
+                title: "extra charge group",
+                path: "/rate/extra-charge-group",
+            },
+            {
+                title: "extra charges",
+                path: "/rate/extra-charge",
+            },
+            {
+                title: "tax",
+                path: "/rate/tax",
+            },
+            {
+                title: "payment method",
+                path: "/rate/payment-method",
+            },
+            {
+                title: "inclusion",
+                path: "/rate/inclusion",
             },
         ],
     },
     {
-        title: "tax",
-        path: "/rate/tax",
+        title: "mini bar",
         icon: getIcon(peopleFill),
-    },
-    {
-        title: "season",
-        path: "/rate/season",
-        icon: getIcon(peopleFill),
-    },
-    {
-        title: "payment method",
-        path: "/rate/payment-method",
-        icon: getIcon(peopleFill),
-    },
-    {
-        title: "inclusion",
-        path: "/rate/inclusion",
-        icon: getIcon(peopleFill),
-    },
-    {
-        title: "extra charge group",
-        path: "/rate/extra-charge-group",
-        icon: getIcon(peopleFill),
-    },
-    {
-        title: "extra charge",
-        path: "/rate/extra-charge",
-        icon: getIcon(peopleFill),
-    },
-    {
-        title: "mini bar item",
-        path: "/mini-bar/item",
-        icon: getIcon(peopleFill),
-    },
-    {
-        title: "mini bar group",
-        path: "/mini-bar/group",
-        icon: getIcon(peopleFill),
-    },
-    {
-        title: "e-mail config",
-        path: "/conf/email-conf",
-        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "groups",
+                path: "/mini-bar/group",
+            },
+            {
+                title: "items",
+                path: "/mini-bar/item",
+            },
+        ],
     },
 ];
 
