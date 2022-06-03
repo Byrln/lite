@@ -28,7 +28,7 @@ const NewEditForm = ({
 
                 try {
                     const arr: any = await api?.get(state.editId);
-                    console.log(arr[0]);
+
                     reset(arr[0]);
                 } finally {
                     setLoadingData(false);

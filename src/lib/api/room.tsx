@@ -16,10 +16,9 @@ export const RoomSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let rooms = JSON.parse(res.data.JsonData);
-            return rooms;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
