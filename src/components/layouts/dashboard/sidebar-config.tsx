@@ -11,10 +11,98 @@ const sidebarConfig = [
         icon: getIcon(pieChart2Fill),
     },
     {
-        title: "Calendar PMS",
-        path: "/timeline",
-        icon: getIcon(pieChart2Fill),
+        title: "front office",
+        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "stay view",
+                path: "/front-office/stay-view",
+            },
+            {
+                title: "new reservation",
+                path: "/front-office/new-reservation",
+            },
+            {
+                title: "night audit",
+                path: "/front-office/night-audit",
+            },
+            {
+                title: "guest database",
+                path: "/front-office/night-database",
+            },
+            {
+                title: "revervation list",
+                path: "/front-office/revervation-list",
+            },
+            {
+                title: "depature list",
+                path: "/front-office/depature-list",
+            },
+            {
+                title: "departured list",
+                path: "/front-office/departured-list",
+            },
+        ],
     },
+    {
+        title: "group operation",
+        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "group reservations list",
+                path: "/group-operation/group-reservations-list",
+            },
+            {
+                title: "in house groups",
+                path: "/group-operation/in-da-groups",
+            },
+            {
+                title: "departed groups",
+                path: "/group-operation/departed-groups",
+            },
+        ],
+    },
+    {
+        title: "payment",
+        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "company database",
+                path: "/payment/company-database",
+            },
+            {
+                title: "cashier",
+                path: "/payment/cashier",
+            },
+            {
+                title: "exchange rate",
+                path: "/payment/exchange-rate",
+            },
+        ],
+    },
+    {
+        title: "room service",
+        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "house keeping",
+                path: "/room-service/house-keeping",
+            },
+            {
+                title: "house status",
+                path: "/room-service/house-status",
+            },
+            {
+                title: "work order",
+                path: "/room-service/work-order",
+            },
+            {
+                title: "room block",
+                path: "/room-service/room-block",
+            },
+        ],
+    },
+
     {
         title: "reports",
         icon: getIcon(peopleFill),
