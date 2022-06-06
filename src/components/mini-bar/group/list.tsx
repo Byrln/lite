@@ -1,3 +1,4 @@
+import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import {
     ChargeTypeGroupSWR,
@@ -18,6 +19,22 @@ const columns = [
         title: "Sort Order",
         key: "SortOrder",
         dataIndex: "SortOrder",
+    },
+    {
+        title: "Status",
+        key: "Status",
+        dataIndex: "Status",
+        render: function renderAction(id: any, checked: boolean) {
+            return (
+                <ToggleChecked
+                    id={id}
+                    checked={checked}
+                    api={ChargeTypeGroupAPI}
+                    apiUrl="UpdateStatus"
+                    mutateUrl={`${listUrl}`}
+                />
+            );
+        },
     },
 ];
 

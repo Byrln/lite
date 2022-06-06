@@ -15,10 +15,9 @@ export const RateTypeSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let rateTypes = JSON.parse(res.data.JsonData);
-            return rateTypes;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
@@ -48,6 +47,23 @@ export const RateTypeAPI = {
         const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
             RateTypeID: id,
         });
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    toggleChecked: async (id: any, checked: boolean, apiUrl: string) => {
+        const values = {
+            RateTypeID: id,
+            Status: checked,
+        };
+
+        const { data, status } = await axios.post(
+            `${urlPrefix}/${apiUrl}`,
+            values
+        );
 
         return {
             data,
