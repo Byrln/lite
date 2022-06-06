@@ -103,6 +103,7 @@ const NewEdit = () => {
                         options={months}
                         optionValue="value"
                         optionLabel="name"
+                        dense={false}
                     />
                 </Grid>
 
@@ -115,6 +116,7 @@ const NewEdit = () => {
                         options={months}
                         optionValue="value"
                         optionLabel="name"
+                        dense={false}
                     />
                 </Grid>
             </Grid>

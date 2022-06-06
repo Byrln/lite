@@ -14,13 +14,14 @@ const CustomSelect = ({
     options,
     optionValue,
     optionLabel,
+    dense = true,
 }: any) => {
     return (
         <FormControl
             fullWidth
             variant="outlined"
             size="small"
-            margin="dense"
+            margin={`${dense && "dense"}`}
             {...register(field)}
             error={errors[field]?.message}
         >
