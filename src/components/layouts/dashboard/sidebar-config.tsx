@@ -28,7 +28,7 @@ const sidebarConfig = [
             },
             {
                 title: "guest database",
-                path: "/front-office/night-database",
+                path: "/front-office/guest-database",
             },
             {
                 title: "revervation list",
@@ -54,11 +54,11 @@ const sidebarConfig = [
             },
             {
                 title: "in house groups",
-                path: "/group-operation/in-da-groups",
+                path: "/group-operation/in-house-group",
             },
             {
                 title: "departed groups",
-                path: "/group-operation/departed-groups",
+                path: "/group-operation/departed-group",
             },
         ],
     },
@@ -137,7 +137,7 @@ const sidebarConfig = [
             },
             {
                 title: "user role",
-                path: "/conf/role",
+                path: "/conf/user-role",
             },
             {
                 title: "user",
@@ -157,7 +157,7 @@ const sidebarConfig = [
             },
             {
                 title: "vip status",
-                path: "/conf/vip status",
+                path: "/conf/vip-status",
             },
             {
                 title: "customer group",
