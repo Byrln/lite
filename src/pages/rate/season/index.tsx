@@ -19,7 +19,7 @@ const Index = () => (
                 </Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <SeasonList />
+                        <SeasonList title={title} />
                     </Grid>
                 </Grid>
             </Container>

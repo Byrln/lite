@@ -24,11 +24,11 @@ const columns = [
         title: "Status",
         key: "Status",
         dataIndex: "Status",
-        render: function renderAction(id: any, checked: boolean) {
+        render: function render(id: any, value: boolean) {
             return (
                 <ToggleChecked
                     id={id}
-                    checked={checked}
+                    checked={value}
                     api={ChargeTypeGroupAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}

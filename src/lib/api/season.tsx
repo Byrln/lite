@@ -14,16 +14,23 @@ export const SeasonSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let rateTypes = JSON.parse(res.data.JsonData);
-            return rateTypes;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
 
 export const SeasonAPI = {
-    get: (id: any) => axios.get(`${urlPrefix}/${id}`),
+    get: async (id: any) => {
+        const values = {
+            SeasonID: id,
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return JSON.parse(res.data.JsonData);
+    },
 
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
@@ -34,8 +41,11 @@ export const SeasonAPI = {
         };
     },
 
-    update: async (id: any, values: any) => {
-        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
+    update: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
 
         return {
             data,
@@ -47,6 +57,23 @@ export const SeasonAPI = {
         const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
             SeasonID: id,
         });
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    toggleChecked: async (id: any, checked: boolean, apiUrl: string) => {
+        const values = {
+            SeasonID: id,
+            Status: checked,
+        };
+
+        const { data, status } = await axios.post(
+            `${urlPrefix}/${apiUrl}`,
+            values
+        );
 
         return {
             data,

@@ -50,6 +50,15 @@ export function monthDays() {
         { key: 31, value: 31 },
     ];
 }
+
+export function formatPrice(number: any) {
+    const fnumber = parseFloat(number);
+    return new Intl.NumberFormat("en-US", {
+        // style: "currency",
+        // currency: "USD",
+    }).format(fnumber);
+}
+
 export function capitalize(string: any) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }

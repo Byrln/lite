@@ -10,6 +10,7 @@ specifiers:
   '@mui/lab': ^5.0.0-alpha.83
   '@mui/material': ^5.8.1
   '@mui/utils': ^5.8.0
+  '@mui/x-date-pickers': 5.0.0-alpha.5
   '@types/faker': ^6.6.9
   '@types/node': ^17.0.36
   '@types/react': ^18.0.9
@@ -51,6 +52,7 @@ dependencies:
   '@mui/lab': 5.0.0-alpha.83_oyvgm34urmmmqotnx7rf4wiklq
   '@mui/material': 5.8.1_4xriuibr7qayay6mzcpq5f43me
   '@mui/utils': 5.8.0_react@18.1.0
+  '@mui/x-date-pickers': 5.0.0-alpha.5_ve5rrtto3tnolz6bykmkmlojhy
   antd-table-saveas-excel: 2.1.5
   axios: 0.27.2
   change-case: 4.1.2
@@ -659,6 +661,53 @@ packages:
       react-dom: 18.1.0_react@18.1.0
       react-transition-group: 4.4.2_ef5jwxihqo6n7gxfmzogljlgcm
       rifm: 0.12.1_react@18.1.0
+    dev: false
+
+  /@mui/x-date-pickers/5.0.0-alpha.5_ve5rrtto3tnolz6bykmkmlojhy:
+    resolution: {integrity: sha512-13sX7TJEkUP8oX3956XsLE8rWnCsC5YgZex2faLbnbdo3axvmje/HH3BPd7KvymQxz4tQWW68+m0+nL2sLjSng==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@emotion/react': ^11.9.0
+      '@emotion/styled': ^11.8.1
+      '@mui/material': ^5.4.1
+      '@mui/system': ^5.4.1
+      date-fns: ^2.25.0
+      dayjs: ^1.10.7
+      luxon: ^1.28.0 || ^2.0.0
+      moment: ^2.29.1
+      react: ^17.0.2 || ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/react':
+        optional: true
+      '@emotion/styled':
+        optional: true
+      date-fns:
+        optional: true
+      dayjs:
+        optional: true
+      luxon:
+        optional: true
+      moment:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.18.0
+      '@date-io/date-fns': 2.14.0_date-fns@2.28.0
+      '@date-io/dayjs': 2.14.0
+      '@date-io/luxon': 2.14.0
+      '@date-io/moment': 2.14.0_moment@2.29.3
+      '@emotion/react': 11.9.0_7cpxmzzodpxnolj5zcc5cr63ji
+      '@emotion/styled': 11.8.1_ycz2ostpb5cpb2s3izz5qyhrbm
+      '@mui/material': 5.8.1_4xriuibr7qayay6mzcpq5f43me
+      '@mui/utils': 5.8.0_react@18.1.0
+      clsx: 1.1.1
+      date-fns: 2.28.0
+      moment: 2.29.3
+      prop-types: 15.8.1
+      react: 18.1.0
+      react-transition-group: 4.4.2_ef5jwxihqo6n7gxfmzogljlgcm
+      rifm: 0.12.1_react@18.1.0
+    transitivePeerDependencies:
+      - react-dom
     dev: false
 
   /@next/env/12.1.6:

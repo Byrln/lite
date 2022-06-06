@@ -1,43 +1,61 @@
-import { useForm } from "react-hook-form";
-import { Grid, MenuItem, TextField } from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import {
+    FormControl,
+    FormHelperText,
+    Grid,
+    InputLabel,
+    NativeSelect,
+    OutlinedInput,
+    TextField,
+} from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import moment from "moment";
 
 import NewEditForm from "components/common/new-edit-form";
 import { SeasonAPI, listUrl } from "lib/api/season";
 import { monthsByNumber, monthDays } from "lib/utils/helpers";
+import { useAppState } from "lib/context/app";
 
-const NewEdit = ({ entity }: any) => {
-    const months = monthsByNumber();
-    const days = monthDays();
+const months = monthsByNumber();
+const days = monthDays();
+const validationSchema = yup.object().shape({
+    SeasonCode: yup.string().required("Бөглөнө үү"),
+    SeasonName: yup.string().required("Бөглөнө үү"),
+    BeginDay: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    BeginMonth: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    EndDay: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    EndMonth: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    BeginDate: yup.date().required("Бөглөнө үү"),
+    EndDate: yup.date().required("Бөглөнө үү"),
+    Priority: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+});
 
-    const validationSchema = yup.object().shape({
-        SeasonCode: yup.string().required("Бөглөнө үү"),
-        SeasonName: yup.string().required("Бөглөнө үү"),
-        BeginDay: yup.number().required("Бөглөнө үү"),
-        BeginMonth: yup.number().required("Бөглөнө үү"),
-        EndDay: yup.number().required("Бөглөнө үү"),
-        EndMonth: yup.number().required("Бөглөнө үү"),
-        BeginDate: yup.date().required("Бөглөнө үү"),
-        EndDate: yup.date().required("Бөглөнө үү"),
-        Priority: yup.number().required("Бөглөнө үү"),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
-
+const NewEdit = () => {
+    const [state]: any = useAppState();
     const {
         register,
+        reset,
         handleSubmit,
+        control,
         formState: { errors },
-    } = useForm(formOptions);
+    } = useForm({
+        resolver: yupResolver(validationSchema),
+    });
 
     return (
         <NewEditForm
             api={SeasonAPI}
-            entity={entity}
             listUrl={listUrl}
+            additionalValues={{ SeasonID: state.editId }}
+            reset={reset}
             handleSubmit={handleSubmit}
         >
             <TextField
+                size="small"
                 fullWidth
                 id="SeasonCode"
                 label="Код"
@@ -48,6 +66,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 fullWidth
                 id="SeasonName"
                 label="Нэр"
@@ -56,107 +75,202 @@ const NewEdit = ({ entity }: any) => {
                 error={errors.SeasonName?.message}
                 helperText={errors.SeasonName?.message}
             />
-            <Grid container spacing={2}>
+
+            <Grid container spacing={1}>
                 <Grid item xs={6}>
-                    <TextField
+                    <FormControl
                         fullWidth
-                        id="BeginDay"
-                        label="Улирал эхлэх өдөр"
+                        variant="outlined"
+                        size="small"
+                        margin="dense"
                         {...register("BeginDay")}
-                        select
-                        margin="dense"
                         error={errors.BeginDay?.message}
-                        helperText={errors.BeginDay?.message}
                     >
-                        {days.map((element: any) => (
-                            <MenuItem key={element.key} value={element.value}>
-                                {element.value}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                        <InputLabel variant="outlined" htmlFor="BeginDay">
+                            Эхлэх өдөр
+                        </InputLabel>
+                        <NativeSelect
+                            input={<OutlinedInput label="Эхлэх өдөр" />}
+                            inputProps={{
+                                name: "BeginDay",
+                                id: "BeginDay",
+                            }}
+                        >
+                            <option></option>
+                            {days.map((element: any) => (
+                                <option key={element.key} value={element.value}>
+                                    {element.value}
+                                </option>
+                            ))}
+                        </NativeSelect>
+                        {errors.BeginDay?.message && (
+                            <FormHelperText error>
+                                {errors.BeginDay?.message}
+                            </FormHelperText>
+                        )}
+                    </FormControl>
                 </Grid>
 
                 <Grid item xs={6}>
-                    <TextField
+                    <FormControl
                         fullWidth
-                        id="BeginMonth"
-                        label="Улирал эхлэх сар"
-                        {...register("BeginMonth")}
-                        select
+                        variant="outlined"
+                        size="small"
                         margin="dense"
-                        error={errors.BeginMonth?.message}
-                        helperText={errors.BeginMonth?.message}
-                    >
-                        {months.map((element: any) => (
-                            <MenuItem key={element.value} value={element.value}>
-                                {element.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                </Grid>
-
-                <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        id="EndDay"
-                        label="Улирал дуусах өдөр"
                         {...register("EndDay")}
-                        select
-                        margin="dense"
                         error={errors.EndDay?.message}
-                        helperText={errors.EndDay?.message}
                     >
-                        {days.map((element: any) => (
-                            <MenuItem key={element.key} value={element.value}>
-                                {element.value}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                        <InputLabel variant="outlined" htmlFor="EndDay">
+                            Дуусах өдөр
+                        </InputLabel>
+                        <NativeSelect
+                            input={<OutlinedInput label="Дуусах өдөр" />}
+                            inputProps={{
+                                name: "EndDay",
+                                id: "EndDay",
+                            }}
+                        >
+                            <option></option>
+                            {days.map((element: any) => (
+                                <option key={element.key} value={element.value}>
+                                    {element.value}
+                                </option>
+                            ))}
+                        </NativeSelect>
+                        {errors.EndDay?.message && (
+                            <FormHelperText error>
+                                {errors.EndDay?.message}
+                            </FormHelperText>
+                        )}
+                    </FormControl>
                 </Grid>
 
                 <Grid item xs={6}>
-                    <TextField
+                    <FormControl
                         fullWidth
-                        id="EndMonth"
-                        label="Улирал дуусах сар"
-                        {...register("EndMonth")}
-                        select
-                        margin="dense"
-                        error={errors.EndMonth?.message}
-                        helperText={errors.EndMonth?.message}
+                        variant="outlined"
+                        size="small"
+                        {...register("BeginMonth")}
+                        error={errors.BeginMonth?.message}
                     >
-                        {months.map((element: any) => (
-                            <MenuItem key={element.value} value={element.value}>
-                                {element.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
+                        <InputLabel variant="outlined" htmlFor="BeginMonth">
+                            Эхлэх сар
+                        </InputLabel>
+                        <NativeSelect
+                            input={<OutlinedInput label="Эхлэх сар" />}
+                            inputProps={{
+                                name: "BeginMonth",
+                                id: "BeginMonth",
+                            }}
+                        >
+                            <option></option>
+                            {months.map((element: any) => (
+                                <option key={element.key} value={element.value}>
+                                    {element.name}
+                                </option>
+                            ))}
+                        </NativeSelect>
+                        {errors.BeginMonth?.message && (
+                            <FormHelperText error>
+                                {errors.BeginMonth?.message}
+                            </FormHelperText>
+                        )}
+                    </FormControl>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <FormControl
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        {...register("EndMonth")}
+                        error={errors.EndMonth?.message}
+                    >
+                        <InputLabel variant="outlined" htmlFor="EndMonth">
+                            Дуусах сар
+                        </InputLabel>
+                        <NativeSelect
+                            input={<OutlinedInput label="Дуусах сар" />}
+                            inputProps={{
+                                name: "EndMonth",
+                                id: "EndMonth",
+                            }}
+                        >
+                            <option></option>
+                            {months.map((element: any) => (
+                                <option key={element.key} value={element.value}>
+                                    {element.name}
+                                </option>
+                            ))}
+                        </NativeSelect>
+                        {errors.EndMonth?.message && (
+                            <FormHelperText error>
+                                {errors.EndMonth?.message}
+                            </FormHelperText>
+                        )}
+                    </FormControl>
                 </Grid>
             </Grid>
 
-            <TextField
-                type="date"
-                fullWidth
-                id="BeginDate"
-                label="Эхлэх огноо"
-                {...register("BeginDate")}
-                margin="dense"
-                error={errors.BeginDate?.message}
-                helperText={errors.BeginDate?.message}
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Controller
+                    name="BeginDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Эхлэх огноо"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value).format("YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    error={errors.BeginDate?.message}
+                                    helperText={errors.BeginDate?.message}
+                                    id="BeginDate"
+                                    {...register("BeginDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                    {...params}
+                                />
+                            )}
+                        />
+                    )}
+                />
+
+                <Controller
+                    name="EndDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Дуусах огноо"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value).format("YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    error={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message}
+                                    id="EndDate"
+                                    {...register("EndDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </LocalizationProvider>
 
             <TextField
-                type="date"
-                fullWidth
-                id="EndDate"
-                label="Дуусах огноо"
-                {...register("EndDate")}
-                margin="dense"
-                error={errors.EndDate?.message}
-                helperText={errors.EndDate?.message}
-            />
-
-            <TextField
+                size="small"
                 type="number"
                 fullWidth
                 id="Priority"

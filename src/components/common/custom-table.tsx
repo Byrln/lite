@@ -50,11 +50,7 @@ const CustomTable = ({
             title: "№",
             key: "id",
             dataIndex: "id",
-            render: function renderAction(
-                text: any,
-                record: any,
-                index: number
-            ) {
+            render: function render(index: number) {
                 return index + 1;
             },
         },
@@ -246,11 +242,7 @@ const CustomTable = ({
                                                                         />
                                                                     )}
                                                                 </Stack>
-                                                            ) : typeof element[
-                                                                  column.key
-                                                              ] ===
-                                                              "boolean" ? (
-                                                                column.render &&
+                                                            ) : column.render ? (
                                                                 column.render(
                                                                     element[id],
                                                                     element[
