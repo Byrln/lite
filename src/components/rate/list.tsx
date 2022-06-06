@@ -29,7 +29,7 @@ const columns = [
         title: "Rate",
         key: "BaseRate",
         dataIndex: "BaseRate",
-        render: function render(id: any, value: boolean) {
+        render: function render(id: any, value: any) {
             return formatPrice(value);
         },
     },
@@ -37,7 +37,7 @@ const columns = [
         title: "Rate for Extra Adult",
         key: "ExtraAdult",
         dataIndex: "ExtraAdult",
-        render: function render(id: any, value: boolean) {
+        render: function render(id: any, value: any) {
             return formatPrice(value);
         },
     },
@@ -45,7 +45,7 @@ const columns = [
         title: "Rate for Extra Child",
         key: "ExtraChild",
         dataIndex: "ExtraChild",
-        render: function render(id: any, value: boolean) {
+        render: function render(id: any, value: any) {
             return formatPrice(value);
         },
     },

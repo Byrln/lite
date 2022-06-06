@@ -1,13 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import {
-    FormControl,
-    FormHelperText,
-    Grid,
-    InputLabel,
-    NativeSelect,
-    OutlinedInput,
-    TextField,
-} from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -19,6 +11,7 @@ import NewEditForm from "components/common/new-edit-form";
 import { SeasonAPI, listUrl } from "lib/api/season";
 import { monthsByNumber, monthDays } from "lib/utils/helpers";
 import { useAppState } from "lib/context/app";
+import CustomSelect from "components/common/custom-select";
 
 const months = monthsByNumber();
 const days = monthDays();
@@ -29,8 +22,8 @@ const validationSchema = yup.object().shape({
     BeginMonth: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     EndDay: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     EndMonth: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    BeginDate: yup.date().required("Бөглөнө үү"),
-    EndDate: yup.date().required("Бөглөнө үү"),
+    BeginDate: yup.date().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    EndDate: yup.date().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     Priority: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
@@ -78,137 +71,51 @@ const NewEdit = () => {
 
             <Grid container spacing={1}>
                 <Grid item xs={6}>
-                    <FormControl
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        margin="dense"
-                        {...register("BeginDay")}
-                        error={errors.BeginDay?.message}
-                    >
-                        <InputLabel variant="outlined" htmlFor="BeginDay">
-                            Эхлэх өдөр
-                        </InputLabel>
-                        <NativeSelect
-                            input={<OutlinedInput label="Эхлэх өдөр" />}
-                            inputProps={{
-                                name: "BeginDay",
-                                id: "BeginDay",
-                            }}
-                        >
-                            <option></option>
-                            {days.map((element: any) => (
-                                <option key={element.key} value={element.value}>
-                                    {element.value}
-                                </option>
-                            ))}
-                        </NativeSelect>
-                        {errors.BeginDay?.message && (
-                            <FormHelperText error>
-                                {errors.BeginDay?.message}
-                            </FormHelperText>
-                        )}
-                    </FormControl>
+                    <CustomSelect
+                        register={register}
+                        errors={errors}
+                        field="BeginDay"
+                        label="Эхлэх өдөр"
+                        options={days}
+                        optionValue="value"
+                        optionLabel="value"
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <FormControl
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        margin="dense"
-                        {...register("EndDay")}
-                        error={errors.EndDay?.message}
-                    >
-                        <InputLabel variant="outlined" htmlFor="EndDay">
-                            Дуусах өдөр
-                        </InputLabel>
-                        <NativeSelect
-                            input={<OutlinedInput label="Дуусах өдөр" />}
-                            inputProps={{
-                                name: "EndDay",
-                                id: "EndDay",
-                            }}
-                        >
-                            <option></option>
-                            {days.map((element: any) => (
-                                <option key={element.key} value={element.value}>
-                                    {element.value}
-                                </option>
-                            ))}
-                        </NativeSelect>
-                        {errors.EndDay?.message && (
-                            <FormHelperText error>
-                                {errors.EndDay?.message}
-                            </FormHelperText>
-                        )}
-                    </FormControl>
+                    <CustomSelect
+                        register={register}
+                        errors={errors}
+                        field="EndDay"
+                        label="Дуусах өдөр"
+                        options={days}
+                        optionValue="value"
+                        optionLabel="value"
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <FormControl
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        {...register("BeginMonth")}
-                        error={errors.BeginMonth?.message}
-                    >
-                        <InputLabel variant="outlined" htmlFor="BeginMonth">
-                            Эхлэх сар
-                        </InputLabel>
-                        <NativeSelect
-                            input={<OutlinedInput label="Эхлэх сар" />}
-                            inputProps={{
-                                name: "BeginMonth",
-                                id: "BeginMonth",
-                            }}
-                        >
-                            <option></option>
-                            {months.map((element: any) => (
-                                <option key={element.key} value={element.value}>
-                                    {element.name}
-                                </option>
-                            ))}
-                        </NativeSelect>
-                        {errors.BeginMonth?.message && (
-                            <FormHelperText error>
-                                {errors.BeginMonth?.message}
-                            </FormHelperText>
-                        )}
-                    </FormControl>
+                    <CustomSelect
+                        register={register}
+                        errors={errors}
+                        field="BeginMonth"
+                        label="Эхлэх сар"
+                        options={months}
+                        optionValue="value"
+                        optionLabel="name"
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <FormControl
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        {...register("EndMonth")}
-                        error={errors.EndMonth?.message}
-                    >
-                        <InputLabel variant="outlined" htmlFor="EndMonth">
-                            Дуусах сар
-                        </InputLabel>
-                        <NativeSelect
-                            input={<OutlinedInput label="Дуусах сар" />}
-                            inputProps={{
-                                name: "EndMonth",
-                                id: "EndMonth",
-                            }}
-                        >
-                            <option></option>
-                            {months.map((element: any) => (
-                                <option key={element.key} value={element.value}>
-                                    {element.name}
-                                </option>
-                            ))}
-                        </NativeSelect>
-                        {errors.EndMonth?.message && (
-                            <FormHelperText error>
-                                {errors.EndMonth?.message}
-                            </FormHelperText>
-                        )}
-                    </FormControl>
+                    <CustomSelect
+                        register={register}
+                        errors={errors}
+                        field="EndMonth"
+                        label="Дуусах сар"
+                        options={months}
+                        optionValue="value"
+                        optionLabel="name"
+                    />
                 </Grid>
             </Grid>
 
@@ -227,14 +134,14 @@ const NewEdit = () => {
                             renderInput={(params) => (
                                 <TextField
                                     size="small"
-                                    error={errors.BeginDate?.message}
-                                    helperText={errors.BeginDate?.message}
                                     id="BeginDate"
                                     {...register("BeginDate")}
                                     margin="dense"
                                     fullWidth
                                     sx={{ mt: 2 }}
                                     {...params}
+                                    error={errors.BeginDate?.message}
+                                    helperText={errors.BeginDate?.message}
                                 />
                             )}
                         />
@@ -255,13 +162,13 @@ const NewEdit = () => {
                             renderInput={(params) => (
                                 <TextField
                                     size="small"
-                                    error={errors.EndDate?.message}
-                                    helperText={errors.EndDate?.message}
                                     id="EndDate"
                                     {...register("EndDate")}
                                     margin="dense"
                                     fullWidth
                                     {...params}
+                                    error={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message}
                                 />
                             )}
                         />

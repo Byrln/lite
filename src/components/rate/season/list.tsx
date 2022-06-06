@@ -47,7 +47,7 @@ const SeasonList = ({ title }: any) => {
             title: "Status",
             key: "Status",
             dataIndex: "Status",
-            render: function render(id: any, value: boolean) {
+            render: function render(id: any, value: any) {
                 return (
                     <ToggleChecked
                         id={id}

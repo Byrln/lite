@@ -98,9 +98,8 @@ const NewEdit = () => {
 
             <FormGroup>
                 <FormControlLabel
-                    control={<Checkbox {...register("IsEditable")} />}
+                    control={<Checkbox {...register("EditableRate")} />}
                     label="Үнийн дүнг засах боломжтой эсэх"
-                    {...register("Booking")}
                 />
             </FormGroup>
 

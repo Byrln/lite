@@ -1,6 +1,7 @@
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { ChargeTypeSWR, ChargeTypeAPI, listUrl } from "lib/api/charge-type";
+import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 
 const listType = "extraCharge";
@@ -20,11 +21,17 @@ const columns = [
         title: "Rate",
         key: "RoomChargeTypeRate",
         dataIndex: "RoomChargeTypeRate",
+        render: function render(id: any, value: any) {
+            return formatPrice(value);
+        },
     },
     {
         title: "Editable",
-        key: "EdiableRate",
-        dataIndex: "EdiableRate",
+        key: "EditableRate",
+        dataIndex: "EditableRate",
+        render: function render(id: any, value: any) {
+            return <ToggleChecked id={id} checked={value} disabled={true} />;
+        },
     },
     {
         title: "Sort Order",
@@ -35,7 +42,7 @@ const columns = [
         title: "Status",
         key: "Status",
         dataIndex: "Status",
-        render: function render(id: any, value: boolean) {
+        render: function render(id: any, value: any) {
             return (
                 <ToggleChecked
                     id={id}

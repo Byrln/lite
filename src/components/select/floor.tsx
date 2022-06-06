@@ -1,14 +1,8 @@
-import {
-    FormControl,
-    FormHelperText,
-    InputLabel,
-    NativeSelect,
-    OutlinedInput,
-} from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
+import CustomSelect from "components/common/custom-select";
 import { FloorSWR } from "lib/api/floor";
 
 const FloorSelect = ({ register, errors }: any) => {
@@ -25,35 +19,15 @@ const FloorSelect = ({ register, errors }: any) => {
         );
 
     return (
-        <FormControl
-            fullWidth
-            variant="outlined"
-            size="small"
-            margin="dense"
-            {...register("FloorID")}
-            error={errors.FloorID?.message}
-        >
-            <InputLabel variant="outlined" htmlFor="FloorID">
-                Давхар
-            </InputLabel>
-            <NativeSelect
-                input={<OutlinedInput label="Давхар" />}
-                inputProps={{
-                    name: "FloorID",
-                    id: "FloorID",
-                }}
-            >
-                <option></option>
-                {data.map((element: any) => (
-                    <option key={element.FloorID} value={element.FloorID}>
-                        {element.FloorNo}
-                    </option>
-                ))}
-            </NativeSelect>
-            {errors.FloorID?.message && (
-                <FormHelperText error>{errors.FloorID?.message}</FormHelperText>
-            )}
-        </FormControl>
+        <CustomSelect
+            register={register}
+            errors={errors}
+            field="FloorID"
+            label="Давхар"
+            options={data}
+            optionValue="FloorID"
+            optionLabel="FloorNo"
+        />
     );
 };
 
