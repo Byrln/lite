@@ -1,23 +1,39 @@
+import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { TaxSWR, TaxAPI, listUrl } from "lib/api/tax";
 import NewEdit from "./new-edit";
 
-const TaxList = () => {
-    const { data, error } = TaxSWR();
+const columns = [
+    {
+        title: "Tax Code",
+        key: "TaxCode",
+        dataIndex: "TaxCode",
+    },
+    {
+        title: "Tax Name",
+        key: "TaxName",
+        dataIndex: "TaxName",
+    },
+    {
+        title: "Status",
+        key: "Status",
+        dataIndex: "Status",
+        render: function render(id: any, value: any) {
+            return (
+                <ToggleChecked
+                    id={id}
+                    checked={value}
+                    api={TaxAPI}
+                    apiUrl="UpdateStatus"
+                    mutateUrl={`${listUrl}`}
+                />
+            );
+        },
+    },
+];
 
-    const columns = [
-        {
-            title: "Tax Code",
-            key: "TaxCode",
-            dataIndex: "TaxCode",
-        },
-        {
-            title: "Tax Name",
-            key: "TaxName",
-            dataIndex: "TaxName",
-        },
-        { title: "Status", key: "Status", dataIndex: "Status" },
-    ];
+const TaxList = ({ title }: any) => {
+    const { data, error } = TaxSWR();
 
     return (
         <CustomTable
@@ -30,8 +46,9 @@ const TaxList = () => {
             hasDelete={true}
             id="TaxID"
             listUrl={listUrl}
-            modalTitle="Татвар"
+            modalTitle={title}
             modalContent={<NewEdit />}
+            excelName={title}
         />
     );
 };
