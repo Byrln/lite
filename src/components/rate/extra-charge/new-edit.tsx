@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { FormControlLabel, FormGroup, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
@@ -30,6 +30,7 @@ const NewEdit = () => {
         register,
         reset,
         handleSubmit,
+        control,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
 
@@ -96,12 +97,24 @@ const NewEdit = () => {
                 helperText={errors.SortOrder?.message}
             />
 
-            <FormGroup>
-                <FormControlLabel
-                    control={<Checkbox {...register("EditableRate")} />}
-                    label="Үнийн дүнг засах боломжтой эсэх"
-                />
-            </FormGroup>
+            <FormControlLabel
+                control={
+                    <Controller
+                        name="EditableRate"
+                        control={control}
+                        render={(props: any) => (
+                            <Checkbox
+                                {...register("EditableRate")}
+                                checked={props.field.value}
+                                onChange={(e) =>
+                                    props.field.onChange(e.target.checked)
+                                }
+                            />
+                        )}
+                    />
+                }
+                label="Үнийн дүнг засах боломжтой эсэх"
+            />
 
             <TextField
                 size="small"
