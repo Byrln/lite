@@ -10,6 +10,7 @@ const ToggleChecked = ({
     api,
     apiUrl,
     mutateUrl,
+    toggleKey = "Status",
 }: any) => {
     const [isChecked, setIsChecked] = useState(checked);
     const [loading, setLoading] = useState(false);
@@ -22,7 +23,7 @@ const ToggleChecked = ({
         setLoading(true);
 
         try {
-            await api.toggleChecked(id, !checked, apiUrl);
+            await api.toggleChecked(id, !checked, apiUrl, toggleKey);
             mutateUrl && (await mutate(mutateUrl));
 
             setIsChecked(!isChecked);

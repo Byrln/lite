@@ -1,9 +1,11 @@
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { ChargeTypeSWR, ChargeTypeAPI, listUrl } from "lib/api/charge-type";
-// import NewEdit from "./new-edit";
 
-const listType = "inclusion";
+const IsExtraCharge = true;
+const IsMiniBar = null;
+const IsDiscount = null;
+const IsInclusion = null;
 const columns = [
     {
         title: "Group Name",
@@ -25,8 +27,9 @@ const columns = [
                     id={id}
                     checked={value}
                     api={ChargeTypeAPI}
-                    apiUrl="UpdateStatus"
+                    apiUrl="Update"
                     mutateUrl={`${listUrl}`}
+                    toggleKey="IsInclusion"
                 />
             );
         },
@@ -34,7 +37,12 @@ const columns = [
 ];
 
 const InclusionList = () => {
-    const { data, error } = ChargeTypeSWR(listType);
+    const { data, error } = ChargeTypeSWR(
+        IsExtraCharge,
+        IsMiniBar,
+        IsDiscount,
+        IsInclusion
+    );
 
     return (
         <CustomTable
@@ -42,12 +50,9 @@ const InclusionList = () => {
             data={data}
             error={error}
             api={ChargeTypeAPI}
-            hasNew={true}
-            hasUpdate={true}
             id="RoomChargeTypeID"
             listUrl={listUrl}
             modalTitle="Нэмэлт тооцооны төрлүүд"
-            // modalContent={<NewEdit />}
         />
     );
 };

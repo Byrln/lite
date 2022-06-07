@@ -47,7 +47,10 @@ const NewEdit = () => {
             <ChargeTypeGroupSelect
                 register={register}
                 errors={errors}
-                listType="extraCharge"
+                IsRoomCharge={null}
+                IsExtraCharge={true}
+                IsMiniBar={false}
+                IsDiscount={null}
             />
 
             <TextField
