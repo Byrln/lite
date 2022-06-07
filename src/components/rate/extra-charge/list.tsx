@@ -27,8 +27,8 @@ const columns = [
     },
     {
         title: "Editable",
-        key: "EditableRate",
-        dataIndex: "EditableRate",
+        key: "IsEditable",
+        dataIndex: "IsEditable",
         render: function render(id: any, value: any) {
             return <ToggleChecked id={id} checked={value} disabled={true} />;
         },

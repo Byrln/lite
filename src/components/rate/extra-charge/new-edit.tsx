@@ -15,13 +15,12 @@ const validationSchema = yup.object().shape({
         .required("Бөглөнө үү")
         .typeError("Бөглөнө үү"),
     RoomChargeTypeName: yup.string().required("Бөглөнө үү"),
-    RoomChargeTypeNameCustom: yup.string().required("Бөглөнө үү"),
     RoomChargeTypeRate: yup
         .number()
         .required("Бөглөнө үү")
         .typeError("Бөглөнө үү"),
     SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    PosApiServiceCode: yup.string().required("Бөглөнө үү"),
+    IsEditable: yup.boolean(),
 });
 
 const NewEdit = () => {
@@ -64,17 +63,6 @@ const NewEdit = () => {
 
             <TextField
                 size="small"
-                fullWidth
-                id="RoomChargeTypeNameCustom"
-                label="Кустом нэр"
-                {...register("RoomChargeTypeNameCustom")}
-                margin="dense"
-                error={errors.RoomChargeTypeNameCustom?.message}
-                helperText={errors.RoomChargeTypeNameCustom?.message}
-            />
-
-            <TextField
-                size="small"
                 type="number"
                 fullWidth
                 id="RoomChargeTypeRate"
@@ -100,11 +88,11 @@ const NewEdit = () => {
             <FormControlLabel
                 control={
                     <Controller
-                        name="EditableRate"
+                        name="IsEditable"
                         control={control}
                         render={(props: any) => (
                             <Checkbox
-                                {...register("EditableRate")}
+                                {...register("IsEditable")}
                                 checked={props.field.value}
                                 onChange={(e) =>
                                     props.field.onChange(e.target.checked)
@@ -114,17 +102,6 @@ const NewEdit = () => {
                     />
                 }
                 label="Үнийн дүнг засах боломжтой эсэх"
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="PosApiServiceCode"
-                label="PosApiServiceCode"
-                {...register("PosApiServiceCode")}
-                margin="dense"
-                error={errors.PosApiServiceCode?.message}
-                helperText={errors.PosApiServiceCode?.message}
             />
         </NewEditForm>
     );
