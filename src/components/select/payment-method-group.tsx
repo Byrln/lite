@@ -1,9 +1,8 @@
-import { TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
+import CustomSelect from "components/common/custom-select";
 import { PaymentMethodGroupSWR } from "lib/api/payment-method-group";
 
 const PaymentMethodGroupSelect = ({ register, errors }: any) => {
@@ -20,25 +19,15 @@ const PaymentMethodGroupSelect = ({ register, errors }: any) => {
         );
 
     return (
-        <TextField
-            fullWidth
-            id="PaymentMethodGroupID"
+        <CustomSelect
+            register={register}
+            errors={errors}
+            field="PaymentMethodGroupID"
             label="Төлбөрийн хэлбэр - Групп"
-            {...register("PaymentMethodGroupID")}
-            select
-            margin="dense"
-            error={errors.PaymentMethodGroupID?.message}
-            helperText={errors.PaymentMethodGroupID?.message}
-        >
-            {data.map((element: any) => (
-                <MenuItem
-                    key={element.PaymentMethodGroupID}
-                    value={element.PaymentMethodGroupID}
-                >
-                    {element.PaymentMethodGroupName}
-                </MenuItem>
-            ))}
-        </TextField>
+            options={data}
+            optionValue="PaymentMethodGroupID"
+            optionLabel="PaymentMethodGroupName"
+        />
     );
 };
 

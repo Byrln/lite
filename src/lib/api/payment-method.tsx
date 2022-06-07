@@ -15,16 +15,23 @@ export const PaymentMethodSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let paymentMethods = JSON.parse(res.data.JsonData);
-            return paymentMethods;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
 
 export const PaymentMethodAPI = {
-    get: (id: any) => axios.get(`${urlPrefix}/${id}`),
+    get: async (id: any) => {
+        const values = {
+            PaymentMethodID: id,
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return JSON.parse(res.data.JsonData);
+    },
 
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
@@ -35,8 +42,11 @@ export const PaymentMethodAPI = {
         };
     },
 
-    update: async (id: any, values: any) => {
-        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
+    update: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
 
         return {
             data,
@@ -48,6 +58,23 @@ export const PaymentMethodAPI = {
         const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
             PaymentMethodID: id,
         });
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    toggleChecked: async (id: any, checked: boolean, apiUrl: string) => {
+        const values = {
+            PaymentMethodID: id,
+            Status: checked,
+        };
+
+        const { data, status } = await axios.post(
+            `${urlPrefix}/${apiUrl}`,
+            values
+        );
 
         return {
             data,

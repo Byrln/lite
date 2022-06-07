@@ -51,7 +51,7 @@ const MiniBarGroupList = ({ title }: any) => {
             hasDelete={true}
             id="RoomChargeTypeGroupID"
             listUrl={listUrl}
-            modalTitle="Нэмэлт тооцооны бүлгүүд"
+            modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}
         />

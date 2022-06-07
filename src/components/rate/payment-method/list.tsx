@@ -1,3 +1,4 @@
+import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import {
     PaymentMethodSWR,
@@ -6,27 +7,38 @@ import {
 } from "lib/api/payment-method";
 import NewEdit from "./new-edit";
 
-const PaymentMethodList = () => {
+const columns = [
+    {
+        title: "Group Name",
+        key: "PaymentMethodGroupName",
+        dataIndex: "PaymentMethodGroupName",
+    },
+
+    {
+        title: "Payment Method",
+        key: "PaymentMethodName",
+        dataIndex: "PaymentMethodName",
+    },
+    {
+        title: "Status",
+        key: "Status",
+        dataIndex: "Status",
+        render: function render(id: any, value: any) {
+            return (
+                <ToggleChecked
+                    id={id}
+                    checked={value}
+                    api={PaymentMethodAPI}
+                    apiUrl="UpdateStatus"
+                    mutateUrl={`${listUrl}`}
+                />
+            );
+        },
+    },
+];
+
+const PaymentMethodList = ({ title }: any) => {
     const { data, error } = PaymentMethodSWR();
-
-    const columns = [
-        {
-            title: "Group Name",
-            key: "PaymentMethodGroupName",
-            dataIndex: "PaymentMethodGroupName",
-        },
-
-        {
-            title: "Payment Method",
-            key: "PaymentMethodName",
-            dataIndex: "PaymentMethodName",
-        },
-        {
-            title: "Status",
-            key: "Status",
-            dataIndex: "Status",
-        },
-    ];
 
     return (
         <CustomTable
@@ -39,8 +51,9 @@ const PaymentMethodList = () => {
             hasDelete={true}
             id="PaymentMethodID"
             listUrl={listUrl}
-            modalTitle="Төлбөрийн хэлбэр"
+            modalTitle={title}
             modalContent={<NewEdit />}
+            excelName={title}
         />
     );
 };
