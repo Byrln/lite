@@ -23,10 +23,7 @@ export const ReasonSWR = () => {
 
 export const ReasonAPI = {
     list: async (values: any) => {
-        const { data, status } = await axios.post(
-            listUrl,
-            values
-        );
+        const { data, status } = await axios.post(listUrl, values);
         if (status != 200) {
             return [];
         }
