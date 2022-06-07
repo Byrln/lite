@@ -26,7 +26,13 @@ const NewEdit = () => {
             api={ChargeTypeGroupAPI}
             listUrl={listUrl}
             additionalValues={{
-                ChargeTypeGroupID: state.editId,
+                RoomChargeTypeGroupID: state.editId,
+                IsRoomCharge: false,
+                IsExtraCharge: false,
+                IsMiniBar: true,
+                IsDiscount: false,
+            }}
+            getAdditionalValues={{
                 IsRoomCharge: false,
                 IsExtraCharge: false,
                 IsMiniBar: true,

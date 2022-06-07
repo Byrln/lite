@@ -13,6 +13,7 @@ const NewEditForm = ({
     api,
     listUrl,
     additionalValues,
+    getAdditionalValues = {},
     reset,
     handleSubmit,
 }: any) => {
@@ -27,7 +28,9 @@ const NewEditForm = ({
                 setLoadingData(true);
 
                 try {
-                    const arr: any = await api?.get(state.editId);
+                    const arr: any = getAdditionalValues
+                        ? await api?.get(state.editId, getAdditionalValues)
+                        : await api?.get(state.editId);
 
                     reset(arr[0]);
                 } finally {

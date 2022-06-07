@@ -1,6 +1,7 @@
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { ChargeTypeSWR, ChargeTypeAPI, listUrl } from "lib/api/charge-type";
+import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 
 const listType = "miniBar";
@@ -20,6 +21,9 @@ const columns = [
         title: "Rate",
         key: "RoomChargeTypeRate",
         dataIndex: "RoomChargeTypeRate",
+        render: function render(id: any, value: any) {
+            return formatPrice(value);
+        },
     },
 
     {
@@ -59,7 +63,7 @@ const MiniBarItemList = ({ title }: any) => {
             hasDelete={true}
             id="RoomChargeTypeID"
             listUrl={listUrl}
-            modalTitle="Нэмэлт тооцооны төрлүүд"
+            modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}
         />

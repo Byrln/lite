@@ -5,36 +5,33 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/ChargeTypeGroup";
 export const listUrl = `${urlPrefix}/List`;
 
-export const ChargeTypeGroupSWR = (listType: any) => {
+export const ChargeTypeGroupSWR = (listType: string) => {
     const values = {
         RoomChargeTypeGroupID: 0,
         SearchStr: "",
-        IsRoomCharge: listType == "roomCharge" ? true : null,
-        IsExtraCharge: listType == "extraCharge" ? true : null,
-        IsMiniBar: listType == "miniBar" ? true : null,
-        IsDiscount: listType == "discount" ? true : null,
+        IsRoomCharge: listType === "roomCharge" ? true : null,
+        IsExtraCharge: listType === "extraCharge" ? true : null,
+        IsMiniBar: listType === "miniBar" ? true : null,
+        IsDiscount: listType === "discount" ? true : null,
         Status: null,
         EmptyRow: null,
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let chargeTypeGroups = JSON.parse(res.data.JsonData);
-            return chargeTypeGroups;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
 
 export const ChargeTypeGroupAPI = {
-    get: async (id: any) => {
-        const values = {
-            ChargeTypeGroupID: id,
-            IsRoomCharge: false,
-            IsExtraCharge: false,
-            IsMiniBar: true,
-            IsDiscount: false,
+    get: async (id: any, additionalValues: any) => {
+        let values = {
+            RoomChargeTypeGroupID: id,
         };
+
+        values = Object.assign(values, additionalValues);
 
         const res = await axios.post(listUrl, values);
 

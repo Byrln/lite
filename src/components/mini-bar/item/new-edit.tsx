@@ -42,6 +42,10 @@ const NewEdit = () => {
                 IsInclusion: false,
                 IsEditable: true,
             }}
+            getAdditionalValues={{
+                IsInclusion: false,
+                IsEditable: true,
+            }}
             reset={reset}
             handleSubmit={handleSubmit}
         >

@@ -27,12 +27,12 @@ export const ChargeTypeSWR = (listType: string) => {
 };
 
 export const ChargeTypeAPI = {
-    get: async (id: any) => {
-        const values = {
+    get: async (id: any, additionalValues: any) => {
+        let values = {
             RoomChargeTypeID: id,
-            IsInclusion: false,
-            IsEditable: true,
         };
+
+        values = Object.assign(values, additionalValues);
 
         const res = await axios.post(listUrl, values);
 
@@ -40,6 +40,8 @@ export const ChargeTypeAPI = {
     },
 
     new: async (values: any) => {
+        values = Object.assign(values, { Status: true });
+
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 
         return {
@@ -48,7 +50,7 @@ export const ChargeTypeAPI = {
         };
     },
 
-    update: async (id: any, values: any) => {
+    update: async (values: any) => {
         const { data, status } = await axios.post(
             `${urlPrefix}/Update`,
             values
