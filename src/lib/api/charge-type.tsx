@@ -5,24 +5,23 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/ChargeType";
 export const listUrl = `${urlPrefix}/List`;
 
-export const ChargeTypeSWR = (listType: any) => {
+export const ChargeTypeSWR = (listType: string) => {
     const values = {
         RoomChargeTypeGroupID: 0,
         RoomChargeTypeID: 0,
         SearchStr: "",
-        IsExtraCharge: listType == "extraCharge" ? true : null,
-        IsMiniBar: listType == "miniBar" ? true : null,
-        IsDiscount: listType == "discount" ? true : null,
-        IsInclusion: listType == "inclusion" ? true : null,
+        IsExtraCharge: listType === "extraCharge" ? true : null,
+        IsMiniBar: listType === "miniBar" ? true : null,
+        IsDiscount: listType === "discount" ? true : null,
+        IsInclusion: listType === "inclusion" ? true : null,
         Status: null,
         EmptyRow: null,
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let extraCharges = JSON.parse(res.data.JsonData);
-            return extraCharges;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
