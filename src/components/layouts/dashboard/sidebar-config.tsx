@@ -152,8 +152,8 @@ const sidebarConfig = [
                 path: "/conf/reservation-source",
             },
             {
-                title: "post api config",
-                path: "/conf/post-api",
+                title: "pos api config",
+                path: "/conf/pos-api",
             },
             {
                 title: "vip status",

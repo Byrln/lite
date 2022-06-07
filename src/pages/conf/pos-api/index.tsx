@@ -2,9 +2,9 @@ import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
 
 import Page from "components/page";
-import PostApi from "components/conf/post-api/list";
+import PostApi from "components/conf/pos-api/list";
 
-const title = "Post-Api";
+const title = "Post Api Configuration";
 
 const Index = () => (
     <>

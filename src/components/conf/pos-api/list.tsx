@@ -1,25 +1,39 @@
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
-import {
-    ReservationSourceSWR,
-    ReservationSourceAPI,
-    listUrl,
-} from "lib/api/reservation-source";
+import { PosApiSWR, PosApiAPI, listUrl } from "lib/api/pos-api";
 import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Vip Status",
-        key: "ReservationSourceName",
-        dataIndex: "ReservationSourceName",
+        title: "Registry No",
+        key: "PosApiName",
+        dataIndex: "PosApiName",
     },
     {
-        title: "Description",
-        key: "ReservationSourceDescription",
-        dataIndex: "ReservationSourceDescription",
+        title: "Company name",
+        key: "PosApiDescription",
+        dataIndex: "PosApiDescription",
     },
     {
-        title: "Show Warning",
+        title: "branch No",
+        key: "PosApiDescription",
+        dataIndex: "PosApiDescription",
+    },
+    {
+        title: "District",
+        key: "PosApiDescription",
+        dataIndex: "PosApiDescription",
+    },
+    {
+        title: "VAT Payer",
+        key: "ShowWarning",
+        dataIndex: "ShowWarning",
+        render: function render(id: any, value: any) {
+            return <ToggleChecked id={id} checked={value} disabled={true} />;
+        },
+    },
+    {
+        title: "City tax Payer",
         key: "ShowWarning",
         dataIndex: "ShowWarning",
         render: function render(id: any, value: any) {
@@ -35,7 +49,7 @@ const columns = [
                 <ToggleChecked
                     id={id}
                     checked={value}
-                    api={ReservationSourceAPI}
+                    api={PosApiAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}
                 />
@@ -44,19 +58,19 @@ const columns = [
     },
 ];
 
-const ReservationSourceList = ({ title }: any) => {
-    const { data, error } = ReservationSourceSWR();
+const PosApiList = ({ title }: any) => {
+    const { data, error } = PosApiSWR();
 
     return (
         <CustomTable
             columns={columns}
             data={data}
             error={error}
-            api={ReservationSourceAPI}
+            api={PosApiAPI}
             hasNew={true}
             hasUpdate={true}
             hasDelete={true}
-            id="ReservationSourceID"
+            id="PosApiID"
             listUrl={listUrl}
             modalTitle={title}
             modalContent={<NewEdit />}
@@ -65,4 +79,4 @@ const ReservationSourceList = ({ title }: any) => {
     );
 };
 
-export default ReservationSourceList;
+export default PosApiList;
