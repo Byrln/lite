@@ -5,8 +5,20 @@ import Skeleton from "@mui/material/Skeleton";
 import CustomSelect from "components/common/custom-select";
 import { ChargeTypeGroupSWR } from "lib/api/charge-type-group";
 
-const ChargeTypeGroupSelect = ({ register, errors, listType }: any) => {
-    const { data, error } = ChargeTypeGroupSWR(listType);
+const ChargeTypeGroupSelect = ({
+    register,
+    errors,
+    IsRoomCharge,
+    IsExtraCharge,
+    IsMiniBar,
+    IsDiscount,
+}: any) => {
+    const { data, error } = ChargeTypeGroupSWR(
+        IsRoomCharge,
+        IsExtraCharge,
+        IsMiniBar,
+        IsDiscount
+    );
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 

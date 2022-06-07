@@ -4,7 +4,10 @@ import { ChargeTypeSWR, ChargeTypeAPI, listUrl } from "lib/api/charge-type";
 import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 
-const listType = "miniBar";
+const IsExtraCharge = true;
+const IsMiniBar = true;
+const IsDiscount = false;
+const IsInclusion = null;
 const columns = [
     {
         title: "Mini Bar Group",
@@ -50,7 +53,12 @@ const columns = [
 ];
 
 const MiniBarItemList = ({ title }: any) => {
-    const { data, error } = ChargeTypeSWR(listType);
+    const { data, error } = ChargeTypeSWR(
+        IsExtraCharge,
+        IsMiniBar,
+        IsDiscount,
+        IsInclusion
+    );
 
     return (
         <CustomTable

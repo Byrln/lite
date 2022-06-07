@@ -5,15 +5,20 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/ChargeType";
 export const listUrl = `${urlPrefix}/List`;
 
-export const ChargeTypeSWR = (listType: string) => {
+export const ChargeTypeSWR = (
+    IsExtraCharge: any,
+    IsMiniBar: any,
+    IsDiscount: any,
+    IsInclusion: any
+) => {
     const values = {
         RoomChargeTypeGroupID: 0,
         RoomChargeTypeID: 0,
         SearchStr: "",
-        IsExtraCharge: listType === "extraCharge" ? true : null,
-        IsMiniBar: listType === "miniBar" ? true : false,
-        IsDiscount: listType === "discount" ? true : null,
-        IsInclusion: listType === "inclusion" ? true : null,
+        IsExtraCharge: IsExtraCharge,
+        IsMiniBar: IsMiniBar,
+        IsDiscount: IsDiscount,
+        IsInclusion: IsInclusion,
         Status: null,
         EmptyRow: null,
     };

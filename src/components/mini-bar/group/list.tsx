@@ -7,7 +7,10 @@ import {
 } from "lib/api/charge-type-group";
 import NewEdit from "./new-edit";
 
-const listType = "miniBar";
+const IsRoomCharge = false;
+const IsExtraCharge = true;
+const IsMiniBar = true;
+const IsDiscount = false;
 const columns = [
     {
         title: "Group Name",
@@ -38,7 +41,12 @@ const columns = [
 ];
 
 const MiniBarGroupList = ({ title }: any) => {
-    const { data, error } = ChargeTypeGroupSWR(listType);
+    const { data, error } = ChargeTypeGroupSWR(
+        IsRoomCharge,
+        IsExtraCharge,
+        IsMiniBar,
+        IsDiscount
+    );
 
     return (
         <CustomTable

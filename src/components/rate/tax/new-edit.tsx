@@ -19,7 +19,7 @@ const validationSchema = yup.object().shape({
     EndDate: yup.date().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
-const NewEdit = ({ entity }: any) => {
+const NewEdit = () => {
     const [state]: any = useAppState();
     const {
         register,
@@ -93,7 +93,6 @@ const NewEdit = ({ entity }: any) => {
                                     {...register("BeginDate")}
                                     margin="dense"
                                     fullWidth
-                                    sx={{ mt: 2 }}
                                     {...params}
                                     error={errors.BeginDate?.message}
                                     helperText={errors.BeginDate?.message}

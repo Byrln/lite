@@ -28,13 +28,13 @@ const NewEdit = () => {
             additionalValues={{
                 RoomChargeTypeGroupID: state.editId,
                 IsRoomCharge: false,
-                IsExtraCharge: false,
+                IsExtraCharge: true,
                 IsMiniBar: true,
                 IsDiscount: false,
             }}
             getAdditionalValues={{
                 IsRoomCharge: false,
-                IsExtraCharge: false,
+                IsExtraCharge: true,
                 IsMiniBar: true,
                 IsDiscount: false,
             }}
