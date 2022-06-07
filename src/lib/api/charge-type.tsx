@@ -11,7 +11,7 @@ export const ChargeTypeSWR = (listType: string) => {
         RoomChargeTypeID: 0,
         SearchStr: "",
         IsExtraCharge: listType === "extraCharge" ? true : null,
-        IsMiniBar: listType === "miniBar" ? true : null,
+        IsMiniBar: listType === "miniBar" ? true : false,
         IsDiscount: listType === "discount" ? true : null,
         IsInclusion: listType === "inclusion" ? true : null,
         Status: null,

@@ -11,7 +11,7 @@ export const ChargeTypeGroupSWR = (listType: string) => {
         SearchStr: "",
         IsRoomCharge: listType === "roomCharge" ? true : null,
         IsExtraCharge: listType === "extraCharge" ? true : null,
-        IsMiniBar: listType === "miniBar" ? true : null,
+        IsMiniBar: listType === "miniBar" ? true : false,
         IsDiscount: listType === "discount" ? true : null,
         Status: null,
         EmptyRow: null,
