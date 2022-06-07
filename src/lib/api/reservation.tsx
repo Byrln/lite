@@ -31,8 +31,10 @@ export const ReservationApi = {
 
     new: async (values: any) => {
         var vals = values;
-        vals.ArrivalDate = fToUniversal(values.ArrivalDate) + " " + values.ArrivalTime;
-        vals.DepartureDate = fToUniversal(values.DepartureDate) + " " + values.DepartureTime;
+        vals.ArrivalDate =
+            fToUniversal(values.ArrivalDate) + " " + values.ArrivalTime;
+        vals.DepartureDate =
+            fToUniversal(values.DepartureDate) + " " + values.DepartureTime;
         vals.IsReserved = true;
         vals.IsCheckIn = false;
         vals.CustomerID = values.CustomerID > 0 ? values.CustomerID : 0;
@@ -44,7 +46,7 @@ export const ReservationApi = {
             status: status,
             code: data.Code,
             msg: data.Message,
-            data: JSON.parse(data.JsonData)
+            data: JSON.parse(data.JsonData),
         };
     },
     checkIn: async (TransactionID: any) => {

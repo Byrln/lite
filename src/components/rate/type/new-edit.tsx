@@ -1,27 +1,29 @@
-import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import { Controller, useForm } from "react-hook-form";
+import { FormControlLabel, TextField } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
-import { TaxAPI, listUrl } from "lib/api/tax";
+import { RateTypeAPI, listUrl } from "lib/api/rate-type";
 import { useAppState } from "lib/context/app";
+import ChannelSelect from "components/select/channel";
 
 const validationSchema = yup.object().shape({
-    TaxCode: yup.string().required("Бөглөнө үү"),
-    TaxName: yup.string().required("Бөглөнө үү"),
-    TaxAmount: yup.number().required("Бөглөнө үү"),
-    BeginDate: yup.date().required("Бөглөнө үү"),
-    EndDate: yup.date().required("Бөглөнө үү"),
+    RateTypeCode: yup.string().required("Бөглөнө үү"),
+    RateTypeName: yup.string().required("Бөглөнө үү"),
+    ChannelID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    BreakfastIncluded: yup.boolean(),
+    TaxIncluded: yup.boolean(),
 });
 
-const NewEdit = ({ entity }: any) => {
+const NewEdit = () => {
     const [state]: any = useAppState();
     const {
         register,
         reset,
         handleSubmit,
+        control,
         formState: { errors },
     } = useForm({
         resolver: yupResolver(validationSchema),
@@ -29,62 +31,72 @@ const NewEdit = ({ entity }: any) => {
 
     return (
         <NewEditForm
-            api={TaxAPI}
+            api={RateTypeAPI}
             listUrl={listUrl}
             additionalValues={{ RateTypeID: state.editId }}
             reset={reset}
             handleSubmit={handleSubmit}
         >
             <TextField
+                size="small"
                 fullWidth
-                id="TaxCode"
-                label="Код"
-                {...register("TaxCode")}
+                id="RateTypeCode"
+                label="Short Code"
+                {...register("RateTypeCode")}
                 margin="dense"
-                error={errors.TaxCode?.message}
-                helperText={errors.TaxCode?.message}
+                error={errors.RateTypeCode?.message}
+                helperText={errors.RateTypeCode?.message}
             />
 
             <TextField
+                size="small"
                 fullWidth
-                id="TaxName"
-                label="Нэр"
-                {...register("TaxName")}
+                id="RateTypeName"
+                label="Rate Type"
+                {...register("RateTypeName")}
                 margin="dense"
-                error={errors.TaxName?.message}
-                helperText={errors.TaxName?.message}
+                error={errors.RateTypeName?.message}
+                helperText={errors.RateTypeName?.message}
             />
 
-            <TextField
-                type="number"
-                fullWidth
-                id="TaxAmount"
-                label="Дүн"
-                InputProps={{ inputProps: { min: 0, max: 99 } }}
-                {...register("TaxAmount")}
-                margin="dense"
-                error={errors.TaxAmount?.message}
-                helperText={errors.TaxAmount?.message}
+            <ChannelSelect register={register} errors={errors} />
+
+            <FormControlLabel
+                control={
+                    <Controller
+                        name="BreakfastIncluded"
+                        control={control}
+                        render={(props: any) => (
+                            <Checkbox
+                                {...register("BreakfastIncluded")}
+                                checked={props.field.value}
+                                onChange={(e) =>
+                                    props.field.onChange(e.target.checked)
+                                }
+                            />
+                        )}
+                    />
+                }
+                label="BreakfastIncluded"
             />
-            <TextField
-                type="date"
-                fullWidth
-                id="BeginDate"
-                label="Эхлэх огноо"
-                {...register("BeginDate")}
-                margin="dense"
-                error={errors.BeginDate?.message}
-                helperText={errors.BeginDate?.message}
-            />
-            <TextField
-                type="date"
-                fullWidth
-                id="EndDate"
-                label="Дуусах огноо"
-                {...register("EndDate")}
-                margin="dense"
-                error={errors.EndDate?.message}
-                helperText={errors.EndDate?.message}
+
+            <FormControlLabel
+                control={
+                    <Controller
+                        name="TaxIncluded"
+                        control={control}
+                        render={(props: any) => (
+                            <Checkbox
+                                {...register("TaxIncluded")}
+                                checked={props.field.value}
+                                onChange={(e) =>
+                                    props.field.onChange(e.target.checked)
+                                }
+                            />
+                        )}
+                    />
+                }
+                label="Room Rates inclusive of total 10% + 1%"
             />
         </NewEditForm>
     );

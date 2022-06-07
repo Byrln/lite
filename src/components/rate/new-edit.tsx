@@ -61,6 +61,7 @@ const NewEdit = ({ entity }: any) => {
                 error={errors.TaxAmount?.message}
                 helperText={errors.TaxAmount?.message}
             />
+
             <TextField
                 type="date"
                 fullWidth
@@ -71,6 +72,7 @@ const NewEdit = ({ entity }: any) => {
                 error={errors.BeginDate?.message}
                 helperText={errors.BeginDate?.message}
             />
+
             <TextField
                 type="date"
                 fullWidth
