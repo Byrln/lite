@@ -152,16 +152,29 @@ const sidebarConfig = [
                 path: "/conf/reservation-source",
             },
             {
-                title: "pos api config",
-                path: "/conf/pos-api",
-            },
-            {
                 title: "vip status",
                 path: "/conf/vip-status",
             },
             {
                 title: "customer group",
                 path: "/conf/customer-group",
+            },
+            {
+                title: "hotel setting",
+                path: "/conf/hotel-setting",
+            },
+            {
+                title: "notification",
+                path: "/conf/notification",
+            },
+
+            {
+                title: "Promotion",
+                path: "/conf/promotion",
+            },
+            {
+                title: "package",
+                path: "/conf/package",
             },
         ],
     },

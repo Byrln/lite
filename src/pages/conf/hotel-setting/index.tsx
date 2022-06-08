@@ -2,9 +2,9 @@ import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
 
 import Page from "components/page";
-import HotelInformationList from "components/conf/hotel/list";
+import HotelSetting from "components/conf/hotel-setting/list";
 
-const title = "Hotel Information";
+const title = "Hotel Setting";
 
 const Index = () => (
     <>
@@ -19,7 +19,7 @@ const Index = () => (
                 </Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <HotelInformationList title={title} />
+                        <HotelSetting title={title} />
                     </Grid>
                 </Grid>
             </Container>
