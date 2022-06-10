@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/reservation-source";
+const urlPrefix = "/api/ReservationSource";
 export const listUrl = `${urlPrefix}/list`;
 
 export const ReservationSourceSWR = () => {

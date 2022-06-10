@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/notification";
+const urlPrefix = "/api/Notification";
 export const listUrl = `${urlPrefix}/List`;
 
 export const NotificationSWR = () => {

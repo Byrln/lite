@@ -2,8 +2,8 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/hotel-setting";
-export const listUrl = `${urlPrefix}/List`;
+const urlPrefix = "/api/Hotel/Settings";
+export const listUrl = `${urlPrefix}`;
 
 export const HotelSettingSWR = () => {
     const values = {

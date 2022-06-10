@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/promotion";
+const urlPrefix = "/api/Promotion";
 export const listUrl = `${urlPrefix}/List`;
 
 export const PromotionSWR = () => {
