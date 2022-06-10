@@ -1,26 +1,33 @@
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
-import { PromotionSWR, PromotionAPI, listUrl } from "lib/api/promotion";
+import { UserSWR, UserAPI, listUrl } from "lib/api/user";
 import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Promotion",
-        key: "PromotionName",
-        dataIndex: "PromotionName",
+        title: "User Name",
+        key: "UserName",
+        dataIndex: "UserName",
     },
     {
-        title: "Promotion",
-        key: "PromotionDescription",
-        dataIndex: "PromotionDescription",
+        title: "Login Name",
+        key: "LoginName",
+        dataIndex: "LoginName",
     },
     {
-        title: "Show Warning",
-        key: "ShowWarning",
-        dataIndex: "ShowWarning",
-        render: function render(id: any, value: any) {
-            return <ToggleChecked id={id} checked={value} disabled={true} />;
-        },
+        title: "User Role",
+        key: "User Role",
+        dataIndex: "User Role",
+    },
+    {
+        title: "Language",
+        key: "Language",
+        dataIndex: "Language",
+    },
+    {
+        title: "Email",
+        key: "Email",
+        dataIndex: "Email",
     },
     {
         title: "Status",
@@ -31,7 +38,7 @@ const columns = [
                 <ToggleChecked
                     id={id}
                     checked={value}
-                    api={PromotionAPI}
+                    api={UserAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}
                 />
@@ -40,19 +47,19 @@ const columns = [
     },
 ];
 
-const PromotionList = ({ title }: any) => {
-    const { data, error } = PromotionSWR();
+const UserList = ({ title }: any) => {
+    const { data, error } = UserSWR();
 
     return (
         <CustomTable
             columns={columns}
             data={data}
             error={error}
-            api={PromotionAPI}
+            api={UserAPI}
             hasNew={true}
             hasUpdate={true}
             hasDelete={true}
-            id="PromotionID"
+            id="UserID"
             listUrl={listUrl}
             modalTitle={title}
             modalContent={<NewEdit />}
@@ -61,4 +68,4 @@ const PromotionList = ({ title }: any) => {
     );
 };
 
-export default PromotionList;
+export default UserList;

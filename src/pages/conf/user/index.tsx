@@ -2,7 +2,7 @@ import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
 
 import Page from "components/page";
-import UserList from "components/conf/user-list/list";
+import UserList from "components/conf/user/list";
 
 const title = "user list";
 
