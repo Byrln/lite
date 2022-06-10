@@ -22,6 +22,19 @@ export const RateTypeSWR = () => {
     return useSWR(listUrl, fetcher);
 };
 
+export const BaseRateSWR = (id: any) => {
+    const values = {
+        RateTypeID: id,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
+
+    return useSWR(`${urlPrefix}/BaseRateList`, fetcher);
+};
+
 export const RateTypeAPI = {
     get: async (id: any) => {
         const values = {

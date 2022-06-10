@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { FormControlLabel, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
@@ -8,6 +8,7 @@ import NewEditForm from "components/common/new-edit-form";
 import { RateTypeAPI, listUrl } from "lib/api/rate-type";
 import { useAppState } from "lib/context/app";
 import ChannelSelect from "components/select/channel";
+import BaseRateList from "./base-rate-list";
 
 const validationSchema = yup.object().shape({
     RateTypeCode: yup.string().required("Бөглөнө үү"),
@@ -15,6 +16,22 @@ const validationSchema = yup.object().shape({
     ChannelID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     BreakfastIncluded: yup.boolean(),
     TaxIncluded: yup.boolean(),
+    RoomType: yup.array().of(
+        yup.object().shape({
+            BaseRate: yup
+                .number()
+                .required("Бөглөнө үү")
+                .typeError("Бөглөнө үү"),
+            ExtraAdult: yup
+                .number()
+                .required("Бөглөнө үү")
+                .typeError("Бөглөнө үү"),
+            ExtraChild: yup
+                .number()
+                .required("Бөглөнө үү")
+                .typeError("Бөглөнө үү"),
+        })
+    ),
 });
 
 const NewEdit = () => {
@@ -27,6 +44,11 @@ const NewEdit = () => {
         formState: { errors },
     } = useForm({
         resolver: yupResolver(validationSchema),
+    });
+
+    const { fields } = useFieldArray({
+        name: "RoomTypes",
+        control,
     });
 
     return (
@@ -97,6 +119,13 @@ const NewEdit = () => {
                     />
                 }
                 label="Room Rates inclusive of total 10% + 1%"
+            />
+
+            <BaseRateList
+                id={state.editId ? state.editId : -1}
+                register={register}
+                errors={errors}
+                control={control}
             />
         </NewEditForm>
     );

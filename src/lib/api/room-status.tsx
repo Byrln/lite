@@ -12,39 +12,29 @@ export const RoomStatusSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
-            let roomStatus = JSON.parse(res.data.JsonData);
-            return roomStatus;
-        });
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };
 
 export const RoomStatusAPI = {
-    get: (id: any) => axios.get(`${urlPrefix}/${id}`),
-
-    new: async (values: any) => {
-        const { data, status } = await axios.post(urlPrefix, values);
-
-        return {
-            data,
-            status,
-        };
-    },
-
-    update: async (id: any, values: any) => {
-        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
-
-        return {
-            data,
-            status,
-        };
-    },
-
-    delete: async (id: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
+    get: async (id: any) => {
+        const values = {
             RoomStatusID: id,
-        });
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return JSON.parse(res.data.JsonData);
+    },
+
+    update: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
 
         return {
             data,

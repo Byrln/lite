@@ -4,59 +4,58 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
-import { RoomAPI, listUrl } from "lib/api/room";
-import RoomTypeSelect from "components/select/room-type";
-import FloorSelect from "components/select/floor";
+import { RoomStatusAPI, listUrl } from "lib/api/room-status";
+import { useAppState } from "lib/context/app";
 
-const NewEdit = ({ entity }: any) => {
-    const validationSchema = yup.object().shape({
-        RoomNo: yup.string().required("Бөглөнө үү"),
-        RoomTypeID: yup.number().required("Бөглөнө үү"),
-        FloorID: yup.number().required("Бөглөнө үү"),
-        RoomPhone: yup.string().required("Бөглөнө үү"),
-        Description: yup.string().required("Бөглөнө үү"),
-        SortOrder: yup.number().required("Бөглөнө үү"),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
+const validationSchema = yup.object().shape({
+    StatusColor: yup.string().required("Бөглөнө үү"),
+    Description: yup.string().required("Бөглөнө үү"),
+});
 
+const NewEdit = () => {
+    const [state]: any = useAppState();
     const {
         register,
+        reset,
         handleSubmit,
         formState: { errors },
-    } = useForm(formOptions);
+    } = useForm({
+        resolver: yupResolver(validationSchema),
+    });
 
     return (
         <NewEditForm
-            api={RoomAPI}
-            entity={entity}
+            api={RoomStatusAPI}
             listUrl={listUrl}
+            additionalValues={{ RoomStatusID: state.editId }}
+            reset={reset}
             handleSubmit={handleSubmit}
         >
             <TextField
+                size="small"
+                disabled
                 fullWidth
-                id="RoomNo"
-                label="Өрөөний дугаар"
-                {...register("RoomNo")}
+                id="StatusCode"
+                label="Өрөөний статус"
+                {...register("StatusCode")}
                 margin="dense"
                 error={errors.RoomNo?.message}
                 helperText={errors.RoomNo?.message}
             />
 
-            <RoomTypeSelect register={register} errors={errors} />
-
-            <FloorSelect register={register} errors={errors} />
-
             <TextField
+                size="small"
                 fullWidth
-                id="RoomPhone"
-                label="Өрөөний утас"
-                {...register("RoomPhone")}
+                id="StatusColor"
+                label="Color"
+                {...register("StatusColor")}
                 margin="dense"
-                error={errors.RoomPhone?.message}
-                helperText={errors.RoomPhone?.message}
+                error={errors.StatusColor?.message}
+                helperText={errors.StatusColor?.message}
             />
 
             <TextField
+                size="small"
                 fullWidth
                 id="Description"
                 label="Тайлбар"
@@ -64,17 +63,6 @@ const NewEdit = ({ entity }: any) => {
                 margin="dense"
                 error={errors.Description?.message}
                 helperText={errors.Description?.message}
-            />
-
-            <TextField
-                type="number"
-                fullWidth
-                id="SortOrder"
-                label="Дараалал"
-                {...register("SortOrder")}
-                margin="dense"
-                error={errors.SortOrder?.message}
-                helperText={errors.SortOrder?.message}
             />
         </NewEditForm>
     );
