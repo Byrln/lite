@@ -1,4 +1,5 @@
-import ToggleChecked from "components/common/custom-switch";
+import { format } from "date-fns";
+
 import CustomTable from "components/common/custom-table";
 import { ReasonSWR, ReasonAPI, listUrl } from "lib/api/reason";
 import NewEdit from "./new-edit";
@@ -23,6 +24,15 @@ const columns = [
         title: "Changed Date",
         key: "CreatedDate",
         dataIndex: "CreatedDate",
+        render: function render(id: any, value: any) {
+            return (
+                value &&
+                format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                )
+            );
+        },
     },
     {
         title: "Ip Address",
@@ -41,7 +51,6 @@ const ReasonList = ({ title }: any) => {
             error={error}
             api={ReasonAPI}
             hasNew={true}
-            //hasUpdate={true}
             hasDelete={true}
             id="ReasonID"
             listUrl={listUrl}

@@ -16,8 +16,8 @@ const columns = [
     },
     {
         title: "User Role",
-        key: "User Role",
-        dataIndex: "User Role",
+        key: "UserRoleName",
+        dataIndex: "UserRoleName",
     },
     {
         title: "Language",

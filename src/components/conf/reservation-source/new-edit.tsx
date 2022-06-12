@@ -10,8 +10,6 @@ import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
     ReservationSourceName: yup.string().required("Бөглөнө үү"),
-    ReservationSourceDescription: yup.string().required("Бөглөнө үү"),
-    ShowWarning: yup.boolean(),
 });
 
 const NewEdit = () => {
@@ -43,36 +41,6 @@ const NewEdit = () => {
                 margin="dense"
                 error={errors.ReservationSourceName?.message}
                 helperText={errors.ReservationSourceName?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="ReservationSourceDescription"
-                label="ReservationSourceDescription"
-                {...register("ReservationSourceDescription")}
-                margin="dense"
-                error={errors.ReservationSourceDescription?.message}
-                helperText={errors.ReservationSourceDescription?.message}
-            />
-
-            <FormControlLabel
-                control={
-                    <Controller
-                        name="ShowWarning"
-                        control={control}
-                        render={(props: any) => (
-                            <Checkbox
-                                {...register("ShowWarning")}
-                                checked={props.field.value}
-                                onChange={(e) =>
-                                    props.field.onChange(e.target.checked)
-                                }
-                            />
-                        )}
-                    />
-                }
-                label="ShowWarning"
             />
         </NewEditForm>
     );

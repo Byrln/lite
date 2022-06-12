@@ -1,7 +1,9 @@
-import ToggleChecked from "components/common/custom-switch";
+import { format } from "date-fns";
+
 import CustomTable from "components/common/custom-table";
 import { PackageSWR, PackageAPI, listUrl } from "lib/api/package";
 import NewEdit from "./new-edit";
+import { formatPrice } from "lib/utils/helpers";
 
 const columns = [
     {
@@ -11,18 +13,36 @@ const columns = [
     },
     {
         title: "Nigths",
-        key: "Nigths",
-        dataIndex: "Nigths",
+        key: "Nights",
+        dataIndex: "Nights",
     },
     {
         title: "Begin Date",
         key: "BeginDate",
         dataIndex: "BeginDate",
+        render: function render(id: any, value: any) {
+            return (
+                value &&
+                format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                )
+            );
+        },
     },
     {
         title: "End Date",
         key: "EndDate",
         dataIndex: "EndDate",
+        render: function render(id: any, value: any) {
+            return (
+                value &&
+                format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                )
+            );
+        },
     },
     {
         title: "Room Count",
@@ -30,20 +50,30 @@ const columns = [
         dataIndex: "RoomCount",
     },
     {
-        title: "Status",
-        key: "Status",
-        dataIndex: "Status",
+        title: "Room",
+        key: "RoomAmount",
+        dataIndex: "RoomAmount",
         render: function render(id: any, value: any) {
-            return (
-                <ToggleChecked
-                    id={id}
-                    checked={value}
-                    api={PackageAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
+            return formatPrice(value);
         },
+    },
+    {
+        title: "Extra Charge",
+        key: "ExtraChargeAmount",
+        dataIndex: "ExtraChargeAmount",
+        render: function render(id: any, value: any) {
+            return formatPrice(value);
+        },
+    },
+    {
+        title: "User Name",
+        key: "UserName",
+        dataIndex: "UserName",
+    },
+    {
+        title: "IP Address",
+        key: "IPAddress",
+        dataIndex: "IPAddress",
     },
 ];
 
@@ -58,7 +88,6 @@ const PackageList = ({ title }: any) => {
             api={PackageAPI}
             hasNew={true}
             hasUpdate={true}
-            hasDelete={true}
             id="PackageID"
             listUrl={listUrl}
             modalTitle={title}

@@ -32,6 +32,9 @@ const EmailList = () => {
             title: "Main",
             key: "IsMain",
             dataIndex: "IsMain",
+            render: function render(id: any, value: any) {
+                return value && "Main";
+            },
         },
     ];
 

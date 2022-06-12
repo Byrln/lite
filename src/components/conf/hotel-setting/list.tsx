@@ -1,46 +1,73 @@
-import ToggleChecked from "components/common/custom-switch";
+import { format } from "date-fns";
+
 import CustomTable from "components/common/custom-table";
 import {
     HotelSettingSWR,
     HotelSettingAPI,
     listUrl,
 } from "lib/api/hotel-setting";
+import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
+import ToggleChecked from "components/common/custom-switch";
 
 const columns = [
     {
-        title: "Hotel Setting",
-        key: "HotelSettingName",
-        dataIndex: "HotelSettingName",
+        title: "Hotel Code",
+        key: "HotelCode",
+        dataIndex: "HotelCode",
     },
     {
-        title: "Description",
-        key: "HotelSettingDescription",
-        dataIndex: "HotelSettingDescription",
+        title: "Hotel Name",
+        key: "HotelName",
+        dataIndex: "HotelName",
     },
     {
-        title: "Show Warning",
-        key: "ShowWarning",
-        dataIndex: "ShowWarning",
+        title: "Room Count",
+        key: "RoomCount",
+        dataIndex: "RoomCount",
+    },
+    {
+        title: "PMS Start",
+        key: "PMSStart",
+        dataIndex: "PMSStart",
+        render: function render(id: any, value: any) {
+            return (
+                value &&
+                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+            );
+        },
+    },
+    {
+        title: "PMS End",
+        key: "PMSEnd",
+        dataIndex: "PMSEnd",
+        render: function render(id: any, value: any) {
+            return (
+                value &&
+                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+            );
+        },
+    },
+    {
+        title: "Booking Engine",
+        key: "BookingEngine",
+        dataIndex: "BookingEngine",
         render: function render(id: any, value: any) {
             return <ToggleChecked id={id} checked={value} disabled={true} />;
         },
     },
     {
-        title: "Status",
-        key: "Status",
-        dataIndex: "Status",
+        title: "Commission",
+        key: "RoomChargeDuration",
+        dataIndex: "RoomChargeDuration",
         render: function render(id: any, value: any) {
-            return (
-                <ToggleChecked
-                    id={id}
-                    checked={value}
-                    api={HotelSettingAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
+            return formatPrice(value);
         },
+    },
+    {
+        title: "Package Name",
+        key: "EditionName",
+        dataIndex: "EditionName",
     },
 ];
 

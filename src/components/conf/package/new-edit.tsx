@@ -1,8 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
+import { TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import moment from "moment";
 
 import NewEditForm from "components/common/new-edit-form";
 import { PackageAPI, listUrl } from "lib/api/package";
@@ -10,8 +13,10 @@ import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
     PackageName: yup.string().required("Бөглөнө үү"),
-    PackageDescription: yup.string().required("Бөглөнө үү"),
-    ShowWarning: yup.boolean(),
+    Description: yup.string().required("Бөглөнө үү"),
+    Nights: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    BeginDate: yup.date().required("Бөглөнө үү"),
+    EndDate: yup.date().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -38,7 +43,7 @@ const NewEdit = () => {
                 size="small"
                 fullWidth
                 id="PackageName"
-                label="PackageName"
+                label="Package Name"
                 {...register("PackageName")}
                 margin="dense"
                 error={errors.PackageName?.message}
@@ -48,32 +53,81 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="PackageDescription"
-                label="PackageDescription"
-                {...register("PackageDescription")}
+                id="Description"
+                label="Description"
+                {...register("Description")}
                 margin="dense"
-                error={errors.PackageDescription?.message}
-                helperText={errors.PackageDescription?.message}
+                error={errors.Description?.message}
+                helperText={errors.Description?.message}
             />
 
-            <FormControlLabel
-                control={
-                    <Controller
-                        name="ShowWarning"
-                        control={control}
-                        render={(props: any) => (
-                            <Checkbox
-                                {...register("ShowWarning")}
-                                checked={props.field.value}
-                                onChange={(e) =>
-                                    props.field.onChange(e.target.checked)
-                                }
-                            />
-                        )}
-                    />
-                }
-                label="ShowWarning"
+            <TextField
+                size="small"
+                type="number"
+                fullWidth
+                id="Nights"
+                label="Nights"
+                {...register("Nights")}
+                margin="dense"
+                error={errors.Nights?.message}
+                helperText={errors.Nights?.message}
             />
+
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Controller
+                    name="BeginDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Эхлэх огноо"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value).format("YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id="BeginDate"
+                                    {...register("BeginDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.BeginDate?.message}
+                                    helperText={errors.BeginDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+
+                <Controller
+                    name="EndDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Дуусах огноо"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value).format("YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id="EndDate"
+                                    {...register("EndDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </LocalizationProvider>
         </NewEditForm>
     );
 };

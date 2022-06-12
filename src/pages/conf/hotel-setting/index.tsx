@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import HotelSetting from "components/conf/hotel-setting/list";
 
-const title = "Hotel Setting";
+const title = "Hotel Settings";
 
 const Index = () => (
     <>

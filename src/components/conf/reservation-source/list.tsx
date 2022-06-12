@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import {
@@ -9,22 +11,38 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Vip Status",
+        title: "Reservation Source",
         key: "ReservationSourceName",
         dataIndex: "ReservationSourceName",
     },
     {
-        title: "Description",
-        key: "ReservationSourceDescription",
-        dataIndex: "ReservationSourceDescription",
+        title: "Channel",
+        key: "ChannelName",
+        dataIndex: "ChannelName",
     },
     {
-        title: "Show Warning",
-        key: "ShowWarning",
-        dataIndex: "ShowWarning",
+        title: "User Name",
+        key: "UserName",
+        dataIndex: "UserName",
+    },
+    {
+        title: "Changed Date",
+        key: "CreatedDate",
+        dataIndex: "CreatedDate",
         render: function render(id: any, value: any) {
-            return <ToggleChecked id={id} checked={value} disabled={true} />;
+            return (
+                value &&
+                format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                )
+            );
         },
+    },
+    {
+        title: "IP Address",
+        key: "IPAddress",
+        dataIndex: "IPAddress",
     },
     {
         title: "Status",

@@ -15,7 +15,7 @@ const columns = [
         dataIndex: "StatusColor",
         render: function render(id: any, value: any) {
             return (
-                <Tooltip title={value} placement="top">
+                <Tooltip title={`#${value}`} placement="top">
                     <div
                         style={{
                             width: "40px",
