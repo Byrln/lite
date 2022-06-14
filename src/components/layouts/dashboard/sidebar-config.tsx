@@ -129,7 +129,7 @@ const sidebarConfig = [
         children: [
             {
                 title: "hotel information",
-                path: "/conf/hotel",
+                path: "/conf/hotel-information",
             },
             {
                 title: "e-mail configuration",

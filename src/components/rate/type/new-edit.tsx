@@ -1,4 +1,4 @@
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { FormControlLabel, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
@@ -16,22 +16,13 @@ const validationSchema = yup.object().shape({
     ChannelID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     BreakfastIncluded: yup.boolean(),
     TaxIncluded: yup.boolean(),
-    RoomType: yup.array().of(
-        yup.object().shape({
-            BaseRate: yup
-                .number()
-                .required("Бөглөнө үү")
-                .typeError("Бөглөнө үү"),
-            ExtraAdult: yup
-                .number()
-                .required("Бөглөнө үү")
-                .typeError("Бөглөнө үү"),
-            ExtraChild: yup
-                .number()
-                .required("Бөглөнө үү")
-                .typeError("Бөглөнө үү"),
-        })
-    ),
+    // RoomTypes: yup.array().of(
+    //     yup.object().shape({
+    //         BaseRate: yup.number(),
+    //         ExtraAdult: yup.number(),
+    //         ExtraChild: yup.number(),
+    //     })
+    // ),
 });
 
 const NewEdit = () => {
@@ -44,11 +35,6 @@ const NewEdit = () => {
         formState: { errors },
     } = useForm({
         resolver: yupResolver(validationSchema),
-    });
-
-    const { fields } = useFieldArray({
-        name: "RoomTypes",
-        control,
     });
 
     return (

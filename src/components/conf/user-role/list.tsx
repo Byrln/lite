@@ -6,13 +6,13 @@ import NewEdit from "./new-edit";
 const columns = [
     {
         title: "Short Code",
-        key: "UserRoleName",
-        dataIndex: "UserRoleName",
+        key: "UserRoleShortName",
+        dataIndex: "UserRoleShortName",
     },
     {
         title: "User Role",
-        key: "Description",
-        dataIndex: "Description",
+        key: "UserRoleName",
+        dataIndex: "UserRoleName",
     },
     {
         title: "Description",

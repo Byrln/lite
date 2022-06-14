@@ -3,10 +3,17 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
 import CustomSelect from "components/common/custom-select";
-import { ChannelSWR } from "lib/api/reference";
+import { ReferenceSWR } from "lib/api/reference";
 
-const ChannelSelect = ({ register, errors }: any) => {
-    const { data, error } = ChannelSWR();
+const ReferenceSelect = ({
+    register,
+    errors,
+    type,
+    label,
+    optionValue,
+    optionLabel,
+}: any) => {
+    const { data, error } = ReferenceSWR(type);
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -22,13 +29,13 @@ const ChannelSelect = ({ register, errors }: any) => {
         <CustomSelect
             register={register}
             errors={errors}
-            field="ChannelID"
-            label="ChannelID"
+            field={optionValue}
+            label={label}
             options={data}
-            optionValue="ChannelID"
-            optionLabel="ChannelName"
+            optionValue={optionValue}
+            optionLabel={optionLabel}
         />
     );
 };
 
-export default ChannelSelect;
+export default ReferenceSelect;

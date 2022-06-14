@@ -38,6 +38,16 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
 
             {data.map((element: any, index: any) => (
                 <Grid key={element.RoomTypeID} container spacing={1}>
+                    <input
+                        type="hidden"
+                        {...register(`RoomTypes[${index}].RateTypeID`)}
+                        value={element.RateTypeID}
+                    />
+                    <input
+                        type="hidden"
+                        {...register(`RoomTypes[${index}].RoomTypeID`)}
+                        value={element.RoomTypeID}
+                    />
                     <Grid item xs={3}>
                         <FormControlLabel
                             control={
@@ -47,7 +57,7 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
                                     render={(props: any) => (
                                         <Checkbox
                                             {...register(
-                                                `RoomType.${element.index}.Status`
+                                                `RoomTypes[${index}].Status`
                                             )}
                                             checked={props.field.value}
                                             onChange={(e) =>
@@ -69,7 +79,7 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
                             fullWidth
                             id="BaseRate"
                             label="Base Rate"
-                            {...register(`RoomType.${element.index}.BaseRate`)}
+                            {...register(`RoomTypes[${index}].BaseRate`)}
                             margin="dense"
                             error={errors.BaseRate?.message}
                             helperText={errors.BaseRate?.message}
@@ -82,9 +92,7 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
                             fullWidth
                             id="Extra Adult"
                             label="Extra Adult"
-                            {...register(
-                                `RoomType.${element.index}.ExtraAdult`
-                            )}
+                            {...register(`RoomTypes[${index}].ExtraAdult`)}
                             margin="dense"
                             error={errors.ExtraAdult?.message}
                             helperText={errors.ExtraAdult?.message}
@@ -97,9 +105,7 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
                             fullWidth
                             id={`Extra Child`}
                             label="ExtraChild"
-                            {...register(
-                                `RoomType.${element.index}.ExtraChild`
-                            )}
+                            {...register(`RoomTypes[${index}].ExtraChild`)}
                             margin="dense"
                             error={errors.ExtraChild?.message}
                             helperText={errors.ExtraChild?.message}

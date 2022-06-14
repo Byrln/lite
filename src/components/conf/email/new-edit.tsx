@@ -5,32 +5,37 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
 import { EmailAPI, listUrl } from "lib/api/email-conf";
+import { useAppState } from "lib/context/app";
 
-const NewEdit = ({ entity }: any) => {
-    const validationSchema = yup.object().shape({
-        Email: yup.string().required("Бөглөнө үү"),
-        EmailHost: yup.string().required("Бөглөнө үү"),
-        Port: yup.number().required("Бөглөнө үү"),
-        UserName: yup.string().required("Бөглөнө үү"),
-        Password: yup.string().required("Бөглөнө үү"),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
+const validationSchema = yup.object().shape({
+    Email: yup.string().email().required("Бөглөнө үү"),
+    EmailHost: yup.string().required("Бөглөнө үү"),
+    Port: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    UserName: yup.string().required("Бөглөнө үү"),
+    Password: yup.string().required("Бөглөнө үү"),
+});
 
+const NewEdit = () => {
+    const [state]: any = useAppState();
     const {
         register,
+        reset,
         handleSubmit,
         formState: { errors },
-    } = useForm(formOptions);
+    } = useForm({ resolver: yupResolver(validationSchema) });
 
     return (
         <NewEditForm
             api={EmailAPI}
-            entity={entity}
             listUrl={listUrl}
+            additionalValues={{
+                EmailID: state.editId,
+            }}
+            reset={reset}
             handleSubmit={handleSubmit}
-            additionalValues={{ HotelID: 0 }}
         >
             <TextField
+                size="small"
                 fullWidth
                 id="Email"
                 label="И-Мэйл"
@@ -41,6 +46,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 fullWidth
                 id="EmailHost"
                 label="И-Мэйл сервер"
@@ -51,6 +57,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 type="number"
                 fullWidth
                 id="Port"
@@ -62,6 +69,7 @@ const NewEdit = ({ entity }: any) => {
             />
 
             <TextField
+                size="small"
                 fullWidth
                 id="UserName"
                 label="Хэрэглэгчийн нэр"
@@ -71,16 +79,19 @@ const NewEdit = ({ entity }: any) => {
                 helperText={errors.UserName?.message}
             />
 
-            <TextField
-                fullWidth
-                id="Password"
-                label="Нууц үг"
-                type="password"
-                {...register("Password")}
-                margin="dense"
-                error={errors.Password?.message}
-                helperText={errors.Password?.message}
-            />
+            {!state.editId && (
+                <TextField
+                    size="small"
+                    fullWidth
+                    id="Password"
+                    label="Нууц үг"
+                    type="password"
+                    {...register("Password")}
+                    margin="dense"
+                    error={errors.Password?.message}
+                    helperText={errors.Password?.message}
+                />
+            )}
         </NewEditForm>
     );
 };

@@ -41,7 +41,7 @@ const NewEditForm = ({
 
     const onSubmit = async (values: any) => {
         setLoading(true);
-        console.log(values);
+
         try {
             if (additionalValues) {
                 values = Object.assign(values, additionalValues);

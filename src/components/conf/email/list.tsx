@@ -1,8 +1,15 @@
+import { useContext } from "react";
+import { Button } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+
 import CustomTable from "components/common/custom-table";
 import { EmailSWR, EmailAPI, listUrl } from "lib/api/email-conf";
 import NewEdit from "./new-edit";
+import { ModalContext } from "lib/context/modal";
+import ChangePassword from "./change-password";
 
-const EmailList = () => {
+const EmailList = ({ title }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
     const { data, error } = EmailSWR();
 
     const columns = [
@@ -36,6 +43,30 @@ const EmailList = () => {
                 return value && "Main";
             },
         },
+        {
+            title: "Change Password",
+            key: "ChangePassword",
+            dataIndex: "ChangePassword",
+            render: function render(id: any, value: any) {
+                return (
+                    <Button
+                        size="small"
+                        variant="outlined"
+                        color="secondary"
+                        startIcon={<EditIcon />}
+                        onClick={() => {
+                            handleModal(
+                                true,
+                                `Нууц үг өөрчлөх`,
+                                <ChangePassword id={id} />
+                            );
+                        }}
+                    >
+                        Солих
+                    </Button>
+                );
+            },
+        },
     ];
 
     return (
@@ -46,10 +77,12 @@ const EmailList = () => {
             api={EmailAPI}
             hasNew={true}
             hasUpdate={true}
+            hasDelete={true}
             id="EmailID"
             listUrl={listUrl}
-            modalTitle="И-мэйл"
+            modalTitle={title}
             modalContent={<NewEdit />}
+            excelName={title}
         />
     );
 };

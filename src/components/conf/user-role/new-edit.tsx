@@ -9,10 +9,13 @@ import { UserRoleAPI, listUrl } from "lib/api/user-role";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
-    ShortCode: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    UserRole: yup.string().required("Бөглөнө үү"),
+    UserRoleShortName: yup
+        .number()
+        .required("Бөглөнө үү")
+        .typeError("Бөглөнө үү"),
+    UserRoleName: yup.string().required("Бөглөнө үү"),
     Description: yup.string().required("Бөглөнө үү"),
-    ShowWarning: yup.boolean(),
+    ParentID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -38,24 +41,25 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="ShortCode"
-                label="ShortCode"
-                {...register("ShortCode")}
+                id="UserRoleShortName"
+                label="Short Code"
+                {...register("UserRoleShortName")}
                 margin="dense"
-                error={errors.ShortCode?.message}
-                helperText={errors.ShortCode?.message}
+                error={errors.UserRoleShortName?.message}
+                helperText={errors.UserRoleShortName?.message}
             />
 
             <TextField
                 size="small"
                 fullWidth
-                id="UserRole"
-                label="UserRole"
-                {...register("UserRole")}
+                id="UserRoleName"
+                label="User Role"
+                {...register("UserRoleName")}
                 margin="dense"
-                error={errors.UserRole?.message}
-                helperText={errors.UserRole?.message}
+                error={errors.UserRoleName?.message}
+                helperText={errors.UserRoleName?.message}
             />
+
             <TextField
                 size="small"
                 fullWidth
