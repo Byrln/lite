@@ -25,7 +25,7 @@ export const UserRoleAPI = {
             UserRoleID: id,
         };
 
-        const res = await axios.post(listUrl, values);
+        const res = await axios.post(`${urlPrefix}/Detail`, values);
 
         return JSON.parse(res.data.JsonData);
     },

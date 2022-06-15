@@ -60,7 +60,11 @@ const NewEdit = () => {
                 helperText={errors.LoginName?.message}
             />
 
-            <UserRoleSelect register={register} errors={errors} />
+            <UserRoleSelect
+                register={register}
+                errors={errors}
+                field="UserRoleID"
+            />
 
             <LanguageSelect register={register} errors={errors} />
 

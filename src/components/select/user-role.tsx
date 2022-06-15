@@ -5,7 +5,7 @@ import Skeleton from "@mui/material/Skeleton";
 import CustomSelect from "components/common/custom-select";
 import { UserRoleSWR } from "lib/api/user-role";
 
-const UserRoleSelect = ({ register, errors }: any) => {
+const UserRoleSelect = ({ register, errors, field }: any) => {
     const { data, error } = UserRoleSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -22,7 +22,7 @@ const UserRoleSelect = ({ register, errors }: any) => {
         <CustomSelect
             register={register}
             errors={errors}
-            field="UserRoleID"
+            field={field}
             label="User Role"
             options={data}
             optionValue="UserRoleID"
