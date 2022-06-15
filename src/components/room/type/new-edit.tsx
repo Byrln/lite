@@ -1,9 +1,5 @@
-import { useState } from "react";
 import {
     Checkbox,
-    Typography,
-    Tabs,
-    Tab,
     Box,
     Grid,
     FormControlLabel,
@@ -20,35 +16,7 @@ import AmenitySelect from "components/select/amenity";
 
 import { RoomTypeAPI, listUrl } from "lib/api/room-type";
 import { useAppState } from "lib/context/app";
-
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && <Typography>{children}</Typography>}
-        </div>
-    );
-}
-
-function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        "aria-controls": `simple-tabpanel-${index}`,
-    };
-}
+import CustomTab from "components/common/custom-tab";
 
 const validationSchema = yup.object().shape({
     RoomTypeShortName: yup.string().required("Бөглөнө үү"),
@@ -62,10 +30,6 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
-    const [value, setValue] = useState(0);
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
     const [state]: any = useAppState();
     const {
         register,
@@ -75,27 +39,11 @@ const NewEdit = () => {
     } = useForm({
         resolver: yupResolver(validationSchema),
     });
-
-    return (
-        <NewEditForm
-            api={RoomTypeAPI}
-            listUrl={listUrl}
-            additionalValues={{ RoomTypeID: state.editId }}
-            reset={reset}
-            handleSubmit={handleSubmit}
-        >
-            <Box sx={{ width: "100%" }}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="basic tabs"
-                    sx={{ pb: 2 }}
-                >
-                    <Tab label="General" {...a11yProps(0)} />
-                    <Tab label="Booking Engine" {...a11yProps(1)} />
-                </Tabs>
-
-                <TabPanel value={value} index={0}>
+    const tabs = [
+        {
+            label: "General",
+            component: (
+                <>
                     <TextField
                         size="small"
                         fullWidth
@@ -185,9 +133,13 @@ const NewEdit = () => {
                     />
 
                     <RoomAmenitySelect register={register} errors={errors} />
-                </TabPanel>
-
-                <TabPanel value={value} index={1}>
+                </>
+            ),
+        },
+        {
+            label: "Booking Engine",
+            component: (
+                <>
                     <TextField
                         size="small"
                         fullWidth
@@ -220,7 +172,21 @@ const NewEdit = () => {
                     </FormGroup>
 
                     <AmenitySelect register={register} errors={errors} />
-                </TabPanel>
+                </>
+            ),
+        },
+    ];
+
+    return (
+        <NewEditForm
+            api={RoomTypeAPI}
+            listUrl={listUrl}
+            additionalValues={{ RoomTypeID: state.editId }}
+            reset={reset}
+            handleSubmit={handleSubmit}
+        >
+            <Box sx={{ width: "100%" }}>
+                <CustomTab tabs={tabs} />
             </Box>
         </NewEditForm>
     );

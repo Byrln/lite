@@ -19,6 +19,20 @@ export const UserRoleSWR = () => {
     return useSWR(listUrl, fetcher);
 };
 
+export const UserRolePrivilegeSWR = () => {
+    const values = {
+        UserRoleID: null,
+        ActionGroupType: 0,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
+
+    return useSWR(`${urlPrefix}/GetPrivileges`, fetcher);
+};
+
 export const UserRoleAPI = {
     get: async (id: any) => {
         const values = {

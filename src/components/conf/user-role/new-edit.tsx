@@ -7,6 +7,7 @@ import NewEditForm from "components/common/new-edit-form";
 import { UserRoleAPI, listUrl } from "lib/api/user-role";
 import { useAppState } from "lib/context/app";
 import UserRoleSelect from "components/select/user-role";
+import UserRolePrivilegeSelect from "components/select/user-role-privilege";
 
 const validationSchema = yup.object().shape({
     UserRoleShortName: yup.string().required("Бөглөнө үү"),
@@ -73,6 +74,27 @@ const NewEdit = () => {
                 register={register}
                 errors={errors}
                 field="ParentID"
+            />
+
+            <UserRolePrivilegeSelect
+                register={register}
+                errors={errors}
+                type={1}
+                title="Front Office"
+            />
+
+            <UserRolePrivilegeSelect
+                register={register}
+                errors={errors}
+                type={2}
+                title="Configuration"
+            />
+
+            <UserRolePrivilegeSelect
+                register={register}
+                errors={errors}
+                type={3}
+                title="Reports"
             />
         </NewEditForm>
     );
