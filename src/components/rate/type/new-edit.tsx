@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import NewEditForm from "components/common/new-edit-form";
 import { RateTypeAPI, listUrl } from "lib/api/rate-type";
 import { useAppState } from "lib/context/app";
-import ChannelSelect from "components/select/channel";
+import ChannelSelect from "components/select/reference";
 import BaseRateList from "./base-rate-list";
 
 const validationSchema = yup.object().shape({

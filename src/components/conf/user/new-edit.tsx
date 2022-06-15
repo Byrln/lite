@@ -7,11 +7,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import NewEditForm from "components/common/new-edit-form";
 import { UserAPI, listUrl } from "lib/api/user";
 import { useAppState } from "lib/context/app";
+import LanguageSelect from "components/select/language";
+import UserRoleSelect from "components/select/user-role";
 
 const validationSchema = yup.object().shape({
     UserName: yup.string().required("Бөглөнө үү"),
-    User: yup.string().required("Бөглөнө үү"),
-    ShowWarning: yup.boolean(),
+    LoginName: yup.string().required("Бөглөнө үү"),
+    UserRoleID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    Language: yup.string().required("Бөглөнө үү"),
+    Email: yup.string().email().required("Бөглөнө үү"),
+    Password: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -20,7 +25,6 @@ const NewEdit = () => {
         register,
         reset,
         handleSubmit,
-        control,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
 
@@ -37,8 +41,8 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="User Name"
-                label="UserName"
+                id="UserName"
+                label="User Name"
                 {...register("UserName")}
                 margin="dense"
                 error={errors.UserName?.message}
@@ -48,31 +52,39 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="Login Name"
-                label="LoginName"
+                id="LoginName"
+                label="Login Name"
                 {...register("LoginName")}
                 margin="dense"
                 error={errors.LoginName?.message}
                 helperText={errors.LoginName?.message}
             />
 
-            <FormControlLabel
-                control={
-                    <Controller
-                        name="ShowWarning"
-                        control={control}
-                        render={(props: any) => (
-                            <Checkbox
-                                {...register("ShowWarning")}
-                                checked={props.field.value}
-                                onChange={(e) =>
-                                    props.field.onChange(e.target.checked)
-                                }
-                            />
-                        )}
-                    />
-                }
-                label="ShowWarning"
+            <UserRoleSelect register={register} errors={errors} />
+
+            <LanguageSelect register={register} errors={errors} />
+
+            <TextField
+                size="small"
+                fullWidth
+                id="Email"
+                label="Email"
+                {...register("Email")}
+                margin="dense"
+                error={errors.Email?.message}
+                helperText={errors.Email?.message}
+            />
+
+            <TextField
+                size="small"
+                type="password"
+                fullWidth
+                id="Password"
+                label="Password"
+                {...register("Password")}
+                margin="dense"
+                error={errors.Password?.message}
+                helperText={errors.Password?.message}
             />
         </NewEditForm>
     );

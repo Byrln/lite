@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 
 import { HotelAPI } from "lib/api/hotel";
 import SubmitButton from "components/common/submit-button";
-import ReferenceSelect from "components/select/channel";
+import ReferenceSelect from "components/select/reference";
 
 interface TabPanelProps {
     children?: React.ReactNode;
