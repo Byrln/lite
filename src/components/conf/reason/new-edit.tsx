@@ -7,10 +7,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import NewEditForm from "components/common/new-edit-form";
 import { ReasonAPI, listUrl } from "lib/api/reason";
 import { useAppState } from "lib/context/app";
+import ReasonType from "components/select/reason";
 
 const validationSchema = yup.object().shape({
-    RoomStatusID: yup.number().required("Бөглөнө үү"),
-    Reason: yup.string().required("Бөглөнө үү"),
+    ReasonType: yup.string().required("Бөглөнө үү"),
+    ReasonName: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -19,7 +20,6 @@ const NewEdit = () => {
         register,
         reset,
         handleSubmit,
-        control,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
 
@@ -33,29 +33,19 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="Reason"
-                label="Reason"
-                {...register("Reason")}
-                margin="dense"
-                error={errors.Reason?.message}
-                helperText={errors.Reason?.message}
-            />
+            <ReasonType register={register} errors={errors} />
 
             <TextField
                 size="small"
                 fullWidth
-                id="Reason12312"
-                label="Reason12312"
-                {...register("Reason12312")}
+                id="ReasonName"
+                label="ReasonName"
+                {...register("ReasonName")}
                 margin="dense"
-                error={errors.Reason12312?.message}
-                helperText={errors.Reason12312?.message}
+                error={errors.ReasonName?.message}
+                helperText={errors.ReasonName?.message}
             />
         </NewEditForm>
     );
 };
-
 export default NewEdit;

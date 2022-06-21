@@ -7,11 +7,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import NewEditForm from "components/common/new-edit-form";
 import { PromotionAPI, listUrl } from "lib/api/promotion";
 import { useAppState } from "lib/context/app";
+import { DatePicker, LocalizationProvider } from "@mui/lab";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import moment from "moment";
 
 const validationSchema = yup.object().shape({
-    PromotionName: yup.string().required("Бөглөнө үү"),
-    PromotionDescription: yup.string().required("Бөглөнө үү"),
-    ShowWarning: yup.boolean(),
+    PromotionCode: yup.string().required("Бөглөнө үү"),
+    PromotionType: yup.string().required("Бөглөнө үү"),
+    Description: yup.string().required("Бөглөнө үү"),
+    BeginDate: yup.date().required("Бөглөнө үү"),
+    EndDate: yup.date().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -37,43 +42,92 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="PromotionName"
-                label="PromotionName"
-                {...register("PromotionName")}
+                id="PromotionCode"
+                label="Promotion Name"
+                {...register("PromotionCode")}
                 margin="dense"
-                error={errors.PromotionName?.message}
-                helperText={errors.PromotionName?.message}
+                error={errors.PromotionCode?.message}
+                helperText={errors.PromotionCode?.message}
             />
 
             <TextField
                 size="small"
                 fullWidth
-                id="PromotionDescription"
-                label="PromotionDescription"
-                {...register("PromotionDescription")}
+                id="PromotionType"
+                label="Promotion Type"
+                {...register("PromotionType")}
                 margin="dense"
-                error={errors.PromotionDescription?.message}
-                helperText={errors.PromotionDescription?.message}
+                error={errors.PromotionType?.message}
+                helperText={errors.PromotionType?.message}
             />
 
-            <FormControlLabel
-                control={
-                    <Controller
-                        name="ShowWarning"
-                        control={control}
-                        render={(props: any) => (
-                            <Checkbox
-                                {...register("ShowWarning")}
-                                checked={props.field.value}
-                                onChange={(e) =>
-                                    props.field.onChange(e.target.checked)
-                                }
-                            />
-                        )}
-                    />
-                }
-                label="ShowWarning"
+            <TextField
+                size="small"
+                fullWidth
+                multiline
+                id="Description"
+                label="Description"
+                {...register("Description")}
+                margin="dense"
+                error={errors.Description?.message}
+                helperText={errors.Description?.message}
             />
+
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Controller
+                    name="BeginDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Begin Date"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value).format("YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id="BeginDate"
+                                    {...register("BeginDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.BeginDate?.message}
+                                    helperText={errors.BeginDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+
+                <Controller
+                    name="EndDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="End Date"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value).format("YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id="EndDate"
+                                    {...register("EndDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </LocalizationProvider>
         </NewEditForm>
     );
 };

@@ -6,7 +6,7 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Reason",
+        title: "reason",
         key: "ReasonName",
         dataIndex: "ReasonName",
     },
