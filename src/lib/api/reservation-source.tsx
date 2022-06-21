@@ -5,9 +5,10 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/ReservationSource";
 export const listUrl = `${urlPrefix}/list`;
 
-export const ReservationSourceSWR = () => {
+export const ReservationSourceSWR = (ChannelId: number) => {
     const values = {
         ReservationSourceID: null,
+        ChannelId: ChannelId,
         EmptyRow: 0,
     };
 

@@ -1,7 +1,7 @@
-import ToggleChecked from "components/common/custom-switch";
+import { format } from "date-fns";
+
 import CustomTable from "components/common/custom-table";
 import { PromotionSWR, PromotionAPI, listUrl } from "lib/api/promotion";
-import { format } from "path";
 import NewEdit from "./new-edit";
 
 const columns = [
@@ -17,10 +17,7 @@ const columns = [
         render: function render(id: any, value: any) {
             return (
                 value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy hh:mm:ss a"
-                )
+                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
             );
         },
     },
@@ -31,10 +28,7 @@ const columns = [
         render: function render(id: any, value: any) {
             return (
                 value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy hh:mm:ss a"
-                )
+                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
             );
         },
     },
@@ -42,11 +36,23 @@ const columns = [
         title: "Available On",
         key: "AvailableOn",
         dataIndex: "AvailableOn",
+        render: function render(id: any, value: any) {
+            return value === 1
+                ? "Өдөр бүр"
+                : value === 2
+                ? "Эхний өдөр"
+                : value === 3
+                ? "Сүүлийн өдөр"
+                : "";
+        },
     },
     {
-        title: "Status",
-        key: "Status",
-        dataIndex: "Status",
+        title: "Week Days Enabled",
+        key: "WeekDaysEnabled",
+        dataIndex: "WeekDaysEnabled",
+        render: function render(id: any, value: any) {
+            return value ? "долоо хоногийн үнэ" : "энгийн";
+        },
     },
 ];
 

@@ -1,16 +1,15 @@
-import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
+import { useForm } from "react-hook-form";
+import { TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
 import { ReasonAPI, listUrl } from "lib/api/reason";
 import { useAppState } from "lib/context/app";
-import ReasonType from "components/select/reason";
+import ReasonTypeSelect from "components/select/reason-type";
 
 const validationSchema = yup.object().shape({
-    ReasonType: yup.string().required("Бөглөнө үү"),
+    ReasonTypeID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     ReasonName: yup.string().required("Бөглөнө үү"),
 });
 
@@ -33,7 +32,12 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <ReasonType register={register} errors={errors} />
+            <ReasonTypeSelect
+                register={register}
+                errors={errors}
+                label="Category"
+                ReasonTypeID={1}
+            />
 
             <TextField
                 size="small"
