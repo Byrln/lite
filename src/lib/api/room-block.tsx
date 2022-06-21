@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import { ApiResponseModel } from "models/response/ApiResponseModel";
 import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/RoomBlock";
@@ -24,10 +23,7 @@ export const RoomBlockSWR = (dateStart: any, dateEnd: any) => {
 
 export const RoomBlockAPI = {
     list: async (values: any) => {
-        const { data, status } = await axios.post(
-            listUrl,
-            values
-        );
+        const { data, status } = await axios.post(listUrl, values);
         if (status != 200) {
             return [];
         }
@@ -44,7 +40,10 @@ export const RoomBlockAPI = {
     },
 
     updateStatus: async (id: any, values: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/UpdateStatus`, values);
+        const { data, status } = await axios.post(
+            `${urlPrefix}/UpdateStatus`,
+            values
+        );
         return {
             data,
             status,
@@ -52,7 +51,10 @@ export const RoomBlockAPI = {
     },
 
     update: async (id: any, values: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/Update`, values);
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
 
         return {
             data,
