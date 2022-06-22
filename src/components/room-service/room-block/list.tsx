@@ -5,8 +5,8 @@ import NewEdit from "./new-edit";
 const columns = [
     {
         title: "Room",
-        key: "Room",
-        dataIndex: "Room",
+        key: "RoomFullName",
+        dataIndex: "RoomFullName",
     },
     {
         title: "Begin Date",
@@ -20,18 +20,18 @@ const columns = [
     },
     {
         title: "Blocked On",
-        key: "BlockedOn",
-        dataIndex: "BlockedOn",
+        key: "CreatedDate",
+        dataIndex: "CreatedDate",
     },
     {
         title: "Blocked By",
-        key: "BlockedBy",
-        dataIndex: "BlockedBy",
+        key: "UserName",
+        dataIndex: "UserName",
     },
     {
         title: "Reason",
-        key: "Reason",
-        dataIndex: "Reason",
+        key: "Description",
+        dataIndex: "Description",
     },
 ];
 
@@ -44,9 +44,9 @@ const RoomBlockList = ({ title }: any) => {
             data={data}
             error={error}
             api={RoomBlockAPI}
-            hasNew={true}
-            hasUpdate={true}
-            hasDelete={true}
+            //hasNew={true}
+            //hasUpdate={true}
+            //hasDelete={true}
             id="RoomBlockID"
             listUrl={listUrl}
             modalTitle={title}

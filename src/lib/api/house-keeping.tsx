@@ -2,14 +2,14 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Promotion";
-export const listUrl = `${urlPrefix}/list`;
+const urlPrefix = "/api/HouseKeeping";
+export const listCurrentUrl = `${urlPrefix}/Current`;
+export const listRoomUrl = `${urlPrefix}/Rooms`;
 
-export const HouseKeepingSWR = (ChannelId: number) => {
+export const HouseKeepingCurrentSWR = () => {
     const values = {
-        HouseKeepingID: null,
-        ChannelId: ChannelId,
-        EmptyRow: 0,
+        RoomTypeID: null,
+        RoomID: null,
     };
 
     const fetcher = async (url: any) =>
@@ -17,20 +17,24 @@ export const HouseKeepingSWR = (ChannelId: number) => {
             .post(url, values)
             .then((res: any) => JSON.parse(res.data.JsonData));
 
-    return useSWR(listUrl, fetcher);
+    return useSWR(listCurrentUrl, fetcher);
+};
+
+export const HouseKeepingRoomSWR = () => {
+    const values = {
+        RoomTypeID: null,
+        RoomID: null,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonData));
+
+    return useSWR(listRoomUrl, fetcher);
 };
 
 export const HouseKeepingAPI = {
-    get: async (id: any) => {
-        const values = {
-            HouseKeepingID: id,
-        };
-
-        const res = await axios.post(listUrl, values);
-
-        return JSON.parse(res.data.JsonData);
-    },
-
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 

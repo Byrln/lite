@@ -2,14 +2,13 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Promotion";
+const urlPrefix = "/api/Currency";
 export const listUrl = `${urlPrefix}/list`;
 
-export const ExchangeRateSWR = (ChannelId: number) => {
+export const ExchangeRateSWR = () => {
     const values = {
-        ExchangeRateID: null,
-        ChannelId: ChannelId,
-        EmptyRow: 0,
+        CurrencyID: null,
+        CountryID: null,
     };
 
     const fetcher = async (url: any) =>

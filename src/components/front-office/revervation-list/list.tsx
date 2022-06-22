@@ -1,92 +1,93 @@
 import { format } from "date-fns";
 
-import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
-import { RevervationSWR, RevervationAPI, listUrl } from "lib/api/revervation";
+import { ReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
 import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Begin Date",
-        key: "BeginDate",
-        dataIndex: "BeginDate",
+        title: "Check In",
+        key: "CheckIn",
+        dataIndex: "CheckIn",
+    },
+    {
+        title: "Arrival",
+        key: "ArrivalDate",
+        dataIndex: "ArrivalDate",
         render: function render(id: any, value: any) {
             return (
                 value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+                format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                )
             );
         },
     },
     {
-        title: "End Date",
-        key: "EndDate",
-        dataIndex: "EndDate",
+        title: "Departure",
+        key: "DepartureDate",
+        dataIndex: "DepartureDate",
         render: function render(id: any, value: any) {
             return (
                 value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+                format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                )
             );
         },
     },
     {
-        title: "Company",
-        key: "Company",
-        dataIndex: "Company",
+        title: "Guest",
+        key: "GuestName",
+        dataIndex: "GuestName",
     },
     {
-        title: "Name",
-        key: "Name",
-        dataIndex: "Name",
+        title: "Room",
+        key: "RoomFullName",
+        dataIndex: "RoomFullName",
     },
     {
-        title: "Phone",
-        key: "Phone",
-        dataIndex: "Phone",
+        title: "company",
+        key: "company",
+        dataIndex: "company",
     },
     {
-        title: "Email",
-        key: "Email",
-        dataIndex: "Email",
+        title: "Total",
+        key: "TotalAmount",
+        dataIndex: "TotalAmount",
     },
     {
-        title: "Revervation Type",
-        key: "RevervationType",
-        dataIndex: "RevervationType",
-        render: function render(id: any, value: any) {
-            return value === 1
-                ? "Confirm Booking"
-                : value === 2
-                ? "Unconfirmed Booking Inquiry"
-                : "";
-        },
+        title: "Paid",
+        key: "Deposit",
+        dataIndex: "Deposit",
     },
     {
-        title: "Revervation Source",
-        key: "RevervationSource",
-        dataIndex: "RevervationSource",
-        render: function render(id: any, value: any) {
-            return value === 1
-                ? "Confirm Booking"
-                : value === 2
-                ? "Unconfirmed Booking Inquiry"
-                : "";
-        },
+        title: "Balance",
+        key: "CurrentBalance",
+        dataIndex: "CurrentBalance",
+    },
+    {
+        title: "User",
+        key: "UserName",
+        dataIndex: "UserName",
     },
 ];
 
-const RevervationList = ({ title }: any) => {
-    const { data, error } = RevervationSWR();
+const DeparturedListList = ({ title }: any) => {
+    const { data, error } = ReservationSWR(1);
 
     return (
         <CustomTable
             columns={columns}
             data={data}
             error={error}
-            api={RevervationAPI}
+            api={ReservationAPI}
             hasNew={true}
             hasUpdate={true}
-            hasDelete={true}
-            id="RevervationID"
+            //hasDelete={true}
+            id="DeparturedListID"
             listUrl={listUrl}
             modalTitle={title}
             modalContent={<NewEdit />}
@@ -95,4 +96,4 @@ const RevervationList = ({ title }: any) => {
     );
 };
 
-export default RevervationList;
+export default DeparturedListList;

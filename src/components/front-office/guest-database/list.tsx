@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import {
@@ -12,18 +10,23 @@ import NewEdit from "./new-edit";
 const columns = [
     {
         title: "Guest Name",
-        key: "GuestName",
-        dataIndex: "GuestName",
+        key: "GuestFullName",
+        dataIndex: "GuestFullName",
     },
     {
         title: "Country",
-        key: "Country",
-        dataIndex: "Country",
+        key: "CountryName",
+        dataIndex: "CountryName",
     },
     {
         title: "Phone",
         key: "Phone",
         dataIndex: "Phone",
+    },
+    {
+        title: "Mobile",
+        key: "Mobile",
+        dataIndex: "Mobile",
     },
     {
         title: "Email",
@@ -33,8 +36,8 @@ const columns = [
 
     {
         title: "Vip Status",
-        key: "VipStatus",
-        dataIndex: "VipStatus",
+        key: "VipStatusName",
+        dataIndex: "VipStatusName",
     },
 ];
 

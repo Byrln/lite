@@ -1,49 +1,50 @@
 import CustomTable from "components/common/custom-table";
-import { HouseStatusSWR, HouseStatusAPI, listUrl } from "lib/api/house-status";
+import {
+    HouseKeepingRoomSWR,
+    HouseKeepingAPI,
+    listRoomUrl,
+} from "lib/api/house-keeping";
 import NewEdit from "./new-edit";
 
 const columns = [
     {
         title: "Room",
-        key: "Room",
-        dataIndex: "Room",
+        key: "RoomNo",
+        dataIndex: "RoomNo",
     },
     {
         title: "Room Type",
-        key: "RoomType",
-        dataIndex: "RoomType",
+        key: "RoomTypeName",
+        dataIndex: "RoomTypeName",
     },
     {
         title: "House Status",
-        key: "HouseStatus",
-        dataIndex: "HouseStatus",
+        key: "HKSDescription",
+        dataIndex: "HKSDescription",
     },
     {
         title: "Room Status",
-        key: "RoomStatus",
-        dataIndex: "RoomStatus",
+        key: "RSDescription",
+        dataIndex: "RSDescription",
     },
     {
         title: "HouseKeeper",
-        key: "HouseKeeper",
-        dataIndex: "HouseKeeper",
+        key: "HKUserName",
+        dataIndex: "HKUserName",
     },
 ];
 
 const HouseStatusList = ({ title }: any) => {
-    const { data, error } = HouseStatusSWR();
+    const { data, error } = HouseKeepingRoomSWR();
 
     return (
         <CustomTable
             columns={columns}
             data={data}
             error={error}
-            api={HouseStatusAPI}
-            hasNew={true}
-            hasUpdate={true}
-            hasDelete={true}
+            api={HouseKeepingAPI}
             id="HouseStatusID"
-            listUrl={listUrl}
+            listUrl={listRoomUrl}
             modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}

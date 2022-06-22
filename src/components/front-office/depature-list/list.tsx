@@ -1,78 +1,74 @@
 import { format } from "date-fns";
 
 import CustomTable from "components/common/custom-table";
-import {
-    DeparturedListSWR,
-    DeparturedListAPI,
-    listUrl,
-} from "lib/api/departured-list";
+import { ReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
 import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Res. No",
-        key: "Res.No",
-        dataIndex: "Res.No",
+        title: "Res No",
+        key: "ReservationID",
+        dataIndex: "ReservationID",
     },
     {
         title: "Arrival",
-        key: "Arrival",
-        dataIndex: "Arrival",
+        key: "ArrivalDate",
+        dataIndex: "ArrivalDate",
     },
     {
         title: "Departure",
-        key: "Departure",
-        dataIndex: "Departure",
+        key: "DepartureDate",
+        dataIndex: "DepartureDate",
     },
     {
         title: "Guest",
-        key: "Guest",
-        dataIndex: "Guest",
+        key: "GuestName",
+        dataIndex: "GuestName",
     },
     {
         title: "Room",
-        key: "Room",
-        dataIndex: "Room",
+        key: "RoomFullName",
+        dataIndex: "RoomFullName",
     },
     {
         title: "company",
-        key: "company",
-        dataIndex: "company",
+        key: "CustomerName",
+        dataIndex: "CustomerName",
     },
     {
         title: "Total",
-        key: "Total",
-        dataIndex: "Total",
+        key: "TotalAmount",
+        dataIndex: "TotalAmount",
     },
     {
         title: "Paid",
-        key: "Paid",
-        dataIndex: "Paid",
+        key: "CurrentBalance",
+        dataIndex: "CurrentBalance",
     },
     {
-        title: "Res. Type",
-        key: "Res.Type",
-        dataIndex: "Res.Type",
+        title: "ResType",
+        key: "ReservationTypeName",
+        dataIndex: "ReservationTypeName",
     },
     {
         title: "User",
-        key: "User",
-        dataIndex: "User",
+        key: "UserName",
+        dataIndex: "UserName",
     },
 ];
 
 const DeparturedListList = ({ title }: any) => {
-    const { data, error } = DeparturedListSWR();
+    const { data, error } = ReservationSWR(1);
 
     return (
         <CustomTable
             columns={columns}
             data={data}
             error={error}
-            api={DeparturedListAPI}
+            api={ReservationAPI}
             hasNew={true}
             hasUpdate={true}
-            hasDelete={true}
+            //hasDelete={true}
             id="DeparturedListID"
             listUrl={listUrl}
             modalTitle={title}

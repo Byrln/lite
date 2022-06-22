@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
-import { HouseStatusAPI, listUrl } from "lib/api/house-status";
+import { HouseKeepingAPI, listRoomUrl } from "lib/api/house-keeping";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
@@ -23,25 +23,14 @@ const NewEdit = () => {
 
     return (
         <NewEditForm
-            api={HouseStatusAPI}
+            api={HouseKeepingAPI}
             listUrl={listUrl}
             additionalValues={{
                 HouseStatusID: state.editId,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
-        >
-            <TextField
-                size="small"
-                fullWidth
-                id="HouseStatusName"
-                label="HouseStatusName"
-                {...register("HouseStatusName")}
-                margin="dense"
-                error={errors.HouseStatusName?.message}
-                helperText={errors.HouseStatusName?.message}
-            />
-        </NewEditForm>
+        ></NewEditForm>
     );
 };
 

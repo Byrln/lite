@@ -8,7 +8,12 @@ import { GuestdatabaseAPI, listUrl } from "lib/api/guest-database";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
-    GuestdatabaseName: yup.string().required("Бөглөнө үү"),
+    GuestName: yup.string().required("Бөглөнө үү"),
+    Country: yup.string().required("Бөглөнө үү"),
+    GuestPhone: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    Mobile: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    GuestEmail: yup.string().email("Бөглөнө үү"),
+    Vipstatus: yup.string().email("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -26,7 +31,7 @@ const NewEdit = () => {
             api={GuestdatabaseAPI}
             listUrl={listUrl}
             additionalValues={{
-                GuestdatabaseID: state.editId,
+                GuestID: state.editId,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
@@ -34,12 +39,53 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="GuestdatabaseName"
-                label="GuestdatabaseName"
-                {...register("GuestdatabaseName")}
+                id="GuestName"
+                label="GuestName"
+                {...register("GuestName")}
                 margin="dense"
-                error={errors.GuestdatabaseName?.message}
-                helperText={errors.GuestdatabaseName?.message}
+                error={errors.GuestName?.message}
+                helperText={errors.GuestName?.message}
+            />
+
+            <TextField
+                size="small"
+                fullWidth
+                id="GuestPhone"
+                label="Guest Phone"
+                {...register("GuestPhone")}
+                margin="dense"
+                error={errors.GuestPhone?.message}
+                helperText={errors.GuestPhone?.message}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                id="Mobile"
+                label="Mobile"
+                {...register("Mobile")}
+                margin="dense"
+                error={errors.Mobile?.message}
+                helperText={errors.Mobile?.message}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                id="Email"
+                label="Email"
+                {...register("Email")}
+                margin="dense"
+                error={errors.Email?.message}
+                helperText={errors.Email?.message}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                id="Status"
+                label="Status"
+                {...register("Status")}
+                margin="dense"
+                error={errors.Status?.message}
+                helperText={errors.Status?.message}
             />
         </NewEditForm>
     );

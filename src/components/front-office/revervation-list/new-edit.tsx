@@ -4,11 +4,11 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
-import { RevervationAPI, listUrl } from "lib/api/revervation";
+import { ReservationAPI, listUrl } from "lib/api/reservation";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
-    RevervationName: yup.string().required("Бөглөнө үү"),
+    DeparturedListName: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -23,10 +23,10 @@ const NewEdit = () => {
 
     return (
         <NewEditForm
-            api={RevervationAPI}
+            api={ReservationAPI}
             listUrl={listUrl}
             additionalValues={{
-                RevervationID: state.editId,
+                DeparturedListID: state.editId,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
@@ -34,12 +34,12 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="RevervationName"
-                label="RevervationName"
-                {...register("RevervationName")}
+                id="DeparturedListName"
+                label="DeparturedListName"
+                {...register("DeparturedListName")}
                 margin="dense"
-                error={errors.RevervationName?.message}
-                helperText={errors.RevervationName?.message}
+                error={errors.DeparturedListName?.message}
+                helperText={errors.DeparturedListName?.message}
             />
         </NewEditForm>
     );
