@@ -7,8 +7,7 @@ export const listUrl = `${urlPrefix}/list`;
 
 export const ExchangeRateSWR = () => {
     const values = {
-        CurrencyID: null,
-        CountryID: null,
+        IsCurrent: false,
     };
 
     const fetcher = async (url: any) =>

@@ -2,9 +2,9 @@ import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
 
 import Page from "components/page";
-import RevervationList from "components/front-office/revervation-list/list";
+import RevervationList from "components/front-office/reservation-list/list";
 
-const title = "Revervation List";
+const title = "Reservation List";
 
 const Index = () => (
     <>

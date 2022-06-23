@@ -1,4 +1,3 @@
-import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import {
     GuestdatabaseSWR,
@@ -39,6 +38,21 @@ const columns = [
         key: "VipStatusName",
         dataIndex: "VipStatusName",
     },
+    {
+        title: "Action",
+        key: "Action",
+        dataIndex: "Action",
+        render: function render(id: any, value: any) {
+            return (
+                <>
+                    <button>View</button>
+                    <button>Edit</button>
+                    <button>Upload Picture</button>
+                    <button>Upload Document</button>
+                </>
+            );
+        },
+    },
 ];
 
 const GuestdatabaseList = ({ title }: any) => {
@@ -50,9 +64,9 @@ const GuestdatabaseList = ({ title }: any) => {
             data={data}
             error={error}
             api={GuestdatabaseAPI}
-            hasNew={true}
-            hasUpdate={true}
-            hasDelete={true}
+            // hasNew={true}
+            //hasUpdate={true}
+            //hasDelete={true}
             id="GuestdatabaseID"
             listUrl={listUrl}
             modalTitle={title}

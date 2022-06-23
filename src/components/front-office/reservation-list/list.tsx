@@ -6,37 +6,19 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Check In",
-        key: "CheckIn",
-        dataIndex: "CheckIn",
+        title: "Res No",
+        key: "ReservationID",
+        dataIndex: "ReservationID",
     },
     {
         title: "Arrival",
         key: "ArrivalDate",
         dataIndex: "ArrivalDate",
-        render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy hh:mm:ss a"
-                )
-            );
-        },
     },
     {
         title: "Departure",
         key: "DepartureDate",
         dataIndex: "DepartureDate",
-        render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy hh:mm:ss a"
-                )
-            );
-        },
     },
     {
         title: "Guest",
@@ -50,8 +32,8 @@ const columns = [
     },
     {
         title: "company",
-        key: "company",
-        dataIndex: "company",
+        key: "CustomerName",
+        dataIndex: "CustomerName",
     },
     {
         title: "Total",
@@ -60,13 +42,13 @@ const columns = [
     },
     {
         title: "Paid",
-        key: "Deposit",
-        dataIndex: "Deposit",
-    },
-    {
-        title: "Balance",
         key: "CurrentBalance",
         dataIndex: "CurrentBalance",
+    },
+    {
+        title: "ResType",
+        key: "ReservationTypeName",
+        dataIndex: "ReservationTypeName",
     },
     {
         title: "User",

@@ -49,9 +49,9 @@ const columns = [
         dataIndex: "RoomFullName",
     },
     {
-        title: "company",
-        key: "company",
-        dataIndex: "company",
+        title: "Company",
+        key: "CustomerName",
+        dataIndex: "CustomerName",
     },
     {
         title: "Total",

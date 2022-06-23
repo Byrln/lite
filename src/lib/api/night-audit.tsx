@@ -2,8 +2,8 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/WorkingDate";
-export const listUrl = `${urlPrefix}/Current`;
+const urlPrefix = "/api/Reservation";
+export const listUrl = `${urlPrefix}/PendingReservation`;
 
 export const NightAuditSWR = () => {
     const fetcher = async (url: any) =>

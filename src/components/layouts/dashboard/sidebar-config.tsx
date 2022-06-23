@@ -31,8 +31,8 @@ const sidebarConfig = [
                 path: "/front-office/guest-database",
             },
             {
-                title: "revervation list",
-                path: "/front-office/revervation-list",
+                title: "reservation list",
+                path: "/front-office/reservation-list",
             },
             {
                 title: "depature list",
