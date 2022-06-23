@@ -2,14 +2,13 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Promotion";
+const urlPrefix = "/api/Guest";
 export const listUrl = `${urlPrefix}/list`;
 
-export const GuestdatabaseSWR = (ChannelId: number) => {
+export const GuestdatabaseSWR = () => {
     const values = {
-        GuestdatabaseID: null,
-        ChannelId: ChannelId,
-        EmptyRow: 0,
+        GuestID: null,
+        CountryID: null,
     };
 
     const fetcher = async (url: any) =>

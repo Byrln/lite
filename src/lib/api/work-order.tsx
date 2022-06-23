@@ -2,13 +2,13 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Promotion";
+const urlPrefix = "/api/WorkOrder";
 export const listUrl = `${urlPrefix}/list`;
 
-export const WorkOrderSWR = (ChannelId: number) => {
+export const WorkOrderSWR = () => {
     const values = {
-        WorkOrderID: null,
-        ChannelId: ChannelId,
+        WorkOrderRegisterID: null,
+        AssignedUserID: null,
         EmptyRow: 0,
     };
 

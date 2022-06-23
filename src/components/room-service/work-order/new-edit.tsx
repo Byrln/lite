@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
+import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -34,12 +34,105 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="WorkOrderName"
-                label="WorkOrderName"
-                {...register("WorkOrderName")}
+                id="OrderId"
+                label="Order No"
+                {...register("OrderId")}
                 margin="dense"
-                error={errors.WorkOrderName?.message}
-                helperText={errors.WorkOrderName?.message}
+                error={errors.OrderId?.message}
+                helperText={errors.OrderId?.message}
+            />
+
+            <TextField
+                size="small"
+                fullWidth
+                id="Priority"
+                label="Priority"
+                {...register("Priority")}
+                margin="dense"
+                error={errors.Priority?.message}
+                helperText={errors.Priority?.message}
+            />
+
+            <TextField
+                size="small"
+                fullWidth
+                id="Status"
+                label="Status"
+                {...register("Status")}
+                margin="dense"
+                error={errors.Status?.message}
+                helperText={errors.Status?.message}
+            />
+
+            <TextField
+                size="small"
+                fullWidth
+                multiline
+                rows={3}
+                id="Description"
+                label="Description"
+                {...register("Description")}
+                margin="dense"
+                error={errors.Description?.message}
+                helperText={errors.Description?.message}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                id="Status"
+                label="Status"
+                {...register("Status")}
+                margin="dense"
+                error={errors.Status?.message}
+                helperText={errors.Status?.message}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                id="Room"
+                label="Room"
+                {...register("Room")}
+                margin="dense"
+                error={errors.Room?.message}
+                helperText={errors.Room?.message}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                id="AssignedTo"
+                label="Assigned To"
+                {...register("AssignedTo")}
+                margin="dense"
+                error={errors.AssignedTo?.message}
+                helperText={errors.AssignedTo?.message}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                id="DeadLine"
+                label="DeadLine"
+                {...register("DeadLine")}
+                margin="dense"
+                error={errors.DeadLine?.message}
+                helperText={errors.DeadLine?.message}
+            />
+            <FormControlLabel
+                control={
+                    <Controller
+                        name="RoomBlock"
+                        control={control}
+                        render={(props: any) => (
+                            <Checkbox
+                                {...register("RoomBlock")}
+                                checked={props.field.value}
+                                onChange={(e) =>
+                                    props.field.onChange(e.target.checked)
+                                }
+                            />
+                        )}
+                    />
+                }
+                label="Room Block"
             />
         </NewEditForm>
     );

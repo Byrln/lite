@@ -1,11 +1,7 @@
 import { format } from "date-fns";
 
 import CustomTable from "components/common/custom-table";
-import {
-    DeparturedListSWR,
-    DeparturedListAPI,
-    listUrl,
-} from "lib/api/departured-list";
+import { ReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
 import NewEdit from "./new-edit";
 
 const columns = [
@@ -16,23 +12,41 @@ const columns = [
     },
     {
         title: "Arrival",
-        key: "Arrival",
-        dataIndex: "Arrival",
+        key: "ArrivalDate",
+        dataIndex: "ArrivalDate",
+        render: function render(id: any, value: any) {
+            return (
+                value &&
+                format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                )
+            );
+        },
     },
     {
         title: "Departure",
-        key: "Departure",
-        dataIndex: "Departure",
+        key: "DepartureDate",
+        dataIndex: "DepartureDate",
+        render: function render(id: any, value: any) {
+            return (
+                value &&
+                format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                )
+            );
+        },
     },
     {
         title: "Guest",
-        key: "Guest",
-        dataIndex: "Guest",
+        key: "GuestName",
+        dataIndex: "GuestName",
     },
     {
         title: "Room",
-        key: "Room",
-        dataIndex: "Room",
+        key: "RoomFullName",
+        dataIndex: "RoomFullName",
     },
     {
         title: "company",
@@ -41,38 +55,38 @@ const columns = [
     },
     {
         title: "Total",
-        key: "Total",
-        dataIndex: "Total",
+        key: "TotalAmount",
+        dataIndex: "TotalAmount",
     },
     {
         title: "Paid",
-        key: "Paid",
-        dataIndex: "Paid",
+        key: "Deposit",
+        dataIndex: "Deposit",
     },
     {
         title: "Balance",
-        key: "Balance",
-        dataIndex: "Balance",
+        key: "CurrentBalance",
+        dataIndex: "CurrentBalance",
     },
     {
         title: "User",
-        key: "User",
-        dataIndex: "User",
+        key: "UserName",
+        dataIndex: "UserName",
     },
 ];
 
 const DeparturedListList = ({ title }: any) => {
-    const { data, error } = DeparturedListSWR();
+    const { data, error } = ReservationSWR(1);
 
     return (
         <CustomTable
             columns={columns}
             data={data}
             error={error}
-            api={DeparturedListAPI}
+            api={ReservationAPI}
             hasNew={true}
             hasUpdate={true}
-            hasDelete={true}
+            //hasDelete={true}
             id="DeparturedListID"
             listUrl={listUrl}
             modalTitle={title}

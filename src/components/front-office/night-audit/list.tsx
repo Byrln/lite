@@ -24,9 +24,9 @@ const columns = [
         dataIndex: "RateType",
     },
     {
-        title: "Revervation Type",
-        key: "RevervationType",
-        dataIndex: "RevervationType",
+        title: "Reservation  Type",
+        key: "ReservationType",
+        dataIndex: "ReservationType",
     },
     {
         title: "Departure",

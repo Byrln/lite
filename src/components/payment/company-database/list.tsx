@@ -9,18 +9,18 @@ import NewEdit from "./new-edit";
 const columns = [
     {
         title: "Company Name",
-        key: "CompanyName",
-        dataIndex: "CompanyName",
+        key: "CustomerName",
+        dataIndex: "CustomerName",
     },
     {
         title: "Group Name",
-        key: "GroupName",
-        dataIndex: "GroupName",
+        key: "CustomerGroupName",
+        dataIndex: "CustomerGroupName",
     },
     {
         title: "Registry No",
-        key: "RegistryNo",
-        dataIndex: "Registry No",
+        key: "RegisterNo",
+        dataIndex: "RegisterNo",
     },
     {
         title: "Phone",
@@ -39,8 +39,8 @@ const columns = [
     },
     {
         title: "Country",
-        key: "Country",
-        dataIndex: "Country",
+        key: "CountryName",
+        dataIndex: "CountryName",
     },
 ];
 

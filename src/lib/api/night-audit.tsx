@@ -2,20 +2,12 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Promotion";
-export const listUrl = `${urlPrefix}/list`;
+const urlPrefix = "/api/WorkingDate";
+export const listUrl = `${urlPrefix}/Current`;
 
-export const NightAuditSWR = (ChannelId: number) => {
-    const values = {
-        NightAuditID: null,
-        ChannelId: ChannelId,
-        EmptyRow: 0,
-    };
-
+export const NightAuditSWR = () => {
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.get(url).then((res: any) => JSON.parse(res.data.JsonData));
 
     return useSWR(listUrl, fetcher);
 };

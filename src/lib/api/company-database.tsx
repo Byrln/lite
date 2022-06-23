@@ -2,15 +2,11 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Promotion";
+const urlPrefix = "/api/Customer";
 export const listUrl = `${urlPrefix}/list`;
 
-export const CompanyDatabaseSWR = (ChannelId: number) => {
-    const values = {
-        CompanyDatabaseID: null,
-        ChannelId: ChannelId,
-        EmptyRow: 0,
-    };
+export const CompanyDatabaseSWR = () => {
+    const values = {};
 
     const fetcher = async (url: any) =>
         await axios

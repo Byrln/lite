@@ -5,28 +5,28 @@ import NewEdit from "./new-edit";
 const columns = [
     {
         title: "Order #",
-        key: "Order",
-        dataIndex: "Order",
+        key: "WorkOrderNo",
+        dataIndex: "WorkOrderNo",
     },
     {
         title: "Room",
-        key: "Room",
-        dataIndex: "Room",
+        key: "RoomFullName",
+        dataIndex: "RoomFullName",
     },
     {
         title: "Priority",
-        key: "Priority",
-        dataIndex: "Priority",
+        key: "WorkOrderPriorityCode",
+        dataIndex: "WorkOrderPriorityCode",
     },
     {
         title: "Description",
-        key: "Description",
-        dataIndex: "Description",
+        key: "WODescription",
+        dataIndex: "WODescription",
     },
     {
         title: "Started",
-        key: "Started",
-        dataIndex: "Started",
+        key: "CreatedDate",
+        dataIndex: "CreatedDate",
     },
     {
         title: "Deadline",
@@ -35,18 +35,18 @@ const columns = [
     },
     {
         title: "Assigner",
-        key: "Assigner",
-        dataIndex: "Assigner",
+        key: "UserName",
+        dataIndex: "UserName",
     },
     {
         title: "Assigned To",
-        key: "AssignedTo",
-        dataIndex: "AssignedTo",
+        key: "AssignedUser",
+        dataIndex: "AssignedUser",
     },
     {
         title: "Status",
-        key: "Status",
-        dataIndex: "Status",
+        key: "StDescription",
+        dataIndex: "StDescription",
     },
 ];
 

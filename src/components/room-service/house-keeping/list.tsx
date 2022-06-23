@@ -1,8 +1,8 @@
 import CustomTable from "components/common/custom-table";
 import {
-    HouseKeepingSWR,
+    HouseKeepingCurrentSWR,
     HouseKeepingAPI,
-    listUrl,
+    listCurrentUrl,
 } from "lib/api/house-keeping";
 import NewEdit from "./new-edit";
 
@@ -50,7 +50,7 @@ const columns = [
 ];
 
 const HouseKeepingList = ({ title }: any) => {
-    const { data, error } = HouseKeepingSWR();
+    const { data, error } = HouseKeepingCurrentSWR();
 
     return (
         <CustomTable
@@ -62,7 +62,7 @@ const HouseKeepingList = ({ title }: any) => {
             hasUpdate={true}
             hasDelete={true}
             id="HouseKeepingID"
-            listUrl={listUrl}
+            listUrl={listCurrentUrl}
             modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}

@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 import CustomTable from "components/common/custom-table";
 import {
     ExchangeRateSWR,
@@ -8,44 +10,58 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Reservation No",
-        key: "ReservationNo",
-        dataIndex: "ReservationNo",
+        title: "Date",
+        key: "BeginDate",
+        dataIndex: "BeginDate",
+        render: function render(id: any, value: any) {
+            return (
+                value &&
+                format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                )
+            );
+        },
     },
     {
-        title: "Guest",
-        key: "Guest",
-        dataIndex: "Guest",
+        title: "Country",
+        key: "CountryName",
+        dataIndex: "CountryName",
     },
     {
-        title: "Room",
-        key: "Room",
-        dataIndex: "Room",
+        title: "Currency",
+        key: "CurrencyName",
+        dataIndex: "CurrencyName",
     },
     {
-        title: "Rate Type",
-        key: "RateType",
-        dataIndex: "RateType",
+        title: "Code",
+        key: "CurrencyCode",
+        dataIndex: "CurrencyCode",
     },
     {
-        title: "Revervation Type",
-        key: "RevervationType",
-        dataIndex: "RevervationType",
+        title: "Symbol",
+        key: "CurrencySymbol",
+        dataIndex: "CurrencySymbol",
     },
     {
-        title: "Departure",
-        key: "Departure",
-        dataIndex: "Departure",
+        title: "Buy",
+        key: "CurrencyID",
+        dataIndex: "CurrencyID",
     },
     {
-        title: "Total",
-        key: "Total",
-        dataIndex: "Total",
+        title: "Sell",
+        key: "CountryID",
+        dataIndex: "CountryID",
     },
     {
-        title: "Deposit",
-        key: "Deposit",
-        dataIndex: "Deposit",
+        title: "Main",
+        key: "Main",
+        dataIndex: "Main",
+    },
+    {
+        title: "User Name",
+        key: "UserName",
+        dataIndex: "UserName",
     },
 ];
 

@@ -1,14 +1,15 @@
 import useSWR from "swr";
 import axios from "lib/utils/axios";
+import { date } from "yup/lib/locale";
 
 const urlPrefix = "/api/RoomBlock";
 export const listUrl = `${urlPrefix}/List`;
 
-export const RoomBlockSWR = (dateStart: any, dateEnd: any) => {
+export const RoomBlockSWR = () => {
     const values = {
         RoomBlockID: 0,
-        StartDate: dateStart,
-        EndDate: dateEnd,
+        StartDate: date,
+        EndDate: date,
         RoomID: 0,
     };
 
