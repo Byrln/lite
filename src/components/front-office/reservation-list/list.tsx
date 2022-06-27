@@ -6,54 +6,44 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Res No",
+        title: "Start Date",
         key: "ReservationID",
         dataIndex: "ReservationID",
     },
     {
-        title: "Arrival",
+        title: "End Date",
         key: "ArrivalDate",
         dataIndex: "ArrivalDate",
     },
     {
-        title: "Departure",
+        title: "Company",
         key: "DepartureDate",
         dataIndex: "DepartureDate",
     },
     {
-        title: "Guest",
+        title: "Name",
         key: "GuestName",
         dataIndex: "GuestName",
     },
     {
-        title: "Room",
+        title: "Phone",
         key: "RoomFullName",
         dataIndex: "RoomFullName",
     },
     {
-        title: "company",
+        title: "Email",
         key: "CustomerName",
         dataIndex: "CustomerName",
     },
     {
-        title: "Total",
+        title: "Reservation Type",
         key: "TotalAmount",
         dataIndex: "TotalAmount",
     },
     {
-        title: "Paid",
+        title: "Reservation Source",
         key: "CurrentBalance",
         dataIndex: "CurrentBalance",
-    },
-    {
-        title: "ResType",
-        key: "ReservationTypeName",
-        dataIndex: "ReservationTypeName",
-    },
-    {
-        title: "User",
-        key: "UserName",
-        dataIndex: "UserName",
     },
 ];
 
@@ -66,8 +56,8 @@ const DeparturedListList = ({ title }: any) => {
             data={data}
             error={error}
             api={ReservationAPI}
-            hasNew={true}
-            hasUpdate={true}
+            //hasNew={true}
+            //hasUpdate={true}
             //hasDelete={true}
             id="DeparturedListID"
             listUrl={listUrl}

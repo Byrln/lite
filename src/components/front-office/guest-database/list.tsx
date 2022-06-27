@@ -45,10 +45,10 @@ const columns = [
         render: function render(id: any, value: any) {
             return (
                 <>
-                    <button>View</button>
-                    <button>Edit</button>
-                    <button>Upload Picture</button>
-                    <button>Upload Document</button>
+                    <button> View </button>
+                    <button> Edit </button>
+                    <button> Upload Picture </button>
+                    <button> Upload Document </button>
                 </>
             );
         },
