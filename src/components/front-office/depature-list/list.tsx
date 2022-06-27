@@ -7,8 +7,8 @@ import NewEdit from "./new-edit";
 const columns = [
     {
         title: "Res No",
-        key: "ReservationID",
-        dataIndex: "ReservationID",
+        key: "ReservationNo",
+        dataIndex: "ReservationNo",
     },
     {
         title: "Arrival",

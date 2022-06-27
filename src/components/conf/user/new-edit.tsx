@@ -1,6 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
 import { FormControlLabel, TextField } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 

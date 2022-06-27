@@ -37,42 +37,34 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="NotificationName"
-                label="NotificationName"
-                {...register("NotificationName")}
+                id="NotificationType"
+                label="Notification Type"
+                {...register("NotificationType")}
                 margin="dense"
-                error={errors.NotificationName?.message}
-                helperText={errors.NotificationName?.message}
+                error={errors.NotificationType?.message}
+                helperText={errors.NotificationType?.message}
             />
 
             <TextField
                 size="small"
                 fullWidth
-                id="NotificationDescription"
-                label="NotificationDescription"
-                {...register("NotificationDescription")}
+                id="TextType"
+                label="TextType"
+                {...register("TextType")}
                 margin="dense"
-                error={errors.NotificationDescription?.message}
-                helperText={errors.NotificationDescription?.message}
+                error={errors.TextType?.message}
+                helperText={errors.TextType?.message}
             />
 
-            <FormControlLabel
-                control={
-                    <Controller
-                        name="ShowWarning"
-                        control={control}
-                        render={(props: any) => (
-                            <Checkbox
-                                {...register("ShowWarning")}
-                                checked={props.field.value}
-                                onChange={(e) =>
-                                    props.field.onChange(e.target.checked)
-                                }
-                            />
-                        )}
-                    />
-                }
-                label="ShowWarning"
+            <TextField
+                size="small"
+                fullWidth
+                id="TextType"
+                label="TextType"
+                {...register("TextType")}
+                margin="dense"
+                error={errors.TextType?.message}
+                helperText={errors.TextType?.message}
             />
         </NewEditForm>
     );

@@ -9,14 +9,24 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Notification",
-        key: "NotificationName",
-        dataIndex: "NotificationName",
+        title: "NotificationTypeID",
+        key: "NotificationTypeID",
+        dataIndex: "NotificationTypeID",
     },
     {
-        title: "Description",
-        key: "NotificationDescription",
-        dataIndex: "NotificationDescription",
+        title: "NotificationTypeName",
+        key: "NotificationTypeName",
+        dataIndex: "NotificationTypeName",
+    },
+    {
+        title: "UserID",
+        key: "UserID",
+        dataIndex: "UserID",
+    },
+    {
+        title: "UserName",
+        key: "UserName",
+        dataIndex: "UserName",
     },
     {
         title: "Status",
@@ -46,8 +56,6 @@ const NotificationList = ({ title }: any) => {
             error={error}
             api={NotificationAPI}
             hasNew={true}
-            hasUpdate={true}
-            hasDelete={true}
             id="NotificationID"
             listUrl={listUrl}
             modalTitle={title}
