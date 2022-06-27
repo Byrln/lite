@@ -14,7 +14,6 @@ const columns = [
         key: "RoomChargeTypeGroupName",
         dataIndex: "RoomChargeTypeGroupName",
     },
-
     {
         title: "Mini Bar Item",
         key: "RoomChargeTypeName",
@@ -28,7 +27,6 @@ const columns = [
             return formatPrice(value);
         },
     },
-
     {
         title: "Sort Order",
         key: "SortOrder",
