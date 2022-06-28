@@ -116,8 +116,8 @@ export default function LoginForm() {
                         label="Username"
                         {...register("username")}
                         margin="dense"
-                        error={errors.username?.message}
-                        helperText={errors.username?.message}
+                        error={errors?.username?.message}
+                        helperText={errors?.username?.message}
                     />
 
                     <TextField
@@ -145,8 +145,8 @@ export default function LoginForm() {
                                 </InputAdornment>
                             ),
                         }}
-                        error={errors.password?.message}
-                        helperText={errors.password?.message}
+                        error={errors?.password?.message}
+                        helperText={errors?.password?.message}
                     />
 
                     <TextField
@@ -154,8 +154,8 @@ export default function LoginForm() {
                         label="Hotel"
                         {...register("hotel")}
                         margin="dense"
-                        error={errors.hotel?.message}
-                        helperText={errors.hotel?.message}
+                        error={errors?.hotel?.message}
+                        helperText={errors?.hotel?.message}
                     />
                 </Stack>
 
