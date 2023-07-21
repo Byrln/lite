@@ -7,6 +7,8 @@ import { SWRConfig } from "swr";
 import { Slide, ToastContainer } from "react-toastify";
 
 import "styles/globals.scss";
+import "assets/styles.css";
+import "styles/custom.css";
 import { ModalProvider } from "lib/context/modal";
 import Page from "components/layouts/page";
 import WithAuth from "lib/hoc/with-auth";

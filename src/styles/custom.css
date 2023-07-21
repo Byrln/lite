@@ -1,0 +1,28 @@
+td.custom-cell {
+    color: #fff;
+    background-color: #37bc6c !important;
+}
+
+td.half {
+    background: linear-gradient(to left, #fff 50%, #000 50%);
+}
+
+.handsontable th {
+    background-color: #F00;
+}
+
+/* Row headers */
+.htCore thead th{
+    background-color: rgb(128, 79, 230);
+    color: white;
+}
+
+/* Column headers */
+.ht_clone_top th {
+    background-color: #F00;
+}
+.handsontable th {
+    white-space: normal!important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
