@@ -1,14 +1,36 @@
-td.custom-cell {
+td.green-cell {
     color: #fff;
     background-color: #37bc6c !important;
 }
 
-td.half {
+td.half-green {
+    background: linear-gradient(to left, #fff 50%, #37bc6c 50%);
+}
+
+td.black-cell {
+    color: #fff;
+    background-color: #000 !important;
+}
+
+td.black-bold-header {
+    color: #000000;
+    font-weight: bold;
+}
+
+td.half-black {
     background: linear-gradient(to left, #fff 50%, #000 50%);
 }
 
 .handsontable th {
     background-color: #F00;
+}
+
+.handsontable td {
+    color: #555 !important;
+}
+
+.handsontable tbody th.ht__highlight, .handsontable thead th.ht__highlight {
+    background-color: rgb(128, 79, 230) !important;
 }
 
 /* Row headers */
@@ -25,4 +47,44 @@ td.half {
     white-space: normal!important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
+}
+
+td.color-9933CC {
+    color: #fff !important;
+    background-color: #9933CC !important;
+}
+
+td.color-F21232 {
+    color: #fff !important;
+    background-color: #F21232 !important;
+}
+
+td.color-6699FF {
+    color: #fff !important;
+    background-color: #6699FF !important;
+}
+
+td.color-009933 {
+    color: #fff !important;
+    background-color: #009933 !important;
+}
+
+td.color-000000 {
+    color: #fff !important;
+    background-color: #000 !important;
+}
+
+td.color-CCFF00 {
+    color: #fff !important;
+    background-color: #CCFF00 !important;
+}
+
+td.color-009933 {
+    color: #fff !important;
+    background-color: #009933 !important;
+}
+
+td.color-FF66FF {
+    color: #fff !important;
+    background-color: #FF66FF !important;
 }
