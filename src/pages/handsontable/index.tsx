@@ -162,7 +162,21 @@
                 // RoomType set 0
                 for (let l=0; l < parseInt(dayCount) * 2; l ++){
                     // @ts-ignore
-                    temp_rec[l] = l;
+                    temp_rec[l] = 0;
+                    for (let k in items) {
+                        let startTime = new Date(items[k].StartDate); // startTime.setHours(14); startTime.setMinutes(0); startTime.setSeconds(0);
+                        let endTime = new Date(items[k].EndDate);
+                        let groupKey = "" + items[k].RoomTypeID;
+                        if (items[k].RoomID == 0 && groupKey == temp_rec.id) {
+                            // @ts-ignore
+                            if ( l > coldict[startTime.toDateString()] && l < coldict[endTime.toDateString()] * 2) {
+                                // @ts-ignore
+                                temp_rec[l] = temp_rec[l] + 1;
+                            }
+                        }
+
+                    }
+                    // @ts-ignore
                 }
                 records.push(temp_rec);
 
@@ -253,7 +267,9 @@
                                 // @ts-ignore
                                 mergeCell['colspan'] = day_count > 0 ? day_count : 1;
                             }
-                            mergeCells.push(mergeCell);
+                            if (items[i].RoomID !== 0){
+                                mergeCells.push(mergeCell);
+                            }
 
                             /* Set cell styles */
                             // @ts-ignore
@@ -274,9 +290,20 @@
                     col: 0,
                     className: 'black-bold-header',
                 })
+                // Making merge cells for excel
+                for (let l=0; l < parseInt(dayCount); l ++){
+                    let mergeCell = {};
+                    // @ts-ignore
+                    mergeCell['row'] = group_index[i];
+                    // @ts-ignore
+                    mergeCell['col'] = l * 2 - 1;
+                    // @ts-ignore
+                    mergeCell['rowspan'] = 1;
+                    // @ts-ignore
+                    mergeCell['colspan'] = 2;
+                    mergeCells.push(mergeCell);
+                }
             }
-
-            // Making merge cells for excel
 
             // @ts-ignore
             setRecords(records);
