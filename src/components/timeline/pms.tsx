@@ -72,7 +72,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
 
     useEffect(() => {
         createGroups();
-    }, [roomTypes, rooms, items, roomBlocks]);
+    }, [roomTypes, rooms, items]);
 
     const createGroups = () => {
         let gs = [];
@@ -137,22 +137,22 @@ const TimelinePms = ({ props, workingDate }: any) => {
             itemIds.push(itemId);
         }
 
-        for (i in roomBlocks) {
-            itemId = "block_" + roomBlocks[i].RoomBlockID;
-            startTime = new Date(roomBlocks[i].BeginDate); // startTime.setHours(14); startTime.setMinutes(0); startTime.setSeconds(0);
-            endTime = new Date(roomBlocks[i].EndDate); // endTime.setDate(endTime.getDate() + 1);
-            groupKey =
-                "" + roomBlocks[i].RoomTypeID + "_" + roomBlocks[i].RoomID;
+        // for (i in roomBlocks) {
+        //     itemId = "block_" + roomBlocks[i].RoomBlockID;
+        //     startTime = new Date(roomBlocks[i].BeginDate); // startTime.setHours(14); startTime.setMinutes(0); startTime.setSeconds(0);
+        //     endTime = new Date(roomBlocks[i].EndDate); // endTime.setDate(endTime.getDate() + 1);
+        //     groupKey =
+        //         "" + roomBlocks[i].RoomTypeID + "_" + roomBlocks[i].RoomID;
 
-            itemData.push({
-                id: itemId,
-                group: groupKey,
-                start_time: startTime,
-                end_time: endTime,
-                itemType: "room_block",
-                detail: roomBlocks[i],
-            });
-        }
+        //     itemData.push({
+        //         id: itemId,
+        //         group: groupKey,
+        //         start_time: startTime,
+        //         end_time: endTime,
+        //         itemType: "room_block",
+        //         detail: roomBlocks[i],
+        //     });
+        // }
 
         var openGroups =
             typeof timelineData.openGroups != "undefined"
@@ -302,12 +302,12 @@ const TimelinePms = ({ props, workingDate }: any) => {
     const getRoomBlockDetail = (id: number) => {
         let result = null;
         let rb;
-        for (rb of roomBlocks) {
-            if (rb.RoomBlockID === id) {
-                result = rb;
-                break;
-            }
-        }
+        // for (rb of roomBlocks) {
+        //     if (rb.RoomBlockID === id) {
+        //         result = rb;
+        //         break;
+        //     }
+        // }
         return result;
     };
 
