@@ -8,7 +8,7 @@ export const listUrl = `${urlPrefix}/list`;
 export const NewRevervationSWR = (ChannelId = null) => {
     const values = {
         NewRevervationID: null,
-        ChannelId: ChannelId,
+        ChannelId: ChannelId ? ChannelId : 0,
         EmptyRow: 0,
     };
 

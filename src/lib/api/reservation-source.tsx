@@ -8,7 +8,7 @@ export const listUrl = `${urlPrefix}/list`;
 export const ReservationSourceSWR = (ChannelId = null) => {
     const values = {
         ReservationSourceID: null,
-        ChannelId: ChannelId,
+        ChannelId: ChannelId ? ChannelId : null,
         EmptyRow: 0,
     };
 
