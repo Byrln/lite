@@ -8,7 +8,7 @@ import NewEditForm from "components/common/new-edit-form";
 import { RoomBlockAPI, listUrl } from "lib/api/room-block";
 import RoomTypeSelect from "components/select/room-type";
 import RoomSelect from "components/select/room";
-import ReasonSelect from "../../select/reason";
+// import ReasonSelect from "../../select/reason";
 import { dateToSimpleFormat, fToCustom } from "lib/utils/format-time";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
@@ -191,12 +191,12 @@ const NewEdit = ({ timelineCoord, defaultEntity }: any) => {
                 InputLabelProps={{ shrink: true }}
             />
 
-            <ReasonSelect
+            {/* <ReasonSelect
                 register={register}
                 errors={errors}
                 ReasonTypeID={3}
                 nameKey={"ReasonID"}
-            />
+            /> */}
 
             <SubmitButton loading={loading} />
         </form>

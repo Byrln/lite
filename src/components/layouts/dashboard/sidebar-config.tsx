@@ -18,9 +18,13 @@ const sidebarConfig = [
                 title: "stay view",
                 path: "/front-office/stay-view",
             },
+            // {
+            //     title: "new reservation",
+            //     path: "/front-office/new-reservation",
+            // },
             {
-                title: "new reservation",
-                path: "/front-office/new-reservation",
+                title: "reservation list",
+                path: "/front-office/reservation-list",
             },
             {
                 title: "night audit",
@@ -30,10 +34,7 @@ const sidebarConfig = [
                 title: "guest database",
                 path: "/front-office/guest-database",
             },
-            {
-                title: "reservation list",
-                path: "/front-office/reservation-list",
-            },
+
             {
                 title: "depature list",
                 path: "/front-office/depature-list",

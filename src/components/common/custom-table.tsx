@@ -1,4 +1,4 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Alert from "@mui/material/Alert";
@@ -43,6 +43,7 @@ const CustomTable = ({
     excelName,
 }: any) => {
     const [state, dispatch]: any = useAppState();
+    // const [excelColumns, setExcelColumns]: any = useState(null);
     const { handleModal }: any = useContext(ModalContext);
     const componentRef: any = useRef<HTMLDivElement>(null);
     const customizedColumns: any = [
@@ -56,6 +57,17 @@ const CustomTable = ({
         },
     ].concat(columns);
 
+    const excelColumns: any = customizedColumns
+        .map((obj: any) => ({
+            ...obj,
+        }))
+        .map((column: any, index: any) => {
+            if (column.excelRenderPass) {
+                delete column["render"];
+            }
+            return column;
+        });
+
     (hasUpdate || hasDelete) &&
         customizedColumns.push({
             title: "Action",
@@ -66,13 +78,15 @@ const CustomTable = ({
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
-
+    console.log("data", data);
     const downloadExcel = async () => {
+        console.log("clickedColumn ", customizedColumns);
+        console.log("cllicked ", data);
         const Excel = await import("antd-table-saveas-excel");
         const excel = new Excel.Excel();
         excel
             .addSheet("Жагсаалт")
-            .addColumns(customizedColumns)
+            .addColumns(excelColumns)
             .addDataSource(data)
             .saveAs(
                 `${
@@ -202,7 +216,7 @@ const CustomTable = ({
                                                                         <Button
                                                                             size="small"
                                                                             variant="outlined"
-                                                                            color="secondary"
+                                                                            color="primary"
                                                                             startIcon={
                                                                                 <EditIcon />
                                                                             }

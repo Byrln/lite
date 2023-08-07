@@ -1,14 +1,20 @@
-import {TextField} from "@mui/material";
+import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import {useEffect, useState} from "react";
-import {RateTypeSWR} from "lib/api/rate-type";
-import {RateAPI} from "lib/api/rate";
-import {elementAcceptingRef} from "@mui/utils";
+import { useEffect, useState } from "react";
+import { RateTypeSWR } from "lib/api/rate-type";
+import { RateAPI } from "lib/api/rate";
+import { elementAcceptingRef } from "@mui/utils";
 
-const RoomRateTypeSelect = ({register, errors, reservationModel, setReservationModel, reset}: any) => {
+const RoomRateTypeSelect = ({
+    register,
+    errors,
+    reservationModel,
+    setReservationModel,
+    reset,
+}: any) => {
     const [data, setData]: any = useState([]);
 
     const fetchRoomTypeRates = async () => {
@@ -25,9 +31,7 @@ const RoomRateTypeSelect = ({register, errors, reservationModel, setReservationM
     };
 
     useEffect(() => {
-
         fetchRoomTypeRates();
-
     }, [reservationModel.roomType]);
 
     const onChange = (evt: any) => {
@@ -41,10 +45,9 @@ const RoomRateTypeSelect = ({register, errors, reservationModel, setReservationM
         if (rate) {
             setReservationModel({
                 ...reservationModel,
-                rate: rate
+                rate: rate,
             });
         }
-
     };
 
     return (
@@ -58,6 +61,7 @@ const RoomRateTypeSelect = ({register, errors, reservationModel, setReservationM
             error={errors.RateTypeID?.message}
             helperText={errors.RateTypeID?.message}
             onChange={onChange}
+            size="small"
         >
             {data.map((element: any) => {
                 return (

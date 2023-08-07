@@ -37,6 +37,7 @@ const CurrencySelect = ({
             margin="dense"
             error={errors[nameKey]?.message}
             helperText={errors[nameKey]?.message}
+            size="small"
         >
             {data.map((element: any) => {
                 return (

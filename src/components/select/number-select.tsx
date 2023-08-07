@@ -32,6 +32,7 @@ const NumberSelect = ({
             margin="dense"
             error={errors[nameKey]?.message}
             helperText={errors[nameKey]?.message}
+            size="small"
         >
             {data.map((num: any) => {
                 return (

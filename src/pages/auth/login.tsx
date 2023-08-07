@@ -43,14 +43,14 @@ const ContentStyle = styled("div")(({ theme }) => ({
 export default function Login() {
     return (
         <RootStyle title="Login | Horeca">
-            <AuthLayout>
+            {/* <AuthLayout>
                 Don’t have an account? &nbsp;
                 <Link href="#" passHref>
                     <MaterialLink underline="none" variant="subtitle2">
                         Get started
                     </MaterialLink>
                 </Link>
-            </AuthLayout>
+            </AuthLayout> */}
 
             <MHidden width="mdDown">
                 <SectionStyle>
@@ -74,8 +74,6 @@ export default function Login() {
                             Enter your details below.
                         </Typography>
                     </Stack>
-
-                    <AuthSocial />
 
                     <LoginForm />
 

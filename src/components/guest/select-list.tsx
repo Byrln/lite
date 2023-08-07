@@ -4,10 +4,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import CommentIcon from "@mui/icons-material/Comment";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { GuestAPI } from "lib/api/guest";
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 const SelectList = ({ filterValues, setGuest }: any) => {
     const [guestList, setGuestList]: any = useState([]);
@@ -29,17 +31,18 @@ const SelectList = ({ filterValues, setGuest }: any) => {
         }
     };
 
-    const guestSelect = (guestID: number) => {
-    };
+    const guestSelect = (guestID: number) => {};
 
     return (
         <Box
             sx={{
-                width: "90%",
+                width: "100%",
                 height: 400,
-                maxHeight: 400,
+                maxHeight: 350,
                 maxWidth: 600,
                 bgcolor: "background.paper",
+                overflow: "scroll",
+                paddingRight: "20px",
             }}
         >
             <List>
@@ -47,19 +50,46 @@ const SelectList = ({ filterValues, setGuest }: any) => {
                     <ListItem
                         key={index}
                         disableGutters
-                        secondaryAction={
-                            <IconButton
-                                onClick={() => {
-                                    setGuest(guest);
-                                }}
-                            >
-                                <ArrowCircleRightIcon />
-                            </IconButton>
-                        }
+                        divider
+                        // secondaryAction={
+                        //     <IconButton
+                        //         onClick={() => {
+                        //             setGuest(guest);
+                        //         }}
+                        //     >
+                        //         <ArrowCircleRightIcon />
+                        //     </IconButton>
+                        // }
                     >
-                        <ListItemText primary={`${guest.GuestFullName}`} />
-                        <ListItemText primary={`${guest.IdentityValue}`} />
-                        <ListItemText primary={`${guest.CountryName}`} />
+                        <Grid container spacing={2} alignItems="center">
+                            <Grid item xs={6}>
+                                <Typography variant="subtitle2" component="div">
+                                    {guest.GuestFullName}
+                                    {/* <ListItemText primary={`${guest.GuestFullName}`} /> */}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography variant="subtitle2" component="div">
+                                    {guest.IdentityValue}
+                                    {/* <ListItemText primary={`${guest.GuestFullName}`} /> */}
+                                </Typography>{" "}
+                                <Typography variant="subtitle2" component="div">
+                                    {guest.CountryName}
+                                    {/* <ListItemText primary={`${guest.GuestFullName}`} /> */}
+                                </Typography>
+                                {/* <ListItemText primary={`${guest.IdentityValue}`} />
+                            <ListItemText primary={`${guest.CountryName}`} /> */}
+                            </Grid>
+                            <Grid item xs={2}>
+                                <IconButton
+                                    onClick={() => {
+                                        setGuest(guest);
+                                    }}
+                                >
+                                    <ArrowCircleRightIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
                     </ListItem>
                 ))}
             </List>

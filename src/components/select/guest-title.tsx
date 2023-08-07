@@ -21,6 +21,7 @@ const GuestTitleSelect = ({ register, errors, entity, setEntity }: any) => {
 
     return (
         <TextField
+            size="small"
             fullWidth
             id="GuestTitleID"
             label="Title"

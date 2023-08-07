@@ -104,11 +104,11 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
         setLoading(true);
 
         try {
-            // if (entity && entity._id) {
-            //     await api?.update(entity._id, values);
-            // } else {
-            //     await api?.new(values);
-            // }
+            if (entity && entity._id) {
+                await GuestAPI?.update(entity._id, values);
+            } else {
+                await GuestAPI?.new(values);
+            }
 
             await mutate(listUrl);
 
@@ -126,7 +126,7 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2}>
-                    <Grid item xs={2}>
+                    <Grid item xs={6}>
                         <GuestTitleSelect
                             register={register}
                             errors={errors}
@@ -134,8 +134,9 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                             setEntity={setEntity}
                         />
                     </Grid>
-                    <Grid item xs={5}>
+                    <Grid item xs={6}>
                         <TextField
+                            size="small"
                             fullWidth
                             id="Surname"
                             label="Овог"
@@ -155,9 +156,12 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                             }}
                         />
                     </Grid>
+                </Grid>
 
-                    <Grid item xs={5}>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
                         <TextField
+                            size="small"
                             fullWidth
                             id="Name"
                             label="Нэр"
@@ -183,11 +187,9 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                             }}
                         />
                     </Grid>
-                </Grid>
-
-                <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <TextField
+                            size="small"
                             fullWidth
                             id="IdentityTypeID"
                             label="IdentityType"
@@ -206,9 +208,10 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                             <MenuItem value={2}>{"Жолооны үнэмлэх"}</MenuItem>
                         </TextField>
                     </Grid>
-                    <Grid item xs={6}>
-                        {(identityType === 1 || true) && (
+                    {(identityType === 1 || true) && (
+                        <Grid item xs={6}>
                             <TextField
+                                size="small"
                                 fullWidth
                                 id="RegistryNo"
                                 label="Регистерийн дугаар"
@@ -241,10 +244,13 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                                     }
                                 }}
                             />
-                        )}
+                        </Grid>
+                    )}
 
-                        {(identityType === 2 || true) && (
+                    {(identityType === 2 || true) && (
+                        <Grid item xs={6}>
                             <TextField
+                                size="small"
                                 fullWidth
                                 id="DriverLicenseNo"
                                 label="Жолооны үнэмлэхний дугаар"
@@ -276,8 +282,8 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                                     }
                                 }}
                             />
-                        )}
-                    </Grid>
+                        </Grid>
+                    )}
                 </Grid>
                 <GenderSelect
                     register={register}
@@ -296,6 +302,7 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <TextField
+                            size="small"
                             fullWidth
                             id="Email"
                             label="Емэйл"
@@ -317,6 +324,7 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
+                            size="small"
                             fullWidth
                             id="Mobile"
                             label="Гар утас"
@@ -345,6 +353,7 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
                 </Grid>
 
                 <TextField
+                    size="small"
                     fullWidth
                     id="Address"
                     label="Хаягийн мэдээлэл"

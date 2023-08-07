@@ -24,6 +24,7 @@ const styles = {
         maxHeight: "90%",
         width: "30%",
         overflow: "auto",
+        borderRadius: "10px",
     },
     medium: {
         position: "absolute" as "absolute",
@@ -38,6 +39,7 @@ const styles = {
         maxHeight: "90%",
         width: "60%",
         overflow: "auto",
+        borderRadius: "10px",
     },
     large: {
         position: "absolute" as "absolute",
@@ -52,6 +54,7 @@ const styles = {
         maxHeight: "90%",
         width: "90%",
         overflow: "auto",
+        borderRadius: "10px",
     },
 };
 
@@ -94,9 +97,9 @@ const CustomModal = () => {
                     >
                         <Typography
                             id="modal-modal-title"
-                            variant="h5"
+                            variant="h4"
                             gutterBottom
-                            className="mb-3 mt-2"
+                            className=" mt-3"
                         >
                             {modalTitle}
                         </Typography>
@@ -109,7 +112,7 @@ const CustomModal = () => {
                     </Grid>
                 )}
 
-                <Divider />
+                {/* <Divider /> */}
 
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     {modalContent}

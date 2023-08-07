@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import NewRevervation from "components/front-office/new-reservation/list";
 
-const title = "New Revervation";
+const title = "New Reservation";
 
 const Index = () => (
     <>

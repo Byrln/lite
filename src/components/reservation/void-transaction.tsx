@@ -9,7 +9,7 @@ import { ReservationApi } from "lib/api/reservation";
 import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
-import ReasonSelect from "../select/reason";
+// import ReasonSelect from "../select/reason";
 
 const VoidTransactionForm = ({ transactionInfo, reservation }: any) => {
     const { handleModal }: any = useContext(ModalContext);
@@ -58,12 +58,12 @@ const VoidTransactionForm = ({ transactionInfo, reservation }: any) => {
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <ReasonSelect
+                        {/* <ReasonSelect
                             register={register}
                             errors={errors}
                             ReasonTypeID={2}
                             nameKey={"ReasonID"}
-                        />
+                        /> */}
                     </Grid>
                 </Grid>
 

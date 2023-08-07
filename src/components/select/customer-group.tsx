@@ -31,6 +31,7 @@ const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
             margin="dense"
             error={errors.CustomerGroupID?.message}
             helperText={errors.CustomerGroupID?.message}
+            size="small"
         >
             {data.map((element: any) => {
                 return (

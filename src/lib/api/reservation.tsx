@@ -5,10 +5,10 @@ import { fToUniversal } from "lib/utils/format-time";
 const urlPrefix = "/api/Reservation";
 export const listUrl = `${urlPrefix}/List`;
 
-export const ReservationSWR = (ReservationTypeID: number) => {
-    const values = {
-        ReservationTypeID: ReservationTypeID,
-    };
+export const ReservationSWR = (values: any) => {
+    // const values = {
+    //     ReservationTypeID: ReservationTypeID,
+    // };
 
     const fetcher = async (url: any) =>
         await axios

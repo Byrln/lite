@@ -67,7 +67,14 @@ const NewEdit = () => {
                 helperText={errors.RateTypeName?.message}
             />
 
-            <ChannelSelect register={register} errors={errors} />
+            <ChannelSelect
+                register={register}
+                errors={errors}
+                type="ReservationChannel"
+                label="Channel"
+                optionValue="ChannelID"
+                optionLabel="ChannelName"
+            />
 
             <FormControlLabel
                 control={

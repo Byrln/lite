@@ -1,18 +1,18 @@
-import {TextField, Grid, Checkbox, FormControlLabel} from "@mui/material";
+import { TextField, Grid, Checkbox, FormControlLabel } from "@mui/material";
 import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {useForm} from "react-hook-form";
-import {useState, useContext, useEffect} from "react";
-import {mutate} from "swr";
-import {toast} from "react-toastify";
-import {ReservationApi} from "lib/api/reservation";
-import {ModalContext} from "lib/context/modal";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import { useState, useContext, useEffect } from "react";
+import { mutate } from "swr";
+import { toast } from "react-toastify";
+import { ReservationAPI } from "lib/api/reservation";
+import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
-import ReasonSelect from "../select/reason";
+// import ReasonSelect from "../select/reason";
 
-const CancelReservationForm = ({transactionInfo, reservation}: any) => {
-    const {handleModal}: any = useContext(ModalContext);
+const CancelReservationForm = ({ transactionInfo, reservation }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
 
     const validationSchema = yup.object().shape({
@@ -20,12 +20,12 @@ const CancelReservationForm = ({transactionInfo, reservation}: any) => {
         ReasonID: yup.number().required("Сонгоно уу"),
         Fee: yup.number().required(""),
     });
-    const formOptions = {resolver: yupResolver(validationSchema)};
+    const formOptions = { resolver: yupResolver(validationSchema) };
 
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
         reset,
     } = useForm(formOptions);
 
@@ -34,13 +34,11 @@ const CancelReservationForm = ({transactionInfo, reservation}: any) => {
             TransactionID: transactionInfo.TransactionID,
             Fee: 0,
         });
-    },[]);
-
+    }, []);
 
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-
             const res = await ReservationApi.cancel(values);
 
             await mutate(listUrl);
@@ -66,18 +64,16 @@ const CancelReservationForm = ({transactionInfo, reservation}: any) => {
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
-
-                <input type="text" {...register("TransactionID")}/>
+                <input type="text" {...register("TransactionID")} />
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-
-                        <ReasonSelect
+                        {/* <ReasonSelect
                             register={register}
                             errors={errors}
                             ReasonTypeID={1}
                             nameKey={"ReasonID"}
-                        />
+                        /> */}
 
                         <TextField
                             fullWidth
@@ -88,7 +84,6 @@ const CancelReservationForm = ({transactionInfo, reservation}: any) => {
                             error={errors.Fee?.message}
                             helperText={errors.Fee?.message}
                         />
-
                     </Grid>
                 </Grid>
 
@@ -98,7 +93,9 @@ const CancelReservationForm = ({transactionInfo, reservation}: any) => {
                     variant="contained"
                     loading={loading}
                     className="mt-3"
-                >Cancel Reservation</LoadingButton>
+                >
+                    Cancel Reservation
+                </LoadingButton>
             </form>
         </>
     );

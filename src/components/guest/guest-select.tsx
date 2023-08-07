@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import SelectList from "components/guest/select-list";
 import NewEdit from "./new-edit";
-import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
-import {Box} from "@mui/material";
+import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const GuestSelect = ({ guestSelected }: any) => {
     const [idEditing, setIdEditing]: any = useState(null);
@@ -63,7 +63,15 @@ const GuestSelect = ({ guestSelected }: any) => {
                 </Grid>
             </Grid>
 
-            <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+            <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-3"
+            >
+                <div></div>
+
                 <Button
                     variant="contained"
                     onClick={(evt: any) => {
@@ -71,13 +79,11 @@ const GuestSelect = ({ guestSelected }: any) => {
                             guestSelected(guestCurrent);
                         }
                     }}
+                    size="small"
                 >
-                    Үргэлжлүүлэх <ArrowForwardIcon/>
+                    Continue <ArrowForwardIcon />
                 </Button>
-            </Box>
-
-
-
+            </Grid>
         </>
     );
 };

@@ -1,8 +1,12 @@
-import { format } from "date-fns";
+// import { format } from "date-fns";
+import { useState } from "react";
 
 import CustomTable from "components/common/custom-table";
+import CustomSearch from "components/common/custom-search";
+
 import { ReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
-import NewEdit from "./new-edit";
+import NewEdit from "components/reservation/new-edit";
+import Search from "./search";
 
 const columns = [
     {
@@ -47,24 +51,40 @@ const columns = [
     },
 ];
 
+const initialState = {
+    ReservationTypeID: 1,
+};
+
 const DeparturedListList = ({ title }: any) => {
-    const { data, error } = ReservationSWR(1);
+    const [search, setSearch] = useState(null);
+
+    const { data, error } = ReservationSWR(search ? search : initialState);
 
     return (
-        <CustomTable
-            columns={columns}
-            data={data}
-            error={error}
-            api={ReservationAPI}
-            //hasNew={true}
-            //hasUpdate={true}
-            //hasDelete={true}
-            id="DeparturedListID"
-            listUrl={listUrl}
-            modalTitle={title}
-            modalContent={<NewEdit />}
-            excelName={title}
-        />
+        <>
+            {/* <CustomSearch
+                listUrl={listUrl}
+                search={search}
+                setSearch={setSearch}
+            >
+                <Search />
+            </CustomSearch> */}
+
+            <CustomTable
+                columns={columns}
+                data={data}
+                error={error}
+                api={ReservationAPI}
+                //hasNew={true}
+                //hasUpdate={true}
+                //hasDelete={true}
+                id="DeparturedListID"
+                listUrl={listUrl}
+                modalTitle={title}
+                modalContent={<NewEdit />}
+                excelName={title}
+            />
+        </>
     );
 };
 

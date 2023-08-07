@@ -62,36 +62,36 @@ const typography = {
     subtitle1: {
         fontWeight: 600,
         lineHeight: 1.5,
-        fontSize: pxToRem(16),
+        fontSize: pxToRem(14),
     },
     subtitle2: {
         fontWeight: 600,
         lineHeight: 22 / 14,
-        fontSize: pxToRem(14),
+        fontSize: pxToRem(12),
     },
     body1: {
         lineHeight: 1.5,
-        fontSize: pxToRem(16),
+        fontSize: pxToRem(14),
     },
     body2: {
         lineHeight: 22 / 14,
-        fontSize: pxToRem(14),
+        fontSize: pxToRem(12),
     },
     caption: {
         lineHeight: 1.5,
-        fontSize: pxToRem(12),
+        fontSize: pxToRem(10),
     },
     overline: {
         fontWeight: 700,
         lineHeight: 1.5,
-        fontSize: pxToRem(12),
+        fontSize: pxToRem(10),
         letterSpacing: 1.1,
         textTransform: "uppercase",
     },
     button: {
         fontWeight: 700,
         lineHeight: 24 / 14,
-        fontSize: pxToRem(14),
+        fontSize: pxToRem(12),
         textTransform: "capitalize",
     },
 };

@@ -1,18 +1,31 @@
-import {useState, useEffect} from "react";
-import {Grid, TextField} from "@mui/material";
+import { useState, useEffect } from "react";
+import { Grid, TextField } from "@mui/material";
 import CurrencySelect from "../select/currency";
-import {RateAPI} from "../../lib/api/rate";
-import {dateToCustomFormat} from "../../lib/utils/format-time";
+import { RateAPI } from "../../lib/api/rate";
+import { dateToCustomFormat } from "../../lib/utils/format-time";
 
-const CurrencyAmount = ({register, errors, reservationModel, setReservationModel, reset}: any) => {
-
+const CurrencyAmount = ({
+    register,
+    errors,
+    reservationModel,
+    setReservationModel,
+    reset,
+}: any) => {
     const calculateAmount = async () => {
-
-        if (!(reservationModel.roomType && reservationModel.rate && reservationModel.dateStart)) {
+        if (
+            !(
+                reservationModel.roomType &&
+                reservationModel.rate &&
+                reservationModel.dateStart
+            )
+        ) {
             return;
         }
         var values = {
-            CurrDate: dateToCustomFormat(reservationModel.dateStart, "yyyy MMM dd"),
+            CurrDate: dateToCustomFormat(
+                reservationModel.dateStart,
+                "yyyy MMM dd"
+            ),
             RoomTypeID: reservationModel.roomType.RoomTypeID,
             RateTypeID: reservationModel.rate.RateTypeID,
             ChannelID: 0,
@@ -21,11 +34,10 @@ const CurrencyAmount = ({register, errors, reservationModel, setReservationModel
             TaxIncluded: reservationModel.TaxIncluded,
             RoomChargeDuration: 1,
             ContractRate: false,
-            EmptyRow: false
+            EmptyRow: false,
         };
 
         try {
-
             var rates = await RateAPI.listByDate(values);
 
             var amount;
@@ -35,7 +47,6 @@ const CurrencyAmount = ({register, errors, reservationModel, setReservationModel
                 return;
             }
 
-
             reset({
                 CurrencyAmount: amount,
             });
@@ -44,11 +55,7 @@ const CurrencyAmount = ({register, errors, reservationModel, setReservationModel
                 ...reservationModel,
                 CurrencyAmount: amount,
             });
-
-        } catch (exp) {
-
-        }
-
+        } catch (exp) {}
     };
 
     useEffect(() => {
@@ -61,39 +68,42 @@ const CurrencyAmount = ({register, errors, reservationModel, setReservationModel
         reservationModel.TaxIncluded,
     ]);
 
-    return <>
-        <Grid container spacing={2}>
-            <Grid item md={3}>
-                <CurrencySelect
-                    register={register}
-                    errors={errors}
-                    nameKey={"CurrencyID"}
-                />
-            </Grid>
-            <Grid item md={9}>
-                <Grid container spacing={1}>
-                    <Grid item xs={6} sx={{display: "none"}}>
-
-                    </Grid>
-                    <Grid item xs={6}>
+    return (
+        <>
+            <Grid container spacing={2}>
+                <Grid item md={4}>
+                    <CurrencySelect
+                        register={register}
+                        errors={errors}
+                        nameKey={"CurrencyID"}
+                    />
+                </Grid>
+                <Grid item md={8}>
+                    <Grid container spacing={1}>
+                        {/* <Grid item xs={6} sx={{ display: "none" }}></Grid>
+                        <Grid item xs={6}> */}
                         <TextField
                             id="CurrencyAmount"
                             label="CurrencyAmount"
                             type="number"
-                            disabled
+                            disabled={true}
                             {...register("CurrencyAmount")}
                             margin="dense"
                             error={errors.CurrencyAmount?.message}
                             helperText={errors.CurrencyAmount?.message}
                             InputLabelProps={{
-                                shrink: reservationModel.CurrencyAmount
+                                shrink: reservationModel.CurrencyAmount,
                             }}
+                            size="small"
+                            style={{ width: "100%" }}
+                            className="mt-3"
                         />
+                        {/* </Grid> */}
                     </Grid>
                 </Grid>
             </Grid>
-        </Grid>
-    </>
+        </>
+    );
 };
 
 export default CurrencyAmount;

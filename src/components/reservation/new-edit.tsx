@@ -10,6 +10,7 @@ import {
     Alert,
     Typography,
 } from "@mui/material";
+
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import RoomTypeSelect from "components/select/room-type";
@@ -41,7 +42,7 @@ import RoomRateTypeSelect from "../select/room-rate-type";
 import ReplayIcon from "@mui/icons-material/Replay";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CurrencyAmount from "./currency-amount";
-import { ReservationApi } from "../../lib/api/reservation";
+// import { ReservationApi } from "../../lib/api/reservation";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -88,10 +89,10 @@ const NewEdit = ({
               TransactionID: 0,
               guest: defaultData ? defaultData.guest : null,
               roomType: {
-                  RoomTypeID: timelineCoord.RoomTypeID,
+                  RoomTypeID: timelineCoord ? timelineCoord.RoomTypeID : null,
               },
               room: {
-                  RoomID: timelineCoord.RoomID,
+                  RoomID: timelineCoord ? timelineCoord.RoomID : null,
               },
               rate: null,
               dateStart: null,
@@ -108,13 +109,13 @@ const NewEdit = ({
               TransactionID: 0,
               guest: defaultData ? defaultData.guest : null,
               roomType: {
-                  RoomTypeID: timelineCoord.RoomTypeID,
+                  RoomTypeID: timelineCoord ? timelineCoord.RoomTypeID : null,
               },
               room: null,
               rate: null,
-              dateStart: defaultData.dateStart,
-              dateEnd: defaultData.dateEnd,
-              Nights: defaultData.Nights,
+              dateStart: defaultData ? defaultData.dateStart : null,
+              dateEnd: defaultData ? defaultData.dateEnd : null,
+              Nights: defaultData ? defaultData.Nights : null,
               RateModeID: 1,
               RoomChargeDurationID: 1,
               TaxIncluded: true,
@@ -194,7 +195,9 @@ const NewEdit = ({
     };
 
     useEffect(() => {
-        setRange(timelineCoord.TimeStart, timelineCoord.TimeEnd);
+        if (timelineCoord) {
+            setRange(timelineCoord.TimeStart, timelineCoord.TimeEnd);
+        }
     }, []);
 
     useEffect(() => {
@@ -204,8 +207,15 @@ const NewEdit = ({
     }, [submitting]);
 
     const onArrivalDateChange = (evt: any) => {
+        console.log(baseStay);
         var dateStart = new Date(evt.target.value);
-        var dateEnd = new Date(baseStay.dateEnd.getTime());
+        var dateEnd = new Date(baseStay.dateEnd && baseStay.dateEnd.getTime());
+        setBaseStay({
+            ...baseStay,
+            dateStart: evt.target.value,
+        });
+
+        console.log("baseStay", baseStay);
         if (
             dateToCustomFormat(dateStart, "yyyyMMdd") >
             dateToCustomFormat(dateEnd, "yyyyMMdd")
@@ -217,8 +227,16 @@ const NewEdit = ({
     };
 
     const onDepartureDateChange = (evt: any) => {
-        var dateStart = new Date(baseStay.dateStart.getTime());
+        var dateStart = new Date(
+            baseStay.dateStart && baseStay.dateStart.getTime()
+        );
         var dateEnd = new Date(evt.target.value);
+        setBaseStay({
+            ...baseStay,
+            dateEnd: evt.target.value,
+        });
+
+        console.log("baseStay", baseStay);
         if (
             dateToCustomFormat(dateStart, "yyyyMMdd") >
             dateToCustomFormat(dateEnd, "yyyyMMdd")
@@ -299,29 +317,10 @@ const NewEdit = ({
                         >
                             <Grid container spacing={4}>
                                 <Grid item xs={6}>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                            mb: 2,
-                                        }}
-                                    >
-                                        <Typography
-                                            variant="h6"
-                                            component="div"
-                                        >{`${baseStay.guest?.GuestFullName} /${baseStay.guest?.IdentityValue}/`}</Typography>
-
-                                        <Button
-                                            variant={"outlined"}
-                                            onClick={() => {
-                                                setActiveStep("guest");
-                                            }}
-                                        >
-                                            <ReplayIcon />
-                                        </Button>
-                                    </Box>
+                                    <Typography
+                                        variant="subtitle2"
+                                        component="div"
+                                    >{`${baseStay.guest?.GuestFullName} /${baseStay.guest?.IdentityValue}/`}</Typography>
 
                                     <Grid container spacing={2}>
                                         <Grid item xs={8}>
@@ -407,12 +406,13 @@ const NewEdit = ({
                                                     });
                                                 }}
                                                 disabled
+                                                size="small"
                                             />
                                         </Grid>
                                     </Grid>
 
                                     <Grid container spacing={2}>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={7}>
                                             <TextField
                                                 type="date"
                                                 fullWidth
@@ -432,9 +432,10 @@ const NewEdit = ({
                                                 onChange={(evt: any) => {
                                                     onArrivalDateChange(evt);
                                                 }}
+                                                size="small"
                                             />
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={5}>
                                             <TextField
                                                 id="ArrivalTime"
                                                 label="Ирэх цаг"
@@ -448,13 +449,14 @@ const NewEdit = ({
                                                 inputProps={{
                                                     step: 600, // 5 min
                                                 }}
-                                                sx={{ width: 150 }}
+                                                sx={{ width: "100%" }}
+                                                size="small"
                                             />
                                         </Grid>
                                     </Grid>
 
                                     <Grid container spacing={2}>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={7}>
                                             <TextField
                                                 type="date"
                                                 fullWidth
@@ -476,9 +478,10 @@ const NewEdit = ({
                                                 onChange={(evt: any) => {
                                                     onDepartureDateChange(evt);
                                                 }}
+                                                size="small"
                                             />
                                         </Grid>
-                                        <Grid item xs={3}>
+                                        <Grid item xs={5}>
                                             <TextField
                                                 id="DepartureTime"
                                                 label="Гарах цаг"
@@ -491,14 +494,15 @@ const NewEdit = ({
                                                 inputProps={{
                                                     step: 600, // 5 min
                                                 }}
-                                                sx={{ width: 150 }}
+                                                sx={{ width: "100%" }}
                                                 onChange={(evt: any) => {}}
+                                                size="small"
                                             />
                                         </Grid>
                                     </Grid>
 
                                     <Grid container spacing={2}>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={4}>
                                             <FormControlLabel
                                                 sx={{ my: 2 }}
                                                 control={
@@ -512,7 +516,7 @@ const NewEdit = ({
                                                 label="BreakFast Included"
                                             />
                                         </Grid>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={8}>
                                             <ReservationTypeSelect
                                                 register={register}
                                                 errors={errors}
@@ -570,29 +574,46 @@ const NewEdit = ({
                                         setEntity={setBaseStay}
                                         reset={reset}
                                     />
-
-                                    <Box sx={{ mt: 4 }}>
-                                        <Button
-                                            variant={"text"}
-                                            onClick={() => {
-                                                setActiveStep("deposit");
-                                            }}
-                                        >
-                                            Deposit
-                                        </Button>
-                                    </Box>
                                 </Grid>
                             </Grid>
 
-                            <Box sx={{ display: "none" }}>
+                            <Grid
+                                container
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                className="mt-3"
+                            >
                                 <Button
-                                    type="submit"
-                                    variant="contained"
-                                    ref={formRef}
+                                    variant={"outlined"}
+                                    onClick={() => {
+                                        setActiveStep("guest");
+                                    }}
+                                    size="small"
                                 >
-                                    Submit
+                                    <ReplayIcon className="mr-1" /> Back to
+                                    Guest
                                 </Button>
-                            </Box>
+
+                                <Button
+                                    variant={"outlined"}
+                                    onClick={() => {
+                                        setActiveStep("deposit");
+                                    }}
+                                >
+                                    Deposit
+                                </Button>
+                            </Grid>
+
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                ref={formRef}
+                                className="mt-3"
+                                style={{ width: "100%" }}
+                            >
+                                Submit
+                            </Button>
                         </Box>
 
                         <Box
@@ -611,14 +632,14 @@ const NewEdit = ({
                                         errors={errors}
                                     />
                                 </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={2}>
                                     <CurrencySelect
                                         register={register}
                                         errors={errors}
                                         nameKey={"PayCurrencyID"}
                                     />
                                 </Grid>
-                                <Grid item xs={5}>
+                                <Grid item xs={6}>
                                     <TextField
                                         id="PayAmount"
                                         label="PayAmount"
@@ -627,6 +648,8 @@ const NewEdit = ({
                                         margin="dense"
                                         error={errors.PayAmount?.message}
                                         helperText={errors.PayAmount?.message}
+                                        size="small"
+                                        style={{ width: "100%" }}
                                     />
                                 </Grid>
                             </Grid>
@@ -653,21 +676,23 @@ const NewEdit = ({
                                 margin="dense"
                                 error={errors.setMessage?.message}
                                 helperText={errors.setMessage?.message}
+                                size="small"
+                                style={{ width: "100%" }}
                             />
                             <PaymentMethodGroupSelect
                                 register={register}
                                 errors={errors}
                             />
-                            <Box>
-                                <Button
-                                    variant={"text"}
-                                    onClick={() => {
-                                        setActiveStep("main");
-                                    }}
-                                >
-                                    <ArrowBackIcon /> Back to main
-                                </Button>
-                            </Box>
+                            <Button
+                                variant={"outlined"}
+                                onClick={() => {
+                                    setActiveStep("main");
+                                }}
+                                className="mt-3"
+                                size="small"
+                            >
+                                <ReplayIcon className="mr-1" /> Back to Main
+                            </Button>
                         </Box>
                     </form>
 

@@ -1,21 +1,19 @@
-import {TextField} from "@mui/material";
+import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import {useEffect, useState} from "react";
-import {RoomSWR, RoomAPI} from "lib/api/room";
-import {dateToSimpleFormat} from "lib/utils/format-time";
+import { useEffect, useState } from "react";
+import { RoomSWR, RoomAPI } from "lib/api/room";
+import { dateToSimpleFormat } from "lib/utils/format-time";
 
-const RoomSelect = (
-    {
-        register,
-        errors,
-        baseStay,
-        onRoomChange,
-        roomAutoAssign,
-    }: any
-) => {
+const RoomSelect = ({
+    register,
+    errors,
+    baseStay,
+    onRoomChange,
+    roomAutoAssign,
+}: any) => {
     // const { data, error } = RoomSWR();
     const [data, setData]: any = useState([]);
 
@@ -58,18 +56,15 @@ const RoomSelect = (
     }, [data]);
 
     useEffect(() => {
-
         console.log("===== baseStay change =====");
 
         fetchRooms();
     }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);
 
     useEffect(() => {
-
         if (roomAutoAssign && data.length > 0) {
-            onRoomChange(data[0])
+            onRoomChange(data[0]);
         }
-
     }, [roomAutoAssign]);
 
     // if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -96,6 +91,7 @@ const RoomSelect = (
                 eventRoomChange(evt.target.value);
             }}
             value={baseStay?.room?.RoomID}
+            size="small"
         >
             {data.map((room: any) => {
                 return (

@@ -29,6 +29,7 @@ const PaymentMethodSelect = ({ register, errors }: any) => {
             margin="dense"
             error={errors.PaymentMethodID?.message}
             helperText={errors.PaymentMethodID?.message}
+            size="small"
         >
             {data.map((element: any) => (
                 <MenuItem

@@ -21,6 +21,7 @@ const CountrySelect = ({ register, errors, entity, setEntity }: any) => {
 
     return (
         <TextField
+            size="small"
             fullWidth
             id="CountryID"
             label="Улс сонгох"

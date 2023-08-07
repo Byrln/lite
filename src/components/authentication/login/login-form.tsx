@@ -151,7 +151,7 @@ export default function LoginForm() {
 
                     <TextField
                         fullWidth
-                        label="Hotel"
+                        label="Hotel code"
                         {...register("hotel")}
                         margin="dense"
                         error={errors?.hotel?.message}
@@ -159,7 +159,7 @@ export default function LoginForm() {
                     />
                 </Stack>
 
-                <Stack
+                {/* <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
@@ -170,7 +170,7 @@ export default function LoginForm() {
                             Forgot password?
                         </MaterialLink>
                     </Link>
-                </Stack>
+                </Stack> */}
 
                 <LoadingButton
                     fullWidth
@@ -178,6 +178,7 @@ export default function LoginForm() {
                     type="submit"
                     variant="contained"
                     loading={loading}
+                    sx={{ my: 2 }}
                 >
                     Login
                 </LoadingButton>

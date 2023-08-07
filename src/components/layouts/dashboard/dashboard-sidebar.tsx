@@ -11,6 +11,7 @@ import {
     Avatar,
     Stack,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 import Logo from "components/logo";
 import Scrollbar from "components/scrollbar";
@@ -41,7 +42,8 @@ export default function DashboardSidebar({
     onCloseSidebar,
 }: any) {
     const router = useRouter();
-
+    const { data: session } = useSession();
+    console.log("session", session);
     useEffect(() => {
         if (isOpenSidebar) {
             onCloseSidebar();
@@ -98,7 +100,7 @@ export default function DashboardSidebar({
 
             <Box sx={{ flexGrow: 1 }} />
 
-            <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+            {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
                 <Stack
                     alignItems="center"
                     spacing={3}
@@ -137,7 +139,7 @@ export default function DashboardSidebar({
                         Upgrade to Pro
                     </Button>
                 </Stack>
-            </Box>
+            </Box> */}
         </Scrollbar>
     );
 

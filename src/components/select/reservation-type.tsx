@@ -35,6 +35,7 @@ const ReservationTypeSelect = ({ register, errors, reset }: any) => {
             margin="dense"
             error={errors.ReservationTypeID?.message}
             helperText={errors.ReservationTypeID?.message}
+            size="small"
         >
             {data.map((element: any) => {
                 return (

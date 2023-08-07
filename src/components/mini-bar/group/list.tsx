@@ -26,6 +26,7 @@ const columns = [
         title: "Status",
         key: "Status",
         dataIndex: "Status",
+        excelRenderPass: true,
         render: function render(id: any, value: any) {
             return (
                 <ToggleChecked
