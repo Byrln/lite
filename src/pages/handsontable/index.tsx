@@ -77,12 +77,14 @@
         });
 
         const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-            setDayCount((event.target as HTMLInputElement).value);
-            mutateItems();
+
+            // @ts-ignore
+            let value = (event.target as HTMLInputElement).value;
+            setDayCount(value);
         };
 
         useEffect(() => {
-
+            mutateItems()
             /* Excel column data build for UI start */
             let cols:any = [];
             let headers:any = [];
@@ -129,6 +131,9 @@
             // Data prepare
             setColDict(col_dict);
             createRecords();
+            if (items && items.length > 0){
+                console.log(items.length)
+            }
 
         },[dayCount, roomTypes, rooms, items, roomBlocks])
 
@@ -267,7 +272,8 @@
                                 // @ts-ignore
                                 mergeCell['colspan'] = day_count > 0 ? day_count : 1;
                             }
-                            if (items[i].RoomID !== 0){
+                            // @ts-ignore
+                            if (items[i].RoomID !== 0 && parseInt(mergeCell['colspan']) != 1 && parseInt(mergeCell['col']) != -1 && parseInt(dayCount)*2 > parseInt(mergeCell['col'])){
                                 mergeCells.push(mergeCell);
                             }
 
@@ -301,7 +307,10 @@
                     mergeCell['rowspan'] = 1;
                     // @ts-ignore
                     mergeCell['colspan'] = 2;
-                    mergeCells.push(mergeCell);
+                    // @ts-ignore
+                    if (parseInt(mergeCell['col']) != -1) {
+                        mergeCells.push(mergeCell);
+                    }
                 }
             }
 
@@ -316,7 +325,6 @@
             setOrderCoords(order_coords);
         };
 
-        // @ts-ignore
         // @ts-ignore
         return (
             <>
@@ -337,7 +345,7 @@
                     </RadioGroup>
                 </FormControl>
                 {/*{workingDate}*/}
-                {/*{cellRow} {cellCol}*/}
+                {/*{items}*/}
                 <HotTableCSR
                     data={records}
                     //rowHeaders={false}
