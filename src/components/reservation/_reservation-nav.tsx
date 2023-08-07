@@ -1,4 +1,4 @@
-import { ReservationApi } from "lib/api/reservation";
+import { ReservationAPI } from "lib/api/reservation";
 import { useState, useEffect, useContext } from "react";
 import { Grid, Box, Paper, Typography, Button } from "@mui/material";
 import { fToCustom } from "lib/utils/format-time";
@@ -37,7 +37,7 @@ const ReservationNav = ({
         if (!confirm("Are you sure?")) {
             return;
         }
-        var res = await ReservationApi.checkIn(transactionInfo.TransactionID);
+        // var res = await ReservationApi.checkIn(transactionInfo.TransactionID);
         await mutate(calendarItemsURL);
         finishCall("Амжилттай");
     };
@@ -46,9 +46,9 @@ const ReservationNav = ({
         if (!confirm("Are you sure?")) {
             return;
         }
-        var res = await ReservationApi.roomUnassign(
-            transactionInfo.TransactionID
-        );
+        // var res = await ReservationApi.roomUnassign(
+        //     transactionInfo.TransactionID
+        // );
         await mutate(calendarItemsURL);
         finishCall("Амжилттай");
     };

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState, useContext, useEffect } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
-import { ReservationApi } from "lib/api/reservation";
+// import { ReservationApi } from "lib/api/reservation";
 import SubmitButton from "components/common/submit-button";
 import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
@@ -140,7 +140,7 @@ const AmendStayForm = ({ transactionInfo, reservation }: any) => {
                 values.DepartureTime +
                 ":00";
 
-            const res = await ReservationApi.amendStay(vals);
+            // const res = await ReservationApi.amendStay(vals);
 
             await mutate(listUrl);
 

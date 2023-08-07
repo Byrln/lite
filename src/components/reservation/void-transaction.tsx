@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState, useContext, useEffect } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
-import { ReservationApi } from "lib/api/reservation";
+// import { ReservationApi } from "lib/api/reservation";
 import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
@@ -37,7 +37,7 @@ const VoidTransactionForm = ({ transactionInfo, reservation }: any) => {
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            const res = await ReservationApi.void(values);
+            // const res = await ReservationApi.void(values);
 
             await mutate(listUrl);
 
