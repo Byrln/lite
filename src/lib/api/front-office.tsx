@@ -5,10 +5,10 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/FrontOffice";
 export const listUrl = `${urlPrefix}/ReservationDetailsByDate`;
 
-export const FrontOfficeSWR = (date: any) => {
+export const FrontOfficeSWR = (date: any, dayCount: string = "30") => {
     const values = {
         CurrDate: date,
-        NumberOfDays: 30,
+        NumberOfDays: parseInt(dayCount),
         RoomTypeID: 0,
     };
 

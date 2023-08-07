@@ -273,7 +273,7 @@
                                 mergeCell['colspan'] = day_count > 0 ? day_count : 1;
                             }
                             // @ts-ignore
-                            if (items[i].RoomID !== 0 && parseInt(mergeCell['colspan']) != 1 && parseInt(mergeCell['col']) != -1 && parseInt(dayCount)*2 > parseInt(mergeCell['col'])){
+                            if (items[i].RoomID !== 0 && parseInt(mergeCell['colspan']) != 1 && parseInt(mergeCell['col']) != -1 && (parseInt(dayCount)*2 - 1) > parseInt(mergeCell['col'])){
                                 mergeCells.push(mergeCell);
                             }
 
