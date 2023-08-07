@@ -1,9 +1,9 @@
 import CustomTable from "components/common/custom-table";
-import {
-    DepartedGroupSWR,
-    DepartedGroupAPI,
-    listUrl,
-} from "lib/api/departed-group";
+// import {
+//     DepartedGroupSWR,
+//     DepartedGroupAPI,
+//     listUrl,
+// } from "lib/api/departed-group";
 import NewEdit from "./new-edit";
 
 const columns = [
@@ -70,23 +70,24 @@ const columns = [
 ];
 
 const DepartedGroupList = ({ title }: any) => {
-    const { data, error } = DepartedGroupSWR();
+    // const { data, error } = DepartedGroupSWR();
 
     return (
-        <CustomTable
-            columns={columns}
-            data={data}
-            error={error}
-            api={DepartedGroupAPI}
-            hasNew={true}
-            hasUpdate={true}
-            hasDelete={true}
-            id="DepartedGroupID"
-            listUrl={listUrl}
-            modalTitle={title}
-            modalContent={<NewEdit />}
-            excelName={title}
-        />
+        // <CustomTable
+        //     columns={columns}
+        //     data={data}
+        //     error={error}
+        //     api={DepartedGroupAPI}
+        //     hasNew={true}
+        //     hasUpdate={true}
+        //     hasDelete={true}
+        //     id="DepartedGroupID"
+        //     listUrl={listUrl}
+        //     modalTitle={title}
+        //     modalContent={<NewEdit />}
+        //     excelName={title}
+        // />
+        <>test</>
     );
 };
 

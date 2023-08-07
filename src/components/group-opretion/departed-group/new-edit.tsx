@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
-import { DepartedGroupAPI, listUrl } from "lib/api/departed-group";
+// import { DepartedGroupAPI, listUrl } from "lib/api/departed-group";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
@@ -22,26 +22,27 @@ const NewEdit = () => {
     } = useForm({ resolver: yupResolver(validationSchema) });
 
     return (
-        <NewEditForm
-            api={DepartedGroupAPI}
-            listUrl={listUrl}
-            additionalValues={{
-                DepartedGroupID: state.editId,
-            }}
-            reset={reset}
-            handleSubmit={handleSubmit}
-        >
-            <TextField
-                size="small"
-                fullWidth
-                id="DepartedGroupName"
-                label="DepartedGroupName"
-                {...register("DepartedGroupName")}
-                margin="dense"
-                error={errors.DepartedGroupName?.message}
-                helperText={errors.DepartedGroupName?.message}
-            />
-        </NewEditForm>
+        // <NewEditForm
+        //     api={DepartedGroupAPI}
+        //     listUrl={listUrl}
+        //     additionalValues={{
+        //         DepartedGroupID: state.editId,
+        //     }}
+        //     reset={reset}
+        //     handleSubmit={handleSubmit}
+        // >
+        //     <TextField
+        //         size="small"
+        //         fullWidth
+        //         id="DepartedGroupName"
+        //         label="DepartedGroupName"
+        //         {...register("DepartedGroupName")}
+        //         margin="dense"
+        //         error={errors.DepartedGroupName?.message}
+        //         helperText={errors.DepartedGroupName?.message}
+        //     />
+        // </NewEditForm>
+        <></>
     );
 };
 
