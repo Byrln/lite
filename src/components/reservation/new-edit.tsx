@@ -9,6 +9,10 @@ import {
     Button,
     Alert,
     Typography,
+    Stepper,
+    Step,
+    StepLabel,
+    StepContent,
 } from "@mui/material";
 
 import * as yup from "yup";
@@ -56,9 +60,7 @@ const styleAccordion = {
 };
 
 const styleAccordionHeader = {
-    mx: -4,
-    px: 2,
-    backgroundColor: "#efefef",
+    // borderRadius: "15px",
 };
 
 const styleAccordionContent = {
@@ -82,6 +84,7 @@ const NewEdit = ({
     const [activeStep, setActiveStep]: any = useState(
         defaultData?.guest ? "main" : "guest"
     );
+    const [activeStepper, setActiveStepper]: any = useState(0);
     const formRef = createRef<HTMLButtonElement>();
 
     const baseStayDefault = isMain
@@ -172,6 +175,9 @@ const NewEdit = ({
             GuestID: guest.GuestID,
         });
         setActiveStep("main");
+        if (activeStepper != 2) {
+            setActiveStepper(1);
+        }
     };
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
@@ -276,21 +282,36 @@ const NewEdit = ({
                 >
                     <Box
                         sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
                             width: "100%",
                         }}
                     >
-                        <Typography variant="subtitle1" component="div">{`${
-                            keyIndex + 1
-                        }. ${baseStay.guest?.GuestFullName}`}</Typography>
-
-                        <Typography
-                            variant="subtitle1"
-                            component="div"
-                        >{`${baseStay.roomType?.RoomTypeName}(${baseStay.room?.RoomNo})`}</Typography>
+                        <Stepper activeStep={activeStepper} alternativeLabel>
+                            <Step key={0}>
+                                <StepLabel>
+                                    {baseStay.guest
+                                        ? `${baseStay.guest?.GuestFullName}
+                                        ${
+                                            baseStay.guest?.IdentityValue
+                                                ? "/" +
+                                                  baseStay.guest
+                                                      ?.IdentityValue +
+                                                  "/"
+                                                : ""
+                                        }`
+                                        : "Guest"}
+                                </StepLabel>
+                            </Step>
+                            <Step key={1}>
+                                <StepLabel>
+                                    {baseStay.room?.RoomNo
+                                        ? `${baseStay.roomType?.RoomTypeName}(${baseStay.room?.RoomNo})`
+                                        : "Room"}
+                                </StepLabel>
+                            </Step>
+                            <Step key={2}>
+                                <StepLabel>Deposit</StepLabel>
+                            </Step>
+                        </Stepper>
                     </Box>
                 </AccordionSummary>
                 <AccordionDetails sx={styleAccordionContent}>
@@ -316,14 +337,14 @@ const NewEdit = ({
                             }}
                         >
                             <Grid container spacing={4}>
-                                <Grid item xs={6}>
-                                    <Typography
+                                <Grid item xs={12} md={6}>
+                                    {/* <Typography
                                         variant="subtitle2"
                                         component="div"
-                                    >{`${baseStay.guest?.GuestFullName} /${baseStay.guest?.IdentityValue}/`}</Typography>
+                                    >{`${baseStay.guest?.GuestFullName} /${baseStay.guest?.IdentityValue}/`}</Typography> */}
 
                                     <Grid container spacing={2}>
-                                        <Grid item xs={8}>
+                                        <Grid item xs={12} sm={8}>
                                             <RoomTypeSelect
                                                 register={register}
                                                 errors={errors}
@@ -333,7 +354,7 @@ const NewEdit = ({
                                                 baseStay={baseStay}
                                             />
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={12} sm={4}>
                                             <RoomSelect
                                                 register={register}
                                                 errors={errors}
@@ -344,7 +365,7 @@ const NewEdit = ({
                                     </Grid>
 
                                     <Grid container spacing={2}>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={12} sm={4}>
                                             <NumberSelect
                                                 numberMin={
                                                     baseStay.roomType?.BaseAdult
@@ -364,7 +385,7 @@ const NewEdit = ({
                                                 label={"Adult"}
                                             />
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={12} sm={4}>
                                             <NumberSelect
                                                 numberMin={
                                                     baseStay.roomType?.BaseChild
@@ -384,7 +405,7 @@ const NewEdit = ({
                                                 label={"Child"}
                                             />
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 id="Nights"
                                                 label="Nights"
@@ -407,12 +428,13 @@ const NewEdit = ({
                                                 }}
                                                 disabled
                                                 size="small"
+                                                style={{ width: "100%" }}
                                             />
                                         </Grid>
                                     </Grid>
 
                                     <Grid container spacing={2}>
-                                        <Grid item xs={7}>
+                                        <Grid item xs={12} sm={8}>
                                             <TextField
                                                 type="date"
                                                 fullWidth
@@ -435,7 +457,7 @@ const NewEdit = ({
                                                 size="small"
                                             />
                                         </Grid>
-                                        <Grid item xs={5}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 id="ArrivalTime"
                                                 label="Ирэх цаг"
@@ -456,7 +478,7 @@ const NewEdit = ({
                                     </Grid>
 
                                     <Grid container spacing={2}>
-                                        <Grid item xs={7}>
+                                        <Grid item xs={12} sm={8}>
                                             <TextField
                                                 type="date"
                                                 fullWidth
@@ -481,7 +503,7 @@ const NewEdit = ({
                                                 size="small"
                                             />
                                         </Grid>
-                                        <Grid item xs={5}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 id="DepartureTime"
                                                 label="Гарах цаг"
@@ -502,7 +524,15 @@ const NewEdit = ({
                                     </Grid>
 
                                     <Grid container spacing={2}>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={12} sm={8}>
+                                            <ReservationTypeSelect
+                                                register={register}
+                                                errors={errors}
+                                                reset={reset}
+                                            />
+                                        </Grid>
+
+                                        <Grid item xs={12} sm={4}>
                                             <FormControlLabel
                                                 sx={{ my: 2 }}
                                                 control={
@@ -516,16 +546,9 @@ const NewEdit = ({
                                                 label="BreakFast Included"
                                             />
                                         </Grid>
-                                        <Grid item xs={8}>
-                                            <ReservationTypeSelect
-                                                register={register}
-                                                errors={errors}
-                                                reset={reset}
-                                            />
-                                        </Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} md={6}>
                                     <Box>
                                         <RateModeSelect
                                             register={register}
@@ -599,6 +622,7 @@ const NewEdit = ({
                                     variant={"outlined"}
                                     onClick={() => {
                                         setActiveStep("deposit");
+                                        setActiveStepper(2);
                                     }}
                                 >
                                     Deposit

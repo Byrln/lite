@@ -71,14 +71,14 @@ const CurrencyAmount = ({
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item md={4}>
+                <Grid item xs={12} sm={4}>
                     <CurrencySelect
                         register={register}
                         errors={errors}
                         nameKey={"CurrencyID"}
                     />
                 </Grid>
-                <Grid item md={8}>
+                <Grid item xs={12} sm={8}>
                     <Grid container spacing={1}>
                         {/* <Grid item xs={6} sx={{ display: "none" }}></Grid>
                         <Grid item xs={6}> */}

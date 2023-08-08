@@ -49,16 +49,17 @@ const GuestSelect = ({ guestSelected }: any) => {
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={6}>
-                    <SelectList
-                        filterValues={filterValues}
-                        setGuest={setGuest}
-                    />
-                </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <NewEdit
                         onFilterValueChange={onFilterValueChange}
                         idEditing={idEditing}
+                    />
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                    <SelectList
+                        filterValues={filterValues}
+                        setGuest={setGuest}
                     />
                 </Grid>
             </Grid>

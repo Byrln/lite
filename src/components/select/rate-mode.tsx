@@ -43,7 +43,7 @@ const RateModeSelect = ({
     return (
         <>
             <FormControl component="fieldset">
-                <FormLabel id="RateModeID">Rate Mode</FormLabel>
+                {/* <FormLabel id="RateModeID">Rate Mode</FormLabel> */}
                 <RadioGroup
                     row
                     id="RateModeID"
