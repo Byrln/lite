@@ -41,7 +41,7 @@ import RoomRateTypeSelect from "../select/room-rate-type";
 import ReplayIcon from "@mui/icons-material/Replay";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CurrencyAmount from "./currency-amount";
-// import { ReservationApi } from "../../lib/api/reservation";
+import { ReservationAPI } from "../../lib/api/reservation";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
