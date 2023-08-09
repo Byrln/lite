@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import NewEdit from "components/reservation/new-edit";
-import { ReservationApi } from "lib/api/reservation";
+// import { ReservationApi } from "lib/api/reservation";
 import { mutate } from "swr";
 import { listUrl as reservationListUrl } from "lib/api/front-office";
 import { toast } from "react-toastify";
@@ -74,11 +74,11 @@ const ReservationMake = ({ timelineCoord, workingDate }: any) => {
                 values.GroupColor = commonValues.GroupColor;
             }
 
-            res = await ReservationApi.new(values);
+            // res = await ReservationApi.new(values);
 
-            if (isGroup && res.data.length > 0) {
-                groupId = res.data[0].GroupID;
-            }
+            // if (isGroup && res.data.length > 0) {
+            //     groupId = res.data[0].GroupID;
+            // }
 
             var i;
             for (i = 1; i < reservations.length; i++) {
@@ -91,7 +91,7 @@ const ReservationMake = ({ timelineCoord, workingDate }: any) => {
                     values.GroupID = groupId;
                     values.GroupColor = commonValues.GroupColor;
                 }
-                res = await ReservationApi.new(values);
+                // res = await ReservationApi.new(values);
             }
 
             await mutate(reservationListUrl);
