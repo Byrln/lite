@@ -5,7 +5,7 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/Promotion";
 export const listUrl = `${urlPrefix}/list`;
 
-export const InHouseGroupSWR = (ChannelId: number) => {
+export const InHouseGroupSWR = (ChannelId = null) => {
     const values = {
         InHouseGroupID: null,
         ChannelId: ChannelId,

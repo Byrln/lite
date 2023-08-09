@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
 import CustomSelect from "components/common/custom-select";
-import { ExchangeRateSWR } from "lib/api/user-role";
+import { ExchangeRateSWR } from "lib/api/exchange-rate";
 
 const ExchangeRateSelect = ({ register, errors, field }: any) => {
     const { data, error } = ExchangeRateSWR();

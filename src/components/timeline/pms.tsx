@@ -6,28 +6,35 @@ import Timeline, {
 // make sure you include the timeline stylesheet or the timeline will not be styled
 import "react-calendar-timeline/lib/Timeline.css";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
-import {RoomSWR} from "lib/api/room";
-import {RoomTypeSWR} from "lib/api/room-type";
-import {FrontOfficeSWR, FrontOfficeAPI, listUrl as reservationListUrl} from "lib/api/front-office";
-import {RoomBlockSWR, listUrl as roomBlockListUrl} from "lib/api/room-block";
-import {ModalContext} from "lib/context/modal";
-import {useState, useEffect, useContext} from "react";
-import {mutate} from "swr";
-import {ClickNav} from "components/timeline/_click-nav";
+import { RoomSWR } from "lib/api/room";
+import { RoomTypeSWR } from "lib/api/room-type";
+import {
+    FrontOfficeSWR,
+    FrontOfficeAPI,
+    listUrl as reservationListUrl,
+} from "lib/api/front-office";
+import { RoomBlockSWR, listUrl as roomBlockListUrl } from "lib/api/room-block";
+import { ModalContext } from "lib/context/modal";
+import { useState, useEffect, useContext } from "react";
+import { mutate } from "swr";
+import { ClickNav } from "components/timeline/_click-nav";
 import ReservationDetail from "components/reservation/item-detail";
 import RoomBlockDetail from "components/room/block/item-detail";
-import {TimelineCoordModel, createTimelineCoord} from "models/data/TimelineCoordModel";
-import {Box, IconButton} from "@mui/material";
-import ReplayIcon from '@mui/icons-material/Replay';
-import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
-import {dateToCustomFormat} from "../../lib/utils/format-time";
+import {
+    TimelineCoordModel,
+    createTimelineCoord,
+} from "models/data/TimelineCoordModel";
+import { Box, IconButton } from "@mui/material";
+import ReplayIcon from "@mui/icons-material/Replay";
+import AutoAwesomeMosaicIcon from "@mui/icons-material/AutoAwesomeMosaic";
+import { dateToCustomFormat } from "../../lib/utils/format-time";
 
 const filterGroups = (props: any) => {
     for (var i = 0; i < 3; i++) {
         props.groups.map((group: any) => {
             if (group.parent != null) {
                 if (!props.openGroups[group.parent]) {
-                    Object.assign(props.openGroups, {[group.id]: false});
+                    Object.assign(props.openGroups, { [group.id]: false });
                 }
             }
             return group;
@@ -42,20 +49,16 @@ const filterGroups = (props: any) => {
 /*
  * TimelinePMS component
  */
-const TimelinePms = ({props, workingDate}: any) => {
-
+const TimelinePms = ({ props, workingDate }: any) => {
     let timeStart = new Date(workingDate);
     let timeEnd = new Date(workingDate);
     timeEnd.setDate(timeEnd.getDate() + 30);
 
-    const {data: roomTypes, error: roomTypeSwrError} = RoomTypeSWR();
-    const {data: rooms, error: roomSwrError} = RoomSWR();
-    const {data: items, error: itemsError} = FrontOfficeSWR(workingDate);
-    const {data: roomBlocks, error: roomBlocksError} = RoomBlockSWR(
-        dateToCustomFormat(timeStart, "yyyy MMM dd"),
-        dateToCustomFormat(timeEnd, "yyyy MMM dd")
-    );
-    const {handleModal}: any = useContext(ModalContext);
+    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR();
+    const { data: rooms, error: roomSwrError } = RoomSWR();
+    const { data: items, error: itemsError } = FrontOfficeSWR(workingDate);
+    const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR();
+    const { handleModal }: any = useContext(ModalContext);
 
     const [timelineData, setTimelineData] = useState({
         openGroups: {} as any,
@@ -132,11 +135,11 @@ const TimelinePms = ({props, workingDate}: any) => {
         }
 
         for (i in roomBlocks) {
-
             itemId = "block_" + roomBlocks[i].RoomBlockID;
             startTime = new Date(roomBlocks[i].BeginDate); // startTime.setHours(14); startTime.setMinutes(0); startTime.setSeconds(0);
             endTime = new Date(roomBlocks[i].EndDate); // endTime.setDate(endTime.getDate() + 1);
-            groupKey = "" + roomBlocks[i].RoomTypeID + "_" + roomBlocks[i].RoomID;
+            groupKey =
+                "" + roomBlocks[i].RoomTypeID + "_" + roomBlocks[i].RoomID;
 
             itemData.push({
                 id: itemId,
@@ -184,7 +187,7 @@ const TimelinePms = ({props, workingDate}: any) => {
         });
     };
 
-    const renderGroup = ({group}: any) => {
+    const renderGroup = ({ group }: any) => {
         return (
             <div className={"custom_group nest_level_" + group.nestLevel}>
                 {toggleIcon(group)}
@@ -195,7 +198,7 @@ const TimelinePms = ({props, workingDate}: any) => {
     };
 
     const toggleIcon = (group: any) => {
-        const {openGroups}: any = timelineData;
+        const { openGroups }: any = timelineData;
 
         return group.hasChild ? (
             <KeyboardArrowRightOutlinedIcon
@@ -214,37 +217,41 @@ const TimelinePms = ({props, workingDate}: any) => {
         handleModal(
             true,
             "Timeline menu",
-            <ClickNav timelineCoord={timelineCoord} workingDate={workingDate}/>
+            <ClickNav timelineCoord={timelineCoord} workingDate={workingDate} />
         );
     };
 
-    const renderItem = (
-        {
-            item,
-            itemContext,
-            getItemProps,
-            getResizeProps,
-        }: any
-    ) => {
-        const {left: leftResizeProps, right: rightResizeProps} = getResizeProps();
+    const renderItem = ({
+        item,
+        itemContext,
+        getItemProps,
+        getResizeProps,
+    }: any) => {
+        const { left: leftResizeProps, right: rightResizeProps } =
+            getResizeProps();
 
         return (
             <div {...getItemProps(item.itemProps)}>
-
-                {itemContext.useResizeHandle ? (<div {...leftResizeProps} />) : ("")}
+                {itemContext.useResizeHandle ? (
+                    <div {...leftResizeProps} />
+                ) : (
+                    ""
+                )}
 
                 <div
                     className="rct_item_content"
                     style={{
-                        backgroundColor: item.itemType === "room_block" ? "#505050" : `#${item.detail.StatusColor}`,
+                        backgroundColor:
+                            item.itemType === "room_block"
+                                ? "#505050"
+                                : `#${item.detail.StatusColor}`,
                     }}
                     onDoubleClick={(evt: any) => {
-
                         if (item.itemType === "reservation") {
                             handleModal(
                                 true,
                                 "Reservation Detail",
-                                <ReservationDetail itemInfo={item}/>,
+                                <ReservationDetail itemInfo={item} />,
                                 true,
                                 "large"
                             );
@@ -258,21 +265,20 @@ const TimelinePms = ({props, workingDate}: any) => {
                                 />
                             );
                         }
-
                     }}
                     title={item.description}
                 >
-
-                    {
-                        item.detail.GroupID > 0 &&
+                    {item.detail.GroupID > 0 && (
                         <div className={"item_icon"}>
-                            <AutoAwesomeMosaicIcon style={{fill: item.detail.GroupColor}}/>
+                            <AutoAwesomeMosaicIcon
+                                style={{ fill: item.detail.GroupColor }}
+                            />
                         </div>
-                    }
+                    )}
                     <div>
-                        {
-                            item.itemType === "room_block" ? `${item.detail.UserName}` : `${item.detail.GuestID} ${item.detail.GuestName}`
-                        }
+                        {item.itemType === "room_block"
+                            ? `${item.detail.UserName}`
+                            : `${item.detail.GuestID} ${item.detail.GuestName}`}
                     </div>
                 </div>
 
@@ -300,11 +306,10 @@ const TimelinePms = ({props, workingDate}: any) => {
             }
         }
         return result;
-    }
+    };
 
     return (
         <>
-
             <Box>
                 <IconButton
                     color={"secondary"}
@@ -312,9 +317,8 @@ const TimelinePms = ({props, workingDate}: any) => {
                         reloadTimeline();
                     }}
                 >
-                    <ReplayIcon/>
+                    <ReplayIcon />
                 </IconButton>
-
             </Box>
 
             <div className={"timeline_main"}>
@@ -342,7 +346,7 @@ const TimelinePms = ({props, workingDate}: any) => {
                         calendarHeaderClassName={"calendar_header"}
                     >
                         <SidebarHeader>
-                            {({getRootProps}: any) => {
+                            {({ getRootProps }: any) => {
                                 return (
                                     <div
                                         {...getRootProps()}
@@ -355,7 +359,7 @@ const TimelinePms = ({props, workingDate}: any) => {
                             unit="primaryHeader"
                             className={"date_header"}
                         />
-                        <DateHeader/>
+                        <DateHeader />
                     </TimelineHeaders>
                 </Timeline>
             </div>
