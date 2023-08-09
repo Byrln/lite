@@ -24,7 +24,7 @@ const NewEdit = () => {
     return (
         <NewEditForm
             api={HouseKeepingAPI}
-            listUrl={listUrl}
+            listUrl={listRoomUrl}
             additionalValues={{
                 HouseStatusID: state.editId,
             }}

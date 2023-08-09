@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
-import { HouseKeepingAPI, listUrl } from "lib/api/house-keeping";
+import { HouseKeepingAPI, listCurrentUrl } from "lib/api/house-keeping";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
@@ -24,7 +24,7 @@ const NewEdit = () => {
     return (
         <NewEditForm
             api={HouseKeepingAPI}
-            listUrl={listUrl}
+            listCurrentUrl={listCurrentUrl}
             additionalValues={{
                 HouseKeepingID: state.editId,
             }}
