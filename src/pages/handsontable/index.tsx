@@ -21,6 +21,7 @@ import { HouseKeepingCurrentSWR } from "../../lib/api/house-keeping";
 import { date } from "yup";
 
 const HotTableCSR = dynamic(
+    // @ts-ignore
     () => {
         // @ts-ignore
         return import("handsontable/registry").then((module) => {
