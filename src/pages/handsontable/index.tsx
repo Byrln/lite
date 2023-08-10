@@ -19,11 +19,13 @@ import { RoomBlockSWR } from "../../lib/api/room-block";
 import { dateToCustomFormat } from "../../lib/utils/format-time";
 import { HouseKeepingCurrentSWR } from "../../lib/api/house-keeping";
 import { date } from "yup";
-// @ts-ignore
+
 const HotTableCSR = dynamic(
     () => {
+        // @ts-ignore
         return import("handsontable/registry").then((module) => {
             module.registerAllModules();
+            // @ts-ignore
             return import("@handsontable/react").then((submodule) => {
                 return submodule;
             });
@@ -163,17 +165,20 @@ const TimelineTable = ({ props, workingDate }: any) => {
             col = 0;
         }
         let key = Object.keys(coldict).filter(function (key) {
+            // @ts-ignore
             return coldict[key] === col;
         })[0];
         console.log("Column date: ", key);
         console.log(
             "Records: ",
+            // @ts-ignore
             records[coords.row].id,
+            // @ts-ignore
             records[coords.row].room
         );
         // @ts-ignore
         console.log(
-            "Finding order by coordinate: ",
+            "Finding order by coordinate: ", // @ts-ignore
             orderCoords[coords.row + "_" + (coords.col - 1)]
         );
     }
@@ -205,7 +210,8 @@ const TimelineTable = ({ props, workingDate }: any) => {
                     if (items[k].RoomID == 0 && groupKey == temp_rec.id) {
                         // @ts-ignore
                         if (
-                            l > coldict[startTime.toDateString()] &&
+                            // @ts-ignore
+                            l > coldict[startTime.toDateString()] && // @ts-ignore
                             l < coldict[endTime.toDateString()] * 2
                         ) {
                             // @ts-ignore
@@ -314,10 +320,10 @@ const TimelineTable = ({ props, workingDate }: any) => {
                         }
                         // @ts-ignore
                         if (
-                            items[i].RoomID !== 0 &&
-                            parseInt(mergeCell["colspan"]) != 1 &&
+                            items[i].RoomID !== 0 && // @ts-ignore
+                            parseInt(mergeCell["colspan"]) != 1 && // @ts-ignore
                             parseInt(mergeCell["col"]) != -1 &&
-                            parseInt(dayCount) * 2 - 1 >
+                            parseInt(dayCount) * 2 - 1 > // @ts-ignore
                                 parseInt(mergeCell["col"])
                         ) {
                             mergeCells.push(mergeCell);
@@ -406,6 +412,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
             {/*{workingDate}*/}
             {/*{items}*/}
             <HotTableCSR
+                // @ts-ignore
                 data={records}
                 //rowHeaders={false}
                 colHeaders={true}
