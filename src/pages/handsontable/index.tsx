@@ -6,6 +6,9 @@ import { FrontOfficeAPI, FrontOfficeSWR } from "lib/api/front-office";
 import "handsontable/dist/handsontable.full.min.css";
 import dynamic from "next/dynamic";
 import useSWR from "swr";
+import Head from "next/head";
+import { Box, Grid, Container } from "@mui/material";
+import Page from "components/page";
 
 // Radio
 import Radio from "@mui/material/Radio";
@@ -382,56 +385,63 @@ const TimelineTable = ({ props, workingDate }: any) => {
     // @ts-ignore
     return (
         <>
-            <h4>Календар</h4>
-            <br />
-            <FormControl>
-                <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                    value={dayCount}
-                    onChange={handleChange}
-                    defaultValue={"30"}
-                >
-                    <FormControlLabel
-                        value="7"
-                        control={<Radio />}
-                        label="7 хоног"
+            <Head>
+                <title>Календар</title>
+            </Head>
+            <Page>
+                <Container maxWidth="xl">
+                    <h4>Календар</h4>
+                    <br />
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                            value={dayCount}
+                            onChange={handleChange}
+                            defaultValue={"30"}
+                        >
+                            <FormControlLabel
+                                value="7"
+                                control={<Radio />}
+                                label="7 хоног"
+                            />
+                            <FormControlLabel
+                                value="15"
+                                control={<Radio />}
+                                label="15 хоног"
+                            />
+                            <FormControlLabel
+                                value="30"
+                                control={<Radio />}
+                                label="30 хоног"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                    {/*{workingDate}*/}
+                    {/*{items}*/}
+                    <HotTableCSR
+                        // @ts-ignore
+                        data={records}
+                        //rowHeaders={false}
+                        colHeaders={true}
+                        rowHeaders={false}
+                        colWidths={30}
+                        height="auto"
+                        licenseKey="non-commercial-and-evaluation" // for non-commercial use only
+                        // stretchH="all"
+                        columns={columns}
+                        // nestedHeaders={headers}
+                        //contextMenu={false}
+                        cell={cells}
+                        mergeCells={mergeCells}
+                        afterOnCellMouseDown={(event: any, coords: any) =>
+                            clickCell(event, coords)
+                        }
+                        nestedHeaders={[headers]}
                     />
-                    <FormControlLabel
-                        value="15"
-                        control={<Radio />}
-                        label="15 хоног"
-                    />
-                    <FormControlLabel
-                        value="30"
-                        control={<Radio />}
-                        label="30 хоног"
-                    />
-                </RadioGroup>
-            </FormControl>
-            {/*{workingDate}*/}
-            {/*{items}*/}
-            <HotTableCSR
-                // @ts-ignore
-                data={records}
-                //rowHeaders={false}
-                colHeaders={true}
-                rowHeaders={false}
-                colWidths={30}
-                height="auto"
-                licenseKey="non-commercial-and-evaluation" // for non-commercial use only
-                // stretchH="all"
-                columns={columns}
-                // nestedHeaders={headers}
-                //contextMenu={false}
-                cell={cells}
-                mergeCells={mergeCells}
-                afterOnCellMouseDown={(event: any, coords: any) =>
-                    clickCell(event, coords)
-                }
-                nestedHeaders={[headers]}
-            />
+                </Container>
+            </Page>
         </>
     );
 };
