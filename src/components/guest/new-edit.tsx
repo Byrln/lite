@@ -18,7 +18,16 @@ import { ModalContext } from "../../lib/context/modal";
 import { LoadingButton } from "@mui/lab";
 import SaveIcon from "@mui/icons-material/Save";
 
-const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
+const NewEdit = ({
+    idEditing,
+    onFilterValueChange,
+    onInputChange,
+    register,
+    handleSubmit,
+    errors,
+    reset,
+    getValues,
+}: any) => {
     const [entity, setEntity]: any = useState(null);
     const [identityType, setIdentityType] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -52,53 +61,54 @@ const NewEdit = ({ idEditing, onFilterValueChange }: any) => {
         setIdentityType(evt.target.value);
     };
 
-    const validationSchema = yup.object().shape(
-        {
-            // GuestTitleID: yup.string().required("Бөглөнө үү"),
-            Name: yup.string().required("Бөглөнө үү"),
-            Surname: yup.string().notRequired(),
-            GenderID: yup.number().required("Бөглөнө үү"),
-            RegistryNo: yup.string().when("IdentityTypeID", {
-                is: (IdentityTypeID: number) => {
-                    return IdentityTypeID === 1;
-                },
-                then: yup.string().required("Бөглөнө үү"),
-                otherwise: yup.string().notRequired(),
-            }),
-            DriverLicenseNo: yup.string().when("IdentityTypeID", {
-                is: (IdentityTypeID: number) => {
-                    return IdentityTypeID === 2;
-                },
-                then: yup.string().required("Бөглөнө үү"),
-                otherwise: yup.string().notRequired(),
-            }),
-            // RegistryNo: yup.string().when("DriverLicenseNo", {
-            //     is: (DriverLicenseNo: any) => {
-            //         console.log("DriverLicenseNo", DriverLicenseNo);
-            //         return !DriverLicenseNo || DriverLicenseNo.length === 0;
-            //     },
-            //     then: yup.string().required("Бөглөнө үү"),
-            //     otherwise: yup.string().notRequired(),
-            // }),
-            // DriverLicenseNo: yup.string().when("RegistryNo", {
-            //     is: (RegistryNo: any) => {
-            //         console.log("RegistryNo", RegistryNo);
-            //         return !RegistryNo || RegistryNo.length === 0;
-            //     },
-            //     then: yup.string().required("Бөглөнө үү"),
-            //     otherwise: yup.string().notRequired(),
-            // }),
-        },
-        [["RegistryNo", "DriverLicenseNo"]]
-    );
-    const formOptions = { resolver: yupResolver(validationSchema) };
+    // const validationSchema = yup.object().shape(
+    //     {
+    //         // GuestTitleID: yup.string().required("Бөглөнө үү"),
+    //         Name: yup.string().required("Бөглөнө үү"),
+    //         Surname: yup.string().notRequired(),
+    //         GenderID: yup.number().required("Бөглөнө үү"),
+    //         RegistryNo: yup.string().when("IdentityTypeID", {
+    //             is: (IdentityTypeID: number) => {
+    //                 return IdentityTypeID === 1;
+    //             },
+    //             then: yup.string().required("Бөглөнө үү"),
+    //             otherwise: yup.string().notRequired(),
+    //         }),
+    //         DriverLicenseNo: yup.string().when("IdentityTypeID", {
+    //             is: (IdentityTypeID: number) => {
+    //                 return IdentityTypeID === 2;
+    //             },
+    //             then: yup.string().required("Бөглөнө үү"),
+    //             otherwise: yup.string().notRequired(),
+    //         }),
+    //         // RegistryNo: yup.string().when("DriverLicenseNo", {
+    //         //     is: (DriverLicenseNo: any) => {
+    //         //         console.log("DriverLicenseNo", DriverLicenseNo);
+    //         //         return !DriverLicenseNo || DriverLicenseNo.length === 0;
+    //         //     },
+    //         //     then: yup.string().required("Бөглөнө үү"),
+    //         //     otherwise: yup.string().notRequired(),
+    //         // }),
+    //         // DriverLicenseNo: yup.string().when("RegistryNo", {
+    //         //     is: (RegistryNo: any) => {
+    //         //         console.log("RegistryNo", RegistryNo);
+    //         //         return !RegistryNo || RegistryNo.length === 0;
+    //         //     },
+    //         //     then: yup.string().required("Бөглөнө үү"),
+    //         //     otherwise: yup.string().notRequired(),
+    //         // }),
+    //     },
+    //     [["RegistryNo", "DriverLicenseNo"]]
+    // );
+    // const formOptions = { resolver: yupResolver(validationSchema) };
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-    } = useForm(formOptions);
+    // const {
+    //     register,
+    //     handleSubmit,
+    //     formState: { errors },
+    //     reset,
+    //     getValues,
+    // } = useForm(formOptions);
 
     const onSubmit = async (values: any) => {
         setLoading(true);

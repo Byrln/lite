@@ -16,9 +16,7 @@ export const RoomSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
@@ -53,7 +51,7 @@ export const RoomAPI = {
                 res = {
                     status: 200,
                     msg: "",
-                    data: JSON.parse(data.JsonData),
+                    data: data.JsonData,
                 };
 
                 return res;
@@ -72,7 +70,7 @@ export const RoomAPI = {
             return [];
         }
 
-        return JSON.parse(data.JsonData);
+        return data.JsonData;
     },
 
     get: async (id: any) => {
@@ -82,7 +80,7 @@ export const RoomAPI = {
 
         const res = await axios.post(listUrl, values);
 
-        return JSON.parse(res.data.JsonData);
+        return res.data.JsonData;
     },
 
     new: async (values: any) => {

@@ -9,7 +9,7 @@ const RoomChargeDurationSelect = ({
     errors,
     entity,
     setEntity,
-    reset
+    reset,
 }: any) => {
     const data = [
         {
@@ -33,7 +33,7 @@ const RoomChargeDurationSelect = ({
                 RoomChargeDurationID: evt.target.value,
             });
         }
-        if(reset) {
+        if (reset) {
             reset({
                 RoomChargeDurationID: evt.target.value,
             });
@@ -43,9 +43,9 @@ const RoomChargeDurationSelect = ({
     return (
         <>
             <FormControl component="fieldset">
-                <FormLabel id="RoomChargeDurationID">
+                {/* <FormLabel id="RoomChargeDurationID">
                     Room Charge Duration
-                </FormLabel>
+                </FormLabel> */}
                 <RadioGroup
                     row
                     id="RoomChargeDurationID"

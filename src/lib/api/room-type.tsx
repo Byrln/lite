@@ -14,9 +14,7 @@ export const RoomTypeSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
@@ -29,7 +27,7 @@ export const RoomTypeAPI = {
 
         const res = await axios.post(listUrl, values);
 
-        return JSON.parse(res.data.JsonData);
+        return res.data.JsonData;
     },
 
     list: async (values: any) => {
@@ -37,7 +35,7 @@ export const RoomTypeAPI = {
         if (status != 200) {
             return [];
         }
-        var list = JSON.parse(data.JsonData);
+        var list = data.JsonData;
         return list;
     },
 
@@ -65,7 +63,7 @@ export const RoomTypeAPI = {
                 res = {
                     status: 200,
                     msg: "",
-                    data: JSON.parse(data.JsonData),
+                    data: data.JsonData,
                 };
                 return res;
             });

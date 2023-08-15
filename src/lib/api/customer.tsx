@@ -17,7 +17,7 @@ export const CustomerSWR = () => {
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let currencies = JSON.parse(res.data.JsonData);
+            let currencies = res.data.JsonData;
             return currencies;
         });
 
@@ -35,7 +35,7 @@ export const CustomerAPI = {
 
         console.log(res);
 
-        var list = JSON.parse(res.data.JsonData);
+        var list = res.data.JsonData;
         var item;
 
         console.log(list);

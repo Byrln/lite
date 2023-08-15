@@ -15,7 +15,7 @@ export const RoomBlockSWR = () => {
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let list = JSON.parse(res.data.JsonData);
+            let list = res.data.JsonData;
             return list;
         });
 
@@ -28,7 +28,7 @@ export const RoomBlockAPI = {
         if (status != 200) {
             return [];
         }
-        var list = JSON.parse(data.JsonData);
+        var list = data.JsonData;
         return list;
     },
     new: async (values: any) => {

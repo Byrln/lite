@@ -118,7 +118,9 @@ const CustomTable = ({
                                 handleModal(
                                     true,
                                     `${modalTitle} нэмэх`,
-                                    modalContent
+                                    modalContent,
+                                    null,
+                                    "large"
                                 );
                                 dispatch({
                                     type: "editId",

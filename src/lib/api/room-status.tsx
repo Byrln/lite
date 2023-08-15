@@ -12,9 +12,7 @@ export const RoomStatusSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
@@ -27,7 +25,7 @@ export const RoomStatusAPI = {
 
         const res = await axios.post(listUrl, values);
 
-        return JSON.parse(res.data.JsonData);
+        return res.data.JsonData;
     },
 
     update: async (values: any) => {

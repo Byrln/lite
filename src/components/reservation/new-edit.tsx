@@ -12,7 +12,8 @@ import {
     Stepper,
     Step,
     StepLabel,
-    StepContent,
+    Card,
+    CardContent,
 } from "@mui/material";
 
 import * as yup from "yup";
@@ -46,6 +47,8 @@ import RoomRateTypeSelect from "../select/room-rate-type";
 import ReplayIcon from "@mui/icons-material/Replay";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CurrencyAmount from "./currency-amount";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import SaveIcon from "@mui/icons-material/Save";
 // import { ReservationApi } from "../../lib/api/reservation";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -162,6 +165,12 @@ const NewEdit = ({
     } = useForm(formOptions);
 
     const guestSelected = (guest: any) => {
+        console.log("guest", guest.GuestID ? "Байна" : "Байхгүй");
+        if (!guest.GuestID) {
+            guest.GuestID = 0;
+        }
+        console.log("guest", guest);
+
         if (!guest) {
             toast(<Alert severity="error">Зочин сонгоно уу!</Alert>);
             return;
@@ -173,6 +182,7 @@ const NewEdit = ({
         });
         reset({
             GuestID: guest.GuestID,
+            GuestDetail: { guest },
         });
         setActiveStep("main");
         if (activeStepper != 2) {
@@ -213,7 +223,6 @@ const NewEdit = ({
     }, [submitting]);
 
     const onArrivalDateChange = (evt: any) => {
-        console.log(baseStay);
         var dateStart = new Date(evt.target.value);
         var dateEnd = new Date(baseStay.dateEnd && baseStay.dateEnd.getTime());
         setBaseStay({
@@ -242,7 +251,6 @@ const NewEdit = ({
             dateEnd: evt.target.value,
         });
 
-        console.log("baseStay", baseStay);
         if (
             dateToCustomFormat(dateStart, "yyyyMMdd") >
             dateToCustomFormat(dateEnd, "yyyyMMdd")
@@ -260,7 +268,8 @@ const NewEdit = ({
         if (!values.CurrencyAmount) {
             values.CurrencyAmount = baseStay.CurrencyAmount;
         }
-        onSingleSubmit(values, keyIndex);
+        console.log(values);
+        // onSingleSubmit(values, keyIndex);
     };
 
     return (
@@ -305,12 +314,12 @@ const NewEdit = ({
                                 <StepLabel>
                                     {baseStay.room?.RoomNo
                                         ? `${baseStay.roomType?.RoomTypeName}(${baseStay.room?.RoomNo})`
-                                        : "Room"}
+                                        : "Room and Billing"}
                                 </StepLabel>
                             </Step>
-                            <Step key={2}>
+                            {/* <Step key={2}>
                                 <StepLabel>Deposit</StepLabel>
-                            </Step>
+                            </Step> */}
                         </Stepper>
                     </Box>
                 </AccordionSummary>
@@ -329,6 +338,36 @@ const NewEdit = ({
                             name="GuestID"
                             value={baseStay.guest?.GuestID}
                         />
+                        <input
+                            type="hidden"
+                            {...register("GuestDetail")}
+                            name="GuestDetail"
+                            value={baseStay.guest?.GuestDetail}
+                        />
+                        {/* <input
+                            type="hidden"
+                            {...register("Surname")}
+                            name="Surname"
+                            value={baseStay.guest?.Surname}
+                        />
+                        <input
+                            type="hidden"
+                            {...register("GenderID")}
+                            name="GenderID"
+                            value={baseStay.guest?.GenderID}
+                        />
+                        <input
+                            type="hidden"
+                            {...register("RegistryNo")}
+                            name="RegistryNo"
+                            value={baseStay.guest?.RegistryNo}
+                        />
+                        <input
+                            type="hidden"
+                            {...register("DriverLicenseNo")}
+                            name="DriverLicenseNo"
+                            value={baseStay.guest?.DriverLicenseNo}
+                        /> */}
 
                         <Box
                             sx={{
@@ -336,267 +375,381 @@ const NewEdit = ({
                                     activeStep === "main" ? "inline" : "none",
                             }}
                         >
-                            <Grid container spacing={4}>
-                                <Grid item xs={12} md={6}>
-                                    {/* <Typography
-                                        variant="subtitle2"
-                                        component="div"
-                                    >{`${baseStay.guest?.GuestFullName} /${baseStay.guest?.IdentityValue}/`}</Typography> */}
-
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={8}>
-                                            <RoomTypeSelect
-                                                register={register}
-                                                errors={errors}
-                                                onRoomTypeChange={
-                                                    onRoomTypeChange
-                                                }
-                                                baseStay={baseStay}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={4}>
-                                            <RoomSelect
-                                                register={register}
-                                                errors={errors}
-                                                baseStay={baseStay}
-                                                onRoomChange={onRoomChange}
-                                            />
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={4}>
-                                            <NumberSelect
-                                                numberMin={
-                                                    baseStay.roomType?.BaseAdult
-                                                        ? baseStay.roomType
-                                                              ?.BaseAdult
-                                                        : 0
-                                                }
-                                                numberMax={
-                                                    baseStay.roomType?.MaxAdult
-                                                        ? baseStay.roomType
-                                                              ?.MaxAdult
-                                                        : 0
-                                                }
-                                                nameKey={"Adult"}
-                                                register={register}
-                                                errors={errors}
-                                                label={"Adult"}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={4}>
-                                            <NumberSelect
-                                                numberMin={
-                                                    baseStay.roomType?.BaseChild
-                                                        ? baseStay.roomType
-                                                              ?.BaseChild
-                                                        : 0
-                                                }
-                                                numberMax={
-                                                    baseStay.roomType?.MaxChild
-                                                        ? baseStay.roomType
-                                                              ?.MaxChild
-                                                        : 0
-                                                }
-                                                nameKey={"Child"}
-                                                register={register}
-                                                errors={errors}
-                                                label={"Child"}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={4}>
-                                            <TextField
-                                                id="Nights"
-                                                label="Nights"
-                                                type="number"
-                                                {...register("Nights")}
-                                                margin="dense"
-                                                error={errors.Nights?.message}
-                                                helperText={
-                                                    errors.Nights?.message
-                                                }
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                                value={baseStay.Nights}
-                                                onChange={(evt: any) => {
-                                                    reset({
-                                                        Nights: evt.target
-                                                            .value,
-                                                    });
-                                                }}
-                                                disabled
-                                                size="small"
-                                                style={{ width: "100%" }}
-                                            />
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={8}>
-                                            <TextField
-                                                type="date"
-                                                fullWidth
-                                                id="ArrivalDate"
-                                                label="Эхлэх огноо"
-                                                {...register("ArrivalDate")}
-                                                margin="dense"
-                                                error={
-                                                    errors.ArrivalDate?.message
-                                                }
-                                                helperText={
-                                                    errors.ArrivalDate?.message
-                                                }
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                                onChange={(evt: any) => {
-                                                    onArrivalDateChange(evt);
-                                                }}
-                                                size="small"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={4}>
-                                            <TextField
-                                                id="ArrivalTime"
-                                                label="Ирэх цаг"
-                                                type="time"
-                                                margin="dense"
-                                                fullWidth
-                                                {...register("ArrivalTime")}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                                inputProps={{
-                                                    step: 600, // 5 min
-                                                }}
-                                                sx={{ width: "100%" }}
-                                                size="small"
-                                            />
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={8}>
-                                            <TextField
-                                                type="date"
-                                                fullWidth
-                                                id="DepartureDate"
-                                                label="Гарах огноо"
-                                                {...register("DepartureDate")}
-                                                margin="dense"
-                                                error={
-                                                    errors.DepartureDate
-                                                        ?.message
-                                                }
-                                                helperText={
-                                                    errors.DepartureDate
-                                                        ?.message
-                                                }
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                                onChange={(evt: any) => {
-                                                    onDepartureDateChange(evt);
-                                                }}
-                                                size="small"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={4}>
-                                            <TextField
-                                                id="DepartureTime"
-                                                label="Гарах цаг"
-                                                type="time"
-                                                margin="dense"
-                                                {...register("DepartureTime")}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                                inputProps={{
-                                                    step: 600, // 5 min
-                                                }}
-                                                sx={{ width: "100%" }}
-                                                onChange={(evt: any) => {}}
-                                                size="small"
-                                            />
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={8}>
-                                            <ReservationTypeSelect
-                                                register={register}
-                                                errors={errors}
-                                                reset={reset}
-                                            />
-                                        </Grid>
-
-                                        <Grid item xs={12} sm={4}>
-                                            <FormControlLabel
-                                                sx={{ my: 2 }}
-                                                control={
-                                                    <Checkbox
-                                                        id={"BreakfastIncluded"}
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <Card>
+                                        <CardContent>
+                                            <Typography
+                                                variant="h6"
+                                                component="div"
+                                                className="mb-3"
+                                            >
+                                                Stay Information
+                                            </Typography>
+                                            <Grid container spacing={1}>
+                                                <Grid item xs={12} sm={8}>
+                                                    <TextField
+                                                        type="date"
+                                                        fullWidth
+                                                        id="ArrivalDate"
+                                                        label="Эхлэх огноо"
                                                         {...register(
-                                                            "BreakfastIncluded"
+                                                            "ArrivalDate"
                                                         )}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.ArrivalDate
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.ArrivalDate
+                                                                ?.message
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            onArrivalDateChange(
+                                                                evt
+                                                            );
+                                                        }}
+                                                        size="small"
                                                     />
-                                                }
-                                                label="BreakFast Included"
-                                            />
-                                        </Grid>
-                                    </Grid>
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <TextField
+                                                        id="ArrivalTime"
+                                                        label="Ирэх цаг"
+                                                        type="time"
+                                                        margin="dense"
+                                                        fullWidth
+                                                        {...register(
+                                                            "ArrivalTime"
+                                                        )}
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        inputProps={{
+                                                            step: 600, // 5 min
+                                                        }}
+                                                        sx={{
+                                                            width: "100%",
+                                                        }}
+                                                        size="small"
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={8}>
+                                                    <TextField
+                                                        type="date"
+                                                        fullWidth
+                                                        id="DepartureDate"
+                                                        label="Гарах огноо"
+                                                        {...register(
+                                                            "DepartureDate"
+                                                        )}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.DepartureDate
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.DepartureDate
+                                                                ?.message
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            onDepartureDateChange(
+                                                                evt
+                                                            );
+                                                        }}
+                                                        size="small"
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <TextField
+                                                        id="DepartureTime"
+                                                        label="Гарах цаг"
+                                                        type="time"
+                                                        margin="dense"
+                                                        {...register(
+                                                            "DepartureTime"
+                                                        )}
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        inputProps={{
+                                                            step: 600, // 5 min
+                                                        }}
+                                                        sx={{
+                                                            width: "100%",
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {}}
+                                                        size="small"
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={8}>
+                                                    <RoomTypeSelect
+                                                        register={register}
+                                                        errors={errors}
+                                                        onRoomTypeChange={
+                                                            onRoomTypeChange
+                                                        }
+                                                        baseStay={baseStay}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <RoomSelect
+                                                        register={register}
+                                                        errors={errors}
+                                                        baseStay={baseStay}
+                                                        onRoomChange={
+                                                            onRoomChange
+                                                        }
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={4}>
+                                                    <NumberSelect
+                                                        numberMin={
+                                                            baseStay.roomType
+                                                                ?.BaseAdult
+                                                                ? baseStay
+                                                                      .roomType
+                                                                      ?.BaseAdult
+                                                                : 0
+                                                        }
+                                                        numberMax={
+                                                            baseStay.roomType
+                                                                ?.MaxAdult
+                                                                ? baseStay
+                                                                      .roomType
+                                                                      ?.MaxAdult
+                                                                : 0
+                                                        }
+                                                        nameKey={"Adult"}
+                                                        register={register}
+                                                        errors={errors}
+                                                        label={"Adult"}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <NumberSelect
+                                                        numberMin={
+                                                            baseStay.roomType
+                                                                ?.BaseChild
+                                                                ? baseStay
+                                                                      .roomType
+                                                                      ?.BaseChild
+                                                                : 0
+                                                        }
+                                                        numberMax={
+                                                            baseStay.roomType
+                                                                ?.MaxChild
+                                                                ? baseStay
+                                                                      .roomType
+                                                                      ?.MaxChild
+                                                                : 0
+                                                        }
+                                                        nameKey={"Child"}
+                                                        register={register}
+                                                        errors={errors}
+                                                        label={"Child"}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <TextField
+                                                        id="Nights"
+                                                        label="Nights"
+                                                        type="number"
+                                                        {...register("Nights")}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.Nights
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.Nights
+                                                                ?.message
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        value={baseStay.Nights}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            reset({
+                                                                Nights: evt
+                                                                    .target
+                                                                    .value,
+                                                            });
+                                                        }}
+                                                        disabled
+                                                        size="small"
+                                                        style={{
+                                                            width: "100%",
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
                                 </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Box>
-                                        <RateModeSelect
-                                            register={register}
-                                            errors={errors}
-                                            entity={baseStay}
-                                            setEntity={setBaseStay}
-                                            reset={reset}
-                                        />
-                                    </Box>
 
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                defaultChecked
-                                                id={"TaxIncluded"}
-                                                {...register("TaxIncluded")}
-                                            />
-                                        }
-                                        label="Tax Included"
-                                    />
+                                <Grid item xs={12} sm={6}>
+                                    <Card>
+                                        <CardContent>
+                                            <Typography
+                                                variant="h6"
+                                                component="div"
+                                                className="mb-3"
+                                            >
+                                                Billing and Payment
+                                            </Typography>
+                                            <Grid container spacing={1}>
+                                                <Grid item xs={12} sm={8}>
+                                                    <ReservationTypeSelect
+                                                        register={register}
+                                                        errors={errors}
+                                                        reset={reset}
+                                                    />
+                                                </Grid>
 
-                                    <Box sx={{ mt: 1.5 }}>
-                                        <RoomRateTypeSelect
-                                            register={register}
-                                            errors={errors}
-                                            reservationModel={baseStay}
-                                            setReservationModel={setBaseStay}
-                                            reset={reset}
-                                        />
-                                    </Box>
+                                                <Grid item xs={12} sm={4}>
+                                                    <FormControlLabel
+                                                        sx={{ my: 2 }}
+                                                        control={
+                                                            <Checkbox
+                                                                id={
+                                                                    "BreakfastIncluded"
+                                                                }
+                                                                {...register(
+                                                                    "BreakfastIncluded"
+                                                                )}
+                                                            />
+                                                        }
+                                                        label="BreakFast Included"
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <Box>
+                                                        <RateModeSelect
+                                                            register={register}
+                                                            errors={errors}
+                                                            entity={baseStay}
+                                                            setEntity={
+                                                                setBaseStay
+                                                            }
+                                                            reset={reset}
+                                                        />
+                                                    </Box>
+                                                </Grid>
 
-                                    <Box sx={{ mb: 2 }}>
-                                        <CurrencyAmount
-                                            register={register}
-                                            errors={errors}
-                                            reservationModel={baseStay}
-                                            setReservationModel={setBaseStay}
-                                            reset={reset}
-                                        />
-                                    </Box>
+                                                <Grid item xs={12}>
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox
+                                                                defaultChecked
+                                                                id={
+                                                                    "TaxIncluded"
+                                                                }
+                                                                {...register(
+                                                                    "TaxIncluded"
+                                                                )}
+                                                            />
+                                                        }
+                                                        label="Tax Included"
+                                                    />
+                                                </Grid>
 
-                                    <RoomChargeDurationSelect
-                                        register={register}
-                                        errors={errors}
-                                        entity={baseStay}
-                                        setEntity={setBaseStay}
-                                        reset={reset}
-                                    />
+                                                <Grid item xs={12} sm={6}>
+                                                    <RoomRateTypeSelect
+                                                        register={register}
+                                                        errors={errors}
+                                                        reservationModel={
+                                                            baseStay
+                                                        }
+                                                        setReservationModel={
+                                                            setBaseStay
+                                                        }
+                                                        reset={reset}
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={6}>
+                                                    <CurrencyAmount
+                                                        register={register}
+                                                        errors={errors}
+                                                        reservationModel={
+                                                            baseStay
+                                                        }
+                                                        setReservationModel={
+                                                            setBaseStay
+                                                        }
+                                                        reset={reset}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <RoomChargeDurationSelect
+                                                        register={register}
+                                                        errors={errors}
+                                                        entity={baseStay}
+                                                        setEntity={setBaseStay}
+                                                        reset={reset}
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={4}>
+                                                    <PaymentMethodSelect
+                                                        register={register}
+                                                        errors={errors}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={2}>
+                                                    <CurrencySelect
+                                                        register={register}
+                                                        errors={errors}
+                                                        nameKey={
+                                                            "PayCurrencyID"
+                                                        }
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={6}>
+                                                    <TextField
+                                                        id="PayAmount"
+                                                        label="PayAmount"
+                                                        type="number"
+                                                        {...register(
+                                                            "PayAmount"
+                                                        )}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.PayAmount
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.PayAmount
+                                                                ?.message
+                                                        }
+                                                        size="small"
+                                                        style={{
+                                                            width: "100%",
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
                                 </Grid>
                             </Grid>
 
@@ -619,25 +772,14 @@ const NewEdit = ({
                                 </Button>
 
                                 <Button
-                                    variant={"outlined"}
-                                    onClick={() => {
-                                        setActiveStep("deposit");
-                                        setActiveStepper(2);
-                                    }}
+                                    type="submit"
+                                    variant="contained"
+                                    ref={formRef}
                                 >
-                                    Deposit
+                                    <SaveIcon className="mr-1" />
+                                    Reservation
                                 </Button>
                             </Grid>
-
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                ref={formRef}
-                                className="mt-3"
-                                style={{ width: "100%" }}
-                            >
-                                Submit
-                            </Button>
                         </Box>
 
                         <Box
@@ -648,15 +790,81 @@ const NewEdit = ({
                                         : "none",
                             }}
                         >
-                            Deposit
                             <Grid container spacing={2}>
-                                <Grid item xs={4}>
+                                <Grid item xs={12} sm={8}>
+                                    <ReservationTypeSelect
+                                        register={register}
+                                        errors={errors}
+                                        reset={reset}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} sm={4}>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                id={"BreakfastIncluded"}
+                                                {...register(
+                                                    "BreakfastIncluded"
+                                                )}
+                                            />
+                                        }
+                                        label="BreakFast Included"
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} md={6}>
+                                    <RateModeSelect
+                                        register={register}
+                                        errors={errors}
+                                        entity={baseStay}
+                                        setEntity={setBaseStay}
+                                        reset={reset}
+                                    />
+                                </Grid>
+
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            defaultChecked
+                                            id={"TaxIncluded"}
+                                            {...register("TaxIncluded")}
+                                        />
+                                    }
+                                    label="Tax Included"
+                                />
+
+                                <RoomRateTypeSelect
+                                    register={register}
+                                    errors={errors}
+                                    reservationModel={baseStay}
+                                    setReservationModel={setBaseStay}
+                                    reset={reset}
+                                />
+
+                                <CurrencyAmount
+                                    register={register}
+                                    errors={errors}
+                                    reservationModel={baseStay}
+                                    setReservationModel={setBaseStay}
+                                    reset={reset}
+                                />
+
+                                <RoomChargeDurationSelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={baseStay}
+                                    setEntity={setBaseStay}
+                                    reset={reset}
+                                />
+
+                                <Grid item xs={6} sm={4}>
                                     <PaymentMethodSelect
                                         register={register}
                                         errors={errors}
                                     />
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={6} sm={2}>
                                     <CurrencySelect
                                         register={register}
                                         errors={errors}
@@ -676,7 +884,21 @@ const NewEdit = ({
                                         style={{ width: "100%" }}
                                     />
                                 </Grid>
+                                <Grid item xs={6}>
+                                    <CustomerGroupSelect
+                                        register={register}
+                                        errors={errors}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={6}>
+                                    <CustomerSelect
+                                        register={register}
+                                        errors={errors}
+                                    />
+                                </Grid>
                             </Grid>
+                            ////testeetsetsetes
                             <Grid container spacing={2}>
                                 <Grid item xs={6}>
                                     <CustomerGroupSelect
@@ -707,16 +929,33 @@ const NewEdit = ({
                                 register={register}
                                 errors={errors}
                             />
-                            <Button
-                                variant={"outlined"}
-                                onClick={() => {
-                                    setActiveStep("main");
-                                }}
-                                className="mt-3"
-                                size="small"
+                            <Grid
+                                container
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
                             >
-                                <ReplayIcon className="mr-1" /> Back to Main
-                            </Button>
+                                <Button
+                                    variant={"outlined"}
+                                    onClick={() => {
+                                        setActiveStep("main");
+                                    }}
+                                    className="mt-3"
+                                    size="small"
+                                >
+                                    <ReplayIcon className="mr-1" /> Back to Main
+                                </Button>
+
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    ref={formRef}
+                                    className="mt-3"
+                                >
+                                    <SaveIcon className="mr-1" />
+                                    Reservation
+                                </Button>
+                            </Grid>
                         </Box>
                     </form>
 

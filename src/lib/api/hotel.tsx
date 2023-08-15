@@ -6,7 +6,7 @@ export const HotelAPI = {
     get: async () => {
         const res = await axios.get(`${urlPrefix}/Details`);
 
-        return JSON.parse(res.data.JsonData);
+        return res.data.JsonData;
     },
 
     update: async (values: any) => {

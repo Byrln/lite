@@ -14,9 +14,7 @@ export const TaxSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
@@ -29,7 +27,7 @@ export const TaxAPI = {
 
         const res = await axios.post(listUrl, values);
 
-        return JSON.parse(res.data.JsonData);
+        return res.data.JsonData;
     },
 
     new: async (values: any) => {

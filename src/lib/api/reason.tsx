@@ -13,9 +13,7 @@ export const ReasonSWR = (ReasonTypeID = 0) => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

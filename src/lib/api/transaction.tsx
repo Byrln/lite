@@ -12,7 +12,7 @@ export const TransactionSWR = (transactionID: any) => {
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let transaction = JSON.parse(res.data.JsonData);
+            let transaction = res.data.JsonData;
             return transaction[0] ? transaction[0] : transaction;
         });
 
@@ -28,7 +28,7 @@ export const TransactionAPI = {
 
         console.log(res);
 
-        var list = JSON.parse(res.data.JsonData);
+        var list = res.data.JsonData;
         var item;
 
         console.log(list);

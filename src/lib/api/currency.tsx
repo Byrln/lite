@@ -12,7 +12,7 @@ export const CurrencySWR = () => {
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let currencies = JSON.parse(res.data.JsonData);
+            let currencies = res.data.JsonData;
             return currencies;
         });
 
