@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -10,8 +10,11 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { ModalContext } from "lib/context/modal";
 
 const GuestSelect = ({ guestSelected }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
+
     const [idEditing, setIdEditing]: any = useState(null);
     const [guestCurrent, setGuestCurrent]: any = useState(null);
     const [filterValues, setFilterValues]: any = useState({
@@ -107,7 +110,7 @@ const GuestSelect = ({ guestSelected }: any) => {
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={12}>
                     <Card>
                         <CardContent>
                             <Typography
@@ -126,17 +129,19 @@ const GuestSelect = ({ guestSelected }: any) => {
                                 errors={errors}
                                 reset={reset}
                                 getValues={getValues}
+                                filterValues={filterValues}
+                                setGuest={setGuest}
                             />
                         </CardContent>
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                {/* <Grid item xs={12} md={6}>
                     <SelectList
                         filterValues={filterValues}
                         setGuest={setGuest}
                     />
-                </Grid>
+                </Grid> */}
             </Grid>
 
             <Grid

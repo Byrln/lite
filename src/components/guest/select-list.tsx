@@ -37,7 +37,7 @@ const SelectList = ({ filterValues, setGuest }: any) => {
         <Box
             sx={{
                 width: "100%",
-                height: 400,
+                height: 100,
                 maxHeight: 350,
                 maxWidth: 600,
                 bgcolor: "background.paper",

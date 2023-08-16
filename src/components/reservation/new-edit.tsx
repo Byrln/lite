@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext, createRef } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useEffect, createRef, useContext } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import {
     TextField,
     Grid,
@@ -14,7 +14,9 @@ import {
     StepLabel,
     Card,
     CardContent,
+    MenuItem,
 } from "@mui/material";
+import { fToUniversal } from "lib/utils/format-time";
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -28,7 +30,11 @@ import {
     RoomChargeDurationSelect,
     ReservationTypeSelect,
 } from "components/select";
+import { ApiResponseModel } from "models/response/ApiResponseModel";
+import { GuestAPI } from "lib/api/guest";
 
+import GenderSelect from "components/select/gender";
+import CountrySelect from "components/select/country";
 import PaymentMethodGroupSelect from "components/select/payment-method-group";
 import PaymentMethodSelect from "components/select/payment-method";
 import CustomerGroupSelect from "components/select/customer-group";
@@ -57,6 +63,9 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ColorPicker from "../select/color";
 import GroupAdd from "components/reservation/group-add";
 import PositionedMenu from "components/reservation/dropdown-menu";
+import GuestTitleSelect from "components/select/guest-title";
+import SelectList from "components/guest/select-list";
+import { ReservationAPI } from "lib/api/reservation";
 
 const styleAccordion = {
     boxShadow: "none",
@@ -82,8 +91,12 @@ const NewEdit = ({
     openIndex,
     onSingleSubmit,
     submitting,
-    onColorChange,
 }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
+
+    const [entity, setEntity]: any = useState(null);
+    const [idEditing, setIdEditing]: any = useState(null);
+
     const [activeStep, setActiveStep]: any = useState(
         defaultData?.guest ? "main" : "guest"
     );
@@ -131,19 +144,41 @@ const NewEdit = ({
           };
 
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
+    const [baseGroupStay, setBaseGroupStay]: any = useState([baseStayDefault]);
 
-    const onRoomTypeChange = (rt: any) => {
-        setBaseStay({
-            ...baseStay,
-            roomType: rt,
-        });
+    const onRoomTypeChange = (rt: any, index: number) => {
+        console.log(index);
+        if (index == null) {
+            setBaseStay({
+                ...baseStay,
+                roomType: rt,
+            });
+        } else {
+            const newArray = { ...baseGroupStay };
+            newArray[index] = { ...baseStay };
+            newArray[index].roomType = rt;
+            newArray[index].room = null;
+            newArray[index].rate = null;
+
+            console.log("newArray[index]", newArray[index]);
+
+            setBaseGroupStay(newArray);
+        }
+        console.log("baseGroupStay", baseGroupStay);
     };
 
-    const onRoomChange = (r: any) => {
-        setBaseStay({
-            ...baseStay,
-            room: r,
-        });
+    const onRoomChange = (r: any, index: any) => {
+        if (index == null) {
+            setBaseStay({
+                ...baseStay,
+                room: r,
+            });
+        } else {
+            const newArray = { ...baseGroupStay };
+            newArray[index].room = r;
+            newArray[index].rate = null;
+            setBaseGroupStay(newArray);
+        }
     };
 
     const validationSchema = yup.object().shape({
@@ -154,6 +189,24 @@ const NewEdit = ({
         CurrencyID: yup.number().required("Сонгоно уу"),
         RateModeID: yup.number().required("Сонгоно уу"),
         RoomChargeDurationID: yup.number().required("Сонгоно уу"),
+        Name: yup.string().required("Бөглөнө үү"),
+        Surname: yup.string().notRequired(),
+        GenderID: yup.number().required("Бөглөнө үү"),
+        RegistryNo: yup.string().when("IdentityTypeID", {
+            is: (IdentityTypeID: number) => {
+                return IdentityTypeID === 1;
+            },
+            then: yup.string().required("Бөглөнө үү"),
+            otherwise: yup.string().notRequired(),
+        }),
+        DriverLicenseNo: yup.string().when("IdentityTypeID", {
+            is: (IdentityTypeID: number) => {
+                return IdentityTypeID === 2;
+            },
+            then: yup.string().required("Бөглөнө үү"),
+            otherwise: yup.string().notRequired(),
+        }),
+        groupReservation: yup.array().notRequired(),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -162,7 +215,15 @@ const NewEdit = ({
         handleSubmit,
         formState: { errors },
         reset,
+        control,
+        resetField,
+        setValue,
     } = useForm(formOptions);
+
+    const { fields, append, prepend, remove } = useFieldArray({
+        name: "groupReservation",
+        control,
+    });
 
     const guestSelected = (guest: any) => {
         console.log("guest", guest.GuestID ? "Байна" : "Байхгүй");
@@ -230,7 +291,6 @@ const NewEdit = ({
             dateStart: evt.target.value,
         });
 
-        console.log("baseStay", baseStay);
         if (
             dateToCustomFormat(dateStart, "yyyyMMdd") >
             dateToCustomFormat(dateEnd, "yyyyMMdd")
@@ -261,15 +321,229 @@ const NewEdit = ({
         setRange(dateStart, dateEnd);
     };
 
-    const onSubmit = (values: any) => {
-        if (!values.Nights) {
-            values.Nights = countNights(baseStay.dateStart, baseStay.dateEnd);
+    const onSubmit = async (values: any) => {
+        // setLoading(true);
+
+        try {
+            if (!values.Nights) {
+                values.Nights = countNights(
+                    baseStay.dateStart,
+                    baseStay.dateEnd
+                );
+            }
+            if (!values.CurrencyAmount) {
+                values.CurrencyAmount = baseStay.CurrencyAmount;
+            }
+
+            let tempValues = values;
+            let groupReservation = values.groupReservation;
+            delete values.groupReservation;
+
+            values.TransactionDetail = {};
+
+            values = {};
+            values.TransactionDetail = [];
+            values.TransactionDetail.push(tempValues);
+
+            if (groupReservation) {
+                groupReservation.forEach((element: any) =>
+                    values.TransactionDetail.push(element)
+                );
+            }
+
+            console.log(values);
+
+            values.TransactionDetail.forEach((element: any) => {
+                element.ArrivalDate = values.TransactionDetail[0].ArrivalDate;
+                element.ArrivalTime = values.TransactionDetail[0].ArrivalTime;
+                element.DepartureDate =
+                    values.TransactionDetail[0].DepartureDate;
+                element.DepartureTime =
+                    values.TransactionDetail[0].DepartureTime;
+            });
+
+            values.TransactionDetail.forEach((element: any) => {
+                element.ArrivalDate =
+                    fToUniversal(element.ArrivalDate) +
+                    " " +
+                    element.ArrivalTime;
+
+                element.DepartureDate =
+                    fToUniversal(element.DepartureDate) +
+                    " " +
+                    element.DepartureTime;
+
+                element.IsReserved = true;
+                element.IsCheckIn = false;
+                element.DurationEnabled = true;
+                element.ReservationSourceID = 1;
+
+                if (!element.GuestID) {
+                    element.GuestID = 0;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.GuestID =
+                        values.TransactionDetail[0].GuestID;
+                }
+                element.GuestDetail = {};
+
+                if (element.Name) {
+                    element.GuestDetail.Name = element.Name;
+                    delete element.Name;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.Name =
+                        values.TransactionDetail[0].GuestDetail.Name;
+                }
+
+                if (element.Surname) {
+                    element.GuestDetail.Surname = element.Surname;
+                    delete element.Surname;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.Surname =
+                        values.TransactionDetail[0].GuestDetail.Surname;
+                }
+
+                if (element.GenderID) {
+                    element.GuestDetail.GenderID = element.GenderID;
+                    delete element.GenderID;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.GenderID =
+                        values.TransactionDetail[0].GuestDetail.GenderID;
+                }
+
+                if (element.RegistryNo) {
+                    element.GuestDetail.RegistryNo = element.RegistryNo;
+                    delete element.RegistryNo;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.RegistryNo =
+                        values.TransactionDetail[0].GuestDetail.RegistryNo;
+                }
+
+                if (element.DriverLicenseNo) {
+                    element.GuestDetail.DriverLicenseNo =
+                        element.DriverLicenseNo;
+                    delete element.DriverLicenseNo;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.DriverLicenseNo =
+                        values.TransactionDetail[0].GuestDetail.DriverLicenseNo;
+                }
+
+                if (element.Email) {
+                    element.GuestDetail.Email = element.Email;
+                    delete element.Email;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.Email =
+                        values.TransactionDetail[0].GuestDetail.Email;
+                }
+
+                if (element.Mobile) {
+                    element.GuestDetail.Mobile = element.Mobile;
+                    delete element.Mobile;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.Mobile =
+                        values.TransactionDetail[0].GuestDetail.Mobile;
+                }
+            });
+
+            // if (!values.GuestID) {
+            //     values.GuestID = 0;
+            // }
+            // values.GuestDetail = {};
+
+            // values.GuestDetail.Name = values.Name;
+            // values.GuestDetail.Surname = values.Surname;
+            // values.GuestDetail.GenderID = values.GenderID;
+            // values.GuestDetail.RegistryNo = values.RegistryNo;
+            // values.GuestDetail.DriverLicenseNo = values.DriverLicenseNo;
+            // values.GuestDetail.Email = values.Email;
+            // values.GuestDetail.Mobile = values.Mobile;
+
+            // delete values.Name;
+            // delete values.Surname;
+            // delete values.GenderID;
+            // delete values.RegistryNo;
+            // delete values.DriverLicenseNo;
+            // delete values.Email;
+            // delete values.Mobile;
+            await ReservationAPI.new(values);
+
+            handleModal();
+            toast("Амжилттай.");
+
+            console.log(values);
+            // onSingleSubmit(values, keyIndex);
+        } finally {
+            // setLoading(false);
         }
-        if (!values.CurrencyAmount) {
-            values.CurrencyAmount = baseStay.CurrencyAmount;
+    };
+
+    const setGuest = (guest: any) => {
+        setIdEditing(guest.GuestID);
+        // setGuestCurrent(guest);
+    };
+
+    useEffect(() => {
+        if (idEditing) {
+            const fetchDatas = async () => {
+                const response: ApiResponseModel = await GuestAPI.get(
+                    idEditing
+                );
+                if (response.status === 200 && response.data.length === 1) {
+                    let newEntity = response.data[0];
+                    newEntity._id = newEntity.GuestID;
+                    setEntity(newEntity);
+                } else {
+                    setEntity(null);
+                }
+            };
+            fetchDatas();
+        } else {
+            setEntity(null);
         }
-        console.log(values);
-        // onSingleSubmit(values, keyIndex);
+    }, [idEditing]);
+
+    const [filterValues, setFilterValues]: any = useState({
+        GuestID: 0,
+        GuestName: "",
+        CountryID: "0",
+        IdentityValue: "",
+        Phone: "",
+        TransactionID: "",
+        IsMainOnly: false,
+    });
+
+    const onFilterValueChange = ({ key, value }: any) => {
+        if (key == "GuestName") {
+            setFilterValues({
+                ...filterValues,
+                GuestName: value,
+            });
+        }
+        if (key == "IdentityValue") {
+            setFilterValues({
+                ...filterValues,
+                IdentityValue: value,
+            });
+        }
+        if (key == "Phone") {
+            setFilterValues({
+                ...filterValues,
+                Phone: value,
+            });
+        }
+    };
+
+    const [identityType, setIdentityType] = useState(1);
+
+    const onIdentityTypeChange = (evt: any) => {
+        setEntity({
+            ...entity,
+            IdentityTypeID: evt.target.value,
+        });
+        setIdentityType(evt.target.value);
+    };
+
+    const onColorChange = (color: any) => {
+        console.log("color", color);
     };
 
     return (
@@ -283,54 +557,14 @@ const NewEdit = ({
                     }
                 }}
             >
-                <AccordionSummary
-                    // expandIcon={<ExpandMoreIcon/>}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    sx={styleAccordionHeader}
-                >
-                    <Box
-                        sx={{
-                            width: "100%",
-                        }}
-                    >
-                        <Stepper activeStep={activeStepper} alternativeLabel>
-                            <Step key={0}>
-                                <StepLabel>
-                                    {baseStay.guest
-                                        ? `${baseStay.guest?.GuestFullName}
-                                        ${
-                                            baseStay.guest?.IdentityValue
-                                                ? "/" +
-                                                  baseStay.guest
-                                                      ?.IdentityValue +
-                                                  "/"
-                                                : ""
-                                        }`
-                                        : "Guest"}
-                                </StepLabel>
-                            </Step>
-                            <Step key={1}>
-                                <StepLabel>
-                                    {baseStay.room?.RoomNo
-                                        ? `${baseStay.roomType?.RoomTypeName}(${baseStay.room?.RoomNo})`
-                                        : "Room and Billing"}
-                                </StepLabel>
-                            </Step>
-                            {/* <Step key={2}>
-                                <StepLabel>Deposit</StepLabel>
-                            </Step> */}
-                        </Stepper>
-                    </Box>
-                </AccordionSummary>
                 <AccordionDetails sx={styleAccordionContent}>
-                    <Box
+                    {/* <Box
                         sx={{
                             display: activeStep === "guest" ? "inline" : "none",
                         }}
                     >
                         <GuestSelect guestSelected={guestSelected} />
-                    </Box>
+                    </Box> */}
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <input
                             type="hidden"
@@ -338,45 +572,456 @@ const NewEdit = ({
                             name="GuestID"
                             value={baseStay.guest?.GuestID}
                         />
-                        <input
-                            type="hidden"
-                            {...register("GuestDetail")}
-                            name="GuestDetail"
-                            value={baseStay.guest?.GuestDetail}
-                        />
-                        {/* <input
-                            type="hidden"
-                            {...register("Surname")}
-                            name="Surname"
-                            value={baseStay.guest?.Surname}
-                        />
-                        <input
-                            type="hidden"
-                            {...register("GenderID")}
-                            name="GenderID"
-                            value={baseStay.guest?.GenderID}
-                        />
-                        <input
-                            type="hidden"
-                            {...register("RegistryNo")}
-                            name="RegistryNo"
-                            value={baseStay.guest?.RegistryNo}
-                        />
-                        <input
-                            type="hidden"
-                            {...register("DriverLicenseNo")}
-                            name="DriverLicenseNo"
-                            value={baseStay.guest?.DriverLicenseNo}
-                        /> */}
 
                         <Box
-                            sx={{
-                                display:
-                                    activeStep === "main" ? "inline" : "none",
-                            }}
+                        // sx={{
+                        //     display:
+                        //         activeStep === "main" ? "inline" : "none",
+                        // }}
                         >
                             <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={4}>
+                                    <Card>
+                                        <CardContent>
+                                            <Typography
+                                                variant="h6"
+                                                component="div"
+                                                className="mb-3"
+                                            >
+                                                Guest Information
+                                            </Typography>
+                                            {/* <GuestSelect
+                                        guestSelected={guestSelected}
+                                    /> */}
+
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={6}>
+                                                    <GuestTitleSelect
+                                                        register={register}
+                                                        errors={errors}
+                                                        entity={entity}
+                                                        setEntity={setEntity}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={6}>
+                                                    <TextField
+                                                        size="small"
+                                                        fullWidth
+                                                        id="Surname"
+                                                        label="Овог"
+                                                        {...register("Surname")}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.Surname
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.Surname
+                                                                ?.message
+                                                        }
+                                                        value={
+                                                            entity &&
+                                                            entity.Surname
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink:
+                                                                entity &&
+                                                                entity.Surname,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            setEntity({
+                                                                ...entity,
+                                                                Surname:
+                                                                    evt.target
+                                                                        .value,
+                                                            });
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={6}>
+                                                    <TextField
+                                                        size="small"
+                                                        fullWidth
+                                                        id="Name"
+                                                        label="Нэр"
+                                                        {...register("Name")}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.Name?.message
+                                                        }
+                                                        helperText={
+                                                            errors.Name?.message
+                                                        }
+                                                        value={
+                                                            entity &&
+                                                            entity.Name
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink:
+                                                                entity &&
+                                                                entity.Name,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            setEntity({
+                                                                ...entity,
+                                                                Name: evt.target
+                                                                    .value,
+                                                            });
+                                                            if (
+                                                                onFilterValueChange
+                                                            ) {
+                                                                onFilterValueChange(
+                                                                    {
+                                                                        key: "GuestName",
+                                                                        value: evt
+                                                                            .target
+                                                                            .value,
+                                                                    }
+                                                                );
+                                                            }
+                                                        }}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={6}>
+                                                    <TextField
+                                                        size="small"
+                                                        fullWidth
+                                                        id="IdentityTypeID"
+                                                        label="IdentityType"
+                                                        select
+                                                        margin="dense"
+                                                        error={
+                                                            errors
+                                                                .IdentityTypeID
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors
+                                                                .IdentityTypeID
+                                                                ?.message
+                                                        }
+                                                        onChange={
+                                                            onIdentityTypeChange
+                                                        }
+                                                        value={
+                                                            entity &&
+                                                            entity.IdentityTypeID
+                                                                ? entity.IdentityTypeID
+                                                                : ""
+                                                        }
+                                                    >
+                                                        <MenuItem value={1}>
+                                                            {"Пасспорт"}
+                                                        </MenuItem>
+                                                        <MenuItem value={2}>
+                                                            {"Жолооны үнэмлэх"}
+                                                        </MenuItem>
+                                                    </TextField>
+                                                </Grid>
+                                                {(identityType === 1 ||
+                                                    true) && (
+                                                    <Grid item xs={6}>
+                                                        <TextField
+                                                            size="small"
+                                                            fullWidth
+                                                            id="RegistryNo"
+                                                            label="Регистерийн дугаар"
+                                                            {...register(
+                                                                "RegistryNo"
+                                                            )}
+                                                            margin="dense"
+                                                            error={
+                                                                errors
+                                                                    .RegistryNo
+                                                                    ?.message
+                                                            }
+                                                            helperText={
+                                                                errors
+                                                                    .RegistryNo
+                                                                    ?.message
+                                                            }
+                                                            value={
+                                                                entity &&
+                                                                entity.IdentityTypeID ===
+                                                                    1 &&
+                                                                entity.IdentityValue
+                                                                    ? entity.IdentityValue
+                                                                    : ""
+                                                            }
+                                                            InputLabelProps={{
+                                                                shrink:
+                                                                    entity &&
+                                                                    entity.RegistryNo,
+                                                            }}
+                                                            onChange={(
+                                                                evt: any
+                                                            ) => {
+                                                                setEntity({
+                                                                    ...entity,
+                                                                    IdentityTypeID: 1,
+                                                                    IdentityValue:
+                                                                        evt
+                                                                            .target
+                                                                            .value,
+                                                                });
+
+                                                                if (
+                                                                    onFilterValueChange
+                                                                ) {
+                                                                    onFilterValueChange(
+                                                                        {
+                                                                            key: "IdentityValue",
+                                                                            value: evt
+                                                                                .target
+                                                                                .value,
+                                                                        }
+                                                                    );
+                                                                }
+                                                            }}
+                                                        />
+                                                    </Grid>
+                                                )}
+
+                                                {(identityType === 2 ||
+                                                    true) && (
+                                                    <Grid item xs={6}>
+                                                        <TextField
+                                                            size="small"
+                                                            fullWidth
+                                                            id="DriverLicenseNo"
+                                                            label="Жолооны үнэмлэхний дугаар"
+                                                            {...register(
+                                                                "DriverLicenseNo"
+                                                            )}
+                                                            margin="dense"
+                                                            error={
+                                                                errors
+                                                                    .DriverLicenseNo
+                                                                    ?.message
+                                                            }
+                                                            helperText={
+                                                                errors
+                                                                    .DriverLicenseNo
+                                                                    ?.message
+                                                            }
+                                                            value={
+                                                                entity &&
+                                                                entity.IdentityTypeID ===
+                                                                    2 &&
+                                                                entity.IdentityValue
+                                                                    ? entity.IdentityValue
+                                                                    : ""
+                                                            }
+                                                            InputLabelProps={{
+                                                                shrink:
+                                                                    entity &&
+                                                                    entity.DriverLicenseNo,
+                                                            }}
+                                                            onChange={(
+                                                                evt: any
+                                                            ) => {
+                                                                setEntity({
+                                                                    ...entity,
+                                                                    IdentityTypeID: 2,
+                                                                    IdentityValue:
+                                                                        evt
+                                                                            .target
+                                                                            .value,
+                                                                });
+                                                                if (
+                                                                    onFilterValueChange
+                                                                ) {
+                                                                    onFilterValueChange(
+                                                                        {
+                                                                            key: "IdentityValue",
+                                                                            value: evt
+                                                                                .target
+                                                                                .value,
+                                                                        }
+                                                                    );
+                                                                }
+                                                            }}
+                                                        />
+                                                    </Grid>
+                                                )}
+                                            </Grid>
+                                            <GenderSelect
+                                                register={register}
+                                                errors={errors}
+                                                entity={entity}
+                                                setEntity={setEntity}
+                                            />
+
+                                            <CountrySelect
+                                                register={register}
+                                                errors={errors}
+                                                entity={entity}
+                                                setEntity={setEntity}
+                                            />
+
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={6}>
+                                                    <TextField
+                                                        size="small"
+                                                        fullWidth
+                                                        id="Email"
+                                                        label="Емэйл"
+                                                        {...register("Email")}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.Email
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.Email
+                                                                ?.message
+                                                        }
+                                                        value={
+                                                            entity &&
+                                                            entity.Email
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink:
+                                                                entity &&
+                                                                entity.Email,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            setEntity({
+                                                                ...entity,
+                                                                Email: evt
+                                                                    .target
+                                                                    .value,
+                                                            });
+                                                        }}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={6}>
+                                                    <TextField
+                                                        size="small"
+                                                        fullWidth
+                                                        id="Mobile"
+                                                        label="Гар утас"
+                                                        {...register("Mobile")}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.Mobile
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.Mobile
+                                                                ?.message
+                                                        }
+                                                        value={
+                                                            entity &&
+                                                            entity.Mobile
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink:
+                                                                entity &&
+                                                                entity.Mobile,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            setEntity({
+                                                                ...entity,
+                                                                Mobile: evt
+                                                                    .target
+                                                                    .value,
+                                                            });
+                                                            if (
+                                                                onFilterValueChange
+                                                            ) {
+                                                                onFilterValueChange(
+                                                                    {
+                                                                        key: "Phone",
+                                                                        value: evt
+                                                                            .target
+                                                                            .value,
+                                                                    }
+                                                                );
+                                                            }
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+
+                                            <TextField
+                                                size="small"
+                                                fullWidth
+                                                id="Address"
+                                                label="Хаягийн мэдээлэл"
+                                                {...register("Address")}
+                                                margin="dense"
+                                                error={errors.Address?.message}
+                                                helperText={
+                                                    errors.Address?.message
+                                                }
+                                                value={entity && entity.Address}
+                                                InputLabelProps={{
+                                                    shrink:
+                                                        entity &&
+                                                        entity.Address,
+                                                }}
+                                                onChange={(evt: any) => {
+                                                    setEntity({
+                                                        ...entity,
+                                                        Address:
+                                                            evt.target.value,
+                                                    });
+                                                }}
+                                            />
+
+                                            <Box
+                                                sx={{
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                    alignItems: "center",
+                                                    justifyContent: "end",
+                                                    mt: 2,
+                                                }}
+                                            >
+                                                <Button
+                                                    variant="text"
+                                                    onClick={(evt: any) => {
+                                                        setEntity({});
+                                                        reset({
+                                                            Surname: null,
+                                                            Name: null,
+                                                            GenderID: null,
+                                                            Mobile: null,
+                                                            Address: null,
+                                                        });
+                                                    }}
+                                                >
+                                                    RESET
+                                                </Button>
+
+                                                {/* <LoadingButton
+                        type="submit"
+                        variant="outlined"
+                        loading={loading}
+                    >
+                        <SaveIcon />
+                    </LoadingButton> */}
+                                            </Box>
+                                            <SelectList
+                                                filterValues={filterValues}
+                                                setGuest={setGuest}
+                                            />
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
                                     <Card>
                                         <CardContent>
                                             <Typography
@@ -606,7 +1251,7 @@ const NewEdit = ({
                                     </Card>
                                 </Grid>
 
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={4}>
                                     <Card>
                                         <CardContent>
                                             <Typography
@@ -760,7 +1405,7 @@ const NewEdit = ({
                                 alignItems="center"
                                 className="mt-3"
                             >
-                                <Button
+                                {/* <Button
                                     variant={"outlined"}
                                     onClick={() => {
                                         setActiveStep("guest");
@@ -769,7 +1414,7 @@ const NewEdit = ({
                                 >
                                     <ReplayIcon className="mr-1" /> Back to
                                     Guest
-                                </Button>
+                                </Button> */}
 
                                 <Button
                                     type="submit"
@@ -966,17 +1611,157 @@ const NewEdit = ({
                             alignItems: "center",
                         }}
                     >
-                        {isMain && activeStep == "main" && (
-                            <ColorPicker onColorChange={onColorChange} />
-                        )}
+                        <ColorPicker onColorChange={onColorChange} />
 
-                        {isMain && activeStep == "main" && (
-                            <GroupAdd
-                                baseStay={baseStay}
-                                addReservations={addReservations}
-                            />
-                        )}
+                        <GroupAdd
+                            baseStay={baseStay}
+                            baseGroupStay={baseGroupStay}
+                            addReservations={append}
+                            setBaseGroupStay={setBaseGroupStay}
+                        />
                     </Box>
+                    {fields.map((field: any, index: number) => {
+                        return (
+                            <section key={field.id}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={2}>
+                                        <RoomTypeSelect
+                                            register={register}
+                                            errors={errors}
+                                            onRoomTypeChange={onRoomTypeChange}
+                                            baseStay={baseGroupStay[index]}
+                                            customRegisterName={`groupReservation.${index}.RoomTypeID`}
+                                            groupIndex={index}
+                                        />
+                                    </Grid>
+                                    {baseGroupStay[index] &&
+                                        baseGroupStay[index].roomType && (
+                                            <Grid item xs={12} sm={2}>
+                                                <RoomSelect
+                                                    register={register}
+                                                    errors={errors}
+                                                    baseStay={
+                                                        baseGroupStay[index]
+                                                    }
+                                                    onRoomChange={onRoomChange}
+                                                    groupIndex={index}
+                                                    customRegisterName={`groupReservation.${index}.RoomID`}
+                                                />
+                                            </Grid>
+                                        )}
+
+                                    {baseGroupStay[index] &&
+                                        baseGroupStay[index].roomType &&
+                                        baseGroupStay[index].room && (
+                                            <Grid item xs={12} sm={2}>
+                                                <RoomRateTypeSelect
+                                                    register={register}
+                                                    errors={errors}
+                                                    reservationModel={
+                                                        baseGroupStay[index]
+                                                    }
+                                                    setReservationModel={
+                                                        setBaseGroupStay
+                                                    }
+                                                    baseGroupStay={
+                                                        baseGroupStay
+                                                    }
+                                                    reset={reset}
+                                                    groupIndex={index}
+                                                    customRegisterName={`groupReservation.${index}.RateTypeID`}
+                                                />
+                                            </Grid>
+                                        )}
+                                    {baseGroupStay[index] &&
+                                        baseGroupStay[index].roomType &&
+                                        baseGroupStay[index].room &&
+                                        baseGroupStay[index].rate &&
+                                        baseGroupStay[index].dateStart &&
+                                        baseGroupStay[index].Nights &&
+                                        baseGroupStay[index].TaxIncluded && (
+                                            <>
+                                                <Grid item xs={12} sm={2}>
+                                                    <CurrencyAmount
+                                                        register={register}
+                                                        errors={errors}
+                                                        reservationModel={
+                                                            baseGroupStay[index]
+                                                        }
+                                                        setReservationModel={
+                                                            setBaseGroupStay
+                                                        }
+                                                        baseGroupStay={
+                                                            baseGroupStay
+                                                        }
+                                                        reset={reset}
+                                                        groupIndex={index}
+                                                        customRegisterName={`groupReservation.${index}.CurrencyAmount`}
+                                                        setValue={setValue}
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={2}>
+                                                    <NumberSelect
+                                                        numberMin={
+                                                            baseGroupStay[index]
+                                                                .roomType
+                                                                ?.BaseAdult
+                                                                ? baseGroupStay[
+                                                                      index
+                                                                  ].roomType
+                                                                      ?.BaseAdult
+                                                                : 0
+                                                        }
+                                                        numberMax={
+                                                            baseGroupStay[index]
+                                                                .roomType
+                                                                ?.MaxAdult
+                                                                ? baseGroupStay[
+                                                                      index
+                                                                  ].roomType
+                                                                      ?.MaxAdult
+                                                                : 0
+                                                        }
+                                                        nameKey={`groupReservation.${index}.Adult`}
+                                                        register={register}
+                                                        errors={errors}
+                                                        label={"Adult"}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={2}>
+                                                    <NumberSelect
+                                                        numberMin={
+                                                            baseGroupStay[index]
+                                                                .roomType
+                                                                ?.BaseChild
+                                                                ? baseGroupStay[
+                                                                      index
+                                                                  ].roomType
+                                                                      ?.BaseChild
+                                                                : 0
+                                                        }
+                                                        numberMax={
+                                                            baseGroupStay[index]
+                                                                .roomType
+                                                                ?.MaxChild
+                                                                ? baseGroupStay[
+                                                                      index
+                                                                  ].roomType
+                                                                      ?.MaxChild
+                                                                : 0
+                                                        }
+                                                        nameKey={`groupReservation.${index}.Adult`}
+                                                        register={register}
+                                                        errors={errors}
+                                                        label={"Child"}
+                                                    />
+                                                </Grid>
+                                            </>
+                                        )}
+                                </Grid>
+                            </section>
+                        );
+                    })}
                 </AccordionDetails>
             </Accordion>
         </>

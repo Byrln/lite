@@ -1,10 +1,12 @@
-import {useState, useEffect} from "react";
-import {SketchPicker} from "react-color";
-import {Box} from "@mui/material";
+import { useState, useEffect } from "react";
+import { SketchPicker } from "react-color";
+import { Box } from "@mui/material";
 import styles1 from "./styles/color.module.scss";
 
 const hexToRGBA = (h: string) => {
-    let r: any = 0, g: any = 0, b: any = 0;
+    let r: any = 0,
+        g: any = 0,
+        b: any = 0;
 
     // 3 digits
     if (h.length == 4) {
@@ -23,12 +25,11 @@ const hexToRGBA = (h: string) => {
         r: parseInt(r, 16),
         g: parseInt(g, 16),
         b: parseInt(b, 16),
-        a: '1'
+        a: "1",
     };
-}
+};
 
-const ColorPicker = ({onColorChange}: any) => {
-
+const ColorPicker = ({ onColorChange }: any) => {
     const colorDefault = "#f17013";
 
     const [state, setState] = useState({
@@ -49,40 +50,39 @@ const ColorPicker = ({onColorChange}: any) => {
     const handleClick = () => {
         setState({
             ...state,
-            displayColorPicker: !state.displayColorPicker
+            displayColorPicker: !state.displayColorPicker,
         });
     };
 
     const handleClose = () => {
         setState({
             ...state,
-            displayColorPicker: false
-        })
+            displayColorPicker: false,
+        });
     };
 
     const handleChange = (color: any) => {
         setState({
             ...state,
-            color: color.rgb
-        })
+            color: color.rgb,
+        });
         onColorChange(color.hex);
     };
 
-
     const styles = {
         color: {
-            width: '50px',
-            height: '40px',
-            borderRadius: '2px',
+            width: "40px",
+            height: "22px",
+            borderRadius: "2px",
             background: `rgba(${state.color.r}, ${state.color.g}, ${state.color.b}, ${state.color.a})`,
         },
         swatch: {
-            padding: '5px',
-            background: '#fff',
-            borderRadius: '1px',
-            boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-            display: 'inline-block',
-            cursor: 'pointer',
+            padding: "5px",
+            background: "#fff",
+            borderRadius: "1px",
+            boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
+            display: "inline-block",
+            cursor: "pointer",
             mt: 1.5,
         },
         popover: {
@@ -91,28 +91,27 @@ const ColorPicker = ({onColorChange}: any) => {
             bottom: "80px",
         },
         cover: {
-            position: 'fixed',
-            top: '0px',
-            right: '0px',
-            bottom: '0px',
-            left: '0px',
+            position: "fixed",
+            top: "0px",
+            right: "0px",
+            bottom: "0px",
+            left: "0px",
         },
     };
-
 
     return (
         <Box>
             <Box sx={styles.swatch} onClick={handleClick}>
-                <Box sx={styles.color}/>
+                <Box sx={styles.color} />
             </Box>
-            {state.displayColorPicker ?
+            {state.displayColorPicker ? (
                 <Box className={styles1.popover}>
-                    <Box onClick={handleClose}/>
-                    <SketchPicker color={state.color} onChange={handleChange}/>
-                </Box> : null}
+                    <Box onClick={handleClose} />
+                    <SketchPicker color={state.color} onChange={handleChange} />
+                </Box>
+            ) : null}
         </Box>
     );
-
 };
 
 export default ColorPicker;

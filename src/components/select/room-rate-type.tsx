@@ -13,7 +13,10 @@ const RoomRateTypeSelect = ({
     errors,
     reservationModel,
     setReservationModel,
+    baseGroupStay,
     reset,
+    groupIndex,
+    customRegisterName,
 }: any) => {
     const [data, setData]: any = useState([]);
 
@@ -43,10 +46,18 @@ const RoomRateTypeSelect = ({
             }
         }
         if (rate) {
-            setReservationModel({
-                ...reservationModel,
-                rate: rate,
-            });
+            console.log("groupIndex", groupIndex);
+            if (groupIndex == null) {
+                setReservationModel({
+                    ...reservationModel,
+                    rate: rate,
+                });
+            } else {
+                let tempReservation = { ...baseGroupStay };
+                tempReservation[groupIndex].rate = rate;
+                setReservationModel(tempReservation);
+                console.log("tempReservation", tempReservation);
+            }
         }
     };
 
@@ -55,7 +66,9 @@ const RoomRateTypeSelect = ({
             fullWidth
             id="RateTypeID"
             label="Rate Type"
-            {...register("RateTypeID")}
+            {...register(
+                customRegisterName ? customRegisterName : "RateTypeID"
+            )}
             select
             margin="dense"
             error={errors.RateTypeID?.message}

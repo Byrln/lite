@@ -9,9 +9,14 @@ const CurrencyAmount = ({
     errors,
     reservationModel,
     setReservationModel,
+    baseGroupStay,
     reset,
+    groupIndex,
+    customRegisterName,
+    setValue,
 }: any) => {
     const calculateAmount = async () => {
+        console.log("reservavtionModalCalculateAmount", reservationModel);
         if (
             !(
                 reservationModel.roomType &&
@@ -21,6 +26,7 @@ const CurrencyAmount = ({
         ) {
             return;
         }
+
         var values = {
             CurrDate: dateToCustomFormat(
                 reservationModel.dateStart,
@@ -36,25 +42,34 @@ const CurrencyAmount = ({
             ContractRate: false,
             EmptyRow: false,
         };
-
         try {
             var rates = await RateAPI.listByDate(values);
-
+            console.log("reservation.Nights", reservationModel.Nights);
             var amount;
             if (rates.length > 0) {
                 amount = rates[0].BaseRate * reservationModel.Nights;
             } else {
                 return;
             }
+            if (groupIndex == null) {
+                reset({
+                    CurrencyAmount: amount,
+                });
+            } else {
+                setValue(customRegisterName, amount);
+            }
 
-            reset({
-                CurrencyAmount: amount,
-            });
-
-            setReservationModel({
-                ...reservationModel,
-                CurrencyAmount: amount,
-            });
+            if (groupIndex == null) {
+                setReservationModel({
+                    ...reservationModel,
+                    CurrencyAmount: amount,
+                });
+            } else {
+                let tempReservation = { ...baseGroupStay };
+                tempReservation[groupIndex].CurrencyAmount = amount;
+                setReservationModel(tempReservation);
+                console.log("tempReservation", tempReservation);
+            }
         } catch (exp) {}
     };
 
@@ -71,14 +86,21 @@ const CurrencyAmount = ({
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={12} sm={4}>
-                    <CurrencySelect
-                        register={register}
-                        errors={errors}
-                        nameKey={"CurrencyID"}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={8}>
+                {groupIndex == null && (
+                    <Grid item xs={12} sm={4}>
+                        <CurrencySelect
+                            register={register}
+                            errors={errors}
+                            nameKey={
+                                customRegisterName
+                                    ? customRegisterName
+                                    : "CurrencyID"
+                            }
+                        />
+                    </Grid>
+                )}
+
+                <Grid item xs={12} sm={groupIndex == null ? 8 : 12}>
                     <Grid container spacing={1}>
                         {/* <Grid item xs={6} sx={{ display: "none" }}></Grid>
                         <Grid item xs={6}> */}
@@ -87,7 +109,11 @@ const CurrencyAmount = ({
                             label="CurrencyAmount"
                             type="number"
                             disabled={true}
-                            {...register("CurrencyAmount")}
+                            {...register(
+                                customRegisterName
+                                    ? customRegisterName
+                                    : "CurrencyAmount"
+                            )}
                             margin="dense"
                             error={errors.CurrencyAmount?.message}
                             helperText={errors.CurrencyAmount?.message}

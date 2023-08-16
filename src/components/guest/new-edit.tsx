@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { ModalContext } from "../../lib/context/modal";
 import { LoadingButton } from "@mui/lab";
 import SaveIcon from "@mui/icons-material/Save";
+import SelectList from "components/guest/select-list";
 
 const NewEdit = ({
     idEditing,
@@ -27,6 +28,8 @@ const NewEdit = ({
     errors,
     reset,
     getValues,
+    filterValues,
+    setGuest,
 }: any) => {
     const [entity, setEntity]: any = useState(null);
     const [identityType, setIdentityType] = useState(1);
@@ -410,14 +413,15 @@ const NewEdit = ({
                         </Button>
                     )}
 
-                    <LoadingButton
+                    {/* <LoadingButton
                         type="submit"
                         variant="outlined"
                         loading={loading}
                     >
                         <SaveIcon />
-                    </LoadingButton>
+                    </LoadingButton> */}
                 </Box>
+                <SelectList filterValues={filterValues} setGuest={setGuest} />
             </form>
         </>
     );

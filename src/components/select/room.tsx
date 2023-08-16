@@ -13,6 +13,8 @@ const RoomSelect = ({
     baseStay,
     onRoomChange,
     roomAutoAssign,
+    customRegisterName,
+    groupIndex,
 }: any) => {
     // const { data, error } = RoomSWR();
     const [data, setData]: any = useState([]);
@@ -27,16 +29,27 @@ const RoomSelect = ({
                 }
             }
             if (
+                typeof baseStay == "undefined" ||
                 baseStay.room?.RoomID != room?.RoomID ||
                 typeof baseStay.room.RoomName != "string"
             ) {
-                onRoomChange(room);
+                onRoomChange(
+                    room,
+                    typeof groupIndex != "undefined" ? groupIndex : null
+                );
             }
         }
     };
 
     const fetchRooms = async () => {
-        if (!(baseStay.roomType && baseStay.dateStart && baseStay.dateEnd)) {
+        if (
+            !(
+                baseStay &&
+                baseStay.roomType &&
+                baseStay.dateStart &&
+                baseStay.dateEnd
+            )
+        ) {
             return;
         }
         var values = {
@@ -82,7 +95,7 @@ const RoomSelect = ({
             fullWidth
             id="RoomTypeID"
             label="Өрөө"
-            {...register("RoomID")}
+            {...register(customRegisterName ? customRegisterName : "RoomID")}
             select
             margin="dense"
             error={errors.RoomID?.message}

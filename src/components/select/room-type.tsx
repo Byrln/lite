@@ -10,6 +10,8 @@ const RoomTypeSelect = ({
     errors,
     onRoomTypeChange,
     baseStay,
+    customRegisterName,
+    groupIndex,
 }: any) => {
     const [data, setData]: any = useState([]);
 
@@ -36,11 +38,19 @@ const RoomTypeSelect = ({
             }
 
             if (roomType) {
-                if (
+                if (typeof baseStay == "undefined") {
+                    onRoomTypeChange(
+                        roomType,
+                        typeof groupIndex != "undefined" ? groupIndex : null
+                    );
+                } else if (
                     typeof baseStay.roomType.RoomTypeName != "string" ||
                     roomType.RoomTypeID != baseStay.roomType.RoomTypeID
                 ) {
-                    onRoomTypeChange(roomType);
+                    onRoomTypeChange(
+                        roomType,
+                        typeof groupIndex != "undefined" ? groupIndex : null
+                    );
                 }
             }
         }
@@ -51,7 +61,12 @@ const RoomTypeSelect = ({
     }, []);
 
     useEffect(() => {
-        if (data && data.length > 0 && baseStay?.roomType?.RoomTypeID) {
+        if (
+            data &&
+            data.length > 0 &&
+            baseStay &&
+            baseStay?.roomType?.RoomTypeID
+        ) {
             eventRoomTypeChange(baseStay?.roomType?.RoomTypeID);
         }
     }, [data]);
@@ -62,7 +77,9 @@ const RoomTypeSelect = ({
             fullWidth
             id="RoomTypeID"
             label="Өрөөний төрөл"
-            {...register("RoomTypeID")}
+            {...register(
+                customRegisterName ? customRegisterName : "RoomTypeID"
+            )}
             select
             margin="dense"
             error={errors.RoomTypeID?.message}
@@ -70,7 +87,7 @@ const RoomTypeSelect = ({
             onChange={(evt: any) => {
                 eventRoomTypeChange(evt.target.value);
             }}
-            value={baseStay?.roomType?.RoomTypeID}
+            value={baseStay && baseStay?.roomType?.RoomTypeID}
         >
             {data.map((element: any) => (
                 <MenuItem key={element.RoomTypeID} value={element.RoomTypeID}>

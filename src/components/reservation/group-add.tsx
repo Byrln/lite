@@ -1,12 +1,17 @@
-import {useState} from "react";
-import {Button, TextField} from "@mui/material";
+import { useState } from "react";
+import { Button, TextField } from "@mui/material";
 
-const GroupAdd = ({baseStay, addReservations}: any) => {
+const GroupAdd = ({
+    baseStay,
+    baseGroupStay,
+    addReservations,
+    setBaseGroupStay,
+}: any) => {
     const [addCount, setAddCount] = useState(1);
 
     const onCountChange = (evt: any) => {
         setAddCount(evt.target.value);
-    }
+    };
 
     return (
         <>
@@ -17,17 +22,23 @@ const GroupAdd = ({baseStay, addReservations}: any) => {
                 margin="dense"
                 value={addCount}
                 onChange={onCountChange}
-                sx={{maxWidth: "100px", mx: 2}}
+                sx={{ maxWidth: "100px", mx: 2 }}
+                size="small"
+                disabled
             />
             <Button
-                variant="contained"
+                variant="outlined"
                 onClick={(evt: any) => {
-                    addReservations(baseStay, addCount);
+                    addReservations();
+                    // let tempStay = [...baseGroupStay];
+                    // tempStay.push(baseStay);
+                    // setBaseGroupStay(tempStay);
                 }}
-            >Add room</Button>
+            >
+                + Add room
+            </Button>
         </>
     );
-
 };
 
 export default GroupAdd;
