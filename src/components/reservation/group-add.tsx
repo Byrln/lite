@@ -7,7 +7,7 @@ const GroupAdd = ({
     addReservations,
     setBaseGroupStay,
 }: any) => {
-    const [addCount, setAddCount] = useState(1);
+    const [addCount, setAddCount] = useState(0);
 
     const onCountChange = (evt: any) => {
         setAddCount(evt.target.value);

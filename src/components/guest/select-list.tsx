@@ -11,7 +11,7 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-const SelectList = ({ filterValues, setGuest }: any) => {
+const SelectList = ({ filterValues, setGuest, groupIndex }: any) => {
     const [guestList, setGuestList]: any = useState([]);
 
     useEffect(() => {
@@ -39,10 +39,10 @@ const SelectList = ({ filterValues, setGuest }: any) => {
                 width: "100%",
                 height: 100,
                 maxHeight: 350,
-                maxWidth: 600,
                 bgcolor: "background.paper",
                 overflow: "scroll",
                 paddingRight: "20px",
+                marginBottom: "20px",
             }}
         >
             <List>
@@ -83,7 +83,16 @@ const SelectList = ({ filterValues, setGuest }: any) => {
                             <Grid item xs={2}>
                                 <IconButton
                                     onClick={() => {
-                                        setGuest(guest);
+                                        if (groupIndex == null) {
+                                            setGuest(guest);
+                                        } else {
+                                            let tempGuest = { ...guest };
+                                            tempGuest.groupReservation = [];
+                                            tempGuest.groupReservation[
+                                                groupIndex
+                                            ] = guest;
+                                            setGuest(tempGuest, groupIndex);
+                                        }
                                     }}
                                 >
                                     <ArrowCircleRightIcon />

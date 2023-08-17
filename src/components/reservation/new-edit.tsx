@@ -218,6 +218,7 @@ const NewEdit = ({
         control,
         resetField,
         setValue,
+        getValues,
     } = useForm(formOptions);
 
     const { fields, append, prepend, remove } = useFieldArray({
@@ -323,7 +324,7 @@ const NewEdit = ({
 
     const onSubmit = async (values: any) => {
         // setLoading(true);
-
+        console.log("values", values);
         try {
             if (!values.Nights) {
                 values.Nights = countNights(
@@ -340,6 +341,7 @@ const NewEdit = ({
             delete values.groupReservation;
 
             values.TransactionDetail = {};
+            console.log(values);
 
             values = {};
             values.TransactionDetail = [];
@@ -351,9 +353,11 @@ const NewEdit = ({
                 );
             }
 
-            console.log(values);
-
             values.TransactionDetail.forEach((element: any) => {
+                element.Nights = countNights(
+                    baseStay.dateStart,
+                    baseStay.dateEnd
+                );
                 element.ArrivalDate = values.TransactionDetail[0].ArrivalDate;
                 element.ArrivalTime = values.TransactionDetail[0].ArrivalTime;
                 element.DepartureDate =
@@ -392,6 +396,31 @@ const NewEdit = ({
                 } else if (element != values.TransactionDetail[0]) {
                     element.GuestDetail.Name =
                         values.TransactionDetail[0].GuestDetail.Name;
+                }
+
+                if (element.Address) {
+                    element.GuestDetail.Address = element.Address;
+                    delete element.Address;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.Address =
+                        values.TransactionDetail[0].GuestDetail.Address;
+                }
+
+                if (element.DriverLicenseNo) {
+                    element.GuestDetail.DriverLicenseNo =
+                        element.DriverLicenseNo;
+                    delete element.DriverLicenseNo;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.DriverLicenseNo =
+                        values.TransactionDetail[0].GuestDetail.DriverLicenseNo;
+                }
+
+                if (element.GuestTitleID) {
+                    element.GuestDetail.GuestTitleID = element.GuestTitleID;
+                    delete element.GuestTitleID;
+                } else if (element != values.TransactionDetail[0]) {
+                    element.GuestDetail.GuestTitleID =
+                        values.TransactionDetail[0].GuestDetail.GuestTitleID;
                 }
 
                 if (element.Surname) {
@@ -444,40 +473,29 @@ const NewEdit = ({
                 }
             });
 
-            // if (!values.GuestID) {
-            //     values.GuestID = 0;
-            // }
-            // values.GuestDetail = {};
-
-            // values.GuestDetail.Name = values.Name;
-            // values.GuestDetail.Surname = values.Surname;
-            // values.GuestDetail.GenderID = values.GenderID;
-            // values.GuestDetail.RegistryNo = values.RegistryNo;
-            // values.GuestDetail.DriverLicenseNo = values.DriverLicenseNo;
-            // values.GuestDetail.Email = values.Email;
-            // values.GuestDetail.Mobile = values.Mobile;
-
-            // delete values.Name;
-            // delete values.Surname;
-            // delete values.GenderID;
-            // delete values.RegistryNo;
-            // delete values.DriverLicenseNo;
-            // delete values.Email;
-            // delete values.Mobile;
             await ReservationAPI.new(values);
 
             handleModal();
             toast("Амжилттай.");
 
             console.log(values);
-            // onSingleSubmit(values, keyIndex);
         } finally {
             // setLoading(false);
         }
     };
 
-    const setGuest = (guest: any) => {
-        setIdEditing(guest.GuestID);
+    const setGuest = (guest: any, groupIndex: number) => {
+        if (guest.groupReservation) {
+            console.log("guest", guest);
+            setIdEditing([
+                guest.groupReservation[groupIndex].GuestID,
+                groupIndex,
+            ]);
+        } else {
+            console.log("guest", guest);
+
+            setIdEditing(guest.GuestID);
+        }
         // setGuestCurrent(guest);
     };
 
@@ -485,16 +503,25 @@ const NewEdit = ({
         if (idEditing) {
             const fetchDatas = async () => {
                 const response: ApiResponseModel = await GuestAPI.get(
-                    idEditing
+                    typeof idEditing == "object" ? idEditing[0] : idEditing
                 );
                 if (response.status === 200 && response.data.length === 1) {
                     let newEntity = response.data[0];
                     newEntity._id = newEntity.GuestID;
-                    setEntity(newEntity);
+
+                    if (typeof idEditing == "object") {
+                        let tempEntity = { ...entity };
+                        tempEntity.groupReservation = [];
+                        tempEntity.groupReservation[idEditing[1]] = newEntity;
+                        setEntity(tempEntity);
+                    } else {
+                        setEntity(newEntity);
+                    }
                 } else {
                     setEntity(null);
                 }
             };
+            console.log("idEditing", typeof idEditing);
             fetchDatas();
         } else {
             setEntity(null);
@@ -544,6 +571,13 @@ const NewEdit = ({
 
     const onColorChange = (color: any) => {
         console.log("color", color);
+    };
+
+    const onCheckChange = (name: any, value: any) => {
+        setValue(name, getValues(name) == true ? true : false);
+        console.log("name", name);
+
+        console.log("TaxIncluded", getValues("TaxIncluded"));
     };
 
     return (
@@ -1281,6 +1315,9 @@ const NewEdit = ({
                                                                 {...register(
                                                                     "BreakfastIncluded"
                                                                 )}
+                                                                {...register(
+                                                                    "ShowWarning"
+                                                                )}
                                                             />
                                                         }
                                                         label="BreakFast Included"
@@ -1308,9 +1345,16 @@ const NewEdit = ({
                                                                 id={
                                                                     "TaxIncluded"
                                                                 }
-                                                                {...register(
-                                                                    "TaxIncluded"
-                                                                )}
+                                                                // {...register(
+                                                                //     "TaxIncluded"
+                                                                // )}
+                                                                onChange={(e) =>
+                                                                    onCheckChange(
+                                                                        "TaxIncluded",
+                                                                        e.target
+                                                                            .checked
+                                                                    )
+                                                                }
                                                             />
                                                         }
                                                         label="Tax Included"
@@ -1415,15 +1459,6 @@ const NewEdit = ({
                                     <ReplayIcon className="mr-1" /> Back to
                                     Guest
                                 </Button> */}
-
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    ref={formRef}
-                                >
-                                    <SaveIcon className="mr-1" />
-                                    Reservation
-                                </Button>
                             </Grid>
                         </Box>
 
@@ -1602,6 +1637,11 @@ const NewEdit = ({
                                 </Button>
                             </Grid>
                         </Box>
+
+                        <Button type="submit" variant="contained" ref={formRef}>
+                            <SaveIcon className="mr-1" />
+                            Reservation
+                        </Button>
                     </form>
 
                     <Box
@@ -1756,9 +1796,140 @@ const NewEdit = ({
                                                         label={"Child"}
                                                     />
                                                 </Grid>
+
+                                                <Grid item xs={12} sm={2}>
+                                                    <TextField
+                                                        size="small"
+                                                        fullWidth
+                                                        id="Surname"
+                                                        label="Овог"
+                                                        {...register(
+                                                            `groupReservation.${index}.Surname`
+                                                        )}
+                                                        margin="dense"
+                                                        value={
+                                                            entity &&
+                                                            entity.groupReservation &&
+                                                            entity
+                                                                .groupReservation[
+                                                                index
+                                                            ] &&
+                                                            entity
+                                                                .groupReservation[
+                                                                index
+                                                            ].Surname &&
+                                                            entity
+                                                                .groupReservation[
+                                                                index
+                                                            ].Surname
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink:
+                                                                entity &&
+                                                                entity.groupReservation &&
+                                                                entity
+                                                                    .groupReservation[
+                                                                    index
+                                                                ] &&
+                                                                entity
+                                                                    .groupReservation[
+                                                                    index
+                                                                ].Surname &&
+                                                                entity
+                                                                    .groupReservation[
+                                                                    index
+                                                                ].Surname,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            let tempReservation =
+                                                                {
+                                                                    ...baseGroupStay,
+                                                                };
+                                                            tempReservation[
+                                                                index
+                                                            ].Surname =
+                                                                evt.target.value;
+                                                            setBaseGroupStay(
+                                                                tempReservation
+                                                            );
+                                                        }}
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={2}>
+                                                    <TextField
+                                                        size="small"
+                                                        fullWidth
+                                                        id="Name"
+                                                        label="Нэр"
+                                                        {...register(
+                                                            `groupReservation.${index}.Name`
+                                                        )}
+                                                        margin="dense"
+                                                        value={
+                                                            entity &&
+                                                            entity.groupReservation &&
+                                                            entity
+                                                                .groupReservation[
+                                                                index
+                                                            ] &&
+                                                            entity
+                                                                .groupReservation[
+                                                                index
+                                                            ].Name
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink:
+                                                                entity &&
+                                                                entity.groupReservation &&
+                                                                entity
+                                                                    .groupReservation[
+                                                                    index
+                                                                ] &&
+                                                                entity
+                                                                    .groupReservation[
+                                                                    index
+                                                                ].Name,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            let tempReservation =
+                                                                {
+                                                                    ...baseGroupStay,
+                                                                };
+                                                            tempReservation[
+                                                                index
+                                                            ].Name =
+                                                                evt.target.value;
+                                                            setBaseGroupStay(
+                                                                tempReservation
+                                                            );
+                                                            if (
+                                                                onFilterValueChange
+                                                            ) {
+                                                                onFilterValueChange(
+                                                                    {
+                                                                        key: "GuestName",
+                                                                        value: evt
+                                                                            .target
+                                                                            .value,
+                                                                    }
+                                                                );
+                                                            }
+                                                        }}
+                                                    />
+                                                </Grid>
                                             </>
                                         )}
                                 </Grid>
+                                <SelectList
+                                    filterValues={filterValues}
+                                    setGuest={setGuest}
+                                    groupIndex={index}
+                                />
                             </section>
                         );
                     })}
