@@ -16,7 +16,7 @@ export const PaymentMethodGroupSWR = () => {
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let paymentMethodGroup = JSON.parse(res.data.JsonData);
+            let paymentMethodGroup = res.data.JsonData;
             return paymentMethodGroup;
         });
 

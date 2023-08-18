@@ -7,12 +7,12 @@ export const listUrl = `${urlPrefix}`;
 
 export const ReservationRemarkSWR = (TransactionID: any) => {
     const values = {
-        TransactionID: TransactionID
+        TransactionID: TransactionID,
     };
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let list = JSON.parse(res.data.JsonData);
+            let list = res.data.JsonData;
             return list;
         });
 
@@ -21,7 +21,7 @@ export const ReservationRemarkSWR = (TransactionID: any) => {
 
 export const ReservationRemarkAPI = {
     new: async (values: any) => {
-        const {data, status} = await axios.post(`${urlPrefix}New`, values);
+        const { data, status } = await axios.post(`${urlPrefix}New`, values);
 
         return {
             data,
@@ -29,7 +29,7 @@ export const ReservationRemarkAPI = {
         };
     },
     update: async (id: any, values: any) => {
-        const {data, status} = await axios.put(`${urlPrefix}/${id}`, values);
+        const { data, status } = await axios.put(`${urlPrefix}/${id}`, values);
 
         return {
             data,
@@ -37,7 +37,7 @@ export const ReservationRemarkAPI = {
         };
     },
     delete: async (id: any) => {
-        const {data, status} = await axios.post(`${urlPrefix}/Delete`, {
+        const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
             RateTypeID: id,
         });
 

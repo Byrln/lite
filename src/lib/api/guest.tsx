@@ -18,7 +18,7 @@ export const GuestSWR = () => {
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let roomTypes = JSON.parse(res.data.JsonData);
+            let roomTypes = res.data.JsonData;
             return roomTypes;
         });
 
@@ -54,7 +54,7 @@ export const GuestAPI = {
                 res = {
                     status: 200,
                     msg: "",
-                    data: JSON.parse(data.JsonData),
+                    data: data.JsonData,
                 };
                 return res;
             });
@@ -86,7 +86,7 @@ export const GuestAPI = {
                 res = {
                     status: 200,
                     msg: "",
-                    data: JSON.parse(data.JsonData),
+                    data: data.JsonData,
                 };
                 return res;
             });

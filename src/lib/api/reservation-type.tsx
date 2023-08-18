@@ -7,7 +7,7 @@ export const listUrl = `${urlPrefix}`;
 export const ReservationTypeSWR = () => {
     const fetcher = async (url: any) =>
         await axios.get(url).then((res: any) => {
-            let reservationTypes = JSON.parse(res.data.JsonData);
+            let reservationTypes = res.data.JsonData;
             return reservationTypes;
         });
 

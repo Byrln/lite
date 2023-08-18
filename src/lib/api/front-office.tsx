@@ -14,7 +14,7 @@ export const FrontOfficeSWR = (date: any, dayCount: string = "30") => {
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let rates = JSON.parse(res.data.JsonData);
+            let rates = res.data.JsonData;
             return rates;
         });
 
@@ -27,7 +27,7 @@ export const FrontOfficeAPI = {
             TransactionID: id,
         };
         const res = await axios.post(`${urlPrefix}/TransactionInfo`, values);
-        var list = JSON.parse(res.data.JsonData);
+        var list = res.data.JsonData;
         var item;
         if (list.length === 1) {
             item = list[0];
@@ -39,7 +39,7 @@ export const FrontOfficeAPI = {
 
     workingDate: async () => {
         const { data, status } = await axios.get(`${urlPrefix}/WorkingDate`);
-        let workingDate = JSON.parse(data.JsonData);
+        let workingDate = data.JsonData;
         return {
             workingDate,
             status,

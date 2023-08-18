@@ -13,9 +13,7 @@ export const HouseKeepingCurrentSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listCurrentUrl, fetcher);
 };
@@ -27,9 +25,7 @@ export const HouseKeepingRoomSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listRoomUrl, fetcher);
 };

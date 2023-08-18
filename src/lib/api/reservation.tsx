@@ -11,9 +11,7 @@ export const ReservationSWR = (ReservationTypeID: number) => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
@@ -31,7 +29,7 @@ export const ReservationAPI = {
             ],
         };
         const res = await axios.post(listUrl, values);
-        var list = JSON.parse(res.data.JsonData);
+        var list = res.data.JsonData;
         var item;
 
         if (list.length === 1) {
@@ -59,7 +57,7 @@ export const ReservationAPI = {
             status: status,
             code: data.Code,
             msg: data.Message,
-            data: JSON.parse(data.JsonData),
+            data: data.JsonData,
         };
     },
     checkIn: async (TransactionID: any) => {

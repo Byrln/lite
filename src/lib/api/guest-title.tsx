@@ -7,7 +7,7 @@ export const listUrl = `${urlPrefix}`;
 export const GuestTitleSWR = () => {
     const fetcher = async (url: any) =>
         await axios.get(url).then((res: any) => {
-            let guestTitles = JSON.parse(res.data.JsonData);
+            let guestTitles = res.data.JsonData;
             return guestTitles;
         });
     return useSWR(listUrl, fetcher);

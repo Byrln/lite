@@ -12,9 +12,7 @@ export const UserRoleSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
@@ -26,9 +24,7 @@ export const UserRolePrivilegeSWR = () => {
     };
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => JSON.parse(res.data.JsonData));
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(`${urlPrefix}/GetPrivileges`, fetcher);
 };
@@ -41,7 +37,7 @@ export const UserRoleAPI = {
 
         const res = await axios.post(`${urlPrefix}/Detail`, values);
 
-        return JSON.parse(res.data.JsonData);
+        return res.data.JsonData;
     },
 
     new: async (values: any) => {
