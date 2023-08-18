@@ -10,11 +10,13 @@ export const FrontOfficeSWR = (date: any, dayCount: string = "30") => {
         CurrDate: date,
         NumberOfDays: parseInt(dayCount),
         RoomTypeID: 0,
+        IncludeRoomBlock: true
     };
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => {
-            let rates = JSON.parse(res.data.JsonData);
+            // let rates = JSON.parse(res.data.JsonData);
+            let rates = res.data.JsonData;
             return rates;
         });
 
@@ -39,7 +41,8 @@ export const FrontOfficeAPI = {
 
     workingDate: async () => {
         const { data, status } = await axios.get(`${urlPrefix}/WorkingDate`);
-        let workingDate = JSON.parse(data.JsonData);
+        let workingDate = data.JsonData;
+        //console.log(data)
         return {
             workingDate,
             status,

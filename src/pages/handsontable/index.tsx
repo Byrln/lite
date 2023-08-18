@@ -20,6 +20,7 @@ import { useState } from "react";
 import { RoomTypeSWR } from "../../lib/api/room-type";
 import { RoomSWR } from "../../lib/api/room";
 import { RoomBlockSWR } from "../../lib/api/room-block";
+import { StayView2SWR } from "../../lib/api/stay-view2";
 import { dateToCustomFormat } from "../../lib/utils/format-time";
 import { HouseKeepingCurrentSWR } from "../../lib/api/house-keeping";
 import { date } from "yup";
@@ -81,6 +82,10 @@ const TimelineTable = ({ props, workingDate }: any) => {
         mutate: mutateItems,
         error: itemsError,
     } = FrontOfficeSWR(workingDate, dayCount);
+    const {
+        data: availableRooms,
+        error: availableRoomsError,
+    } = StayView2SWR(workingDate, dayCount);
     const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR(
         //@ts-ignore
         dateToCustomFormat(timeStart, "yyyy MMM dd"),
@@ -113,7 +118,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
             }
 
             // @ts-ignore
-            col_dict[date_temp.toDateString()] = i;
+            col_dict[date_temp.toISOString().slice(0, 10)] = i;
             let week = "";
             switch (date_temp.getDay()) {
                 case 0:
@@ -162,7 +167,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
         if (items && items.length > 0) {
             console.log(items.length);
         }
-    }, [dayCount, roomTypes, rooms, items, roomBlocks]);
+    }, [dayCount, roomTypes, rooms, items, availableRooms]);
 
     function clickCell(event: any, coords: any) {
         let col = Math.round(coords.col / 2) - 1;
@@ -198,6 +203,9 @@ const TimelineTable = ({ props, workingDate }: any) => {
         let i,
             j,
             k = 0;
+        // console.log(roomTypes)
+        // console.log(items)
+        console.log(availableRooms)
         for (i in roomTypes) {
             let temp_rec = {
                 id: "" + roomTypes[i].RoomTypeID,
@@ -216,8 +224,8 @@ const TimelineTable = ({ props, workingDate }: any) => {
                         // @ts-ignore
                         if (
                             // @ts-ignore
-                            l > coldict[startTime.toDateString()] && // @ts-ignore
-                            l < coldict[endTime.toDateString()] * 2
+                            l > coldict[startTime.toISOString().slice(0, 10)] && // @ts-ignore
+                            l < coldict[endTime.toISOString().slice(0, 10)] * 2
                         ) {
                             // @ts-ignore
                             temp_rec[l] = temp_rec[l] + 1;
@@ -276,10 +284,10 @@ const TimelineTable = ({ props, workingDate }: any) => {
                 if (groupKey == records[j]["id"]) {
                     // startTime, endTime calc style and merge cells calc
                     // @ts-ignore
-                    let col_dict_temp = coldict[startTime.toDateString()];
+                    let col_dict_temp = coldict[startTime.toISOString().slice(0, 10)];
                     let start_index = col_dict_temp;
                     // @ts-ignore
-                    let end_index = coldict[endTime.toDateString()];
+                    let end_index = coldict[endTime.toISOString().slice(0, 10)];
                     if (end_index === null || end_index === undefined) {
                         let last = Object.keys(coldict).pop();
                         // @ts-ignore
@@ -298,7 +306,8 @@ const TimelineTable = ({ props, workingDate }: any) => {
                             records[j][start_index] = items[i]["GuestName"];
                             // @ts-ignore
                             order_coords[j + "_" + start_index] = items[i];
-                        } catch (e) {}
+                        } catch (e) {
+                        }
 
                         // Set merge cells
                         let mergeCell = {};
@@ -329,7 +338,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
                             parseInt(mergeCell["colspan"]) != 1 && // @ts-ignore
                             parseInt(mergeCell["col"]) != -1 &&
                             parseInt(dayCount) * 2 - 1 > // @ts-ignore
-                                parseInt(mergeCell["col"])
+                            parseInt(mergeCell["col"])
                         ) {
                             mergeCells.push(mergeCell);
                         }
@@ -371,7 +380,16 @@ const TimelineTable = ({ props, workingDate }: any) => {
                 }
             }
         }
-
+        let temp_rec = {"id": "last", "room": "Боломжит өрөө"};
+        console.log(coldict)
+        // Bolomjit uruu
+        if (availableRooms && availableRooms.length > 0) {
+            for (let l = 0; l < parseInt(dayCount); l++) {
+                // @ts-ignore
+                temp_rec[l*2] = availableRooms[0]['D' + (l+1).toString()];
+            }
+        }
+        records.push(temp_rec)
         // @ts-ignore
         setRecords(records);
         // @ts-ignore
