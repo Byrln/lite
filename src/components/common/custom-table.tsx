@@ -19,6 +19,7 @@ import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import { Icon } from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import { getCurrentDate } from "lib/utils/helpers";
 import EmptyAlert from "./empty-alert";
@@ -36,6 +37,8 @@ const CustomTable = ({
     hasDelete,
     hasPrint = true,
     hasExcel = true,
+    hasShow = true,
+
     id,
     listUrl,
     modalTitle,
@@ -125,6 +128,10 @@ const CustomTable = ({
                                 dispatch({
                                     type: "editId",
                                     editId: null,
+                                });
+                                dispatch({
+                                    type: "isShow",
+                                    isShow: null,
                                 });
                             }}
                             startIcon={<Icon icon={plusFill} />}
@@ -226,7 +233,15 @@ const CustomTable = ({
                                                                                 handleModal(
                                                                                     true,
                                                                                     `${modalTitle} засах`,
-                                                                                    modalContent
+                                                                                    modalContent,
+                                                                                    null,
+                                                                                    "large"
+                                                                                );
+                                                                                dispatch(
+                                                                                    {
+                                                                                        type: "isShow",
+                                                                                        isShow: null,
+                                                                                    }
                                                                                 );
                                                                                 dispatch(
                                                                                     {
@@ -239,6 +254,42 @@ const CustomTable = ({
                                                                             }}
                                                                         >
                                                                             Засах
+                                                                        </Button>
+                                                                    )}
+
+                                                                    {hasShow && (
+                                                                        <Button
+                                                                            size="small"
+                                                                            variant="outlined"
+                                                                            color="primary"
+                                                                            startIcon={
+                                                                                <VisibilityIcon />
+                                                                            }
+                                                                            onClick={() => {
+                                                                                handleModal(
+                                                                                    true,
+                                                                                    `${modalTitle} харах`,
+                                                                                    modalContent,
+                                                                                    null,
+                                                                                    "large"
+                                                                                );
+                                                                                dispatch(
+                                                                                    {
+                                                                                        type: "isShow",
+                                                                                        isShow: true,
+                                                                                    }
+                                                                                );
+                                                                                dispatch(
+                                                                                    {
+                                                                                        type: "editId",
+                                                                                        editId: element[
+                                                                                            id
+                                                                                        ],
+                                                                                    }
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            Харах
                                                                         </Button>
                                                                     )}
 

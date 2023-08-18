@@ -10,6 +10,7 @@ const saveToLocal = (state: any) => {
 const initialState = {
     themeColor: "#ffffff",
     editId: null,
+    isShow: null,
 };
 
 const reducer = (state: any, action: any) => {
@@ -22,6 +23,12 @@ const reducer = (state: any, action: any) => {
         }
         case "editId": {
             const newState = { ...state, editId: action.editId };
+            saveToLocal(newState);
+
+            return newState;
+        }
+        case "isShow": {
+            const newState = { ...state, isShow: action.isShow };
             saveToLocal(newState);
 
             return newState;

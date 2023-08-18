@@ -15,6 +15,7 @@ const NewEditForm = ({
     additionalValues,
     reset,
     handleSubmit,
+    setEntity,
 }: any) => {
     const [state]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
@@ -28,7 +29,9 @@ const NewEditForm = ({
 
                 try {
                     const arr: any = await api?.get(state.editId);
-
+                    if (setEntity) {
+                        setEntity(arr[0]);
+                    }
                     reset(arr[0]);
                 } finally {
                     setLoadingData(false);
@@ -76,7 +79,7 @@ const NewEditForm = ({
         <form onSubmit={handleSubmit(onSubmit)}>
             {children}
 
-            <SubmitButton loading={loading} />
+            {state.isShow ? null : <SubmitButton loading={loading} />}
         </form>
     );
 };

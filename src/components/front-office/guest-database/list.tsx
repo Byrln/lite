@@ -45,8 +45,6 @@ const columns = [
         render: function render(id: any, value: any) {
             return (
                 <>
-                    <button> View </button>
-                    <button> Edit </button>
                     <button> Upload Picture </button>
                     <button> Upload Document </button>
                 </>
@@ -64,10 +62,10 @@ const GuestdatabaseList = ({ title }: any) => {
             data={data}
             error={error}
             api={GuestdatabaseAPI}
-            // hasNew={true}
-            //hasUpdate={true}
+            hasNew={true}
+            hasUpdate={true}
             //hasDelete={true}
-            id="GuestdatabaseID"
+            id="GuestID"
             listUrl={listUrl}
             modalTitle={title}
             modalContent={<NewEdit />}

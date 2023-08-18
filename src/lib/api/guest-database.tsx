@@ -17,6 +17,28 @@ export const GuestdatabaseSWR = () => {
     return useSWR(listUrl, fetcher);
 };
 
+export const GuestHistorySWR = (id: any) => {
+    const values = {
+        GuestID: id,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/History`, fetcher);
+};
+
+export const GuestHistorySummarySWR = (id: any) => {
+    const values = {
+        GuestID: id,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/HistorySummary`, fetcher);
+};
+
 export const GuestdatabaseAPI = {
     get: async (id: any) => {
         const values = {
