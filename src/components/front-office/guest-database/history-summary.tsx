@@ -12,11 +12,13 @@ const GuestHistory = ({ title }: any) => {
             <br />
             Paid : {data[0].TotalPaid}
             <br />
-            Status Reservation: {data[0].Reservations}
+            Status Reservation : {data[0].Reservations}
             <br />
-            Staying: {data[0].StayTransactions}
+            Staying : {data[0].StayTransactions}
             <br />
-            Checked Out: {data[0].StayTransactions}
+            Checked Out : {data[0].StayTransactions}
+            <br />
+            Cancel & No Show : {data[0].CancelNoShow}
         </>
     );
 };
