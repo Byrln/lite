@@ -364,7 +364,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
                 className: "black-bold-header",
             });
             // Making merge cells for excel
-            for (let l = 0; l < parseInt(dayCount); l++) {
+            for (let l = 0; l < parseInt(dayCount) + 1; l++) {
                 let mergeCell = {};
                 // @ts-ignore
                 mergeCell["row"] = group_index[i];
