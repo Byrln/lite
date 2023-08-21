@@ -15,7 +15,6 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
-    const [entity, setEntity]: any = useState(null);
     const [state]: any = useAppState();
     const {
         register,
@@ -35,7 +34,9 @@ const NewEdit = () => {
                 }}
                 reset={reset}
                 handleSubmit={handleSubmit}
-                setEntity={setEntity}
+                isShowNotAffected={true}
+                handleModalNotAffected={true}
+                stateEditIdNotAffected={true}
             >
                 <TextField
                     size="small"

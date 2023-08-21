@@ -28,7 +28,7 @@ export const RemarkAPI = {
     },
 
     new: async (values: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}New`, values);
+        const { data, status } = await axios.post(`${listUrl}New`, values);
 
         return {
             data,

@@ -27,20 +27,23 @@ const GuestHistory = ({ title }: any) => {
     const { data, error } = GuestRemarkSWR(state.editId);
 
     return (
-        <CustomTable
-            columns={columns}
-            data={data}
-            error={error}
-            api={RemarkAPI}
-            hasNew={true}
-            hasUpdate={true}
-            hasDelete={true}
-            id="RemarkID"
-            listUrl={listUrl}
-            modalTitle={title}
-            modalContent={<NewEdit />}
-            excelName={title}
-        />
+        <>
+            <CustomTable
+                columns={columns}
+                data={data}
+                error={error}
+                api={RemarkAPI}
+                hasNew={false}
+                hasUpdate={false}
+                hasDelete={false}
+                id="RemarkID"
+                listUrl={listUrl}
+                modalTitle={title}
+                excelName={title}
+            />
+            <br />
+            <NewEdit />
+        </>
     );
 };
 

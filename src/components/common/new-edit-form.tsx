@@ -16,6 +16,9 @@ const NewEditForm = ({
     reset,
     handleSubmit,
     setEntity,
+    isShowNotAffected = false,
+    handleModalNotAffected = false,
+    stateEditIdNotAffected = false,
 }: any) => {
     const [state]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
@@ -50,7 +53,7 @@ const NewEditForm = ({
                 values = Object.assign(values, additionalValues);
             }
 
-            if (state.editId) {
+            if (state.editId && !stateEditIdNotAffected) {
                 await api?.update(values);
             } else {
                 await api?.new(values);
@@ -58,7 +61,9 @@ const NewEditForm = ({
 
             listUrl && (await mutate(listUrl));
 
-            handleModal();
+            if (!handleModalNotAffected) {
+                handleModal();
+            }
             toast("Амжилттай.");
         } finally {
             setLoading(false);
@@ -79,7 +84,9 @@ const NewEditForm = ({
         <form onSubmit={handleSubmit(onSubmit)}>
             {children}
 
-            {state.isShow ? null : <SubmitButton loading={loading} />}
+            {state.isShow && !isShowNotAffected ? null : (
+                <SubmitButton loading={loading} />
+            )}
         </form>
     );
 };
