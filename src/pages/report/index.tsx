@@ -19,9 +19,14 @@ const Index = () => (
                 </Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <iframe width={800} height={600} onload="this.width=screen.width;this.height=screen.height;"
+                        <iframe
+                            width={800}
+                            height={600}
+                            // @ts-ignore
+                            onload="this.width=screen.width;this.height=screen.height;" // @ts-ignore
                             src="http://124.158.124.85/ReportServer/Pages/ReportViewer.aspx?%2fInterAgency&rs:Command=Render&rs:Embed=True"
-                            type="application/html" />
+                            type="application/html"
+                        />
                     </Grid>
                 </Grid>
             </Container>
