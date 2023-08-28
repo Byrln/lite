@@ -37,7 +37,7 @@ const ReservationNav = ({
         if (!confirm("Are you sure?")) {
             return;
         }
-        // var res = await ReservationApi.checkIn(transactionInfo.TransactionID);
+        var res = await ReservationAPI.checkIn(transactionInfo.TransactionID);
         await mutate(calendarItemsURL);
         finishCall("Амжилттай");
     };
@@ -46,9 +46,9 @@ const ReservationNav = ({
         if (!confirm("Are you sure?")) {
             return;
         }
-        // var res = await ReservationApi.roomUnassign(
-        //     transactionInfo.TransactionID
-        // );
+        var res = await ReservationAPI.roomUnassign(
+            transactionInfo.TransactionID
+        );
         await mutate(calendarItemsURL);
         finishCall("Амжилттай");
     };

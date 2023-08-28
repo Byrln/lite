@@ -11,11 +11,11 @@ import { useForm } from "react-hook-form";
 import { useState, useContext, useEffect } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
-// import { ReservationApi } from "lib/api/reservation";
+import { ReservationAPI } from "lib/api/reservation";
 import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
-// import ReasonSelect from "../select/reason";
+import ReasonSelect from "../select/reason";
 import RoomTypeSelect from "../select/room-type";
 import RoomSelect from "../select/room";
 import { dateToCustomFormat, fToCustom } from "lib/utils/format-time";
@@ -89,7 +89,7 @@ const RoomMoveForm = ({ transactionInfo, reservation }: any) => {
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            // const res = await ReservationApi.roomMove(values);
+            const res = await ReservationAPI.roomMove(values);
 
             await mutate(listUrl);
 

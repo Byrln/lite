@@ -5,11 +5,11 @@ import { useForm } from "react-hook-form";
 import { useState, useContext, useEffect } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
-// import { ReservationAPI } from "lib/api/reservation";
+import { ReservationAPI } from "lib/api/reservation";
 import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
-// import ReasonSelect from "../select/reason";
+import ReasonSelect from "../select/reason";
 
 const CancelReservationForm = ({ transactionInfo, reservation }: any) => {
     const { handleModal }: any = useContext(ModalContext);
@@ -39,7 +39,7 @@ const CancelReservationForm = ({ transactionInfo, reservation }: any) => {
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            // const res = await ReservationApi.cancel(values);
+            const res = await ReservationAPI.cancel(values);
 
             await mutate(listUrl);
 
@@ -68,12 +68,12 @@ const CancelReservationForm = ({ transactionInfo, reservation }: any) => {
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        {/* <ReasonSelect
+                        <ReasonSelect
                             register={register}
                             errors={errors}
                             ReasonTypeID={1}
                             nameKey={"ReasonID"}
-                        /> */}
+                        />
 
                         <TextField
                             fullWidth

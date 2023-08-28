@@ -42,7 +42,7 @@ const NewEdit = () => {
         //         helperText={errors.DepartedGroupName?.message}
         //     />
         // </NewEditForm>
-        <></>
+        <>test</>
     );
 };
 

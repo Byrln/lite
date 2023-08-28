@@ -9,7 +9,7 @@ import { LoadingButton } from "@mui/lab";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-// import { ReservationApi } from "../../lib/api/reservation";
+import { ReservationAPI } from "../../lib/api/reservation";
 import { mutate } from "swr";
 import { listUrl } from "../../lib/api/front-office";
 import { toast } from "react-toastify";
@@ -56,7 +56,7 @@ const RoomAssign = ({ transactionInfo, reservation }: any) => {
         try {
             console.log(values);
 
-            // const res = await ReservationApi.roomAssign(values);
+            const res = await ReservationAPI.roomAssign(values);
 
             await mutate(listUrl);
 

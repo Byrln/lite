@@ -69,61 +69,61 @@ const NewEdit = () => {
                 helperText={errors.Description?.message}
             />
 
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Controller
-                    name="BeginDate"
-                    control={control}
-                    defaultValue={null}
-                    render={({ field: { onChange, value } }) => (
-                        <DatePicker
-                            label="Begin Date"
-                            value={value}
-                            onChange={(value) =>
-                                onChange(moment(value).format("YYYY-MM-DD"))
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    size="small"
-                                    id="BeginDate"
-                                    {...register("BeginDate")}
-                                    margin="dense"
-                                    fullWidth
-                                    {...params}
-                                    error={errors.BeginDate?.message}
-                                    helperText={errors.BeginDate?.message}
-                                />
-                            )}
-                        />
-                    )}
-                />
+            {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
+            <Controller
+                name="BeginDate"
+                control={control}
+                defaultValue={null}
+                render={({ field: { onChange, value } }) => (
+                    <DatePicker
+                        label="Begin Date"
+                        value={value}
+                        onChange={(value) =>
+                            onChange(moment(value).format("YYYY-MM-DD"))
+                        }
+                        renderInput={(params) => (
+                            <TextField
+                                size="small"
+                                id="BeginDate"
+                                {...register("BeginDate")}
+                                margin="dense"
+                                fullWidth
+                                {...params}
+                                error={errors.BeginDate?.message}
+                                helperText={errors.BeginDate?.message}
+                            />
+                        )}
+                    />
+                )}
+            />
 
-                <Controller
-                    name="EndDate"
-                    control={control}
-                    defaultValue={null}
-                    render={({ field: { onChange, value } }) => (
-                        <DatePicker
-                            label="End Date"
-                            value={value}
-                            onChange={(value) =>
-                                onChange(moment(value).format("YYYY-MM-DD"))
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    size="small"
-                                    id="EndDate"
-                                    {...register("EndDate")}
-                                    margin="dense"
-                                    fullWidth
-                                    {...params}
-                                    error={errors.EndDate?.message}
-                                    helperText={errors.EndDate?.message}
-                                />
-                            )}
-                        />
-                    )}
-                />
-            </LocalizationProvider>
+            <Controller
+                name="EndDate"
+                control={control}
+                defaultValue={null}
+                render={({ field: { onChange, value } }) => (
+                    <DatePicker
+                        label="End Date"
+                        value={value}
+                        onChange={(value) =>
+                            onChange(moment(value).format("YYYY-MM-DD"))
+                        }
+                        renderInput={(params) => (
+                            <TextField
+                                size="small"
+                                id="EndDate"
+                                {...register("EndDate")}
+                                margin="dense"
+                                fullWidth
+                                {...params}
+                                error={errors.EndDate?.message}
+                                helperText={errors.EndDate?.message}
+                            />
+                        )}
+                    />
+                )}
+            />
+            {/* </LocalizationProvider> */}
 
             <CustomSelect
                 register={register}

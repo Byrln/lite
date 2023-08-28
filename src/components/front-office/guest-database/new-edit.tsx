@@ -8,6 +8,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import Grid from "@mui/material/Grid";
 
 import { Controller, useForm } from "react-hook-form";
 import { FormControlLabel, TextField } from "@mui/material";
@@ -89,156 +90,178 @@ const NewEdit = () => {
                         handleSubmit={handleSubmit}
                         setEntity={setEntity}
                     >
-                        <GuestTitleSelect
-                            register={register}
-                            errors={errors}
-                            entity={entity}
-                            setEntity={setEntity}
-                        />
+                        <Grid container spacing={1}>
+                            <Grid item xs={12} sm={3}>
+                                <GuestTitleSelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={entity}
+                                    setEntity={setEntity}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Name"
+                                    label="Name"
+                                    {...register("Name")}
+                                    margin="dense"
+                                    error={errors.Name?.message}
+                                    helperText={errors.Name?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Surname"
+                                    label="Surname"
+                                    {...register("Surname")}
+                                    margin="dense"
+                                    error={errors.Surname?.message}
+                                    helperText={errors.Surname?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="RegistryNo"
+                                    label="Registration No"
+                                    {...register("RegistryNo")}
+                                    margin="dense"
+                                    error={errors.RegistryNo?.message}
+                                    helperText={errors.RegistryNo?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="DriverLicenseNo"
+                                    label="Driver License No"
+                                    {...register("DriverLicenseNo")}
+                                    margin="dense"
+                                    error={errors.DriverLicenseNo?.message}
+                                    helperText={errors.DriverLicenseNo?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    type="date"
+                                    fullWidth
+                                    id="DateOfBirth"
+                                    label="Date of Birth"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    {...register("DateOfBirth")}
+                                    margin="dense"
+                                    error={errors.DateOfBirth?.message}
+                                    helperText={errors.DateOfBirth?.message}
+                                />
+                            </Grid>
 
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Name"
-                            label="Name"
-                            {...register("Name")}
-                            margin="dense"
-                            error={errors.Name?.message}
-                            helperText={errors.Name?.message}
-                        />
+                            <Grid item xs={12} sm={3}>
+                                <VipStatusSelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={entity}
+                                    setEntity={setEntity}
+                                />
+                            </Grid>
 
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Surname"
-                            label="Surname"
-                            {...register("Surname")}
-                            margin="dense"
-                            error={errors.Surname?.message}
-                            helperText={errors.Surname?.message}
-                        />
-
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="RegistryNo"
-                            label="Registration No"
-                            {...register("RegistryNo")}
-                            margin="dense"
-                            error={errors.RegistryNo?.message}
-                            helperText={errors.RegistryNo?.message}
-                        />
-
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="DriverLicenseNo"
-                            label="Driver License No"
-                            {...register("DriverLicenseNo")}
-                            margin="dense"
-                            error={errors.DriverLicenseNo?.message}
-                            helperText={errors.DriverLicenseNo?.message}
-                        />
-
-                        <TextField
-                            size="small"
-                            type="date"
-                            fullWidth
-                            id="DateOfBirth"
-                            label="Date of Birth"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            {...register("DateOfBirth")}
-                            margin="dense"
-                            error={errors.DateOfBirth?.message}
-                            helperText={errors.DateOfBirth?.message}
-                        />
-
-                        <GenderSelect
-                            register={register}
-                            errors={errors}
-                            entity={entity}
-                            setEntity={setEntity}
-                        />
-
-                        <VipStatusSelect
-                            register={register}
-                            errors={errors}
-                            entity={entity}
-                            setEntity={setEntity}
-                        />
-
-                        <CountrySelect
-                            register={register}
-                            errors={errors}
-                            entity={entity}
-                            setEntity={setEntity}
-                        />
-
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Phone"
-                            label="Phone"
-                            {...register("Phone")}
-                            margin="dense"
-                            error={errors.Phone?.message}
-                            helperText={errors.Phone?.message}
-                        />
-
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Zip"
-                            label="Zip"
-                            {...register("Zip")}
-                            margin="dense"
-                            error={errors.Zip?.message}
-                            helperText={errors.Zip?.message}
-                        />
-
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Company"
-                            label="Company"
-                            {...register("Company")}
-                            margin="dense"
-                            error={errors.Company?.message}
-                            helperText={errors.Company?.message}
-                        />
-
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Mobile"
-                            label="Mobile"
-                            {...register("Mobile")}
-                            margin="dense"
-                            error={errors.Mobile?.message}
-                            helperText={errors.Mobile?.message}
-                        />
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Email"
-                            label="Email"
-                            {...register("Email")}
-                            margin="dense"
-                            error={errors.Email?.message}
-                            helperText={errors.Email?.message}
-                        />
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Address"
-                            label="Address"
-                            {...register("Address")}
-                            margin="dense"
-                            error={errors.Address?.message}
-                            helperText={errors.Address?.message}
-                        />
+                            <Grid item xs={12} sm={3}>
+                                <CountrySelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={entity}
+                                    setEntity={setEntity}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <GenderSelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={entity}
+                                    setEntity={setEntity}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Phone"
+                                    label="Phone"
+                                    {...register("Phone")}
+                                    margin="dense"
+                                    error={errors.Phone?.message}
+                                    helperText={errors.Phone?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Zip"
+                                    label="Zip"
+                                    {...register("Zip")}
+                                    margin="dense"
+                                    error={errors.Zip?.message}
+                                    helperText={errors.Zip?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Company"
+                                    label="Company"
+                                    {...register("Company")}
+                                    margin="dense"
+                                    error={errors.Company?.message}
+                                    helperText={errors.Company?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Mobile"
+                                    label="Mobile"
+                                    {...register("Mobile")}
+                                    margin="dense"
+                                    error={errors.Mobile?.message}
+                                    helperText={errors.Mobile?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Email"
+                                    label="Email"
+                                    {...register("Email")}
+                                    margin="dense"
+                                    error={errors.Email?.message}
+                                    helperText={errors.Email?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Address"
+                                    label="Address"
+                                    {...register("Address")}
+                                    margin="dense"
+                                    error={errors.Address?.message}
+                                    helperText={errors.Address?.message}
+                                />
+                            </Grid>
+                        </Grid>
                     </NewEditForm>
                 </TabPanel>
                 <TabPanel value="2">

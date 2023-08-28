@@ -1,4 +1,4 @@
-// import { ReservationApi } from "lib/api/reservation";
+import { ReservationAPI } from "lib/api/reservation";
 import { useState, useEffect } from "react";
 import { Grid, Box, Paper, Typography } from "@mui/material";
 import { fToCustom, countNights } from "lib/utils/format-time";
@@ -42,11 +42,11 @@ const ItemDetail = ({ itemInfo }: any) => {
     const [transactionInfo, setTransactionInfo]: any = useState(null);
 
     const reloadDetailInfo = async () => {
-        // var res = await ReservationApi.get(itemInfo.detail.TransactionID);
+        var res = await ReservationAPI.get(itemInfo.detail.TransactionID);
         var trs = await FrontOfficeAPI.transactionInfo(
             itemInfo.detail.TransactionID
         );
-        // setReservation(res);
+        setReservation(res);
         setTransactionInfo(trs);
     };
 

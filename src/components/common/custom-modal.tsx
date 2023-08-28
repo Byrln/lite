@@ -97,12 +97,13 @@ const CustomModal = () => {
                     >
                         <Typography
                             id="modal-modal-title"
-                            variant="h4"
+                            variant="h6"
                             gutterBottom
-                            className=" mt-3"
+                            className="mt-3 "
                         >
                             {modalTitle}
                         </Typography>
+
                         <IconButton
                             aria-label="close"
                             onClick={() => handleModal()}
@@ -112,7 +113,7 @@ const CustomModal = () => {
                     </Grid>
                 )}
 
-                {/* <Divider /> */}
+                <Divider />
 
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     {modalContent}
