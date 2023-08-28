@@ -45,6 +45,7 @@ const ColorPicker = ({ onColorChange }: any) => {
 
     useEffect(() => {
         onColorChange(colorDefault);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleClick = () => {

@@ -13,6 +13,7 @@ const ReservationChannelSelect = ({ register, errors, reset }: any) => {
         if (data && data.length > 0) {
             reset({ ReservationSourceID: data[0].ReservationSourceID });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     if (error) return <Alert severity="error">{error.message}</Alert>;

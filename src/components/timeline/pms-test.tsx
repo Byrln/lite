@@ -53,7 +53,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
         items: [] as any,
     });
     useEffect(() => {
-        createGroups();
+        // createGroups();
     }, []);
     const createGroups = async () => {
         let response: ApiResponseModel = await RoomTypeAPI.list(null);
@@ -171,8 +171,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
                 <div
                     className="rct-item-content"
                     style={{ maxHeight: `${itemContext.dimensions.height}` }}
-                    onClick={() => {
-                    }}
+                    onClick={() => {}}
                     title={item.description}
                 >
                     <div>{item.title}</div>

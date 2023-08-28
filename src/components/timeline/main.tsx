@@ -48,13 +48,13 @@ const MainTimeline = (props: any) => {
             groups: groups,
             openGroups: {},
         });
-        setTimelineData({
-            ...timelineData,
-            groups: groups,
-            groupsRender: groupsRender,
-            openGroups: {},
-            items: items,
-        });
+        // setTimelineData({
+        //     ...timelineData,
+        //     groups: groups,
+        //     groupsRender: groupsRender,
+        //     openGroups: {},
+        //     items: items,
+        // });
     }, []);
 
     const toggleGroup = (groupToggling: any) => {
@@ -121,8 +121,7 @@ const MainTimeline = (props: any) => {
                 <div
                     className="rct-item-content"
                     style={{ maxHeight: `${itemContext.dimensions.height}` }}
-                    onClick={() => {
-                    }}
+                    onClick={() => {}}
                     title={item.description}
                 >
                     <div>{item.title}</div>

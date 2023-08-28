@@ -35,6 +35,7 @@ const RoomRateTypeSelect = ({
 
     useEffect(() => {
         fetchRoomTypeRates();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reservationModel.roomType]);
 
     const onChange = (evt: any) => {

@@ -66,18 +66,22 @@ const RoomSelect = ({
         if (data && data.length > 0 && baseStay.room) {
             eventRoomChange(baseStay.room?.RoomID);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     useEffect(() => {
         console.log("===== baseStay change =====");
 
         fetchRooms();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);
 
     useEffect(() => {
-        if (roomAutoAssign && data.length > 0) {
+        if (roomAutoAssign && data.length > 0 && data) {
+            // @ts-ignore
             onRoomChange(data[0]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomAutoAssign]);
 
     // if (error) return <Alert severity="error">{error.message}</Alert>;

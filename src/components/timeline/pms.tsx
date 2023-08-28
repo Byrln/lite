@@ -68,7 +68,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
     });
 
     useEffect(() => {
-        createGroups();
+        // createGroups();
     }, [roomTypes, rooms, items, roomBlocks]);
 
     const createGroups = () => {
