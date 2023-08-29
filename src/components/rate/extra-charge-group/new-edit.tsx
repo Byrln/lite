@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -37,28 +37,33 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="RoomChargeTypeGroupName"
-                label="Бүлгийн нэр"
-                {...register("RoomChargeTypeGroupName")}
-                margin="dense"
-                error={errors.RoomChargeTypeGroupName?.message}
-                helperText={errors.RoomChargeTypeGroupName?.message}
-            />
-
-            <TextField
-                size="small"
-                type="number"
-                fullWidth
-                id="SortOrder"
-                label="Дараалал"
-                {...register("SortOrder")}
-                margin="dense"
-                error={errors.SortOrder?.message}
-                helperText={errors.SortOrder?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="RoomChargeTypeGroupName"
+                        label="Бүлгийн нэр"
+                        {...register("RoomChargeTypeGroupName")}
+                        margin="dense"
+                        error={errors.RoomChargeTypeGroupName?.message}
+                        helperText={errors.RoomChargeTypeGroupName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        type="number"
+                        fullWidth
+                        id="SortOrder"
+                        label="Дараалал"
+                        {...register("SortOrder")}
+                        margin="dense"
+                        error={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

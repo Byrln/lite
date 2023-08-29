@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
+import { FormControlLabel, TextField, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -44,49 +44,56 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <ChargeTypeGroupSelect
-                register={register}
-                errors={errors}
-                IsRoomCharge={null}
-                IsExtraCharge={true}
-                IsMiniBar={false}
-                IsDiscount={null}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="RoomChargeTypeName"
-                label="Нэр"
-                {...register("RoomChargeTypeName")}
-                margin="dense"
-                error={errors.RoomChargeTypeName?.message}
-                helperText={errors.RoomChargeTypeName?.message}
-            />
-
-            <TextField
-                size="small"
-                type="number"
-                fullWidth
-                id="RoomChargeTypeRate"
-                label="Үнийн дүн"
-                {...register("RoomChargeTypeRate")}
-                margin="dense"
-                error={errors.RoomChargeTypeRate?.message}
-                helperText={errors.RoomChargeTypeRate?.message}
-            />
-
-            <TextField
-                size="small"
-                type="number"
-                fullWidth
-                id="SortOrder"
-                label="Дараалал"
-                {...register("SortOrder")}
-                margin="dense"
-                error={errors.SortOrder?.message}
-                helperText={errors.SortOrder?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <ChargeTypeGroupSelect
+                        register={register}
+                        errors={errors}
+                        IsRoomCharge={null}
+                        IsExtraCharge={true}
+                        IsMiniBar={false}
+                        IsDiscount={null}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="RoomChargeTypeName"
+                        label="Нэр"
+                        {...register("RoomChargeTypeName")}
+                        margin="dense"
+                        error={errors.RoomChargeTypeName?.message}
+                        helperText={errors.RoomChargeTypeName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        type="number"
+                        fullWidth
+                        id="RoomChargeTypeRate"
+                        label="Үнийн дүн"
+                        {...register("RoomChargeTypeRate")}
+                        margin="dense"
+                        error={errors.RoomChargeTypeRate?.message}
+                        helperText={errors.RoomChargeTypeRate?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        type="number"
+                        fullWidth
+                        id="SortOrder"
+                        label="Дараалал"
+                        {...register("SortOrder")}
+                        margin="dense"
+                        error={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message}
+                    />
+                </Grid>
+            </Grid>
 
             <FormControlLabel
                 control={

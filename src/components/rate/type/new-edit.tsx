@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
+import { FormControlLabel, TextField, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -45,36 +45,42 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="RateTypeCode"
-                label="Short Code"
-                {...register("RateTypeCode")}
-                margin="dense"
-                error={errors.RateTypeCode?.message}
-                helperText={errors.RateTypeCode?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="RateTypeName"
-                label="Rate Type"
-                {...register("RateTypeName")}
-                margin="dense"
-                error={errors.RateTypeName?.message}
-                helperText={errors.RateTypeName?.message}
-            />
-
-            <ChannelSelect
-                register={register}
-                errors={errors}
-                type="ReservationChannel"
-                label="Channel"
-                optionValue="ChannelID"
-                optionLabel="ChannelName"
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="RateTypeCode"
+                        label="Short Code"
+                        {...register("RateTypeCode")}
+                        margin="dense"
+                        error={errors.RateTypeCode?.message}
+                        helperText={errors.RateTypeCode?.message}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="RateTypeName"
+                        label="Rate Type"
+                        {...register("RateTypeName")}
+                        margin="dense"
+                        error={errors.RateTypeName?.message}
+                        helperText={errors.RateTypeName?.message}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <ChannelSelect
+                        register={register}
+                        errors={errors}
+                        type="ReservationChannel"
+                        label="Channel"
+                        optionValue="ChannelID"
+                        optionLabel="ChannelName"
+                    />
+                </Grid>
+            </Grid>
 
             <FormControlLabel
                 control={

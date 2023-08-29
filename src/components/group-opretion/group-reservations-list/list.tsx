@@ -1,9 +1,9 @@
 import CustomTable from "components/common/custom-table";
 import {
     GroupReservationSWR,
-    GroupReservationAPI,
+    ReservationAPI,
     listUrl,
-} from "lib/api/group-reservation";
+} from "lib/api/reservation";
 import NewEdit from "./new-edit";
 
 const columns = [
@@ -77,7 +77,7 @@ const GroupReservationList = ({ title }: any) => {
             columns={columns}
             data={data}
             error={error}
-            api={GroupReservationAPI}
+            api={ReservationAPI}
             hasNew={true}
             hasUpdate={true}
             hasDelete={true}

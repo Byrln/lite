@@ -289,10 +289,6 @@ const sidebarConfig = [
         icon: getIcon(shoppingCartFill),
         children: [
             {
-                title: "stay view",
-                path: "/front-office/stay-view",
-            },
-            {
                 title: "reservation list",
                 path: "/front-office/reservation-list",
             },
@@ -344,18 +340,10 @@ const sidebarConfig = [
                 title: "extra charges",
                 path: "/rate/extra-charge",
             },
-            {
-                title: "tax",
-                path: "/rate/tax",
-            },
-            {
-                title: "payment method",
-                path: "/rate/payment-method",
-            },
-            {
-                title: "inclusion",
-                path: "/rate/inclusion",
-            },
+            // {
+            //     title: "inclusion",
+            //     path: "/rate/inclusion",
+            // },
         ],
     },
     {
@@ -399,6 +387,14 @@ const sidebarConfig = [
             {
                 title: "exchange rate",
                 path: "/payment/exchange-rate",
+            },
+            {
+                title: "tax",
+                path: "/rate/tax",
+            },
+            {
+                title: "payment method",
+                path: "/rate/payment-method",
             },
         ],
     },

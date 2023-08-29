@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -37,54 +37,63 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="RoomNo"
-                label="Өрөөний дугаар"
-                {...register("RoomNo")}
-                margin="dense"
-                error={errors.RoomNo?.message}
-                helperText={errors.RoomNo?.message}
-            />
-
-            <RoomTypeSelect register={register} errors={errors} />
-
-            <FloorSelect register={register} errors={errors} />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="RoomPhone"
-                label="Өрөөний утас"
-                {...register("RoomPhone")}
-                margin="dense"
-                error={errors.RoomPhone?.message}
-                helperText={errors.RoomPhone?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="Description"
-                label="Тайлбар"
-                {...register("Description")}
-                margin="dense"
-                error={errors.Description?.message}
-                helperText={errors.Description?.message}
-            />
-
-            <TextField
-                size="small"
-                type="number"
-                fullWidth
-                id="SortOrder"
-                label="Дараалал"
-                {...register("SortOrder")}
-                margin="dense"
-                error={errors.SortOrder?.message}
-                helperText={errors.SortOrder?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="RoomNo"
+                        label="Өрөөний дугаар"
+                        {...register("RoomNo")}
+                        margin="dense"
+                        error={errors.RoomNo?.message}
+                        helperText={errors.RoomNo?.message}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <RoomTypeSelect register={register} errors={errors} />
+                </Grid>
+                <Grid item xs={4}>
+                    <FloorSelect register={register} errors={errors} />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="RoomPhone"
+                        label="Өрөөний утас"
+                        {...register("RoomPhone")}
+                        margin="dense"
+                        error={errors.RoomPhone?.message}
+                        helperText={errors.RoomPhone?.message}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Description"
+                        label="Тайлбар"
+                        {...register("Description")}
+                        margin="dense"
+                        error={errors.Description?.message}
+                        helperText={errors.Description?.message}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        type="number"
+                        fullWidth
+                        id="SortOrder"
+                        label="Дараалал"
+                        {...register("SortOrder")}
+                        margin="dense"
+                        error={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

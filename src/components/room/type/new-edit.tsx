@@ -44,29 +44,31 @@ const NewEdit = () => {
             label: "General",
             component: (
                 <>
-                    <TextField
-                        size="small"
-                        fullWidth
-                        id="RoomTypeShortName"
-                        label="Товч нэр"
-                        {...register("RoomTypeShortName")}
-                        margin="dense"
-                        error={errors.RoomTypeShortName?.message}
-                        helperText={errors.RoomTypeShortName?.message}
-                    />
-
-                    <TextField
-                        size="small"
-                        fullWidth
-                        id="RoomTypeName"
-                        label="Нэр"
-                        {...register("RoomTypeName")}
-                        margin="dense"
-                        error={errors.RoomTypeName?.message}
-                        helperText={errors.RoomTypeName?.message}
-                    />
-
                     <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                            <TextField
+                                size="small"
+                                fullWidth
+                                id="RoomTypeShortName"
+                                label="Товч нэр"
+                                {...register("RoomTypeShortName")}
+                                margin="dense"
+                                error={errors.RoomTypeShortName?.message}
+                                helperText={errors.RoomTypeShortName?.message}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                size="small"
+                                fullWidth
+                                id="RoomTypeName"
+                                label="Нэр"
+                                {...register("RoomTypeName")}
+                                margin="dense"
+                                error={errors.RoomTypeName?.message}
+                                helperText={errors.RoomTypeName?.message}
+                            />
+                        </Grid>
                         <Grid item xs={6}>
                             <TextField
                                 size="small"

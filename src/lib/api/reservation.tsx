@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import axios from "lib/utils/axios";
 import { fToUniversal } from "lib/utils/format-time";
+import { date } from "yup/lib/locale";
 
 const urlPrefix = "/api/Reservation";
 export const listUrl = `${urlPrefix}/List`;
@@ -12,6 +13,49 @@ export const ReservationSWR = (values: any) => {
 
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => res.data.JsonData);
+
+    return useSWR(listUrl, fetcher);
+};
+
+export const DepartureSWR = (values: any) => {
+    // const values = {
+    //     ReservationTypeID: ReservationTypeID,
+    // };
+
+    const fetcher = async (url: any) =>
+        await axios
+            .get(`${urlPrefix}/DepartureList`)
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(listUrl, fetcher);
+};
+
+export const DepartedListSWR = () => {
+    // const values = {
+    //     ReservationTypeID: ReservationTypeID,
+    // };
+
+    const fetcher = async (url: any) =>
+        await axios
+            .post(`${urlPrefix}/DepartedList`)
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(listUrl, fetcher);
+};
+
+export const GroupReservationSWR = () => {
+    const values = {
+        StartDate: date,
+        EndDate: date,
+    };
+    // const values = {
+    //     ReservationTypeID: ReservationTypeID,
+    // };
+
+    const fetcher = async (url: any) =>
+        await axios
+            .post(`${urlPrefix}/GroupList`, values)
+            .then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

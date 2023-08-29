@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 
 import CustomTable from "components/common/custom-table";
-import { ReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
+import { DepartureSWR, ReservationAPI, listUrl } from "lib/api/reservation";
 import NewEdit from "./new-edit";
 
 const columns = [
@@ -58,7 +58,7 @@ const columns = [
 ];
 
 const DeparturedListList = ({ title }: any) => {
-    const { data, error } = ReservationSWR(1);
+    const { data, error } = DepartureSWR(1);
 
     return (
         <CustomTable
@@ -66,9 +66,9 @@ const DeparturedListList = ({ title }: any) => {
             data={data}
             error={error}
             api={ReservationAPI}
-            hasNew={true}
-            hasUpdate={true}
-            //hasDelete={true}
+            hasNew={false}
+            hasUpdate={false}
+            hasDelete={false}
             id="DeparturedListID"
             listUrl={listUrl}
             modalTitle={title}

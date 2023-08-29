@@ -57,6 +57,22 @@ const columns = [
             );
         },
     },
+    {
+        title: "Inclusion",
+        key: "IsInclusion",
+        dataIndex: "IsInclusion",
+        render: function render(id: any, value: any) {
+            return (
+                <ToggleChecked
+                    id={id}
+                    checked={value}
+                    api={ChargeTypeAPI}
+                    apiUrl="IsInclusion"
+                    mutateUrl={`${listUrl}`}
+                />
+            );
+        },
+    },
 ];
 
 const ExtraChargeList = ({ title }: any) => {

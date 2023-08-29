@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 
 import CustomTable from "components/common/custom-table";
-import { ReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
+import { DepartedListSWR, ReservationAPI, listUrl } from "lib/api/reservation";
 import NewEdit from "./new-edit";
 
 const columns = [
@@ -76,7 +76,7 @@ const columns = [
 ];
 
 const DeparturedListList = ({ title }: any) => {
-    const { data, error } = ReservationSWR(1);
+    const { data, error } = DepartedListSWR();
 
     return (
         <CustomTable

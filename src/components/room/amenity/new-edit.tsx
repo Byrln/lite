@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -32,41 +32,48 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <AmenityTypeSelect register={register} errors={errors} />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="AmenityShortName"
-                label="Богино нэр"
-                {...register("AmenityShortName")}
-                margin="dense"
-                error={errors.AmenityShortName?.message}
-                helperText={errors.AmenityShortName?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="AmenityName"
-                label="Нэр"
-                {...register("AmenityName")}
-                margin="dense"
-                error={errors.AmenityName?.message}
-                helperText={errors.AmenityName?.message}
-            />
-
-            <TextField
-                size="small"
-                type="number"
-                fullWidth
-                id="SortOrder"
-                label="Дараалал"
-                {...register("SortOrder")}
-                margin="dense"
-                error={errors.SortOrder?.message}
-                helperText={errors.SortOrder?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <AmenityTypeSelect register={register} errors={errors} />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="AmenityShortName"
+                        label="Богино нэр"
+                        {...register("AmenityShortName")}
+                        margin="dense"
+                        error={errors.AmenityShortName?.message}
+                        helperText={errors.AmenityShortName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="AmenityName"
+                        label="Нэр"
+                        {...register("AmenityName")}
+                        margin="dense"
+                        error={errors.AmenityName?.message}
+                        helperText={errors.AmenityName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        type="number"
+                        fullWidth
+                        id="SortOrder"
+                        label="Дараалал"
+                        {...register("SortOrder")}
+                        margin="dense"
+                        error={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

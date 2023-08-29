@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -37,30 +37,39 @@ const NewEdit = ({ entity }: any) => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <PaymentMethodGroupSelect register={register} errors={errors} />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="PaymentMethodName"
-                label="Нэр"
-                {...register("PaymentMethodName")}
-                margin="dense"
-                error={errors.PaymentMethodName?.message}
-                helperText={errors.PaymentMethodName?.message}
-            />
-
-            <TextField
-                size="small"
-                type="number"
-                fullWidth
-                id="SortOrder"
-                label="Дараалал"
-                {...register("SortOrder")}
-                margin="dense"
-                error={errors.SortOrder?.message}
-                helperText={errors.SortOrder?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={4}>
+                    <PaymentMethodGroupSelect
+                        register={register}
+                        errors={errors}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="PaymentMethodName"
+                        label="Нэр"
+                        {...register("PaymentMethodName")}
+                        margin="dense"
+                        error={errors.PaymentMethodName?.message}
+                        helperText={errors.PaymentMethodName?.message}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        type="number"
+                        fullWidth
+                        id="SortOrder"
+                        label="Дараалал"
+                        {...register("SortOrder")}
+                        margin="dense"
+                        error={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -31,39 +31,45 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                disabled
-                fullWidth
-                id="StatusCode"
-                label="Өрөөний статус"
-                {...register("StatusCode")}
-                margin="dense"
-                error={errors.RoomNo?.message}
-                helperText={errors.RoomNo?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="StatusColor"
-                label="Color"
-                {...register("StatusColor")}
-                margin="dense"
-                error={errors.StatusColor?.message}
-                helperText={errors.StatusColor?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="Description"
-                label="Тайлбар"
-                {...register("Description")}
-                margin="dense"
-                error={errors.Description?.message}
-                helperText={errors.Description?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        disabled
+                        fullWidth
+                        id="StatusCode"
+                        label="Өрөөний статус"
+                        {...register("StatusCode")}
+                        margin="dense"
+                        error={errors.RoomNo?.message}
+                        helperText={errors.RoomNo?.message}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="StatusColor"
+                        label="Color"
+                        {...register("StatusColor")}
+                        margin="dense"
+                        error={errors.StatusColor?.message}
+                        helperText={errors.StatusColor?.message}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Description"
+                        label="Тайлбар"
+                        {...register("Description")}
+                        margin="dense"
+                        error={errors.Description?.message}
+                        helperText={errors.Description?.message}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };
