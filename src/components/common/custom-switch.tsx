@@ -20,15 +20,16 @@ const ToggleChecked = ({
     }, [checked]);
 
     const onToggleChecked = async () => {
-        setLoading(true);
+        if (api) {
+            setLoading(true);
+            try {
+                await api.toggleChecked(id, !checked, apiUrl, toggleKey);
+                mutateUrl && (await mutate(mutateUrl));
 
-        try {
-            await api.toggleChecked(id, !checked, apiUrl, toggleKey);
-            mutateUrl && (await mutate(mutateUrl));
-
-            setIsChecked(!isChecked);
-        } finally {
-            setLoading(false);
+                setIsChecked(!isChecked);
+            } finally {
+                setLoading(false);
+            }
         }
     };
 

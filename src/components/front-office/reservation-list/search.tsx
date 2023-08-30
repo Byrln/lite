@@ -1,17 +1,151 @@
-import { TextField } from "@mui/material";
+import { TextField, Grid, MenuItem } from "@mui/material";
 
-const Search = () => {
+import { Controller } from "react-hook-form";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import moment from "moment";
+
+import ReservationTypeSelect from "components/select/reservation-type";
+import ReservationSourceSelect from "components/select/reservation-source";
+
+const Search = ({ register, errors, control, reset }: any) => {
     return (
-        <TextField
-            size="small"
-            fullWidth
-            id="DeparturedListName"
-            label="DeparturedListName"
-            // {...register("DeparturedListName")}
-            margin="dense"
-            // error={errors.DeparturedListName?.message}
-            // helperText={errors.DeparturedListName?.message}
-        />
+        <Grid container spacing={1}>
+            <Grid item xs={3}>
+                <Controller
+                    name="StartDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Эхлэх огноо"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value).format("YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id="StartDate"
+                                    {...register("StartDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.StartDate?.message}
+                                    helperText={errors.StartDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <Controller
+                    name="EndDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Дуусах огноо"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value).format("YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id="EndDate"
+                                    {...register("EndDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <ReservationTypeSelect
+                    register={register}
+                    errors={errors}
+                    reset={reset}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <ReservationSourceSelect register={register} errors={errors} />
+            </Grid>
+
+            <Grid item xs={3}>
+                <TextField
+                    size="small"
+                    fullWidth
+                    id="GuestName"
+                    label="Guest Name"
+                    {...register("GuestName")}
+                    margin="dense"
+                    error={errors.GuestName?.message}
+                    helperText={errors.GuestName?.message}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <TextField
+                    size="small"
+                    fullWidth
+                    id="GuestPhone"
+                    label="Guest Phone"
+                    {...register("GuestPhone")}
+                    margin="dense"
+                    error={errors.GuestPhone?.message}
+                    helperText={errors.GuestPhone?.message}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <TextField
+                    size="small"
+                    fullWidth
+                    id="GuestEmail"
+                    label="Guest Email"
+                    {...register("GuestEmail")}
+                    margin="dense"
+                    error={errors.GuestEmail?.message}
+                    helperText={errors.GuestEmail?.message}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <TextField
+                    fullWidth
+                    id="StatusGroup"
+                    label="Status Group"
+                    {...register("StatusGroup")}
+                    select
+                    margin="dense"
+                    error={errors.StatusGroup?.message}
+                    helperText={errors.StatusGroup?.message}
+                    size="small"
+                >
+                    <MenuItem key={3} value={3}>
+                        Checked out
+                    </MenuItem>
+                    <MenuItem key={2} value={2}>
+                        Arrived, Stay over, Due out
+                    </MenuItem>
+                    <MenuItem key={1} value={1}>
+                        Reservations
+                    </MenuItem>
+                    <MenuItem key={0} value={0}>
+                        Cancel, Void, No Show
+                    </MenuItem>
+                </TextField>
+            </Grid>
+        </Grid>
     );
 };
 

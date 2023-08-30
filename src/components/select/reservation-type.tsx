@@ -13,7 +13,6 @@ const ReservationTypeSelect = ({ register, errors, reset }: any) => {
         if (data && data.length > 0) {
             reset({ ReservationTypeID: data[0].ReservationTypeID });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     if (error) return <Alert severity="error">{error.message}</Alert>;

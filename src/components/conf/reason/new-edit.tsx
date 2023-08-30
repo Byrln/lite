@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Grid } from "@mui/material";
 
 import NewEditForm from "components/common/new-edit-form";
 import { ReasonAPI, listUrl } from "lib/api/reason";
@@ -32,23 +33,28 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <ReasonTypeSelect
-                register={register}
-                errors={errors}
-                label="Category"
-                ReasonTypeID={1}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="ReasonName"
-                label="ReasonName"
-                {...register("ReasonName")}
-                margin="dense"
-                error={errors.ReasonName?.message}
-                helperText={errors.ReasonName?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <ReasonTypeSelect
+                        register={register}
+                        errors={errors}
+                        label="Category"
+                        ReasonTypeID={1}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="ReasonName"
+                        label="ReasonName"
+                        {...register("ReasonName")}
+                        margin="dense"
+                        error={errors.ReasonName?.message}
+                        helperText={errors.ReasonName?.message}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

@@ -297,7 +297,7 @@ const sidebarConfig = [
                 path: "/front-office/night-audit",
             },
             {
-                title: "guest database",
+                title: "guest",
                 path: "/front-office/guest-database",
             },
 

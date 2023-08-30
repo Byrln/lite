@@ -21,6 +21,7 @@ const validationSchema = yup.object().shape({
         .typeError("Бөглөнө үү"),
     SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     IsEditable: yup.boolean(),
+    IsInclusion: yup.boolean(),
 });
 
 const NewEdit = () => {
@@ -39,7 +40,6 @@ const NewEdit = () => {
             listUrl={listUrl}
             additionalValues={{
                 RoomChargeTypeID: state.editId,
-                IsInclusion: false,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
@@ -93,26 +93,51 @@ const NewEdit = () => {
                         helperText={errors.SortOrder?.message}
                     />
                 </Grid>
-            </Grid>
-
-            <FormControlLabel
-                control={
-                    <Controller
-                        name="IsEditable"
-                        control={control}
-                        render={(props: any) => (
-                            <Checkbox
-                                {...register("IsEditable")}
-                                checked={props.field.value}
-                                onChange={(e) =>
-                                    props.field.onChange(e.target.checked)
-                                }
+                <Grid item xs={6}>
+                    <FormControlLabel
+                        control={
+                            <Controller
+                                name="IsEditable"
+                                control={control}
+                                render={(props: any) => (
+                                    <Checkbox
+                                        {...register("IsEditable")}
+                                        checked={props.field.value}
+                                        onChange={(e) =>
+                                            props.field.onChange(
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                )}
                             />
-                        )}
+                        }
+                        label="Үнийн дүнг засах боломжтой эсэх"
                     />
-                }
-                label="Үнийн дүнг засах боломжтой эсэх"
-            />
+                </Grid>
+                <Grid item xs={6}>
+                    <FormControlLabel
+                        control={
+                            <Controller
+                                name="IsInclusion"
+                                control={control}
+                                render={(props: any) => (
+                                    <Checkbox
+                                        {...register("IsInclusion")}
+                                        checked={props.field.value}
+                                        onChange={(e) =>
+                                            props.field.onChange(
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                )}
+                            />
+                        }
+                        label="Is Inclusion"
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

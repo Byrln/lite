@@ -5,6 +5,8 @@ import NProgress from "nprogress";
 import { SessionProvider } from "next-auth/react";
 import { SWRConfig } from "swr";
 import { Slide, ToastContainer } from "react-toastify";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import "styles/globals.scss";
 import "assets/styles.css";
@@ -52,19 +54,23 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
                 >
                     <AppProvider>
                         <ModalProvider>
-                            <Page>
-                                <Component {...pageProps} />
-                                <ToastContainer
-                                    transition={Slide}
-                                    newestOnTop={true}
-                                    position="top-right"
-                                    autoClose={5000}
-                                    hideProgressBar={false}
-                                    closeOnClick={true}
-                                    pauseOnHover={true}
-                                    draggable={true}
-                                />
-                            </Page>
+                            <LocalizationProvider // @ts-ignore
+                                dateAdapter={AdapterDateFns}
+                            >
+                                <Page>
+                                    <Component {...pageProps} />
+                                    <ToastContainer
+                                        transition={Slide}
+                                        newestOnTop={true}
+                                        position="top-right"
+                                        autoClose={5000}
+                                        hideProgressBar={false}
+                                        closeOnClick={true}
+                                        pauseOnHover={true}
+                                        draggable={true}
+                                    />
+                                </Page>
+                            </LocalizationProvider>
                         </ModalProvider>
                     </AppProvider>
                 </SWRConfig>

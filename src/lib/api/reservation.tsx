@@ -2,17 +2,18 @@ import useSWR from "swr";
 import axios from "lib/utils/axios";
 import { fToUniversal } from "lib/utils/format-time";
 import { date } from "yup/lib/locale";
+import { SearchTwoTone } from "@mui/icons-material";
 
 const urlPrefix = "/api/Reservation";
 export const listUrl = `${urlPrefix}/List`;
 
-export const ReservationSWR = (values: any) => {
-    // const values = {
-    //     ReservationTypeID: ReservationTypeID,
-    // };
+export const ReservationSWR = (search: any) => {
+    if (!search.ReservationTypeID) {
+        search.ReservationTypeID = 1;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

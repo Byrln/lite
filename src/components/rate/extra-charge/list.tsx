@@ -66,9 +66,9 @@ const columns = [
                 <ToggleChecked
                     id={id}
                     checked={value}
-                    api={ChargeTypeAPI}
-                    apiUrl="IsInclusion"
-                    mutateUrl={`${listUrl}`}
+                    // api={ChargeTypeAPI}
+                    // apiUrl="IsInclusion"
+                    // mutateUrl={`${listUrl}`}
                 />
             );
         },

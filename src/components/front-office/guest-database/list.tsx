@@ -1,3 +1,8 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import CustomTable from "components/common/custom-table";
 import {
     GuestdatabaseSWR,
@@ -54,6 +59,27 @@ const columns = [
 ];
 
 const GuestdatabaseList = ({ title }: any) => {
+    const validationSchema = yup.object().shape({
+        StartDate: yup.date().nullable(),
+        EndDate: yup.date().nullable(),
+        ReservationTypeID: yup.number().nullable(),
+        ReservationSourceID: yup.number().nullable(),
+        StatusGroup: yup.number().nullable(),
+        GuestName: yup.string(),
+        GuestPhone: yup.string(),
+        GuestEmail: yup.string(),
+    });
+    const formOptions = { resolver: yupResolver(validationSchema) };
+    const {
+        reset,
+        register,
+        handleSubmit,
+        formState: { errors },
+        control,
+    } = useForm(formOptions);
+
+    const [search, setSearch] = useState({});
+
     const { data, error } = GuestdatabaseSWR();
 
     return (
