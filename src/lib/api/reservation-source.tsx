@@ -5,15 +5,19 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/ReservationSource";
 export const listUrl = `${urlPrefix}/list`;
 
-export const ReservationSourceSWR = (ChannelId = null) => {
-    const values = {
-        ReservationSourceID: null,
-        ChannelId: ChannelId ? ChannelId : null,
-        EmptyRow: 0,
-    };
+export const ReservationSourceSWR = (search: any) => {
+    if (!search.ReservationSourceID) {
+        search.ReservationSourceID = null;
+    }
+    if (!search.ChannelId) {
+        search.ChannelId = null;
+    }
+    if (!search.EmptyRow) {
+        search.EmptyRow = 0;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

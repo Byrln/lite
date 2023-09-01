@@ -10,8 +10,9 @@ const ReservationSourceSelect = ({
     errors,
     label = "Reservation Source",
     ChannelID = 0,
+    field = "ReservationSourceID",
 }: any) => {
-    const { data, error } = ReservationSourceSWR(ChannelID);
+    const { data, error } = ReservationSourceSWR({ ChannelID: ChannelID });
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -27,7 +28,7 @@ const ReservationSourceSelect = ({
         <CustomSelect
             register={register}
             errors={errors}
-            field="ReservationSourceID"
+            field={field}
             label={label}
             options={data}
             optionValue="ReservationSourceID"

@@ -2,8 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { DatePicker, LocalizationProvider } from "@mui/lab";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/lab";
 import moment from "moment";
 
 import NewEditForm from "components/common/new-edit-form";
@@ -69,7 +68,6 @@ const NewEdit = () => {
                 helperText={errors.Description?.message}
             />
 
-            {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
             <Controller
                 name="BeginDate"
                 control={control}
@@ -123,7 +121,6 @@ const NewEdit = () => {
                     />
                 )}
             />
-            {/* </LocalizationProvider> */}
 
             <CustomSelect
                 register={register}

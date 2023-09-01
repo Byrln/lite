@@ -5,13 +5,13 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/Promotion";
 export const listUrl = `${urlPrefix}/List`;
 
-export const PromotionSWR = () => {
-    const values = {
-        PromotionID: null,
-    };
+export const PromotionSWR = (search: any) => {
+    if (!search.PromotionID) {
+        search.PromotionID = null;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

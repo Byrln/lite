@@ -466,11 +466,11 @@ const sidebarConfig = [
                 path: "/conf/package",
             },
             {
-                title: "groups",
+                title: "mini bar groups",
                 path: "/mini-bar/group",
             },
             {
-                title: "items",
+                title: "mini bar items",
                 path: "/mini-bar/item",
             },
         ],

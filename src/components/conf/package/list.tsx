@@ -1,9 +1,15 @@
 import { format } from "date-fns";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
+import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import { PackageSWR, PackageAPI, listUrl } from "lib/api/package";
 import NewEdit from "./new-edit";
 import { formatPrice } from "lib/utils/helpers";
+import Search from "./search";
 
 const columns = [
     {
@@ -78,22 +84,55 @@ const columns = [
 ];
 
 const PackageList = ({ title }: any) => {
-    const { data, error } = PackageSWR();
+    const validationSchema = yup.object().shape({
+        SearchStr: yup.string().nullable(),
+        BeginDate: yup.date().nullable(),
+        EndDate: yup.date().nullable(),
+    });
+    const formOptions = { resolver: yupResolver(validationSchema) };
+    const {
+        reset,
+        register,
+        handleSubmit,
+        formState: { errors },
+        control,
+    } = useForm(formOptions);
+
+    const [search, setSearch] = useState({});
+
+    const { data, error } = PackageSWR(search);
 
     return (
-        <CustomTable
-            columns={columns}
-            data={data}
-            error={error}
-            api={PackageAPI}
-            hasNew={true}
-            hasUpdate={true}
-            id="PackageID"
-            listUrl={listUrl}
-            modalTitle={title}
-            modalContent={<NewEdit />}
-            excelName={title}
-        />
+        <>
+            <CustomSearch
+                listUrl={listUrl}
+                search={search}
+                setSearch={setSearch}
+                handleSubmit={handleSubmit}
+                reset={reset}
+            >
+                <Search
+                    register={register}
+                    errors={errors}
+                    control={control}
+                    reset={reset}
+                />
+            </CustomSearch>
+
+            <CustomTable
+                columns={columns}
+                data={data}
+                error={error}
+                api={PackageAPI}
+                hasNew={true}
+                hasUpdate={true}
+                id="PackageID"
+                listUrl={listUrl}
+                modalTitle={title}
+                modalContent={<NewEdit />}
+                excelName={title}
+            />
+        </>
     );
 };
 

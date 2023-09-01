@@ -18,14 +18,16 @@ export const HouseKeepingCurrentSWR = () => {
     return useSWR(listCurrentUrl, fetcher);
 };
 
-export const HouseKeepingRoomSWR = () => {
-    const values = {
-        RoomTypeID: null,
-        RoomID: null,
-    };
+export const HouseKeepingRoomSWR = (search: any) => {
+    if (!search.RoomTypeID) {
+        search.RoomTypeID = null;
+    }
+    if (!search.RoomID) {
+        search.RoomID = null;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listRoomUrl, fetcher);
 };

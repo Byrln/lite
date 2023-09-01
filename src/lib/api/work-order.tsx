@@ -5,15 +5,19 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/WorkOrder";
 export const listUrl = `${urlPrefix}/list`;
 
-export const WorkOrderSWR = () => {
-    const values = {
-        WorkOrderRegisterID: null,
-        AssignedUserID: null,
-        EmptyRow: 0,
-    };
+export const WorkOrderSWR = (search: any) => {
+    if (!search.WorkOrderRegisterID) {
+        search.WorkOrderRegisterID = null;
+    }
+    if (!search.AssignedUserID) {
+        search.AssignedUserID = null;
+    }
+    if (!search.EmptyRow) {
+        search.EmptyRow = 0;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
