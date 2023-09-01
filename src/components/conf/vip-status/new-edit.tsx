@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
+import { FormControlLabel, TextField, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,28 +34,32 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="VipStatusName"
-                label="VipStatusName"
-                {...register("VipStatusName")}
-                margin="dense"
-                error={errors.VipStatusName?.message}
-                helperText={errors.VipStatusName?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="VipStatusDescription"
-                label="VipStatusDescription"
-                {...register("VipStatusDescription")}
-                margin="dense"
-                error={errors.VipStatusDescription?.message}
-                helperText={errors.VipStatusDescription?.message}
-            />
-
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="VipStatusName"
+                        label="VipStatusName"
+                        {...register("VipStatusName")}
+                        margin="dense"
+                        error={errors.VipStatusName?.message}
+                        helperText={errors.VipStatusName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="VipStatusDescription"
+                        label="VipStatusDescription"
+                        {...register("VipStatusDescription")}
+                        margin="dense"
+                        error={errors.VipStatusDescription?.message}
+                        helperText={errors.VipStatusDescription?.message}
+                    />
+                </Grid>
+            </Grid>
             <FormControlLabel
                 control={
                     <Controller

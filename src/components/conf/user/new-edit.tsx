@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
+import { FormControlLabel, TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -37,58 +37,67 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="UserName"
-                label="User Name"
-                {...register("UserName")}
-                margin="dense"
-                error={errors.UserName?.message}
-                helperText={errors.UserName?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="LoginName"
-                label="Login Name"
-                {...register("LoginName")}
-                margin="dense"
-                error={errors.LoginName?.message}
-                helperText={errors.LoginName?.message}
-            />
-
-            <UserRoleSelect
-                register={register}
-                errors={errors}
-                field="UserRoleID"
-            />
-
-            <LanguageSelect register={register} errors={errors} />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="Email"
-                label="Email"
-                {...register("Email")}
-                margin="dense"
-                error={errors.Email?.message}
-                helperText={errors.Email?.message}
-            />
-
-            <TextField
-                size="small"
-                type="password"
-                fullWidth
-                id="Password"
-                label="Password"
-                {...register("Password")}
-                margin="dense"
-                error={errors.Password?.message}
-                helperText={errors.Password?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="UserName"
+                        label="User Name"
+                        {...register("UserName")}
+                        margin="dense"
+                        error={errors.UserName?.message}
+                        helperText={errors.UserName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="LoginName"
+                        label="Login Name"
+                        {...register("LoginName")}
+                        margin="dense"
+                        error={errors.LoginName?.message}
+                        helperText={errors.LoginName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <UserRoleSelect
+                        register={register}
+                        errors={errors}
+                        field="UserRoleID"
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <LanguageSelect register={register} errors={errors} />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Email"
+                        label="Email"
+                        {...register("Email")}
+                        margin="dense"
+                        error={errors.Email?.message}
+                        helperText={errors.Email?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        type="password"
+                        fullWidth
+                        id="Password"
+                        label="Password"
+                        {...register("Password")}
+                        margin="dense"
+                        error={errors.Password?.message}
+                        helperText={errors.Password?.message}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

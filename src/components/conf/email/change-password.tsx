@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
@@ -44,42 +44,47 @@ const ChangePassword = ({ id }: any) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-                size="small"
-                type="password"
-                fullWidth
-                id="OldPassword"
-                label="Old Password"
-                {...register("OldPassword")}
-                margin="dense"
-                error={errors.OldPassword?.message}
-                helperText={errors.OldPassword?.message}
-            />
-
-            <TextField
-                size="small"
-                type="password"
-                fullWidth
-                id="NewPassword"
-                label="New Password"
-                {...register("NewPassword")}
-                margin="dense"
-                error={errors.NewPassword?.message}
-                helperText={errors.NewPassword?.message}
-            />
-
-            <TextField
-                size="small"
-                type="password"
-                fullWidth
-                id="NewPasswordConfirmation"
-                label="New Password Confirmation"
-                {...register("NewPasswordConfirmation")}
-                margin="dense"
-                error={errors.NewPasswordConfirmation?.message}
-                helperText={errors.NewPasswordConfirmation?.message}
-            />
-
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        type="password"
+                        fullWidth
+                        id="OldPassword"
+                        label="Old Password"
+                        {...register("OldPassword")}
+                        margin="dense"
+                        error={errors.OldPassword?.message}
+                        helperText={errors.OldPassword?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        type="password"
+                        fullWidth
+                        id="NewPassword"
+                        label="New Password"
+                        {...register("NewPassword")}
+                        margin="dense"
+                        error={errors.NewPassword?.message}
+                        helperText={errors.NewPassword?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        type="password"
+                        fullWidth
+                        id="NewPasswordConfirmation"
+                        label="New Password Confirmation"
+                        {...register("NewPasswordConfirmation")}
+                        margin="dense"
+                        error={errors.NewPasswordConfirmation?.message}
+                        helperText={errors.NewPasswordConfirmation?.message}
+                    />
+                </Grid>
+            </Grid>
             <SubmitButton loading={loading} />
         </form>
     );

@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
+import { FormControlLabel, TextField, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,28 +34,32 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="HotelSettingName"
-                label="HotelSettingName"
-                {...register("HotelSettingName")}
-                margin="dense"
-                error={errors.HotelSettingName?.message}
-                helperText={errors.HotelSettingName?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="HotelSettingDescription"
-                label="HotelSettingDescription"
-                {...register("HotelSettingDescription")}
-                margin="dense"
-                error={errors.HotelSettingDescription?.message}
-                helperText={errors.HotelSettingDescription?.message}
-            />
-
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="HotelSettingName"
+                        label="HotelSettingName"
+                        {...register("HotelSettingName")}
+                        margin="dense"
+                        error={errors.HotelSettingName?.message}
+                        helperText={errors.HotelSettingName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="HotelSettingDescription"
+                        label="HotelSettingDescription"
+                        {...register("HotelSettingDescription")}
+                        margin="dense"
+                        error={errors.HotelSettingDescription?.message}
+                        helperText={errors.HotelSettingDescription?.message}
+                    />
+                </Grid>
+            </Grid>
             <FormControlLabel
                 control={
                     <Controller

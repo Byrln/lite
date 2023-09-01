@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -34,64 +34,72 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="Email"
-                label="И-Мэйл"
-                {...register("Email")}
-                margin="dense"
-                error={errors.Email?.message}
-                helperText={errors.Email?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="EmailHost"
-                label="И-Мэйл сервер"
-                {...register("EmailHost")}
-                margin="dense"
-                error={errors.EmailHost?.message}
-                helperText={errors.EmailHost?.message}
-            />
-
-            <TextField
-                size="small"
-                type="number"
-                fullWidth
-                id="Port"
-                label="Порт"
-                {...register("Port")}
-                margin="dense"
-                error={errors.Port?.message}
-                helperText={errors.Port?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="UserName"
-                label="Хэрэглэгчийн нэр"
-                {...register("UserName")}
-                margin="dense"
-                error={errors.UserName?.message}
-                helperText={errors.UserName?.message}
-            />
-
-            {!state.editId && (
-                <TextField
-                    size="small"
-                    fullWidth
-                    id="Password"
-                    label="Нууц үг"
-                    type="password"
-                    {...register("Password")}
-                    margin="dense"
-                    error={errors.Password?.message}
-                    helperText={errors.Password?.message}
-                />
-            )}
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Email"
+                        label="И-Мэйл"
+                        {...register("Email")}
+                        margin="dense"
+                        error={errors.Email?.message}
+                        helperText={errors.Email?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="EmailHost"
+                        label="И-Мэйл сервер"
+                        {...register("EmailHost")}
+                        margin="dense"
+                        error={errors.EmailHost?.message}
+                        helperText={errors.EmailHost?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        type="number"
+                        fullWidth
+                        id="Port"
+                        label="Порт"
+                        {...register("Port")}
+                        margin="dense"
+                        error={errors.Port?.message}
+                        helperText={errors.Port?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="UserName"
+                        label="Хэрэглэгчийн нэр"
+                        {...register("UserName")}
+                        margin="dense"
+                        error={errors.UserName?.message}
+                        helperText={errors.UserName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    {!state.editId && (
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Password"
+                            label="Нууц үг"
+                            type="password"
+                            {...register("Password")}
+                            margin="dense"
+                            error={errors.Password?.message}
+                            helperText={errors.Password?.message}
+                        />
+                    )}
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

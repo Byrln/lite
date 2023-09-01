@@ -119,20 +119,21 @@ const NewEdit = () => {
                                 helperText={errors.MaxChild?.message}
                             />
                         </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                            size="small"
+                            type="number"
+                            fullWidth
+                            id="SortOrder"
+                            label="Дараалал"
+                            {...register("SortOrder")}
+                            margin="dense"
+                            error={errors.SortOrder?.message}
+                            helperText={errors.SortOrder?.message}
+                            sx={{ mt: 2 }}
+                            />
+                        </Grid>
                     </Grid>
-
-                    <TextField
-                        size="small"
-                        type="number"
-                        fullWidth
-                        id="SortOrder"
-                        label="Дараалал"
-                        {...register("SortOrder")}
-                        margin="dense"
-                        error={errors.SortOrder?.message}
-                        helperText={errors.SortOrder?.message}
-                        sx={{ mt: 2 }}
-                    />
 
                     <RoomAmenitySelect register={register} errors={errors} />
                 </>
@@ -142,29 +143,33 @@ const NewEdit = () => {
             label: "Booking Engine",
             component: (
                 <>
-                    <TextField
-                        size="small"
-                        fullWidth
-                        id="BookingDescription"
-                        label="Товч тайлбар (Онлайн захиалга)"
-                        {...register("BookingDescription")}
-                        margin="dense"
-                        error={errors.BookingDescription?.message}
-                        helperText={errors.BookingDescription?.message}
-                    />
-
-                    <TextField
-                        size="small"
-                        type="number"
-                        fullWidth
-                        id="SortOrder"
-                        label="Эрэмбэлэх утга"
-                        {...register("SortOrder")}
-                        margin="dense"
-                        error={errors.SortOrder?.message}
-                        helperText={errors.SortOrder?.message}
-                    />
-
+                <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="BookingDescription"
+                            label="Товч тайлбар (Онлайн захиалга)"
+                            {...register("BookingDescription")}
+                            margin="dense"
+                            error={errors.BookingDescription?.message}
+                            helperText={errors.BookingDescription?.message}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            size="small"
+                            type="number"
+                            fullWidth
+                            id="SortOrder"
+                            label="Эрэмбэлэх утга"
+                            {...register("SortOrder")}
+                            margin="dense"
+                            error={errors.SortOrder?.message}
+                            helperText={errors.SortOrder?.message}
+                        />
+                    </Grid>
+                </Grid>
                     <FormGroup>
                         <FormControlLabel
                             control={<Checkbox />}

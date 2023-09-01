@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { Checkbox, FormControlLabel, TextField } from "@mui/material";
+import { Checkbox, FormControlLabel, TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -31,91 +31,106 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="OrderId"
-                label="Order No"
-                {...register("OrderId")}
-                margin="dense"
-                error={errors.OrderId?.message}
-                helperText={errors.OrderId?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="Priority"
-                label="Priority"
-                {...register("Priority")}
-                margin="dense"
-                error={errors.Priority?.message}
-                helperText={errors.Priority?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="Status"
-                label="Status"
-                {...register("Status")}
-                margin="dense"
-                error={errors.Status?.message}
-                helperText={errors.Status?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                multiline
-                rows={3}
-                id="Description"
-                label="Description"
-                {...register("Description")}
-                margin="dense"
-                error={errors.Description?.message}
-                helperText={errors.Description?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="Status"
-                label="Status"
-                {...register("Status")}
-                margin="dense"
-                error={errors.Status?.message}
-                helperText={errors.Status?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="Room"
-                label="Room"
-                {...register("Room")}
-                margin="dense"
-                error={errors.Room?.message}
-                helperText={errors.Room?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="AssignedTo"
-                label="Assigned To"
-                {...register("AssignedTo")}
-                margin="dense"
-                error={errors.AssignedTo?.message}
-                helperText={errors.AssignedTo?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="DeadLine"
-                label="DeadLine"
-                {...register("DeadLine")}
-                margin="dense"
-                error={errors.DeadLine?.message}
-                helperText={errors.DeadLine?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="OrderId"
+                        label="Order No"
+                        {...register("OrderId")}
+                        margin="dense"
+                        error={errors.OrderId?.message}
+                        helperText={errors.OrderId?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Priority"
+                        label="Priority"
+                        {...register("Priority")}
+                        margin="dense"
+                        error={errors.Priority?.message}
+                        helperText={errors.Priority?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Status"
+                        label="Status"
+                        {...register("Status")}
+                        margin="dense"
+                        error={errors.Status?.message}
+                        helperText={errors.Status?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        multiline
+                        rows={3}
+                        id="Description"
+                        label="Description"
+                        {...register("Description")}
+                        margin="dense"
+                        error={errors.Description?.message}
+                        helperText={errors.Description?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Status"
+                        label="Status"
+                        {...register("Status")}
+                        margin="dense"
+                        error={errors.Status?.message}
+                        helperText={errors.Status?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}> 
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Room"
+                        label="Room"
+                        {...register("Room")}
+                        margin="dense"
+                        error={errors.Room?.message}
+                        helperText={errors.Room?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="AssignedTo"
+                        label="Assigned To"
+                        {...register("AssignedTo")}
+                        margin="dense"
+                        error={errors.AssignedTo?.message}
+                        helperText={errors.AssignedTo?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="DeadLine"
+                        label="DeadLine"
+                        {...register("DeadLine")}
+                        margin="dense"
+                        error={errors.DeadLine?.message}
+                        helperText={errors.DeadLine?.message}
+                    />
+                </Grid>
+            </Grid>
             <FormControlLabel
                 control={
                     <Controller

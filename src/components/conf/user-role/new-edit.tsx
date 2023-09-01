@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -35,47 +35,53 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="UserRoleShortName"
-                label="Short Code"
-                {...register("UserRoleShortName")}
-                margin="dense"
-                error={errors.UserRoleShortName?.message}
-                helperText={errors.UserRoleShortName?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="UserRoleName"
-                label="User Role"
-                {...register("UserRoleName")}
-                margin="dense"
-                error={errors.UserRoleName?.message}
-                helperText={errors.UserRoleName?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                multiline
-                rows={3}
-                id="Description"
-                label="Description"
-                {...register("Description")}
-                margin="dense"
-                error={errors.Description?.message}
-                helperText={errors.Description?.message}
-            />
-
-            <UserRoleSelect
-                register={register}
-                errors={errors}
-                field="ParentID"
-            />
-
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="UserRoleShortName"
+                        label="Short Code"
+                        {...register("UserRoleShortName")}
+                        margin="dense"
+                        error={errors.UserRoleShortName?.message}
+                        helperText={errors.UserRoleShortName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="UserRoleName"
+                        label="User Role"
+                        {...register("UserRoleName")}
+                        margin="dense"
+                        error={errors.UserRoleName?.message}
+                        helperText={errors.UserRoleName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        multiline
+                        rows={3}
+                        id="Description"
+                        label="Description"
+                        {...register("Description")}
+                        margin="dense"
+                        error={errors.Description?.message}
+                        helperText={errors.Description?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <UserRoleSelect
+                        register={register}
+                        errors={errors}
+                        field="ParentID"
+                    />
+                </Grid>
+            </Grid>
             <UserRolePrivilegeSelect
                 register={register}
                 errors={errors}

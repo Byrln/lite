@@ -39,98 +39,118 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="Company Name"
-                label="CompanyName"
-                {...register("CompanyName")}
-                margin="dense"
-                error={errors.CompanyName?.message}
-                helperText={errors.CompanyName?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="City"
-                label="City"
-                {...register("City")}
-                margin="dense"
-                error={errors.City?.message}
-                helperText={errors.City?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="Country"
-                label="Country"
-                {...register("Country")}
-                margin="dense"
-                error={errors.Country?.message}
-                helperText={errors.Country?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="RegistrationID"
-                label="Registration No"
-                {...register("RegistrationID")}
-                margin="dense"
-                error={errors.RegistrationID?.message}
-                helperText={errors.RegistrationID?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="PhoneNumber"
-                label="PhoneNumber"
-                {...register("PhoneNumber")}
-                margin="dense"
-                error={errors.PhoneNumber?.message}
-                helperText={errors.PhoneNumber?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="Email"
-                label="Email"
-                {...register("Email")}
-                margin="dense"
-                error={errors.Email?.message}
-                helperText={errors.Email?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="GroupName"
-                label="Group Name"
-                {...register("GroupName")}
-                margin="dense"
-                error={errors.GroupName?.message}
-                helperText={errors.GroupName?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                id="CustomerType"
-                label="CustomerType"
-                {...register("CustomerType")}
-                margin="dense"
-                error={errors.CustomerType?.message}
-                helperText={errors.CustomerType?.message}
-            />
-            <TextField
-                size="small"
-                fullWidth
-                multiline
-                rows={3}
-                id="Address"
-                label="Address"
-                {...register("Address")}
-                margin="dense"
-                error={errors.Address?.message}
-                helperText={errors.Address?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Company Name"
+                        label="CompanyName"
+                        {...register("CompanyName")}
+                        margin="dense"
+                        error={errors.CompanyName?.message}
+                        helperText={errors.CompanyName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="City"
+                        label="City"
+                        {...register("City")}
+                        margin="dense"
+                        error={errors.City?.message}
+                        helperText={errors.City?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Country"
+                        label="Country"
+                        {...register("Country")}
+                        margin="dense"
+                        error={errors.Country?.message}
+                        helperText={errors.Country?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="RegistrationID"
+                        label="Registration No"
+                        {...register("RegistrationID")}
+                        margin="dense"
+                        error={errors.RegistrationID?.message}
+                        helperText={errors.RegistrationID?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="PhoneNumber"
+                        label="PhoneNumber"
+                        {...register("PhoneNumber")}
+                        margin="dense"
+                        error={errors.PhoneNumber?.message}
+                        helperText={errors.PhoneNumber?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Email"
+                        label="Email"
+                        {...register("Email")}
+                        margin="dense"
+                        error={errors.Email?.message}
+                        helperText={errors.Email?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="GroupName"
+                        label="Group Name"
+                        {...register("GroupName")}
+                        margin="dense"
+                        error={errors.GroupName?.message}
+                        helperText={errors.GroupName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="CustomerType"
+                        label="CustomerType"
+                        {...register("CustomerType")}
+                        margin="dense"
+                        error={errors.CustomerType?.message}
+                        helperText={errors.CustomerType?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}> 
+                    <TextField
+                        size="small"
+                        fullWidth
+                        multiline
+                        rows={3}
+                        id="Address"
+                        label="Address"
+                        {...register("Address")}
+                        margin="dense"
+                        error={errors.Address?.message}
+                        helperText={errors.Address?.message}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

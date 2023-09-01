@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
+import { FormControlLabel, TextField, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,38 +34,44 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="NotificationType"
-                label="Notification Type"
-                {...register("NotificationType")}
-                margin="dense"
-                error={errors.NotificationType?.message}
-                helperText={errors.NotificationType?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="TextType"
-                label="TextType"
-                {...register("TextType")}
-                margin="dense"
-                error={errors.TextType?.message}
-                helperText={errors.TextType?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="TextType"
-                label="TextType"
-                {...register("TextType")}
-                margin="dense"
-                error={errors.TextType?.message}
-                helperText={errors.TextType?.message}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="NotificationType"
+                        label="Notification Type"
+                        {...register("NotificationType")}
+                        margin="dense"
+                        error={errors.NotificationType?.message}
+                        helperText={errors.NotificationType?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="TextType"
+                        label="TextType"
+                        {...register("TextType")}
+                        margin="dense"
+                        error={errors.TextType?.message}
+                        helperText={errors.TextType?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="TextType"
+                        label="TextType"
+                        {...register("TextType")}
+                        margin="dense"
+                        error={errors.TextType?.message}
+                        helperText={errors.TextType?.message}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };
