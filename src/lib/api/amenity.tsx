@@ -6,14 +6,13 @@ const urlPrefix = "/api/Amenity";
 export const listUrl = `${urlPrefix}/List`;
 export const roomTypeAmenityUrl = `${urlPrefix}/RoomTypeAmenity`;
 
-export const AmenitySWR = () => {
-    const values = {
-        AmenityID: 0,
-        SearchStr: "",
-    };
+export const AmenitySWR = (search: any) => {
+    if (!search.AmenityID) {
+        search.AmenityID = 0;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

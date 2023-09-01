@@ -4,12 +4,14 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import CustomTable from "components/common/custom-table";
+import CustomSearch from "components/common/custom-search";
 import {
     GuestdatabaseSWR,
     GuestdatabaseAPI,
     listUrl,
 } from "lib/api/guest-database";
 import NewEdit from "./new-edit";
+import Search from "./search";
 
 const columns = [
     {
@@ -60,14 +62,10 @@ const columns = [
 
 const GuestdatabaseList = ({ title }: any) => {
     const validationSchema = yup.object().shape({
-        StartDate: yup.date().nullable(),
-        EndDate: yup.date().nullable(),
-        ReservationTypeID: yup.number().nullable(),
-        ReservationSourceID: yup.number().nullable(),
-        StatusGroup: yup.number().nullable(),
-        GuestName: yup.string(),
-        GuestPhone: yup.string(),
-        GuestEmail: yup.string(),
+        GuestName: yup.string().nullable(),
+        CountryID: yup.string().nullable(),
+        Phone: yup.string().nullable(),
+        GuestEmail: yup.string().nullable(),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
     const {
@@ -80,23 +78,40 @@ const GuestdatabaseList = ({ title }: any) => {
 
     const [search, setSearch] = useState({});
 
-    const { data, error } = GuestdatabaseSWR();
+    const { data, error } = GuestdatabaseSWR(search);
 
     return (
-        <CustomTable
-            columns={columns}
-            data={data}
-            error={error}
-            api={GuestdatabaseAPI}
-            hasNew={true}
-            hasUpdate={true}
-            //hasDelete={true}
-            id="GuestID"
-            listUrl={listUrl}
-            modalTitle={title}
-            modalContent={<NewEdit />}
-            excelName={title}
-        />
+        <>
+            <CustomSearch
+                listUrl={listUrl}
+                search={search}
+                setSearch={setSearch}
+                handleSubmit={handleSubmit}
+                reset={reset}
+            >
+                <Search
+                    register={register}
+                    errors={errors}
+                    control={control}
+                    reset={reset}
+                />
+            </CustomSearch>
+
+            <CustomTable
+                columns={columns}
+                data={data}
+                error={error}
+                api={GuestdatabaseAPI}
+                hasNew={true}
+                hasUpdate={true}
+                //hasDelete={true}
+                id="GuestID"
+                listUrl={listUrl}
+                modalTitle={title}
+                modalContent={<NewEdit />}
+                excelName={title}
+            />
+        </>
     );
 };
 

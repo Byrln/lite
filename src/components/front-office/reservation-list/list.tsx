@@ -57,9 +57,9 @@ const DeparturedListList = ({ title }: any) => {
     const validationSchema = yup.object().shape({
         StartDate: yup.date().nullable(),
         EndDate: yup.date().nullable(),
-        ReservationTypeID: yup.number().nullable(),
-        ReservationSourceID: yup.number().nullable(),
-        StatusGroup: yup.number().nullable(),
+        ReservationTypeID: yup.string().nullable(),
+        ReservationSourceID: yup.string().nullable(),
+        StatusGroup: yup.string().nullable(),
         GuestName: yup.string(),
         GuestPhone: yup.string(),
         GuestEmail: yup.string(),

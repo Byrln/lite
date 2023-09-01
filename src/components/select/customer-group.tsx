@@ -26,7 +26,7 @@ const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
             fullWidth
             id="CustomerGroupID"
             label="Customer group"
-            {...register("CurrencyID")}
+            {...register("CustomerGroupID")}
             select
             margin="dense"
             error={errors.CustomerGroupID?.message}

@@ -5,14 +5,16 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/UserRole";
 export const listUrl = `${urlPrefix}/List`;
 
-export const UserRoleSWR = () => {
-    const values = {
-        UserRoleID: null,
-        EmptyRow: 0,
-    };
+export const UserRoleSWR = (search: any) => {
+    if (!search.UserRoleID) {
+        search.UserRoleID = null;
+    }
+    if (!search.EmptyRow) {
+        search.EmptyRow = 0;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

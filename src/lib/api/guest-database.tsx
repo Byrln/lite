@@ -5,14 +5,14 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/Guest";
 export const listUrl = `${urlPrefix}/list`;
 
-export const GuestdatabaseSWR = () => {
-    const values = {
-        GuestID: null,
-        CountryID: null,
-    };
+export const GuestdatabaseSWR = (search: any) => {
+    // const values = {
+    //     GuestID: null,
+    //     CountryID: null,
+    // };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

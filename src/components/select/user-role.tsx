@@ -6,7 +6,7 @@ import CustomSelect from "components/common/custom-select";
 import { UserRoleSWR } from "lib/api/user-role";
 
 const UserRoleSelect = ({ register, errors, field }: any) => {
-    const { data, error } = UserRoleSWR();
+    const { data, error } = UserRoleSWR({});
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 

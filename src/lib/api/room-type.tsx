@@ -6,15 +6,16 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/RoomType";
 export const listUrl = `${urlPrefix}/List`;
 
-export const RoomTypeSWR = () => {
-    const values = {
-        RoomTypeID: 0,
-        SearchStr: "",
-        EmptyRow: "0",
-    };
+export const RoomTypeSWR = (search: any) => {
+    if (!search.RoomTypeID) {
+        search.RoomTypeID = 0;
+    }
+    if (!search.EmptyRow) {
+        search.EmptyRow = 0;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

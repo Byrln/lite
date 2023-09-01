@@ -5,14 +5,13 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/RoomStatus";
 export const listUrl = `${urlPrefix}/List`;
 
-export const RoomStatusSWR = () => {
-    const values = {
-        RoomTypeID: 0,
-        SearchStr: "",
-    };
+export const RoomStatusSWR = (search: any) => {
+    if (!search.RoomTypeID) {
+        search.RoomTypeID = 0;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

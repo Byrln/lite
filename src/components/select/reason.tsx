@@ -11,7 +11,7 @@ const ReasonTypeSelect = ({
     label,
     ReasonTypeID = 0,
 }: any) => {
-    const { data, error } = ReasonSWR(ReasonTypeID);
+    const { data, error } = ReasonSWR({ ReasonTypeID: ReasonTypeID });
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 

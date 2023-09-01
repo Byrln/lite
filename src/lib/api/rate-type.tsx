@@ -5,17 +5,22 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/RateType";
 export const listUrl = `${urlPrefix}/List`;
 
-export const RateTypeSWR = () => {
-    const values = {
-        RateTypeID: 0,
-        ChannelID: 0,
-        SearchStr: "",
-        Status: false,
-        EmptyRow: false,
-    };
+export const RateTypeSWR = (search: any) => {
+    if (!search.RateTypeID) {
+        search.RateTypeID = 0;
+    }
+    if (!search.ChannelID) {
+        search.ChannelID = 0;
+    }
+    if (!search.Status) {
+        search.Status = false;
+    }
+    if (!search.EmptyRow) {
+        search.EmptyRow = false;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

@@ -13,12 +13,12 @@ const ChargeTypeGroupSelect = ({
     IsMiniBar,
     IsDiscount,
 }: any) => {
-    const { data, error } = ChargeTypeGroupSWR(
-        IsRoomCharge,
-        IsExtraCharge,
-        IsMiniBar,
-        IsDiscount
-    );
+    const { data, error } = ChargeTypeGroupSWR({
+        IsRoomCharge: IsRoomCharge,
+        IsExtraCharge: IsExtraCharge,
+        IsMiniBar: IsMiniBar,
+        IsDiscount: IsDiscount,
+    });
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 

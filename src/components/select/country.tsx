@@ -35,10 +35,11 @@ const CountrySelect = ({ register, errors, entity, setEntity }: any) => {
                 shrink: entity && entity.CountryID,
             }}
             onChange={(evt: any) => {
-                setEntity({
-                    ...entity,
-                    CountryID: evt.target.value,
-                });
+                setEntity &&
+                    setEntity({
+                        ...entity,
+                        CountryID: evt.target.value,
+                    });
             }}
         >
             {data.map((country: any) => (

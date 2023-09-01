@@ -301,14 +301,14 @@ const sidebarConfig = [
                 path: "/front-office/guest-database",
             },
 
-            {
-                title: "depature list",
-                path: "/front-office/depature-list",
-            },
-            {
-                title: "departured list",
-                path: "/front-office/departured-list",
-            },
+            // {
+            //     title: "depature list",
+            //     path: "/front-office/depature-list",
+            // },
+            // {
+            //     title: "departured list",
+            //     path: "/front-office/departured-list",
+            // },
         ],
     },
     {
@@ -321,12 +321,12 @@ const sidebarConfig = [
         icon: getIcon(pricetagsFill),
         children: [
             {
-                title: "rate type",
-                path: "/rate/type",
-            },
-            {
                 title: "season",
                 path: "/rate/season",
+            },
+            {
+                title: "rate type",
+                path: "/rate/type",
             },
             {
                 title: "rates",
@@ -351,10 +351,6 @@ const sidebarConfig = [
         icon: getIcon(homeFill),
         children: [
             {
-                title: "room type",
-                path: "/room/type",
-            },
-            {
                 title: "room amenities",
                 path: "/room/amenities",
             },
@@ -363,12 +359,16 @@ const sidebarConfig = [
                 path: "/room/status",
             },
             {
-                title: "rooms",
-                path: "/room",
-            },
-            {
                 title: "door lock",
                 path: "/room/door-lock",
+            },
+            {
+                title: "room type",
+                path: "/room/type",
+            },
+            {
+                title: "rooms",
+                path: "/room",
             },
         ],
     },
@@ -377,7 +377,7 @@ const sidebarConfig = [
         icon: getIcon(creditCardFill),
         children: [
             {
-                title: "company database",
+                title: "company",
                 path: "/payment/company-database",
             },
             {

@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import CompanyDatabase from "components/payment/company-database/list";
 
-const title = "Company Database";
+const title = "Company";
 
 const Index = () => (
     <>

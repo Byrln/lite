@@ -5,27 +5,31 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/ChargeTypeGroup";
 export const listUrl = `${urlPrefix}/List`;
 
-export const ChargeTypeGroupSWR = (
-    IsRoomCharge: any,
-    IsExtraCharge: any,
-    IsMiniBar: any,
-    IsDiscount: any
-) => {
-    const values = {
-        RoomChargeTypeGroupID: 0,
-        SearchStr: "",
-        IsRoomCharge: IsRoomCharge,
-        IsExtraCharge: IsExtraCharge,
-        IsMiniBar: IsMiniBar,
-        IsDiscount: IsDiscount,
-        Status: null,
-        EmptyRow: null,
-    };
+export const ChargeTypeGroupSWR = (search: any) => {
+    if (!search.RoomChargeTypeGroupID) {
+        search.RoomChargeTypeGroupID = 0;
+    }
+    if (!search.IsRoomCharge) {
+        search.IsRoomCharge = null;
+    }
+    if (!search.IsExtraCharge) {
+        search.IsExtraCharge = true;
+    }
+    if (!search.IsMiniBar) {
+        search.StaIsMiniBartus = false;
+    }
+    if (!search.IsDiscount) {
+        search.IsDiscount = null;
+    }
+    if (!search.Status) {
+        search.Status = null;
+    }
+    if (!search.EmptyRow) {
+        search.EmptyRow = null;
+    }
 
     const fetcher = async (url: any) =>
-        await axios
-            .post(url, values)
-            .then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

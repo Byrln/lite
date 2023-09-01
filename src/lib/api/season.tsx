@@ -5,16 +5,19 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/Season";
 export const listUrl = `${urlPrefix}/List`;
 
-export const SeasonSWR = () => {
-    const values = {
-        SeasonID: 0,
-        SearchStr: "",
-        Status: false,
-        EmptyRow: false,
-    };
+export const SeasonSWR = (search: any) => {
+    if (!search.SeasonID) {
+        search.SeasonID = 0;
+    }
+    if (!search.Status) {
+        search.Status = false;
+    }
+    if (!search.EmptyRow) {
+        search.EmptyRow = false;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };

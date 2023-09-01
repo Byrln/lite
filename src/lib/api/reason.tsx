@@ -5,15 +5,17 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/Reason";
 export const listUrl = `${urlPrefix}/List`;
 
-export const ReasonSWR = (ReasonTypeID = 0) => {
-    const values = {
-        ReasonID: 0,
-        ReasonTypeID: ReasonTypeID,
-        EmptyRow: false,
-    };
+export const ReasonSWR = (search: any) => {
+    if (!search.ReasonID) {
+        search.ReasonID = 0;
+    }
+
+    if (!search.EmptyRow) {
+        search.EmptyRow = false;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
