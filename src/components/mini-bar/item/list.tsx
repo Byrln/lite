@@ -51,12 +51,12 @@ const columns = [
 ];
 
 const MiniBarItemList = ({ title }: any) => {
-    const { data, error } = ChargeTypeSWR(
-        IsExtraCharge,
-        IsMiniBar,
-        IsDiscount,
-        IsInclusion
-    );
+    const { data, error } = ChargeTypeSWR({
+        IsExtraCharge: IsExtraCharge,
+        IsMiniBar: IsMiniBar,
+        IsDiscount: IsDiscount,
+        IsInclusion: IsInclusion,
+    });
 
     return (
         <CustomTable
