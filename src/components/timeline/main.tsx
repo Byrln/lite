@@ -33,8 +33,8 @@ const filterGroups = (props: any) => {
  * MainTimeline component
  */
 const MainTimeline = (props: any) => {
-    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR();
-    const { data: rooms, error: roomSwrError } = RoomSWR();
+    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({});
+    const { data: rooms, error: roomSwrError } = RoomSWR({});
 
     const [timelineData, setTimelineData] = useState({
         openGroups: {} as any,

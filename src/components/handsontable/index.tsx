@@ -75,8 +75,8 @@ const TimelineTable = ({ props, workingDate }: any) => {
     let timeEnd = new Date(workingDate);
     timeEnd.setDate(timeEnd.getDate() + 7);
 
-    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR();
-    const { data: rooms, error: roomSwrError } = RoomSWR();
+    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({});
+    const { data: rooms, error: roomSwrError } = RoomSWR({});
     const {
         data: items,
         mutate: mutateItems,

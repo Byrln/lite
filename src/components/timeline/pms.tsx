@@ -54,8 +54,8 @@ const TimelinePms = ({ props, workingDate }: any) => {
     let timeEnd = new Date(workingDate);
     timeEnd.setDate(timeEnd.getDate() + 30);
 
-    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR();
-    const { data: rooms, error: roomSwrError } = RoomSWR();
+    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({});
+    const { data: rooms, error: roomSwrError } = RoomSWR({});
     const { data: items, error: itemsError } = FrontOfficeSWR(workingDate);
     const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR();
     const { handleModal }: any = useContext(ModalContext);
