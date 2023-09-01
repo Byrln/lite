@@ -9,7 +9,7 @@ import { RateTypeSWR } from "lib/api/rate-type";
 import { elementAcceptingRef } from "@mui/utils";
 
 const RateTypeSelect = ({ register, errors }: any) => {
-    const { data, error } = RateTypeSWR();
+    const { data, error } = RateTypeSWR({});
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
