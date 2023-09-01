@@ -42,12 +42,12 @@ const columns = [
 ];
 
 const MiniBarGroupList = ({ title }: any) => {
-    const { data, error } = ChargeTypeGroupSWR(
-        IsRoomCharge,
-        IsExtraCharge,
-        IsMiniBar,
-        IsDiscount
-    );
+    const { data, error } = ChargeTypeGroupSWR({
+        IsRoomCharge: IsRoomCharge,
+        IsExtraCharge: IsExtraCharge,
+        IsMiniBar: IsMiniBar,
+        IsDiscount: IsDiscount,
+    });
 
     return (
         <CustomTable
