@@ -2,27 +2,17 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Customer";
-export const listUrl = `${urlPrefix}/list`;
+const urlPrefix = "/api/CustomerType";
+export const listUrl = `${urlPrefix}/List`;
 
-export const CompanyDatabaseSWR = (search: any) => {
+export const CustomerTypeSWR = () => {
     const fetcher = async (url: any) =>
-        await axios.post(url, search).then((res: any) => res.data.JsonData);
+        await axios.post(url).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
 
-export const CompanyDatabaseAPI = {
-    get: async (id: any) => {
-        const values = {
-            CustomerID: id,
-        };
-
-        const res = await axios.post(listUrl, values);
-
-        return res.data.JsonData;
-    },
-
+export const CustomerTypeAPI = {
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 
@@ -46,8 +36,25 @@ export const CompanyDatabaseAPI = {
 
     delete: async (id: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
-            CompanyDatabaseID: id,
+            CustomerGroupID: id,
         });
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    toggleChecked: async (id: any, checked: boolean, apiUrl: string) => {
+        const values = {
+            CustomerGroupID: id,
+            Status: checked,
+        };
+
+        const { data, status } = await axios.post(
+            `${urlPrefix}/${apiUrl}`,
+            values
+        );
 
         return {
             data,

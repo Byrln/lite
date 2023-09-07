@@ -42,7 +42,7 @@ export const GuestHistorySummarySWR = (id: any) => {
 export const GuestdatabaseAPI = {
     get: async (id: any) => {
         const values = {
-            GuestdatabaseID: id,
+            GuestID: id,
         };
 
         const res = await axios.post(listUrl, values);

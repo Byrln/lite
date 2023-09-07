@@ -91,7 +91,14 @@ const NewEdit = ({
     openIndex,
     onSingleSubmit,
     submitting,
+    dateStart,
+    roomType,
+    room,
 }: any) => {
+    console.log("testestest", dateStart);
+    console.log("roomTyperoomTyperoomType", roomType);
+    console.log("roomroomroomroom", room);
+
     const { handleModal }: any = useContext(ModalContext);
 
     const [entity, setEntity]: any = useState(null);
@@ -108,13 +115,21 @@ const NewEdit = ({
               TransactionID: 0,
               guest: defaultData ? defaultData.guest : null,
               roomType: {
-                  RoomTypeID: timelineCoord ? timelineCoord.RoomTypeID : null,
+                  RoomTypeID: timelineCoord
+                      ? timelineCoord.RoomTypeID
+                      : roomType
+                      ? roomType
+                      : null,
               },
               room: {
-                  RoomID: timelineCoord ? timelineCoord.RoomID : null,
+                  RoomID: timelineCoord
+                      ? timelineCoord.RoomID
+                      : room
+                      ? room
+                      : null,
               },
               rate: null,
-              dateStart: null,
+              dateStart: dateStart ? dateStart : null,
               dateEnd: null,
               Nights: 1,
               RateModeID: 1,
@@ -128,11 +143,19 @@ const NewEdit = ({
               TransactionID: 0,
               guest: defaultData ? defaultData.guest : null,
               roomType: {
-                  RoomTypeID: timelineCoord ? timelineCoord.RoomTypeID : null,
+                  RoomTypeID: timelineCoord
+                      ? timelineCoord.RoomTypeID
+                      : roomType
+                      ? roomType
+                      : null,
               },
-              room: null,
+              room: room ? room : null,
               rate: null,
-              dateStart: defaultData ? defaultData.dateStart : null,
+              dateStart: defaultData
+                  ? defaultData.dateStart
+                  : dateStart
+                  ? dateStart
+                  : null,
               dateEnd: defaultData ? defaultData.dateEnd : null,
               Nights: defaultData ? defaultData.Nights : null,
               RateModeID: 1,
@@ -275,6 +298,9 @@ const NewEdit = ({
     useEffect(() => {
         if (timelineCoord) {
             setRange(timelineCoord.TimeStart, timelineCoord.TimeEnd);
+        }
+        if (dateStart) {
+            setRange(new Date(dateStart), new Date(dateStart));
         }
     }, []);
 
@@ -614,6 +640,236 @@ const NewEdit = ({
                         // }}
                         >
                             <Grid container spacing={2}>
+                                <Grid item xs={12} sm={4}>
+                                    <Card>
+                                        <CardContent>
+                                            <Typography
+                                                variant="h6"
+                                                component="div"
+                                                className="mb-3"
+                                            >
+                                                Stay Information
+                                            </Typography>
+                                            <Grid container spacing={1}>
+                                                <Grid item xs={12} sm={8}>
+                                                    <TextField
+                                                        type="date"
+                                                        fullWidth
+                                                        id="ArrivalDate"
+                                                        label="Эхлэх огноо"
+                                                        {...register(
+                                                            "ArrivalDate"
+                                                        )}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.ArrivalDate
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.ArrivalDate
+                                                                ?.message
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            onArrivalDateChange(
+                                                                evt
+                                                            );
+                                                        }}
+                                                        size="small"
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <TextField
+                                                        id="ArrivalTime"
+                                                        label="Ирэх цаг"
+                                                        type="time"
+                                                        margin="dense"
+                                                        fullWidth
+                                                        {...register(
+                                                            "ArrivalTime"
+                                                        )}
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        inputProps={{
+                                                            step: 600, // 5 min
+                                                        }}
+                                                        sx={{
+                                                            width: "100%",
+                                                        }}
+                                                        size="small"
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={8}>
+                                                    <TextField
+                                                        type="date"
+                                                        fullWidth
+                                                        id="DepartureDate"
+                                                        label="Гарах огноо"
+                                                        {...register(
+                                                            "DepartureDate"
+                                                        )}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.DepartureDate
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.DepartureDate
+                                                                ?.message
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            onDepartureDateChange(
+                                                                evt
+                                                            );
+                                                        }}
+                                                        size="small"
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <TextField
+                                                        id="DepartureTime"
+                                                        label="Гарах цаг"
+                                                        type="time"
+                                                        margin="dense"
+                                                        {...register(
+                                                            "DepartureTime"
+                                                        )}
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        inputProps={{
+                                                            step: 600, // 5 min
+                                                        }}
+                                                        sx={{
+                                                            width: "100%",
+                                                        }}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {}}
+                                                        size="small"
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={8}>
+                                                    <RoomTypeSelect
+                                                        register={register}
+                                                        errors={errors}
+                                                        onRoomTypeChange={
+                                                            onRoomTypeChange
+                                                        }
+                                                        baseStay={baseStay}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <RoomSelect
+                                                        register={register}
+                                                        errors={errors}
+                                                        baseStay={baseStay}
+                                                        onRoomChange={
+                                                            onRoomChange
+                                                        }
+                                                    />
+                                                </Grid>
+
+                                                <Grid item xs={12} sm={4}>
+                                                    <NumberSelect
+                                                        numberMin={
+                                                            baseStay.roomType
+                                                                ?.BaseAdult
+                                                                ? baseStay
+                                                                      .roomType
+                                                                      ?.BaseAdult
+                                                                : 0
+                                                        }
+                                                        numberMax={
+                                                            baseStay.roomType
+                                                                ?.MaxAdult
+                                                                ? baseStay
+                                                                      .roomType
+                                                                      ?.MaxAdult
+                                                                : 0
+                                                        }
+                                                        nameKey={"Adult"}
+                                                        register={register}
+                                                        errors={errors}
+                                                        label={"Adult"}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <NumberSelect
+                                                        numberMin={
+                                                            baseStay.roomType
+                                                                ?.BaseChild
+                                                                ? baseStay
+                                                                      .roomType
+                                                                      ?.BaseChild
+                                                                : 0
+                                                        }
+                                                        numberMax={
+                                                            baseStay.roomType
+                                                                ?.MaxChild
+                                                                ? baseStay
+                                                                      .roomType
+                                                                      ?.MaxChild
+                                                                : 0
+                                                        }
+                                                        nameKey={"Child"}
+                                                        register={register}
+                                                        errors={errors}
+                                                        label={"Child"}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} sm={4}>
+                                                    <TextField
+                                                        id="Nights"
+                                                        label="Nights"
+                                                        type="number"
+                                                        {...register("Nights")}
+                                                        margin="dense"
+                                                        error={
+                                                            errors.Nights
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.Nights
+                                                                ?.message
+                                                        }
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        value={baseStay.Nights}
+                                                        onChange={(
+                                                            evt: any
+                                                        ) => {
+                                                            reset({
+                                                                Nights: evt
+                                                                    .target
+                                                                    .value,
+                                                            });
+                                                        }}
+                                                        disabled
+                                                        size="small"
+                                                        style={{
+                                                            width: "100%",
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+
                                 <Grid item xs={12} sm={4}>
                                     <Card>
                                         <CardContent>
@@ -1052,235 +1308,6 @@ const NewEdit = ({
                                                 filterValues={filterValues}
                                                 setGuest={setGuest}
                                             />
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <Card>
-                                        <CardContent>
-                                            <Typography
-                                                variant="h6"
-                                                component="div"
-                                                className="mb-3"
-                                            >
-                                                Stay Information
-                                            </Typography>
-                                            <Grid container spacing={1}>
-                                                <Grid item xs={12} sm={8}>
-                                                    <TextField
-                                                        type="date"
-                                                        fullWidth
-                                                        id="ArrivalDate"
-                                                        label="Эхлэх огноо"
-                                                        {...register(
-                                                            "ArrivalDate"
-                                                        )}
-                                                        margin="dense"
-                                                        error={
-                                                            errors.ArrivalDate
-                                                                ?.message
-                                                        }
-                                                        helperText={
-                                                            errors.ArrivalDate
-                                                                ?.message
-                                                        }
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                        onChange={(
-                                                            evt: any
-                                                        ) => {
-                                                            onArrivalDateChange(
-                                                                evt
-                                                            );
-                                                        }}
-                                                        size="small"
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12} sm={4}>
-                                                    <TextField
-                                                        id="ArrivalTime"
-                                                        label="Ирэх цаг"
-                                                        type="time"
-                                                        margin="dense"
-                                                        fullWidth
-                                                        {...register(
-                                                            "ArrivalTime"
-                                                        )}
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                        inputProps={{
-                                                            step: 600, // 5 min
-                                                        }}
-                                                        sx={{
-                                                            width: "100%",
-                                                        }}
-                                                        size="small"
-                                                    />
-                                                </Grid>
-
-                                                <Grid item xs={12} sm={8}>
-                                                    <TextField
-                                                        type="date"
-                                                        fullWidth
-                                                        id="DepartureDate"
-                                                        label="Гарах огноо"
-                                                        {...register(
-                                                            "DepartureDate"
-                                                        )}
-                                                        margin="dense"
-                                                        error={
-                                                            errors.DepartureDate
-                                                                ?.message
-                                                        }
-                                                        helperText={
-                                                            errors.DepartureDate
-                                                                ?.message
-                                                        }
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                        onChange={(
-                                                            evt: any
-                                                        ) => {
-                                                            onDepartureDateChange(
-                                                                evt
-                                                            );
-                                                        }}
-                                                        size="small"
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12} sm={4}>
-                                                    <TextField
-                                                        id="DepartureTime"
-                                                        label="Гарах цаг"
-                                                        type="time"
-                                                        margin="dense"
-                                                        {...register(
-                                                            "DepartureTime"
-                                                        )}
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                        inputProps={{
-                                                            step: 600, // 5 min
-                                                        }}
-                                                        sx={{
-                                                            width: "100%",
-                                                        }}
-                                                        onChange={(
-                                                            evt: any
-                                                        ) => {}}
-                                                        size="small"
-                                                    />
-                                                </Grid>
-
-                                                <Grid item xs={12} sm={8}>
-                                                    <RoomTypeSelect
-                                                        register={register}
-                                                        errors={errors}
-                                                        onRoomTypeChange={
-                                                            onRoomTypeChange
-                                                        }
-                                                        baseStay={baseStay}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12} sm={4}>
-                                                    <RoomSelect
-                                                        register={register}
-                                                        errors={errors}
-                                                        baseStay={baseStay}
-                                                        onRoomChange={
-                                                            onRoomChange
-                                                        }
-                                                    />
-                                                </Grid>
-
-                                                <Grid item xs={12} sm={4}>
-                                                    <NumberSelect
-                                                        numberMin={
-                                                            baseStay.roomType
-                                                                ?.BaseAdult
-                                                                ? baseStay
-                                                                      .roomType
-                                                                      ?.BaseAdult
-                                                                : 0
-                                                        }
-                                                        numberMax={
-                                                            baseStay.roomType
-                                                                ?.MaxAdult
-                                                                ? baseStay
-                                                                      .roomType
-                                                                      ?.MaxAdult
-                                                                : 0
-                                                        }
-                                                        nameKey={"Adult"}
-                                                        register={register}
-                                                        errors={errors}
-                                                        label={"Adult"}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12} sm={4}>
-                                                    <NumberSelect
-                                                        numberMin={
-                                                            baseStay.roomType
-                                                                ?.BaseChild
-                                                                ? baseStay
-                                                                      .roomType
-                                                                      ?.BaseChild
-                                                                : 0
-                                                        }
-                                                        numberMax={
-                                                            baseStay.roomType
-                                                                ?.MaxChild
-                                                                ? baseStay
-                                                                      .roomType
-                                                                      ?.MaxChild
-                                                                : 0
-                                                        }
-                                                        nameKey={"Child"}
-                                                        register={register}
-                                                        errors={errors}
-                                                        label={"Child"}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12} sm={4}>
-                                                    <TextField
-                                                        id="Nights"
-                                                        label="Nights"
-                                                        type="number"
-                                                        {...register("Nights")}
-                                                        margin="dense"
-                                                        error={
-                                                            errors.Nights
-                                                                ?.message
-                                                        }
-                                                        helperText={
-                                                            errors.Nights
-                                                                ?.message
-                                                        }
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                        value={baseStay.Nights}
-                                                        onChange={(
-                                                            evt: any
-                                                        ) => {
-                                                            reset({
-                                                                Nights: evt
-                                                                    .target
-                                                                    .value,
-                                                            });
-                                                        }}
-                                                        disabled
-                                                        size="small"
-                                                        style={{
-                                                            width: "100%",
-                                                        }}
-                                                    />
-                                                </Grid>
-                                            </Grid>
                                         </CardContent>
                                     </Card>
                                 </Grid>

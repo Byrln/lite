@@ -1,9 +1,11 @@
+import { createRef } from "react";
 import {
     Checkbox,
     Box,
     Grid,
     FormControlLabel,
     FormGroup,
+    Button,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
@@ -30,7 +32,9 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const formRef = createRef<HTMLButtonElement>();
     const [state]: any = useAppState();
+
     const {
         register,
         reset,
@@ -39,6 +43,19 @@ const NewEdit = () => {
     } = useForm({
         resolver: yupResolver(validationSchema),
     });
+
+    const onSubmit = async (values: any) => {
+        values.RoomTypeID = state.editId;
+        console.log("values", values);
+
+        // await RoomTypeAPI.update(values);
+
+        // values.amenities.forEach((element: any) => console.log(element));
+
+        // handleModal();
+        // toast("Амжилттай.");
+    };
+
     const tabs = [
         {
             label: "General",
@@ -121,16 +138,16 @@ const NewEdit = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                            size="small"
-                            type="number"
-                            fullWidth
-                            id="SortOrder"
-                            label="Дараалал"
-                            {...register("SortOrder")}
-                            margin="dense"
-                            error={errors.SortOrder?.message}
-                            helperText={errors.SortOrder?.message}
-                            sx={{ mt: 2 }}
+                                size="small"
+                                type="number"
+                                fullWidth
+                                id="SortOrder"
+                                label="Дараалал"
+                                {...register("SortOrder")}
+                                margin="dense"
+                                error={errors.SortOrder?.message}
+                                helperText={errors.SortOrder?.message}
+                                sx={{ mt: 2 }}
                             />
                         </Grid>
                     </Grid>
@@ -143,33 +160,33 @@ const NewEdit = () => {
             label: "Booking Engine",
             component: (
                 <>
-                <Grid container spacing={1}>
-                    <Grid item xs={6}>
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="BookingDescription"
-                            label="Товч тайлбар (Онлайн захиалга)"
-                            {...register("BookingDescription")}
-                            margin="dense"
-                            error={errors.BookingDescription?.message}
-                            helperText={errors.BookingDescription?.message}
-                        />
+                    <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                            <TextField
+                                size="small"
+                                fullWidth
+                                id="BookingDescription"
+                                label="Товч тайлбар (Онлайн захиалга)"
+                                {...register("BookingDescription")}
+                                margin="dense"
+                                error={errors.BookingDescription?.message}
+                                helperText={errors.BookingDescription?.message}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                size="small"
+                                type="number"
+                                fullWidth
+                                id="SortOrder"
+                                label="Эрэмбэлэх утга"
+                                {...register("SortOrder")}
+                                margin="dense"
+                                error={errors.SortOrder?.message}
+                                helperText={errors.SortOrder?.message}
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            size="small"
-                            type="number"
-                            fullWidth
-                            id="SortOrder"
-                            label="Эрэмбэлэх утга"
-                            {...register("SortOrder")}
-                            margin="dense"
-                            error={errors.SortOrder?.message}
-                            helperText={errors.SortOrder?.message}
-                        />
-                    </Grid>
-                </Grid>
                     <FormGroup>
                         <FormControlLabel
                             control={<Checkbox />}
@@ -185,17 +202,28 @@ const NewEdit = () => {
     ];
 
     return (
-        <NewEditForm
-            api={RoomTypeAPI}
-            listUrl={listUrl}
-            additionalValues={{ RoomTypeID: state.editId }}
-            reset={reset}
-            handleSubmit={handleSubmit}
-        >
+        //         <NewEditForm
+        //             api={RoomTypeAPI}
+        //             listUrl={listUrl}
+        //             additionalValues={{ RoomTypeID: state.editId }}
+        //             reset={reset}
+        //             handleSubmit={handleSubmit}
+        //         >
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Box sx={{ width: "100%" }}>
                 <CustomTab tabs={tabs} />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    ref={formRef}
+                    className="mt-3"
+                >
+                    {/* <SaveIcon className="mr-1" /> */}
+                    Reservation
+                </Button>
             </Box>
-        </NewEditForm>
+        </form>
+        // </NewEditForm>
     );
 };
 

@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { lazy, useEffect } from "react";
+import { lazy, useEffect, useContext } from "react";
 import { withAuthServerSideProps } from "lib/utils/with-auth-server-side-props";
 import { FrontOfficeAPI, FrontOfficeSWR } from "lib/api/front-office";
 // Handsontable
@@ -9,6 +9,7 @@ import useSWR from "swr";
 import Head from "next/head";
 import { Box, Grid, Container } from "@mui/material";
 import Page from "components/page";
+
 //test
 
 // Radio
@@ -24,6 +25,8 @@ import { StayView2SWR } from "../../lib/api/stay-view2";
 import { dateToCustomFormat } from "../../lib/utils/format-time";
 import { HouseKeepingCurrentSWR } from "../../lib/api/house-keeping";
 import { date } from "yup";
+import { ModalContext } from "lib/context/modal";
+import NewReservation from "components/reservation/new-edit";
 
 const HotTableCSR = dynamic(
     // @ts-ignore
@@ -62,6 +65,7 @@ const myClick = () => {
 };
 
 const TimelineTable = ({ props, workingDate }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
     const [dayCount, setDayCount] = useState("30");
     const [columns, setColumns] = useState([]);
     const [headers, setHeaders] = useState([]);
@@ -191,6 +195,20 @@ const TimelineTable = ({ props, workingDate }: any) => {
             "Finding order by coordinate: ", // @ts-ignore
             orderCoords[coords.row + "_" + (coords.col - 1)]
         );
+        console.log("records genee", records[coords.row]);
+        handleModal(
+            true,
+            `New Reservation`,
+            <NewReservation
+                dateStart={key}
+                // @ts-ignore
+                roomType={records[coords.row].roomTypeID}
+                // @ts-ignore
+                room={records[coords.row].roomID}
+            />,
+            null,
+            "large"
+        );
     }
 
     // @ts-ignore
@@ -210,6 +228,8 @@ const TimelineTable = ({ props, workingDate }: any) => {
             let temp_rec = {
                 id: "" + roomTypes[i].RoomTypeID,
                 room: roomTypes[i].RoomTypeName,
+                roomTypeID: roomTypes[i].RoomTypeID,
+                roomID: 0,
                 group: true,
             };
             // RoomType set 0
@@ -247,6 +267,8 @@ const TimelineTable = ({ props, workingDate }: any) => {
                             "_" +
                             rooms[j].RoomID,
                         room: rooms[j].RoomNo,
+                        roomID: rooms[j].RoomID,
+                        roomTypeID: roomTypes[i].RoomTypeID,
                     };
                     for (let l = 0; l < parseInt(dayCount) * 2; l++) {
                         // @ts-ignore

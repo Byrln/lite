@@ -35,7 +35,7 @@ const validationSchema = yup.object().shape({
     DateOfBirth: yup.date().required("Бөглөнө үү"),
     GenderID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     Address: yup.string().notRequired(),
-    CountryID: yup.number().notRequired(),
+    CountryID: yup.string().notRequired(),
     Zip: yup.string().notRequired(),
     Phone: yup.string().notRequired(),
     Mobile: yup.string().notRequired(),
@@ -60,13 +60,15 @@ const NewEdit = () => {
         setValue(newValue);
     };
 
-    useEffect(() => {
-        if (entity) {
-            let tempEntity = { ...entity };
-            tempEntity.DateOfBirth = new Date(tempEntity.DateOfBirth);
-            setEntity(entity);
-        }
-    }, [entity]);
+    // useEffect(() => {
+    //     if (entity) {
+    //         console.log("entity", entity);
+    //         // let tempEntity = { ...entity };
+    //         // tempEntity.DateOfBirth = new Date(tempEntity.DateOfBirth);
+    //         // console.log("testestest", tempEntity.DateOfBirth);
+    //         // setEntity(tempEntity);
+    //     }
+    // }, [entity]);
 
     return (
         <>
@@ -89,6 +91,7 @@ const NewEdit = () => {
                         reset={reset}
                         handleSubmit={handleSubmit}
                         setEntity={setEntity}
+                        dateKeys={["DateOfBirth"]}
                     >
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={3}>

@@ -5,11 +5,11 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { useEffect } from "react";
 
-import { CustomerGroupSWR } from "lib/api/customer-group";
+import { CustomerTypeSWR } from "lib/api/customer-type";
 import { elementAcceptingRef } from "@mui/utils";
 
-const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
-    const { data, error } = CustomerGroupSWR();
+const CustomerTypeSelect = ({ register, errors, entity, setEntity }: any) => {
+    const { data, error } = CustomerTypeSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -24,19 +24,19 @@ const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
     return (
         <TextField
             fullWidth
-            id="CustomerGroupID"
-            label="Customer group"
-            {...register("CustomerGroupID")}
+            id="CustomerTypeID"
+            label="Customer Type"
+            {...register("CustomerTypeID")}
             select
             margin="dense"
-            error={errors.CustomerGroupID?.message}
-            helperText={errors.CustomerGroupID?.message}
-            value={entity && entity.CustomerGroupID}
+            error={errors.CustomerTypeID?.message}
+            helperText={errors.CustomerTypeID?.message}
+            value={entity && entity.CustomerTypeID}
             onChange={(evt: any) => {
                 setEntity &&
                     setEntity({
                         ...entity,
-                        CustomerGroupID: evt.target.value,
+                        CustomerTypeID: evt.target.value,
                     });
             }}
             size="small"
@@ -44,10 +44,10 @@ const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
             {data.map((element: any) => {
                 return (
                     <MenuItem
-                        key={element.CustomerGroupID}
-                        value={element.CustomerGroupID}
+                        key={element.CustomerTypeID}
+                        value={element.CustomerTypeID}
                     >
-                        {`${element.CustomerGroupName}`}
+                        {`${element.CustomerTypeName}`}
                     </MenuItem>
                 );
             })}
@@ -55,4 +55,4 @@ const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
     );
 };
 
-export default CustomerGroupSelect;
+export default CustomerTypeSelect;

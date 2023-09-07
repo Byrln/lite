@@ -32,10 +32,14 @@ const RoomAmenitySelect = ({ register, errors }: any) => {
             <FormGroup>
                 <Box display="flex" flexWrap="wrap">
                     {data.map((element: any, index: number) => (
-                        <Box key={index}>
+                        <Box key={element.AmenityID}>
                             <FormControlLabel
                                 control={
-                                    <Checkbox {...register("AmenityID")} />
+                                    <Checkbox
+                                        key={element.AmenityID}
+                                        name={element.AmenityID}
+                                        {...register("AmenityID")}
+                                    />
                                 }
                                 label={element.AmenityName}
                             />

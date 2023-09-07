@@ -7,6 +7,7 @@ import { CircularProgress, Grid } from "@mui/material";
 import SubmitButton from "components/common/submit-button";
 import { ModalContext } from "lib/context/modal";
 import { useAppState } from "lib/context/app";
+import { format } from "date-fns";
 
 const NewEditForm = ({
     children,
@@ -19,6 +20,8 @@ const NewEditForm = ({
     isShowNotAffected = false,
     handleModalNotAffected = false,
     stateEditIdNotAffected = false,
+    dateKeys,
+    customSubmitTitle,
 }: any) => {
     const [state]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
@@ -32,6 +35,30 @@ const NewEditForm = ({
 
                 try {
                     const arr: any = await api?.get(state.editId);
+                    if (dateKeys) {
+                        if (Array.isArray(dateKeys)) {
+                            for (const key of dateKeys) {
+                                if (arr[0][key]) {
+                                    arr[0][key] = format(
+                                        new Date(
+                                            arr[0][key].replace(/ /g, "T")
+                                        ),
+                                        "yyyy-MM-dd"
+                                    );
+                                }
+                            }
+                        } else {
+                            if (arr[0][dateKeys]) {
+                                arr[0][dateKeys] = format(
+                                    new Date(
+                                        arr[0][dateKeys].replace(/ /g, "T")
+                                    ),
+                                    "yyyy-MM-dd"
+                                );
+                            }
+                        }
+                    }
+
                     if (setEntity) {
                         setEntity(arr[0]);
                     }
@@ -47,7 +74,7 @@ const NewEditForm = ({
 
     const onSubmit = async (values: any) => {
         setLoading(true);
-
+        console.log("valuesvaluesvaluesvalues", values);
         try {
             if (additionalValues) {
                 values = Object.assign(values, additionalValues);
@@ -85,7 +112,7 @@ const NewEditForm = ({
             {children}
 
             {state.isShow && !isShowNotAffected ? null : (
-                <SubmitButton loading={loading} />
+                <SubmitButton loading={loading} title={customSubmitTitle} />
             )}
         </form>
     );

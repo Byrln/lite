@@ -80,7 +80,7 @@ export const RoomTypeAPI = {
         };
     },
 
-    update: async (id: any, values: any) => {
+    update: async (values: any) => {
         const { data, status } = await axios.post(
             `${urlPrefix}/Update`,
             values
@@ -111,6 +111,18 @@ export const RoomTypeAPI = {
 
         const { data, status } = await axios.post(
             `${urlPrefix}/${apiUrl}`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    amenityInsertWU: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/AmenityInsertWU`,
             values
         );
 

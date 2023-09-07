@@ -96,7 +96,7 @@ const CompanyDatabaseList = ({ title }: any) => {
                 hasNew={true}
                 hasUpdate={true}
                 hasDelete={true}
-                id="CompanyDatabaseID"
+                id="CustomerID"
                 listUrl={listUrl}
                 modalTitle={title}
                 modalContent={<NewEdit />}
