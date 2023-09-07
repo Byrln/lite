@@ -20,7 +20,7 @@ export const HotelSettingSWR = () => {
 export const HotelSettingAPI = {
     get: async (id: any) => {
         const values = {
-            HotelSettingID: id,
+            HotelID: id,
         };
 
         const res = await axios.post(listUrl, values);

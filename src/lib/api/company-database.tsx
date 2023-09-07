@@ -6,6 +6,10 @@ const urlPrefix = "/api/Customer";
 export const listUrl = `${urlPrefix}/list`;
 
 export const CompanyDatabaseSWR = (search: any) => {
+    if (!search.CountryID) {
+        search.CountryID = 0;
+    }
+
     const fetcher = async (url: any) =>
         await axios.post(url, search).then((res: any) => res.data.JsonData);
 
