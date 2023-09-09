@@ -4,10 +4,10 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
-import { PackageSWR } from "lib/api/package";
+import { EditionSWR } from "lib/api/edition";
 
-const PackageSelect = ({ register, errors, entity, setEntity }: any) => {
-    const { data, error } = PackageSWR([]);
+const EditionSelect = ({ register, errors, entity, setEntity }: any) => {
+    const { data, error } = EditionSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -23,32 +23,32 @@ const PackageSelect = ({ register, errors, entity, setEntity }: any) => {
         <TextField
             size="small"
             fullWidth
-            id="PackageID"
-            label="Package"
-            {...register("PackageID")}
+            id="EditionID"
+            label="EditionID"
+            {...register("EditionID")}
             select
             margin="dense"
-            error={errors.PackageID?.message}
-            helperText={errors.PackageID?.message}
-            value={entity && entity.PackageID}
+            error={errors.EditionID?.message}
+            helperText={errors.EditionID?.message}
+            value={entity && entity.EditionID}
             InputLabelProps={{
-                shrink: entity && entity.PackageID,
+                shrink: entity && entity.EditionID,
             }}
             onChange={(evt: any) => {
                 setEntity &&
                     setEntity({
                         ...entity,
-                        PackageID: evt.target.value,
+                        EditionID: evt.target.value,
                     });
             }}
         >
             {data.map((country: any) => (
-                <MenuItem key={country.PackageID} value={country.PackageID}>
-                    {country.PackageName}
+                <MenuItem key={country.EditionID} value={country.EditionID}>
+                    {country.EditionName}
                 </MenuItem>
             ))}
         </TextField>
     );
 };
 
-export default PackageSelect;
+export default EditionSelect;

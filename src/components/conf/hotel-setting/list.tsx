@@ -80,10 +80,10 @@ const HotelSettingList = ({ title }: any) => {
             data={data}
             error={error}
             api={HotelSettingAPI}
-            hasNew={true}
+            hasNew={false}
             hasUpdate={true}
-            hasDelete={true}
-            id="HotelSettingID"
+            hasDelete={false}
+            id="HotelID"
             listUrl={listUrl}
             modalTitle={title}
             modalContent={<NewEdit />}

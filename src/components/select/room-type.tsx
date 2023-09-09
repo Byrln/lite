@@ -87,7 +87,12 @@ const RoomTypeSelect = ({
             onChange={(evt: any) => {
                 eventRoomTypeChange(evt.target.value);
             }}
-            value={baseStay && baseStay?.roomType?.RoomTypeID}
+            value={
+                baseStay &&
+                (baseStay?.roomType
+                    ? baseStay?.roomType?.RoomTypeID
+                    : baseStay?.RoomTypeID)
+            }
         >
             {data.map((element: any) => (
                 <MenuItem key={element.RoomTypeID} value={element.RoomTypeID}>

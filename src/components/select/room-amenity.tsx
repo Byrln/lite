@@ -34,6 +34,7 @@ const RoomAmenitySelect = ({ register, errors }: any) => {
                     {data.map((element: any, index: number) => (
                         <Box key={element.AmenityID}>
                             <FormControlLabel
+                                key={element.AmenityID}
                                 control={
                                     <Checkbox
                                         key={element.AmenityID}

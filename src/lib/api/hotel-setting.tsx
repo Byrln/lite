@@ -38,10 +38,7 @@ export const HotelSettingAPI = {
     },
 
     update: async (values: any) => {
-        const { data, status } = await axios.post(
-            `${urlPrefix}/Update`,
-            values
-        );
+        const { data, status } = await axios.post(`${urlPrefix}Update`, values);
 
         return {
             data,

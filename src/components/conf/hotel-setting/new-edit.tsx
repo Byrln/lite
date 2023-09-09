@@ -12,7 +12,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import NewEditForm from "components/common/new-edit-form";
 import { HotelSettingAPI, listUrl } from "lib/api/hotel-setting";
 import { useAppState } from "lib/context/app";
-import PackageSelect from "components/select/packages";
+import EditionSelect from "components/select/edition";
 
 const validationSchema = yup.object().shape({
     PMSStart: yup.date().required("Бөглөнө үү"),
@@ -37,7 +37,7 @@ const NewEdit = () => {
             api={HotelSettingAPI}
             listUrl={listUrl}
             additionalValues={{
-                HotelSettingID: state.editId,
+                HotelID: state.editId,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
@@ -47,6 +47,37 @@ const NewEdit = () => {
                 dateAdapter={AdapterDateFns} // @ts-ignore
             >
                 <Grid container spacing={1}>
+                    {state.editId && (
+                        <>
+                            <Grid item xs={6}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="HotelCode"
+                                    label="HotelCode"
+                                    {...register("HotelCode")}
+                                    margin="dense"
+                                    error={errors.HotelCode?.message}
+                                    helperText={errors.HotelCode?.message}
+                                    disabled
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="HotelName"
+                                    label="HotelName"
+                                    {...register("HotelName")}
+                                    margin="dense"
+                                    error={errors.HotelName?.message}
+                                    helperText={errors.HotelName?.message}
+                                    disabled
+                                />
+                            </Grid>{" "}
+                        </>
+                    )}
+
                     <Grid item xs={6}>
                         <Controller
                             name="PMSStart"
@@ -110,7 +141,7 @@ const NewEdit = () => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <PackageSelect
+                        <EditionSelect
                             register={register}
                             errors={errors}
                             entity={entity}

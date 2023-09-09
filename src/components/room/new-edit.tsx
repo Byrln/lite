@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 
 import NewEditForm from "components/common/new-edit-form";
 import { RoomAPI, listUrl } from "lib/api/room";
@@ -18,7 +19,13 @@ const validationSchema = yup.object().shape({
     SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
+const baseStayDefault = {
+    TransactionID: 0,
+};
+
 const NewEdit = () => {
+    const [baseStay, setBaseStay]: any = useState(baseStayDefault);
+
     const [state]: any = useAppState();
     const {
         register,
@@ -36,6 +43,7 @@ const NewEdit = () => {
             additionalValues={{ RoomID: state.editId }}
             reset={reset}
             handleSubmit={handleSubmit}
+            setEntity={setBaseStay}
         >
             <Grid container spacing={1}>
                 <Grid item xs={4}>
@@ -51,7 +59,11 @@ const NewEdit = () => {
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <RoomTypeSelect register={register} errors={errors} />
+                    <RoomTypeSelect
+                        register={register}
+                        errors={errors}
+                        baseStay={baseStay}
+                    />
                 </Grid>
                 <Grid item xs={4}>
                     <FloorSelect register={register} errors={errors} />
