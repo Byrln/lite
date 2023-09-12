@@ -128,7 +128,7 @@ const CustomModal = () => {
                                 }}
                             >
                                 <Button
-                                    size="medium"
+                                    size="small"
                                     variant="outlined"
                                     key="back"
                                     onClick={() => handleModal()}

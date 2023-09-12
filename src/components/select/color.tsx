@@ -35,12 +35,6 @@ const ColorPicker = ({ onColorChange }: any) => {
     const [state, setState] = useState({
         displayColorPicker: false,
         color: hexToRGBA(colorDefault),
-        // color: {
-        //     r: '241',
-        //     g: '112',
-        //     b: '19',
-        //     a: '1',
-        // },
     });
 
     useEffect(() => {

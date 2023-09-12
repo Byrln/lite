@@ -94,7 +94,7 @@ const NewEdit = () => {
                         helperText={errors.Status?.message}
                     />
                 </Grid>
-                <Grid item xs={6}> 
+                <Grid item xs={6}>
                     <TextField
                         size="small"
                         fullWidth

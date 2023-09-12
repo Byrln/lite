@@ -51,7 +51,7 @@ const CustomSelect = ({
                     <div className="search-button-position">
                         <LoadingButton
                             variant="outlined"
-                            size="medium"
+                            size="small"
                             loading={loading}
                             className="mt-3 mr-3"
                             onClick={() => reset()}
@@ -61,7 +61,7 @@ const CustomSelect = ({
                         </LoadingButton>
 
                         <LoadingButton
-                            size="medium"
+                            size="small"
                             type="submit"
                             variant="contained"
                             loading={loading}

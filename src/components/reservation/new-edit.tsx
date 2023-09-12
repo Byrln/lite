@@ -9,9 +9,6 @@ import {
     Button,
     Alert,
     Typography,
-    Stepper,
-    Step,
-    StepLabel,
     Card,
     CardContent,
     MenuItem,
@@ -138,6 +135,7 @@ const NewEdit = ({
               CurrencyAmount: null,
               Adult: 0,
               Child: 0,
+              GroupColor: "#F17013",
           }
         : {
               TransactionID: 0,
@@ -164,6 +162,7 @@ const NewEdit = ({
               CurrencyAmount: null,
               Adult: 0,
               Child: 0,
+              GroupColor: "#F17013",
           };
 
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
@@ -230,6 +229,7 @@ const NewEdit = ({
             otherwise: yup.string().notRequired(),
         }),
         groupReservation: yup.array().notRequired(),
+        GroupColor: yup.string().notRequired(),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -300,7 +300,10 @@ const NewEdit = ({
             setRange(timelineCoord.TimeStart, timelineCoord.TimeEnd);
         }
         if (dateStart) {
-            setRange(new Date(dateStart), new Date(dateStart));
+            setRange(
+                new Date(dateStart),
+                new Date(new Date(dateStart).getTime() + 86400000)
+            );
         }
     }, []);
 
@@ -358,8 +361,13 @@ const NewEdit = ({
                     baseStay.dateEnd
                 );
             }
+
             if (!values.CurrencyAmount) {
                 values.CurrencyAmount = baseStay.CurrencyAmount;
+            }
+
+            if (!values.GroupColor) {
+                values.GroupColor = baseStay.GroupColor;
             }
 
             let tempValues = values;
@@ -386,6 +394,7 @@ const NewEdit = ({
                 );
                 element.ArrivalDate = values.TransactionDetail[0].ArrivalDate;
                 element.ArrivalTime = values.TransactionDetail[0].ArrivalTime;
+                element.GroupColor = values.TransactionDetail[0].GroupColor;
                 element.DepartureDate =
                     values.TransactionDetail[0].DepartureDate;
                 element.DepartureTime =
@@ -547,7 +556,7 @@ const NewEdit = ({
                     setEntity(null);
                 }
             };
-            console.log("idEditing", typeof idEditing);
+
             fetchDatas();
         } else {
             setEntity(null);
@@ -597,13 +606,11 @@ const NewEdit = ({
 
     const onColorChange = (color: any) => {
         console.log("color", color);
+        setValue("GroupColor", color);
     };
 
     const onCheckChange = (name: any, value: any) => {
-        setValue(name, getValues(name) == true ? true : false);
-        console.log("name", name);
-
-        console.log("TaxIncluded", getValues("TaxIncluded"));
+        setValue(name, getValues(name) == true ? false : true);
     };
 
     return (
@@ -1703,7 +1710,7 @@ const NewEdit = ({
                                     </Grid>
                                     {baseGroupStay[index] &&
                                         baseGroupStay[index].roomType && (
-                                            <Grid item xs={12} sm={2}>
+                                            <Grid item xs={12} sm={1}>
                                                 <RoomSelect
                                                     register={register}
                                                     errors={errors}
@@ -1747,7 +1754,7 @@ const NewEdit = ({
                                         baseGroupStay[index].Nights &&
                                         baseGroupStay[index].TaxIncluded && (
                                             <>
-                                                <Grid item xs={12} sm={2}>
+                                                <Grid item xs={12} sm={1}>
                                                     <CurrencyAmount
                                                         register={register}
                                                         errors={errors}
@@ -1767,7 +1774,7 @@ const NewEdit = ({
                                                     />
                                                 </Grid>
 
-                                                <Grid item xs={12} sm={2}>
+                                                <Grid item xs={12} sm={1}>
                                                     <NumberSelect
                                                         numberMin={
                                                             baseGroupStay[index]
@@ -1795,7 +1802,7 @@ const NewEdit = ({
                                                         label={"Adult"}
                                                     />
                                                 </Grid>
-                                                <Grid item xs={12} sm={2}>
+                                                <Grid item xs={12} sm={1}>
                                                     <NumberSelect
                                                         numberMin={
                                                             baseGroupStay[index]

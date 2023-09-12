@@ -3,7 +3,7 @@ import { LoadingButton } from "@mui/lab";
 const SubmitButton = ({ loading, title }: any) => (
     <LoadingButton
         fullWidth
-        size="medium"
+        size="small"
         type="submit"
         variant="contained"
         loading={loading}

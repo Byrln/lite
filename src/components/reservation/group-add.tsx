@@ -30,9 +30,7 @@ const GroupAdd = ({
                 variant="outlined"
                 onClick={(evt: any) => {
                     addReservations();
-                    // let tempStay = [...baseGroupStay];
-                    // tempStay.push(baseStay);
-                    // setBaseGroupStay(tempStay);
+                    setAddCount(addCount + 1);
                 }}
             >
                 + Add room
