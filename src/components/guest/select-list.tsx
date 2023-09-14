@@ -86,12 +86,12 @@ const SelectList = ({ filterValues, setGuest, groupIndex }: any) => {
                                         if (groupIndex == null) {
                                             setGuest(guest);
                                         } else {
-                                            let tempGuest = { ...guest };
-                                            tempGuest.groupReservation = [];
-                                            tempGuest.groupReservation[
-                                                groupIndex
-                                            ] = guest;
-                                            setGuest(tempGuest, groupIndex);
+                                            // let tempGuest = { ...guest };
+                                            // tempGuest.groupReservation = [];
+                                            // tempGuest.groupReservation[
+                                            //     groupIndex
+                                            // ] = guest;
+                                            setGuest(guest, groupIndex);
                                         }
                                     }}
                                 >

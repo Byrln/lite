@@ -81,7 +81,7 @@ const CustomTable = ({
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
-    console.log("data", data);
+
     const downloadExcel = async () => {
         console.log("clickedColumn ", customizedColumns);
         console.log("cllicked ", data);

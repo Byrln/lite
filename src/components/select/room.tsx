@@ -16,6 +16,7 @@ const RoomSelect = ({
     customRegisterName,
     groupIndex,
 }: any) => {
+    console.log("baseStay", baseStay);
     // const { data, error } = RoomSWR();
     const [data, setData]: any = useState([]);
 

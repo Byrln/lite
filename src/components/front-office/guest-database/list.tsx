@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Button from "@mui/material/Button";
 
 import CustomTable from "components/common/custom-table";
 import CustomSearch from "components/common/custom-search";
@@ -12,55 +13,86 @@ import {
 } from "lib/api/guest-database";
 import NewEdit from "./new-edit";
 import Search from "./search";
-
-const columns = [
-    {
-        title: "Guest Name",
-        key: "GuestFullName",
-        dataIndex: "GuestFullName",
-    },
-    {
-        title: "Country",
-        key: "CountryName",
-        dataIndex: "CountryName",
-    },
-    {
-        title: "Phone",
-        key: "Phone",
-        dataIndex: "Phone",
-    },
-    {
-        title: "Mobile",
-        key: "Mobile",
-        dataIndex: "Mobile",
-    },
-    {
-        title: "Email",
-        key: "Email",
-        dataIndex: "Email",
-    },
-
-    {
-        title: "Vip Status",
-        key: "VipStatusName",
-        dataIndex: "VipStatusName",
-    },
-    {
-        title: "Action",
-        key: "Action",
-        dataIndex: "Action",
-        render: function render(id: any, value: any) {
-            return (
-                <>
-                    <button> Upload Picture </button>
-                    <button> Upload Document </button>
-                </>
-            );
-        },
-    },
-];
+import CustomUpload from "components/common/custom-upload";
+import { ModalContext } from "lib/context/modal";
 
 const GuestdatabaseList = ({ title }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
+
+    const columns = [
+        {
+            title: "Guest Name",
+            key: "GuestFullName",
+            dataIndex: "GuestFullName",
+        },
+        {
+            title: "Country",
+            key: "CountryName",
+            dataIndex: "CountryName",
+        },
+        {
+            title: "Phone",
+            key: "Phone",
+            dataIndex: "Phone",
+        },
+        {
+            title: "Mobile",
+            key: "Mobile",
+            dataIndex: "Mobile",
+        },
+        {
+            title: "Email",
+            key: "Email",
+            dataIndex: "Email",
+        },
+
+        {
+            title: "Vip Status",
+            key: "VipStatusName",
+            dataIndex: "VipStatusName",
+        },
+        {
+            title: "Action",
+            key: "Action",
+            dataIndex: "Action",
+            render: function render(id: any, record: any) {
+                return (
+                    <>
+                        <Button
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Upload Picture`,
+                                    <CustomUpload GuestID={id} />,
+                                    null,
+                                    "large"
+                                );
+                            }}
+                        >
+                            Upload Picture
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Upload Picture`,
+                                    <CustomUpload
+                                        GuestID={id}
+                                        IsDocument={true}
+                                    />,
+                                    null,
+                                    "large"
+                                );
+                            }}
+                        >
+                            Upload Document
+                        </Button>
+                    </>
+                );
+            },
+        },
+    ];
+
     const validationSchema = yup.object().shape({
         GuestName: yup.string().nullable(),
         CountryID: yup.string().nullable(),

@@ -147,7 +147,13 @@ const NewEdit = ({
                       ? roomType
                       : null,
               },
-              room: room ? room : null,
+              room: {
+                  RoomID: timelineCoord
+                      ? timelineCoord.RoomID
+                      : room
+                      ? room
+                      : null,
+              },
               rate: null,
               dateStart: defaultData
                   ? defaultData.dateStart
@@ -353,6 +359,7 @@ const NewEdit = ({
 
     const onSubmit = async (values: any) => {
         // setLoading(true);
+        console.log("idEditing", idEditing);
         console.log("values", values);
         try {
             if (!values.Nights) {
@@ -383,25 +390,27 @@ const NewEdit = ({
 
             if (groupReservation) {
                 groupReservation.forEach((element: any) =>
-                    values.TransactionDetail.push(element)
+                    values.TransactionDetail.push(tempValues)
                 );
             }
 
-            values.TransactionDetail.forEach((element: any) => {
-                element.Nights = countNights(
-                    baseStay.dateStart,
-                    baseStay.dateEnd
-                );
-                element.ArrivalDate = values.TransactionDetail[0].ArrivalDate;
-                element.ArrivalTime = values.TransactionDetail[0].ArrivalTime;
-                element.GroupColor = values.TransactionDetail[0].GroupColor;
-                element.DepartureDate =
-                    values.TransactionDetail[0].DepartureDate;
-                element.DepartureTime =
-                    values.TransactionDetail[0].DepartureTime;
-            });
+            // values.TransactionDetail.forEach((element: any, index:any) => {
+            //     // element = values.TransactionDetail[0];
+            //     element.Nights = countNights(
+            //         baseStay.dateStart,
+            //         baseStay.dateEnd
+            //     );
+            //     element.ArrivalDate = values.TransactionDetail[0].ArrivalDate;
+            //     element.ArrivalTime = values.TransactionDetail[0].ArrivalTime;
+            //     element.GroupColor = values.TransactionDetail[0].GroupColor;
+            //     element.DepartureDate =
+            //         values.TransactionDetail[0].DepartureDate;
+            //     element.DepartureTime =
+            //         values.TransactionDetail[0].DepartureTime;
+            // });
 
-            values.TransactionDetail.forEach((element: any) => {
+            values.TransactionDetail.forEach((element: any, index: any) => {
+                console.log("index", index);
                 element.ArrivalDate =
                     fToUniversal(element.ArrivalDate) +
                     " " +
@@ -416,152 +425,183 @@ const NewEdit = ({
                 element.IsCheckIn = false;
                 element.DurationEnabled = true;
                 element.ReservationSourceID = 1;
-
-                if (!element.GuestID) {
-                    element.GuestID = 0;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.GuestID =
-                        values.TransactionDetail[0].GuestID;
-                }
                 element.GuestDetail = {};
 
-                if (element.Name) {
-                    element.GuestDetail.Name = element.Name;
-                    delete element.Name;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.Name =
-                        values.TransactionDetail[0].GuestDetail.Name;
+                // if (index == 0) {
+                //     element.GuestID = idEditing[0];
+                //     element.GuestDetail.GuestID = idEditing[0];
+                // }
+                console.log("idEditing[index]", idEditing[index]);
+                console.log("index", index);
+                console.log("groupReservation", groupReservation);
+                console.log("element", element);
+
+                if (idEditing[index]) {
+                    element.GuestID = idEditing[index];
+                    element.GuestDetail.GuestID = idEditing[index];
+                } else {
+                    element.GuestDetail.GuestID = idEditing[0];
+                    element.GuestID = idEditing[0];
                 }
 
-                if (element.Address) {
-                    element.GuestDetail.Address = element.Address;
-                    delete element.Address;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.Address =
-                        values.TransactionDetail[0].GuestDetail.Address;
-                }
+                // if (element.Name) {
+                //     element.GuestDetail.Name = element.Name;
+                //     delete element.Name;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.Name =
+                //         values.TransactionDetail[0].GuestDetail.Name;
+                // }
 
-                if (element.DriverLicenseNo) {
-                    element.GuestDetail.DriverLicenseNo =
-                        element.DriverLicenseNo;
-                    delete element.DriverLicenseNo;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.DriverLicenseNo =
-                        values.TransactionDetail[0].GuestDetail.DriverLicenseNo;
-                }
+                // if (element.Address) {
+                //     element.GuestDetail.Address = element.Address;
+                //     delete element.Address;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.Address =
+                //         values.TransactionDetail[0].GuestDetail.Address;
+                // }
 
-                if (element.GuestTitleID) {
-                    element.GuestDetail.GuestTitleID = element.GuestTitleID;
-                    delete element.GuestTitleID;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.GuestTitleID =
-                        values.TransactionDetail[0].GuestDetail.GuestTitleID;
-                }
+                // if (element.DriverLicenseNo) {
+                //     element.GuestDetail.DriverLicenseNo =
+                //         element.DriverLicenseNo;
+                //     delete element.DriverLicenseNo;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.DriverLicenseNo =
+                //         values.TransactionDetail[0].GuestDetail.DriverLicenseNo;
+                // }
 
-                if (element.Surname) {
-                    element.GuestDetail.Surname = element.Surname;
-                    delete element.Surname;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.Surname =
-                        values.TransactionDetail[0].GuestDetail.Surname;
-                }
+                // if (element.GuestTitleID) {
+                //     element.GuestDetail.GuestTitleID = element.GuestTitleID;
+                //     delete element.GuestTitleID;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.GuestTitleID =
+                //         values.TransactionDetail[0].GuestDetail.GuestTitleID;
+                // }
 
-                if (element.GenderID) {
-                    element.GuestDetail.GenderID = element.GenderID;
-                    delete element.GenderID;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.GenderID =
-                        values.TransactionDetail[0].GuestDetail.GenderID;
-                }
+                // if (element.Surname) {
+                //     element.GuestDetail.Surname = element.Surname;
+                //     delete element.Surname;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.Surname =
+                //         values.TransactionDetail[0].GuestDetail.Surname;
+                // }
 
-                if (element.RegistryNo) {
-                    element.GuestDetail.RegistryNo = element.RegistryNo;
-                    delete element.RegistryNo;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.RegistryNo =
-                        values.TransactionDetail[0].GuestDetail.RegistryNo;
-                }
+                // if (element.GenderID) {
+                //     element.GuestDetail.GenderID = element.GenderID;
+                //     delete element.GenderID;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.GenderID =
+                //         values.TransactionDetail[0].GuestDetail.GenderID;
+                // }
 
-                if (element.DriverLicenseNo) {
-                    element.GuestDetail.DriverLicenseNo =
-                        element.DriverLicenseNo;
-                    delete element.DriverLicenseNo;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.DriverLicenseNo =
-                        values.TransactionDetail[0].GuestDetail.DriverLicenseNo;
-                }
+                // if (element.RegistryNo) {
+                //     element.GuestDetail.RegistryNo = element.RegistryNo;
+                //     delete element.RegistryNo;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.RegistryNo =
+                //         values.TransactionDetail[0].GuestDetail.RegistryNo;
+                // }
 
-                if (element.Email) {
-                    element.GuestDetail.Email = element.Email;
-                    delete element.Email;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.Email =
-                        values.TransactionDetail[0].GuestDetail.Email;
-                }
+                // if (element.DriverLicenseNo) {
+                //     element.GuestDetail.DriverLicenseNo =
+                //         element.DriverLicenseNo;
+                //     delete element.DriverLicenseNo;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.DriverLicenseNo =
+                //         values.TransactionDetail[0].GuestDetail.DriverLicenseNo;
+                // }
 
-                if (element.Mobile) {
-                    element.GuestDetail.Mobile = element.Mobile;
-                    delete element.Mobile;
-                } else if (element != values.TransactionDetail[0]) {
-                    element.GuestDetail.Mobile =
-                        values.TransactionDetail[0].GuestDetail.Mobile;
-                }
+                // if (element.Email) {
+                //     element.GuestDetail.Email = element.Email;
+                //     delete element.Email;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.Email =
+                //         values.TransactionDetail[0].GuestDetail.Email;
+                // }
+
+                // if (element.Mobile) {
+                //     element.GuestDetail.Mobile = element.Mobile;
+                //     delete element.Mobile;
+                // } else if (element != values.TransactionDetail[0]) {
+                //     element.GuestDetail.Mobile =
+                //         values.TransactionDetail[0].GuestDetail.Mobile;
+                // }
             });
+            console.log("values", values);
+            // await ReservationAPI.new(values);
 
-            await ReservationAPI.new(values);
-
-            handleModal();
+            // handleModal();
             toast("Амжилттай.");
-
-            console.log(values);
         } finally {
             // setLoading(false);
         }
     };
 
-    const setGuest = (guest: any, groupIndex: number) => {
-        if (guest.groupReservation) {
-            console.log("guest", guest);
-            setIdEditing([
-                guest.groupReservation[groupIndex].GuestID,
-                groupIndex,
-            ]);
-        } else {
-            console.log("guest", guest);
+    const setGuest = (guest: any, groupIndex: any) => {
+        const fetchDatas = async (GuestID: any, index: any) => {
+            const response: ApiResponseModel = await GuestAPI.get(GuestID);
 
-            setIdEditing(guest.GuestID);
+            if (response.status === 200 && response.data.length === 1) {
+                let newEntity = response.data[0];
+                newEntity._id = newEntity.GuestID;
+                console.log(index);
+                if (index != null) {
+                    let tempEntity = { ...entity };
+                    tempEntity.groupReservation = [];
+                    tempEntity.groupReservation[index] = newEntity;
+                    setEntity(tempEntity);
+                    console.log(tempEntity, "tempEntity");
+                } else {
+                    setEntity(newEntity);
+                }
+            } else {
+                setEntity(null);
+            }
+        };
+        if (typeof groupIndex == "undefined") {
+            let tempGuest = { ...idEditing };
+
+            tempGuest[0] = guest.GuestID;
+            fetchDatas(guest.GuestID, null);
+
+            setIdEditing(tempGuest);
+        } else {
+            let tempGuest = { ...idEditing };
+            tempGuest[groupIndex + 1] = guest.GuestID;
+            setIdEditing(tempGuest);
+            fetchDatas(guest.GuestID, groupIndex);
         }
+
         // setGuestCurrent(guest);
     };
 
-    useEffect(() => {
-        if (idEditing) {
-            const fetchDatas = async () => {
-                const response: ApiResponseModel = await GuestAPI.get(
-                    typeof idEditing == "object" ? idEditing[0] : idEditing
-                );
-                if (response.status === 200 && response.data.length === 1) {
-                    let newEntity = response.data[0];
-                    newEntity._id = newEntity.GuestID;
+    // useEffect(() => {
+    //     if (idEditing) {
+    //         const fetchDatas = async () => {
+    //             const response: ApiResponseModel = await GuestAPI.get(
+    //                 typeof idEditing == "object" ? idEditing[0] : idEditing
+    //             );
+    //             if (response.status === 200 && response.data.length === 1) {
+    //                 let newEntity = response.data[0];
+    //                 newEntity._id = newEntity.GuestID;
 
-                    if (typeof idEditing == "object") {
-                        let tempEntity = { ...entity };
-                        tempEntity.groupReservation = [];
-                        tempEntity.groupReservation[idEditing[1]] = newEntity;
-                        setEntity(tempEntity);
-                    } else {
-                        setEntity(newEntity);
-                    }
-                } else {
-                    setEntity(null);
-                }
-            };
+    //                 if (typeof idEditing == "object") {
+    //                     let tempEntity = { ...entity };
+    //                     tempEntity.groupReservation = [];
+    //                     tempEntity.groupReservation[idEditing[1]] = newEntity;
+    //                     setEntity(tempEntity);
+    //                 } else {
+    //                     setEntity(newEntity);
+    //                 }
+    //             } else {
+    //                 setEntity(null);
+    //             }
+    //         };
 
-            fetchDatas();
-        } else {
-            setEntity(null);
-        }
-    }, [idEditing]);
+    //         fetchDatas();
+    //     } else {
+    //         setEntity(null);
+    //     }
+    // }, [idEditing]);
 
     const [filterValues, setFilterValues]: any = useState({
         GuestID: 0,
