@@ -1,17 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Stack from "@mui/material/Stack";
 import Input from "@mui/material/Input";
 
-import cloudUploadFill from "@iconify/icons-eva/cloud-upload-fill";
-import { Icon } from "@iconify/react";
-
-import Button from "@mui/material/Button";
 import SubmitButton from "components/common/submit-button";
 import { toast } from "react-toastify";
 import { PictureAPI } from "lib/api/picture";
+import { ModalContext } from "lib/context/modal";
 
 const GuestSelect = ({
     GuestID,
@@ -22,6 +19,7 @@ const GuestSelect = ({
     IsDocument,
     Description,
 }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
     const [imageUrl, setImageUrl] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -53,37 +51,35 @@ const GuestSelect = ({
 
     const onSubmit = async (values: any) => {
         try {
-            console.log("values", values);
-            // let tempPic = values.file[0];
-            // delete values.file;
+            setLoading(true);
+            const formData = new FormData();
+
             if (GuestID) {
-                values.GuestID = GuestID;
+                formData.append("GuestID", GuestID);
             }
             if (RoomTypeID) {
-                values.RoomTypeID = RoomTypeID;
+                formData.append("RoomTypeID", RoomTypeID);
             }
             if (IsMain) {
-                values.IsMain = IsMain;
+                formData.append("IsMain", IsMain);
             }
             if (IsBanner) {
-                values.IsBanner = IsBanner;
+                formData.append("IsBanner", IsBanner);
             }
             if (IsLogo) {
-                values.IsLogo = IsLogo;
+                formData.append("IsLogo", IsLogo);
             }
             if (IsDocument) {
-                values.IsDocument = IsDocument;
+                formData.append("IsDocument", IsDocument);
             }
             if (Description) {
-                values.Description = Description;
+                formData.append("Description", Description);
             }
-            // values.push(tempPic);
-            // values.file = tempPic;
-            console.log("tempValues", values);
-            await PictureAPI.upload(values);
+            await PictureAPI.upload(formData);
             toast("Амжилттай.");
         } finally {
-            // setLoading(false);
+            setLoading(false);
+            handleModal();
         }
     };
 
@@ -91,22 +87,11 @@ const GuestSelect = ({
         <form onSubmit={handleSubmit(onSubmit)}>
             <Stack direction="row" alignItems="center" spacing={2}>
                 <label htmlFor="file">
-                    {/* <Button variant="outlined" component="span">
-                        <Icon icon={cloudUploadFill} /> Upload
-                    </Button> */}
                     <Input
                         type="file"
                         {...register("file")}
                         onChange={handleFileUpload}
                     />
-                    {/* <input
-                        id="file"
-                        {...register("file")}
-                        hidden
-                        accept="image/*"
-                        type="file"
-                        onChange={handleFileUpload}
-                    /> */}
                 </label>
             </Stack>
 

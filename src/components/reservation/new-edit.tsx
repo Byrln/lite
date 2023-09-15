@@ -12,64 +12,50 @@ import {
     Card,
     CardContent,
     MenuItem,
+    Accordion,
+    AccordionDetails,
 } from "@mui/material";
-import { fToUniversal } from "lib/utils/format-time";
-
+import ReplayIcon from "@mui/icons-material/Replay";
+import SaveIcon from "@mui/icons-material/Save";
 import * as yup from "yup";
+import { toast } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup";
-import RoomTypeSelect from "components/select/room-type";
-import RoomSelect from "components/select/room";
-import NumberSelect from "components/select/number-select";
-import CurrencySelect from "components/select/currency";
-import CustomerSelect from "components/select/customer";
-import {
-    RateModeSelect,
-    RoomChargeDurationSelect,
-    ReservationTypeSelect,
-} from "components/select";
-import { ApiResponseModel } from "models/response/ApiResponseModel";
-import { GuestAPI } from "lib/api/guest";
 
-import GenderSelect from "components/select/gender";
-import CountrySelect from "components/select/country";
-import PaymentMethodGroupSelect from "components/select/payment-method-group";
-import PaymentMethodSelect from "components/select/payment-method";
-import CustomerGroupSelect from "components/select/customer-group";
-import GuestSelect from "components/guest/guest-select";
 import {
     dateToSimpleFormat,
     dateToCustomFormat,
     countNights,
 } from "lib/utils/format-time";
-import { listUrl } from "lib/api/front-office";
-import { LoadingButton } from "@mui/lab";
-import { mutate } from "swr";
-import { toast } from "react-toastify";
-import { ModalContext } from "../../lib/context/modal";
-import RoomRateTypeSelect from "../select/room-rate-type";
-import ReplayIcon from "@mui/icons-material/Replay";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CurrencyAmount from "./currency-amount";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import SaveIcon from "@mui/icons-material/Save";
-// import { ReservationApi } from "../../lib/api/reservation";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ColorPicker from "../select/color";
+import { ReservationAPI } from "lib/api/reservation";
+import { GuestAPI } from "lib/api/guest";
+import { fToUniversal } from "lib/utils/format-time";
+import { ApiResponseModel } from "models/response/ApiResponseModel";
+import {
+    RateModeSelect,
+    RoomChargeDurationSelect,
+    ReservationTypeSelect,
+} from "components/select";
+
+import RoomTypeSelect from "components/select/room-type";
+import RoomSelect from "components/select/room";
+import NumberSelect from "components/select/number-select";
+import CurrencySelect from "components/select/currency";
+import CustomerSelect from "components/select/customer";
+import GenderSelect from "components/select/gender";
+import CountrySelect from "components/select/country";
+import PaymentMethodGroupSelect from "components/select/payment-method-group";
+import PaymentMethodSelect from "components/select/payment-method";
+import CustomerGroupSelect from "components/select/customer-group";
 import GroupAdd from "components/reservation/group-add";
-import PositionedMenu from "components/reservation/dropdown-menu";
 import GuestTitleSelect from "components/select/guest-title";
 import SelectList from "components/guest/select-list";
-import { ReservationAPI } from "lib/api/reservation";
+import CurrencyAmount from "./currency-amount";
+import ColorPicker from "../select/color";
+import RoomRateTypeSelect from "../select/room-rate-type";
+import { ModalContext } from "../../lib/context/modal";
 
 const styleAccordion = {
     boxShadow: "none",
-};
-
-const styleAccordionHeader = {
-    // borderRadius: "15px",
 };
 
 const styleAccordionContent = {
@@ -79,28 +65,20 @@ const styleAccordionContent = {
 
 const NewEdit = ({
     timelineCoord,
-    workingDate,
-    addReservations,
     keyIndex,
     isMain,
     defaultData,
     onAccordionChange,
     openIndex,
-    onSingleSubmit,
     submitting,
     dateStart,
     roomType,
     room,
 }: any) => {
-    console.log("testestest", dateStart);
-    console.log("roomTyperoomTyperoomType", roomType);
-    console.log("roomroomroomroom", room);
-
+    const [loading, setLoading] = useState(false);
     const { handleModal }: any = useContext(ModalContext);
-
     const [entity, setEntity]: any = useState(null);
     const [idEditing, setIdEditing]: any = useState(null);
-
     const [activeStep, setActiveStep]: any = useState(
         defaultData?.guest ? "main" : "guest"
     );
@@ -175,7 +153,6 @@ const NewEdit = ({
     const [baseGroupStay, setBaseGroupStay]: any = useState([baseStayDefault]);
 
     const onRoomTypeChange = (rt: any, index: number) => {
-        console.log(index);
         if (index == null) {
             setBaseStay({
                 ...baseStay,
@@ -188,11 +165,8 @@ const NewEdit = ({
             newArray[index].room = null;
             newArray[index].rate = null;
 
-            console.log("newArray[index]", newArray[index]);
-
             setBaseGroupStay(newArray);
         }
-        console.log("baseGroupStay", baseGroupStay);
     };
 
     const onRoomChange = (r: any, index: any) => {
@@ -254,32 +228,6 @@ const NewEdit = ({
         name: "groupReservation",
         control,
     });
-
-    const guestSelected = (guest: any) => {
-        console.log("guest", guest.GuestID ? "Байна" : "Байхгүй");
-        if (!guest.GuestID) {
-            guest.GuestID = 0;
-        }
-        console.log("guest", guest);
-
-        if (!guest) {
-            toast(<Alert severity="error">Зочин сонгоно уу!</Alert>);
-            return;
-        }
-
-        setBaseStay({
-            ...baseStay,
-            guest: guest,
-        });
-        reset({
-            GuestID: guest.GuestID,
-            GuestDetail: { guest },
-        });
-        setActiveStep("main");
-        if (activeStepper != 2) {
-            setActiveStepper(1);
-        }
-    };
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -358,10 +306,9 @@ const NewEdit = ({
     };
 
     const onSubmit = async (values: any) => {
-        // setLoading(true);
-        console.log("idEditing", idEditing);
-        console.log("values", values);
         try {
+            setLoading(true);
+
             if (!values.Nights) {
                 values.Nights = countNights(
                     baseStay.dateStart,
@@ -378,12 +325,10 @@ const NewEdit = ({
             }
 
             let tempValues = values;
-            let groupReservation = values.groupReservation;
+            let groupReservation = entity.groupReservation;
             delete values.groupReservation;
 
             values.TransactionDetail = {};
-            console.log(values);
-
             values = {};
             values.TransactionDetail = [];
             values.TransactionDetail.push(tempValues);
@@ -394,145 +339,136 @@ const NewEdit = ({
                 );
             }
 
-            // values.TransactionDetail.forEach((element: any, index:any) => {
-            //     // element = values.TransactionDetail[0];
-            //     element.Nights = countNights(
-            //         baseStay.dateStart,
-            //         baseStay.dateEnd
-            //     );
-            //     element.ArrivalDate = values.TransactionDetail[0].ArrivalDate;
-            //     element.ArrivalTime = values.TransactionDetail[0].ArrivalTime;
-            //     element.GroupColor = values.TransactionDetail[0].GroupColor;
-            //     element.DepartureDate =
-            //         values.TransactionDetail[0].DepartureDate;
-            //     element.DepartureTime =
-            //         values.TransactionDetail[0].DepartureTime;
-            // });
-
+            let finalValues: any = {};
+            finalValues.TransactionDetail = [];
             values.TransactionDetail.forEach((element: any, index: any) => {
-                console.log("index", index);
-                element.ArrivalDate =
+                let temp1 = { ...element };
+                temp1.ArrivalDate =
                     fToUniversal(element.ArrivalDate) +
                     " " +
                     element.ArrivalTime;
 
-                element.DepartureDate =
+                temp1.DepartureDate =
                     fToUniversal(element.DepartureDate) +
                     " " +
                     element.DepartureTime;
 
-                element.IsReserved = true;
-                element.IsCheckIn = false;
-                element.DurationEnabled = true;
-                element.ReservationSourceID = 1;
-                element.GuestDetail = {};
-
-                // if (index == 0) {
-                //     element.GuestID = idEditing[0];
-                //     element.GuestDetail.GuestID = idEditing[0];
-                // }
-                console.log("idEditing[index]", idEditing[index]);
-                console.log("index", index);
-                console.log("groupReservation", groupReservation);
-                console.log("element", element);
+                temp1.IsReserved = true;
+                temp1.IsCheckIn = false;
+                temp1.DurationEnabled = true;
+                temp1.ReservationSourceID = 1;
+                temp1.GuestDetail = {};
 
                 if (idEditing[index]) {
-                    element.GuestID = idEditing[index];
-                    element.GuestDetail.GuestID = idEditing[index];
+                    temp1.GuestID = idEditing[index];
+                    temp1.GuestDetail.GuestID = idEditing[index];
                 } else {
-                    element.GuestDetail.GuestID = idEditing[0];
-                    element.GuestID = idEditing[0];
+                    temp1.GuestDetail.GuestID = idEditing[0];
+                    temp1.GuestID = idEditing[0];
                 }
 
-                // if (element.Name) {
-                //     element.GuestDetail.Name = element.Name;
-                //     delete element.Name;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.Name =
-                //         values.TransactionDetail[0].GuestDetail.Name;
-                // }
+                if (
+                    index > 0 &&
+                    groupReservation &&
+                    groupReservation[index - 1]
+                ) {
+                    if (groupReservation[index - 1].Name) {
+                        temp1.GuestDetail.Name =
+                            groupReservation[index - 1].Name;
+                    } else {
+                        temp1.GuestDetail.Name = "";
+                    }
 
-                // if (element.Address) {
-                //     element.GuestDetail.Address = element.Address;
-                //     delete element.Address;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.Address =
-                //         values.TransactionDetail[0].GuestDetail.Address;
-                // }
+                    if (groupReservation[index - 1].Address) {
+                        temp1.GuestDetail.Address =
+                            groupReservation[index - 1].Address;
+                    } else {
+                        temp1.GuestDetail.Address = "";
+                    }
 
-                // if (element.DriverLicenseNo) {
-                //     element.GuestDetail.DriverLicenseNo =
-                //         element.DriverLicenseNo;
-                //     delete element.DriverLicenseNo;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.DriverLicenseNo =
-                //         values.TransactionDetail[0].GuestDetail.DriverLicenseNo;
-                // }
+                    if (groupReservation[index - 1].DriverLicenseNo) {
+                        temp1.GuestDetail.DriverLicenseNo =
+                            groupReservation[index - 1].DriverLicenseNo;
+                    } else {
+                        temp1.GuestDetail.DriverLicenseNo = "";
+                    }
 
-                // if (element.GuestTitleID) {
-                //     element.GuestDetail.GuestTitleID = element.GuestTitleID;
-                //     delete element.GuestTitleID;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.GuestTitleID =
-                //         values.TransactionDetail[0].GuestDetail.GuestTitleID;
-                // }
+                    if (groupReservation[index - 1].GuestTitleID) {
+                        temp1.GuestDetail.GuestTitleID =
+                            groupReservation[index - 1].GuestTitleID;
+                    } else {
+                        temp1.GuestDetail.GuestTitleID = "";
+                    }
 
-                // if (element.Surname) {
-                //     element.GuestDetail.Surname = element.Surname;
-                //     delete element.Surname;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.Surname =
-                //         values.TransactionDetail[0].GuestDetail.Surname;
-                // }
+                    if (groupReservation[index - 1].Surname) {
+                        temp1.GuestDetail.Surname =
+                            groupReservation[index - 1].Surname;
+                    } else {
+                        temp1.GuestDetail.Surname = "";
+                    }
 
-                // if (element.GenderID) {
-                //     element.GuestDetail.GenderID = element.GenderID;
-                //     delete element.GenderID;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.GenderID =
-                //         values.TransactionDetail[0].GuestDetail.GenderID;
-                // }
+                    if (groupReservation[index - 1].GenderID) {
+                        temp1.GuestDetail.GenderID =
+                            groupReservation[index - 1].GenderID;
+                    } else {
+                        temp1.GuestDetail.GenderID = "";
+                    }
 
-                // if (element.RegistryNo) {
-                //     element.GuestDetail.RegistryNo = element.RegistryNo;
-                //     delete element.RegistryNo;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.RegistryNo =
-                //         values.TransactionDetail[0].GuestDetail.RegistryNo;
-                // }
+                    if (groupReservation[index - 1].RegistryNo) {
+                        temp1.GuestDetail.RegistryNo =
+                            groupReservation[index - 1].RegistryNo;
+                    } else {
+                        temp1.GuestDetail.RegistryNo = "";
+                    }
 
-                // if (element.DriverLicenseNo) {
-                //     element.GuestDetail.DriverLicenseNo =
-                //         element.DriverLicenseNo;
-                //     delete element.DriverLicenseNo;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.DriverLicenseNo =
-                //         values.TransactionDetail[0].GuestDetail.DriverLicenseNo;
-                // }
+                    if (groupReservation[index - 1].DriverLicenseNo) {
+                        temp1.GuestDetail.DriverLicenseNo =
+                            groupReservation[index - 1].DriverLicenseNo;
+                    } else {
+                        temp1.GuestDetail.DriverLicenseNo = "";
+                    }
 
-                // if (element.Email) {
-                //     element.GuestDetail.Email = element.Email;
-                //     delete element.Email;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.Email =
-                //         values.TransactionDetail[0].GuestDetail.Email;
-                // }
+                    if (groupReservation[index - 1].Email) {
+                        temp1.GuestDetail.Email =
+                            groupReservation[index - 1].Email;
+                    } else {
+                        temp1.GuestDetail.Email = "";
+                    }
 
-                // if (element.Mobile) {
-                //     element.GuestDetail.Mobile = element.Mobile;
-                //     delete element.Mobile;
-                // } else if (element != values.TransactionDetail[0]) {
-                //     element.GuestDetail.Mobile =
-                //         values.TransactionDetail[0].GuestDetail.Mobile;
-                // }
+                    if (groupReservation[index - 1].Mobile) {
+                        temp1.GuestDetail.Mobile =
+                            groupReservation[index - 1].Mobile;
+                    } else {
+                        temp1.GuestDetail.Mobile = "";
+                    }
+                } else {
+                    temp1.GuestDetail.Name = values.TransactionDetail[0].Name;
+                    temp1.GuestDetail.Address =
+                        values.TransactionDetail[0].Address;
+                    temp1.GuestDetail.DriverLicenseNo =
+                        values.TransactionDetail[0].DriverLicenseNo;
+                    temp1.GuestDetail.GuestTitleID =
+                        values.TransactionDetail[0].GuestTitleID;
+                    temp1.GuestDetail.Surname =
+                        values.TransactionDetail[0].Surname;
+                    temp1.GuestDetail.GenderID =
+                        values.TransactionDetail[0].GenderID;
+                    temp1.GuestDetail.GenderID =
+                        values.TransactionDetail[0].RegistryNo;
+                    temp1.GuestDetail.DriverLicenseNo =
+                        values.TransactionDetail[0].DriverLicenseNo;
+                    temp1.GuestDetail.Email = values.TransactionDetail[0].Email;
+                    temp1.GuestDetail.Mobile =
+                        values.TransactionDetail[0].Mobile;
+                }
+                finalValues.TransactionDetail.push(temp1);
             });
-            console.log("values", values);
-            // await ReservationAPI.new(values);
+            await ReservationAPI.new(finalValues);
 
-            // handleModal();
+            handleModal();
             toast("Амжилттай.");
         } finally {
-            // setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -543,13 +479,11 @@ const NewEdit = ({
             if (response.status === 200 && response.data.length === 1) {
                 let newEntity = response.data[0];
                 newEntity._id = newEntity.GuestID;
-                console.log(index);
                 if (index != null) {
                     let tempEntity = { ...entity };
                     tempEntity.groupReservation = [];
                     tempEntity.groupReservation[index] = newEntity;
                     setEntity(tempEntity);
-                    console.log(tempEntity, "tempEntity");
                 } else {
                     setEntity(newEntity);
                 }
@@ -570,38 +504,7 @@ const NewEdit = ({
             setIdEditing(tempGuest);
             fetchDatas(guest.GuestID, groupIndex);
         }
-
-        // setGuestCurrent(guest);
     };
-
-    // useEffect(() => {
-    //     if (idEditing) {
-    //         const fetchDatas = async () => {
-    //             const response: ApiResponseModel = await GuestAPI.get(
-    //                 typeof idEditing == "object" ? idEditing[0] : idEditing
-    //             );
-    //             if (response.status === 200 && response.data.length === 1) {
-    //                 let newEntity = response.data[0];
-    //                 newEntity._id = newEntity.GuestID;
-
-    //                 if (typeof idEditing == "object") {
-    //                     let tempEntity = { ...entity };
-    //                     tempEntity.groupReservation = [];
-    //                     tempEntity.groupReservation[idEditing[1]] = newEntity;
-    //                     setEntity(tempEntity);
-    //                 } else {
-    //                     setEntity(newEntity);
-    //                 }
-    //             } else {
-    //                 setEntity(null);
-    //             }
-    //         };
-
-    //         fetchDatas();
-    //     } else {
-    //         setEntity(null);
-    //     }
-    // }, [idEditing]);
 
     const [filterValues, setFilterValues]: any = useState({
         GuestID: 0,
@@ -645,7 +548,6 @@ const NewEdit = ({
     };
 
     const onColorChange = (color: any) => {
-        console.log("color", color);
         setValue("GroupColor", color);
     };
 
@@ -665,13 +567,6 @@ const NewEdit = ({
                 }}
             >
                 <AccordionDetails sx={styleAccordionContent}>
-                    {/* <Box
-                        sx={{
-                            display: activeStep === "guest" ? "inline" : "none",
-                        }}
-                    >
-                        <GuestSelect guestSelected={guestSelected} />
-                    </Box> */}
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <input
                             type="hidden"
@@ -930,7 +825,6 @@ const NewEdit = ({
                                             {/* <GuestSelect
                                         guestSelected={guestSelected}
                                     /> */}
-
                                             <Grid container spacing={2}>
                                                 <Grid item xs={6}>
                                                     <GuestTitleSelect
@@ -978,7 +872,6 @@ const NewEdit = ({
                                                     />
                                                 </Grid>
                                             </Grid>
-
                                             <Grid container spacing={2}>
                                                 <Grid item xs={6}>
                                                     <TextField
@@ -1195,14 +1088,12 @@ const NewEdit = ({
                                                 entity={entity}
                                                 setEntity={setEntity}
                                             />
-
                                             <CountrySelect
                                                 register={register}
                                                 errors={errors}
                                                 entity={entity}
                                                 setEntity={setEntity}
                                             />
-
                                             <Grid container spacing={2}>
                                                 <Grid item xs={6}>
                                                     <TextField
@@ -1291,7 +1182,6 @@ const NewEdit = ({
                                                     />
                                                 </Grid>
                                             </Grid>
-
                                             <TextField
                                                 size="small"
                                                 fullWidth
@@ -1317,7 +1207,6 @@ const NewEdit = ({
                                                     });
                                                 }}
                                             />
-
                                             <Box
                                                 sx={{
                                                     display: "flex",
@@ -1342,15 +1231,8 @@ const NewEdit = ({
                                                 >
                                                     RESET
                                                 </Button>
-
-                                                {/* <LoadingButton
-                        type="submit"
-                        variant="outlined"
-                        loading={loading}
-                    >
-                        <SaveIcon />
-                    </LoadingButton> */}
                                             </Box>
+                                            й{" "}
                                             <SelectList
                                                 filterValues={filterValues}
                                                 setGuest={setGuest}
@@ -1712,7 +1594,12 @@ const NewEdit = ({
                             </Grid>
                         </Box>
 
-                        <Button type="submit" variant="contained" ref={formRef}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            ref={formRef}
+                            disabled={loading}
+                        >
                             <SaveIcon className="mr-1" />
                             Reservation
                         </Button>

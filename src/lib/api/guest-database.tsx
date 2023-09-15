@@ -39,6 +39,17 @@ export const GuestHistorySummarySWR = (id: any) => {
     return useSWR(`${urlPrefix}/HistorySummary`, fetcher);
 };
 
+export const GuestDocumentSWR = (id: any) => {
+    const values = {
+        GuestID: id,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Documents`, fetcher);
+};
+
 export const GuestdatabaseAPI = {
     get: async (id: any) => {
         const values = {

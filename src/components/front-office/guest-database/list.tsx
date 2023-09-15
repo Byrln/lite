@@ -75,7 +75,7 @@ const GuestdatabaseList = ({ title }: any) => {
                             onClick={() => {
                                 handleModal(
                                     true,
-                                    `Upload Picture`,
+                                    `Upload Document`,
                                     <CustomUpload
                                         GuestID={id}
                                         IsDocument={true}

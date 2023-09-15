@@ -25,6 +25,7 @@ import GuestTitleSelect from "components/select/guest-title";
 import GuestHistoryList from "./history";
 import GuestHistorySummaryList from "./history-summary";
 import GuestRemarksList from "./remarks";
+import GuestDocumentsList from "./documents";
 
 const validationSchema = yup.object().shape({
     GuestTitleID: yup.number().notRequired(),
@@ -274,7 +275,9 @@ const NewEdit = () => {
                 <TabPanel value="3">
                     <GuestRemarksList />
                 </TabPanel>
-                <TabPanel value="4">Item Four</TabPanel>
+                <TabPanel value="4">
+                    <GuestDocumentsList />
+                </TabPanel>
             </TabContext>
         </>
     );
