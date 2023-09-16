@@ -14,7 +14,7 @@ import { Controller } from "react-hook-form";
 
 const BaseRateList = ({ id, register, errors, control }: any) => {
     const { data, error } = BaseRateSWR(id);
-    console.log(data);
+
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
     if (!error && !data)

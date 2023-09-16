@@ -37,7 +37,15 @@ const CurrencySelect = ({
             margin="dense"
             error={errors[nameKey]?.message}
             helperText={errors[nameKey]?.message}
+            value={entity && entity.CurrencyID}
             size="small"
+            onChange={(evt: any) => {
+                setEntity &&
+                    setEntity({
+                        ...entity,
+                        CurrencyID: evt.target.value,
+                    });
+            }}
         >
             {data.map((element: any) => {
                 return (

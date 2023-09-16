@@ -1,13 +1,23 @@
+import { useState, useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField, Grid } from "@mui/material";
+import {
+    FormControlLabel,
+    TextField,
+    Grid,
+    CircularProgress,
+} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
+import { mutate } from "swr";
 
-import NewEditForm from "components/common/new-edit-form";
 import { RateTypeAPI, listUrl } from "lib/api/rate-type";
 import { useAppState } from "lib/context/app";
+import { ModalContext } from "lib/context/modal";
 import ChannelSelect from "components/select/reference";
+import CurrencySelect from "components/select/currency";
+import SubmitButton from "components/common/submit-button";
 import BaseRateList from "./base-rate-list";
 
 const validationSchema = yup.object().shape({
@@ -16,16 +26,13 @@ const validationSchema = yup.object().shape({
     ChannelID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     BreakfastIncluded: yup.boolean(),
     TaxIncluded: yup.boolean(),
-    // RoomTypes: yup.array().of(
-    //     yup.object().shape({
-    //         BaseRate: yup.number(),
-    //         ExtraAdult: yup.number(),
-    //         ExtraChild: yup.number(),
-    //     })
-    // ),
 });
 
 const NewEdit = () => {
+    const { handleModal }: any = useContext(ModalContext);
+    const [loading, setLoading] = useState(false);
+    const [loadingData, setLoadingData] = useState(false);
+    const [entity, setEntity] = useState<any>({});
     const [state]: any = useAppState();
     const {
         register,
@@ -37,16 +44,75 @@ const NewEdit = () => {
         resolver: yupResolver(validationSchema),
     });
 
-    return (
-        <NewEditForm
-            api={RateTypeAPI}
-            listUrl={listUrl}
-            additionalValues={{ RateTypeID: state.editId }}
-            reset={reset}
-            handleSubmit={handleSubmit}
+    useEffect(() => {
+        const fetchDatas = async () => {
+            if (state.editId) {
+                setLoadingData(true);
+                try {
+                    const arr: any = await RateTypeAPI?.get(state.editId);
+                    const arr2: any = await RateTypeAPI?.baseRateList(
+                        state.editId
+                    );
+                    setEntity({ CurrencyID: arr2[0].CurrencyID });
+                    arr[0].RoomTypes = arr2;
+                    reset(arr[0]);
+                } finally {
+                    setLoadingData(false);
+                }
+            }
+        };
+
+        fetchDatas();
+    }, [state.editId]);
+
+    const onSubmit = async (values: any) => {
+        setLoading(true);
+        try {
+            let tempBaseRates: any = {};
+            tempBaseRates.BaseRateList = values.RoomTypes;
+            let rateTypeId: any;
+            if (state.editId) {
+                values.RateTypeID = state.editId;
+                rateTypeId = state.editId;
+                await RateTypeAPI.update(values);
+            } else {
+                const response = await RateTypeAPI.new(values);
+                rateTypeId = response.data.JsonData[0].RateTypeID;
+            }
+
+            tempBaseRates.BaseRateList.forEach((element: any) => {
+                element.RateTypeID = rateTypeId;
+                element.TaxIncluded = false;
+                if ((element.Status = true)) {
+                    element.CurrencyID = entity.CurrencyID;
+                }
+            });
+            RateTypeAPI.BaseRateInsertWUList(tempBaseRates);
+
+            await mutate(listUrl);
+            toast("Амжилттай.");
+            setLoading(false);
+            handleModal();
+        } catch (error) {
+            setLoading(false);
+            handleModal();
+        }
+    };
+
+    return loadingData ? (
+        <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
         >
+            <CircularProgress color="info" />
+        </Grid>
+    ) : (
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={1}>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                     <TextField
                         size="small"
                         fullWidth
@@ -58,7 +124,7 @@ const NewEdit = () => {
                         helperText={errors.RateTypeCode?.message}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                     <TextField
                         size="small"
                         fullWidth
@@ -70,7 +136,7 @@ const NewEdit = () => {
                         helperText={errors.RateTypeName?.message}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                     <ChannelSelect
                         register={register}
                         errors={errors}
@@ -78,6 +144,15 @@ const NewEdit = () => {
                         label="Channel"
                         optionValue="ChannelID"
                         optionLabel="ChannelName"
+                    />
+                </Grid>
+                <Grid item xs={3}>
+                    <CurrencySelect
+                        register={register}
+                        errors={errors}
+                        entity={entity}
+                        setEntity={setEntity}
+                        nameKey="CurrencyID"
                     />
                 </Grid>
             </Grid>
@@ -126,7 +201,9 @@ const NewEdit = () => {
                 errors={errors}
                 control={control}
             />
-        </NewEditForm>
+
+            {!state.isShow && <SubmitButton loading={loading} />}
+        </form>
     );
 };
 

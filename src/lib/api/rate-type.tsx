@@ -47,6 +47,16 @@ export const RateTypeAPI = {
         return res.data.JsonData;
     },
 
+    baseRateList: async (id: any) => {
+        const values = {
+            RateTypeID: id,
+        };
+
+        const res = await axios.post(`${urlPrefix}/BaseRateList`, values);
+
+        return res.data.JsonData;
+    },
+
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 
@@ -87,6 +97,18 @@ export const RateTypeAPI = {
 
         const { data, status } = await axios.post(
             `${urlPrefix}/${apiUrl}`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    BaseRateInsertWUList: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/BaseRateInsertWUList`,
             values
         );
 
