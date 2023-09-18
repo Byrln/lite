@@ -6,12 +6,14 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
+import mn from "date-fns/locale/mn";
 
 import NewEditForm from "components/common/new-edit-form";
 import { SeasonAPI, listUrl } from "lib/api/season";
 import { monthsByNumber, monthDays } from "lib/utils/helpers";
 import { useAppState } from "lib/context/app";
 import CustomSelect from "components/common/custom-select";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const months = monthsByNumber();
 const days = monthDays();
@@ -39,6 +41,8 @@ const NewEdit = () => {
         resolver: yupResolver(validationSchema),
     });
 
+    const locale = mn;
+
     return (
         <NewEditForm
             api={SeasonAPI}
@@ -47,151 +51,184 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="SeasonCode"
-                label="Код"
-                {...register("SeasonCode")}
-                margin="dense"
-                error={errors.SeasonCode?.message}
-                helperText={errors.SeasonCode?.message}
-            />
-
-            <TextField
-                size="small"
-                fullWidth
-                id="SeasonName"
-                label="Нэр"
-                {...register("SeasonName")}
-                margin="dense"
-                error={errors.SeasonName?.message}
-                helperText={errors.SeasonName?.message}
-            />
-
-            <Grid container spacing={1}>
-                <Grid item xs={6}>
-                    <CustomSelect
-                        register={register}
-                        errors={errors}
-                        field="BeginDay"
-                        label="Эхлэх өдөр"
-                        options={days}
-                        optionValue="value"
-                        optionLabel="value"
-                    />
-                </Grid>
-
-                <Grid item xs={6}>
-                    <CustomSelect
-                        register={register}
-                        errors={errors}
-                        field="EndDay"
-                        label="Дуусах өдөр"
-                        options={days}
-                        optionValue="value"
-                        optionLabel="value"
-                    />
-                </Grid>
-
-                <Grid item xs={6}>
-                    <CustomSelect
-                        register={register}
-                        errors={errors}
-                        field="BeginMonth"
-                        label="Эхлэх сар"
-                        options={months}
-                        optionValue="value"
-                        optionLabel="name"
-                        dense={false}
-                    />
-                </Grid>
-
-                <Grid item xs={6}>
-                    <CustomSelect
-                        register={register}
-                        errors={errors}
-                        field="EndMonth"
-                        label="Дуусах сар"
-                        options={months}
-                        optionValue="value"
-                        optionLabel="name"
-                        dense={false}
-                    />
-                </Grid>
-            </Grid>
-
             <LocalizationProvider
                 //@ts-ignore
                 dateAdapter={AdapterDateFns}
+                adapterLocale={locale}
             >
-                <Controller
-                    name="BeginDate"
-                    control={control}
-                    defaultValue={null}
-                    render={({ field: { onChange, value } }) => (
-                        <DatePicker
-                            label="Эхлэх огноо"
-                            value={value}
-                            onChange={(value) =>
-                                onChange(moment(value).format("YYYY-MM-DD"))
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    size="small"
-                                    id="BeginDate"
-                                    {...register("BeginDate")}
-                                    margin="dense"
-                                    fullWidth
-                                    sx={{ mt: 2 }}
-                                    {...params}
-                                    error={errors.BeginDate?.message}
-                                    helperText={errors.BeginDate?.message}
-                                />
-                            )}
+                <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="SeasonCode"
+                            label="Код"
+                            {...register("SeasonCode")}
+                            margin="dense"
+                            error={errors.SeasonCode?.message}
+                            helperText={errors.SeasonCode?.message}
                         />
-                    )}
-                />
+                    </Grid>
 
-                <Controller
-                    name="EndDate"
-                    control={control}
-                    defaultValue={null}
-                    render={({ field: { onChange, value } }) => (
-                        <DatePicker
-                            label="Дуусах огноо"
-                            value={value}
-                            onChange={(value) =>
-                                onChange(moment(value).format("YYYY-MM-DD"))
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    size="small"
-                                    id="EndDate"
-                                    {...register("EndDate")}
-                                    margin="dense"
-                                    fullWidth
-                                    {...params}
-                                    error={errors.EndDate?.message}
-                                    helperText={errors.EndDate?.message}
+                    <Grid item xs={6}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="SeasonName"
+                            label="Нэр"
+                            {...register("SeasonName")}
+                            margin="dense"
+                            error={errors.SeasonName?.message}
+                            helperText={errors.SeasonName?.message}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <CustomSelect
+                            register={register}
+                            errors={errors}
+                            field="BeginDay"
+                            label="Эхлэх өдөр"
+                            options={days}
+                            optionValue="value"
+                            optionLabel="value"
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <CustomSelect
+                            register={register}
+                            errors={errors}
+                            field="EndDay"
+                            label="Дуусах өдөр"
+                            options={days}
+                            optionValue="value"
+                            optionLabel="value"
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <CustomSelect
+                            register={register}
+                            errors={errors}
+                            field="BeginMonth"
+                            label="Эхлэх сар"
+                            options={months}
+                            optionValue="value"
+                            optionLabel="name"
+                            dense={false}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <CustomSelect
+                            register={register}
+                            errors={errors}
+                            field="EndMonth"
+                            label="Дуусах сар"
+                            options={months}
+                            optionValue="value"
+                            optionLabel="name"
+                            dense={false}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <Controller
+                            name="BeginDate"
+                            control={control}
+                            defaultValue={null}
+                            render={({ field: { onChange, value } }) => (
+                                <DatePicker
+                                    label="Эхлэх огноо"
+                                    value={value}
+                                    onChange={(value) =>
+                                        onChange(
+                                            // moment(value)
+                                            //     .utcOffset("+0400", true)
+                                            //     .format("YYYY-MM-DD")
+                                            moment(
+                                                dateStringToObj(
+                                                    moment(value).format(
+                                                        "YYYY-MM-DD"
+                                                    )
+                                                ),
+                                                "YYYY-MM-DD"
+                                            )
+                                        )
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            size="small"
+                                            id="BeginDate"
+                                            {...register("BeginDate")}
+                                            margin="dense"
+                                            fullWidth
+                                            {...params}
+                                            error={errors.BeginDate?.message}
+                                            helperText={
+                                                errors.BeginDate?.message
+                                            }
+                                        />
+                                    )}
                                 />
                             )}
                         />
-                    )}
-                />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <Controller
+                            name="EndDate"
+                            control={control}
+                            defaultValue={null}
+                            render={({ field: { onChange, value } }) => (
+                                <DatePicker
+                                    label="Эхлэх огноо"
+                                    value={value}
+                                    onChange={(value) =>
+                                        onChange(
+                                            moment(
+                                                dateStringToObj(
+                                                    moment(value).format(
+                                                        "YYYY-MM-DD"
+                                                    )
+                                                ),
+                                                "YYYY-MM-DD"
+                                            )
+                                        )
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            size="small"
+                                            id="EndDate"
+                                            {...register("EndDate")}
+                                            margin="dense"
+                                            fullWidth
+                                            {...params}
+                                            error={errors.EndDate?.message}
+                                            helperText={errors.EndDate?.message}
+                                        />
+                                    )}
+                                />
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <TextField
+                            size="small"
+                            type="number"
+                            fullWidth
+                            id="Priority"
+                            label="Priority"
+                            {...register("Priority")}
+                            margin="dense"
+                            error={errors.Priority?.message}
+                            helperText={errors.Priority?.message}
+                        />
+                    </Grid>
+                </Grid>
             </LocalizationProvider>
-
-            <TextField
-                size="small"
-                type="number"
-                fullWidth
-                id="Priority"
-                label="Priority"
-                {...register("Priority")}
-                margin="dense"
-                error={errors.Priority?.message}
-                helperText={errors.Priority?.message}
-            />
         </NewEditForm>
     );
 };

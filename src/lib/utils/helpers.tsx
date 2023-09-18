@@ -145,3 +145,11 @@ export function removeParams(sParam: any) {
 
     return url.substring(0, url.length - 1);
 }
+
+export function dateStringToObj(date: any) {
+    // return new Date(date.replace(/ /g, "T")).setTime(
+    //     new Date(date.replace(/ /g, "T")).getTime() +
+    //         new Date(date.replace(/ /g, "T")).getTimezoneOffset() * 60 * 1000
+    // );
+    return new Date(date.replace(/ /g, "T"));
+}

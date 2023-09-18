@@ -4,6 +4,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 
 import ReservationSourceSelect from "components/select/reservation-source";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const Search = ({ register, errors, control, reset }: any) => {
     return (
@@ -31,7 +32,14 @@ const Search = ({ register, errors, control, reset }: any) => {
                             label="Эхлэх огноо"
                             value={value}
                             onChange={(value) =>
-                                onChange(moment(value).format("YYYY-MM-DD"))
+                                onChange(
+                                    moment(
+                                        dateStringToObj(
+                                            moment(value).format("YYYY-MM-DD")
+                                        ),
+                                        "YYYY-MM-DD"
+                                    )
+                                )
                             }
                             renderInput={(params) => (
                                 <TextField
@@ -60,7 +68,14 @@ const Search = ({ register, errors, control, reset }: any) => {
                             label="Дуусах огноо"
                             value={value}
                             onChange={(value) =>
-                                onChange(moment(value).format("YYYY-MM-DD"))
+                                onChange(
+                                    moment(
+                                        dateStringToObj(
+                                            moment(value).format("YYYY-MM-DD")
+                                        ),
+                                        "YYYY-MM-DD"
+                                    )
+                                )
                             }
                             renderInput={(params) => (
                                 <TextField

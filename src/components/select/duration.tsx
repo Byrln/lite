@@ -3,20 +3,20 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { ReservationChannelSWR } from "lib/api/reservation-channel";
+import { RoomChargeDurationSWR } from "lib/api/room-charge-duration";
 import { useEffect } from "react";
 
-const ReservationChannelSelect = ({
+const RoomChargeDurationSelect = ({
     register,
     errors,
     reset,
     customRegisterName,
 }: any) => {
-    const { data, error } = ReservationChannelSWR();
+    const { data, error } = RoomChargeDurationSWR();
 
     useEffect(() => {
         if (data && data.length > 0 && reset) {
-            reset({ ReservationSourceID: data[0].ReservationSourceID });
+            reset({ RoomChargeDurationID: data[0].RoomChargeDurationID });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
@@ -34,21 +34,24 @@ const ReservationChannelSelect = ({
     return (
         <TextField
             fullWidth
-            id="ReservationSourceID"
-            label="ReservationChannel"
+            id="RoomChargeDurationID"
+            label="Duration"
             {...register(
-                customRegisterName ? customRegisterName : "ReservationSourceID"
+                customRegisterName ? customRegisterName : "RoomChargeDurationID"
             )}
             select
             margin="dense"
-            error={errors.ReservationSourceID?.message}
-            helperText={errors.ReservationSourceID?.message}
+            error={errors.RoomChargeDurationID?.message}
+            helperText={errors.RoomChargeDurationID?.message}
             size="small"
         >
             {data.map((element: any) => {
                 return (
-                    <MenuItem key={element.ChannelID} value={element.ChannelID}>
-                        {`${element.ChannelName}`}
+                    <MenuItem
+                        key={element.RoomChargeDurationID}
+                        value={element.RoomChargeDurationID}
+                    >
+                        {`${element.RoomChargeDurationName}`}
                     </MenuItem>
                 );
             })}
@@ -56,4 +59,4 @@ const ReservationChannelSelect = ({
     );
 };
 
-export default ReservationChannelSelect;
+export default RoomChargeDurationSelect;

@@ -36,7 +36,6 @@ const columns = [
             );
         },
     },
-    { title: "FloorID", key: "FloorID", dataIndex: "FloorID" },
     { title: "FloorNo", key: "FloorNo", dataIndex: "FloorNo" },
 ];
 

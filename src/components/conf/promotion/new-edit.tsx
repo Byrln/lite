@@ -12,6 +12,7 @@ import PromotionTypeSelect from "components/select/promotion-type";
 import CustomSelect from "components/common/custom-select";
 import ReservationSourceSelect from "components/select/reservation-source";
 import RoomTypeSelect from "components/select/room-type";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const validationSchema = yup.object().shape({
     PromotionCode: yup.string().required("Бөглөнө үү"),
@@ -77,7 +78,14 @@ const NewEdit = () => {
                         label="Begin Date"
                         value={value}
                         onChange={(value) =>
-                            onChange(moment(value).format("YYYY-MM-DD"))
+                            onChange(
+                                moment(
+                                    dateStringToObj(
+                                        moment(value).format("YYYY-MM-DD")
+                                    ),
+                                    "YYYY-MM-DD"
+                                )
+                            )
                         }
                         renderInput={(params) => (
                             <TextField
@@ -104,7 +112,14 @@ const NewEdit = () => {
                         label="End Date"
                         value={value}
                         onChange={(value) =>
-                            onChange(moment(value).format("YYYY-MM-DD"))
+                            onChange(
+                                moment(
+                                    dateStringToObj(
+                                        moment(value).format("YYYY-MM-DD")
+                                    ),
+                                    "YYYY-MM-DD"
+                                )
+                            )
                         }
                         renderInput={(params) => (
                             <TextField

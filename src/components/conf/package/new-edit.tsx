@@ -10,6 +10,7 @@ import moment from "moment";
 import NewEditForm from "components/common/new-edit-form";
 import { PackageAPI, listUrl } from "lib/api/package";
 import { useAppState } from "lib/context/app";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const validationSchema = yup.object().shape({
     PackageName: yup.string().required("Бөглөнө үү"),
@@ -83,7 +84,12 @@ const NewEdit = () => {
                         label="Эхлэх огноо"
                         value={value}
                         onChange={(value) =>
-                            onChange(moment(value).format("YYYY-MM-DD"))
+                            moment(
+                                dateStringToObj(
+                                    moment(value).format("YYYY-MM-DD")
+                                ),
+                                "YYYY-MM-DD"
+                            )
                         }
                         renderInput={(params) => (
                             <TextField
@@ -110,7 +116,14 @@ const NewEdit = () => {
                         label="Дуусах огноо"
                         value={value}
                         onChange={(value) =>
-                            onChange(moment(value).format("YYYY-MM-DD"))
+                            onChange(
+                                moment(
+                                    dateStringToObj(
+                                        moment(value).format("YYYY-MM-DD")
+                                    ),
+                                    "YYYY-MM-DD"
+                                )
+                            )
                         }
                         renderInput={(params) => (
                             <TextField

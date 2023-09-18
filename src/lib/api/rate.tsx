@@ -5,20 +5,34 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/Rate";
 export const listUrl = `${urlPrefix}/List`;
 
-export const RateSWR = () => {
-    const values = {
-        RoomTypeID: 0,
-        RateTypeID: 0,
-        ChannelID: 0,
-        SourceID: 0,
-        SeasonID: 0,
-        CustomerID: 0,
-        TaxIncluded: false,
-        RoomChargeDuration: 1,
-    };
+export const RateSWR = (search: any) => {
+    if (!search.RoomTypeID) {
+        search.RoomTypeID = 0;
+    }
+    if (!search.RateTypeID) {
+        search.RateTypeID = 0;
+    }
+    if (!search.ChannelID) {
+        search.ChannelID = 0;
+    }
+    if (!search.SourceID) {
+        search.SourceID = 0;
+    }
+    if (!search.SeasonID) {
+        search.SeasonID = 0;
+    }
+    if (!search.CustomerID) {
+        search.CustomerID = 0;
+    }
+    if (!search.TaxIncluded) {
+        search.TaxIncluded = 0;
+    }
+    if (!search.RoomChargeDuration) {
+        search.RoomChargeDuration = 0;
+    }
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
+        await axios.post(url, search).then((res: any) => {
             let rates = res.data.JsonData;
             return rates;
         });
@@ -49,6 +63,18 @@ export const RateAPI = {
     get: (id: any) => axios.get(`${urlPrefix}/${id}`),
     new: async (values: any) => {
         const { data, status } = await axios.post(urlPrefix, values);
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    insertWUList: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/InsertWUList`,
+            values
+        );
 
         return {
             data,

@@ -3,13 +3,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { useEffect } from "react";
 
-import { RateTypeSWR } from "lib/api/rate-type";
-import { elementAcceptingRef } from "@mui/utils";
+import { SeasonSWR } from "lib/api/season";
 
-const RateTypeSelect = ({ register, errors }: any) => {
-    const { data, error } = RateTypeSWR({});
+const SeasonSelect = ({ register, errors }: any) => {
+    const { data, error } = SeasonSWR({});
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -24,22 +22,19 @@ const RateTypeSelect = ({ register, errors }: any) => {
     return (
         <TextField
             fullWidth
-            id="RateTypeID"
-            label="Rate Type"
-            {...register("RateTypeID")}
+            id="SeasonID"
+            label="Season"
+            {...register("SeasonID")}
             select
             margin="dense"
-            error={errors.RateTypeID?.message}
-            helperText={errors.RateTypeID?.message}
+            error={errors.SeasonID?.message}
+            helperText={errors.SeasonID?.message}
             size="small"
         >
             {data.map((element: any) => {
                 return (
-                    <MenuItem
-                        key={element.RateTypeID}
-                        value={element.RateTypeID}
-                    >
-                        {`${element.RateTypeName}`}
+                    <MenuItem key={element.SeasonID} value={element.SeasonID}>
+                        {`${element.SeasonName}`}
                     </MenuItem>
                 );
             })}
@@ -47,4 +42,4 @@ const RateTypeSelect = ({ register, errors }: any) => {
     );
 };
 
-export default RateTypeSelect;
+export default SeasonSelect;

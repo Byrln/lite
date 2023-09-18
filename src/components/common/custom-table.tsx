@@ -315,7 +315,9 @@ const CustomTable = ({
                                                                     element[
                                                                         column
                                                                             .key
-                                                                    ]
+                                                                    ],
+                                                                    element,
+                                                                    dataIndex
                                                                 )
                                                             ) : (
                                                                 element[

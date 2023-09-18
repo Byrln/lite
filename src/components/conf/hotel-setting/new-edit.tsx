@@ -13,6 +13,7 @@ import NewEditForm from "components/common/new-edit-form";
 import { HotelSettingAPI, listUrl } from "lib/api/hotel-setting";
 import { useAppState } from "lib/context/app";
 import EditionSelect from "components/select/edition";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const validationSchema = yup.object().shape({
     PMSStart: yup.date().required("Бөглөнө үү"),
@@ -89,7 +90,14 @@ const NewEdit = () => {
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
-                                            moment(value).format("YYYY-MM-DD")
+                                            moment(
+                                                dateStringToObj(
+                                                    moment(value).format(
+                                                        "YYYY-MM-DD"
+                                                    )
+                                                ),
+                                                "YYYY-MM-DD"
+                                            )
                                         )
                                     }
                                     renderInput={(params) => (
@@ -121,7 +129,14 @@ const NewEdit = () => {
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
-                                            moment(value).format("YYYY-MM-DD")
+                                            moment(
+                                                dateStringToObj(
+                                                    moment(value).format(
+                                                        "YYYY-MM-DD"
+                                                    )
+                                                ),
+                                                "YYYY-MM-DD"
+                                            )
                                         )
                                     }
                                     renderInput={(params) => (
