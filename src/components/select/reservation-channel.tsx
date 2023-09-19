@@ -11,6 +11,8 @@ const ReservationChannelSelect = ({
     errors,
     reset,
     customRegisterName,
+    entity,
+    setEntity,
 }: any) => {
     const { data, error } = ReservationChannelSWR();
 
@@ -44,6 +46,21 @@ const ReservationChannelSelect = ({
             error={errors.ReservationSourceID?.message}
             helperText={errors.ReservationSourceID?.message}
             size="small"
+            value={
+                entity &&
+                entity[
+                    customRegisterName
+                        ? customRegisterName
+                        : "ReservationSourceID"
+                ]
+            }
+            onChange={(evt: any) => {
+                setEntity &&
+                    setEntity({
+                        ...entity,
+                        ChannelID: evt.target.value,
+                    });
+            }}
         >
             {data.map((element: any) => {
                 return (

@@ -87,6 +87,8 @@ const ReasonList = ({ title }: any) => {
                 error={error}
                 api={ReasonAPI}
                 hasNew={true}
+                hasUpdate={false}
+                hasShow={false}
                 hasDelete={true}
                 id="ReasonID"
                 listUrl={listUrl}

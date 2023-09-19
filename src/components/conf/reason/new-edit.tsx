@@ -11,7 +11,7 @@ import ReasonTypeSelect from "components/select/reason-type";
 
 const validationSchema = yup.object().shape({
     ReasonTypeID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    ReasonName: yup.string().required("Бөглөнө үү"),
+    Description: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -46,12 +46,12 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="ReasonName"
-                        label="ReasonName"
-                        {...register("ReasonName")}
+                        id="Description"
+                        label="Description"
+                        {...register("Description")}
                         margin="dense"
-                        error={errors.ReasonName?.message}
-                        helperText={errors.ReasonName?.message}
+                        error={errors.Description?.message}
+                        helperText={errors.Description?.message}
                     />
                 </Grid>
             </Grid>
