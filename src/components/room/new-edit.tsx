@@ -26,6 +26,13 @@ const baseStayDefault = {
 const NewEdit = () => {
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
 
+    const onRoomTypeChange = (rt: any) => {
+        setBaseStay({
+            ...baseStay,
+            RoomTypeID: rt,
+        });
+    };
+
     const [state]: any = useAppState();
     const {
         register,
@@ -63,6 +70,7 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         baseStay={baseStay}
+                        onRoomTypeChange={onRoomTypeChange}
                     />
                 </Grid>
                 <Grid item xs={4}>

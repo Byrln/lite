@@ -44,13 +44,17 @@ const RoomTypeSelect = ({
                         typeof groupIndex != "undefined" ? groupIndex : null
                     );
                 } else if (
-                    typeof baseStay.roomType.RoomTypeName != "string" ||
-                    roomType.RoomTypeID != baseStay.roomType.RoomTypeID
+                    (baseStay.roomType &&
+                        typeof baseStay.roomType.RoomTypeName != "string") ||
+                    (baseStay.roomType &&
+                        roomType.RoomTypeID != baseStay.roomType.RoomTypeID)
                 ) {
                     onRoomTypeChange(
                         roomType,
                         typeof groupIndex != "undefined" ? groupIndex : null
                     );
+                } else {
+                    onRoomTypeChange(val);
                 }
             }
         }
