@@ -1,6 +1,8 @@
 import useSWR from "swr";
+import moment from "moment";
 
 import axios from "lib/utils/axios";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const urlPrefix = "/api/Season";
 export const listUrl = `${urlPrefix}/List`;
@@ -43,6 +45,14 @@ export const SeasonAPI = {
     },
 
     update: async (values: any) => {
+        values.BeginDate = moment(
+            dateStringToObj(moment(values.BeginDate).format("YYYY-MM-DD")),
+            "YYYY-MM-DD"
+        );
+        values.EndDate = moment(
+            dateStringToObj(moment(values.EndDate).format("YYYY-MM-DD")),
+            "YYYY-MM-DD"
+        );
         const { data, status } = await axios.post(
             `${urlPrefix}/Update`,
             values

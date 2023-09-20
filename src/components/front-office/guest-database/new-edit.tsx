@@ -86,9 +86,11 @@ const NewEdit = () => {
                     <NewEditForm
                         api={GuestdatabaseAPI}
                         listUrl={listUrl}
-                        additionalValues={{
-                            GuestID: state.editId,
-                        }}
+                        additionalValues={
+                            state.editId && {
+                                GuestID: state.editId,
+                            }
+                        }
                         reset={reset}
                         handleSubmit={handleSubmit}
                         setEntity={setEntity}
@@ -130,30 +132,6 @@ const NewEdit = () => {
                             <Grid item xs={12} sm={3}>
                                 <TextField
                                     size="small"
-                                    fullWidth
-                                    id="RegistryNo"
-                                    label="Registration No"
-                                    {...register("RegistryNo")}
-                                    margin="dense"
-                                    error={errors.RegistryNo?.message}
-                                    helperText={errors.RegistryNo?.message}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    id="DriverLicenseNo"
-                                    label="Driver License No"
-                                    {...register("DriverLicenseNo")}
-                                    margin="dense"
-                                    error={errors.DriverLicenseNo?.message}
-                                    helperText={errors.DriverLicenseNo?.message}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <TextField
-                                    size="small"
                                     type="date"
                                     fullWidth
                                     id="DateOfBirth"
@@ -168,67 +146,6 @@ const NewEdit = () => {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} sm={3}>
-                                <VipStatusSelect
-                                    register={register}
-                                    errors={errors}
-                                    entity={entity}
-                                    setEntity={setEntity}
-                                />
-                            </Grid>
-
-                            <Grid item xs={12} sm={3}>
-                                <CountrySelect
-                                    register={register}
-                                    errors={errors}
-                                    entity={entity}
-                                    setEntity={setEntity}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <GenderSelect
-                                    register={register}
-                                    errors={errors}
-                                    entity={entity}
-                                    setEntity={setEntity}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    id="Phone"
-                                    label="Phone"
-                                    {...register("Phone")}
-                                    margin="dense"
-                                    error={errors.Phone?.message}
-                                    helperText={errors.Phone?.message}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    id="Zip"
-                                    label="Zip"
-                                    {...register("Zip")}
-                                    margin="dense"
-                                    error={errors.Zip?.message}
-                                    helperText={errors.Zip?.message}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={3}>
-                                <TextField
-                                    size="small"
-                                    fullWidth
-                                    id="Company"
-                                    label="Company"
-                                    {...register("Company")}
-                                    margin="dense"
-                                    error={errors.Company?.message}
-                                    helperText={errors.Company?.message}
-                                />
-                            </Grid>
                             <Grid item xs={12} sm={3}>
                                 <TextField
                                     size="small"
@@ -253,6 +170,92 @@ const NewEdit = () => {
                                     helperText={errors.Email?.message}
                                 />
                             </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <VipStatusSelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={entity}
+                                    setEntity={setEntity}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Company"
+                                    label="Company"
+                                    {...register("Company")}
+                                    margin="dense"
+                                    error={errors.Company?.message}
+                                    helperText={errors.Company?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Phone"
+                                    label="Phone"
+                                    {...register("Phone")}
+                                    margin="dense"
+                                    error={errors.Phone?.message}
+                                    helperText={errors.Phone?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="RegistryNo"
+                                    label="Registration No"
+                                    {...register("RegistryNo")}
+                                    margin="dense"
+                                    error={errors.RegistryNo?.message}
+                                    helperText={errors.RegistryNo?.message}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="DriverLicenseNo"
+                                    label="Driver License No"
+                                    {...register("DriverLicenseNo")}
+                                    margin="dense"
+                                    error={errors.DriverLicenseNo?.message}
+                                    helperText={errors.DriverLicenseNo?.message}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <GenderSelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={entity}
+                                    setEntity={setEntity}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <CountrySelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={entity}
+                                    setEntity={setEntity}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Zip"
+                                    label="Zip"
+                                    {...register("Zip")}
+                                    margin="dense"
+                                    error={errors.Zip?.message}
+                                    helperText={errors.Zip?.message}
+                                />
+                            </Grid>
+
                             <Grid item xs={12} sm={3}>
                                 <TextField
                                     size="small"

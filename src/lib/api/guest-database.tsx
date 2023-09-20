@@ -6,10 +6,7 @@ const urlPrefix = "/api/Guest";
 export const listUrl = `${urlPrefix}/list`;
 
 export const GuestdatabaseSWR = (search: any) => {
-    // const values = {
-    //     GuestID: null,
-    //     CountryID: null,
-    // };
+    search.topX = 1000;
 
     const fetcher = async (url: any) =>
         await axios.post(url, search).then((res: any) => res.data.JsonData);

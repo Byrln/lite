@@ -73,7 +73,7 @@ const CustomTable = ({
 
     (hasUpdate || hasDelete) &&
         customizedColumns.push({
-            title: "Action",
+            title: "Үйлдэл",
             key: "actionButtons",
             dataIndex: "actionButtons",
         });

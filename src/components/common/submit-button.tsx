@@ -1,13 +1,14 @@
 import { LoadingButton } from "@mui/lab";
 
-const SubmitButton = ({ loading, title }: any) => (
+const SubmitButton = ({ loading, title, customMarginClass, id }: any) => (
     <LoadingButton
         fullWidth
         size="small"
         type="submit"
         variant="contained"
         loading={loading}
-        className="mt-3"
+        className={customMarginClass ? customMarginClass : `mt-3`}
+        id={id ? id : ""}
     >
         {title ? title : "Хадгалах"}
     </LoadingButton>

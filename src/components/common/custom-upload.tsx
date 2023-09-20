@@ -2,8 +2,7 @@ import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Stack from "@mui/material/Stack";
-import Input from "@mui/material/Input";
+import { Stack, Input, Grid } from "@mui/material";
 
 import SubmitButton from "components/common/submit-button";
 import { toast } from "react-toastify";
@@ -18,6 +17,8 @@ const GuestSelect = ({
     IsLogo,
     IsDocument,
     Description,
+    Layout,
+    id,
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [imageUrl, setImageUrl] = useState(null);
@@ -54,6 +55,8 @@ const GuestSelect = ({
             setLoading(true);
             const formData = new FormData();
 
+            formData.append("file", values.file[0]);
+
             if (GuestID) {
                 formData.append("GuestID", GuestID);
             }
@@ -84,27 +87,35 @@ const GuestSelect = ({
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack direction="row" alignItems="center" spacing={2}>
-                <label htmlFor="file">
-                    <Input
-                        type="file"
-                        {...register("file")}
-                        onChange={handleFileUpload}
+        <form onSubmit={handleSubmit(onSubmit)} id={id ? id : ""}>
+            <Grid container spacing={1}>
+                <Grid item xs={Layout == "vertical" ? 8 : 12}>
+                    <label htmlFor="file">
+                        <Input
+                            type="file"
+                            {...register("file")}
+                            onChange={handleFileUpload}
+                        />
+                    </label>
+                </Grid>
+
+                <Grid item xs={Layout == "vertical" ? 4 : 12}>
+                    <SubmitButton
+                        loading={loading}
+                        customMarginClass=" "
+                        id={id}
                     />
-                </label>
-            </Stack>
+                </Grid>
 
-            <SubmitButton loading={loading} />
-
-            {imageUrl && (
-                <img //@ts-ignore
-                    src={imageUrl}
-                    alt="Uploaded Image"
-                    height="300"
-                    className="mt-3"
-                />
-            )}
+                {imageUrl && (
+                    <img //@ts-ignore
+                        src={imageUrl}
+                        alt="Uploaded Image"
+                        height="200"
+                        className="mt-3"
+                    />
+                )}
+            </Grid>
         </form>
     );
 };

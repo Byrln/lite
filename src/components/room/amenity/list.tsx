@@ -12,23 +12,23 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Type",
+        title: "Онцлогийн төрөл",
         key: "AmenityTypeName",
         dataIndex: "AmenityTypeName",
     },
     {
-        title: "Short Code",
+        title: "Богино нэр",
         key: "AmenityShortName",
         dataIndex: "AmenityShortName",
     },
     {
-        title: "Amenity Name",
+        title: "Нэр",
         key: "AmenityName",
         dataIndex: "AmenityName",
     },
-    { title: "Sort Order", key: "SortOrder", dataIndex: "SortOrder" },
+    { title: "Дэс дараалал", key: "SortOrder", dataIndex: "SortOrder" },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

@@ -10,6 +10,7 @@ import { HotelAPI } from "lib/api/hotel";
 import SubmitButton from "components/common/submit-button";
 import ReferenceSelect from "components/select/reference";
 import CustomTab from "components/common/custom-tab";
+import CustomUpload from "components/common/custom-upload";
 
 const validationSchema = yup.object().shape({
     HotelCode: yup.string().required("Бөглөнө үү"),
@@ -229,6 +230,13 @@ const HotelInformation = () => {
                             helperText={errors.CancelPolicy?.message}
                         />
                     </Grid>
+                    <Grid item xs={6}>
+                        {/* <CustomUpload
+                            IsLogo={true}
+                            Layout="vertical"
+                            id="logoPic"
+                        /> */}
+                    </Grid>
                 </Grid>
             ),
         },
@@ -272,13 +280,26 @@ const HotelInformation = () => {
             <CircularProgress color="info" />
         </Grid>
     ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Box sx={{ width: "100%" }}>
-                <CustomTab tabs={tabs} />
-            </Box>
+        <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Box sx={{ width: "100%" }}>
+                    <CustomTab tabs={tabs} />
+                </Box>
 
-            <SubmitButton loading={loading} />
-        </form>
+                <SubmitButton loading={loading} />
+            </form>
+
+            {/* <Grid container spacing={1} className="mt-3">
+                <Grid item xs={6}>
+                    Logo
+                    <CustomUpload
+                        IsLogo={true}
+                        Layout="vertical"
+                        id="logoPic"
+                    />
+                </Grid>
+            </Grid> */}
+        </>
     );
 };
 
