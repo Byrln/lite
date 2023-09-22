@@ -3,10 +3,13 @@ import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 
-import ReservationSourceSelect from "components/select/reservation-source";
 import { dateStringToObj } from "lib/utils/helpers";
 
 const Search = ({ register, errors, control, reset }: any) => {
+    reset({
+        BeginDate: new Date(new Date().getFullYear(), 0, 1),
+        EndDate: new Date(new Date().getFullYear(), 11, 31),
+    });
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>

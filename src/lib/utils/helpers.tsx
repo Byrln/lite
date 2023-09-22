@@ -15,6 +15,13 @@ export function monthsByNumber() {
     ];
 }
 
+export function notificationType() {
+    return [
+        { value: 1, name: "User Roles" },
+        { value: 2, name: "Users" },
+    ];
+}
+
 export function monthDays() {
     return [
         { key: 1, value: 1 },

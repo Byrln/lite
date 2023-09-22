@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import moment from "moment";
 
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
@@ -10,6 +11,7 @@ import { PackageSWR, PackageAPI, listUrl } from "lib/api/package";
 import NewEdit from "./new-edit";
 import { formatPrice } from "lib/utils/helpers";
 import Search from "./search";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const columns = [
     {
@@ -98,7 +100,24 @@ const PackageList = ({ title }: any) => {
         control,
     } = useForm(formOptions);
 
-    const [search, setSearch] = useState({});
+    const [search, setSearch] = useState({
+        BeginDate: moment(
+            dateStringToObj(
+                moment(new Date(new Date().getFullYear(), 0, 1)).format(
+                    "YYYY-MM-DD"
+                )
+            ),
+            "YYYY-MM-DD"
+        ),
+        EndDate: moment(
+            dateStringToObj(
+                moment(new Date(new Date().getFullYear(), 11, 31)).format(
+                    "YYYY-MM-DD"
+                )
+            ),
+            "YYYY-MM-DD"
+        ),
+    });
 
     const { data, error } = PackageSWR(search);
 

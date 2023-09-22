@@ -26,7 +26,7 @@ const columns = [
         key: "AmenityName",
         dataIndex: "AmenityName",
     },
-    { title: "Дэс дараалал", key: "SortOrder", dataIndex: "SortOrder" },
+    { title: "Дараалал", key: "SortOrder", dataIndex: "SortOrder" },
     {
         title: "Төлөв",
         key: "Status",

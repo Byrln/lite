@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/package";
+const urlPrefix = "/api/Package";
 export const listUrl = `${urlPrefix}/List`;
 
 export const PackageSWR = (search: any) => {

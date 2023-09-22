@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import { mutate } from "swr";
 import { LoadingButton } from "@mui/lab";
-import { Card, CardContent, Typography } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Card, CardContent } from "@mui/material";
 import { Icon } from "@iconify/react";
 import searchFill from "@iconify/icons-eva/search-fill";
 import trash2Fill from "@iconify/icons-eva/trash-2-fill";
-
-import SubmitButton from "components/common/submit-button";
 
 const CustomSelect = ({
     children,
@@ -20,15 +17,10 @@ const CustomSelect = ({
     const [loading, setLoading] = useState(false);
 
     const onSubmit = async (values: any) => {
-        console.log("values", values);
         setLoading(true);
 
         setSearch(values);
-        // (async () => {
-        //     await mutate(`${listUrl}`);
 
-        //     setLoading(false);
-        // })();
         setLoading(false);
     };
 

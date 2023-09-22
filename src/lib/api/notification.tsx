@@ -17,6 +17,29 @@ export const NotificationSWR = () => {
     return useSWR(listUrl, fetcher);
 };
 
+export const NotificationTypeSWR = () => {
+    const fetcher = async (url: any) =>
+        await axios.post(url).then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Type`, fetcher);
+};
+
+export const NotificationUserItemSWR = (values: any) => {
+    const fetcher = async (url: any) =>
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/UserItem`, fetcher);
+};
+
+export const NotificationUserRoleSWR = (notificationTypeID = 0) => {
+    let values: any = { NotificationTypeID: notificationTypeID };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/UserRole`, fetcher);
+};
+
 export const NotificationAPI = {
     get: async (id: any) => {
         const values = {
@@ -29,7 +52,10 @@ export const NotificationAPI = {
     },
 
     new: async (values: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/New`, values);
+        const { data, status } = await axios.post(
+            `${urlPrefix}/User/InsertWU`,
+            values
+        );
 
         return {
             data,

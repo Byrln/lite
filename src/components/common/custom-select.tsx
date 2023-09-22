@@ -15,6 +15,7 @@ const CustomSelect = ({
     optionValue,
     optionLabel,
     dense = true,
+    onChange,
 }: any) => {
     return (
         <FormControl
@@ -34,6 +35,11 @@ const CustomSelect = ({
                     name: field,
                     id: field,
                 }}
+                onChange={(value) =>
+                    onChange &&
+                    (onChange(value.target.value),
+                    console.log("value", value.target.value))
+                }
             >
                 <option></option>
                 {options.map((element: any) => (
