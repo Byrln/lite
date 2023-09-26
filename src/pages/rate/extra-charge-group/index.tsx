@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import ExtraChargeGroupList from "components/rate/extra-charge-group/list";
 
-const title = "Нэмэлт тооцооны бүлгүүд";
+const title = "Нэмэлт үйлчилгээний бүлэг";
 
 const Index = () => (
     <>

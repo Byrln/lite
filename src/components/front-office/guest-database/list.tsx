@@ -52,7 +52,7 @@ const GuestdatabaseList = ({ title }: any) => {
             dataIndex: "VipStatusName",
         },
         {
-            title: "Action",
+            title: "Нэмэлт үйлдэл",
             key: "Action",
             dataIndex: "Action",
             render: function render(id: any, record: any) {

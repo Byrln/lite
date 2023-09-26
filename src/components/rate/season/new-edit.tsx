@@ -83,7 +83,7 @@ const NewEdit = () => {
                         />
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={3}>
                         <CustomSelect
                             register={register}
                             errors={errors}
@@ -92,22 +92,11 @@ const NewEdit = () => {
                             options={days}
                             optionValue="value"
                             optionLabel="value"
+                            dense={false}
                         />
                     </Grid>
 
-                    <Grid item xs={6}>
-                        <CustomSelect
-                            register={register}
-                            errors={errors}
-                            field="EndDay"
-                            label="Дуусах өдөр"
-                            options={days}
-                            optionValue="value"
-                            optionLabel="value"
-                        />
-                    </Grid>
-
-                    <Grid item xs={6}>
+                    <Grid item xs={3}>
                         <CustomSelect
                             register={register}
                             errors={errors}
@@ -120,7 +109,20 @@ const NewEdit = () => {
                         />
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={3}>
+                        <CustomSelect
+                            register={register}
+                            errors={errors}
+                            field="EndDay"
+                            label="Дуусах өдөр"
+                            options={days}
+                            optionValue="value"
+                            optionLabel="value"
+                            dense={false}
+                        />
+                    </Grid>
+
+                    <Grid item xs={3}>
                         <CustomSelect
                             register={register}
                             errors={errors}
@@ -220,7 +222,7 @@ const NewEdit = () => {
                             type="number"
                             fullWidth
                             id="Priority"
-                            label="Priority"
+                            label="Давуу байдал"
                             {...register("Priority")}
                             margin="dense"
                             error={errors.Priority?.message}

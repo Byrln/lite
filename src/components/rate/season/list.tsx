@@ -12,19 +12,19 @@ import NewEdit from "./new-edit";
 import Search from "./search";
 
 const columns = [
-    { title: "Season Name", key: "SeasonName", dataIndex: "SeasonName" },
+    { title: "Улирлын нэр", key: "SeasonName", dataIndex: "SeasonName" },
     {
-        title: "From",
+        title: "Эхлэх өдөр",
         key: "BeginDayMonth",
         dataIndex: "BeginDayMonth",
     },
     {
-        title: "To",
+        title: "Дуусах өдөр",
         key: "EndDayMonth",
         dataIndex: "EndDayMonth",
     },
     {
-        title: "Begin Date",
+        title: "Эхлэх огноо",
         key: "BeginDate",
         dataIndex: "BeginDate",
         render: function render(id: any, value: any) {
@@ -35,7 +35,7 @@ const columns = [
         },
     },
     {
-        title: "End Date",
+        title: "Дуусах огноо",
         key: "EndDate",
         dataIndex: "EndDate",
         render: function render(id: any, value: any) {
@@ -45,9 +45,9 @@ const columns = [
             );
         },
     },
-    { title: "Priority", key: "Priority", dataIndex: "Priority" },
+    { title: "Давуу байдал", key: "Priority", dataIndex: "Priority" },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

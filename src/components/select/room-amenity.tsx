@@ -12,7 +12,12 @@ import {
 
 import { RoomTypeAmenitySWR } from "lib/api/amenity";
 
-const RoomAmenitySelect = ({ register, errors }: any) => {
+const RoomAmenitySelect = ({
+    register,
+    errors,
+    customRegisterName,
+    entity,
+}: any) => {
     const { data, error } = RoomTypeAmenitySWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -27,7 +32,7 @@ const RoomAmenitySelect = ({ register, errors }: any) => {
 
     return (
         <FormControl sx={{ mt: 2 }} component="fieldset" variant="standard">
-            <FormLabel component="legend">Room Amenities</FormLabel>
+            <FormLabel component="legend">Өрөөний онцлогууд</FormLabel>
 
             <FormGroup>
                 <Box display="flex" flexWrap="wrap">
@@ -39,7 +44,12 @@ const RoomAmenitySelect = ({ register, errors }: any) => {
                                     <Checkbox
                                         key={element.AmenityID}
                                         name={element.AmenityID}
-                                        {...register("AmenityID")}
+                                        value={element.AmenityID}
+                                        {...register(
+                                            customRegisterName
+                                                ? customRegisterName
+                                                : "AmenityID"
+                                        )}
                                     />
                                 }
                                 label={element.AmenityName}

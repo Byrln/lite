@@ -15,37 +15,37 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Company Name",
+        title: "Нэр",
         key: "CustomerName",
         dataIndex: "CustomerName",
     },
     {
-        title: "Group Name",
+        title: "Бүлгийн нэр",
         key: "CustomerGroupName",
         dataIndex: "CustomerGroupName",
     },
     {
-        title: "Registry No",
+        title: "Регистерийн дугаар",
         key: "RegisterNo",
         dataIndex: "RegisterNo",
     },
     {
-        title: "Phone",
+        title: "Утас",
         key: "Phone",
         dataIndex: "Phone",
     },
     {
-        title: "Email",
+        title: "Цах.Шуудан",
         key: "Email",
         dataIndex: "Email",
     },
     {
-        title: "City",
+        title: "Хот, аймаг",
         key: "City",
         dataIndex: "City",
     },
     {
-        title: "Country",
+        title: "Улс",
         key: "CountryName",
         dataIndex: "CountryName",
     },

@@ -37,7 +37,7 @@ const ReservationChannelSelect = ({
         <TextField
             fullWidth
             id="ReservationSourceID"
-            label="ReservationChannel"
+            label="Суваг"
             {...register(
                 customRegisterName ? customRegisterName : "ReservationSourceID"
             )}

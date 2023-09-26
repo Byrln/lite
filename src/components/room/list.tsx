@@ -11,17 +11,15 @@ import NewEdit from "./new-edit";
 import Search from "./search";
 
 const columns = [
-    { title: "RoomTypeID", key: "RoomTypeID", dataIndex: "RoomTypeID" },
+    { title: "Өрөөний №", key: "RoomNo", dataIndex: "RoomNo" },
     {
-        title: "RoomTypeName",
+        title: "Өрөөний төрөл",
         key: "RoomTypeName",
         dataIndex: "RoomTypeName",
     },
-    { title: "RoomID", key: "RoomID", dataIndex: "RoomID" },
-    { title: "RoomNo", key: "RoomNo", dataIndex: "RoomNo" },
-    { title: "RoomPhone", key: "RoomPhone", dataIndex: "RoomPhone" },
+    { title: "Утас", key: "RoomPhone", dataIndex: "RoomPhone" },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {
@@ -36,7 +34,7 @@ const columns = [
             );
         },
     },
-    { title: "FloorNo", key: "FloorNo", dataIndex: "FloorNo" },
+    { title: "Давхар", key: "FloorNo", dataIndex: "FloorNo" },
 ];
 
 const RoomList = ({ title }: any) => {

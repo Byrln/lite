@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import CashierList from "components/payment/cashier/list";
 
-const title = "Cashier";
+const title = "Касс";
 
 const Index = () => (
     <>

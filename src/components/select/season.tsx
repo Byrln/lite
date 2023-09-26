@@ -23,7 +23,7 @@ const SeasonSelect = ({ register, errors }: any) => {
         <TextField
             fullWidth
             id="SeasonID"
-            label="Season"
+            label="Улирал"
             {...register("SeasonID")}
             select
             margin="dense"

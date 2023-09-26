@@ -52,7 +52,7 @@ const InclusionList = () => {
             api={ChargeTypeAPI}
             id="RoomChargeTypeID"
             listUrl={listUrl}
-            modalTitle="Нэмэлт тооцооны төрлүүд"
+            modalTitle="Нэмэлт үйлчилгээ"
         />
     );
 };

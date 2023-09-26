@@ -30,7 +30,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <ReservationSourceSelect
                     register={register}
                     errors={errors}
-                    label="Res. Source"
+                    label="Зах.эх сурвалж"
                     ChannelID={2}
                     field="SourceID"
                 />

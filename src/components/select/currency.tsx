@@ -31,7 +31,7 @@ const CurrencySelect = ({
         <TextField
             fullWidth
             id="CurrencyID"
-            label="Currency"
+            label="Валют"
             {...register(nameKey)}
             select
             margin="dense"

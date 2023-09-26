@@ -65,7 +65,7 @@ const NewEdit = () => {
                                 size="small"
                                 fullWidth
                                 id="Company Name"
-                                label="CustomerName"
+                                label="Компанийн нэр"
                                 {...register("CustomerName")}
                                 margin="dense"
                                 error={errors.CustomerName?.message}
@@ -86,7 +86,7 @@ const NewEdit = () => {
                                 size="small"
                                 fullWidth
                                 id="City"
-                                label="City"
+                                label="Хот"
                                 {...register("City")}
                                 margin="dense"
                                 error={errors.City?.message}
@@ -99,7 +99,7 @@ const NewEdit = () => {
                                 size="small"
                                 fullWidth
                                 id="RegisterNo"
-                                label="Registration No"
+                                label="Регистерийн дугаар"
                                 {...register("RegisterNo")}
                                 margin="dense"
                                 error={errors.RegisterNo?.message}
@@ -111,7 +111,7 @@ const NewEdit = () => {
                                 size="small"
                                 fullWidth
                                 id="Phone"
-                                label="PhoneNumber"
+                                label="Утас"
                                 {...register("Phone")}
                                 margin="dense"
                                 error={errors.Phone?.message}
@@ -123,7 +123,7 @@ const NewEdit = () => {
                                 size="small"
                                 fullWidth
                                 id="Email"
-                                label="Email"
+                                label="Цах.Шуудан"
                                 {...register("Email")}
                                 margin="dense"
                                 error={errors.Email?.message}
@@ -153,7 +153,7 @@ const NewEdit = () => {
                                 multiline
                                 rows={3}
                                 id="Address"
-                                label="Address"
+                                label="Хаяг"
                                 {...register("Address")}
                                 margin="dense"
                                 error={errors.Address?.message}
@@ -173,7 +173,7 @@ const NewEdit = () => {
                                 component="div"
                                 className="mb-3"
                             >
-                                Contact Person 1
+                                Холбогдох хүн 1
                             </Typography>
                             <Grid container spacing={1}>
                                 <Grid item xs={4}>
@@ -181,7 +181,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonFirstName1"
-                                        label="First Name"
+                                        label="Нэр"
                                         {...register("ContactPersonFirstName1")}
                                         margin="dense"
                                         error={
@@ -199,7 +199,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonLastName1"
-                                        label="Last Name"
+                                        label="Овог"
                                         {...register("ContactPersonLastName1")}
                                         margin="dense"
                                         error={
@@ -217,7 +217,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonPosition1"
-                                        label="Work Position"
+                                        label="Албан тушаал"
                                         {...register("ContactPersonPosition1")}
                                         margin="dense"
                                         error={
@@ -235,7 +235,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonPhone1"
-                                        label="Phone"
+                                        label="Утас"
                                         {...register("ContactPersonPhone1")}
                                         margin="dense"
                                         error={
@@ -251,7 +251,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonEmail1"
-                                        label="Email"
+                                        label="Цах.Шуудан"
                                         {...register("ContactPersonEmail1")}
                                         margin="dense"
                                         error={
@@ -272,7 +272,7 @@ const NewEdit = () => {
                                 component="div"
                                 className="mb-3"
                             >
-                                Contact Person 2
+                                Холбогдох хүн 2
                             </Typography>
                             <Grid container spacing={1}>
                                 <Grid item xs={4}>
@@ -280,7 +280,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonFirstName2"
-                                        label="First Name"
+                                        label="Нэр"
                                         {...register("ContactPersonFirstName2")}
                                         margin="dense"
                                         error={
@@ -298,7 +298,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonLastName2"
-                                        label="Last Name"
+                                        label="Овог"
                                         {...register("ContactPersonLastName2")}
                                         margin="dense"
                                         error={
@@ -316,7 +316,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonPosition2"
-                                        label="Work Position"
+                                        label="Албан тушаал"
                                         {...register("ContactPersonPosition2")}
                                         margin="dense"
                                         error={
@@ -334,7 +334,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonPhone2"
-                                        label="Phone"
+                                        label="Утас"
                                         {...register("ContactPersonPhone2")}
                                         margin="dense"
                                         error={
@@ -350,7 +350,7 @@ const NewEdit = () => {
                                         size="small"
                                         fullWidth
                                         id="ContactPersonEmail2"
-                                        label="Email"
+                                        label="Цах.Шуудан"
                                         {...register("ContactPersonEmail2")}
                                         margin="dense"
                                         error={

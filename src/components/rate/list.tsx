@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { TextField } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
@@ -43,29 +43,33 @@ const RateList = ({ title }: any) => {
 
     const columns = [
         {
-            title: "Rate Type",
+            title: "Нэр",
             key: "RateTypeName",
             dataIndex: "RateTypeName",
         },
         {
-            title: "Room Type",
+            title: "Өрөөний төрөл",
             key: "RoomTypeName",
             dataIndex: "RoomTypeName",
         },
-        { title: "Season", key: "SeasonName", dataIndex: "SeasonName" },
-        { title: "Res. Source", key: "SourceName", dataIndex: "SourceName" },
+        { title: "Улирал", key: "SeasonName", dataIndex: "SeasonName" },
         {
-            title: "Company",
+            title: "Зах.эх сурвалж",
+            key: "SourceName",
+            dataIndex: "SourceName",
+        },
+        {
+            title: "Компани",
             key: "CustomerName",
             dataIndex: "CustomerName",
         },
         {
-            title: "Company",
+            title: "Хугацаа",
             key: "DurationName",
             dataIndex: "DurationName",
         },
         {
-            title: "Rate",
+            title: "Тариф",
             key: "BaseRate",
             dataIndex: "BaseRate",
             render: function render(
@@ -100,7 +104,7 @@ const RateList = ({ title }: any) => {
             },
         },
         {
-            title: "Rate for Extra Adult",
+            title: "Нэмэлт Т/хүний тариф",
             key: "ExtraAdult",
             dataIndex: "ExtraAdult",
             render: function render(
@@ -135,7 +139,7 @@ const RateList = ({ title }: any) => {
             },
         },
         {
-            title: "Rate for Extra Child",
+            title: "Нэмэлт хүүхдийн тариф",
             key: "ExtraChild",
             dataIndex: "ExtraChild",
             render: function render(
@@ -211,15 +215,22 @@ const RateList = ({ title }: any) => {
                 excelName={title}
             />
 
-            <LoadingButton
-                loading={loading}
-                variant="contained"
-                onClick={onSubmit}
-                size="small"
-                className="mt-3 "
-            >
-                Хадгалах
-            </LoadingButton>
+            <Grid container spacing={1}>
+                <Grid item xs={5}></Grid>
+                <Grid item xs={2}>
+                    <LoadingButton
+                        loading={loading}
+                        variant="contained"
+                        onClick={onSubmit}
+                        size="small"
+                        className="mt-3 "
+                        fullWidth
+                    >
+                        Хадгалах
+                    </LoadingButton>
+                </Grid>
+                <Grid item xs={5}></Grid>
+            </Grid>
         </>
     );
 };

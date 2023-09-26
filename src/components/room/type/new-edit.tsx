@@ -1,4 +1,4 @@
-import { createRef } from "react";
+import { createRef, useContext, useEffect, useState } from "react";
 import {
     Checkbox,
     Box,
@@ -11,14 +11,16 @@ import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
+import { mutate } from "swr";
+import SaveIcon from "@mui/icons-material/Save";
 
-import NewEditForm from "components/common/new-edit-form";
 import RoomAmenitySelect from "components/select/room-amenity";
 import AmenitySelect from "components/select/amenity";
-
 import { RoomTypeAPI, listUrl } from "lib/api/room-type";
 import { useAppState } from "lib/context/app";
 import CustomTab from "components/common/custom-tab";
+import { ModalContext } from "lib/context/modal";
 
 const validationSchema = yup.object().shape({
     RoomTypeShortName: yup.string().required("Бөглөнө үү"),
@@ -32,8 +34,11 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const [entity, setEntity]: any = useState(null);
+
     const formRef = createRef<HTMLButtonElement>();
     const [state]: any = useAppState();
+    const { handleModal }: any = useContext(ModalContext);
 
     const {
         register,
@@ -44,21 +49,87 @@ const NewEdit = () => {
         resolver: yupResolver(validationSchema),
     });
 
+    useEffect(() => {
+        if (state.editId) {
+            const fetchDatas = async () => {
+                const response: any = await RoomTypeAPI.get(state.editId);
+
+                if (response.length === 1) {
+                    let newEntity = response[0];
+                    newEntity._id = newEntity.GuestID;
+                    setEntity(newEntity);
+                } else {
+                    setEntity(null);
+                }
+            };
+            fetchDatas();
+        } else {
+            setEntity(null);
+        }
+    }, [state.editId]);
+
     const onSubmit = async (values: any) => {
         values.RoomTypeID = state.editId;
+
+        let amenities = values.amenity;
+        delete values.amenity;
+        let amenitiesBooking = values.amenity2;
+        delete values.amenity2;
+        let RoomTypeID: any;
+        if (state.editId) {
+            const response = await RoomTypeAPI.update(values);
+            RoomTypeID = state.editId;
+        } else {
+            const response = await RoomTypeAPI.new(values);
+            RoomTypeID = response.data.JsonData[0].RoomTypeID;
+        }
+
+        let amenitiesInsertValue: any = [];
+        let amenitiesBookingInsertValue: any = [];
+
+        if (amenities) {
+            amenities.forEach((element: any) => {
+                amenitiesInsertValue.push({
+                    RoomTypeID: RoomTypeID,
+                    AmenityID: parseInt(element),
+                    IsGeneral: true,
+                    IsBooking: false,
+                });
+
+                RoomTypeAPI.amenityInsertWU({
+                    RoomTypeID: RoomTypeID,
+                    AmenityID: parseInt(element),
+                    IsGeneral: true,
+                    IsBooking: false,
+                });
+            });
+        }
+
+        if (amenitiesBooking) {
+            amenitiesBooking.forEach((element: any) => {
+                amenitiesBookingInsertValue.push({
+                    RoomTypeID: RoomTypeID,
+                    AmenityID: parseInt(element),
+                    IsGeneral: false,
+                    IsBooking: true,
+                });
+            });
+        }
+
         console.log("values", values);
+        console.log("amenities", amenities);
+        console.log("amenitiesBooking", amenitiesBooking);
+        console.log("amenitiesInsertValue", amenitiesInsertValue);
 
-        // await RoomTypeAPI.update(values);
+        await mutate(listUrl);
 
-        // values.amenities.forEach((element: any) => console.log(element));
-
-        // handleModal();
-        // toast("Амжилттай.");
+        handleModal();
+        toast("Амжилттай.");
     };
 
     const tabs = [
         {
-            label: "General",
+            label: "Ерөнхий",
             component: (
                 <>
                     <Grid container spacing={1}>
@@ -70,6 +141,10 @@ const NewEdit = () => {
                                 label="Товч нэр"
                                 {...register("RoomTypeShortName")}
                                 margin="dense"
+                                value={entity && entity.RoomTypeShortName}
+                                InputLabelProps={{
+                                    shrink: entity && entity.RoomTypeShortName,
+                                }}
                                 error={errors.RoomTypeShortName?.message}
                                 helperText={errors.RoomTypeShortName?.message}
                             />
@@ -82,6 +157,10 @@ const NewEdit = () => {
                                 label="Нэр"
                                 {...register("RoomTypeName")}
                                 margin="dense"
+                                value={entity && entity.RoomTypeName}
+                                InputLabelProps={{
+                                    shrink: entity && entity.RoomTypeName,
+                                }}
                                 error={errors.RoomTypeName?.message}
                                 helperText={errors.RoomTypeName?.message}
                             />
@@ -95,6 +174,10 @@ const NewEdit = () => {
                                 label="Том хүн - үндсэн"
                                 {...register("BaseAdult")}
                                 margin="dense"
+                                value={entity && entity.BaseAdult}
+                                InputLabelProps={{
+                                    shrink: entity && entity.BaseAdult,
+                                }}
                                 error={errors.BaseAdult?.message}
                                 helperText={errors.BaseAdult?.message}
                             />
@@ -108,6 +191,10 @@ const NewEdit = () => {
                                 label="Том хүний тоо - дээд хязгаар"
                                 {...register("MaxAdult")}
                                 margin="dense"
+                                value={entity && entity.MaxAdult}
+                                InputLabelProps={{
+                                    shrink: entity && entity.MaxAdult,
+                                }}
                                 error={errors.MaxAdult?.message}
                                 helperText={errors.MaxAdult?.message}
                             />
@@ -120,6 +207,10 @@ const NewEdit = () => {
                                 id="BaseChild"
                                 label="Хүүхэд - үндсэн"
                                 {...register("BaseChild")}
+                                value={entity && entity.BaseChild}
+                                InputLabelProps={{
+                                    shrink: entity && entity.BaseChild,
+                                }}
                                 error={errors.BaseChild?.message}
                                 helperText={errors.BaseChild?.message}
                             />
@@ -132,6 +223,10 @@ const NewEdit = () => {
                                 id="MaxChild"
                                 label="Хүүхдийн тоо - дээд хязгаар"
                                 {...register("MaxChild")}
+                                value={entity && entity.MaxChild}
+                                InputLabelProps={{
+                                    shrink: entity && entity.MaxChild,
+                                }}
                                 error={errors.MaxChild?.message}
                                 helperText={errors.MaxChild?.message}
                             />
@@ -145,6 +240,10 @@ const NewEdit = () => {
                                 label="Дараалал"
                                 {...register("SortOrder")}
                                 margin="dense"
+                                value={entity && entity.SortOrder}
+                                InputLabelProps={{
+                                    shrink: entity && entity.SortOrder,
+                                }}
                                 error={errors.SortOrder?.message}
                                 helperText={errors.SortOrder?.message}
                                 sx={{ mt: 2 }}
@@ -152,7 +251,12 @@ const NewEdit = () => {
                         </Grid>
                     </Grid>
 
-                    <RoomAmenitySelect register={register} errors={errors} />
+                    <RoomAmenitySelect
+                        register={register}
+                        errors={errors}
+                        customRegisterName="amenity"
+                        entity={entity}
+                    />
                 </>
             ),
         },
@@ -169,6 +273,10 @@ const NewEdit = () => {
                                 label="Товч тайлбар (Онлайн захиалга)"
                                 {...register("BookingDescription")}
                                 margin="dense"
+                                value={entity && entity.BookingDescription}
+                                InputLabelProps={{
+                                    shrink: entity && entity.BookingDescription,
+                                }}
                                 error={errors.BookingDescription?.message}
                                 helperText={errors.BookingDescription?.message}
                             />
@@ -182,6 +290,10 @@ const NewEdit = () => {
                                 label="Эрэмбэлэх утга"
                                 {...register("SortOrder")}
                                 margin="dense"
+                                value={entity && entity.SortOrder}
+                                InputLabelProps={{
+                                    shrink: entity && entity.SortOrder,
+                                }}
                                 error={errors.SortOrder?.message}
                                 helperText={errors.SortOrder?.message}
                             />
@@ -192,10 +304,16 @@ const NewEdit = () => {
                             control={<Checkbox />}
                             label="Онлайн захиалга дээр харуулах эсэх"
                             {...register("Booking")}
+                            value={entity && entity.Booking}
                         />
                     </FormGroup>
 
-                    <AmenitySelect register={register} errors={errors} />
+                    <AmenitySelect
+                        register={register}
+                        errors={errors}
+                        customRegisterName="amenity2"
+                        entity={entity}
+                    />
                 </>
             ),
         },
@@ -217,9 +335,10 @@ const NewEdit = () => {
                     variant="contained"
                     ref={formRef}
                     className="mt-3"
+                    fullWidth
                 >
-                    {/* <SaveIcon className="mr-1" /> */}
-                    Reservation
+                    <SaveIcon className="mr-1" />
+                    Хадгалах
                 </Button>
             </Box>
         </form>

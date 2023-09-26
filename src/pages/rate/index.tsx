@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import RateList from "components/rate/list";
 
-const title = "Үнэ";
+const title = "Тариф";
 
 const Index = () => (
     <>

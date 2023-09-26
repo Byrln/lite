@@ -33,7 +33,7 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
                 alignItems="center"
                 sx={{ my: 1 }}
             >
-                <Typography variant="h6">Room Type</Typography>
+                <Typography variant="h6">Өрөөний төрөл</Typography>
             </Box>
 
             {data.map((element: any, index: any) => (
@@ -78,7 +78,7 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
                             type="number"
                             fullWidth
                             id="BaseRate"
-                            label="Base Rate"
+                            label="Тариф"
                             {...register(`RoomTypes[${index}].BaseRate`)}
                             margin="dense"
                             error={errors.BaseRate?.message}
@@ -91,7 +91,7 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
                             type="number"
                             fullWidth
                             id="Extra Adult"
-                            label="Extra Adult"
+                            label="Нэмэлт Т/Хүн"
                             {...register(`RoomTypes[${index}].ExtraAdult`)}
                             margin="dense"
                             error={errors.ExtraAdult?.message}
@@ -104,7 +104,7 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
                             type="number"
                             fullWidth
                             id={`Extra Child`}
-                            label="ExtraChild"
+                            label="Нэмэлт хүүхэд"
                             {...register(`RoomTypes[${index}].ExtraChild`)}
                             margin="dense"
                             error={errors.ExtraChild?.message}

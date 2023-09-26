@@ -16,18 +16,18 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Group Name",
+        title: "Бүлгийн нэр",
         key: "RoomChargeTypeGroupName",
         dataIndex: "RoomChargeTypeGroupName",
     },
 
     {
-        title: "Sort Order",
+        title: "Дараалал",
         key: "SortOrder",
         dataIndex: "SortOrder",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

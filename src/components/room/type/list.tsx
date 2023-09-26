@@ -12,19 +12,19 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Short Name",
+        title: "Богино нэр",
         key: "RoomTypeShortName",
         dataIndex: "RoomTypeShortName",
     },
     {
-        title: "Room Type",
+        title: "Өрөөний төрөл",
         key: "RoomTypeName",
         dataIndex: "RoomTypeName",
     },
-    { title: "Base (A/C)", key: "BaseAC", dataIndex: "BaseAC" },
-    { title: "Max (A/C)", key: "MaxAC", dataIndex: "MaxAC" },
+    { title: "Хүний тоо (Т/Х)", key: "BaseAC", dataIndex: "BaseAC" },
+    { title: "Хүний тоо/дээд (Т/Х)", key: "MaxAC", dataIndex: "MaxAC" },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

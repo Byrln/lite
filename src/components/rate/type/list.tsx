@@ -12,21 +12,21 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Rate Type",
+        title: "Нэр",
         key: "RateTypeName",
         dataIndex: "RateTypeName",
     },
     {
-        title: "Breakfast Included",
+        title: "Өглөөний цайтай эсэх",
         key: "BreakfastIncluded",
         dataIndex: "BreakfastIncluded",
         render: function render(id: any, value: any) {
             return <ToggleChecked id={id} checked={value} disabled={true} />;
         },
     },
-    { title: "Channel", key: "ChannelName", dataIndex: "ChannelName" },
+    { title: "Суваг", key: "ChannelName", dataIndex: "ChannelName" },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

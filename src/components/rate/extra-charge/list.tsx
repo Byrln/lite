@@ -13,18 +13,18 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Extra Charge Group",
+        title: "Нэмэлт үйлчилгээний бүлэг",
         key: "RoomChargeTypeGroupName",
         dataIndex: "RoomChargeTypeGroupName",
     },
 
     {
-        title: "Extra Charge",
+        title: "Нэмэлт үйлчилгээ",
         key: "RoomChargeTypeName",
         dataIndex: "RoomChargeTypeName",
     },
     {
-        title: "Rate",
+        title: "Тариф",
         key: "RoomChargeTypeRate",
         dataIndex: "RoomChargeTypeRate",
         render: function render(id: any, value: any) {
@@ -32,7 +32,7 @@ const columns = [
         },
     },
     {
-        title: "Editable",
+        title: "Засагдахуйц",
         key: "IsEditable",
         dataIndex: "IsEditable",
         render: function render(id: any, value: any) {
@@ -40,12 +40,12 @@ const columns = [
         },
     },
     {
-        title: "Sort Order",
+        title: "Дараалал",
         key: "SortOrder",
         dataIndex: "SortOrder",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

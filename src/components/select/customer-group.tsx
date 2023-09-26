@@ -25,7 +25,7 @@ const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
         <TextField
             fullWidth
             id="CustomerGroupID"
-            label="Customer group"
+            label="Бүлгийн нэр"
             {...register("CustomerGroupID")}
             select
             margin="dense"

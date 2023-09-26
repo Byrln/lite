@@ -25,7 +25,7 @@ const RateTypeSelect = ({ register, errors }: any) => {
         <TextField
             fullWidth
             id="RateTypeID"
-            label="Rate Type"
+            label="Тарифын төрөл"
             {...register("RateTypeID")}
             select
             margin="dense"

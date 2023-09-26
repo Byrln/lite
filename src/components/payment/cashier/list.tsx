@@ -4,22 +4,22 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Summary",
+        title: "Хураангуй",
         key: "Summary",
         dataIndex: "Summary",
     },
     {
-        title: "# of Transactions",
+        title: "Гүйлгээний тоо",
         key: "Transactions",
         dataIndex: "Transactions",
     },
     {
-        title: "Amount",
+        title: "Дүн",
         key: "Amount",
         dataIndex: "Amount",
     },
     {
-        title: "Amount",
+        title: "Дүн",
         key: "Amount",
         dataIndex: "Amount",
     },

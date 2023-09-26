@@ -50,7 +50,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="StatusColor"
-                        label="Color"
+                        label="Өнгө"
                         {...register("StatusColor")}
                         margin="dense"
                         error={errors.StatusColor?.message}

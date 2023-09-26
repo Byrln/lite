@@ -117,7 +117,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="RateTypeCode"
-                        label="Short Code"
+                        label="Богино код"
                         {...register("RateTypeCode")}
                         margin="dense"
                         error={errors.RateTypeCode?.message}
@@ -129,7 +129,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="RateTypeName"
-                        label="Rate Type"
+                        label="Нэр"
                         {...register("RateTypeName")}
                         margin="dense"
                         error={errors.RateTypeName?.message}
@@ -141,7 +141,7 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         type="ReservationChannel"
-                        label="Channel"
+                        label="Суваг"
                         optionValue="ChannelID"
                         optionLabel="ChannelName"
                     />
@@ -173,7 +173,7 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                label="BreakfastIncluded"
+                label="Өглөөний цайтай эсэх"
             />
 
             <FormControlLabel
@@ -192,7 +192,7 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                label="Room Rates inclusive of total 10% + 1%"
+                label="Өрөөний тариф нь 10% + 1% татвар агуулсан болно."
             />
 
             <BaseRateList

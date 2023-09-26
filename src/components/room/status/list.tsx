@@ -12,12 +12,12 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Room Status",
+        title: "Өрөөний төлөв",
         key: "StatusCode",
         dataIndex: "StatusCode",
     },
     {
-        title: "Color",
+        title: "Өнгө",
         key: "StatusColor",
         dataIndex: "StatusColor",
         render: function render(id: any, value: any) {
@@ -35,7 +35,7 @@ const columns = [
             );
         },
     },
-    { title: "Description", key: "Description", dataIndex: "Description" },
+    { title: "Тайлбар", key: "Description", dataIndex: "Description" },
 ];
 
 const RoomStatusList = ({ title }: any) => {

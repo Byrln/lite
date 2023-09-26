@@ -100,13 +100,13 @@ const PackageList = ({ title }: any) => {
                                 handleModal(
                                     true,
                                     `Upload Picture`,
-                                    <div>{id}</div>,
+                                    <>test</>,
                                     null,
                                     "large"
                                 );
                             }}
                         >
-                            test
+                            Upload Picture
                         </Button>
                     </>
                 );

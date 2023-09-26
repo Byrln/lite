@@ -35,7 +35,7 @@ const RoomChargeDurationSelect = ({
         <TextField
             fullWidth
             id="RoomChargeDurationID"
-            label="Duration"
+            label="Хугацаа"
             {...register(
                 customRegisterName ? customRegisterName : "RoomChargeDurationID"
             )}
