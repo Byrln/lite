@@ -31,19 +31,15 @@ const NewEdit = () => {
     } = useForm({ resolver: yupResolver(validationSchema) });
 
     return (
-        <NewEditForm
-            api={PackageAPI}
-            listUrl={listUrl}
-            additionalValues={
-                state.editId && {
-                    PackageID: state.editId,
-                }
-            }
-            reset={reset}
-            handleSubmit={handleSubmit}
+        <LocalizationProvider // @ts-ignore
+            dateAdapter={AdapterDateFns}
         >
-            <LocalizationProvider // @ts-ignore
-                dateAdapter={AdapterDateFns}
+            <NewEditForm
+                api={PackageAPI}
+                listUrl={listUrl}
+                additionalValues={state.editId && {}}
+                reset={reset}
+                handleSubmit={handleSubmit}
             >
                 <Grid container spacing={1}>
                     <Grid item xs={4}>
@@ -86,7 +82,7 @@ const NewEdit = () => {
                         />
                     </Grid>
 
-                    <Grid item xs={6}>
+                    {/* <Grid item xs={6}>
                         <Controller
                             name="BeginDate"
                             control={control}
@@ -124,9 +120,46 @@ const NewEdit = () => {
                                 />
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
 
                     <Grid item xs={6}>
+                        <Controller
+                            name="EndDate"
+                            control={control}
+                            defaultValue={null}
+                            render={({ field: { onChange, value } }) => (
+                                <DatePicker
+                                    label="PMS Эхлэх огноо"
+                                    value={value}
+                                    onChange={(value) =>
+                                        onChange(
+                                            moment(
+                                                dateStringToObj(
+                                                    moment(value).format(
+                                                        "YYYY-MM-DD"
+                                                    )
+                                                ),
+                                                "YYYY-MM-DD"
+                                            )
+                                        )
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            size="small"
+                                            id="EndDate"
+                                            {...register("EndDate")}
+                                            margin="dense"
+                                            fullWidth
+                                            {...params}
+                                            error={errors.EndDate?.message}
+                                            helperText={errors.EndDate?.message}
+                                        />
+                                    )}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    {/* <Grid item xs={6}>
                         <Controller
                             name="EndDate"
                             control={control}
@@ -162,10 +195,10 @@ const NewEdit = () => {
                                 />
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
                 </Grid>
-            </LocalizationProvider>
-        </NewEditForm>
+            </NewEditForm>
+        </LocalizationProvider>
     );
 };
 

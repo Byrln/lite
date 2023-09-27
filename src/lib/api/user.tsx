@@ -25,7 +25,7 @@ export const UserAPI = {
             UserID: id,
         };
 
-        const res = await axios.post(listUrl, values);
+        const res = await axios.post(`${urlPrefix}/DetailByUserID`, values);
 
         return res.data.JsonData;
     },
