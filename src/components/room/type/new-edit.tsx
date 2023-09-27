@@ -21,6 +21,7 @@ import { RoomTypeAPI, listUrl } from "lib/api/room-type";
 import { useAppState } from "lib/context/app";
 import CustomTab from "components/common/custom-tab";
 import { ModalContext } from "lib/context/modal";
+import { AmenityAPI } from "lib/api/amenity";
 
 const validationSchema = yup.object().shape({
     RoomTypeShortName: yup.string().required("Бөглөнө үү"),
@@ -76,6 +77,8 @@ const NewEdit = () => {
         let amenitiesBooking = values.amenity2;
         delete values.amenity2;
         let RoomTypeID: any;
+        const amenitiesList = await AmenityAPI.list(values);
+
         if (state.editId) {
             const response = await RoomTypeAPI.update(values);
             RoomTypeID = state.editId;
@@ -85,41 +88,40 @@ const NewEdit = () => {
         }
 
         let amenitiesInsertValue: any = [];
-        let amenitiesBookingInsertValue: any = [];
 
         if (amenities) {
-            amenities.forEach((element: any) => {
+            amenitiesList.forEach((amenityElement: any) => {
+                let isGeneralTrue = false;
+                let isBookingTrue = false;
+
+                if (amenities) {
+                    amenities.forEach((element: any) => {
+                        if (amenityElement.AmenityID == parseInt(element)) {
+                            isGeneralTrue = true;
+                        }
+                    });
+                }
+
+                if (amenitiesBooking) {
+                    amenitiesBooking.forEach((element: any) => {
+                        if (amenityElement.AmenityID == parseInt(element)) {
+                            isBookingTrue = true;
+                        }
+                    });
+                }
+
                 amenitiesInsertValue.push({
                     RoomTypeID: RoomTypeID,
-                    AmenityID: parseInt(element),
-                    IsGeneral: true,
-                    IsBooking: false,
-                });
-
-                RoomTypeAPI.amenityInsertWU({
-                    RoomTypeID: RoomTypeID,
-                    AmenityID: parseInt(element),
-                    IsGeneral: true,
-                    IsBooking: false,
+                    AmenityID: amenityElement.AmenityID,
+                    IsGeneral: isGeneralTrue,
+                    IsBooking: isBookingTrue,
                 });
             });
-        }
 
-        if (amenitiesBooking) {
-            amenitiesBooking.forEach((element: any) => {
-                amenitiesBookingInsertValue.push({
-                    RoomTypeID: RoomTypeID,
-                    AmenityID: parseInt(element),
-                    IsGeneral: false,
-                    IsBooking: true,
-                });
+            RoomTypeAPI.amenityInsertWUList({
+                Amenities: amenitiesInsertValue,
             });
         }
-
-        console.log("values", values);
-        console.log("amenities", amenities);
-        console.log("amenitiesBooking", amenitiesBooking);
-        console.log("amenitiesInsertValue", amenitiesInsertValue);
 
         await mutate(listUrl);
 
@@ -142,6 +144,12 @@ const NewEdit = () => {
                                 {...register("RoomTypeShortName")}
                                 margin="dense"
                                 value={entity && entity.RoomTypeShortName}
+                                onChange={(evt: any) => {
+                                    setEntity({
+                                        ...entity,
+                                        RoomTypeShortName: evt.target.value,
+                                    });
+                                }}
                                 InputLabelProps={{
                                     shrink: entity && entity.RoomTypeShortName,
                                 }}
@@ -158,6 +166,12 @@ const NewEdit = () => {
                                 {...register("RoomTypeName")}
                                 margin="dense"
                                 value={entity && entity.RoomTypeName}
+                                onChange={(evt: any) => {
+                                    setEntity({
+                                        ...entity,
+                                        RoomTypeName: evt.target.value,
+                                    });
+                                }}
                                 InputLabelProps={{
                                     shrink: entity && entity.RoomTypeName,
                                 }}
@@ -175,6 +189,12 @@ const NewEdit = () => {
                                 {...register("BaseAdult")}
                                 margin="dense"
                                 value={entity && entity.BaseAdult}
+                                onChange={(evt: any) => {
+                                    setEntity({
+                                        ...entity,
+                                        BaseAdult: evt.target.value,
+                                    });
+                                }}
                                 InputLabelProps={{
                                     shrink: entity && entity.BaseAdult,
                                 }}
@@ -192,6 +212,12 @@ const NewEdit = () => {
                                 {...register("MaxAdult")}
                                 margin="dense"
                                 value={entity && entity.MaxAdult}
+                                onChange={(evt: any) => {
+                                    setEntity({
+                                        ...entity,
+                                        MaxAdult: evt.target.value,
+                                    });
+                                }}
                                 InputLabelProps={{
                                     shrink: entity && entity.MaxAdult,
                                 }}
@@ -208,6 +234,12 @@ const NewEdit = () => {
                                 label="Хүүхэд - үндсэн"
                                 {...register("BaseChild")}
                                 value={entity && entity.BaseChild}
+                                onChange={(evt: any) => {
+                                    setEntity({
+                                        ...entity,
+                                        BaseChild: evt.target.value,
+                                    });
+                                }}
                                 InputLabelProps={{
                                     shrink: entity && entity.BaseChild,
                                 }}
@@ -224,6 +256,12 @@ const NewEdit = () => {
                                 label="Хүүхдийн тоо - дээд хязгаар"
                                 {...register("MaxChild")}
                                 value={entity && entity.MaxChild}
+                                onChange={(evt: any) => {
+                                    setEntity({
+                                        ...entity,
+                                        MaxChild: evt.target.value,
+                                    });
+                                }}
                                 InputLabelProps={{
                                     shrink: entity && entity.MaxChild,
                                 }}
@@ -241,6 +279,12 @@ const NewEdit = () => {
                                 {...register("SortOrder")}
                                 margin="dense"
                                 value={entity && entity.SortOrder}
+                                onChange={(evt: any) => {
+                                    setEntity({
+                                        ...entity,
+                                        SortOrder: evt.target.value,
+                                    });
+                                }}
                                 InputLabelProps={{
                                     shrink: entity && entity.SortOrder,
                                 }}
@@ -274,6 +318,12 @@ const NewEdit = () => {
                                 {...register("BookingDescription")}
                                 margin="dense"
                                 value={entity && entity.BookingDescription}
+                                onChange={(evt: any) => {
+                                    setEntity({
+                                        ...entity,
+                                        BookingDescription: evt.target.value,
+                                    });
+                                }}
                                 InputLabelProps={{
                                     shrink: entity && entity.BookingDescription,
                                 }}
@@ -291,6 +341,12 @@ const NewEdit = () => {
                                 {...register("SortOrder")}
                                 margin="dense"
                                 value={entity && entity.SortOrder}
+                                onChange={(evt: any) => {
+                                    setEntity({
+                                        ...entity,
+                                        SortOrder: evt.target.value,
+                                    });
+                                }}
                                 InputLabelProps={{
                                     shrink: entity && entity.SortOrder,
                                 }}
@@ -305,6 +361,12 @@ const NewEdit = () => {
                             label="Онлайн захиалга дээр харуулах эсэх"
                             {...register("Booking")}
                             value={entity && entity.Booking}
+                            onChange={(evt: any) => {
+                                setEntity({
+                                    ...entity,
+                                    Booking: evt.target.value,
+                                });
+                            }}
                         />
                     </FormGroup>
 

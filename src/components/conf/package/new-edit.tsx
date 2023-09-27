@@ -31,58 +31,55 @@ const NewEdit = () => {
     } = useForm({ resolver: yupResolver(validationSchema) });
 
     return (
-        <LocalizationProvider // @ts-ignore
-            dateAdapter={AdapterDateFns}
+        <NewEditForm
+            api={PackageAPI}
+            listUrl={listUrl}
+            additionalValues={state.editId && {}}
+            reset={reset}
+            handleSubmit={handleSubmit}
         >
-            <NewEditForm
-                api={PackageAPI}
-                listUrl={listUrl}
-                additionalValues={state.editId && {}}
-                reset={reset}
-                handleSubmit={handleSubmit}
-            >
-                <Grid container spacing={1}>
-                    <Grid item xs={4}>
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="PackageName"
-                            label="Package Name"
-                            {...register("PackageName")}
-                            margin="dense"
-                            error={errors.PackageName?.message}
-                            helperText={errors.PackageName?.message}
-                        />
-                    </Grid>
+            <Grid container spacing={1}>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="PackageName"
+                        label="Package Name"
+                        {...register("PackageName")}
+                        margin="dense"
+                        error={errors.PackageName?.message}
+                        helperText={errors.PackageName?.message}
+                    />
+                </Grid>
 
-                    <Grid item xs={4}>
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Description"
-                            label="Description"
-                            {...register("Description")}
-                            margin="dense"
-                            error={errors.Description?.message}
-                            helperText={errors.Description?.message}
-                        />
-                    </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="Description"
+                        label="Description"
+                        {...register("Description")}
+                        margin="dense"
+                        error={errors.Description?.message}
+                        helperText={errors.Description?.message}
+                    />
+                </Grid>
 
-                    <Grid item xs={4}>
-                        <TextField
-                            size="small"
-                            type="number"
-                            fullWidth
-                            id="Nights"
-                            label="Nights"
-                            {...register("Nights")}
-                            margin="dense"
-                            error={errors.Nights?.message}
-                            helperText={errors.Nights?.message}
-                        />
-                    </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        size="small"
+                        type="number"
+                        fullWidth
+                        id="Nights"
+                        label="Nights"
+                        {...register("Nights")}
+                        margin="dense"
+                        error={errors.Nights?.message}
+                        helperText={errors.Nights?.message}
+                    />
+                </Grid>
 
-                    {/* <Grid item xs={6}>
+                {/* <Grid item xs={6}>
                         <Controller
                             name="BeginDate"
                             control={control}
@@ -122,44 +119,10 @@ const NewEdit = () => {
                         />
                     </Grid> */}
 
-                    <Grid item xs={6}>
-                        <Controller
-                            name="EndDate"
-                            control={control}
-                            defaultValue={null}
-                            render={({ field: { onChange, value } }) => (
-                                <DatePicker
-                                    label="PMS Эхлэх огноо"
-                                    value={value}
-                                    onChange={(value) =>
-                                        onChange(
-                                            moment(
-                                                dateStringToObj(
-                                                    moment(value).format(
-                                                        "YYYY-MM-DD"
-                                                    )
-                                                ),
-                                                "YYYY-MM-DD"
-                                            )
-                                        )
-                                    }
-                                    renderInput={(params) => (
-                                        <TextField
-                                            size="small"
-                                            id="EndDate"
-                                            {...register("EndDate")}
-                                            margin="dense"
-                                            fullWidth
-                                            {...params}
-                                            error={errors.EndDate?.message}
-                                            helperText={errors.EndDate?.message}
-                                        />
-                                    )}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    {/* <Grid item xs={6}>
+                <Grid item xs={6}>
+                    <LocalizationProvider // @ts-ignore
+                        dateAdapter={AdapterDateFns}
+                    >
                         <Controller
                             name="EndDate"
                             control={control}
@@ -194,11 +157,11 @@ const NewEdit = () => {
                                     )}
                                 />
                             )}
-                        />
-                    </Grid> */}
+                        />{" "}
+                    </LocalizationProvider>
                 </Grid>
-            </NewEditForm>
-        </LocalizationProvider>
+            </Grid>
+        </NewEditForm>
     );
 };
 

@@ -30,6 +30,17 @@ export const RoomTypeAmenitySWR = () => {
 };
 
 export const AmenityAPI = {
+    list: async (id: any) => {
+        const values = {
+            AmenityID: 0,
+            SearchStr: "",
+        };
+
+        const res = await axios.post(roomTypeAmenityUrl, values);
+
+        return res.data.JsonData;
+    },
+
     get: async (id: any) => {
         const values = {
             AmenityID: id,
