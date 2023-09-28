@@ -8,7 +8,7 @@ import { EmailAPI, listUrl } from "lib/api/email-conf";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
-    Email: yup.string().email().required("Бөглөнө үү"),
+    Email: yup.string().email("Зөв имэйл оруулна уу").required("Бөглөнө үү"),
     EmailHost: yup.string().required("Бөглөнө үү"),
     Port: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     UserName: yup.string().required("Бөглөнө үү"),
