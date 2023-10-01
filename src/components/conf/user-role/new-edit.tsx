@@ -13,7 +13,10 @@ const validationSchema = yup.object().shape({
     UserRoleShortName: yup.string().required("Бөглөнө үү"),
     UserRoleName: yup.string().required("Бөглөнө үү"),
     Description: yup.string().required("Бөглөнө үү"),
-    ParentID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    ParentID: yup.lazy((value) =>
+        value === ''
+            ? yup.string()
+            : yup.number().typeError("Бөглөнө үү")),
 });
 
 const NewEdit = () => {
@@ -24,7 +27,6 @@ const NewEdit = () => {
         handleSubmit,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
-
     return (
         <NewEditForm
             api={UserRoleAPI}
@@ -79,6 +81,7 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         field="ParentID"
+
                     />
                 </Grid>
             </Grid>
@@ -87,6 +90,7 @@ const NewEdit = () => {
                 errors={errors}
                 type={1}
                 title="Front Office"
+                UserRoleID={state.editId}
             />
 
             <UserRolePrivilegeSelect
@@ -94,6 +98,7 @@ const NewEdit = () => {
                 errors={errors}
                 type={2}
                 title="Configuration"
+                UserRoleID={state.editId}
             />
 
             <UserRolePrivilegeSelect
@@ -101,6 +106,7 @@ const NewEdit = () => {
                 errors={errors}
                 type={3}
                 title="Reports"
+                UserRoleID={state.editId}
             />
         </NewEditForm>
     );
