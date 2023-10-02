@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
-import { CircularProgress, Grid } from "@mui/material";
+import {Box, CircularProgress, Grid} from "@mui/material";
 
 import SubmitButton from "components/common/submit-button";
 import { ModalContext } from "lib/context/modal";
@@ -75,6 +75,7 @@ const NewEditForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
+            // console.log(values);
             if (additionalValues) {
                 values = Object.assign(values, additionalValues);
             }
@@ -111,7 +112,9 @@ const NewEditForm = ({
             {children}
 
             {state.isShow && !isShowNotAffected ? null : (
-                <SubmitButton loading={loading} title={customSubmitTitle} />
+                <Box sx={{ width: "15%" }}>
+                    <SubmitButton loading={loading} title={customSubmitTitle} />
+                </Box>
             )}
         </form>
     );

@@ -19,9 +19,9 @@ export const UserRoleSWR = (search: any) => {
     return useSWR(listUrl, fetcher);
 };
 
-export const UserRolePrivilegeSWR = () => {
+export const UserRolePrivilegeSWR = (RoleID: any) => {
     const values = {
-        UserRoleID: null,
+        UserRoleID: RoleID,
         ActionGroupType: 0,
     };
 

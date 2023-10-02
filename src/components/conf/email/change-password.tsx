@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { TextField, Grid } from "@mui/material";
+import {TextField, Grid, Box} from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
@@ -85,7 +85,9 @@ const ChangePassword = ({ id }: any) => {
                     />
                 </Grid>
             </Grid>
-            <SubmitButton loading={loading} />
+            <Box sx={{ width: "15%" }}>
+                <SubmitButton loading={loading} />
+            </Box>
         </form>
     );
 };
