@@ -8,8 +8,8 @@ import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { SeasonSWR, SeasonAPI, listUrl } from "lib/api/season";
-import NewEdit from "./new-edit";
-import Search from "./search";
+// import NewEdit from "./new-edit";
+// import Search from "./search";
 
 const columns = [
     { title: "Season Name", key: "SeasonName", dataIndex: "SeasonName" },
@@ -90,12 +90,12 @@ const SeasonList = ({ title }: any) => {
                 handleSubmit={handleSubmit}
                 reset={reset}
             >
-                <Search
-                    register={register}
-                    errors={errors}
-                    control={control}
-                    reset={reset}
-                />
+                {/*<Search*/}
+                {/*    register={register}*/}
+                {/*    errors={errors}*/}
+                {/*    control={control}*/}
+                {/*    reset={reset}*/}
+                {/*/>*/}
             </CustomSearch>
 
             <CustomTable
@@ -109,7 +109,7 @@ const SeasonList = ({ title }: any) => {
                 id="SeasonID"
                 listUrl={listUrl}
                 modalTitle={title}
-                modalContent={<NewEdit />}
+                // modalContent={<NewEdit />}
                 excelName={title}
             />
         </>

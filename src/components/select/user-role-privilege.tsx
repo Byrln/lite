@@ -19,6 +19,7 @@ const UserRolePrivilegeSelect = ({ register, errors, type, title, UserRoleID }: 
     const [ permissions, setPermissions ] = useState(data ? data : []);
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         // console.log(data)
         if (data && data.length > 0){
