@@ -31,6 +31,16 @@ export const RoomTypeAPI = {
         return res.data.JsonData;
     },
 
+    amenity: async (id: any) => {
+        const values = {
+            RoomTypeID: id,
+        };
+
+        const res = await axios.post(`${urlPrefix}/Amenity`, values);
+
+        return res.data.JsonData;
+    },
+
     list: async (values: any) => {
         const { data, status } = await axios.post(listUrl, values);
         if (status != 200) {

@@ -14,9 +14,8 @@ const validationSchema = yup.object().shape({
     UserRoleName: yup.string().required("Бөглөнө үү"),
     Description: yup.string().required("Бөглөнө үү"),
     ParentID: yup.lazy((value) =>
-        value === ''
-            ? yup.string()
-            : yup.number().typeError("Бөглөнө үү")),
+        value === "" ? yup.string() : yup.number().typeError("Бөглөнө үү")
+    ),
 });
 
 const NewEdit = () => {
@@ -81,7 +80,6 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         field="ParentID"
-
                     />
                 </Grid>
             </Grid>

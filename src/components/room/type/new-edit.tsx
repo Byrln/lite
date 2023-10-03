@@ -6,6 +6,9 @@ import {
     FormControlLabel,
     FormGroup,
     Button,
+    Card,
+    CardContent,
+    Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
@@ -54,11 +57,35 @@ const NewEdit = () => {
         if (state.editId) {
             const fetchDatas = async () => {
                 const response: any = await RoomTypeAPI.get(state.editId);
+                const amenityResponse: any = await RoomTypeAPI.amenity(
+                    state.editId
+                );
+                let amenitiesGeneralValue: any = [];
+                let amenitiesBookingValue: any = [];
 
+                if (amenityResponse) {
+                    amenityResponse.forEach((amenityElement: any) => {
+                        if (amenityElement.IsGeneral == true) {
+                            amenitiesGeneralValue[amenityElement.AmenityID] =
+                                true;
+                        }
+                        if (amenityElement.IsBooking == true) {
+                            amenitiesBookingValue[amenityElement.AmenityID] =
+                                true;
+                        }
+                    });
+                }
+                console.log("amenitiesGeneralValue", amenitiesGeneralValue);
+                console.log("amenitiesBookingValue", amenitiesBookingValue);
+
+                console.log("amenityResponse", amenityResponse);
                 if (response.length === 1) {
                     let newEntity = response[0];
                     newEntity._id = newEntity.GuestID;
+                    newEntity.amenity = amenitiesGeneralValue;
+                    newEntity.amenity2 = amenitiesBookingValue;
                     setEntity(newEntity);
+                    reset(newEntity);
                 } else {
                     setEntity(null);
                 }
@@ -80,11 +107,11 @@ const NewEdit = () => {
         const amenitiesList = await AmenityAPI.list(values);
 
         if (state.editId) {
-            const response = await RoomTypeAPI.update(values);
+            // const response = await RoomTypeAPI.update(values);
             RoomTypeID = state.editId;
         } else {
-            const response = await RoomTypeAPI.new(values);
-            RoomTypeID = response.data.JsonData[0].RoomTypeID;
+            // const response = await RoomTypeAPI.new(values);
+            // RoomTypeID = response.data.JsonData[0].RoomTypeID;
         }
 
         let amenitiesInsertValue: any = [];
@@ -117,10 +144,12 @@ const NewEdit = () => {
                     IsBooking: isBookingTrue,
                 });
             });
+            console.log(amenitiesBooking);
 
-            RoomTypeAPI.amenityInsertWUList({
-                Amenities: amenitiesInsertValue,
-            });
+            console.log(amenitiesInsertValue);
+            // RoomTypeAPI.amenityInsertWUList({
+            //     Amenities: amenitiesInsertValue,
+            // });
         }
 
         await mutate(listUrl);
@@ -299,7 +328,7 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         customRegisterName="amenity"
-                        entity={entity}
+                        entity={entity && entity.amenity}
                     />
                 </>
             ),
@@ -374,7 +403,7 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         customRegisterName="amenity2"
-                        entity={entity}
+                        entity={entity && entity.amenity2}
                     />
                 </>
             ),
@@ -391,7 +420,323 @@ const NewEdit = () => {
         //         >
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box sx={{ width: "100%" }}>
-                <CustomTab tabs={tabs} />
+                {/* <CustomTab tabs={tabs} /> */}
+                <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                        <Card className="mt-3">
+                            <CardContent>
+                                <Typography
+                                    variant="subtitle1"
+                                    component="div"
+                                    className="mb-3"
+                                >
+                                    Ерөнхий
+                                </Typography>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="RoomTypeShortName"
+                                            label="Товч нэр"
+                                            {...register("RoomTypeShortName")}
+                                            margin="dense"
+                                            value={
+                                                entity &&
+                                                entity.RoomTypeShortName
+                                            }
+                                            onChange={(evt: any) => {
+                                                setEntity({
+                                                    ...entity,
+                                                    RoomTypeShortName:
+                                                        evt.target.value,
+                                                });
+                                            }}
+                                            InputLabelProps={{
+                                                shrink:
+                                                    entity &&
+                                                    entity.RoomTypeShortName,
+                                            }}
+                                            error={
+                                                errors.RoomTypeShortName
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.RoomTypeShortName
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="RoomTypeName"
+                                            label="Нэр"
+                                            {...register("RoomTypeName")}
+                                            margin="dense"
+                                            value={
+                                                entity && entity.RoomTypeName
+                                            }
+                                            onChange={(evt: any) => {
+                                                setEntity({
+                                                    ...entity,
+                                                    RoomTypeName:
+                                                        evt.target.value,
+                                                });
+                                            }}
+                                            InputLabelProps={{
+                                                shrink:
+                                                    entity &&
+                                                    entity.RoomTypeName,
+                                            }}
+                                            error={errors.RoomTypeName?.message}
+                                            helperText={
+                                                errors.RoomTypeName?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            type="number"
+                                            fullWidth
+                                            id="BaseAdult"
+                                            label="Том хүн - үндсэн"
+                                            {...register("BaseAdult")}
+                                            margin="dense"
+                                            value={entity && entity.BaseAdult}
+                                            onChange={(evt: any) => {
+                                                setEntity({
+                                                    ...entity,
+                                                    BaseAdult: evt.target.value,
+                                                });
+                                            }}
+                                            InputLabelProps={{
+                                                shrink:
+                                                    entity && entity.BaseAdult,
+                                            }}
+                                            error={errors.BaseAdult?.message}
+                                            helperText={
+                                                errors.BaseAdult?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            type="number"
+                                            fullWidth
+                                            id="MaxAdult"
+                                            label="Том хүний тоо - дээд хязгаар"
+                                            {...register("MaxAdult")}
+                                            margin="dense"
+                                            value={entity && entity.MaxAdult}
+                                            onChange={(evt: any) => {
+                                                setEntity({
+                                                    ...entity,
+                                                    MaxAdult: evt.target.value,
+                                                });
+                                            }}
+                                            InputLabelProps={{
+                                                shrink:
+                                                    entity && entity.MaxAdult,
+                                            }}
+                                            error={errors.MaxAdult?.message}
+                                            helperText={
+                                                errors.MaxAdult?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            type="number"
+                                            fullWidth
+                                            id="BaseChild"
+                                            label="Хүүхэд - үндсэн"
+                                            {...register("BaseChild")}
+                                            value={entity && entity.BaseChild}
+                                            onChange={(evt: any) => {
+                                                setEntity({
+                                                    ...entity,
+                                                    BaseChild: evt.target.value,
+                                                });
+                                            }}
+                                            InputLabelProps={{
+                                                shrink:
+                                                    entity && entity.BaseChild,
+                                            }}
+                                            error={errors.BaseChild?.message}
+                                            helperText={
+                                                errors.BaseChild?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            type="number"
+                                            fullWidth
+                                            id="MaxChild"
+                                            label="Хүүхдийн тоо - дээд хязгаар"
+                                            {...register("MaxChild")}
+                                            value={entity && entity.MaxChild}
+                                            onChange={(evt: any) => {
+                                                setEntity({
+                                                    ...entity,
+                                                    MaxChild: evt.target.value,
+                                                });
+                                            }}
+                                            InputLabelProps={{
+                                                shrink:
+                                                    entity && entity.MaxChild,
+                                            }}
+                                            error={errors.MaxChild?.message}
+                                            helperText={
+                                                errors.MaxChild?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            type="number"
+                                            fullWidth
+                                            id="SortOrder"
+                                            label="Дараалал"
+                                            {...register("SortOrder")}
+                                            margin="dense"
+                                            value={entity && entity.SortOrder}
+                                            onChange={(evt: any) => {
+                                                setEntity({
+                                                    ...entity,
+                                                    SortOrder: evt.target.value,
+                                                });
+                                            }}
+                                            InputLabelProps={{
+                                                shrink:
+                                                    entity && entity.SortOrder,
+                                            }}
+                                            error={errors.SortOrder?.message}
+                                            helperText={
+                                                errors.SortOrder?.message
+                                            }
+                                            sx={{ mt: 2 }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <RoomAmenitySelect
+                                    register={register}
+                                    errors={errors}
+                                    customRegisterName="amenity"
+                                    entity={entity && entity}
+                                    setEntity={setEntity}
+                                />
+                            </CardContent>
+                        </Card>
+                    </Grid>{" "}
+                    <Grid item xs={6}>
+                        <Card className="mt-3">
+                            <CardContent>
+                                <Typography
+                                    variant="subtitle1"
+                                    component="div"
+                                    className="mb-3"
+                                >
+                                    Booking
+                                </Typography>
+
+                                <Grid container spacing={1}>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="BookingDescription"
+                                            label="Товч тайлбар (Онлайн захиалга)"
+                                            {...register("BookingDescription")}
+                                            margin="dense"
+                                            value={
+                                                entity &&
+                                                entity.BookingDescription
+                                            }
+                                            onChange={(evt: any) => {
+                                                setEntity({
+                                                    ...entity,
+                                                    BookingDescription:
+                                                        evt.target.value,
+                                                });
+                                            }}
+                                            InputLabelProps={{
+                                                shrink:
+                                                    entity &&
+                                                    entity.BookingDescription,
+                                            }}
+                                            error={
+                                                errors.BookingDescription
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.BookingDescription
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            type="number"
+                                            fullWidth
+                                            id="SortOrder"
+                                            label="Эрэмбэлэх утга"
+                                            {...register("SortOrder")}
+                                            margin="dense"
+                                            value={entity && entity.SortOrder}
+                                            onChange={(evt: any) => {
+                                                setEntity({
+                                                    ...entity,
+                                                    SortOrder: evt.target.value,
+                                                });
+                                            }}
+                                            InputLabelProps={{
+                                                shrink:
+                                                    entity && entity.SortOrder,
+                                            }}
+                                            error={errors.SortOrder?.message}
+                                            helperText={
+                                                errors.SortOrder?.message
+                                            }
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={<Checkbox />}
+                                        label="Онлайн захиалга дээр харуулах эсэх"
+                                        {...register("Booking")}
+                                        value={entity && entity.Booking}
+                                        onChange={(evt: any) => {
+                                            setEntity({
+                                                ...entity,
+                                                Booking: evt.target.value,
+                                            });
+                                        }}
+                                    />
+                                </FormGroup>
+
+                                <AmenitySelect
+                                    register={register}
+                                    errors={errors}
+                                    customRegisterName="amenity2"
+                                    entity={entity && entity}
+                                    customTitle="Өрөөний онцлогууд (Онлайн захиалга)"
+                                    setEntity={setEntity}
+                                />
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
+
                 <Button
                     type="submit"
                     variant="contained"

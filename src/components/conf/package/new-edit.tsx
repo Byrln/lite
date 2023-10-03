@@ -119,7 +119,7 @@ const NewEdit = () => {
                         />
                     </Grid> */}
 
-                <Grid item xs={6}>
+                {/* <Grid item xs={6}>
                     <LocalizationProvider // @ts-ignore
                         dateAdapter={AdapterDateFns}
                     >
@@ -159,7 +159,7 @@ const NewEdit = () => {
                             )}
                         />{" "}
                     </LocalizationProvider>
-                </Grid>
+                </Grid> */}
             </Grid>
         </NewEditForm>
     );

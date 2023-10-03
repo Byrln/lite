@@ -17,6 +17,7 @@ const RoomAmenitySelect = ({
     errors,
     customRegisterName,
     entity,
+    setEntity,
 }: any) => {
     const { data, error } = RoomTypeAmenitySWR();
 
@@ -29,7 +30,6 @@ const RoomAmenitySelect = ({
                 <Skeleton animation="wave" />
             </Box>
         );
-
     return (
         <FormControl sx={{ mt: 2 }} component="fieldset" variant="standard">
             <FormLabel component="legend">Өрөөний онцлогууд</FormLabel>
@@ -42,9 +42,38 @@ const RoomAmenitySelect = ({
                                 key={element.AmenityID}
                                 control={
                                     <Checkbox
-                                        key={element.AmenityID}
+                                        key={`amenity2-${element.AmenityID}`}
                                         name={element.AmenityID}
                                         value={element.AmenityID}
+                                        checked={
+                                            entity &&
+                                            entity[element.AmenityID] &&
+                                            entity[element.AmenityID]
+                                        }
+                                        onClick={(evt: any) => {
+                                            let tempEntity: any;
+                                            console.log(
+                                                "evt.target.value",
+                                                evt.target.value
+                                            );
+                                            if (entity) {
+                                                tempEntity = { ...entity };
+                                            }
+
+                                            if (tempEntity[element.AmenityID]) {
+                                                delete tempEntity[
+                                                    element.AmenityID
+                                                ];
+                                            } else {
+                                                tempEntity[element.AmenityID] =
+                                                    true;
+                                            }
+
+                                            setEntity({
+                                                ...entity,
+                                                amenity: tempEntity,
+                                            });
+                                        }}
                                         {...register(
                                             customRegisterName
                                                 ? customRegisterName
