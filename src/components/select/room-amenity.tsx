@@ -47,32 +47,47 @@ const RoomAmenitySelect = ({
                                         value={element.AmenityID}
                                         checked={
                                             entity &&
-                                            entity[element.AmenityID] &&
-                                            entity[element.AmenityID]
+                                            entity.amenity &&
+                                            entity.amenity[element.AmenityID] &&
+                                            entity.amenity[element.AmenityID]
                                         }
                                         onClick={(evt: any) => {
                                             let tempEntity: any;
-                                            console.log(
-                                                "evt.target.value",
-                                                evt.target.value
-                                            );
+
                                             if (entity) {
                                                 tempEntity = { ...entity };
-                                            }
 
-                                            if (tempEntity[element.AmenityID]) {
-                                                delete tempEntity[
-                                                    element.AmenityID
-                                                ];
+                                                if (tempEntity.amenity) {
+                                                    if (
+                                                        tempEntity.amenity[
+                                                            element.AmenityID
+                                                        ]
+                                                    ) {
+                                                        delete tempEntity
+                                                            .amenity[
+                                                            element.AmenityID
+                                                        ];
+                                                    } else {
+                                                        tempEntity.amenity[
+                                                            element.AmenityID
+                                                        ] = true;
+                                                    }
+                                                } else {
+                                                    tempEntity.amenity = [];
+                                                    tempEntity.amenity[
+                                                        element.AmenityID
+                                                    ] = true;
+                                                }
                                             } else {
-                                                tempEntity[element.AmenityID] =
-                                                    true;
+                                                tempEntity = {};
+
+                                                tempEntity.amenity = [];
+                                                tempEntity.amenity[
+                                                    element.AmenityID
+                                                ] = true;
                                             }
 
-                                            setEntity({
-                                                ...entity,
-                                                amenity: tempEntity,
-                                            });
+                                            setEntity(tempEntity);
                                         }}
                                         {...register(
                                             customRegisterName

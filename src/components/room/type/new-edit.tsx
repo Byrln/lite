@@ -75,10 +75,7 @@ const NewEdit = () => {
                         }
                     });
                 }
-                console.log("amenitiesGeneralValue", amenitiesGeneralValue);
-                console.log("amenitiesBookingValue", amenitiesBookingValue);
 
-                console.log("amenityResponse", amenityResponse);
                 if (response.length === 1) {
                     let newEntity = response[0];
                     newEntity._id = newEntity.GuestID;
@@ -99,19 +96,19 @@ const NewEdit = () => {
     const onSubmit = async (values: any) => {
         values.RoomTypeID = state.editId;
 
-        let amenities = values.amenity;
+        let amenities = entity.amenity;
         delete values.amenity;
-        let amenitiesBooking = values.amenity2;
+        let amenitiesBooking = entity.amenity2;
         delete values.amenity2;
         let RoomTypeID: any;
         const amenitiesList = await AmenityAPI.list(values);
 
         if (state.editId) {
-            // const response = await RoomTypeAPI.update(values);
+            const response = await RoomTypeAPI.update(values);
             RoomTypeID = state.editId;
         } else {
-            // const response = await RoomTypeAPI.new(values);
-            // RoomTypeID = response.data.JsonData[0].RoomTypeID;
+            const response = await RoomTypeAPI.new(values);
+            RoomTypeID = response.data.JsonData[0].RoomTypeID;
         }
 
         let amenitiesInsertValue: any = [];
@@ -122,17 +119,17 @@ const NewEdit = () => {
                 let isBookingTrue = false;
 
                 if (amenities) {
-                    amenities.forEach((element: any) => {
-                        if (amenityElement.AmenityID == parseInt(element)) {
-                            isGeneralTrue = true;
+                    amenities.forEach((element: any, index: any) => {
+                        if (amenityElement.AmenityID == parseInt(index)) {
+                            isGeneralTrue = element;
                         }
                     });
                 }
 
                 if (amenitiesBooking) {
-                    amenitiesBooking.forEach((element: any) => {
-                        if (amenityElement.AmenityID == parseInt(element)) {
-                            isBookingTrue = true;
+                    amenitiesBooking.forEach((element: any, index: any) => {
+                        if (amenityElement.AmenityID == parseInt(index)) {
+                            isBookingTrue = element;
                         }
                     });
                 }
@@ -144,12 +141,10 @@ const NewEdit = () => {
                     IsBooking: isBookingTrue,
                 });
             });
-            console.log(amenitiesBooking);
 
-            console.log(amenitiesInsertValue);
-            // RoomTypeAPI.amenityInsertWUList({
-            //     Amenities: amenitiesInsertValue,
-            // });
+            RoomTypeAPI.amenityInsertWUList({
+                Amenities: amenitiesInsertValue,
+            });
         }
 
         await mutate(listUrl);

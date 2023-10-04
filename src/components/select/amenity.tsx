@@ -32,9 +32,6 @@ const AmenitySelect = ({
             </Box>
         );
 
-    const handleChange = (e: any) => {
-        console.log("e", e);
-    };
     return (
         <FormControl sx={{ mt: 2 }} component="fieldset" variant="standard">
             <FormLabel component="legend">
@@ -61,31 +58,46 @@ const AmenitySelect = ({
                                         }
                                         onClick={(evt: any) => {
                                             let tempEntity: any;
-                                            console.log(
-                                                "evt.target.value",
-                                                evt.target.value
-                                            );
-                                            console.log("entity", entity);
+
                                             if (entity) {
                                                 tempEntity = { ...entity };
-                                            }
 
-                                            if (
-                                                tempEntity.amenity2[
-                                                    element.AmenityID
-                                                ]
-                                            ) {
-                                                delete tempEntity.amenity2[
-                                                    element.AmenityID
-                                                ];
+                                                if (tempEntity.amenity2) {
+                                                    if (
+                                                        tempEntity.amenity2[
+                                                            element.AmenityID
+                                                        ]
+                                                    ) {
+                                                        delete tempEntity
+                                                            .amenity2[
+                                                            element.AmenityID
+                                                        ];
+                                                    } else {
+                                                        tempEntity.amenity2[
+                                                            element.AmenityID
+                                                        ] = true;
+                                                    }
+                                                } else {
+                                                    tempEntity.amenity2 = [];
+                                                    tempEntity.amenity2[
+                                                        element.AmenityID
+                                                    ] = true;
+                                                }
                                             } else {
+                                                tempEntity = {};
+                                                tempEntity.amenity2 = [];
                                                 tempEntity.amenity2[
                                                     element.AmenityID
                                                 ] = true;
                                             }
 
-                                            setEntity(entity);
+                                            setEntity(tempEntity);
                                         }}
+                                        {...register(
+                                            customRegisterName
+                                                ? customRegisterName
+                                                : "AmenityID"
+                                        )}
                                         {...register(
                                             customRegisterName
                                                 ? customRegisterName
