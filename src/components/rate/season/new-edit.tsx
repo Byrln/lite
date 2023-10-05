@@ -87,19 +87,6 @@ const NewEdit = () => {
                         <CustomSelect
                             register={register}
                             errors={errors}
-                            field="BeginDay"
-                            label="Эхлэх өдөр"
-                            options={days}
-                            optionValue="value"
-                            optionLabel="value"
-                            dense={false}
-                        />
-                    </Grid>
-
-                    <Grid item xs={3}>
-                        <CustomSelect
-                            register={register}
-                            errors={errors}
                             field="BeginMonth"
                             label="Эхлэх сар"
                             options={months}
@@ -113,8 +100,8 @@ const NewEdit = () => {
                         <CustomSelect
                             register={register}
                             errors={errors}
-                            field="EndDay"
-                            label="Дуусах өдөр"
+                            field="BeginDay"
+                            label="Эхлэх өдөр"
                             options={days}
                             optionValue="value"
                             optionLabel="value"
@@ -131,6 +118,18 @@ const NewEdit = () => {
                             options={months}
                             optionValue="value"
                             optionLabel="name"
+                            dense={false}
+                        />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <CustomSelect
+                            register={register}
+                            errors={errors}
+                            field="EndDay"
+                            label="Дуусах өдөр"
+                            options={days}
+                            optionValue="value"
+                            optionLabel="value"
                             dense={false}
                         />
                     </Grid>
@@ -185,7 +184,7 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Эхлэх огноо"
+                                    label="Дуусах огноо"
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -222,7 +221,7 @@ const NewEdit = () => {
                             type="number"
                             fullWidth
                             id="Priority"
-                            label="Давуу байдал"
+                            label="Эрэмбэлэх"
                             {...register("Priority")}
                             margin="dense"
                             error={errors.Priority?.message}
