@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
-import {Box, CircularProgress, Grid} from "@mui/material";
+import { Box, CircularProgress, Grid } from "@mui/material";
 
 import SubmitButton from "components/common/submit-button";
 import { ModalContext } from "lib/context/modal";

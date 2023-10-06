@@ -2,7 +2,7 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
-import { ReasonSWR } from "lib/api/reason";
+import { ReferenceSWR } from "lib/api/reference";
 import CustomSelect from "components/common/custom-select";
 
 const ReasonTypeSelect = ({
@@ -11,7 +11,7 @@ const ReasonTypeSelect = ({
     label,
     ReasonTypeID = 0,
 }: any) => {
-    const { data, error } = ReasonSWR({ ReasonTypeID: ReasonTypeID });
+    const { data, error } = ReferenceSWR("ReasonType");
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 

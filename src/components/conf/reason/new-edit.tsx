@@ -38,7 +38,7 @@ const NewEdit = () => {
                     <ReasonTypeSelect
                         register={register}
                         errors={errors}
-                        label="Category"
+                        label="Төрөл"
                         ReasonTypeID={1}
                     />
                 </Grid>
@@ -47,7 +47,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="Description"
-                        label="Description"
+                        label="Шалтгаан"
                         {...register("Description")}
                         margin="dense"
                         error={errors.Description?.message}

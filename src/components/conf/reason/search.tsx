@@ -9,7 +9,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <ReasonTypeSelect
                     register={register}
                     errors={errors}
-                    label="Category"
+                    label="Төрөл"
                 />
             </Grid>
         </Grid>

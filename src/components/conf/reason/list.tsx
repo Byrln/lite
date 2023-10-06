@@ -12,22 +12,22 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "reason",
+        title: "Шалтгаан",
         key: "ReasonName",
         dataIndex: "ReasonName",
     },
     {
-        title: "Category",
+        title: "Төрөл",
         key: "ReasonTypeName",
         dataIndex: "ReasonTypeName",
     },
     {
-        title: "User Name",
+        title: "Хэрэглэгчийн нэр",
         key: "UserName",
         dataIndex: "UserName",
     },
     {
-        title: "Changed Date",
+        title: "Огноо өөрчлөх",
         key: "CreatedDate",
         dataIndex: "CreatedDate",
         render: function render(id: any, value: any) {
@@ -41,7 +41,7 @@ const columns = [
         },
     },
     {
-        title: "Ip Address",
+        title: "Сүлжээний хаяг",
         key: "IPAddress",
         dataIndex: "IPAddress",
     },

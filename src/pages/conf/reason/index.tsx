@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import ReasonList from "components/conf/reason/list";
 
-const title = "Reasons";
+const title = "Шалтгаан";
 
 const Index = () => (
     <>
