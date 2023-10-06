@@ -100,7 +100,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="GuestName"
-                    label="Guest Name"
+                    label="Нэр"
                     {...register("GuestName")}
                     margin="dense"
                     error={errors.GuestName?.message}
@@ -113,7 +113,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="GuestPhone"
-                    label="Guest Phone"
+                    label="Утас"
                     {...register("GuestPhone")}
                     margin="dense"
                     error={errors.GuestPhone?.message}
@@ -126,7 +126,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="GuestEmail"
-                    label="Guest Email"
+                    label="Цахим шуудан"
                     {...register("GuestEmail")}
                     margin="dense"
                     error={errors.GuestEmail?.message}
@@ -138,7 +138,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <TextField
                     fullWidth
                     id="StatusGroup"
-                    label="Status Group"
+                    label="Төлөв"
                     {...register("StatusGroup")}
                     select
                     margin="dense"

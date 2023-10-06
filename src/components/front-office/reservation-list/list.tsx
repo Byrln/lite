@@ -12,44 +12,56 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Start Date",
+        title: "Зах.Дугаар",
         key: "ReservationID",
         dataIndex: "ReservationID",
     },
+
     {
-        title: "End Date",
+        title: "Ирэх",
         key: "ArrivalDate",
         dataIndex: "ArrivalDate",
     },
     {
-        title: "Company",
+        title: "Гарах",
         key: "DepartureDate",
         dataIndex: "DepartureDate",
     },
     {
-        title: "Name",
+        title: "Зочин",
         key: "GuestName",
         dataIndex: "GuestName",
     },
     {
-        title: "Phone",
+        title: "Өрөө",
         key: "RoomFullName",
         dataIndex: "RoomFullName",
     },
     {
-        title: "Email",
+        title: "Компани",
         key: "CustomerName",
         dataIndex: "CustomerName",
     },
     {
-        title: "Reservation Type",
+        title: "Нийлбэр",
         key: "TotalAmount",
         dataIndex: "TotalAmount",
     },
     {
-        title: "Reservation Source",
+        title: "Төлсөн",
         key: "CurrentBalance",
         dataIndex: "CurrentBalance",
+    },
+
+    {
+        title: "Зах.төрөл",
+        key: "ReservationTypeName",
+        dataIndex: "ReservationTypeName",
+    },
+    {
+        title: "Хэрэглэгч",
+        key: "UserName",
+        dataIndex: "UserName",
     },
 ];
 

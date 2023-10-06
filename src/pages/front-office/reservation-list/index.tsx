@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import RevervationList from "components/front-office/reservation-list/list";
 
-const title = "Reservation List";
+const title = "Захиалгын жагсаалт";
 
 const Index = () => (
     <>

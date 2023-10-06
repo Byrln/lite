@@ -14,15 +14,15 @@ const RateModeSelect = ({
     const data = [
         {
             RateModeID: 1,
-            RateModeName: "Normal",
+            RateModeName: "Энгийн",
         },
         {
             RateModeID: 2,
-            RateModeName: "Manual",
+            RateModeName: "Гараар",
         },
         {
             RateModeID: 3,
-            RateModeName: "Contract",
+            RateModeName: "Гэрээт тариф",
         },
     ];
 

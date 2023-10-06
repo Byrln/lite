@@ -590,7 +590,7 @@ const NewEdit = ({
                                                 component="div"
                                                 className="mb-3"
                                             >
-                                                Stay Information
+                                                Хоногийн мэдээлэл
                                             </Typography>
                                             <Grid container spacing={1}>
                                                 <Grid item xs={12} sm={8}>
@@ -745,7 +745,7 @@ const NewEdit = ({
                                                         nameKey={"Adult"}
                                                         register={register}
                                                         errors={errors}
-                                                        label={"Adult"}
+                                                        label={"Том хүн"}
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12} sm={4}>
@@ -769,13 +769,13 @@ const NewEdit = ({
                                                         nameKey={"Child"}
                                                         register={register}
                                                         errors={errors}
-                                                        label={"Child"}
+                                                        label={"Хүүхэд"}
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12} sm={4}>
                                                     <TextField
                                                         id="Nights"
-                                                        label="Nights"
+                                                        label="Хоног"
                                                         type="number"
                                                         {...register("Nights")}
                                                         margin="dense"
@@ -820,7 +820,7 @@ const NewEdit = ({
                                                 component="div"
                                                 className="mb-3"
                                             >
-                                                Guest Information
+                                                Зочны мэдээлэл
                                             </Typography>
                                             {/* <GuestSelect
                                         guestSelected={guestSelected}
@@ -1232,7 +1232,6 @@ const NewEdit = ({
                                                     RESET
                                                 </Button>
                                             </Box>
-                                            й{" "}
                                             <SelectList
                                                 filterValues={filterValues}
                                                 setGuest={setGuest}
@@ -1249,7 +1248,7 @@ const NewEdit = ({
                                                 component="div"
                                                 className="mb-3"
                                             >
-                                                Billing and Payment
+                                                Төлбөр, баримт
                                             </Typography>
                                             <Grid container spacing={1}>
                                                 <Grid item xs={12} sm={8}>
@@ -1276,7 +1275,7 @@ const NewEdit = ({
                                                                 )}
                                                             />
                                                         }
-                                                        label="BreakFast Included"
+                                                        label="Өглөөний цай орсон"
                                                     />
                                                 </Grid>
                                                 <Grid item xs={12}>
@@ -1313,7 +1312,7 @@ const NewEdit = ({
                                                                 }
                                                             />
                                                         }
-                                                        label="Tax Included"
+                                                        label="Татвар шингэсэн"
                                                     />
                                                 </Grid>
 

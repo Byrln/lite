@@ -29,7 +29,7 @@ const ReservationTypeSelect = ({ register, errors, reset }: any) => {
         <TextField
             fullWidth
             id="ReservationTypeID"
-            label="ReservationType"
+            label="Захиалгын төрөл"
             {...register("ReservationTypeID")}
             select
             margin="dense"

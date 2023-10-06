@@ -8,8 +8,8 @@ import FormLabel from "@mui/material/FormLabel";
 
 const GenderSelect = ({ register, errors, entity, setEntity }: any) => {
     const data = [
-        { GenderID: 1, name: "Male" },
-        { GenderID: 2, name: "Female" },
+        { GenderID: 1, name: "Эрэгтэй" },
+        { GenderID: 2, name: "Эмэгтэй" },
     ];
 
     const onChange = (event: any) => {

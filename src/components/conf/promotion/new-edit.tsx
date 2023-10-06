@@ -75,40 +75,45 @@ const NewEdit = () => {
                     helperText={errors.Description?.message}
                 />
 
-                <Controller
-                    name="BeginDate"
-                    control={control}
-                    defaultValue={null}
-                    render={({ field: { onChange, value } }) => (
-                        <DatePicker
-                            label="Эхлэх огноо"
-                            value={value}
-                            onChange={(value) =>
-                                onChange(
-                                    moment(
-                                        dateStringToObj(
-                                            moment(value).format("YYYY-MM-DD")
-                                        ),
-                                        "YYYY-MM-DD"
+                <LocalizationProvider // @ts-ignore
+                    dateAdapter={AdapterDateFns} // @ts-ignore
+                >
+                    <Controller
+                        name="BeginDate"
+                        control={control}
+                        defaultValue={null}
+                        render={({ field: { onChange, value } }) => (
+                            <DatePicker
+                                label="Эхлэх огноо"
+                                value={value}
+                                onChange={(value) =>
+                                    onChange(
+                                        moment(
+                                            dateStringToObj(
+                                                moment(value).format(
+                                                    "YYYY-MM-DD"
+                                                )
+                                            ),
+                                            "YYYY-MM-DD"
+                                        )
                                     )
-                                )
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    size="small"
-                                    id="BeginDate"
-                                    {...register("BeginDate")}
-                                    margin="dense"
-                                    fullWidth
-                                    {...params}
-                                    error={errors.BeginDate?.message}
-                                    helperText={errors.BeginDate?.message}
-                                />
-                            )}
-                        />
-                    )}
-                />
-
+                                }
+                                renderInput={(params) => (
+                                    <TextField
+                                        size="small"
+                                        id="BeginDate"
+                                        {...register("BeginDate")}
+                                        margin="dense"
+                                        fullWidth
+                                        {...params}
+                                        error={errors.BeginDate?.message}
+                                        helperText={errors.BeginDate?.message}
+                                    />
+                                )}
+                            />
+                        )}
+                    />
+                </LocalizationProvider>
                 {/* <LocalizationProvider // @ts-ignore
                 dateAdapter={AdapterDateFns} // @ts-ignore
             >

@@ -8,7 +8,7 @@ import { ReservationSourceSWR } from "lib/api/reservation-source";
 const ReservationSourceSelect = ({
     register,
     errors,
-    label = "Reservation Source",
+    label = "Захиалгын эх сурвалж",
     ChannelID = 0,
     field = "ReservationSourceID",
 }: any) => {
