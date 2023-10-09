@@ -49,7 +49,7 @@ const CustomSelect = ({
                             onClick={() => reset()}
                             startIcon={<Icon icon={trash2Fill} />}
                         >
-                            Устгах
+                            Хайлт цэвэрлэх
                         </LoadingButton>
 
                         <LoadingButton

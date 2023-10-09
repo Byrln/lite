@@ -29,10 +29,10 @@ import { AmenityAPI } from "lib/api/amenity";
 const validationSchema = yup.object().shape({
     RoomTypeShortName: yup.string().required("Бөглөнө үү"),
     RoomTypeName: yup.string().required("Бөглөнө үү"),
-    BaseAdult: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    BaseChild: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    MaxAdult: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    MaxChild: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    BaseAdult: yup.string().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    BaseChild: yup.string().nullable(),
+    MaxAdult: yup.string().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    MaxChild: yup.string().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     BookingDescription: yup.string(),
 });
@@ -175,7 +175,10 @@ const NewEdit = () => {
                                     });
                                 }}
                                 InputLabelProps={{
-                                    shrink: entity && entity.RoomTypeShortName,
+                                    shrink:
+                                        entity &&
+                                        (entity.RoomTypeShortName ||
+                                            entity.RoomTypeShortName == 0),
                                 }}
                                 error={errors.RoomTypeShortName?.message}
                                 helperText={errors.RoomTypeShortName?.message}
@@ -197,7 +200,10 @@ const NewEdit = () => {
                                     });
                                 }}
                                 InputLabelProps={{
-                                    shrink: entity && entity.RoomTypeName,
+                                    shrink:
+                                        entity &&
+                                        (entity.RoomTypeName ||
+                                            entity.RoomTypeName == 0),
                                 }}
                                 error={errors.RoomTypeName?.message}
                                 helperText={errors.RoomTypeName?.message}
@@ -212,7 +218,11 @@ const NewEdit = () => {
                                 label="Том хүн - үндсэн"
                                 {...register("BaseAdult")}
                                 margin="dense"
-                                value={entity && entity.BaseAdult}
+                                value={
+                                    entity &&
+                                    entity.BaseAdult > 0 &&
+                                    entity.BaseAdult
+                                }
                                 onChange={(evt: any) => {
                                     setEntity({
                                         ...entity,
@@ -220,7 +230,10 @@ const NewEdit = () => {
                                     });
                                 }}
                                 InputLabelProps={{
-                                    shrink: entity && entity.BaseAdult,
+                                    shrink:
+                                        entity &&
+                                        (entity.BaseAdult ||
+                                            entity.BaseAdult == 0),
                                 }}
                                 error={errors.BaseAdult?.message}
                                 helperText={errors.BaseAdult?.message}
@@ -235,7 +248,11 @@ const NewEdit = () => {
                                 label="Том хүний тоо - дээд хязгаар"
                                 {...register("MaxAdult")}
                                 margin="dense"
-                                value={entity && entity.MaxAdult}
+                                value={
+                                    entity &&
+                                    entity.MaxAdult > 0 &&
+                                    entity.MaxAdult
+                                }
                                 onChange={(evt: any) => {
                                     setEntity({
                                         ...entity,
@@ -243,7 +260,10 @@ const NewEdit = () => {
                                     });
                                 }}
                                 InputLabelProps={{
-                                    shrink: entity && entity.MaxAdult,
+                                    shrink:
+                                        entity &&
+                                        (entity.MaxAdult ||
+                                            entity.MaxAdult == 0),
                                 }}
                                 error={errors.MaxAdult?.message}
                                 helperText={errors.MaxAdult?.message}
@@ -257,7 +277,12 @@ const NewEdit = () => {
                                 id="BaseChild"
                                 label="Хүүхэд - үндсэн"
                                 {...register("BaseChild")}
-                                value={entity && entity.BaseChild}
+                                value={
+                                    entity &&
+                                    (entity.BaseChild == 0
+                                        ? ""
+                                        : entity.BaseChild)
+                                }
                                 onChange={(evt: any) => {
                                     setEntity({
                                         ...entity,
@@ -265,7 +290,10 @@ const NewEdit = () => {
                                     });
                                 }}
                                 InputLabelProps={{
-                                    shrink: entity && entity.BaseChild,
+                                    shrink:
+                                        entity &&
+                                        (entity.BaseChild ||
+                                            entity.BaseChild == 0),
                                 }}
                                 error={errors.BaseChild?.message}
                                 helperText={errors.BaseChild?.message}
@@ -279,7 +307,11 @@ const NewEdit = () => {
                                 id="MaxChild"
                                 label="Хүүхдийн тоо - дээд хязгаар"
                                 {...register("MaxChild")}
-                                value={entity && entity.MaxChild}
+                                value={
+                                    entity &&
+                                    entity.MaxChild > 0 &&
+                                    entity.MaxChild
+                                }
                                 onChange={(evt: any) => {
                                     setEntity({
                                         ...entity,
@@ -287,7 +319,10 @@ const NewEdit = () => {
                                     });
                                 }}
                                 InputLabelProps={{
-                                    shrink: entity && entity.MaxChild,
+                                    shrink:
+                                        entity &&
+                                        (entity.MaxChild ||
+                                            entity.MaxChild == 0),
                                 }}
                                 error={errors.MaxChild?.message}
                                 helperText={errors.MaxChild?.message}
@@ -302,7 +337,11 @@ const NewEdit = () => {
                                 label="Дараалал"
                                 {...register("SortOrder")}
                                 margin="dense"
-                                value={entity && entity.SortOrder}
+                                value={
+                                    entity &&
+                                    entity.SortOrder > 0 &&
+                                    entity.SortOrder
+                                }
                                 onChange={(evt: any) => {
                                     setEntity({
                                         ...entity,
@@ -310,7 +349,10 @@ const NewEdit = () => {
                                     });
                                 }}
                                 InputLabelProps={{
-                                    shrink: entity && entity.SortOrder,
+                                    shrink:
+                                        entity &&
+                                        (entity.SortOrder ||
+                                            entity.SortOrder == 0),
                                 }}
                                 error={errors.SortOrder?.message}
                                 helperText={errors.SortOrder?.message}
@@ -333,7 +375,7 @@ const NewEdit = () => {
             component: (
                 <>
                     <Grid container spacing={1}>
-                        <Grid item xs={6}>
+                        <Grid item xs={12}>
                             <TextField
                                 size="small"
                                 fullWidth
@@ -349,13 +391,16 @@ const NewEdit = () => {
                                     });
                                 }}
                                 InputLabelProps={{
-                                    shrink: entity && entity.BookingDescription,
+                                    shrink:
+                                        entity &&
+                                        (entity.BookingDescription ||
+                                            entity.BookingDescription == 0),
                                 }}
                                 error={errors.BookingDescription?.message}
                                 helperText={errors.BookingDescription?.message}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        {/* <Grid item xs={6}>
                             <TextField
                                 size="small"
                                 type="number"
@@ -377,7 +422,7 @@ const NewEdit = () => {
                                 error={errors.SortOrder?.message}
                                 helperText={errors.SortOrder?.message}
                             />
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                     <FormGroup>
                         <FormControlLabel
@@ -450,7 +495,9 @@ const NewEdit = () => {
                                             InputLabelProps={{
                                                 shrink:
                                                     entity &&
-                                                    entity.RoomTypeShortName,
+                                                    (entity.RoomTypeShortName ||
+                                                        entity.RoomTypeShortName ==
+                                                            0),
                                             }}
                                             error={
                                                 errors.RoomTypeShortName
@@ -483,7 +530,9 @@ const NewEdit = () => {
                                             InputLabelProps={{
                                                 shrink:
                                                     entity &&
-                                                    entity.RoomTypeName,
+                                                    (entity.RoomTypeName ||
+                                                        entity.RoomTypeName ==
+                                                            0),
                                             }}
                                             error={errors.RoomTypeName?.message}
                                             helperText={
@@ -500,7 +549,11 @@ const NewEdit = () => {
                                             label="Том хүн - үндсэн"
                                             {...register("BaseAdult")}
                                             margin="dense"
-                                            value={entity && entity.BaseAdult}
+                                            value={
+                                                entity &&
+                                                entity.BaseAdult > 0 &&
+                                                entity.BaseAdult
+                                            }
                                             onChange={(evt: any) => {
                                                 setEntity({
                                                     ...entity,
@@ -509,7 +562,9 @@ const NewEdit = () => {
                                             }}
                                             InputLabelProps={{
                                                 shrink:
-                                                    entity && entity.BaseAdult,
+                                                    entity &&
+                                                    (entity.BaseAdult ||
+                                                        entity.BaseAdult == 0),
                                             }}
                                             error={errors.BaseAdult?.message}
                                             helperText={
@@ -526,7 +581,11 @@ const NewEdit = () => {
                                             label="Том хүний тоо - дээд хязгаар"
                                             {...register("MaxAdult")}
                                             margin="dense"
-                                            value={entity && entity.MaxAdult}
+                                            value={
+                                                entity &&
+                                                entity.MaxAdult > 0 &&
+                                                entity.MaxAdult
+                                            }
                                             onChange={(evt: any) => {
                                                 setEntity({
                                                     ...entity,
@@ -535,7 +594,9 @@ const NewEdit = () => {
                                             }}
                                             InputLabelProps={{
                                                 shrink:
-                                                    entity && entity.MaxAdult,
+                                                    entity &&
+                                                    (entity.MaxAdult ||
+                                                        entity.MaxAdult == 0),
                                             }}
                                             error={errors.MaxAdult?.message}
                                             helperText={
@@ -551,7 +612,12 @@ const NewEdit = () => {
                                             id="BaseChild"
                                             label="Хүүхэд - үндсэн"
                                             {...register("BaseChild")}
-                                            value={entity && entity.BaseChild}
+                                            value={
+                                                entity &&
+                                                (entity.BaseChild == 0
+                                                    ? ""
+                                                    : entity.BaseChild)
+                                            }
                                             onChange={(evt: any) => {
                                                 setEntity({
                                                     ...entity,
@@ -560,7 +626,9 @@ const NewEdit = () => {
                                             }}
                                             InputLabelProps={{
                                                 shrink:
-                                                    entity && entity.BaseChild,
+                                                    entity &&
+                                                    (entity.BaseChild ||
+                                                        entity.BaseChild == 0),
                                             }}
                                             error={errors.BaseChild?.message}
                                             helperText={
@@ -576,7 +644,11 @@ const NewEdit = () => {
                                             id="MaxChild"
                                             label="Хүүхдийн тоо - дээд хязгаар"
                                             {...register("MaxChild")}
-                                            value={entity && entity.MaxChild}
+                                            value={
+                                                entity &&
+                                                entity.MaxChild > 0 &&
+                                                entity.MaxChild
+                                            }
                                             onChange={(evt: any) => {
                                                 setEntity({
                                                     ...entity,
@@ -585,7 +657,9 @@ const NewEdit = () => {
                                             }}
                                             InputLabelProps={{
                                                 shrink:
-                                                    entity && entity.MaxChild,
+                                                    entity &&
+                                                    (entity.MaxChild ||
+                                                        entity.MaxChild == 0),
                                             }}
                                             error={errors.MaxChild?.message}
                                             helperText={
@@ -602,7 +676,11 @@ const NewEdit = () => {
                                             label="Дараалал"
                                             {...register("SortOrder")}
                                             margin="dense"
-                                            value={entity && entity.SortOrder}
+                                            value={
+                                                entity &&
+                                                entity.SortOrder > 0 &&
+                                                entity.SortOrder
+                                            }
                                             onChange={(evt: any) => {
                                                 setEntity({
                                                     ...entity,
@@ -611,7 +689,9 @@ const NewEdit = () => {
                                             }}
                                             InputLabelProps={{
                                                 shrink:
-                                                    entity && entity.SortOrder,
+                                                    entity &&
+                                                    (entity.SortOrder ||
+                                                        entity.SortOrder == 0),
                                             }}
                                             error={errors.SortOrder?.message}
                                             helperText={
@@ -643,7 +723,7 @@ const NewEdit = () => {
                                 </Typography>
 
                                 <Grid container spacing={1}>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={12}>
                                         <TextField
                                             size="small"
                                             fullWidth
@@ -665,7 +745,9 @@ const NewEdit = () => {
                                             InputLabelProps={{
                                                 shrink:
                                                     entity &&
-                                                    entity.BookingDescription,
+                                                    (entity.BookingDescription ||
+                                                        entity.BookingDescription ==
+                                                            0),
                                             }}
                                             error={
                                                 errors.BookingDescription
@@ -677,7 +759,7 @@ const NewEdit = () => {
                                             }
                                         />
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    {/* <Grid item xs={6}>
                                         <TextField
                                             size="small"
                                             type="number"
@@ -702,7 +784,7 @@ const NewEdit = () => {
                                                 errors.SortOrder?.message
                                             }
                                         />
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                                 <FormGroup>
                                     <FormControlLabel
