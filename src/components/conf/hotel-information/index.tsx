@@ -2,6 +2,7 @@
 import { Box } from "@mui/material";
 import CustomTab from "components/common/custom-tab";
 import GeneralForm from "./GeneralForm";
+import BankAccount from "./BankAccount";
 
 const HotelInformation = () => {
 
@@ -9,12 +10,15 @@ const HotelInformation = () => {
         {
             label: "Үндсэн тохиргоо",
             component: (
-                <GeneralForm />
+                <>
+                    <GeneralForm />
+                </>
             ),
         },
         { label: "Дансны тохиргоо",
             component: (
                 <>
+                    <BankAccount title={'Банкны данс'}/>
                 </>
             )
         },

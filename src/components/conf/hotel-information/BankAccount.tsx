@@ -7,45 +7,26 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
-import { SeasonSWR, SeasonAPI, listUrl } from "lib/api/season";
-// import NewEdit from "./new-edit";
-// import Search from "./search";
+import { BankAccountSWR, BankAccountAPI, listUrl } from "lib/api/bank-account";
+import BankAccountNewEdit from "./bank-account-new-edit";
+import Search from "./search";
 
 const columns = [
-    { title: "Season Name", key: "SeasonName", dataIndex: "SeasonName" },
     {
-        title: "From",
-        key: "BeginDayMonth",
-        dataIndex: "BeginDayMonth",
+        title: "Банк",
+        key: "Bank",
+        dataIndex: "Bank"
     },
     {
-        title: "To",
-        key: "EndDayMonth",
-        dataIndex: "EndDayMonth",
+        title: "Дансны дугаар",
+        key: "AccountNo",
+        dataIndex: "AccountNo",
     },
     {
-        title: "Begin Date",
-        key: "BeginDate",
-        dataIndex: "BeginDate",
-        render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
-            );
-        },
+        title: "Дансны нэр",
+        key: "AccountName",
+        dataIndex: "AccountName",
     },
-    {
-        title: "End Date",
-        key: "EndDate",
-        dataIndex: "EndDate",
-        render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
-            );
-        },
-    },
-    { title: "Priority", key: "Priority", dataIndex: "Priority" },
     {
         title: "Status",
         key: "Status",
@@ -55,7 +36,7 @@ const columns = [
                 <ToggleChecked
                     id={id}
                     checked={value}
-                    api={SeasonAPI}
+                    api={BankAccountAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}
                 />
@@ -64,7 +45,7 @@ const columns = [
     },
 ];
 
-const SeasonList = ({ title }: any) => {
+const BankAccountList = ({ title }: any) => {
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
     });
@@ -77,9 +58,9 @@ const SeasonList = ({ title }: any) => {
         control,
     } = useForm(formOptions);
 
-    const [search, setSearch] = useState({});
+    const [search, setSearch] = useState({Status: true});
 
-    const { data, error } = SeasonSWR(search);
+    const { data, error } = BankAccountSWR(search);
 
     return (
         <>
@@ -90,30 +71,30 @@ const SeasonList = ({ title }: any) => {
                 handleSubmit={handleSubmit}
                 reset={reset}
             >
-                {/*<Search*/}
-                {/*    register={register}*/}
-                {/*    errors={errors}*/}
-                {/*    control={control}*/}
-                {/*    reset={reset}*/}
-                {/*/>*/}
+                <Search
+                    register={register}
+                    errors={errors}
+                    control={control}
+                    reset={reset}
+                />
             </CustomSearch>
 
             <CustomTable
                 columns={columns}
                 data={data}
                 error={error}
-                api={SeasonAPI}
+                api={BankAccountAPI}
                 hasNew={true}
                 hasUpdate={true}
-                hasDelete={true}
-                id="SeasonID"
+                hasDelete={false}
+                id="HotelBankAccountID"
                 listUrl={listUrl}
                 modalTitle={title}
-                // modalContent={<NewEdit />}
+                modalContent={<BankAccountNewEdit />}
                 excelName={title}
             />
         </>
     );
 };
 
-export default SeasonList;
+export default BankAccountList;
