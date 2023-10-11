@@ -18,7 +18,7 @@ const CustomSelect = ({
 
     const onSubmit = async (values: any) => {
         setLoading(true);
-
+        console.log("values", values);
         setSearch(values);
 
         setLoading(false);

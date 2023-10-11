@@ -81,6 +81,7 @@ const NewEdit = () => {
                     newEntity._id = newEntity.GuestID;
                     newEntity.amenity = amenitiesGeneralValue;
                     newEntity.amenity2 = amenitiesBookingValue;
+
                     setEntity(newEntity);
                     reset(newEntity);
                 } else {

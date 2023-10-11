@@ -5,15 +5,15 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/FrontOffice";
 export const listUrl = `${urlPrefix}/ReservationDetailsByDate`;
 
-export const FrontOfficeSWR = (date: any, dayCount: string = "30") => {
-    const values = {
-        CurrDate: date,
-        NumberOfDays: parseInt(dayCount),
-        RoomTypeID: 0,
-    };
+export const FrontOfficeSWR = (search: any) => {
+    // const values = {
+    //     CurrDate: date,
+    //     NumberOfDays: parseInt(dayCount),
+    //     RoomTypeID: 0,
+    // };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
+        await axios.post(url, search).then((res: any) => {
             let rates = res.data.JsonData;
             return rates;
         });

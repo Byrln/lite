@@ -1,7 +1,12 @@
 import { GetServerSideProps } from "next";
 import { lazy, useEffect, useContext } from "react";
 import { withAuthServerSideProps } from "lib/utils/with-auth-server-side-props";
-import { FrontOfficeAPI, FrontOfficeSWR } from "lib/api/front-office";
+import { FrontOfficeAPI, FrontOfficeSWR, listUrl } from "lib/api/front-office";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { mutate } from "swr";
+
 // Handsontable
 import "handsontable/dist/handsontable.full.min.css";
 import dynamic from "next/dynamic";
@@ -9,6 +14,7 @@ import useSWR from "swr";
 import Head from "next/head";
 import { Box, Grid, Container } from "@mui/material";
 import Page from "components/page";
+import { dateStringToObj } from "lib/utils/helpers";
 
 //test
 
@@ -27,6 +33,8 @@ import { HouseKeepingCurrentSWR } from "../../lib/api/house-keeping";
 import { date } from "yup";
 import { ModalContext } from "lib/context/modal";
 import NewReservation from "components/reservation/new-edit";
+import CustomSearch from "components/common/custom-search";
+import Search from "./search";
 
 const HotTableCSR = dynamic(
     // @ts-ignore
@@ -74,20 +82,53 @@ const TimelineTable = ({ props, workingDate }: any) => {
     const [cells, setCells] = useState([]);
     const [mergeCells, setMergeCells] = useState([]);
     const [orderCoords, setOrderCoords] = useState({});
+    const [timeStart, setTimeStart] = useState(new Date(workingDate));
+    const [timeEnd, setTimeEnd] = useState(
+        new Date(
+            new Date(workingDate).setDate(new Date(workingDate).getDate() + 7)
+        )
+    );
+    console.log("timeStart", timeStart);
+    console.log("timeEnd", timeEnd);
+    const validationSchema = yup.object().shape({
+        CurrDate: yup.string().nullable(),
+        NumberOfDays: yup.string().nullable(),
+        RoomTypeID: yup.string().nullable(),
+    });
+    const formOptions = { resolver: yupResolver(validationSchema) };
+    const {
+        reset,
+        register,
+        handleSubmit,
+        formState: { errors },
+        control,
+    } = useForm(formOptions);
 
-    let timeStart = new Date(workingDate);
-    let timeEnd = new Date(workingDate);
-    timeEnd.setDate(timeEnd.getDate() + 7);
+    const [search, setSearch] = useState({
+        CurrDate: workingDate,
+        NumberOfDays: parseInt(dayCount),
+        RoomTypeID: 0,
+    });
 
-    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({});
+    // let timeStart = new Date(workingDate);
+    // let timeEnd = new Date(workingDate);
+    // timeEnd.setDate(timeEnd.getDate() + 7);
+
+    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({
+        RoomTypeID: search.RoomTypeID,
+    });
     const { data: rooms, error: roomSwrError } = RoomSWR({});
     const {
         data: items,
         mutate: mutateItems,
         error: itemsError,
-    } = FrontOfficeSWR(workingDate, dayCount);
+    } = FrontOfficeSWR({
+        CurrDate: search.CurrDate ? search.CurrDate : workingDate,
+        NumberOfDays: search.NumberOfDays,
+        RoomTypeID: search.RoomTypeID,
+    });
     const { data: availableRooms, error: availableRoomsError } = StayView2SWR(
-        workingDate,
+        search.CurrDate ? search.CurrDate : workingDate,
         dayCount
     );
     const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR(
@@ -106,6 +147,22 @@ const TimelineTable = ({ props, workingDate }: any) => {
     };
 
     useEffect(() => {
+        (async () => {
+            setTimeStart(new Date(search.CurrDate));
+            setTimeEnd(
+                new Date(
+                    new Date(search.CurrDate).setDate(
+                        new Date(search.CurrDate).getDate() + 7
+                    )
+                )
+            );
+
+            await mutate("/api/RoomType/List");
+            await mutate("/api/FrontOffice/StayView2");
+        })();
+    }, [search]);
+
+    useEffect(() => {
         mutateItems();
         /* Excel column data build for UI start */
         let cols: any = [];
@@ -114,8 +171,12 @@ const TimelineTable = ({ props, workingDate }: any) => {
         // First row
         headers.push("<br>Өрөө");
         cols.push({ data: "room", readOnly: true, width: 100 });
-        let date_working = new Date(workingDate);
-        let date_temp = new Date(workingDate);
+        let date_working = new Date(
+            search.CurrDate ? search.CurrDate : workingDate
+        );
+        let date_temp = new Date(
+            search.CurrDate ? search.CurrDate : workingDate
+        );
         for (let i = 0; i < parseInt(dayCount); i++) {
             if (i != 0) {
                 date_temp.setDate(date_temp.getDate() + 1);
@@ -171,7 +232,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
         if (items && items.length > 0) {
             console.log(items.length);
         }
-    }, [dayCount, roomTypes, rooms, items, availableRooms]);
+    }, [dayCount, roomTypes, rooms, items, availableRooms, search]);
 
     function clickCell(event: any, coords: any) {
         let col = Math.round(coords.col / 2) - 1;
@@ -434,6 +495,20 @@ const TimelineTable = ({ props, workingDate }: any) => {
                 <Container maxWidth="xl">
                     <h4>Календар</h4>
                     <br />
+                    <CustomSearch
+                        listUrl={listUrl}
+                        search={search}
+                        setSearch={setSearch}
+                        handleSubmit={handleSubmit}
+                        reset={reset}
+                    >
+                        <Search
+                            register={register}
+                            errors={errors}
+                            control={control}
+                            reset={reset}
+                        />
+                    </CustomSearch>
                     <FormControl>
                         <RadioGroup
                             row
