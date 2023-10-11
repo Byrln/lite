@@ -501,6 +501,11 @@ const TimelineTable = ({ props, workingDate }: any) => {
                         setSearch={setSearch}
                         handleSubmit={handleSubmit}
                         reset={reset}
+                        searchInitialState={{
+                            CurrDate: workingDate,
+                            NumberOfDays: parseInt(dayCount),
+                            RoomTypeID: 0,
+                        }}
                     >
                         <Search
                             register={register}

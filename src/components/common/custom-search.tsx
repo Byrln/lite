@@ -13,6 +13,7 @@ const CustomSelect = ({
     setSearch,
     handleSubmit,
     reset,
+    searchInitialState = {},
 }: any) => {
     const [loading, setLoading] = useState(false);
 
@@ -46,7 +47,9 @@ const CustomSelect = ({
                             size="small"
                             loading={loading}
                             className="mt-3 mr-3"
-                            onClick={() => reset()}
+                            onClick={() => (
+                                reset(), setSearch(searchInitialState)
+                            )}
                             startIcon={<Icon icon={trash2Fill} />}
                         >
                             Хайлт цэвэрлэх
