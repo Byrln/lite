@@ -10,7 +10,7 @@ import {
     CardContent,
     Typography,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,6 +35,7 @@ const validationSchema = yup.object().shape({
     MaxChild: yup.string().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     BookingDescription: yup.string(),
+    Booking: yup.boolean().nullable(),
 });
 
 const NewEdit = () => {
@@ -48,6 +49,7 @@ const NewEdit = () => {
         register,
         reset,
         handleSubmit,
+        control,
         formState: { errors },
     } = useForm({
         resolver: yupResolver(validationSchema),
@@ -81,6 +83,8 @@ const NewEdit = () => {
                     newEntity._id = newEntity.GuestID;
                     newEntity.amenity = amenitiesGeneralValue;
                     newEntity.amenity2 = amenitiesBookingValue;
+                    console.log("entity", newEntity);
+                    console.log("entityBooking", newEntity.Booking);
 
                     setEntity(newEntity);
                     reset(newEntity);
@@ -95,6 +99,7 @@ const NewEdit = () => {
     }, [state.editId]);
 
     const onSubmit = async (values: any) => {
+        console.log(values);
         values.RoomTypeID = state.editId;
 
         let amenities = entity.amenity;
@@ -425,9 +430,36 @@ const NewEdit = () => {
                             />
                         </Grid> */}
                     </Grid>
-                    <FormGroup>
+
+                    <FormControlLabel
+                        control={
+                            <Controller
+                                name="Booking"
+                                control={control}
+                                render={(props: any) => (
+                                    <Checkbox
+                                        {...register("Booking")}
+                                        checked={
+                                            entity && entity.Booking == true
+                                                ? true
+                                                : false
+                                        }
+                                        onChange={(e) =>
+                                            props.field.onChange(
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                )}
+                            />
+                        }
+                        label="Онлайн захиалга дээр харуулах эсэх"
+                    />
+                    {/* <FormGroup>
                         <FormControlLabel
-                            control={<Checkbox />}
+                            control={
+                                <Checkbox checked={entity && entity.Booking} />
+                            }
                             label="Онлайн захиалга дээр харуулах эсэх"
                             {...register("Booking")}
                             value={entity && entity.Booking}
@@ -438,7 +470,7 @@ const NewEdit = () => {
                                 });
                             }}
                         />
-                    </FormGroup>
+                    </FormGroup> */}
 
                     <AmenitySelect
                         register={register}
@@ -787,7 +819,32 @@ const NewEdit = () => {
                                         />
                                     </Grid> */}
                                 </Grid>
-                                <FormGroup>
+                                <FormControlLabel
+                                    control={
+                                        <Controller
+                                            name="Booking"
+                                            control={control}
+                                            render={(props: any) => (
+                                                <Checkbox
+                                                    {...register("Booking")}
+                                                    checked={
+                                                        entity && entity.Booking
+                                                    }
+                                                    onChange={(evt: any) => {
+                                                        setEntity({
+                                                            ...entity,
+                                                            Booking:
+                                                                evt.target
+                                                                    .checked,
+                                                        });
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                    }
+                                    label="Онлайн захиалга дээр харуулах эсэх"
+                                />
+                                {/* <FormGroup>
                                     <FormControlLabel
                                         control={<Checkbox />}
                                         label="Онлайн захиалга дээр харуулах эсэх"
@@ -796,11 +853,11 @@ const NewEdit = () => {
                                         onChange={(evt: any) => {
                                             setEntity({
                                                 ...entity,
-                                                Booking: evt.target.value,
+                                                Booking: evt.target.checked,
                                             });
                                         }}
                                     />
-                                </FormGroup>
+                                </FormGroup> */}
 
                                 <AmenitySelect
                                     register={register}
