@@ -25,7 +25,7 @@ export const RateSWR = (search: any) => {
         search.CustomerID = 0;
     }
     if (!search.TaxIncluded) {
-        search.TaxIncluded = 0;
+        search.TaxIncluded = false;
     }
     if (!search.RoomChargeDuration) {
         search.RoomChargeDuration = 0;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { TextField, Grid } from "@mui/material";
+import { TextField, Grid, Switch } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
@@ -29,8 +29,8 @@ const RateList = ({ title }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
-
-    const [search, setSearch] = useState({});
+    const [isChecked, setIsChecked] = useState(true);
+    const [search, setSearch] = useState({ TaxIncluded: isChecked });
     const [entity, setEntity] = useState<any>({});
     const [loading, setLoading] = useState(false);
     const { data, error } = RateSWR(search);
@@ -40,6 +40,24 @@ const RateList = ({ title }: any) => {
             setEntity(data);
         }
     }, [data]);
+
+    const onToggleChecked = async () => {
+        setLoading(true);
+        try {
+            // await api.toggleChecked(id, !checked, apiUrl, toggleKey);
+
+            setIsChecked(!isChecked);
+            setSearch({
+                ...search,
+                TaxIncluded: !isChecked,
+            });
+            // await mutate(listUrl);
+
+            console.log("isChecked", isChecked);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const columns = [
         {
@@ -206,7 +224,15 @@ const RateList = ({ title }: any) => {
                     reset={reset}
                 />
             </CustomSearch>
-
+            <LoadingButton loading={loading}>
+                <Switch
+                    checked={isChecked}
+                    disabled={loading}
+                    onClick={onToggleChecked}
+                />
+            </LoadingButton>
+            Өрөөний тариф нь 10% + 1% татвар агуулсан болно.
+            <br />
             <CustomTable
                 columns={columns}
                 data={data}
@@ -214,7 +240,6 @@ const RateList = ({ title }: any) => {
                 modalTitle={title}
                 excelName={title}
             />
-
             <Grid container spacing={1}>
                 <Grid item xs={5}></Grid>
                 <Grid item xs={2}>
