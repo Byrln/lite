@@ -112,9 +112,9 @@ const NewEditForm = ({
             {children}
 
             {state.isShow && !isShowNotAffected ? null : (
-                <Box sx={{ width: "15%" }}>
-                    <SubmitButton loading={loading} title={customSubmitTitle} />
-                </Box>
+                // <Box sx={{ width: "15%" }}>
+                <SubmitButton loading={loading} title={customSubmitTitle} />
+                // </Box>
             )}
         </form>
     );
