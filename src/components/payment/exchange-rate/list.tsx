@@ -10,7 +10,7 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Date",
+        title: "Өдөр",
         key: "BeginDate",
         dataIndex: "BeginDate",
         render: function render(id: any, value: any) {
@@ -24,42 +24,42 @@ const columns = [
         },
     },
     {
-        title: "Country",
+        title: "Улс",
         key: "CountryName",
         dataIndex: "CountryName",
     },
     {
-        title: "Currency",
+        title: "Ханш",
         key: "CurrencyName",
         dataIndex: "CurrencyName",
     },
     {
-        title: "Code",
+        title: "Код",
         key: "CurrencyCode",
         dataIndex: "CurrencyCode",
     },
     {
-        title: "Symbol",
+        title: "Тэмдэгт",
         key: "CurrencySymbol",
         dataIndex: "CurrencySymbol",
     },
     {
-        title: "Buy",
+        title: "Худ.Авах",
         key: "CurrencyID",
         dataIndex: "CurrencyID",
     },
     {
-        title: "Sell",
+        title: "Зарах",
         key: "CountryID",
         dataIndex: "CountryID",
     },
     {
-        title: "Main",
+        title: "Үндсэн",
         key: "Main",
         dataIndex: "Main",
     },
     {
-        title: "User Name",
+        title: "Хэрэглэгчийн нэр",
         key: "UserName",
         dataIndex: "UserName",
     },

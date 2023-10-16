@@ -10,7 +10,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="SearchStr"
-                    label="Reservation Source"
+                    label="Захиалгын эх сурвалж"
                     {...register("SearchStr")}
                     margin="dense"
                     error={errors.SearchStr?.message}

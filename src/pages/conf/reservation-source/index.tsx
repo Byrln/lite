@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import ReservationSource from "components/conf/reservation-source/list";
 
-const title = "Reservation Source";
+const title = "Захиалгын эх сурвалж";
 
 const Index = () => (
     <>

@@ -41,7 +41,7 @@ const NewEdit = () => {
                 size="small"
                 fullWidth
                 id="ReservationSourceName"
-                label="ReservationSourceName"
+                label="Захиалгын эх сурвалж"
                 {...register("ReservationSourceName")}
                 margin="dense"
                 error={errors.ReservationSourceName?.message}

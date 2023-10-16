@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import {TextField, Grid, Box} from "@mui/material";
+import { TextField, Grid, Box } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
@@ -51,7 +51,7 @@ const ChangePassword = ({ id }: any) => {
                         type="password"
                         fullWidth
                         id="OldPassword"
-                        label="Old Password"
+                        label="Хуучин нууц үг"
                         {...register("OldPassword")}
                         margin="dense"
                         error={errors.OldPassword?.message}
@@ -64,7 +64,7 @@ const ChangePassword = ({ id }: any) => {
                         type="password"
                         fullWidth
                         id="NewPassword"
-                        label="New Password"
+                        label="Шинэ нууц үг"
                         {...register("NewPassword")}
                         margin="dense"
                         error={errors.NewPassword?.message}
@@ -77,7 +77,7 @@ const ChangePassword = ({ id }: any) => {
                         type="password"
                         fullWidth
                         id="NewPasswordConfirmation"
-                        label="New Password Confirmation"
+                        label="Нууц үгээ дахин оруул"
                         {...register("NewPasswordConfirmation")}
                         margin="dense"
                         error={errors.NewPasswordConfirmation?.message}

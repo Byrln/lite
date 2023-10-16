@@ -17,22 +17,22 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Reservation Source",
+        title: "Захиалгын эх сурвалж",
         key: "ReservationSourceName",
         dataIndex: "ReservationSourceName",
     },
     {
-        title: "Channel",
+        title: "Суваг",
         key: "ChannelName",
         dataIndex: "ChannelName",
     },
     {
-        title: "User Name",
+        title: "Хэрэглэгчийн нэр",
         key: "UserName",
         dataIndex: "UserName",
     },
     {
-        title: "Changed Date",
+        title: "Огноо өөрчлөх",
         key: "CreatedDate",
         dataIndex: "CreatedDate",
         render: function render(id: any, value: any) {
@@ -46,12 +46,12 @@ const columns = [
         },
     },
     {
-        title: "IP Address",
+        title: "Сүлжээний хаяг",
         key: "IPAddress",
         dataIndex: "IPAddress",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

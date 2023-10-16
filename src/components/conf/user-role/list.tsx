@@ -12,22 +12,22 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Short Code",
+        title: "Богино код",
         key: "UserRoleShortName",
         dataIndex: "UserRoleShortName",
     },
     {
-        title: "User Role",
+        title: "Хэрэглэгчийн төрөл",
         key: "UserRoleName",
         dataIndex: "UserRoleName",
     },
     {
-        title: "Description",
+        title: "Тайлбар",
         key: "Description",
         dataIndex: "Description",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

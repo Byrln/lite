@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import ExchangeRate from "components/payment/exchange-rate/list";
 
-const title = "Exchange Rate";
+const title = "Валютын жагсаалт";
 
 const Index = () => (
     <>

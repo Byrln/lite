@@ -43,7 +43,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="UserName"
-                        label="User Name"
+                        label="Хэрэглэгчин нэр"
                         {...register("UserName")}
                         margin="dense"
                         error={errors.UserName?.message}
@@ -55,7 +55,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="LoginName"
-                        label="Login Name"
+                        label="Нэвтрэх нэр"
                         {...register("LoginName")}
                         margin="dense"
                         error={errors.LoginName?.message}
@@ -77,7 +77,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="Email"
-                        label="Email"
+                        label="Цахим шуудан"
                         {...register("Email")}
                         margin="dense"
                         error={errors.Email?.message}
@@ -90,7 +90,7 @@ const NewEdit = () => {
                         type="password"
                         fullWidth
                         id="Password"
-                        label="Password"
+                        label="Нууц үг"
                         {...register("Password")}
                         margin="dense"
                         error={errors.Password?.message}

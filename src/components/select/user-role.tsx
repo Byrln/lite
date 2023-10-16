@@ -23,7 +23,7 @@ const UserRoleSelect = ({ register, errors, field }: any) => {
             register={register}
             errors={errors}
             field={field}
-            label="User Role"
+            label="Хэрэглэгчин төрөл"
             options={data}
             optionValue="UserRoleID"
             optionLabel="UserRoleName"

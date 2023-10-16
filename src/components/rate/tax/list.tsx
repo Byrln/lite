@@ -5,17 +5,17 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Tax Code",
+        title: "Татварын код",
         key: "TaxCode",
         dataIndex: "TaxCode",
     },
     {
-        title: "Tax Name",
+        title: "Татварын нэр",
         key: "TaxName",
         dataIndex: "TaxName",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

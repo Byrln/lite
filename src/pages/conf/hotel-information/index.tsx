@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import HotelInformation from "components/conf/hotel-information";
 
-const title = "Hotel Information";
+const title = "Зочид буудлын мэдээлэл";
 
 const Index = () => (
     <>

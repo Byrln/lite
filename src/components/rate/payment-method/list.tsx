@@ -9,18 +9,18 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Group Name",
+        title: "Бүлгийн нэр",
         key: "PaymentMethodGroupName",
         dataIndex: "PaymentMethodGroupName",
     },
 
     {
-        title: "Payment Method",
+        title: "Төлбөрийн хэлбэр",
         key: "PaymentMethodName",
         dataIndex: "PaymentMethodName",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

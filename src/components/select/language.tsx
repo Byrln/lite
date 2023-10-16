@@ -17,7 +17,7 @@ const LanguageSelect = ({ register, errors }: any) => {
             register={register}
             errors={errors}
             field="Language"
-            label="Language"
+            label="Хэл"
             options={languageOptions}
             optionValue="value"
             optionLabel="label"

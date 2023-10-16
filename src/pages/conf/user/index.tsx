@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import UserList from "components/conf/user/list";
 
-const title = "User List";
+const title = "Хэрэглэгч";
 
 const Index = () => (
     <>

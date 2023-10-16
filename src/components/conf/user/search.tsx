@@ -18,7 +18,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="SearchStr"
-                    label="User Name"
+                    label="Хэрэглэгчин нэр"
                     {...register("SearchStr")}
                     margin="dense"
                     error={errors.SearchStr?.message}

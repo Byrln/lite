@@ -12,32 +12,32 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "User Name",
+        title: "Хэрэглэгчийн нэр",
         key: "UserName",
         dataIndex: "UserName",
     },
     {
-        title: "Login Name",
+        title: "Нэвтрэх нэр",
         key: "LoginName",
         dataIndex: "LoginName",
     },
     {
-        title: "User Role",
+        title: "Хэрэглэгчийн төрөл",
         key: "UserRoleName",
         dataIndex: "UserRoleName",
     },
     {
-        title: "Language",
+        title: "Хэл",
         key: "Language",
         dataIndex: "Language",
     },
     {
-        title: "Email",
+        title: "Цах.шуудан",
         key: "Email",
         dataIndex: "Email",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

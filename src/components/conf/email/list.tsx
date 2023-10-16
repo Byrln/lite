@@ -14,37 +14,37 @@ const EmailList = ({ title }: any) => {
 
     const columns = [
         {
-            title: "Email",
+            title: "Цах.шуудан",
             key: "Email",
             dataIndex: "Email",
         },
 
         {
-            title: "Email Server",
+            title: "И-мэйлийн сервер",
             key: "EmailHost",
             dataIndex: "EmailHost",
         },
         {
-            title: "Port",
+            title: "Порт",
             key: "Port",
             dataIndex: "Port",
         },
 
         {
-            title: "User Name",
+            title: "Хэрэглэгчин нэр",
             key: "UserName",
             dataIndex: "UserName",
         },
         {
-            title: "Main",
+            title: "Үндсэн",
             key: "IsMain",
             dataIndex: "IsMain",
             render: function render(id: any, value: any) {
-                return value && "Main";
+                return value && "Үндсэн";
             },
         },
         {
-            title: "Change Password",
+            title: "Нууц үг өөрчлөх",
             key: "ChangePassword",
             dataIndex: "ChangePassword",
             render: function render(id: any, value: any) {

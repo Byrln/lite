@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import UserRoleList from "components/conf/user-role/list";
 
-const title = "User Role";
+const title = "Хэрэглэгчийн төрлийн жагсаалт";
 
 const Index = () => (
     <>
