@@ -12,22 +12,22 @@ import ToggleChecked from "components/common/custom-switch";
 
 const columns = [
     {
-        title: "Hotel Code",
+        title: "Буудлын код",
         key: "HotelCode",
         dataIndex: "HotelCode",
     },
     {
-        title: "Hotel Name",
+        title: "Буудлын нэр",
         key: "HotelName",
         dataIndex: "HotelName",
     },
     {
-        title: "Room Count",
+        title: "Өрөөний тоо",
         key: "RoomCount",
         dataIndex: "RoomCount",
     },
     {
-        title: "PMS Start",
+        title: "PMS эхлэх",
         key: "PMSStart",
         dataIndex: "PMSStart",
         render: function render(id: any, value: any) {
@@ -38,7 +38,7 @@ const columns = [
         },
     },
     {
-        title: "PMS End",
+        title: "PMS дуусах",
         key: "PMSEnd",
         dataIndex: "PMSEnd",
         render: function render(id: any, value: any) {
@@ -49,7 +49,7 @@ const columns = [
         },
     },
     {
-        title: "Booking Engine",
+        title: "Шууд захиалга",
         key: "BookingEngine",
         dataIndex: "BookingEngine",
         render: function render(id: any, value: any) {
@@ -57,7 +57,7 @@ const columns = [
         },
     },
     {
-        title: "Commission",
+        title: "Шимтгэл",
         key: "RoomChargeDuration",
         dataIndex: "RoomChargeDuration",
         render: function render(id: any, value: any) {
@@ -65,7 +65,7 @@ const columns = [
         },
     },
     {
-        title: "Package Name",
+        title: "Багцын нэр",
         key: "EditionName",
         dataIndex: "EditionName",
     },

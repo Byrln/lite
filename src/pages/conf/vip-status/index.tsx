@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import VipStatus from "components/conf/vip-status/list";
 
-const title = "Vip Status";
+const title = "ВИП төлөв";
 
 const Index = () => (
     <>

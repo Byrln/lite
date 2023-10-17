@@ -16,17 +16,17 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Group Name",
+        title: "Бүлгийн нэр",
         key: "RoomChargeTypeGroupName",
         dataIndex: "RoomChargeTypeGroupName",
     },
     {
-        title: "Sort Order",
+        title: "Эрэмбэлэх",
         key: "SortOrder",
         dataIndex: "SortOrder",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         excelRenderPass: true,

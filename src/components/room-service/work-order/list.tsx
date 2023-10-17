@@ -11,47 +11,47 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Order #",
+        title: "Захиалга #",
         key: "WorkOrderNo",
         dataIndex: "WorkOrderNo",
     },
     {
-        title: "Room",
+        title: "Өрөө",
         key: "RoomFullName",
         dataIndex: "RoomFullName",
     },
     {
-        title: "Priority",
+        title: "Чухал байдал",
         key: "WorkOrderPriorityCode",
         dataIndex: "WorkOrderPriorityCode",
     },
     {
-        title: "Description",
+        title: "Тайлбар",
         key: "WODescription",
         dataIndex: "WODescription",
     },
     {
-        title: "Started",
+        title: "Эхэлсэн",
         key: "CreatedDate",
         dataIndex: "CreatedDate",
     },
     {
-        title: "Deadline",
+        title: "Эц.хугацаа",
         key: "Deadline",
         dataIndex: "Deadline",
     },
     {
-        title: "Assigner",
+        title: "Оноосон.ажилтан",
         key: "UserName",
         dataIndex: "UserName",
     },
     {
-        title: "Assigned To",
+        title: "Өр.Үйлч оноох",
         key: "AssignedUser",
         dataIndex: "AssignedUser",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "StDescription",
         dataIndex: "StDescription",
     },

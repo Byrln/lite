@@ -37,7 +37,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="OrderId"
-                        label="Order No"
+                        label="Ажлын дугаар"
                         {...register("OrderId")}
                         margin="dense"
                         error={errors.OrderId?.message}
@@ -49,7 +49,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="Priority"
-                        label="Priority"
+                        label="Зэрэглэл"
                         {...register("Priority")}
                         margin="dense"
                         error={errors.Priority?.message}
@@ -61,7 +61,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="Status"
-                        label="Status"
+                        label="Төлөв"
                         {...register("Status")}
                         margin="dense"
                         error={errors.Status?.message}
@@ -75,31 +75,20 @@ const NewEdit = () => {
                         multiline
                         rows={3}
                         id="Description"
-                        label="Description"
+                        label="Тайлбар"
                         {...register("Description")}
                         margin="dense"
                         error={errors.Description?.message}
                         helperText={errors.Description?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        size="small"
-                        fullWidth
-                        id="Status"
-                        label="Status"
-                        {...register("Status")}
-                        margin="dense"
-                        error={errors.Status?.message}
-                        helperText={errors.Status?.message}
-                    />
-                </Grid>
+
                 <Grid item xs={6}>
                     <TextField
                         size="small"
                         fullWidth
                         id="Room"
-                        label="Room"
+                        label="Өрөө"
                         {...register("Room")}
                         margin="dense"
                         error={errors.Room?.message}
@@ -111,7 +100,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="AssignedTo"
-                        label="Assigned To"
+                        label="Оноогдсон"
                         {...register("AssignedTo")}
                         margin="dense"
                         error={errors.AssignedTo?.message}
@@ -123,7 +112,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="DeadLine"
-                        label="DeadLine"
+                        label="Сүүлийн хугацаа"
                         {...register("DeadLine")}
                         margin="dense"
                         error={errors.DeadLine?.message}
@@ -147,7 +136,7 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                label="Room Block"
+                label="Өрөө блоклох"
             />
         </NewEditForm>
     );

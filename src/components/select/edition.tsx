@@ -24,7 +24,7 @@ const EditionSelect = ({ register, errors, entity, setEntity }: any) => {
             size="small"
             fullWidth
             id="EditionID"
-            label="EditionID"
+            label="Багцын нэр"
             {...register("EditionID")}
             select
             margin="dense"

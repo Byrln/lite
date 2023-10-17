@@ -17,7 +17,7 @@ const columns = [
         dataIndex: "PromotionCode",
     },
     {
-        title: "Begin Date",
+        title: "Эхлэх огноо",
         key: "BeginDate",
         dataIndex: "BeginDate",
         render: function render(id: any, value: any) {
@@ -28,7 +28,7 @@ const columns = [
         },
     },
     {
-        title: "End Date",
+        title: "Дуусах хугацаа",
         key: "EndDate",
         dataIndex: "EndDate",
         render: function render(id: any, value: any) {

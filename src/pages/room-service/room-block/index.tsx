@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import RoomBlock from "components/room-service/room-block/list";
 
-const title = "Room Block";
+const title = "Өрөө блоклох";
 
 const Index = () => (
     <>

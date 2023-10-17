@@ -9,12 +9,12 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Group Name",
+        title: "Бүлгийн нэр",
         key: "CustomerGroupName",
         dataIndex: "CustomerGroupName",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

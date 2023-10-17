@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
+import { useForm } from "react-hook-form";
+import { Grid, TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -37,24 +36,30 @@ const NewEdit = () => {
             handleSubmit={handleSubmit}
             setEntity={setEntity}
         >
-            <TextField
-                size="small"
-                fullWidth
-                id="ReservationSourceName"
-                label="Захиалгын эх сурвалж"
-                {...register("ReservationSourceName")}
-                margin="dense"
-                error={errors.ReservationSourceName?.message}
-                helperText={errors.ReservationSourceName?.message}
-            />
-            <ReservationChannelSelect
-                register={register}
-                errors={errors}
-                reset={reset}
-                customRegisterName="ChannelID"
-                entity={entity}
-                setEntity={setEntity}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        id="ReservationSourceName"
+                        label="Захиалгын эх сурвалж"
+                        {...register("ReservationSourceName")}
+                        margin="dense"
+                        error={errors.ReservationSourceName?.message}
+                        helperText={errors.ReservationSourceName?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <ReservationChannelSelect
+                        register={register}
+                        errors={errors}
+                        reset={reset}
+                        customRegisterName="ChannelID"
+                        entity={entity}
+                        setEntity={setEntity}
+                    />
+                </Grid>
+            </Grid>
         </NewEditForm>
     );
 };

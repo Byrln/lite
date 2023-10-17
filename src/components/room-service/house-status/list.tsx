@@ -15,27 +15,27 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Room",
+        title: "Өрөө",
         key: "RoomNo",
         dataIndex: "RoomNo",
     },
     {
-        title: "Room Type",
+        title: "Өр.төрөл",
         key: "RoomTypeName",
         dataIndex: "RoomTypeName",
     },
     {
-        title: "House Status",
+        title: "Цэвэрлэгээ/төлөв",
         key: "HKSDescription",
         dataIndex: "HKSDescription",
     },
     {
-        title: "Room Status",
+        title: "Зочны төлөв",
         key: "RSDescription",
         dataIndex: "RSDescription",
     },
     {
-        title: "HouseKeeper",
+        title: "Өрөө үйлчлэгч",
         key: "HKUserName",
         dataIndex: "HKUserName",
     },

@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import HouseStatus from "components/room-service/house-status/list";
 
-const title = "House Status";
+const title = "Ө.үйлчилгээ төлөв";
 
 const Index = () => (
     <>

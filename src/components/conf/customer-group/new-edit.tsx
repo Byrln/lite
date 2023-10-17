@@ -34,7 +34,7 @@ const NewEdit = () => {
                 size="small"
                 fullWidth
                 id="CustomerGroupName"
-                label="Group Name"
+                label="Бүлгийн нэр"
                 {...register("CustomerGroupName")}
                 margin="dense"
                 error={errors.CustomerGroupName?.message}

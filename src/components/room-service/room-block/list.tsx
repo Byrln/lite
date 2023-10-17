@@ -4,32 +4,32 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Room",
+        title: "Өрөө",
         key: "RoomFullName",
         dataIndex: "RoomFullName",
     },
     {
-        title: "Begin Date",
+        title: "Эхлэх огноо",
         key: "BeginDate",
         dataIndex: "BeginDate",
     },
     {
-        title: "End Date",
+        title: "Дуусах огноо",
         key: "EndDate",
         dataIndex: "EndDate",
     },
     {
-        title: "Blocked On",
+        title: "Блоклох",
         key: "CreatedDate",
         dataIndex: "CreatedDate",
     },
     {
-        title: "Blocked By",
+        title: "Блоклосон",
         key: "UserName",
         dataIndex: "UserName",
     },
     {
-        title: "Reason",
+        title: "Шалтгаан",
         key: "Description",
         dataIndex: "Description",
     },

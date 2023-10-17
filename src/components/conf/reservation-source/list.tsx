@@ -1,8 +1,9 @@
 import { format } from "date-fns";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Stack } from "@mui/material";
 
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
@@ -14,61 +15,105 @@ import {
 } from "lib/api/reservation-source";
 import NewEdit from "./new-edit";
 import Search from "./search";
-
-const columns = [
-    {
-        title: "Захиалгын эх сурвалж",
-        key: "ReservationSourceName",
-        dataIndex: "ReservationSourceName",
-    },
-    {
-        title: "Суваг",
-        key: "ChannelName",
-        dataIndex: "ChannelName",
-    },
-    {
-        title: "Хэрэглэгчийн нэр",
-        key: "UserName",
-        dataIndex: "UserName",
-    },
-    {
-        title: "Огноо өөрчлөх",
-        key: "CreatedDate",
-        dataIndex: "CreatedDate",
-        render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy hh:mm:ss a"
-                )
-            );
-        },
-    },
-    {
-        title: "Сүлжээний хаяг",
-        key: "IPAddress",
-        dataIndex: "IPAddress",
-    },
-    {
-        title: "Төлөв",
-        key: "Status",
-        dataIndex: "Status",
-        render: function render(id: any, value: any) {
-            return (
-                <ToggleChecked
-                    id={id}
-                    checked={value}
-                    api={ReservationSourceAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-];
+import { ModalContext } from "lib/context/modal";
 
 const ReservationSourceList = ({ title }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
+
+    const columns = [
+        {
+            title: "Захиалгын эх сурвалж",
+            key: "ReservationSourceName",
+            dataIndex: "ReservationSourceName",
+        },
+        {
+            title: "Суваг",
+            key: "ChannelName",
+            dataIndex: "ChannelName",
+        },
+        {
+            title: "Хэрэглэгчийн нэр",
+            key: "UserName",
+            dataIndex: "UserName",
+        },
+        {
+            title: "Огноо өөрчлөх",
+            key: "CreatedDate",
+            dataIndex: "CreatedDate",
+            render: function render(id: any, value: any) {
+                return (
+                    value &&
+                    format(
+                        new Date(value.replace(/ /g, "T")),
+                        "MM/dd/yyyy hh:mm:ss a"
+                    )
+                );
+            },
+        },
+        {
+            title: "Сүлжээний хаяг",
+            key: "IPAddress",
+            dataIndex: "IPAddress",
+        },
+        {
+            title: "Төлөв",
+            key: "Status",
+            dataIndex: "Status",
+            render: function render(id: any, value: any) {
+                return (
+                    <ToggleChecked
+                        id={id}
+                        checked={value}
+                        api={ReservationSourceAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+        {
+            title: "Нэмэлт үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            render: function render(id: any, record: any, entity: any) {
+                return entity.ChannelID == 2 ? (
+                    <Stack direction="row" spacing={1}>
+                        <Button
+                            key={id}
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Тохиргоо`,
+                                    `test`,
+                                    null,
+                                    "large"
+                                );
+                            }}
+                        >
+                            Тохиргоо
+                        </Button>
+                        <Button
+                            key={id}
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Холбоос`,
+                                    `test`,
+                                    null,
+                                    "large"
+                                );
+                            }}
+                        >
+                            Холбоос
+                        </Button>
+                    </Stack>
+                ) : (
+                    <></>
+                );
+            },
+        },
+    ];
+
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
     });

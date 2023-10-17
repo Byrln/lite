@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import WorkOrder from "components/room-service/work-order/list";
 
-const title = "Work Order";
+const title = "Ажлын даалгавар";
 
 const Index = () => (
     <>

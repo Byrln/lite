@@ -40,7 +40,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="VipStatusName"
-                        label="VipStatusName"
+                        label="ВИП төлөвийн нэр"
                         {...register("VipStatusName")}
                         margin="dense"
                         error={errors.VipStatusName?.message}
@@ -52,7 +52,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="VipStatusDescription"
-                        label="VipStatusDescription"
+                        label="Тайлбар"
                         {...register("VipStatusDescription")}
                         margin="dense"
                         error={errors.VipStatusDescription?.message}
@@ -76,7 +76,7 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                label="ShowWarning"
+                label="Анхааруулга харуулах"
             />
         </NewEditForm>
     );

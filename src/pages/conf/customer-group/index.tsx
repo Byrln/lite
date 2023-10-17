@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import CustomerGroup from "components/conf/customer-group/list";
 
-const title = "Customer Group";
+const title = "Харилцагчийн бүлэг";
 
 const Index = () => (
     <>

@@ -13,17 +13,17 @@ import Search from "./search";
 
 const columns = [
     {
-        title: "Mini Bar Group",
+        title: "Мини бар бүлэг",
         key: "RoomChargeTypeGroupName",
         dataIndex: "RoomChargeTypeGroupName",
     },
     {
-        title: "Mini Bar Item",
+        title: "Мини бар бараа",
         key: "RoomChargeTypeName",
         dataIndex: "RoomChargeTypeName",
     },
     {
-        title: "Rate",
+        title: "Тариф",
         key: "RoomChargeTypeRate",
         dataIndex: "RoomChargeTypeRate",
         render: function render(id: any, value: any) {
@@ -31,12 +31,12 @@ const columns = [
         },
     },
     {
-        title: "Sort Order",
+        title: "Эрэмбэлэх",
         key: "SortOrder",
         dataIndex: "SortOrder",
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

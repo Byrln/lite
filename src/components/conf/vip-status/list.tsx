@@ -5,17 +5,17 @@ import NewEdit from "./new-edit";
 
 const columns = [
     {
-        title: "Vip Status",
+        title: "ВИП төрөл",
         key: "VipStatusName",
         dataIndex: "VipStatusName",
     },
     {
-        title: "Description",
+        title: "Тайлбар",
         key: "VipStatusDescription",
         dataIndex: "VipStatusDescription",
     },
     {
-        title: "Show Warning",
+        title: "Анхааруулга харуулах",
         key: "ShowWarning",
         dataIndex: "ShowWarning",
         render: function render(id: any, value: any) {
@@ -23,7 +23,7 @@ const columns = [
         },
     },
     {
-        title: "Status",
+        title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
         render: function render(id: any, value: any) {

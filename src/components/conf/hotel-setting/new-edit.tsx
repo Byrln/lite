@@ -55,7 +55,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="HotelCode"
-                                    label="HotelCode"
+                                    label="Буудлын код"
                                     {...register("HotelCode")}
                                     margin="dense"
                                     error={errors.HotelCode?.message}
@@ -68,7 +68,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="HotelName"
-                                    label="HotelName"
+                                    label="Буудлын нэр"
                                     {...register("HotelName")}
                                     margin="dense"
                                     error={errors.HotelName?.message}
