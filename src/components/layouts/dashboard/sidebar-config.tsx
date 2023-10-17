@@ -280,24 +280,24 @@ const getIcon = (name: any) => <Icon icon={name} width={22} height={22} />;
 
 const sidebarConfig = [
     {
-        title: "dashboard",
+        title: "дашбоард",
         path: "/",
         icon: getIcon(pieChart2Fill),
     },
     {
-        title: "bookings",
+        title: "захиалга",
         icon: getIcon(shoppingCartFill),
         children: [
             {
-                title: "reservation list",
+                title: "захиалгын жагсаалт",
                 path: "/front-office/reservation-list",
             },
             {
-                title: "night audit",
+                title: "өдрийн өндөрлөгөө",
                 path: "/front-office/night-audit",
             },
             {
-                title: "guest",
+                title: "зочин",
                 path: "/front-office/guest-database",
             },
 
@@ -312,32 +312,32 @@ const sidebarConfig = [
         ],
     },
     {
-        title: "calendar",
+        title: "календар",
         path: "/handsontable",
         icon: getIcon(calendarFill),
     },
     {
-        title: "rates",
+        title: "тариф",
         icon: getIcon(pricetagsFill),
         children: [
             {
-                title: "season",
+                title: "улирал",
                 path: "/rate/season",
             },
             {
-                title: "rate type",
+                title: "тарифын төрөл",
                 path: "/rate/type",
             },
             {
-                title: "rates",
+                title: "тариф",
                 path: "/rate",
             },
             {
-                title: "extra charge group",
+                title: "нэмэлт үйлчилгээ грүпп",
                 path: "/rate/extra-charge-group",
             },
             {
-                title: "extra charges",
+                title: "нэмэлт үйлчилгээ",
                 path: "/rate/extra-charge",
             },
             // {
@@ -347,59 +347,59 @@ const sidebarConfig = [
         ],
     },
     {
-        title: "rooms",
+        title: "өрөө",
         icon: getIcon(homeFill),
         children: [
             {
-                title: "room amenities",
+                title: "өрөөний онцлог",
                 path: "/room/amenities",
             },
             {
-                title: "room status",
+                title: "өрөөний төлөв",
                 path: "/room/status",
             },
             {
-                title: "door lock",
+                title: "хаалганы цоож",
                 path: "/room/door-lock",
             },
             {
-                title: "room type",
+                title: "өрөөний төрөл",
                 path: "/room/type",
             },
             {
-                title: "rooms",
+                title: "өрөө",
                 path: "/room",
             },
         ],
     },
     {
-        title: "payment",
+        title: "төлбөр тооцоо",
         icon: getIcon(creditCardFill),
         children: [
             {
-                title: "company",
+                title: "байгууллага",
                 path: "/payment/company-database",
             },
             {
-                title: "cashier",
+                title: "касс (бэлэн мөнгө)",
                 path: "/payment/cashier",
             },
             {
-                title: "exchange rate",
+                title: "валютын ханш",
                 path: "/payment/exchange-rate",
             },
             {
-                title: "tax",
+                title: "татвар",
                 path: "/rate/tax",
             },
             {
-                title: "payment method",
+                title: "төлбөрийн хэлбэр",
                 path: "/rate/payment-method",
             },
         ],
     },
     {
-        title: "reports",
+        title: "тайлан",
         icon: getIcon(bookOpenFill),
         children: [
             {
@@ -409,47 +409,47 @@ const sidebarConfig = [
         ],
     },
     {
-        title: "settings",
+        title: "тохиргоо",
         icon: getIcon(settings2Fill),
         children: [
             {
-                title: "hotel information",
+                title: "зочид буудлын мэдээлэл",
                 path: "/conf/hotel-information",
             },
             {
-                title: "e-mail configuration",
+                title: "э-шуудан тохиргоо",
                 path: "/conf/email",
             },
             {
-                title: "user role",
+                title: "хэрэглэгчийн төрөл",
                 path: "/conf/user-role",
             },
             {
-                title: "user",
+                title: "хэрэглэгч",
                 path: "/conf/user",
             },
             {
-                title: "reasons",
+                title: "шалтгаан",
                 path: "/conf/reason",
             },
             {
-                title: "reservation source",
+                title: "захиалгын эх сурвалж",
                 path: "/conf/reservation-source",
             },
             {
-                title: "pos api config",
+                title: "pos api тохиргоо",
                 path: "/conf/pos-api",
             },
             {
-                title: "vip status",
+                title: "вип төлөв",
                 path: "/conf/vip-status",
             },
             {
-                title: "customer group",
+                title: "харилцагчийн бүлэг",
                 path: "/conf/customer-group",
             },
             {
-                title: "hotel setting",
+                title: "зочид буудлын тохиргоо",
                 path: "/conf/hotel-setting",
             },
             {
@@ -462,21 +462,21 @@ const sidebarConfig = [
                 path: "/conf/promotion",
             },
             {
-                title: "package",
+                title: "багц",
                 path: "/conf/package",
             },
             {
-                title: "mini bar groups",
+                title: "мини бар бүлэг",
                 path: "/mini-bar/group",
             },
             {
-                title: "mini bar items",
+                title: "мини бар бараа",
                 path: "/mini-bar/item",
             },
         ],
     },
     {
-        title: "room service",
+        title: "өрөө үйлчилгээ",
         icon: getIcon(awardFill),
         children: [
             {
@@ -484,15 +484,15 @@ const sidebarConfig = [
                 path: "/room-service/house-keeping",
             },
             {
-                title: "house status",
+                title: "өрөөний төлөв",
                 path: "/room-service/house-status",
             },
             {
-                title: "work order",
+                title: "ажлын даалгавар",
                 path: "/room-service/work-order",
             },
             {
-                title: "room block",
+                title: "өрөө блоклох",
                 path: "/room-service/room-block",
             },
         ],
@@ -509,19 +509,19 @@ const sidebarConfig = [
         ],
     },
     {
-        title: "group operation",
+        title: "бүлэг",
         icon: getIcon(peopleFill),
         children: [
             {
-                title: "group reservations list",
+                title: "групп захиалгын жагсаалт",
                 path: "/group-operation/group-reservations-list",
             },
             {
-                title: "in house groups",
+                title: "байрлаж буй групп",
                 path: "/group-operation/in-house-group",
             },
             {
-                title: "departed groups",
+                title: "гарсан групп",
                 path: "/group-operation/departed-group",
             },
         ],

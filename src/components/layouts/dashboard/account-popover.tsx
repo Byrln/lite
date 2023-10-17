@@ -19,23 +19,23 @@ import {
 import MenuPopover from "components/menu-popover";
 import account from "components/_mocks_/account";
 
-const MENU_OPTIONS = [
-    {
-        label: "Home",
-        icon: homeFill,
-        linkTo: "/",
-    },
-    {
-        label: "Profile",
-        icon: personFill,
-        linkTo: "#",
-    },
-    {
-        label: "Settings",
-        icon: settings2Fill,
-        linkTo: "#",
-    },
-];
+// const MENU_OPTIONS = [
+//     // {
+//     //     label: "Home",
+//     //     icon: homeFill,
+//     //     linkTo: "/",
+//     // },
+//     // {
+//     //     label: "Profile",
+//     //     icon: personFill,
+//     //     linkTo: "#",
+//     // },
+//     // {
+//     //     label: "Settings",
+//     //     icon: settings2Fill,
+//     //     linkTo: "#",
+//     // },
+// ];
 
 // ----------------------------------------------------------------------
 
@@ -97,7 +97,7 @@ export default function AccountPopover() {
 
                 <Divider sx={{ my: 1 }} />
 
-                {MENU_OPTIONS.map((option) => (
+                {/* {MENU_OPTIONS.map((option) => (
                     <Link key={option.label} href={option.linkTo} passHref>
                         <MenuItem
                             onClick={handleClose}
@@ -116,7 +116,7 @@ export default function AccountPopover() {
                             {option.label}
                         </MenuItem>
                     </Link>
-                ))}
+                ))} */}
 
                 <Box sx={{ p: 2, pt: 1.5 }}>
                     <Button
@@ -125,7 +125,7 @@ export default function AccountPopover() {
                         variant="outlined"
                         onClick={() => signOut()}
                     >
-                        Logout
+                        Гарах
                     </Button>
                 </Box>
             </MenuPopover>

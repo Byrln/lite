@@ -1,9 +1,9 @@
-import {useState} from "react";
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const PositionedMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -19,9 +19,9 @@ const PositionedMenu = () => {
         <div>
             <IconButton
                 id="demo-positioned-button"
-                aria-controls={open ? 'demo-positioned-menu' : undefined}
+                aria-controls={open ? "demo-positioned-menu" : undefined}
                 aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
+                aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
             >
                 <MoreVertIcon />
@@ -33,20 +33,20 @@ const PositionedMenu = () => {
                 open={open}
                 onClose={handleClose}
                 anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
+                    vertical: "bottom",
+                    horizontal: "right",
                 }}
                 transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                    vertical: "top",
+                    horizontal: "right",
                 }}
             >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
+                {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
+                <MenuItem onClick={handleClose}>Гарах</MenuItem>
             </Menu>
         </div>
     );
-}
+};
 
 export default PositionedMenu;

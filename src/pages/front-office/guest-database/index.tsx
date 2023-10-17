@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import GuestDatabase from "components/front-office/guest-database/list";
 
-const title = "Guest";
+const title = "Зочин";
 
 const Index = () => (
     <>

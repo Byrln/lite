@@ -10,7 +10,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="GuestName"
-                    label="Guest Name"
+                    label="Зочны нэр"
                     {...register("GuestName")}
                     margin="dense"
                     error={errors.GuestName?.message}
@@ -40,7 +40,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="Email"
-                    label="Email"
+                    label="Цахим шуудан"
                     {...register("Email")}
                     margin="dense"
                     error={errors.Email?.message}

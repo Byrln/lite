@@ -113,7 +113,7 @@ export default function LoginForm() {
                     <TextField
                         fullWidth
                         autoComplete="username"
-                        label="Username"
+                        label="Хэрэглэгчийн нэр"
                         {...register("username")}
                         margin="dense"
                         error={errors?.username?.message}
@@ -124,7 +124,7 @@ export default function LoginForm() {
                         fullWidth
                         autoComplete="current-password"
                         type={showPassword ? "text" : "password"}
-                        label="Password"
+                        label="Нууц үг"
                         {...register("password")}
                         margin="dense"
                         InputProps={{
@@ -151,7 +151,7 @@ export default function LoginForm() {
 
                     <TextField
                         fullWidth
-                        label="Hotel code"
+                        label="Зочид буудлын код"
                         {...register("hotel")}
                         margin="dense"
                         error={errors?.hotel?.message}
@@ -180,7 +180,7 @@ export default function LoginForm() {
                     loading={loading}
                     sx={{ my: 2 }}
                 >
-                    Login
+                    Нэвтрэх
                 </LoadingButton>
             </form>
         </>

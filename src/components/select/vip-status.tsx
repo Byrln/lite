@@ -23,7 +23,7 @@ const VipStatusSelect = ({ register, errors, entity, setEntity }: any) => {
         <TextField
             fullWidth
             id="VipStatusID"
-            label="VIP Status"
+            label="ВИП төрөл"
             {...register("VipStatusID")}
             select
             margin="dense"

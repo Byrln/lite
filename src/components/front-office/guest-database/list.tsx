@@ -21,33 +21,33 @@ const GuestdatabaseList = ({ title }: any) => {
 
     const columns = [
         {
-            title: "Guest Name",
+            title: "Зочны нэр",
             key: "GuestFullName",
             dataIndex: "GuestFullName",
         },
         {
-            title: "Country",
+            title: "Улс",
             key: "CountryName",
             dataIndex: "CountryName",
         },
         {
-            title: "Phone",
+            title: "Утас",
             key: "Phone",
             dataIndex: "Phone",
         },
         {
-            title: "Mobile",
+            title: "Гар утас",
             key: "Mobile",
             dataIndex: "Mobile",
         },
         {
-            title: "Email",
+            title: "Цах.шуудан",
             key: "Email",
             dataIndex: "Email",
         },
 
         {
-            title: "Vip Status",
+            title: "ВИП төрөл",
             key: "VipStatusName",
             dataIndex: "VipStatusName",
         },

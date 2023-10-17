@@ -76,10 +76,10 @@ const NewEdit = () => {
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                     <TabList onChange={handleChange}>
-                        <Tab label="Guest Information" value="1" />
-                        {state.isShow && <Tab label="History" value="2" />}
-                        {state.isShow && <Tab label="Remarks" value="3" />}
-                        {state.isShow && <Tab label="Documents" value="4" />}
+                        <Tab label="Зочны мэдээлэл" value="1" />
+                        {state.isShow && <Tab label="Түүх" value="2" />}
+                        {state.isShow && <Tab label="Тэмдэглэгээ" value="3" />}
+                        {state.isShow && <Tab label="Бичиг баримт" value="4" />}
                     </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -110,7 +110,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Name"
-                                    label="Name"
+                                    label="Нэр"
                                     {...register("Name")}
                                     margin="dense"
                                     error={errors.Name?.message}
@@ -122,7 +122,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Surname"
-                                    label="Surname"
+                                    label="Овог"
                                     {...register("Surname")}
                                     margin="dense"
                                     error={errors.Surname?.message}
@@ -135,7 +135,7 @@ const NewEdit = () => {
                                     type="date"
                                     fullWidth
                                     id="DateOfBirth"
-                                    label="Date of Birth"
+                                    label="Төрсөн өдөр"
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
@@ -151,7 +151,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Mobile"
-                                    label="Mobile"
+                                    label="Гар утас"
                                     {...register("Mobile")}
                                     margin="dense"
                                     error={errors.Mobile?.message}
@@ -163,7 +163,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Email"
-                                    label="Email"
+                                    label="Цахим шуудан"
                                     {...register("Email")}
                                     margin="dense"
                                     error={errors.Email?.message}
@@ -183,7 +183,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Company"
-                                    label="Company"
+                                    label="Компани"
                                     {...register("Company")}
                                     margin="dense"
                                     error={errors.Company?.message}
@@ -195,7 +195,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Phone"
-                                    label="Phone"
+                                    label="Утас"
                                     {...register("Phone")}
                                     margin="dense"
                                     error={errors.Phone?.message}
@@ -207,7 +207,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="RegistryNo"
-                                    label="Registration No"
+                                    label="Регистрийн дугаар"
                                     {...register("RegistryNo")}
                                     margin="dense"
                                     error={errors.RegistryNo?.message}
@@ -219,7 +219,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="DriverLicenseNo"
-                                    label="Driver License No"
+                                    label="Жол.үнэм.дугаар"
                                     {...register("DriverLicenseNo")}
                                     margin="dense"
                                     error={errors.DriverLicenseNo?.message}
@@ -248,7 +248,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Zip"
-                                    label="Zip"
+                                    label="Зип код"
                                     {...register("Zip")}
                                     margin="dense"
                                     error={errors.Zip?.message}
@@ -261,7 +261,7 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Address"
-                                    label="Address"
+                                    label="Хаяг"
                                     {...register("Address")}
                                     margin="dense"
                                     error={errors.Address?.message}
