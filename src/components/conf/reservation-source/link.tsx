@@ -25,6 +25,7 @@ const PackageList = ({ ChannelSourceID }: any) => {
                         <a
                             href={data[0].Link} //@ts-ignore
                             target="_blank" //@ts-ignore
+                            rel="noreferrer"
                         >
                             {data[0].Link}
                         </a>
