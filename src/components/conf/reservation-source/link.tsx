@@ -22,7 +22,10 @@ const PackageList = ({ ChannelSourceID }: any) => {
                         </Box>
                     )}
                     {data[0].Link && (
-                        <a href={data[0].Link} target="_blank">
+                        <a
+                            href={data[0].Link} //@ts-ignore
+                            target="_blank" //@ts-ignore
+                        >
                             {data[0].Link}
                         </a>
                     )}
