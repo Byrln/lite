@@ -16,7 +16,9 @@ const PackageList = ({ ChannelSourceID }: any) => {
                 <>
                     {data[0].Image && (
                         <Box>
-                            <img src={data[0].Image} />
+                            <img
+                                src={data[0].Image} //@ts-ignore
+                            />
                         </Box>
                     )}
                     {data[0].Link && (
