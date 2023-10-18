@@ -22,6 +22,32 @@ export const ReservationSourceSWR = (search: any) => {
     return useSWR(listUrl, fetcher);
 };
 
+export const BeLink = (search: any) => {
+    if (!search.ChannelSourceID) {
+        search.ChannelSourceID = 0;
+    }
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
+    return useSWR(`${urlPrefix}/BE/Link`, fetcher);
+};
+
+export const ReservationStatusSWR = (search: any) => {
+    if (!search.ChannelSourceID) {
+        search.ChannelSourceID = 0;
+    }
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
+    return useSWR(`${urlPrefix}/ReservationStatus`, fetcher);
+};
+
+export const BookingSourceSWR = () => {
+    const fetcher = async (url: any) =>
+        await axios.post(url, {}).then((res: any) => res.data.JsonData);
+    return useSWR(`${urlPrefix}/BE/BookingSource`, fetcher);
+};
+
 export const ReservationSourceAPI = {
     get: async (id: any) => {
         const values = {

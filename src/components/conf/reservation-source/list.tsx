@@ -15,6 +15,8 @@ import {
 } from "lib/api/reservation-source";
 import NewEdit from "./new-edit";
 import Search from "./search";
+import BeLink from "./link";
+import ReservationStatus from "./reservation-status";
 import { ModalContext } from "lib/context/modal";
 
 const ReservationSourceList = ({ title }: any) => {
@@ -84,7 +86,9 @@ const ReservationSourceList = ({ title }: any) => {
                                 handleModal(
                                     true,
                                     `Тохиргоо`,
-                                    `test`,
+                                    <ReservationStatus
+                                        ChannelSourceID={entity.ChannelSourceID}
+                                    />,
                                     null,
                                     "large"
                                 );
@@ -92,13 +96,16 @@ const ReservationSourceList = ({ title }: any) => {
                         >
                             Тохиргоо
                         </Button>
+
                         <Button
                             key={id}
                             onClick={() => {
                                 handleModal(
                                     true,
                                     `Холбоос`,
-                                    `test`,
+                                    <BeLink
+                                        ChannelSourceID={entity.ChannelSourceID}
+                                    />,
                                     null,
                                     "large"
                                 );

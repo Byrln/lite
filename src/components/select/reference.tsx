@@ -12,6 +12,7 @@ const ReferenceSelect = ({
     label,
     optionValue,
     optionLabel,
+    customField,
 }: any) => {
     const { data, error } = ReferenceSWR(type);
 
@@ -29,7 +30,7 @@ const ReferenceSelect = ({
         <CustomSelect
             register={register}
             errors={errors}
-            field={optionValue}
+            field={customField ? customField : optionValue}
             label={label}
             options={data}
             optionValue={optionValue}

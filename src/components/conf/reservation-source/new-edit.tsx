@@ -8,9 +8,12 @@ import NewEditForm from "components/common/new-edit-form";
 import { ReservationSourceAPI, listUrl } from "lib/api/reservation-source";
 import { useAppState } from "lib/context/app";
 import ReservationChannelSelect from "components/select/reservation-channel";
+import BookingSourceSelect from "components/select/booking-source";
 
 const validationSchema = yup.object().shape({
-    ReservationSourceName: yup.string().required("Бөглөнө үү"),
+    ReservationSourceID: yup.string().required("Бөглөнө үү"),
+    ChannelID: yup.string().required("Бөглөнө үү"),
+    ChannelSourceID: yup.string().notRequired(),
 });
 
 const NewEdit = () => {
@@ -24,7 +27,7 @@ const NewEdit = () => {
         control,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
-
+    console.log("entity", entity);
     return (
         <NewEditForm
             api={ReservationSourceAPI}
@@ -59,6 +62,17 @@ const NewEdit = () => {
                         setEntity={setEntity}
                     />
                 </Grid>
+                {entity && entity.ChannelID == 2 && (
+                    <Grid item xs={6}>
+                        <BookingSourceSelect
+                            register={register}
+                            errors={errors}
+                            reset={reset}
+                            entity={entity}
+                            setEntity={setEntity}
+                        />
+                    </Grid>
+                )}
             </Grid>
         </NewEditForm>
     );
