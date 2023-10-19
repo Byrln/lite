@@ -9,7 +9,7 @@ const PackageList = ({ ChannelSourceID }: any) => {
     });
 
     const { data, error } = BeLink(search);
-    console.log("ChannelSourceID", data);
+
     return (
         <>
             {data && data[0] && (

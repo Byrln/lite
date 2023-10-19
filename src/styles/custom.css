@@ -52,39 +52,54 @@ td.half-black {
 td.color-9933CC {
     color: #fff !important;
     background-color: #9933CC !important;
+    border-radius: 10px;
 }
 
 td.color-F21232 {
     color: #fff !important;
     background-color: #F21232 !important;
+    border-radius: 10px;
+
 }
 
 td.color-6699FF {
     color: #fff !important;
     background-color: #6699FF !important;
+    border-radius: 10px;
+
 }
 
 td.color-009933 {
     color: #fff !important;
     background-color: #009933 !important;
+    border-radius: 10px;
+
 }
 
 td.color-000000 {
     color: #fff !important;
     background-color: #000 !important;
+    border-radius: 10px;
+
 }
 
 td.color-CCFF00 {
     color: #fff !important;
     background-color: #CCFF00 !important;
+    border-radius: 10px;
+
 }
 
 td.color-009933 {
     color: #fff !important;
     background-color: #009933 !important;
+    border-radius: 10px;
+
 }
 
 td.color-FF66FF {
     color: #fff !important;
     background-color: #FF66FF !important;
+    border-radius: 10px;
+
 }
