@@ -68,6 +68,9 @@ dependencies:
   interactjs:
     specifier: ^1.10.14
     version: 1.10.14
+  mdi-material-ui:
+    specifier: ^7.7.0
+    version: 7.7.0(@mui/material@5.8.3)(react@18.1.0)
   moment:
     specifier: ^2.29.3
     version: 2.29.3
@@ -2737,6 +2740,16 @@ packages:
 
   /material-colors@1.2.6:
     resolution: {integrity: sha512-6qE4B9deFBIa9YSpOc9O0Sgc43zTeVYbgDT5veRKSlB2+ZuHNoVVxA1L/ckMUayV9Ay9y7Z/SZCLcGteW9i7bg==}
+    dev: false
+
+  /mdi-material-ui@7.7.0(@mui/material@5.8.3)(react@18.1.0):
+    resolution: {integrity: sha512-ABcksXoeJhOzy2rQCIEs0+j2K++wLOYAZcLX7mLyWaYycaDKFMcgqg8Up6xHcXxNNMSmggLcw/05fNFZE1LcIg==}
+    peerDependencies:
+      '@mui/material': ^5.0.0 || ^5.0.0-rc.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@mui/material': 5.8.3(@emotion/react@11.9.3)(@emotion/styled@11.9.3)(@types/react@18.0.12)(react-dom@18.1.0)(react@18.1.0)
+      react: 18.1.0
     dev: false
 
   /memoize-one@5.2.1:
