@@ -25,6 +25,7 @@ const Dashboard = () => {
                         container
                         spacing={2}
                         style={{ marginBottom: "20px" }}
+                        key={element[0].ParameterGroupName}
                     >
                         <Grid item xs={12}>
                             <Typography variant="h6" gutterBottom>
@@ -33,7 +34,7 @@ const Dashboard = () => {
                         </Grid>
 
                         {element.map((childElement: any) => (
-                            <Grid item xs={3}>
+                            <Grid item xs={3} key={childElement.ParameterName}>
                                 <DashboardCard
                                     title={childElement.ParameterName}
                                     stats={childElement.ParameterValue}
