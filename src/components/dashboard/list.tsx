@@ -1,5 +1,25 @@
 import { Grid, Typography } from "@mui/material";
 import Poll from "mdi-material-ui/Poll";
+import DoorOpen from "mdi-material-ui/DoorOpen";
+import DoorClosedLock from "mdi-material-ui/DoorClosedLock";
+import Door from "mdi-material-ui/Door";
+import Doorbell from "mdi-material-ui/Doorbell";
+import BedQueen from "mdi-material-ui/BedQueen";
+import StoreCheck from "mdi-material-ui/StoreCheck";
+import StoreMinus from "mdi-material-ui/StoreMinus";
+import StoreRemove from "mdi-material-ui/StoreRemove";
+import StoreClock from "mdi-material-ui/StoreClock";
+import StoreAlert from "mdi-material-ui/StoreAlert";
+import StoreOff from "mdi-material-ui/StoreOff";
+import Store from "mdi-material-ui/Store";
+import Cancel from "mdi-material-ui/Cancel";
+import AccountCancel from "mdi-material-ui/AccountCancel";
+import CashMultiple from "mdi-material-ui/CashMultiple";
+import CashCheck from "mdi-material-ui/CashCheck";
+import RoomService from "mdi-material-ui/RoomService";
+import Sale from "mdi-material-ui/Sale";
+import GlassCocktail from "mdi-material-ui/GlassCocktail";
+import SilverwareForkKnife from "mdi-material-ui/SilverwareForkKnife";
 
 import { DashboardSWR } from "lib/api/dashboard";
 import DashboardCard from "components/common/dashboard-card";
@@ -34,12 +54,84 @@ const Dashboard = () => {
                         </Grid>
 
                         {element.map((childElement: any) => (
-                            <Grid item xs={3} key={childElement.ParameterName}>
+                            <Grid
+                                item
+                                xs={4}
+                                sm={3}
+                                md={2}
+                                key={childElement.ParameterName}
+                            >
                                 <DashboardCard
                                     title={childElement.ParameterName}
                                     stats={childElement.ParameterValue}
                                     subtitle={childElement.ParameterGroupName}
-                                    icon={<Poll />}
+                                    icon={
+                                        childElement.ParameterName ==
+                                        "Total Rooms" ? (
+                                            <DoorOpen />
+                                        ) : childElement.ParameterName ==
+                                          "Blocked Rooms" ? (
+                                            <DoorClosedLock
+                                                sx={{ fontSize: 40 }}
+                                            />
+                                        ) : childElement.ParameterName ==
+                                          "Sold Rooms" ? (
+                                            <Door />
+                                        ) : childElement.ParameterName ==
+                                          "Available Rooms" ? (
+                                            <BedQueen />
+                                        ) : childElement.ParameterName ==
+                                          "Room Occupancy" ? (
+                                            <Doorbell />
+                                        ) : childElement.ParameterName ==
+                                          "Checked In" ? (
+                                            <StoreCheck />
+                                        ) : childElement.ParameterName ==
+                                          "Checked Out" ? (
+                                            <StoreMinus />
+                                        ) : childElement.ParameterName ==
+                                          "Unconfirmed Reservations" ? (
+                                            <StoreRemove />
+                                        ) : childElement.ParameterName ==
+                                          "Pending Reservations" ? (
+                                            <StoreClock />
+                                        ) : childElement.ParameterName ==
+                                          "Due Out" ? (
+                                            <StoreAlert />
+                                        ) : childElement.ParameterName ==
+                                          "Deleted Bookings" ? (
+                                            <StoreOff />
+                                        ) : childElement.ParameterName ==
+                                          "Void Bookings" ? (
+                                            <Store />
+                                        ) : childElement.ParameterName ==
+                                          "Cancelled Bookings" ? (
+                                            <Cancel />
+                                        ) : childElement.ParameterName ==
+                                          "No Show" ? (
+                                            <AccountCancel />
+                                        ) : childElement.ParameterName ==
+                                          "Total Charges" ? (
+                                            <CashCheck />
+                                        ) : childElement.ParameterName ==
+                                          "Extra Charges" ? (
+                                            <CashMultiple />
+                                        ) : childElement.ParameterName ==
+                                          "Room Charges" ? (
+                                            <RoomService />
+                                        ) : childElement.ParameterName ==
+                                          "Discount" ? (
+                                            <Sale />
+                                        ) : childElement.ParameterName ==
+                                          "Mini Bar" ? (
+                                            <GlassCocktail />
+                                        ) : childElement.ParameterName ==
+                                          "Restaurant" ? (
+                                            <SilverwareForkKnife />
+                                        ) : (
+                                            <Poll />
+                                        )
+                                    }
                                     color={randColor()}
                                 />
                             </Grid>

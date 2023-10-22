@@ -23,7 +23,7 @@ const CardStatsVertical = ({
                 <Box
                     sx={{
                         display: "flex",
-                        marginBottom: 5.5,
+                        marginBottom: 3,
                         alignItems: "flex-start",
                         justifyContent: "space-between",
                     }}
