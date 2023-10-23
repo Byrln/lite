@@ -474,6 +474,27 @@ const sidebarConfig = [
                 title: "reception dueout stayover",
                 path: "/report/reception/dueout-stayover",
             },
+            {
+                title: "reception extra charge",
+                path: "/report/reception/extra-charge",
+            },
+            {
+                title: "reception payment",
+                path: "/report/reception/payment",
+            },
+            {
+                title: "reception room charge",
+                path: "/report/reception/room-charge",
+            },
+            {
+                title: "reservations",
+                path: "/report/reservations",
+            },
+
+            {
+                title: "stayview",
+                path: "/report/stayview",
+            },
         ],
     },
     {
