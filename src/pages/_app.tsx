@@ -39,6 +39,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
                 name="keywords"
                 content="horecasoft, hotel, mongolia, Зочид буудал, Амралтын бааз, Сувилал"
             />
+            <meta
+                http-equiv="Content-Security-Policy"
+                content="upgrade-insecure-requests"
+            />
             <title>Horeca PMS</title>
         </Head>
 

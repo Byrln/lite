@@ -7,10 +7,7 @@ export default function Document() {
                 <meta charSet="UTF-8" />
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="robots" content="index, follow" />
-                <meta
-                    http-equiv="Content-Security-Policy"
-                    content="upgrade-insecure-requests"
-                />
+
                 <link rel="shortcut icon" href="/favicon.ico" sizes="48x48" />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link
