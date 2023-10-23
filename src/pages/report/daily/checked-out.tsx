@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import Page from "components/page";
 
-const title = "Зочин бүртгэл";
+const title = "Daily Checked Out";
 
 // @ts-ignore
 const Index = () => (
@@ -24,7 +24,7 @@ const Index = () => (
                             height={600}
                             // @ts-ignore
                             onLoad="this.width=screen.width;this.height=screen.height;" // @ts-ignore
-                            src="http://124.158.124.85/ReportServer/Pages/ReportViewer.aspx?%2fInterAgency&rs:Command=Render&rs:Embed=True"
+                            src="http://124.158.124.85/ReportServer/Pages/ReportViewer.aspx?%2fDaily+Checked+Out&rs:Command=Render&rs:Embed=True"
                             type="application/html"
                         />
                     </Grid>

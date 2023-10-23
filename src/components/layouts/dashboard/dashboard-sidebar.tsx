@@ -72,7 +72,7 @@ export default function DashboardSidebar({
                 </Link>
             </Box>
 
-            <Box sx={{ mb: 5, mx: 2.5 }}>
+            {/* <Box sx={{ mb: 5, mx: 2.5 }}>
                 <Link href="#" passHref>
                     <MaterialLink underline="none">
                         <AccountStyle>
@@ -94,7 +94,7 @@ export default function DashboardSidebar({
                         </AccountStyle>
                     </MaterialLink>
                 </Link>
-            </Box>
+            </Box> */}
 
             <NavSection navConfig={sidebarConfig} />
 

@@ -23,7 +23,7 @@ const CardStatsVertical = ({
                 <Box
                     sx={{
                         display: "flex",
-                        marginBottom: 3,
+                        marginBottom: 2,
                         alignItems: "flex-start",
                         justifyContent: "space-between",
                     }}
@@ -44,10 +44,9 @@ const CardStatsVertical = ({
                 </Typography>
                 <Box
                     sx={{
-                        marginTop: 1.5,
+                        marginTop: 1,
                         display: "flex",
                         flexWrap: "wrap",
-                        marginBottom: 1.5,
                         alignItems: "flex-start",
                     }}
                 >
@@ -67,7 +66,7 @@ const CardStatsVertical = ({
                         {trendNumber}
                     </Typography>
                 </Box>
-                <Typography variant="caption">{subtitle}</Typography>
+                {/* <Typography variant="caption">{subtitle}</Typography> */}
             </CardContent>
         </Card>
     );

@@ -403,8 +403,76 @@ const sidebarConfig = [
         icon: getIcon(bookOpenFill),
         children: [
             {
-                title: "accounting",
-                path: "/integration/accounting",
+                title: "боломжит өрөө",
+                path: "/report/available-room",
+            },
+            {
+                title: "баланс",
+                path: "/report/balance",
+            },
+            {
+                title: "өглөөний цай",
+                path: "/report/breakfast",
+            },
+            {
+                title: "daily checked out",
+                path: "/report/daily/checked-out",
+            },
+            {
+                title: "daily deleted reservations",
+                path: "/report/daily/deleted-reservations",
+            },
+            {
+                title: "daily extra charge",
+                path: "/report/daily/extra-charge",
+            },
+            {
+                title: "daily payment",
+                path: "/report/daily/payment",
+            },
+            {
+                title: "daily room charge",
+                path: "/report/daily/room-charge",
+            },
+            {
+                title: "deleted reservations",
+                path: "/report/deleted-reservations",
+            },
+            {
+                title: "extra charge detailed",
+                path: "/report/extra-charge/detailed",
+            },
+            {
+                title: "extra charge summary",
+                path: "/report/extra-charge/summary",
+            },
+            {
+                title: "interagenct",
+                path: "/report/interagency",
+            },
+            {
+                title: "monthly",
+                path: "/report/monthly",
+            },
+            {
+                title: "monthly revenue",
+                path: "/report/monthly-revenue",
+            },
+            {
+                title: "reception checked in",
+                path: "/report/reception/checked-in",
+            },
+            {
+                title: "reception checked out",
+                path: "/report/reception/checked-out",
+            },
+            {
+                title: "reception deleted reservations",
+                path: "/report/reception/deleted-reservations",
+            },
+            {
+                title: "reception dueout stayover",
+                path: "/report/reception/dueout-stayover",
             },
         ],
     },

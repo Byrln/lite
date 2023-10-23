@@ -64,7 +64,6 @@ const Dashboard = () => {
                                 <DashboardCard
                                     title={childElement.ParameterName}
                                     stats={childElement.ParameterValue}
-                                    subtitle={childElement.ParameterGroupName}
                                     icon={
                                         childElement.ParameterName ==
                                         "Total Rooms" ? (
