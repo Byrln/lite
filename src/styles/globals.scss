@@ -1734,10 +1734,28 @@
 .css-1fu7jd5-MuiButtonBase-root-MuiButton-root{
     background-color: #804FE6 !important;
 }
-
 .handsontable td, .handsontable th{
     text-align: center;
 }
 .MuiSvgIcon-root{
     font-size: 16px;
+}
+.handsontable td, .handsontable th {
+    height: 15px !important;
+}
+.handsontable{
+    border-radius: 20px 20px 0 0;
+}
+
+
+.ht_clone_top_inline_start_corner{
+    height: 62px !important;
+}
+.ht_master:not(.innerBorderTop):not(.innerBorderBottom) thead tr.lastChild th, .ht_master:not(.innerBorderTop):not(.innerBorderBottom) thead tr:last-child th, .ht_master:not(.innerBorderTop):not(.innerBorderBottom)~.handsontable thead tr.lastChild th, .ht_master:not(.innerBorderTop):not(.innerBorderBottom)~.handsontable thead tr:last-child th {
+    height: 52px !important;
+}
+
+
+.handsontable tr:first-child td, .handsontable tr:first-child th {
+    height: 52px !important;
 }

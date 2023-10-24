@@ -86,8 +86,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
             new Date(workingDate).setDate(new Date(workingDate).getDate() + 7)
         )
     );
-    console.log("timeStart", timeStart);
-    console.log("timeEnd", timeEnd);
+
     const validationSchema = yup.object().shape({
         CurrDate: yup.string().nullable(),
         NumberOfDays: yup.string().nullable(),
@@ -241,33 +240,25 @@ const TimelineTable = ({ props, workingDate }: any) => {
             // @ts-ignore
             return coldict[key] === col;
         })[0];
-        console.log("Column date: ", key);
-        console.log(
-            "Records: ",
+
+        if (
             // @ts-ignore
-            records[coords.row].id,
-            // @ts-ignore
-            records[coords.row].room
-        );
-        // @ts-ignore
-        console.log(
-            "Finding order by coordinate: ", // @ts-ignore
-            orderCoords[coords.row + "_" + (coords.col - 1)]
-        );
-        console.log("records genee", records[coords.row]);
-        handleModal(
-            true,
-            `New Reservation`,
-            <NewReservation
-                dateStart={key}
-                // @ts-ignore
-                roomType={records[coords.row].roomTypeID}
-                // @ts-ignore
-                room={records[coords.row].roomID}
-            />,
-            null,
-            "large"
-        );
+            records[coords.row].roomID > 0
+        ) {
+            handleModal(
+                true,
+                `New Reservation`,
+                <NewReservation
+                    dateStart={key}
+                    // @ts-ignore
+                    roomType={records[coords.row].roomTypeID}
+                    // @ts-ignore
+                    room={records[coords.row].roomID}
+                />,
+                null,
+                "large"
+            );
+        }
     }
 
     // @ts-ignore
@@ -280,9 +271,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
         let i,
             j,
             k = 0;
-        // console.log(roomTypes)
-        // console.log(items)
-        console.log(availableRooms);
+
         for (i in roomTypes) {
             let temp_rec = {
                 id: "" + roomTypes[i].RoomTypeID,
@@ -382,7 +371,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
                         if (start_index > 1) {
                             start_index = start_index * 2 + 1;
                         }
-                        // console.log(start_index, end_index, day_count, items[i]['GuestName'], items[i]['StatusColor'])
+
                         // Set guest name for Excel cell
                         try {
                             // @ts-ignore
@@ -463,7 +452,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
             }
         }
         let temp_rec = { id: "last", room: "Боломжит өрөө" };
-        console.log(coldict);
+
         // Bolomjit uruu
         if (availableRooms && availableRooms.length > 0) {
             for (let l = 0; l < parseInt(dayCount); l++) {
@@ -491,8 +480,8 @@ const TimelineTable = ({ props, workingDate }: any) => {
             </Head>
             <Page>
                 <Container maxWidth="xl">
-                    <h4>Календар</h4>
-                    <br />
+                    {/* <h4>Календар</h4> */}
+                    {/* <br /> */}
                     <CustomSearch
                         listUrl={listUrl}
                         search={search}
@@ -546,8 +535,9 @@ const TimelineTable = ({ props, workingDate }: any) => {
                         //rowHeaders={false}
                         colHeaders={true}
                         rowHeaders={false}
+                        fixedColumnsStart={1}
                         colWidths={30}
-                        height="auto"
+                        height="500px"
                         licenseKey="non-commercial-and-evaluation" // for non-commercial use only
                         // stretchH="all"
                         columns={columns}
@@ -555,9 +545,24 @@ const TimelineTable = ({ props, workingDate }: any) => {
                         //contextMenu={false}
                         cell={cells}
                         mergeCells={mergeCells}
-                        afterOnCellMouseDown={(event: any, coords: any) =>
-                            clickCell(event, coords)
-                        }
+                        // afterOnCellMouseDown={(event: any, coords: any) =>
+                        //     clickCell(event, coords)
+                        // }
+                        afterOnCellMouseDown={(
+                            event: any,
+                            coords: any,
+                            td: any
+                        ) => {
+                            var now = new Date().getTime();
+                            // check if dbl-clicked within 1/5th of a second. change 200 (milliseconds) to other value if you want
+                            if (!(td.lastClick && now - td.lastClick < 200)) {
+                                td.lastClick = now;
+                                return; // no double-click detected
+                            }
+
+                            // double-click code goes here
+                            clickCell(event, coords);
+                        }}
                         nestedHeaders={[headers]}
                     />
                 </Container>

@@ -24,7 +24,7 @@ const Index = () => (
                             height={600}
                             // @ts-ignore
                             onLoad="this.width=screen.width;this.height=screen.height;" // @ts-ignore
-                            src="http://124.158.124.85/ReportServer/Pages/ReportViewer.aspx?%2fInterAgency&rs:Command=Render&rs:Embed=True"
+                            src="http://124.158.124.85/ReportServer/Pages/ReportViewer.aspx?%2fInterAgency&rs:Command=Render&rs:Embed=True&DatabaseName=HotelDB_1"
                             type="application/html"
                         />
                     </Grid>
