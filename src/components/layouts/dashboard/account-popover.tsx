@@ -125,7 +125,7 @@ export default function AccountPopover() {
                         variant="outlined"
                         onClick={() =>
                             signOut({
-                                callbackUrl: "http://localhost:3000/foo",
+                                callbackUrl: "http://localhost:3000",
                             })
                         }
                     >
