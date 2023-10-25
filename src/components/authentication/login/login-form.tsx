@@ -76,6 +76,8 @@ export default function LoginForm() {
                     axios.defaults.headers.common[
                         "Authorization"
                     ] = `Bearer ${session.token}`;
+                    localStorage.setItem("hotelId", values.hotel);
+
                     router.replace("/");
                 } else {
                     window.location.href = "/auth/signin";

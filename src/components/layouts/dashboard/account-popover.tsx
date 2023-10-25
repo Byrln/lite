@@ -123,7 +123,11 @@ export default function AccountPopover() {
                         fullWidth
                         color="inherit"
                         variant="outlined"
-                        onClick={() => signOut()}
+                        onClick={() =>
+                            signOut({
+                                callbackUrl: "http://localhost:3000/foo",
+                            })
+                        }
                     >
                         Гарах
                     </Button>

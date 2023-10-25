@@ -447,7 +447,7 @@ const sidebarConfig = [
                 path: "/report/extra-charge/summary",
             },
             {
-                title: "interagenct",
+                title: "interagency",
                 path: "/report/interagency",
             },
             {
