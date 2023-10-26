@@ -65,7 +65,12 @@ export default function DashboardSidebar({
             <Box sx={{ px: 2.5, py: 3 }}>
                 <Link href="/" passHref>
                     <a>
-                        <Box sx={{ display: "inline-flex" }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-around",
+                            }}
+                        >
                             <Logo />
                         </Box>
                     </a>

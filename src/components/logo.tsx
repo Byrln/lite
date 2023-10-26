@@ -6,7 +6,7 @@ export default function Logo({ size, sx }: any) {
             component="img"
             src={size ? "/images/logo_sm.png" : "/images/logo.png"}
             sx={{
-                width: size ? 80 : "auto",
+                width: size ? 80 : "80%",
                 ...sx,
             }}
         />

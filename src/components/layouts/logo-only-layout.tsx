@@ -19,11 +19,11 @@ export default function LogoOnlyLayout({ children }: any) {
     return (
         <>
             <HeaderStyle>
-                <Link href="/">
+                {/* <Link href="/">
                     <a>
                         <Logo size="small" />
                     </a>
-                </Link>
+                </Link> */}
             </HeaderStyle>
 
             {children}
