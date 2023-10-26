@@ -1759,3 +1759,7 @@
 .handsontable tr:first-child td, .handsontable tr:first-child th {
     height: 52px !important;
 }
+
+.handsontable td, .handsontable th{
+    vertical-align: middle !important;
+}
