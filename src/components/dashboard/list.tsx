@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, TextField } from "@mui/material";
 import Poll from "mdi-material-ui/Poll";
 import DoorOpen from "mdi-material-ui/DoorOpen";
 import DoorClosedLock from "mdi-material-ui/DoorClosedLock";
@@ -20,12 +20,23 @@ import RoomService from "mdi-material-ui/RoomService";
 import Sale from "mdi-material-ui/Sale";
 import GlassCocktail from "mdi-material-ui/GlassCocktail";
 import SilverwareForkKnife from "mdi-material-ui/SilverwareForkKnife";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import { useState } from "react";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { mutate } from "swr";
+import { format } from "date-fns";
 
-import { DashboardSWR } from "lib/api/dashboard";
+import { DashboardSWR, dailyUrl, weeklyUrl } from "lib/api/dashboard";
 import DashboardCard from "components/common/dashboard-card";
 
 const Dashboard = () => {
-    const { data, error } = DashboardSWR();
+    const [dashboardType, setDashboardType] = useState("daily");
+    const [dashboardDate, setDashboardDate] = useState(new Date());
+
+    const { data, error } = DashboardSWR(dashboardType, dashboardDate);
 
     const randColor = () => {
         return (
@@ -37,8 +48,59 @@ const Dashboard = () => {
         );
     };
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // @ts-ignore
+        let value = (event.target as HTMLInputElement).value;
+        setDashboardType(value);
+    };
+
+    const handleDateChange = (value: any) => {
+        // @ts-ignore
+        // let value = (event.target as HTMLInputElement).value;
+        // console.log(value);
+        setDashboardDate(value);
+        // if (dashboardType == "daily") {
+        //     mutate(dailyUrl, { CurrDate: format(value, "yyyy-MM-dd") });
+        // } else {
+        //     mutate(weeklyUrl, { CurrDate: format(value, "yyyy-MM-dd") });
+        // }
+        // setDashboardType(value);
+    };
+
     return (
         <>
+            {/* <DatePicker
+                label="Эхлэх огноо"
+                value={dashboardDate}
+                onChange={(value) => handleDateChange(value)}
+                renderInput={(params) => (
+                    <TextField
+                        size="small"
+                        margin="dense"
+                        fullWidth
+                        {...params}
+                    />
+                )}
+            /> */}
+            <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                onChange={handleChange}
+                defaultValue={"daily"}
+            >
+                <FormControlLabel
+                    value="daily"
+                    control={<Radio />}
+                    label="Daily"
+                />
+                <FormControlLabel
+                    value="weekly"
+                    control={<Radio />}
+                    label="Weekly"
+                />
+            </RadioGroup>
+
             {data &&
                 data.map((element: any) => (
                     <Grid

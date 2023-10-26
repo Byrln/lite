@@ -1,9 +1,12 @@
 import useSWR from "swr";
+import { format } from "date-fns";
+
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/DashBoard";
-export const listUrl = `${urlPrefix}/Daily`;
+export const dailyUrl = `${urlPrefix}/Daily`;
+export const weeklyUrl = `${urlPrefix}/Weekly`;
 
 const groupBy = (items: any, key: any) =>
     items.reduce(
@@ -14,14 +17,21 @@ const groupBy = (items: any, key: any) =>
         {}
     );
 
-export const DashboardSWR = () => {
+export const DashboardSWR = (dashboardType: any, date: any) => {
     const fetcher = async (url: any) =>
-        await axios.get(url).then((res: any) => {
-            let roomTypes = groupBy(res.data.JsonData, "ParameterGroupName");
-            var result = Object.values(roomTypes);
+        await axios
+            .post(url, {
+                CurrDate: format(date, "yyyy-MM-dd"),
+            })
+            .then((res: any) => {
+                let roomTypes = groupBy(
+                    res.data.JsonData,
+                    "ParameterGroupName"
+                );
+                var result = Object.values(roomTypes);
 
-            return result;
-        });
+                return result;
+            });
 
-    return useSWR(listUrl, fetcher);
+    return useSWR(dashboardType == "daily" ? dailyUrl : weeklyUrl, fetcher);
 };
