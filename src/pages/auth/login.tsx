@@ -22,12 +22,14 @@ const RootStyle = styled(Page)(({ theme }) => ({
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({
-    width: "100%",
-    maxWidth: 464,
+    // width: "100%",
+    maxWidth: "auto",
     display: "flex",
+    height: "100vh",
     flexDirection: "column",
     justifyContent: "center",
-    margin: theme.spacing(2, 0, 2, 2),
+    borderRadius: "0 !important",
+    filter: "drop-shadow(-4px 0px 4px #000000)",
 }));
 
 const ContentStyle = styled("div")(({ theme }) => ({
@@ -54,25 +56,29 @@ export default function Login() {
 
             <MHidden width="mdDown">
                 <SectionStyle>
-                    <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+                    {/* <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
                         Тавтай морил
-                    </Typography>
-                    <img
+                    </Typography> */}
+                    {/* <img
                         src="/static/illustrations/illustration_login.png"
                         alt="login"
+                    /> */}
+                    <img
+                        src="/images/login_banner.jpeg"
+                        alt="login"
+                        style={{ height: "100%", objectFit: "cover" }}
                     />
                 </SectionStyle>
             </MHidden>
 
             <Container maxWidth="sm">
                 <ContentStyle>
-                    <Stack sx={{ mb: 5 }}>
-                        <Typography variant="h4" gutterBottom>
-                            Хорекад нэвтрэх
-                        </Typography>
-                        <Typography sx={{ color: "text.secondary" }}>
-                            {/* Enter your details below. */}
-                        </Typography>
+                    <Stack sx={{ display: "flex", alignItems: "center" }}>
+                        <img
+                            src="/images/logo.png"
+                            alt="login"
+                            style={{ width: "60%", objectFit: "cover" }}
+                        />
                     </Stack>
 
                     <LoginForm />
