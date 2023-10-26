@@ -1,5 +1,5 @@
 const account = {
-    displayName: "Jaydon Frankie",
+    displayName: "Test User",
     email: "demo@horeca.cc",
     photoURL: "/static/mock-images/avatars/avatar_default.jpg",
 };
