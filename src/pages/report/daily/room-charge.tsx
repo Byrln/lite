@@ -20,7 +20,7 @@ const Index = () => (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <iframe
-                            width={800}
+                            width={"100%"}
                             height={600}
                             // @ts-ignore
                             onLoad="this.width=screen.width;this.height=screen.height;" // @ts-ignore
