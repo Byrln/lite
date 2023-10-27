@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import Promotion from "components/conf/promotion/list";
 
-const title = "Promotion";
+const title = "Урамшуулал";
 
 const Index = () => (
     <>

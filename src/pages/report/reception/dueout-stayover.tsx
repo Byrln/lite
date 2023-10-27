@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import Page from "components/page";
 
-const title = "Reception Dueout Stayover";
+const title = "Ресепшний хугацаа дуусах, үлдэх тайлан";
 
 // @ts-ignore
 const Index = () => (

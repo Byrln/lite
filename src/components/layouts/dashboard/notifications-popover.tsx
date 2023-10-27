@@ -216,7 +216,7 @@ export default function NotificationsPopover() {
 
     return (
         <>
-            <IconButton
+            {/* <IconButton
                 ref={anchorRef}
                 size="large"
                 color={open ? "primary" : "default"}
@@ -234,7 +234,7 @@ export default function NotificationsPopover() {
                 <Badge badgeContent={totalUnRead} color="error">
                     <Icon icon={bellFill} width={20} height={20} />
                 </Badge>
-            </IconButton>
+            </IconButton> */}
 
             <MenuPopover
                 open={open}

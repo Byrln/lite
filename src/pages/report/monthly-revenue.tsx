@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import Page from "components/page";
 
-const title = "Monthly Revenue";
+const title = "Сарын тайлан (орлогоор)";
 
 // @ts-ignore
 const Index = () => (

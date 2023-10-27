@@ -75,7 +75,7 @@ const NewEdit = () => {
                     helperText={errors.Description?.message}
                 />
 
-                <LocalizationProvider // @ts-ignore
+                {/* <LocalizationProvider // @ts-ignore
                     dateAdapter={AdapterDateFns} // @ts-ignore
                 >
                     <Controller
@@ -113,7 +113,7 @@ const NewEdit = () => {
                             />
                         )}
                     />
-                </LocalizationProvider>
+                </LocalizationProvider> */}
                 {/* <LocalizationProvider // @ts-ignore
                 dateAdapter={AdapterDateFns} // @ts-ignore
             >

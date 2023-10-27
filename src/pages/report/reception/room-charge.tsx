@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import Page from "components/page";
 
-const title = "Reception Room Charge";
+const title = "Ресепшний өрөөний төлбөр";
 
 // @ts-ignore
 const Index = () => (

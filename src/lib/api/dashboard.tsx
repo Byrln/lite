@@ -7,6 +7,7 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/DashBoard";
 export const dailyUrl = `${urlPrefix}/Daily`;
 export const weeklyUrl = `${urlPrefix}/Weekly`;
+export const monthlyUrl = `${urlPrefix}/Monthly`;
 
 const groupBy = (items: any, key: any) =>
     items.reduce(
@@ -33,5 +34,12 @@ export const DashboardSWR = (dashboardType: any, date: any) => {
                 return result;
             });
 
-    return useSWR(dashboardType == "daily" ? dailyUrl : weeklyUrl, fetcher);
+    return useSWR(
+        dashboardType == "daily"
+            ? dailyUrl
+            : dashboardType == "weekly"
+            ? weeklyUrl
+            : monthlyUrl,
+        fetcher
+    );
 };

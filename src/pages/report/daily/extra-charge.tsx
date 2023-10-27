@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import Page from "components/page";
 
-const title = "Daily Extra Charge";
+const title = "Нэмэлт төлбөр (Өдөр Тутам)";
 
 // @ts-ignore
 const Index = () => (

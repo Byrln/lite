@@ -22,6 +22,7 @@ const validationSchema = yup.object().shape({
     Currency: yup.string().required("Бөглөнө үү"),
     Code: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     Symbol: yup.string().required("Бөглөнө үү"),
+    CountryID: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -50,7 +51,7 @@ const NewEdit = () => {
                 <Grid item xs={12} sm={3}>
                     <CountrySelect
                         register={register}
-                        error={errors.Country?.message}
+                        errors={errors}
                         entity={entity}
                         setEntity={setEntity}
                     />

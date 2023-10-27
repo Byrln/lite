@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import Page from "components/page";
 
-const title = "InterAgency";
+const title = "Байгууллага хоорондын тооцоо";
 
 // @ts-ignore
 const Index = () => (

@@ -13,10 +13,10 @@ import NewEdit from "./new-edit";
 import { formatPrice } from "lib/utils/helpers";
 import Search from "./search";
 import { dateStringToObj } from "lib/utils/helpers";
-import { ModalContext } from "lib/context/modal";
+// import { ModalContext } from "lib/context/modal";
 
 const PackageList = ({ title }: any) => {
-    const { handleModal }: any = useContext(ModalContext);
+    // const { handleModal }: any = useContext(ModalContext);
 
     const columns = [
         {
@@ -88,29 +88,29 @@ const PackageList = ({ title }: any) => {
             key: "IPAddress",
             dataIndex: "IPAddress",
         },
-        {
-            title: "Нэмэлт үйлдэл",
-            key: "Action",
-            dataIndex: "Action",
-            render: function render(id: any, record: any) {
-                return (
-                    <Button
-                        key={id}
-                        onClick={() => {
-                            // handleModal(
-                            //     true,
-                            //     `Upload Picture`,
-                            //     `test`,
-                            //     null,
-                            //     "large"
-                            // );
-                        }}
-                    >
-                        Upload Picture
-                    </Button>
-                );
-            },
-        },
+        // {
+        //     title: "Нэмэлт үйлдэл",
+        //     key: "Action",
+        //     dataIndex: "Action",
+        //     render: function render(id: any, record: any) {
+        //         return (
+        //             <Button
+        //                 key={id}
+        //                 onClick={() => {
+        //                     // handleModal(
+        //                     //     true,
+        //                     //     `Upload Picture`,
+        //                     //     `test`,
+        //                     //     null,
+        //                     //     "large"
+        //                     // );
+        //                 }}
+        //             >
+        //                 Upload Picture
+        //             </Button>
+        //         );
+        //     },
+        // },
     ];
 
     const validationSchema = yup.object().shape({

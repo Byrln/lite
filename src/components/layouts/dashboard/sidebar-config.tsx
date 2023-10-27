@@ -358,10 +358,10 @@ const sidebarConfig = [
                 title: "өрөөний төлөв",
                 path: "/room/status",
             },
-            {
-                title: "хаалганы цоож",
-                path: "/room/door-lock",
-            },
+            // {
+            //     title: "хаалганы цоож",
+            //     path: "/room/door-lock",
+            // },
             {
                 title: "өрөөний төрөл",
                 path: "/room/type",
@@ -415,15 +415,15 @@ const sidebarConfig = [
                 path: "/report/breakfast",
             },
             {
-                title: "daily checked out",
+                title: "гарах зочид (өдөр тутам)",
                 path: "/report/daily/checked-out",
             },
             {
-                title: "daily deleted reservations",
+                title: "устгалын тайлбар (өдөр тутам)",
                 path: "/report/daily/deleted-reservations",
             },
             {
-                title: "daily extra charge",
+                title: "нэмэлт төлбөр (өдөр тутам)",
                 path: "/report/daily/extra-charge",
             },
             {
@@ -431,51 +431,51 @@ const sidebarConfig = [
                 path: "/report/daily/payment",
             },
             {
-                title: "daily room charge",
+                title: "өрөөний төлбөр (өдөр тутам)",
                 path: "/report/daily/room-charge",
             },
             {
-                title: "deleted reservations",
+                title: "устгалын тайлан",
                 path: "/report/deleted-reservations",
             },
             {
-                title: "extra charge detailed",
+                title: "нэмэлт төлбөрийн (дэлгэрэнгүй)",
                 path: "/report/extra-charge/detailed",
             },
             {
-                title: "extra charge summary",
+                title: "нэмэлт төлбөр (хураангуй)",
                 path: "/report/extra-charge/summary",
             },
             {
-                title: "interagency",
+                title: "байгууллага хоорондын тооцоо",
                 path: "/report/interagency",
             },
             {
-                title: "monthly",
+                title: "сарын тайлан",
                 path: "/report/monthly",
             },
             {
-                title: "monthly revenue",
+                title: "сарын тайлан (орлогоор)",
                 path: "/report/monthly-revenue",
             },
             {
-                title: "reception checked in",
+                title: "ресепшний буух зочдын тайлан",
                 path: "/report/reception/checked-in",
             },
             {
-                title: "reception checked out",
+                title: "ресепшний гарах зочдын тайлан",
                 path: "/report/reception/checked-out",
             },
             {
-                title: "reception deleted reservations",
+                title: "ресепшний устгалын тайлан",
                 path: "/report/reception/deleted-reservations",
             },
             {
-                title: "reception dueout stayover",
+                title: "ресепшний хугацаа дуусах, үлдэх тайлан",
                 path: "/report/reception/dueout-stayover",
             },
             {
-                title: "reception extra charge",
+                title: "ресепшний нэмэлт төлбөрийн тайлан",
                 path: "/report/reception/extra-charge",
             },
             {
@@ -483,11 +483,11 @@ const sidebarConfig = [
                 path: "/report/reception/payment",
             },
             {
-                title: "reception room charge",
+                title: "ресепшний өрөөний төлбөр",
                 path: "/report/reception/room-charge",
             },
             {
-                title: "reservations",
+                title: "захиалгын тайлан",
                 path: "/report/reservations",
             },
 
@@ -525,10 +525,10 @@ const sidebarConfig = [
                 title: "захиалгын эх сурвалж",
                 path: "/conf/reservation-source",
             },
-            {
-                title: "pos api тохиргоо",
-                path: "/conf/pos-api",
-            },
+            // {
+            //     title: "pos api тохиргоо",
+            //     path: "/conf/pos-api",
+            // },
             {
                 title: "вип төлөв",
                 path: "/conf/vip-status",
@@ -547,7 +547,7 @@ const sidebarConfig = [
             },
 
             {
-                title: "Promotion",
+                title: "урамшуулал",
                 path: "/conf/promotion",
             },
             {
@@ -587,34 +587,34 @@ const sidebarConfig = [
         ],
     },
 
-    {
-        title: "integration",
-        icon: getIcon(options2Fill),
-        children: [
-            {
-                title: "accounting",
-                path: "/integration/accounting",
-            },
-        ],
-    },
-    {
-        title: "бүлэг",
-        icon: getIcon(peopleFill),
-        children: [
-            {
-                title: "групп захиалгын жагсаалт",
-                path: "/group-operation/group-reservations-list",
-            },
-            {
-                title: "байрлаж буй групп",
-                path: "/group-operation/in-house-group",
-            },
-            {
-                title: "гарсан групп",
-                path: "/group-operation/departed-group",
-            },
-        ],
-    },
+    // {
+    //     title: "integration",
+    //     icon: getIcon(options2Fill),
+    //     children: [
+    //         {
+    //             title: "accounting",
+    //             path: "/integration/accounting",
+    //         },
+    //     ],
+    // },
+    // {
+    //     title: "бүлэг",
+    //     icon: getIcon(peopleFill),
+    //     children: [
+    //         // {
+    //         //     title: "групп захиалгын жагсаалт",
+    //         //     path: "/group-operation/group-reservations-list",
+    //         // },
+    //         {
+    //             title: "байрлаж буй групп",
+    //             path: "/group-operation/in-house-group",
+    //         },
+    //         {
+    //             title: "гарсан групп",
+    //             path: "/group-operation/departed-group",
+    //         },
+    //     ],
+    // },
 ];
 
 export default sidebarConfig;

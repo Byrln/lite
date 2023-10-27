@@ -99,6 +99,11 @@ const Dashboard = () => {
                     control={<Radio />}
                     label="Weekly"
                 />
+                <FormControlLabel
+                    value="monthly"
+                    control={<Radio />}
+                    label="Monthly"
+                />
             </RadioGroup>
 
             {data &&
