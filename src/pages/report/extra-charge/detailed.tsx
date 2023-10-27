@@ -24,7 +24,7 @@ const Index = () => (
                             height={600}
                             // @ts-ignore
                             onLoad="this.width=screen.width;this.height=screen.height;" // @ts-ignore
-                            src={`https://reporting.horecasoft.mn:8080/ReportServer/Pages/ReportViewer.aspx?%2fExtra+Charge+Detailed&rs:Command=Render&rs:Embed=True&DatabaseName=HotelDB_${localStorage.getItem(
+                            src={`https://reporting.horecasoft.mn/ReportServer/Pages/ReportViewer.aspx?%2fExtra+Charge+Detailed&rs:Command=Render&rs:Embed=True&DatabaseName=HotelDB_${localStorage.getItem(
                                 "hotelId"
                             )}`}
                             type="application/html"
