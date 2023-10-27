@@ -30,15 +30,6 @@ import MenuPopover from "components/menu-popover";
 
 const NOTIFICATIONS = [
     {
-        id: 1,
-        title: "Your order is placed",
-        description: "waiting for shipping",
-        avatar: null,
-        type: "order_placed",
-        createdAt: set(new Date(), { hours: 10, minutes: 30 }),
-        isUnRead: true,
-    },
-    {
         id: 2,
         title: "Bilegsaikhan",
         description: "answered to your comment on the Horeca",
@@ -216,7 +207,7 @@ export default function NotificationsPopover() {
 
     return (
         <>
-            {/* <IconButton
+            <IconButton
                 ref={anchorRef}
                 size="large"
                 color={open ? "primary" : "default"}
@@ -234,7 +225,7 @@ export default function NotificationsPopover() {
                 <Badge badgeContent={totalUnRead} color="error">
                     <Icon icon={bellFill} width={20} height={20} />
                 </Badge>
-            </IconButton> */}
+            </IconButton>
 
             <MenuPopover
                 open={open}

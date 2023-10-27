@@ -427,7 +427,7 @@ const sidebarConfig = [
                 path: "/report/daily/extra-charge",
             },
             {
-                title: "daily payment",
+                title: "Төлбөрийн тайлан (өдөр тутам)",
                 path: "/report/daily/payment",
             },
             {
@@ -479,7 +479,7 @@ const sidebarConfig = [
                 path: "/report/reception/extra-charge",
             },
             {
-                title: "reception payment",
+                title: "ресепшний төлбөрийн тайлан",
                 path: "/report/reception/payment",
             },
             {
