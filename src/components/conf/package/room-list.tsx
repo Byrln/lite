@@ -88,30 +88,30 @@ const PackageList = ({ title }: any) => {
             key: "IPAddress",
             dataIndex: "IPAddress",
         },
-        {
-            title: "Нэмэлт үйлдэл",
-            key: "Action",
-            dataIndex: "Action",
-            render: function render(id: any, record: any) {
-                return (
-                    <>
-                        <Button
-                            onClick={() => {
-                                handleModal(
-                                    true,
-                                    `Upload Picture`,
-                                    <>test</>,
-                                    null,
-                                    "large"
-                                );
-                            }}
-                        >
-                            Upload Picture
-                        </Button>
-                    </>
-                );
-            },
-        },
+        // {
+        //     title: "Нэмэлт үйлдэл",
+        //     key: "Action",
+        //     dataIndex: "Action",
+        //     render: function render(id: any, record: any) {
+        //         return (
+        //             <>
+        //                 <Button
+        //                     onClick={() => {
+        //                         handleModal(
+        //                             true,
+        //                             `Upload Picture`,
+        //                             <>test</>,
+        //                             null,
+        //                             "large"
+        //                         );
+        //                     }}
+        //                 >
+        //                     Upload Picture
+        //                 </Button>
+        //             </>
+        //         );
+        //     },
+        // },
     ];
 
     const validationSchema = yup.object().shape({
@@ -151,34 +151,48 @@ const PackageList = ({ title }: any) => {
 
     return (
         <>
-            <CustomSearch
-                listUrl={listUrl}
-                search={search}
-                setSearch={setSearch}
-                handleSubmit={handleSubmit}
-                reset={reset}
-            >
-                <Search
-                    register={register}
-                    errors={errors}
-                    control={control}
-                    reset={reset}
-                />
-            </CustomSearch>
+            <Button
+                onClick={() => {
+                    handleModal(
+                        true,
+                        `Room List`,
+                        <>
+                            <CustomSearch
+                                listUrl={listUrl}
+                                search={search}
+                                setSearch={setSearch}
+                                handleSubmit={handleSubmit}
+                                reset={reset}
+                            >
+                                <Search
+                                    register={register}
+                                    errors={errors}
+                                    control={control}
+                                    reset={reset}
+                                />
+                            </CustomSearch>
 
-            <CustomTable
-                columns={columns}
-                data={data}
-                error={error}
-                api={PackageAPI}
-                hasNew={true}
-                hasUpdate={true}
-                id="PackageID"
-                listUrl={listUrl}
-                modalTitle={title}
-                modalContent={<NewEdit />}
-                excelName={title}
-            />
+                            <CustomTable
+                                columns={columns}
+                                data={data}
+                                error={error}
+                                api={PackageAPI}
+                                hasNew={true}
+                                hasUpdate={true}
+                                id="PackageID"
+                                listUrl={listUrl}
+                                modalTitle={title}
+                                modalContent={<NewEdit />}
+                                excelName={title}
+                            />
+                        </>,
+                        null,
+                        "large"
+                    );
+                }}
+            >
+                Upload Picture
+            </Button>
         </>
     );
 };

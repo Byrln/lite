@@ -25,7 +25,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                 />
             </Grid>
 
-            <Grid item xs={3}>
+            {/* <Grid item xs={3}>
                 <Controller
                     name="BeginDate"
                     control={control}
@@ -95,7 +95,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                         />
                     )}
                 />
-            </Grid>
+            </Grid> */}
         </Grid>
     );
 };

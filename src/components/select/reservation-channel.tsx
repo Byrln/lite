@@ -41,8 +41,16 @@ const ReservationChannelSelect = ({
             {...register(customRegisterName ? customRegisterName : "Суваг")}
             select
             margin="dense"
-            error={errors.ReservationSourceID?.message}
-            helperText={errors.ReservationSourceID?.message}
+            error={
+                customRegisterName
+                    ? errors[customRegisterName]?.message
+                    : errors.ReservationSourceID?.message
+            }
+            helperText={
+                customRegisterName
+                    ? errors[customRegisterName]?.message
+                    : errors.ReservationSourceID?.message
+            }
             size="small"
             value={
                 entity &&

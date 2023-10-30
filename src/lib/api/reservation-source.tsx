@@ -60,6 +60,10 @@ export const ReservationSourceAPI = {
     },
 
     new: async (values: any) => {
+        if (values.ChannelID == 1) {
+            values.ChannelSourceID = null;
+        }
+
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 
         return {
@@ -69,9 +73,31 @@ export const ReservationSourceAPI = {
     },
 
     update: async (values: any) => {
+        if (values.ChannelID == 1) {
+            values.ChannelSourceID = null;
+        }
+
         const { data, status } = await axios.post(
             `${urlPrefix}/Update`,
             values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    reservationStatus: async (ChannelSourceID: any, entity: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/ReservationStatus/InsertWU`,
+            {
+                ChannelSourceID: ChannelSourceID,
+                CustomerID: 0,
+                DefaultStatusID: entity.DefaultStatusID,
+                PaidStatusID: entity.PaidStatusID,
+                AutoAssignRoom: entity.AutoAssignRoom,
+            }
         );
 
         return {

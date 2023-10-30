@@ -15,6 +15,7 @@ const CustomSelect = ({
     optionValue,
     optionLabel,
     dense = true,
+    entity,
     onChange,
 }: any) => {
     return (
@@ -41,7 +42,22 @@ const CustomSelect = ({
                     console.log("value", value.target.value))
                 }
             >
-                <option></option>
+                <option
+                    key={
+                        entity &&
+                        options[entity[field]] &&
+                        options[entity[field]][optionValue]
+                    }
+                    value={
+                        entity &&
+                        options[entity[field]] &&
+                        options[entity[field]][optionValue]
+                    }
+                >
+                    {entity &&
+                        options[entity[field]] &&
+                        options[entity[field]][optionLabel]}
+                </option>
                 {options.map((element: any) => (
                     <option
                         key={element[optionValue]}

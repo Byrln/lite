@@ -13,6 +13,8 @@ const ReferenceSelect = ({
     optionValue,
     optionLabel,
     customField,
+    entity,
+    setEntity,
 }: any) => {
     const { data, error } = ReferenceSWR(type);
 
@@ -35,6 +37,14 @@ const ReferenceSelect = ({
             options={data}
             optionValue={optionValue}
             optionLabel={optionLabel}
+            entity={entity}
+            onChange={(evt: any) => {
+                setEntity &&
+                    setEntity({
+                        ...entity,
+                        [customField]: Number(evt),
+                    });
+            }}
         />
     );
 };

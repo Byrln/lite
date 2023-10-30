@@ -9,6 +9,10 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Grid from "@mui/material/Grid";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import moment from "moment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 import { Controller, useForm } from "react-hook-form";
 import { FormControlLabel, TextField } from "@mui/material";
@@ -26,6 +30,7 @@ import GuestHistoryList from "./history";
 import GuestHistorySummaryList from "./history-summary";
 import GuestRemarksList from "./remarks";
 import GuestDocumentsList from "./documents";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const validationSchema = yup.object().shape({
     GuestTitleID: yup.number().notRequired(),
@@ -130,7 +135,7 @@ const NewEdit = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
-                                <TextField
+                                {/* <TextField
                                     size="small"
                                     type="date"
                                     fullWidth
@@ -143,7 +148,62 @@ const NewEdit = () => {
                                     margin="dense"
                                     error={errors.DateOfBirth?.message}
                                     helperText={errors.DateOfBirth?.message}
-                                />
+                                /> */}
+                                <LocalizationProvider
+                                    //@ts-ignore
+                                    dateAdapter={AdapterDateFns}
+                                >
+                                    <Controller
+                                        name="DateOfBirth"
+                                        control={control}
+                                        defaultValue={null}
+                                        render={({
+                                            field: { onChange, value },
+                                        }) => (
+                                            <DatePicker
+                                                label="Төрсөн өдөр"
+                                                value={value}
+                                                onChange={(value) =>
+                                                    onChange(
+                                                        // moment(value)
+                                                        //     .utcOffset("+0400", true)
+                                                        //     .format("YYYY-MM-DD")
+                                                        moment(
+                                                            dateStringToObj(
+                                                                moment(
+                                                                    value
+                                                                ).format(
+                                                                    "YYYY-MM-DD"
+                                                                )
+                                                            ),
+                                                            "YYYY-MM-DD"
+                                                        )
+                                                    )
+                                                }
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        size="small"
+                                                        id="DateOfBirth"
+                                                        {...register(
+                                                            "DateOfBirth"
+                                                        )}
+                                                        margin="dense"
+                                                        fullWidth
+                                                        {...params}
+                                                        error={
+                                                            errors.DateOfBirth
+                                                                ?.message
+                                                        }
+                                                        helperText={
+                                                            errors.DateOfBirth
+                                                                ?.message
+                                                        }
+                                                    />
+                                                )}
+                                            />
+                                        )}
+                                    />
+                                </LocalizationProvider>
                             </Grid>
 
                             <Grid item xs={12} sm={3}>

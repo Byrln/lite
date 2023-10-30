@@ -38,7 +38,9 @@ const BookingSourceSelect = ({
             fullWidth
             id="ChannelSourceID"
             label="Суваг"
-            {...register(customRegisterName ? customRegisterName : "Суваг")}
+            {...register(
+                customRegisterName ? customRegisterName : "ChannelSourceID"
+            )}
             select
             margin="dense"
             error={errors.ChannelSourceID?.message}

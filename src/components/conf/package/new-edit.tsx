@@ -80,6 +80,48 @@ const NewEdit = () => {
                 </Grid>
 
                 {/* <Grid item xs={6}>
+                    <Controller
+                        name="BeginDate"
+                        control={control}
+                        defaultValue={null}
+                        render={({ field: { onChange, value } }) => (
+                            <DatePicker
+                                label="Эхлэх огноо"
+                                value={value}
+                                onChange={(value) =>
+                                    onChange(
+                                        moment(
+                                            dateStringToObj(
+                                                moment(value).format(
+                                                    "YYYY-MM-DD"
+                                                )
+                                            ),
+                                            "YYYY-MM-DD"
+                                        )
+                                    )
+                                }
+                                renderInput={(params) => (
+                                    <TextField
+                                        size="small"
+                                        id="BeginDate"
+                                        {...register("BeginDate")}
+                                        margin="dense"
+                                        fullWidth
+                                        {...params}
+                                        error={errors.BeginDate?.message}
+                                        helperText={errors.BeginDate?.message}
+                                    />
+                                )}
+                            />
+                        )}
+                    />
+                </Grid> */}
+
+                <LocalizationProvider // @ts-ignore
+                    dateAdapter={AdapterDateFns}
+                >
+                    {" "}
+                    <Grid item xs={6}>
                         <Controller
                             name="BeginDate"
                             control={control}
@@ -117,12 +159,8 @@ const NewEdit = () => {
                                 />
                             )}
                         />
-                    </Grid> */}
-
-                {/* <Grid item xs={6}>
-                    <LocalizationProvider // @ts-ignore
-                        dateAdapter={AdapterDateFns}
-                    >
+                    </Grid>
+                    <Grid item xs={6}>
                         <Controller
                             name="EndDate"
                             control={control}
@@ -158,8 +196,8 @@ const NewEdit = () => {
                                 />
                             )}
                         />{" "}
-                    </LocalizationProvider>
-                </Grid> */}
+                    </Grid>
+                </LocalizationProvider>
             </Grid>
         </NewEditForm>
     );

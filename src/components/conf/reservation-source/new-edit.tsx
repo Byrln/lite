@@ -11,7 +11,7 @@ import ReservationChannelSelect from "components/select/reservation-channel";
 import BookingSourceSelect from "components/select/booking-source";
 
 const validationSchema = yup.object().shape({
-    ReservationSourceID: yup.string().required("Бөглөнө үү"),
+    ReservationSourceName: yup.string().required("Бөглөнө үү"),
     ChannelID: yup.string().required("Бөглөнө үү"),
     ChannelSourceID: yup.string().notRequired(),
 });
@@ -28,6 +28,8 @@ const NewEdit = () => {
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
     console.log("entity", entity);
+    console.log("errors", errors);
+
     return (
         <NewEditForm
             api={ReservationSourceAPI}

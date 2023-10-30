@@ -10,22 +10,23 @@ import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { ReservationStatusSWR } from "lib/api/reservation-source";
+import {
+    ReservationStatusSWR,
+    ReservationSourceAPI,
+} from "lib/api/reservation-source";
 import { ModalContext } from "lib/context/modal";
 import ReferenceSelect from "components/select/reference";
 import SubmitButton from "components/common/submit-button";
 
 const validationSchema = yup.object().shape({
-    RateTypeCode: yup.string().required("Бөглөнө үү"),
-    RateTypeName: yup.string().required("Бөглөнө үү"),
-    ChannelID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    BreakfastIncluded: yup.boolean(),
-    TaxIncluded: yup.boolean(),
+    DefaultStatusID: yup.string().required("Бөглөнө үү"),
+    PaidStatusID: yup.string().required("Бөглөнө үү"),
 });
 
 const ReservationStatus = ({ ChannelSourceID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
+    const [entity, setEntity] = useState<any>();
     const [search, setSearch] = useState({
         ChannelSourceID: ChannelSourceID,
     });
@@ -45,7 +46,16 @@ const ReservationStatus = ({ ChannelSourceID }: any) => {
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
+            await ReservationSourceAPI?.reservationStatus(
+                ChannelSourceID,
+                entity
+            );
+
+            reset();
         } catch (error) {
+            setLoading(false);
+            handleModal();
+        } finally {
             setLoading(false);
             handleModal();
         }
@@ -55,9 +65,10 @@ const ReservationStatus = ({ ChannelSourceID }: any) => {
         if (data && data[0]) {
             console.log("data[0]", data[0]);
             reset(data[0]);
+            setEntity(data[0]);
         }
     }, [data]);
-
+    console.log(entity);
     return data && data[0] ? (
         <form onSubmit={handleSubmit(onSubmit)}>
             <ReferenceSelect
@@ -65,18 +76,49 @@ const ReservationStatus = ({ ChannelSourceID }: any) => {
                 errors={errors}
                 type="ReservationType"
                 label="Үндсэн төлөв"
-                optionValue="ReservationTypeID"
+                optionValue="RoomStatusID"
                 optionLabel="ReservationTypeName"
                 customField="DefaultStatusID"
+                entity={entity}
+                setEntity={setEntity}
             />
             <ReferenceSelect
                 register={register}
                 errors={errors}
                 type="ReservationType"
                 label="Төлбөр төлсөн төлөв"
-                optionValue="ReservationTypeID"
+                optionValue="RoomStatusID"
                 optionLabel="ReservationTypeName"
                 customField="PaidStatusID"
+                entity={entity}
+                setEntity={setEntity}
+            />
+
+            <FormControlLabel
+                control={
+                    <Controller
+                        name="Booking"
+                        control={control}
+                        render={(props: any) => (
+                            <Checkbox
+                                {...register("AutoAssignRoom")}
+                                checked={
+                                    entity && entity.AutoAssignRoom == true
+                                        ? true
+                                        : false
+                                }
+                                onChange={(e) =>
+                                    setEntity &&
+                                    setEntity({
+                                        ...entity,
+                                        AutoAssignRoom: e.target.checked,
+                                    })
+                                }
+                            />
+                        )}
+                    />
+                }
+                label="Өрөөг автоматаар оноох"
             />
             <SubmitButton loading={loading} />
         </form>
