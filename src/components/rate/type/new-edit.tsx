@@ -92,7 +92,7 @@ const NewEdit = () => {
             }
             tempBaseRates.BaseRateList.forEach((element: any, index: any) => {
                 element.RateTypeID = rateTypeId;
-                element.TaxIncluded = false;
+                element.TaxIncluded = values.TaxIncluded;
 
                 if (entity && entity.length > 0 && entity.RoomTypes) {
                     tempBaseRates.BaseRateList[index].Status =
