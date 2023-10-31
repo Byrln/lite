@@ -53,8 +53,18 @@ const NewEdit = () => {
                     const arr2: any = await RateTypeAPI?.baseRateList(
                         state.editId
                     );
-                    setEntity({ CurrencyID: arr2[0].CurrencyID });
+                    let curRoomTypesCheck: any = [];
+
+                    arr2.forEach((element: any) => {
+                        curRoomTypesCheck[element.RoomTypeID] = element.Status;
+                    });
+
+                    setEntity({
+                        CurrencyID: arr2[0].CurrencyID,
+                        RoomTypes: curRoomTypesCheck,
+                    });
                     arr[0].RoomTypes = arr2;
+
                     reset(arr[0]);
                 } finally {
                     setLoadingData(false);
@@ -70,6 +80,7 @@ const NewEdit = () => {
         try {
             let tempBaseRates: any = {};
             tempBaseRates.BaseRateList = values.RoomTypes;
+
             let rateTypeId: any;
             if (state.editId) {
                 values.RateTypeID = state.editId;
@@ -79,14 +90,20 @@ const NewEdit = () => {
                 const response = await RateTypeAPI.new(values);
                 rateTypeId = response.data.JsonData[0].RateTypeID;
             }
-
-            tempBaseRates.BaseRateList.forEach((element: any) => {
+            tempBaseRates.BaseRateList.forEach((element: any, index: any) => {
                 element.RateTypeID = rateTypeId;
                 element.TaxIncluded = false;
-                if ((element.Status = true)) {
+
+                if (entity && entity.length > 0 && entity.RoomTypes) {
+                    tempBaseRates.BaseRateList[index].Status =
+                        entity.RoomTypes[element.RoomTypeID];
+                }
+
+                if (element.Status == true) {
                     element.CurrencyID = entity.CurrencyID;
                 }
             });
+
             RateTypeAPI.BaseRateInsertWUList(tempBaseRates);
 
             await mutate(listUrl);
@@ -200,6 +217,8 @@ const NewEdit = () => {
                 register={register}
                 errors={errors}
                 control={control}
+                entity={entity}
+                setEntity={setEntity}
             />
 
             {!state.isShow && <SubmitButton loading={loading} />}

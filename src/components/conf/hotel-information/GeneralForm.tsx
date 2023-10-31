@@ -16,7 +16,9 @@ const validationSchemaHotel = yup.object().shape({
     HotelCode: yup.string().required("Бөглөнө үү"),
     HotelName: yup.string().required("Бөглөнө үү"),
     CompanyName: yup.string(),
-    RegistryNo: yup.string().matches(/^[0-9]+$/, "Та регистерээ тоо байхаар оруулна уу"),
+    RegistryNo: yup
+        .string()
+        .matches(/^[0-9]+$/, "Та регистерээ тоо байхаар оруулна уу"),
     ReceptionPhone: yup.string(),
     Address1: yup.string().required("Бөглөнө үү"),
     Address2: yup.string(),
@@ -32,7 +34,7 @@ const validationSchemaHotel = yup.object().shape({
 
 const GeneralForm = () => {
     const [loadingData, setLoadingData] = useState(true);
-    const [data, setData] = useState({Logo: null});
+    const [data, setData] = useState({ Logo: null });
     const [loading, setLoading] = useState(false);
     const {
         register,
@@ -68,7 +70,6 @@ const GeneralForm = () => {
 
         fetchDatas();
     }, []);
-
 
     // @ts-ignore
     return loadingData ? (
@@ -277,21 +278,25 @@ const GeneralForm = () => {
                                 /> */}
                     </Grid>
                 </Grid>
-                <Box sx={{ width: "10%" }}>
-                    <SubmitButton loading={loading}/>
+                <Box>
+                    <SubmitButton loading={loading} />
                 </Box>
-
             </form>
+            <br />
             <Box sx={{ width: "100%" }}>
                 <label>Компаний лого</label>
-                <CustomUpload
-                    IsLogo={true}
-                    Layout="vertical"
-                    id="logoPic"
-                />
-                {data?.Logo ?
-                    (<Box sx={{ width: "80%" }}><img src={data?.Logo}/></Box>) :
-                    (<Box sx={{ width: "80%" }}><img src={'/images/noimage.png'}/></Box>)}
+                <CustomUpload IsLogo={true} Layout="vertical" id="logoPic" />
+                {data?.Logo ? (
+                    <Box sx={{ width: "80%" }}>
+                        <img //@ts-ignore
+                            src={data?.Logo} //@ts-ignore
+                        />
+                    </Box>
+                ) : (
+                    <Box sx={{ width: "80%" }}>
+                        <img src={"/images/noimage.png"} />
+                    </Box>
+                )}
             </Box>
         </>
     );

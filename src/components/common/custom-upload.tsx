@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Stack, Input, Grid } from "@mui/material";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 import SubmitButton from "components/common/submit-button";
 import { toast } from "react-toastify";
@@ -89,32 +90,44 @@ const GuestSelect = ({
     return (
         <form onSubmit={handleSubmit(onSubmit)} id={id ? id : ""}>
             <Grid container spacing={1}>
-                <Grid item xs={Layout == "vertical" ? 8 : 12}>
+                <Grid item xs={Layout == "vertical" ? 8 : 12} className="pb-3">
                     <label htmlFor="file">
                         <Input
                             type="file"
+                            id="file"
+                            className="inputfile"
                             {...register("file")}
                             onChange={handleFileUpload}
                         />
+                        <label htmlFor="file">
+                            <AttachFileIcon
+                                style={{ fontSize: "0.8125rem" }}
+                                className="mr-1"
+                            />
+                            Файл сонгох
+                        </label>
                     </label>
-                </Grid>
+                    {/* </Grid> */}
 
-                <Grid item xs={Layout == "vertical" ? 4 : 12}>
+                    {/* <Grid item xs={Layout == "vertical" ? 4 : 12}> */}
                     <SubmitButton
+                        fullWidth={false}
                         loading={loading}
-                        customMarginClass=" "
+                        customMarginClass="rightBorderRadius"
                         id={id}
                     />
                 </Grid>
 
-                {imageUrl && (
-                    <img //@ts-ignore
-                        src={imageUrl}
-                        alt="Uploaded Image"
-                        height="200"
-                        className="mt-3"
-                    />
-                )}
+                <Grid item xs={12} className="pb-3">
+                    {imageUrl && (
+                        <img //@ts-ignore
+                            src={imageUrl}
+                            alt="Uploaded Image"
+                            height="200"
+                            className="mt-3"
+                        />
+                    )}
+                </Grid>
             </Grid>
         </form>
     );

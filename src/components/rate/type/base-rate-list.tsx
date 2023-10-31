@@ -12,7 +12,14 @@ import {
 import { BaseRateSWR } from "lib/api/rate-type";
 import { Controller } from "react-hook-form";
 
-const BaseRateList = ({ id, register, errors, control }: any) => {
+const BaseRateList = ({
+    id,
+    register,
+    errors,
+    control,
+    entity,
+    setEntity,
+}: any) => {
     const { data, error } = BaseRateSWR(id);
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -56,15 +63,37 @@ const BaseRateList = ({ id, register, errors, control }: any) => {
                                     control={control}
                                     render={(props: any) => (
                                         <Checkbox
+                                            key={`RoomTypes[${index}].Status`}
                                             {...register(
                                                 `RoomTypes[${index}].Status`
                                             )}
-                                            checked={props.field.value}
-                                            onChange={(e) =>
-                                                props.field.onChange(
-                                                    e.target.checked
-                                                )
+                                            checked={
+                                                entity &&
+                                                entity.RoomTypes &&
+                                                entity.RoomTypes[
+                                                    element.RoomTypeID
+                                                ]
                                             }
+                                            onChange={(e) => {
+                                                if (
+                                                    entity &&
+                                                    Object.keys(entity).length >
+                                                        0 &&
+                                                    entity.RoomTypes
+                                                ) {
+                                                    let newEntity = {
+                                                        ...entity,
+                                                    };
+                                                    newEntity.RoomTypes[
+                                                        element.RoomTypeID
+                                                    ] = e.target.checked;
+                                                    setEntity(newEntity);
+                                                } else {
+                                                    props.field.onChange(
+                                                        e.target.checked
+                                                    );
+                                                }
+                                            }}
                                         />
                                     )}
                                 />
