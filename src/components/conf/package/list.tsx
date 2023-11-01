@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import { Button } from "@mui/material";
+import Link from "next/link";
 
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
@@ -92,23 +93,23 @@ const PackageList = ({ title }: any) => {
             title: "Нэмэлт үйлдэл",
             key: "Action",
             dataIndex: "Action",
-            render: function render(id: any, record: any) {
+            render: function render(id: any, record: any, element: any) {
                 return (
-                    // <Button
-                    //     key={id}
-                    //     onClick={() => {
-                    //         // handleModal(
-                    //         //     true,
-                    //         //     `Upload Picture`,
-                    //         //     `test`,
-                    //         //     null,
-                    //         //     "large"
-                    //         // );
-                    //     }}
-                    // >
-                    //     Upload Picture
-                    // </Button>
-                    <RoomList />
+                    <>
+                        <Link
+                            key={id}
+                            href={`/conf/package/room-list/${element.PackageID}`}
+                        >
+                            <Button key={id}>Room List</Button>
+                        </Link>
+
+                        <Link
+                            key={id}
+                            href={`/conf/package/extra-charge/${element.PackageID}`}
+                        >
+                            <Button key={id}>Extra Charge</Button>
+                        </Link>
+                    </>
                 );
             },
         },
