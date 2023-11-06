@@ -15,7 +15,7 @@ const validationSchema = yup.object().shape({
     UserRoleID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     Language: yup.string().required("Бөглөнө үү"),
     Email: yup.string().email().required("Бөглөнө үү"),
-    Password: yup.string().required("Бөглөнө үү"),
+    // Password: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -84,7 +84,7 @@ const NewEdit = () => {
                         helperText={errors.Email?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                {/* <Grid item xs={6}>
                     <TextField
                         size="small"
                         type="password"
@@ -96,7 +96,7 @@ const NewEdit = () => {
                         error={errors.Password?.message}
                         helperText={errors.Password?.message}
                     />
-                </Grid>
+                </Grid> */}
             </Grid>
         </NewEditForm>
     );

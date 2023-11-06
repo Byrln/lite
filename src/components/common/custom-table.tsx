@@ -83,8 +83,6 @@ const CustomTable = ({
     });
 
     const downloadExcel = async () => {
-        console.log("clickedColumn ", customizedColumns);
-        console.log("cllicked ", data);
         const Excel = await import("antd-table-saveas-excel");
         const excel = new Excel.Excel();
         excel

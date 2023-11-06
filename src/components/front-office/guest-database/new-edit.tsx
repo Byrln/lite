@@ -75,7 +75,7 @@ const NewEdit = () => {
     //         // setEntity(tempEntity);
     //     }
     // }, [entity]);
-
+    console.log("entity", entity);
     return (
         <>
             <TabContext value={value}>

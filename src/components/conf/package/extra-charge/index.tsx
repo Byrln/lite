@@ -2,7 +2,7 @@ import CustomTable from "components/common/custom-table";
 import { PackageRoomAPI, listUrl } from "lib/api/package-room";
 import NewEdit from "../new-edit";
 
-const PackageList = ({ title, packageId, data, error }: any) => {
+const PackageList = ({ title, packageId, data, setData, error }: any) => {
     const columns = [
         {
             title: "Room Type",
@@ -39,8 +39,16 @@ const PackageList = ({ title, packageId, data, error }: any) => {
             key: "ExtraChargeAmount",
             dataIndex: "ExtraChargeAmount",
         },
+        {
+            title: "Үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            render: function render(id: any, record: any, element: any) {
+                return <></>;
+            },
+        },
     ];
-
+    // console.log("data", data);
     return (
         <>
             <CustomTable

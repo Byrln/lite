@@ -2,23 +2,29 @@ import { Box, Grid, Container, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { PackageExtraChargeSWR } from "lib/api/package-extra-charge";
+import { useState, useEffect } from "react";
 
 import Page from "components/page";
 import ExtraCharge from "components/conf/package/extra-charge";
 const title = "Package";
 
 const Index = () => {
+    const [tempData, setTempData] = useState<any>([]);
     const router = useRouter();
     const { id } = router.query;
 
     const { data, error } = PackageExtraChargeSWR(id);
 
+    useEffect(() => {
+        setTempData(data);
+    }, [data]);
+
     return (
         <>
             <Head>
                 <title>
-                    {data && data[0] && data[0].PackageName
-                        ? data[0].PackageName
+                    {tempData && tempData[0] && tempData[0].PackageName
+                        ? tempData[0].PackageName
                         : title}
                 </title>
             </Head>
@@ -27,8 +33,8 @@ const Index = () => {
                 <Container maxWidth="xl">
                     <Box sx={{ pb: 5 }}>
                         <Typography variant="h4">
-                            {data && data[0] && data[0].PackageName
-                                ? data[0].PackageName
+                            {tempData && tempData[0] && tempData[0].PackageName
+                                ? tempData[0].PackageName
                                 : title}
                         </Typography>
                     </Box>
@@ -37,8 +43,9 @@ const Index = () => {
                             <ExtraCharge
                                 title={title}
                                 packageId={id}
-                                data={data}
                                 error={error}
+                                data={tempData}
+                                setData={setTempData}
                             />
                         </Grid>
                     </Grid>

@@ -13,10 +13,11 @@ const GenderSelect = ({ register, errors, entity, setEntity }: any) => {
     ];
 
     const onChange = (event: any) => {
+        console.log("event.target.value", event.target.value);
         if (setEntity) {
             setEntity({
                 ...entity,
-                GenderID: event.target.value,
+                GenderID: Number(event.target.value),
             });
         }
     };
