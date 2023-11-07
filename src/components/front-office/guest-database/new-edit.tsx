@@ -39,7 +39,7 @@ const validationSchema = yup.object().shape({
     RegistryNo: yup.string().required("Бөглөнө үү"),
     DriverLicenseNo: yup.string().notRequired(),
     DateOfBirth: yup.date().required("Бөглөнө үү"),
-    GenderID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    GenderID: yup.string().notRequired().nullable(),
     Address: yup.string().notRequired(),
     CountryID: yup.string().notRequired(),
     Zip: yup.string().notRequired(),
@@ -66,16 +66,6 @@ const NewEdit = () => {
         setValue(newValue);
     };
 
-    // useEffect(() => {
-    //     if (entity) {
-    //         console.log("entity", entity);
-    //         // let tempEntity = { ...entity };
-    //         // tempEntity.DateOfBirth = new Date(tempEntity.DateOfBirth);
-    //         // console.log("testestest", tempEntity.DateOfBirth);
-    //         // setEntity(tempEntity);
-    //     }
-    // }, [entity]);
-    console.log("entity", entity);
     return (
         <>
             <TabContext value={value}>
@@ -293,6 +283,8 @@ const NewEdit = () => {
                                     errors={errors}
                                     entity={entity}
                                     setEntity={setEntity}
+                                    reset={reset}
+                                    control={control}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>

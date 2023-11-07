@@ -4,19 +4,35 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
+import FormHelperText from "@mui/material/FormHelperText";
+import { Controller } from "react-hook-form";
 
-const GenderSelect = ({ register, errors, entity, setEntity }: any) => {
+import FormLabel from "@mui/material/FormLabel";
+import { AnyObject } from "yup/lib/types";
+
+const GenderSelect = ({
+    register,
+    errors,
+    entity,
+    setEntity,
+    reset = null,
+    control,
+}: any) => {
     const data = [
         { GenderID: 1, name: "Эрэгтэй" },
         { GenderID: 2, name: "Эмэгтэй" },
     ];
 
     const onChange = (event: any) => {
-        console.log("event.target.value", event.target.value);
         if (setEntity) {
             setEntity({
                 ...entity,
+                GenderID: Number(event.target.value),
+            });
+        }
+
+        if (reset) {
+            reset({
                 GenderID: Number(event.target.value),
             });
         }
@@ -24,27 +40,33 @@ const GenderSelect = ({ register, errors, entity, setEntity }: any) => {
 
     return (
         <>
-            <FormControl component="fieldset">
-                <RadioGroup
-                    row
-                    id="GenderID"
-                    aria-label="Gender"
-                    {...register("GenderID")}
-                    error={errors.GenderID?.message}
-                    helperText={errors.GenderID?.message}
-                    value={entity && entity.GenderID}
-                    onChange={onChange}
-                >
-                    {data.map((element: any, index: number) => (
-                        <FormControlLabel
-                            key={index}
-                            value={element.GenderID}
-                            control={<Radio />}
-                            label={element.name}
-                        />
-                    ))}
-                </RadioGroup>
-            </FormControl>
+            <Controller
+                name="GenderID"
+                defaultValue=""
+                control={control}
+                render={({ field }: any) => (
+                    <FormControl fullWidth>
+                        <RadioGroup
+                            {...field}
+                            row
+                            onChange={(event, value) => field.onChange(value)}
+                            value={field.value}
+                        >
+                            {data.map((element: any, index: number) => (
+                                <FormControlLabel
+                                    key={index}
+                                    value={element.GenderID}
+                                    control={<Radio />}
+                                    label={element.name}
+                                />
+                            ))}
+                        </RadioGroup>
+                        <FormHelperText>
+                            {String(errors["GenderID"]?.message ?? "")}
+                        </FormHelperText>
+                    </FormControl>
+                )}
+            />
         </>
     );
 };
