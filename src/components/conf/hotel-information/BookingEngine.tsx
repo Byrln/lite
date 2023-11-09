@@ -11,28 +11,17 @@ import SubmitButton from "components/common/submit-button";
 import ReferenceSelect from "components/select/reference";
 import CustomTab from "components/common/custom-tab";
 import CustomUpload from "components/common/custom-upload";
+import AmenitySelect from "components/select/amenity";
 
 const validationSchemaHotel = yup.object().shape({
-    HotelCode: yup.string().required("Бөглөнө үү"),
-    HotelName: yup.string().required("Бөглөнө үү"),
-    CompanyName: yup.string(),
-    RegistryNo: yup
-        .string()
-        .matches(/^[0-9]+$/, "Та регистерээ тоо байхаар оруулна уу"),
-    ReceptionPhone: yup.string(),
-    Address1: yup.string().required("Бөглөнө үү"),
-    Address2: yup.string(),
-    City: yup.string(),
-    State: yup.string(),
-    CountryID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    ReservePhone: yup.string(),
-    ReserveEmail: yup.string().email(),
-    HotelType: yup.string(),
-    Website: yup.string(),
-    HotelRatingID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    DescriptionBooking: yup.string().notRequired().nullable(),
+    HotelPolicyBooking: yup.string().notRequired().nullable(),
+    CancelPolicyBooking: yup.string().notRequired().nullable(),
 });
 
 const GeneralForm = () => {
+    const [hotelAmenities, setHotelAmenities]: any = useState(null);
+    const [entity, setEntity]: any = useState(null);
     const [loadingData, setLoadingData] = useState(true);
     const [data, setData] = useState({ Logo: null });
     const [loading, setLoading] = useState(false);
@@ -46,21 +35,60 @@ const GeneralForm = () => {
     });
 
     const onSubmit = async (values: any) => {
-        // setLoading(true);
-        console.log("values", values);
-        // try {
-        //     await HotelAPI.update(values);
+        setLoading(true);
+        try {
+            await HotelAPI.beUpdate(values);
+            delete values.amenity;
 
-        //     toast("Амжилттай.");
-        // } finally {
-        //     setLoading(false);
-        // }
+            const amenitiesList: any = await HotelAPI.amenity();
+            let amenitiesInsertValue: any = [];
+
+            amenitiesList.forEach((amenityElement: any) => {
+                let isBookingTrue = false;
+
+                if (entity && entity.amenity2) {
+                    entity.amenity2.forEach((element: any, index: any) => {
+                        if (amenityElement.AmenityID == parseInt(index)) {
+                            isBookingTrue = element;
+                        }
+                    });
+                }
+
+                amenitiesInsertValue.push({
+                    AmenityID: amenityElement.AmenityID,
+                    IsGeneral: amenityElement.IsGeneral,
+                    IsBooking: isBookingTrue,
+                });
+            });
+            console.log("amenitiesInsertValue", amenitiesInsertValue);
+            HotelAPI.amenityInsertWUList({
+                Amenities: amenitiesInsertValue,
+            });
+            toast("Амжилттай.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
         const fetchDatas = async () => {
             try {
-                const arr: any = await HotelAPI.get();
+                const arr: any = await HotelAPI.hotelBe();
+                const arrAmenity: any = await HotelAPI.amenity();
+                setHotelAmenities(arrAmenity);
+                let amenitiesBookingValue: any = [];
+                if (arrAmenity) {
+                    arrAmenity.forEach((amenityElement: any) => {
+                        if (amenityElement.IsBooking == true) {
+                            amenitiesBookingValue[amenityElement.AmenityID] =
+                                true;
+                        }
+                    });
+                }
+                let newEntity = { amenity2: {} };
+                newEntity.amenity2 = amenitiesBookingValue;
+                console.log("newEntity", newEntity);
+                setEntity(newEntity);
                 setData(arr[0]);
                 reset(arr[0]);
             } finally {
@@ -92,50 +120,47 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="HotelPolicy"
-                            label="Зочид буудлын үйлчилгээний нөхцөл"
-                            {...register("HotelPolicy")}
+                            id="DescriptionBooking"
+                            label="Буудлын тайлбар"
+                            {...register("DescriptionBooking")}
                             margin="dense"
-                            error={errors.HotelPolicy?.message}
-                            helperText={errors.HotelPolicy?.message}
+                            error={errors.DescriptionBooking?.message}
+                            helperText={errors.DescriptionBooking?.message}
+                        />
+
+                        <TextField
+                            size="small"
+                            fullWidth
+                            multiline
+                            rows={3}
+                            id="HotelPolicyBooking"
+                            label="Зочид буудлын журам"
+                            {...register("HotelPolicyBooking")}
+                            margin="dense"
+                            error={errors.HotelPolicyBooking?.message}
+                            helperText={errors.HotelPolicyBooking?.message}
                         />
                         <TextField
                             size="small"
                             fullWidth
                             multiline
                             rows={3}
-                            id="CancelPolicy"
-                            label="Зочид буудлын захиалга цуцлах нөхцөл"
-                            {...register("CancelPolicy")}
+                            id="CancelPolicyBooking"
+                            label="Захиалга цуцлалт"
+                            {...register("CancelPolicyBooking")}
                             margin="dense"
-                            error={errors.CancelPolicy?.message}
-                            helperText={errors.CancelPolicy?.message}
-                        />
-                        <TextField
-                            size="small"
-                            fullWidth
-                            multiline
-                            rows={3}
-                            id="CancelPolicy"
-                            label="Зочид буудлын захиалга цуцлах нөхцөл"
-                            {...register("CancelPolicy")}
-                            margin="dense"
-                            error={errors.CancelPolicy?.message}
-                            helperText={errors.CancelPolicy?.message}
+                            error={errors.CancelPolicyBooking?.message}
+                            helperText={errors.CancelPolicyBooking?.message}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            size="small"
-                            fullWidth
-                            multiline
-                            rows={3}
-                            id="CancelPolicy"
-                            label="Зочид буудлын захиалга цуцлах нөхцөл"
-                            {...register("CancelPolicy")}
-                            margin="dense"
-                            error={errors.CancelPolicy?.message}
-                            helperText={errors.CancelPolicy?.message}
+                        <AmenitySelect
+                            register={register}
+                            errors={errors}
+                            customRegisterName="amenity"
+                            entity={entity}
+                            setEntity={setEntity}
+                            isHotelAmenity={true}
                         />
                     </Grid>
                 </Grid>

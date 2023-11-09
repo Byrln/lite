@@ -99,4 +99,16 @@ export const AmenityAPI = {
             status,
         };
     },
+
+    amenityInsertWUList: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/AmenityInsertWUList`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
 };

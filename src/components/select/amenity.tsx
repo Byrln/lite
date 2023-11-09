@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 
 import { RoomTypeAmenitySWR } from "lib/api/amenity";
+import { AmenitySWR } from "lib/api/hotel";
 
 const AmenitySelect = ({
     register,
@@ -19,8 +20,10 @@ const AmenitySelect = ({
     entity,
     customTitle,
     setEntity,
+    isHotelAmenity = false,
 }: any) => {
-    const { data, error } = RoomTypeAmenitySWR();
+    const { data, error } =
+        isHotelAmenity == false ? RoomTypeAmenitySWR() : AmenitySWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
