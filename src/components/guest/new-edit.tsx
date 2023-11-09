@@ -29,6 +29,7 @@ const NewEdit = ({
     reset,
     getValues,
     filterValues,
+    control,
     setGuest,
 }: any) => {
     const [entity, setEntity]: any = useState(null);
@@ -303,6 +304,7 @@ const NewEdit = ({
                     errors={errors}
                     entity={entity}
                     setEntity={setEntity}
+                    control={control}
                 />
 
                 <CountrySelect

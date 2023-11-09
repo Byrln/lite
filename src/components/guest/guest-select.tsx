@@ -105,6 +105,7 @@ const GuestSelect = ({ guestSelected }: any) => {
         formState: { errors },
         reset,
         getValues,
+        control,
     } = useForm(formOptions);
 
     return (
@@ -131,6 +132,7 @@ const GuestSelect = ({ guestSelected }: any) => {
                                 getValues={getValues}
                                 filterValues={filterValues}
                                 setGuest={setGuest}
+                                control={control}
                             />
                         </CardContent>
                     </Card>

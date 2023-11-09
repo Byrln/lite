@@ -1087,6 +1087,7 @@ const NewEdit = ({
                                                 errors={errors}
                                                 entity={entity}
                                                 setEntity={setEntity}
+                                                control={control}
                                             />
                                             <CountrySelect
                                                 register={register}

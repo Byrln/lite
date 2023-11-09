@@ -16,7 +16,7 @@ const GenderSelect = ({
     entity,
     setEntity,
     reset = null,
-    control,
+    control = null,
 }: any) => {
     const data = [
         { GenderID: 1, name: "Эрэгтэй" },
@@ -43,7 +43,7 @@ const GenderSelect = ({
             <Controller
                 name="GenderID"
                 defaultValue=""
-                control={control}
+                control={control ? control : null}
                 render={({ field }: any) => (
                     <FormControl fullWidth>
                         <RadioGroup

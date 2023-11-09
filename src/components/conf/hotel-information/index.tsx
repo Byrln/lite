@@ -3,9 +3,9 @@ import { Box } from "@mui/material";
 import CustomTab from "components/common/custom-tab";
 import GeneralForm from "./GeneralForm";
 import BankAccount from "./BankAccount";
+import BookingEngine from "./BookingEngine";
 
 const HotelInformation = () => {
-
     const tabs = [
         {
             label: "Үндсэн тохиргоо",
@@ -15,31 +15,24 @@ const HotelInformation = () => {
                 </>
             ),
         },
-        { label: "Дансны тохиргоо",
+        {
+            label: "Дансны тохиргоо",
             component: (
                 <>
-                    <BankAccount title={'Банкны данс'}/>
+                    <BankAccount title={"Банкны данс"} />
                 </>
-            )
+            ),
         },
-        { label: "Шууд захиалга",
+        {
+            label: "Шууд захиалга",
             component: (
                 <>
+                    <BookingEngine />
                 </>
-            )
+            ),
         },
-        { label: "Баннер",
-            component: (
-                <>
-                </>
-            )
-        },
-        { label: "Буудлын зураг",
-            component: (
-                <>
-                </>
-            )
-        },
+        { label: "Баннер", component: <></> },
+        { label: "Буудлын зураг", component: <></> },
     ];
 
     // @ts-ignore
