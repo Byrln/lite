@@ -32,4 +32,14 @@ export const PictureAPI = {
             status,
         };
     },
+    delete: async (id: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
+            PictureID: id,
+        });
+
+        return {
+            data,
+            status,
+        };
+    },
 };

@@ -60,7 +60,7 @@ const GeneralForm = () => {
                     IsBooking: isBookingTrue,
                 });
             });
-            console.log("amenitiesInsertValue", amenitiesInsertValue);
+
             HotelAPI.amenityInsertWUList({
                 Amenities: amenitiesInsertValue,
             });

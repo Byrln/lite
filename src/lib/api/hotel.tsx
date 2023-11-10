@@ -56,7 +56,7 @@ export const HotelAPI = {
 
     amenityInsertWUList: async (values: any) => {
         const { data, status } = await axios.post(
-            `${urlPrefix}/AmenityInsertWUList`,
+            `${urlPrefix}/Amenity/InsertWUList`,
             values
         );
 

@@ -33,7 +33,8 @@ const BankAccountList = () => {
                 api={PictureAPI}
                 hasNew={true}
                 hasUpdate={false}
-                hasDelete={false}
+                hasShow={false}
+                hasDelete={true}
                 id="PictureID"
                 listUrl={listUrl}
                 modalTitle="Banner"
