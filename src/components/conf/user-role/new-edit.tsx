@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
@@ -19,6 +20,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const [entity, setEntity]: any = useState(null);
     const [state]: any = useAppState();
     const {
         register,
@@ -26,6 +28,7 @@ const NewEdit = () => {
         handleSubmit,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
+    // console.log("entity", entity.ParentID);
     return (
         <NewEditForm
             api={UserRoleAPI}
@@ -35,6 +38,7 @@ const NewEdit = () => {
             }}
             reset={reset}
             handleSubmit={handleSubmit}
+            setEntity={setEntity}
         >
             <Grid container spacing={1}>
                 <Grid item xs={6}>
@@ -80,32 +84,50 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         field="ParentID"
+                        entity={entity}
+                        setEntity={setEntity}
                     />
                 </Grid>
             </Grid>
-            <UserRolePrivilegeSelect
-                register={register}
-                errors={errors}
-                type={1}
-                title="Front Office"
-                UserRoleID={state.editId}
-            />
 
-            <UserRolePrivilegeSelect
-                register={register}
-                errors={errors}
-                type={2}
-                title="Configuration"
-                UserRoleID={state.editId}
-            />
+            {entity && (
+                <>
+                    <UserRolePrivilegeSelect
+                        register={register}
+                        errors={errors}
+                        type={1}
+                        title="Front Office"
+                        UserRoleID={
+                            entity && entity.ParentID && entity.ParentID > 0
+                                ? entity.ParentID
+                                : state.editId
+                        }
+                    />
 
-            <UserRolePrivilegeSelect
-                register={register}
-                errors={errors}
-                type={3}
-                title="Reports"
-                UserRoleID={state.editId}
-            />
+                    <UserRolePrivilegeSelect
+                        register={register}
+                        errors={errors}
+                        type={2}
+                        title="Configuration"
+                        UserRoleID={
+                            entity && entity.ParentID && entity.ParentID > 0
+                                ? entity.ParentID
+                                : state.editId
+                        }
+                    />
+                    <UserRolePrivilegeSelect
+                        register={register}
+                        errors={errors}
+                        type={3}
+                        title="Reports"
+                        UserRoleID={
+                            entity && entity.ParentID && entity.ParentID > 0
+                                ? entity.ParentID
+                                : state.editId
+                        }
+                    />
+                </>
+            )}
         </NewEditForm>
     );
 };
