@@ -9,6 +9,7 @@ import SubmitButton from "components/common/submit-button";
 import { toast } from "react-toastify";
 import { PictureAPI } from "lib/api/picture";
 import { ModalContext } from "lib/context/modal";
+import { mutate } from "swr";
 
 const GuestSelect = ({
     GuestID,
@@ -20,6 +21,8 @@ const GuestSelect = ({
     Description,
     Layout,
     id,
+    listUrl,
+    mutateBody,
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [imageUrl, setImageUrl] = useState(null);
@@ -80,6 +83,9 @@ const GuestSelect = ({
                 formData.append("Description", Description);
             }
             await PictureAPI.upload(formData);
+            if (listUrl) {
+                mutate(listUrl, mutateBody);
+            }
             toast("Амжилттай.");
         } finally {
             setLoading(false);

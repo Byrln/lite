@@ -27,6 +27,7 @@ const columns = [
         title: "Тариф",
         key: "RoomChargeTypeRate",
         dataIndex: "RoomChargeTypeRate",
+        excelRenderPass: true,
         render: function render(id: any, value: any) {
             return formatPrice(value);
         },
@@ -35,6 +36,7 @@ const columns = [
         title: "Засагдахуйц",
         key: "IsEditable",
         dataIndex: "IsEditable",
+        excelRenderPass: true,
         render: function render(id: any, value: any) {
             return <ToggleChecked id={id} checked={value} disabled={true} />;
         },
@@ -48,6 +50,7 @@ const columns = [
         title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
+        excelRenderPass: true,
         render: function render(id: any, value: any) {
             return (
                 <ToggleChecked
@@ -64,6 +67,7 @@ const columns = [
         title: "Inclusion",
         key: "IsInclusion",
         dataIndex: "IsInclusion",
+        excelRenderPass: true,
         render: function render(id: any, value: any) {
             return (
                 <ToggleChecked

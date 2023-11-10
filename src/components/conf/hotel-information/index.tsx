@@ -4,6 +4,8 @@ import CustomTab from "components/common/custom-tab";
 import GeneralForm from "./GeneralForm";
 import BankAccount from "./BankAccount";
 import BookingEngine from "./BookingEngine";
+import Banner from "./Banner";
+import MainPictures from "./MainPictures";
 
 const HotelInformation = () => {
     const tabs = [
@@ -31,8 +33,22 @@ const HotelInformation = () => {
                 </>
             ),
         },
-        { label: "Баннер", component: <></> },
-        { label: "Буудлын зураг", component: <></> },
+        {
+            label: "Баннер",
+            component: (
+                <>
+                    <Banner />
+                </>
+            ),
+        },
+        {
+            label: "Буудлын зураг",
+            component: (
+                <>
+                    <MainPictures />
+                </>
+            ),
+        },
     ];
 
     // @ts-ignore
