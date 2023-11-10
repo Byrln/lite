@@ -22,28 +22,22 @@ const UserRolePrivilegeSelect = ({
     title,
     UserRoleID,
 }: any) => {
-    console.log("UserRoleID", UserRoleID);
-    // console.log(register)
     const { data, error } = UserRolePrivilegeSWR(UserRoleID);
     const [permissions, setPermissions] = useState(data ? data : []);
     if (error) return <Alert severity="error">{error.message}</Alert>;
-    console.log("data", data);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-        // console.log(data)
         if (data && data.length > 0) {
             setPermissions(data);
         }
     }, [data]);
 
     useEffect(() => {
-        (async () => {
-            await mutate(`/api/UserRole/GetPrivileges`, {
-                UserRoleID: UserRoleID,
-                ActionGroupType: 0,
-            });
-        })();
+        mutate(`/api/UserRole/GetPrivileges`, {
+            UserRoleID: UserRoleID,
+            ActionGroupType: 0,
+        });
     }, [UserRoleID]);
 
     if (!error && !data)
