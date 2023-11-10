@@ -33,6 +33,7 @@ const UserRolePrivilegeSelect = ({
         }
     }, [data]);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         mutate(`/api/UserRole/GetPrivileges`, {
             UserRoleID: UserRoleID,
