@@ -1,5 +1,7 @@
 import useSWR from "swr";
+import moment from "moment";
 
+import { dateStringToObj } from "lib/utils/helpers";
 import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/Hotel/Settings";
@@ -38,6 +40,20 @@ export const HotelSettingAPI = {
     },
 
     update: async (values: any) => {
+        if (values.PMSStart) {
+            values.PMSStart = moment(
+                dateStringToObj(moment(values.PMSStart).format("YYYY-MM-DD")),
+                "YYYY-MM-DD"
+            );
+        }
+
+        if (values.PMSEnd) {
+            values.PMSEnd = moment(
+                dateStringToObj(moment(values.PMSEnd).format("YYYY-MM-DD")),
+                "YYYY-MM-DD"
+            );
+        }
+
         const { data, status } = await axios.post(`${urlPrefix}Update`, values);
 
         return {

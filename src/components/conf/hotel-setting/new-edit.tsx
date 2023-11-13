@@ -18,7 +18,7 @@ import { dateStringToObj } from "lib/utils/helpers";
 const validationSchema = yup.object().shape({
     PMSStart: yup.date().required("Бөглөнө үү"),
     PMSEnd: yup.date().required("Бөглөнө үү"),
-    EditionID: yup.date().notRequired(),
+    EditionID: yup.number().notRequired(),
 });
 
 const NewEdit = () => {

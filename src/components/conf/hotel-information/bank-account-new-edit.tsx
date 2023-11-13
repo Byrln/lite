@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import NewEditForm from "components/common/new-edit-form";
-import { BankAccountAPI, detailUrl } from "lib/api/bank-account";
+import { BankAccountAPI, listUrl } from "lib/api/bank-account";
 import { useAppState } from "lib/context/app";
 import LanguageSelect from "components/select/language";
 import UserRoleSelect from "components/select/user-role";
@@ -12,7 +12,7 @@ import UserRoleSelect from "components/select/user-role";
 const validationSchema = yup.object().shape({
     Bank: yup.string().required("Бөглөнө үү"),
     AccountNo: yup.string().required("Бөглөнө үү"),
-    AccountName: yup.string().required("Бөглөнө үү")
+    AccountName: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
@@ -27,7 +27,7 @@ const NewEdit = () => {
     return (
         <NewEditForm
             api={BankAccountAPI}
-            listUrl={detailUrl}
+            listUrl={listUrl}
             additionalValues={{
                 HotelBankAccountID: state.editId,
                 BankAccountID: state.editId,
