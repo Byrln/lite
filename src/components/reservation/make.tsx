@@ -76,9 +76,9 @@ const ReservationMake = ({ timelineCoord, workingDate }: any) => {
 
             res = await ReservationAPI.new(values);
 
-            if (isGroup && res.data.length > 0) {
-                groupId = res.data[0].GroupID;
-            }
+            // if (isGroup && res.data.length > 0) {
+            //     groupId = res.data[0].GroupID;
+            // }
 
             var i;
             for (i = 1; i < reservations.length; i++) {
