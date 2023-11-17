@@ -82,7 +82,6 @@ const NewEdit = ({
     const [activeStep, setActiveStep]: any = useState(
         defaultData?.guest ? "main" : "guest"
     );
-    const [activeStepper, setActiveStepper]: any = useState(0);
     const formRef = createRef<HTMLButtonElement>();
 
     const baseStayDefault = isMain
@@ -463,6 +462,7 @@ const NewEdit = ({
                 }
                 finalValues.TransactionDetail.push(temp1);
             });
+            console.log("finalValues", finalValues);
             await ReservationAPI.new(finalValues);
 
             handleModal();

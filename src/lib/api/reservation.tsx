@@ -96,13 +96,16 @@ export const ReservationAPI = {
         // vals.CustomerID = values.CustomerID > 0 ? values.CustomerID : 0;
         // vals.DurationEnabled = true;
         // vals.ReservationSourceID = 1;
-        const { data, status } = await axios.post(`${urlPrefix}/New`, vals);
-
+        // const { data, status } = await axios.post(`${urlPrefix}/New`, vals);
+        console.log("values", values);
+        // return {
+        //     status: status,
+        //     code: data.Code,
+        //     msg: data.Message,
+        //     data: data.JsonData,
+        // };
         return {
-            status: status,
-            code: data.Code,
-            msg: data.Message,
-            data: data.JsonData,
+            status: values,
         };
     },
     checkIn: async (TransactionID: any) => {
