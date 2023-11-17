@@ -52,13 +52,15 @@ const NewEdit = () => {
                     dateAdapter={AdapterDateFns}
                 >
                     {fields.map((field, index) => (
-                        <NewForm
-                            id={index}
-                            register={register}
-                            control={control}
-                            errors={errors}
-                            getValues={getValues}
-                        />
+                        <div key={index}>
+                            <NewForm
+                                id={index}
+                                register={register}
+                                control={control}
+                                errors={errors}
+                                getValues={getValues}
+                            />
+                        </div>
                     ))}
                 </LocalizationProvider>
                 <button
