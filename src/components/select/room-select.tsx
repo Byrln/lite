@@ -19,11 +19,9 @@ const RoomSelect = ({
     ArrivalDate,
     DepartureDate,
     groupIndex,
+    RoomID,
 }: any) => {
     const [data, setData]: any = useState([]);
-    console.log("ArrivalDate", ArrivalDate);
-    console.log("DepartureDate", DepartureDate);
-    console.log("RoomTypeID", RoomTypeID);
 
     const eventRoomChange = (val: any) => {
         if (onRoomChange) {
@@ -34,16 +32,12 @@ const RoomSelect = ({
                     room = r;
                 }
             }
-            if (
-                typeof baseStay == "undefined" ||
-                baseStay.room?.RoomID != room?.RoomID ||
-                typeof baseStay.room.RoomName != "string"
-            ) {
-                onRoomChange(
-                    room,
-                    typeof groupIndex != "undefined" ? groupIndex : null
-                );
-            }
+
+            onRoomChange(
+                room,
+                typeof groupIndex != "undefined" ? groupIndex : null
+            );
+            // }
         }
     };
 
@@ -66,16 +60,6 @@ const RoomSelect = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [RoomTypeID, ArrivalDate, DepartureDate]);
 
-    // if (error) return <Alert severity="error">{error.message}</Alert>;
-
-    // if (!error && !data)
-    //     return (
-    //         <Box sx={{ width: "100%" }}>
-    //             <Skeleton />
-    //             <Skeleton animation="wave" />
-    //         </Box>
-    //     );
-    console.log("data", data);
     return (
         <TextField
             fullWidth
@@ -89,7 +73,7 @@ const RoomSelect = ({
             onChange={(evt: any) => {
                 eventRoomChange(evt.target.value);
             }}
-            value={baseStay?.room?.RoomID}
+            value={RoomID}
             size="small"
         >
             {data.map((room: any) => {

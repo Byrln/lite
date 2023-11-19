@@ -15,32 +15,36 @@ import { useAppState } from "lib/context/app";
 import { dateStringToObj } from "lib/utils/helpers";
 import RoomTypeSelect from "components/select/room-type";
 import RoomSelect from "components/select/room-select";
+import { ReservationTypeSelect } from "components/select";
 
 const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().required("Бөглөнө үү"),
 });
 
-const NewEdit = ({ id, register, control, errors, getValues }: any) => {
+const NewEdit = ({
+    id,
+    register,
+    control,
+    errors,
+    getValues,
+    resetField,
+    reset,
+}: any) => {
     const [state]: any = useAppState();
     const [TransactionID, setTransactionID]: any = useState("");
     const [RoomTypeID, setRoomTypeID]: any = useState("");
-    const [Room, setRoom]: any = useState("");
+    const [RoomType, setRoomType]: any = useState("");
+    const [RoomID, setRoomID]: any = useState("");
     const [ArrivalDate, setArrivalDate]: any = useState("");
     const [DepartureDate, setDepartureDate]: any = useState("");
-    console.log(id + "-RoomTypeID-", RoomTypeID);
-    console.log(id + "-Room-", Room);
-    console.log(id + "-ArrivalDate-", ArrivalDate);
-    console.log(id + "-DepartureDate-", DepartureDate);
 
     useEffect(() => {
         if (getValues(`TransactionDetail[${id}]`)) {
-            console.log("id", id);
-            console.log("values", RoomTypeID);
             if (getValues(`TransactionDetail[${id}].RoomTypeID`)) {
                 setRoomTypeID(getValues(`TransactionDetail[${id}].RoomTypeID`));
             }
             if (getValues(`TransactionDetail[${id}].Room`)) {
-                setRoom(getValues(`TransactionDetail[${id}].Room`));
+                setRoomID(getValues(`TransactionDetail[${id}].RoomID`));
             }
             if (getValues(`TransactionDetail[${id}].ArrivalDate`)) {
                 setArrivalDate(
@@ -55,46 +59,19 @@ const NewEdit = ({ id, register, control, errors, getValues }: any) => {
         }
     }, [id]);
 
-    console.log("key", id);
     const onRoomTypeChange = (rt: any, index: number) => {
-        setRoomTypeID(rt);
-        // if (index == null) {
-        //     setBaseStay({
-        //         ...baseStay,
-        //         roomType: rt,
-        //     });
-        // } else {
-        //     const newArray = { ...baseGroupStay };
-        //     newArray[index] = { ...baseStay };
-        //     newArray[index].roomType = rt;
-        //     newArray[index].room = null;
-        //     newArray[index].rate = null;
-
-        //     setBaseGroupStay(newArray);
-        // }
+        setRoomTypeID(rt.RoomTypeID);
+        setRoomType(rt);
+        resetField(`TransactionDetail.${id}.Adult`, {
+            defaultValue: rt.BaseAdult,
+        });
+        resetField(`TransactionDetail.${id}.Child`, {
+            defaultValue: rt.BaseChild,
+        });
     };
-
     const onRoomChange = (r: any, index: any) => {
-        setRoom(r);
-        // if (index == null) {
-        //     setBaseStay({
-        //         ...baseStay,
-        //         room: r,
-        //     });
-        // } else {
-        //     const newArray = { ...baseGroupStay };
-        //     newArray[index].room = r;
-        //     newArray[index].rate = null;
-        //     setBaseGroupStay(newArray);
-        // }
+        setRoomID(r.RoomID);
     };
-
-    // const {
-    //     reset,
-    //     handleSubmit,
-    //     control,
-    //     formState: { errors },
-    // } = useForm({ resolver: yupResolver(validationSchema) });
 
     return (
         <Grid key={id} container spacing={1}>
@@ -197,8 +174,10 @@ const NewEdit = ({ id, register, control, errors, getValues }: any) => {
                     onRoomTypeChange={onRoomTypeChange}
                     customRegisterName={`TransactionDetail.${id}.RoomTypeID`}
                     baseStay={{ RoomTypeID: RoomTypeID }}
+                    RoomTypeID={RoomTypeID}
                 />
             </Grid>
+
             {RoomTypeID && (
                 <>
                     <Grid item xs={4} sm={2}>
@@ -206,19 +185,22 @@ const NewEdit = ({ id, register, control, errors, getValues }: any) => {
                             register={register}
                             errors={errors}
                             DepartureDate={DepartureDate}
-                            RoomTypeID={RoomTypeID.RoomTypeID}
-                            // baseStay={baseStay}
+                            RoomTypeID={RoomTypeID}
                             onRoomChange={onRoomChange}
                             customRegisterName={`TransactionDetail.${id}.RoomID`}
                             TransactionID={""}
                             ArrivalDate={ArrivalDate}
+                            RoomID={RoomID}
                         />
                     </Grid>
                     <Grid item xs={2} sm={1}>
                         <NumberSelect
                             numberMin={1}
                             numberMax={
-                                RoomTypeID?.MaxAdult ? RoomTypeID?.MaxAdult : 0
+                                RoomType?.MaxAdult ? RoomType?.MaxAdult : 0
+                            }
+                            defaultValue={
+                                RoomType?.BaseAdult ? RoomType?.BaseAdult : 0
                             }
                             nameKey={`TransactionDetail.${id}.Adult`}
                             register={register}
@@ -230,15 +212,23 @@ const NewEdit = ({ id, register, control, errors, getValues }: any) => {
                         <NumberSelect
                             numberMin={0}
                             numberMax={
-                                RoomTypeID?.BaseChild?.MaxChild
-                                    ? RoomTypeID?.BaseChild?.MaxChild
-                                    : 0
+                                RoomType?.MaxChild ? RoomType?.MaxChild : 0
+                            }
+                            defaultValue={
+                                RoomType?.BaseChild ? RoomType?.BaseChild : 0
                             }
                             nameKey={`TransactionDetail.${id}.Child`}
                             register={register}
                             errors={errors}
                             label={"Хүүхэд"}
                         />
+                    </Grid>
+                    <Grid item xs={12} sm={8}>
+                        {/* <ReservationTypeSelect
+                            register={register}
+                            errors={errors}
+                            reset={reset}
+                        /> */}
                     </Grid>
                 </>
             )}

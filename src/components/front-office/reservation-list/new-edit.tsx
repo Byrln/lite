@@ -1,7 +1,12 @@
 import { Controller, useForm, useFieldArray } from "react-hook-form";
-import { Grid } from "@mui/material";
+import { Grid, Card, CardContent } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import Tooltip from "@mui/material/Tooltip";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -22,6 +27,7 @@ const NewEdit = () => {
     const {
         register,
         reset,
+        resetField,
         handleSubmit,
         control,
         getValues,
@@ -33,7 +39,7 @@ const NewEdit = () => {
         resolver: yupResolver(validationSchema),
     });
 
-    const { fields, append, remove, insert } = useFieldArray({
+    const { fields, append, prepend, remove, insert } = useFieldArray({
         control,
         name: "TransactionDetail",
     });
@@ -47,30 +53,66 @@ const NewEdit = () => {
             reset={reset}
             handleSubmit={handleSubmit}
         >
-            <Grid container spacing={1}>
-                <LocalizationProvider // @ts-ignore
-                    dateAdapter={AdapterDateFns}
-                >
-                    {fields.map((field, index) => (
-                        <div key={index}>
+            <LocalizationProvider // @ts-ignore
+                dateAdapter={AdapterDateFns}
+            >
+                {fields.map((field, index) => (
+                    <Card className="mb-3">
+                        <CardContent>
                             <NewForm
                                 id={index}
                                 register={register}
                                 control={control}
                                 errors={errors}
                                 getValues={getValues}
+                                resetField={resetField}
+                                reset={reset}
                             />
-                        </div>
-                    ))}
-                </LocalizationProvider>
-                <button
-                    type="button"
-                    //@ts-ignore
-                    onClick={() => append(getValues(`TransactionDetail[0]`))}
-                >
-                    append
-                </button>
-            </Grid>
+                        </CardContent>
+                        {index != 0 && (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "row-reverse",
+                                    paddingRight: "16px",
+                                }}
+                            >
+                                <Tooltip title="Remove">
+                                    <IconButton
+                                        aria-label="close"
+                                        onClick={() => remove(index)}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Duplicate">
+                                    <IconButton
+                                        aria-label="close"
+                                        onClick={() =>
+                                            append(
+                                                getValues(
+                                                    //@ts-ignore
+                                                    `TransactionDetail[${index}]`
+                                                )
+                                            )
+                                        }
+                                    >
+                                        <ContentCopyIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                        )}
+                    </Card>
+                ))}
+            </LocalizationProvider>
+            <Button
+                variant="outlined"
+                //@ts-ignore
+                onClick={() => append(getValues(`TransactionDetail[0]`))}
+                style={{ width: "100%" }}
+            >
+                + Өрөө нэмэх
+            </Button>
         </NewEditForm>
     );
 };

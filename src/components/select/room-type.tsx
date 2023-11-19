@@ -12,6 +12,7 @@ const RoomTypeSelect = ({
     baseStay,
     customRegisterName,
     groupIndex,
+    RoomTypeID,
 }: any) => {
     const [data, setData]: any = useState([]);
 
@@ -27,37 +28,16 @@ const RoomTypeSelect = ({
     };
 
     const eventRoomTypeChange = (val: any) => {
-        if (onRoomTypeChange) {
-            let rt;
-            let roomType = null;
+        let rt;
+        let roomType = null;
 
-            for (rt of data) {
-                if (rt.RoomTypeID === val) {
-                    roomType = rt;
-                }
-            }
-
-            if (roomType) {
-                if (typeof baseStay == "undefined") {
-                    onRoomTypeChange(
-                        roomType,
-                        typeof groupIndex != "undefined" ? groupIndex : null
-                    );
-                } else if (
-                    (baseStay.roomType &&
-                        typeof baseStay.roomType.RoomTypeName != "string") ||
-                    (baseStay.roomType &&
-                        roomType.RoomTypeID != baseStay.roomType.RoomTypeID)
-                ) {
-                    onRoomTypeChange(
-                        roomType,
-                        typeof groupIndex != "undefined" ? groupIndex : null
-                    );
-                } else {
-                    onRoomTypeChange(val);
-                }
+        for (rt of data) {
+            if (rt.RoomTypeID === val) {
+                roomType = rt;
             }
         }
+
+        onRoomTypeChange(roomType);
     };
 
     useEffect(() => {
@@ -65,13 +45,8 @@ const RoomTypeSelect = ({
     }, []);
 
     useEffect(() => {
-        if (
-            data &&
-            data.length > 0 &&
-            baseStay &&
-            baseStay?.roomType?.RoomTypeID
-        ) {
-            eventRoomTypeChange(baseStay?.roomType?.RoomTypeID);
+        if (data && data.length > 0 && RoomTypeID) {
+            eventRoomTypeChange(RoomTypeID);
         }
     }, [data]);
 
