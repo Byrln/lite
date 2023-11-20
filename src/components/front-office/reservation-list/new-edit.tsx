@@ -57,7 +57,7 @@ const NewEdit = () => {
                 dateAdapter={AdapterDateFns}
             >
                 {fields.map((field, index) => (
-                    <Card className="mb-3">
+                    <Card className="mb-3" key={index}>
                         <CardContent>
                             <NewForm
                                 id={index}
