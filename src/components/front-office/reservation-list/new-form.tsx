@@ -184,6 +184,10 @@ const NewEdit = ({
         setRoomID(r.RoomID);
     };
 
+    resetField(`TransactionDetail.${id}.RateModeID`, {
+        defaultValue: 1,
+    });
+
     return (
         <Grid key={id} container spacing={1}>
             <input

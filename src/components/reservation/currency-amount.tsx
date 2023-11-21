@@ -66,6 +66,18 @@ const CurrencyAmount = ({
         calculateAmount();
     }, [ArrivalDate, RoomTypeID, RateTypeID, TaxIncluded, Nights]);
 
+    useEffect(() => {
+        if (isCurrencyAmountEditable == true) {
+            resetField(`TransactionDetail.${id}.RateModeID`, {
+                defaultValue: 2,
+            });
+        } else {
+            resetField(`TransactionDetail.${id}.RateModeID`, {
+                defaultValue: 1,
+            });
+        }
+    }, [isCurrencyAmountEditable]);
+
     return (
         <>
             {groupIndex == null && (
