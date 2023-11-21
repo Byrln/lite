@@ -6,8 +6,18 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { PaymentMethodSWR } from "lib/api/payment-method";
 
-const PaymentMethodSelect = ({ register, errors }: any) => {
+const PaymentMethodSelect = ({
+    register,
+    errors,
+    customRegisterName,
+    PaymentMethodID,
+    setPaymentMethodID,
+}: any) => {
     const { data, error } = PaymentMethodSWR();
+
+    const onchange = (val: any) => {
+        setPaymentMethodID(val);
+    };
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -22,14 +32,20 @@ const PaymentMethodSelect = ({ register, errors }: any) => {
     return (
         <TextField
             fullWidth
-            id="PaymentMethodID"
+            id={customRegisterName ? customRegisterName : "PaymentMethodID"}
             label="Төлбөрийн хэлбэр"
-            {...register("PaymentMethodID")}
+            {...register(
+                customRegisterName ? customRegisterName : "PaymentMethodID"
+            )}
             select
             margin="dense"
-            error={errors.PaymentMethodID?.message}
-            helperText={errors.PaymentMethodID?.message}
+            // error={errors.PaymentMethodID?.message}
+            // helperText={errors.PaymentMethodID?.message}
             size="small"
+            value={PaymentMethodID ? PaymentMethodID : ""}
+            onChange={(evt: any) => {
+                onchange(evt.target.value);
+            }}
         >
             {data.map((element: any) => (
                 <MenuItem

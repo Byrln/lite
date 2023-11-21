@@ -51,7 +51,6 @@ import GuestTitleSelect from "components/select/guest-title";
 import SelectList from "components/guest/select-list";
 import CurrencyAmount from "./currency-amount";
 import ColorPicker from "../select/color";
-import RoomRateTypeSelect from "../select/room-rate-type";
 import { ModalContext } from "../../lib/context/modal";
 
 const styleAccordion = {
@@ -1318,17 +1317,17 @@ const NewEdit = ({
                                                 </Grid>
 
                                                 <Grid item xs={12} sm={6}>
-                                                    <RoomRateTypeSelect
+                                                    {/* <RoomRateTypeSelect
                                                         register={register}
                                                         errors={errors}
-                                                        reservationModel={
-                                                            baseStay
-                                                        }
-                                                        setReservationModel={
-                                                            setBaseStay
-                                                        }
+                                                        // reservationModel={
+                                                        //     baseStay
+                                                        // }
+                                                        // setReservationModel={
+                                                        //     setBaseStay
+                                                        // }
                                                         reset={reset}
-                                                    />
+                                                    /> */}
                                                 </Grid>
 
                                                 <Grid item xs={12} sm={6}>
@@ -1470,13 +1469,13 @@ const NewEdit = ({
                                     label="Tax Included"
                                 />
 
-                                <RoomRateTypeSelect
+                                {/* <RoomRateTypeSelect
                                     register={register}
                                     errors={errors}
                                     reservationModel={baseStay}
                                     setReservationModel={setBaseStay}
                                     reset={reset}
-                                />
+                                /> */}
 
                                 <CurrencyAmount
                                     register={register}
@@ -1655,7 +1654,7 @@ const NewEdit = ({
                                         baseGroupStay[index].roomType &&
                                         baseGroupStay[index].room && (
                                             <Grid item xs={12} sm={2}>
-                                                <RoomRateTypeSelect
+                                                {/* <RoomRateTypeSelect
                                                     register={register}
                                                     errors={errors}
                                                     reservationModel={
@@ -1670,7 +1669,7 @@ const NewEdit = ({
                                                     reset={reset}
                                                     groupIndex={index}
                                                     customRegisterName={`groupReservation.${index}.RateTypeID`}
-                                                />
+                                                /> */}
                                             </Grid>
                                         )}
                                     {baseGroupStay[index] &&

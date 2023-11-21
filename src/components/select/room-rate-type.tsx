@@ -11,18 +11,18 @@ import { elementAcceptingRef } from "@mui/utils";
 const RoomRateTypeSelect = ({
     register,
     errors,
-    reservationModel,
-    setReservationModel,
-    baseGroupStay,
+    RoomTypeID,
     reset,
     groupIndex,
     customRegisterName,
+    setRate,
+    Rate,
 }: any) => {
     const [data, setData]: any = useState([]);
 
     const fetchRoomTypeRates = async () => {
         let d = await RateAPI.list({
-            RoomTypeID: reservationModel.roomType.RoomTypeID,
+            RoomTypeID: RoomTypeID,
             RateTypeID: 0,
             ChannelID: 0,
             SourceID: 0,
@@ -36,7 +36,7 @@ const RoomRateTypeSelect = ({
     useEffect(() => {
         fetchRoomTypeRates();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reservationModel.roomType]);
+    }, [RoomTypeID]);
 
     const onChange = (evt: any) => {
         var rate = null;
@@ -47,18 +47,7 @@ const RoomRateTypeSelect = ({
             }
         }
         if (rate) {
-            console.log("groupIndex", groupIndex);
-            if (groupIndex == null) {
-                setReservationModel({
-                    ...reservationModel,
-                    rate: rate,
-                });
-            } else {
-                let tempReservation = { ...baseGroupStay };
-                tempReservation[groupIndex].rate = rate;
-                setReservationModel(tempReservation);
-                console.log("tempReservation", tempReservation);
-            }
+            setRate(rate);
         }
     };
 
@@ -76,6 +65,7 @@ const RoomRateTypeSelect = ({
             helperText={errors.RateTypeID?.message}
             onChange={onChange}
             size="small"
+            value={Rate.RateTypeID}
         >
             {data.map((element: any) => {
                 return (

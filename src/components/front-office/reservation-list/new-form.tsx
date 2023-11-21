@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { Grid, TextField } from "@mui/material";
+import { Grid, TextField, Checkbox, FormControlLabel } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -8,6 +8,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useEffect, useState } from "react";
 import NumberSelect from "components/select/number-select";
+import { fToUniversal } from "lib/utils/format-time";
 
 import NewEditForm from "components/common/new-edit-form";
 import { ReservationAPI, listUrl } from "lib/api/reservation";
@@ -16,6 +17,13 @@ import { dateStringToObj } from "lib/utils/helpers";
 import RoomTypeSelect from "components/select/room-type";
 import RoomSelect from "components/select/room-select";
 import { ReservationTypeSelect } from "components/select";
+import RoomRateTypeSelect from "components/select/room-rate-type";
+import CurrencyAmount from "components/reservation/currency-amount";
+import GuestSelect from "components/select/guest-select";
+import PaymentMethodSelect from "components/select/payment-method";
+import CurrencySelect from "components/select/currency";
+
+import { countNights } from "lib/utils/format-time";
 
 const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().required("Бөглөнө үү"),
@@ -29,22 +37,64 @@ const NewEdit = ({
     getValues,
     resetField,
     reset,
+    field,
+    dateStart,
+    roomType,
+    room,
 }: any) => {
+    console.log("roomType", dateStart);
     const [state]: any = useAppState();
     const [TransactionID, setTransactionID]: any = useState("");
-    const [RoomTypeID, setRoomTypeID]: any = useState("");
+    const [RoomTypeID, setRoomTypeID]: any = useState(roomType ? roomType : "");
     const [RoomType, setRoomType]: any = useState("");
-    const [RoomID, setRoomID]: any = useState("");
-    const [ArrivalDate, setArrivalDate]: any = useState("");
+    const [RateTypeID, setRateTypeID]: any = useState("");
+    const [RoomID, setRoomID]: any = useState(room ? room : "");
+    const [ArrivalDate, setArrivalDate]: any = useState(
+        dateStart ? new Date(dateStart) : ""
+    );
     const [DepartureDate, setDepartureDate]: any = useState("");
+    const [Rate, setRate]: any = useState("");
+    const [Nights, setNights]: any = useState("");
+    const [TaxIncluded, setTaxIncluded]: any = useState("");
+    const [currencyAmount, setCurrencyAmount]: any = useState("");
+    const [Currency, setCurrency]: any = useState("");
+    const [BreakfastIncluded, setBreakfastIncluded]: any = useState("");
+    const [selectedGuest, setSelectedGuest]: any = useState(null);
+    const [PaymentMethodID, setPaymentMethodID]: any = useState(null);
+
+    const [ReservationTypeID, setReservationTypeID]: any = useState("");
+
+    const setRange = (dateStart: Date, dateEnd: Date) => {
+        var nights: number;
+        nights = countNights(dateStart, dateEnd);
+
+        setNights(nights);
+        resetField(`TransactionDetail.${id}.Nights`, {
+            defaultValue: nights,
+        });
+    };
+
+    useEffect(() => {
+        if (ArrivalDate && DepartureDate) {
+            setRange(ArrivalDate, DepartureDate);
+        }
+    }, [ArrivalDate, DepartureDate]);
 
     useEffect(() => {
         if (getValues(`TransactionDetail[${id}]`)) {
+            if (id > 0) {
+                console.log(
+                    "testestsetsetse",
+                    getValues(`TransactionDetail[${id}]`)
+                );
+            }
             if (getValues(`TransactionDetail[${id}].RoomTypeID`)) {
-                setRoomTypeID(getValues(`TransactionDetail[${id}].RoomTypeID`));
+                setRoomTypeID(
+                    Number(getValues(`TransactionDetail[${id}].RoomTypeID`))
+                );
             }
             if (getValues(`TransactionDetail[${id}].Room`)) {
-                setRoomID(getValues(`TransactionDetail[${id}].RoomID`));
+                setRoomID(Number(getValues(`TransactionDetail[${id}].RoomID`)));
             }
             if (getValues(`TransactionDetail[${id}].ArrivalDate`)) {
                 setArrivalDate(
@@ -54,6 +104,67 @@ const NewEdit = ({
             if (getValues(`TransactionDetail[${id}].DepartureDate`)) {
                 setDepartureDate(
                     getValues(`TransactionDetail[${id}].DepartureDate`)
+                );
+            }
+            if (getValues(`TransactionDetail[${id}].RateTypeID`)) {
+                setRate({
+                    RateTypeID: Number(
+                        getValues(`TransactionDetail[${id}].RateTypeID`)
+                    ),
+                });
+            }
+            if (getValues(`TransactionDetail[${id}].CurrencyAmount`)) {
+                setCurrencyAmount(
+                    Number(getValues(`TransactionDetail[${id}].CurrencyAmount`))
+                );
+            }
+            if (getValues(`TransactionDetail[${id}].CurrencyID`)) {
+                setCurrency({
+                    CurrencyID: Number(
+                        getValues(`TransactionDetail[${id}].CurrencyID`)
+                    ),
+                });
+            }
+            if (getValues(`TransactionDetail[${id}].BreakfastIncluded`)) {
+                setBreakfastIncluded(
+                    getValues(`TransactionDetail[${id}].BreakfastIncluded`)
+                );
+            }
+            if (getValues(`TransactionDetail[${id}].ReservationTypeID`)) {
+                setReservationTypeID(
+                    Number(
+                        getValues(`TransactionDetail[${id}].ReservationTypeID`)
+                    )
+                );
+            }
+
+            // if (getValues(`TransactionDetail[${id}].PaymentMethodID`)) {
+            //     setPaymentMethodID(
+            //         Number(
+            //             getValues(`TransactionDetail[${id}].PaymentMethodID`)
+            //         )
+            //     );
+            // }
+
+            if (getValues(`TransactionDetail[${id}].GuestDetail.GuestName`)) {
+                setSelectedGuest({
+                    value: Number(
+                        Number(
+                            getValues(
+                                `TransactionDetail[${id}].GuestDetail.GuestID`
+                            )
+                        )
+                    ),
+                    label: getValues(
+                        `TransactionDetail[${id}].GuestDetail.GuestName`
+                    ),
+                });
+                console.log("2222222222222");
+            }
+            if (id > 0) {
+                console.log(
+                    "getValues(`TransactionDetail[${id}].GuestDetail.GuestID`)",
+                    selectedGuest
                 );
             }
         }
@@ -75,11 +186,51 @@ const NewEdit = ({
 
     return (
         <Grid key={id} container spacing={1}>
+            <input
+                type="hidden"
+                {...register(`TransactionDetail.${id}.Nights`)}
+                name={`TransactionDetail.${id}.Nights`}
+            />
+            <input
+                type="hidden"
+                {...register(`TransactionDetail.${id}.Amount`)}
+                name={`TransactionDetail.${id}.Amount`}
+            />
+            <input
+                type="hidden"
+                {...register(`TransactionDetail.${id}.RateModeID`)}
+                name={`TransactionDetail.${id}.RateModeID`}
+                value={1}
+            />
             <Grid item xs={6} sm={2}>
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.IsReserved`)}
+                    name={`TransactionDetail.${id}.IsReserved`}
+                    value={true}
+                />
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.IsCheckIn`)}
+                    name={`TransactionDetail.${id}.IsCheckIn`}
+                    value={false}
+                />
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.DurationEnabled`)}
+                    name={`TransactionDetail.${id}.DurationEnabled`}
+                    value={true}
+                />
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.ReservationSourceID`)}
+                    name={`TransactionDetail.${id}.ReservationSourceID`}
+                    value={1}
+                />
                 <Controller
                     name={`TransactionDetail.${id}.ArrivalDate`}
                     control={control}
-                    defaultValue={null}
+                    defaultValue={ArrivalDate}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
                             label="Эхлэх огноо"
@@ -177,7 +328,100 @@ const NewEdit = ({
                     RoomTypeID={RoomTypeID}
                 />
             </Grid>
+            <Grid item xs={4} sm={4}>
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.GuestDetail.GuestID`)}
+                    name={`TransactionDetail.${id}.GuestDetail.GuestID`}
+                    value={
+                        selectedGuest &&
+                        selectedGuest.value &&
+                        selectedGuest.value != "createNew"
+                            ? selectedGuest.value
+                            : null
+                    }
+                />
+                <input
+                    type="hidden"
+                    {...register(
+                        `TransactionDetail.${id}.GuestDetail.GuestTitleID`
+                    )}
+                    name={`TransactionDetail.${id}.GuestDetail.GuestTitleID`}
+                    value={0}
+                />
+                <input
+                    type="hidden"
+                    {...register(
+                        `TransactionDetail.${id}.GuestDetail.GenderID`
+                    )}
+                    name={`TransactionDetail.${id}.GuestDetail.GenderID`}
+                    value={0}
+                />
+                <input
+                    type="hidden"
+                    {...register(
+                        `TransactionDetail.${id}.GuestDetail.CountryID`
+                    )}
+                    name={`TransactionDetail.${id}.GuestDetail.CountryID`}
+                    value={0}
+                />
+                <input
+                    type="hidden"
+                    {...register(
+                        `TransactionDetail.${id}.GuestDetail.VipStatusID`
+                    )}
+                    name={`TransactionDetail.${id}.GuestDetail.VipStatusID`}
+                    value={0}
+                />
+                <GuestSelect
+                    register={register}
+                    errors={errors}
+                    onRoomTypeChange={onRoomTypeChange}
+                    customRegisterName={`TransactionDetail.${id}.GuestDetail.GuestName`}
+                    baseStay={{ RoomTypeID: RoomTypeID }}
+                    RoomTypeID={RoomTypeID}
+                    resetField={resetField}
+                    control={control}
+                    field={field}
+                    selectedGuest={selectedGuest}
+                    setSelectedGuest={setSelectedGuest}
+                    id={id}
+                />
+            </Grid>
+            {selectedGuest &&
+            (selectedGuest.value == null ||
+                selectedGuest.value == "" ||
+                selectedGuest.value == "createNew") ? (
+                <>
+                    <Grid item xs={4} sm={4}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Name"
+                            label="Нэр"
+                            {...register(
+                                `TransactionDetail.${id}.GuestDetail.Name`
+                            )}
+                            margin="dense"
+                        />
+                    </Grid>
 
+                    <Grid item xs={4} sm={2}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Mobile"
+                            label="Гар утас"
+                            {...register(
+                                `TransactionDetail.${id}.GuestDetail.Mobile`
+                            )}
+                            margin="dense"
+                        />
+                    </Grid>
+                </>
+            ) : (
+                ""
+            )}
             {RoomTypeID && (
                 <>
                     <Grid item xs={4} sm={2}>
@@ -223,13 +467,142 @@ const NewEdit = ({
                             label={"Хүүхэд"}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={8}>
-                        {/* <ReservationTypeSelect
+
+                    <Grid item xs={6} sm={2}>
+                        <ReservationTypeSelect
                             register={register}
                             errors={errors}
                             reset={reset}
-                        /> */}
+                            customRegisterName={`TransactionDetail.${id}.ReservationTypeID`}
+                            ReservationTypeID={ReservationTypeID}
+                            setReservationTypeID={setReservationTypeID}
+                        />
                     </Grid>
+
+                    <Grid item xs={6} sm={2}>
+                        <RoomRateTypeSelect
+                            register={register}
+                            errors={errors}
+                            reset={reset}
+                            customRegisterName={`TransactionDetail.${id}.RateTypeID`}
+                            RoomTypeID={RoomTypeID}
+                            setRate={setRate}
+                            Rate={Rate}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6} sm={2}>
+                        <FormControlLabel
+                            control={
+                                <Controller
+                                    name={`TransactionDetail.${id}.BreakfastIncluded`}
+                                    control={control}
+                                    render={(props: any) => (
+                                        <Checkbox
+                                            {...register(
+                                                `TransactionDetail.${id}.BreakfastIncluded`
+                                            )}
+                                            checked={
+                                                BreakfastIncluded == true
+                                                    ? true
+                                                    : false
+                                            }
+                                            onChange={(e) =>
+                                                setBreakfastIncluded(
+                                                    e.target.checked
+                                                )
+                                            }
+                                        />
+                                    )}
+                                />
+                            }
+                            label="Өглөөний цай"
+                        />
+                    </Grid>
+
+                    <Grid item xs={6} sm={2}>
+                        <FormControlLabel
+                            control={
+                                <Controller
+                                    name={`TransactionDetail.${id}.TaxIncluded`}
+                                    control={control}
+                                    render={(props: any) => (
+                                        <Checkbox
+                                            {...register(
+                                                `TransactionDetail.${id}.TaxIncluded`
+                                            )}
+                                            checked={
+                                                TaxIncluded == true
+                                                    ? true
+                                                    : false
+                                            }
+                                            onChange={(e) =>
+                                                setTaxIncluded(e.target.checked)
+                                            }
+                                        />
+                                    )}
+                                />
+                            }
+                            label="Татвар"
+                        />
+                    </Grid>
+
+                    <CurrencyAmount
+                        register={register}
+                        errors={errors}
+                        reset={reset}
+                        ArrivalDate={ArrivalDate}
+                        RoomTypeID={RoomTypeID}
+                        RateTypeID={Rate && Rate.RateTypeID}
+                        TaxIncluded={TaxIncluded}
+                        Nights={Nights}
+                        setCurrencyAmount={setCurrencyAmount}
+                        currencyAmount={currencyAmount}
+                        resetField={resetField}
+                        id={id}
+                        setCurrency={setCurrency}
+                        Currency={Currency}
+                        control={control}
+                        Controller={Controller}
+                    />
+
+                    {id == 0 ? (
+                        <>
+                            <Grid item xs={6} sm={2}>
+                                <PaymentMethodSelect
+                                    register={register}
+                                    errors={errors}
+                                    customRegisterName={`TransactionDetail.${id}.PaymentMethodID`}
+                                    PaymentMethodID={PaymentMethodID}
+                                    setPaymentMethodID={setPaymentMethodID}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={2}>
+                                <CurrencySelect
+                                    register={register}
+                                    errors={errors}
+                                    nameKey={`TransactionDetail.${id}.PayCurrencyID`}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={2}>
+                                <TextField
+                                    id={`TransactionDetail.${id}.PayAmount`}
+                                    label="PayAmount"
+                                    type="number"
+                                    {...register(
+                                        `TransactionDetail.${id}.PayAmount`
+                                    )}
+                                    margin="dense"
+                                    size="small"
+                                    style={{
+                                        width: "100%",
+                                    }}
+                                />
+                            </Grid>
+                        </>
+                    ) : (
+                        ""
+                    )}
                 </>
             )}
         </Grid>

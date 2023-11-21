@@ -30,7 +30,7 @@ import { RoomBlockSWR } from "../../lib/api/room-block";
 import { StayView2SWR } from "../../lib/api/stay-view2";
 import { dateToCustomFormat } from "../../lib/utils/format-time";
 import { ModalContext } from "lib/context/modal";
-import NewReservation from "components/reservation/new-edit";
+import NewReservation from "components/front-office/reservation-list/new-edit";
 import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 

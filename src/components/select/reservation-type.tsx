@@ -6,14 +6,25 @@ import Skeleton from "@mui/material/Skeleton";
 import { ReservationTypeSWR } from "lib/api/reservation-type";
 import { useEffect } from "react";
 
-const ReservationTypeSelect = ({ register, errors, reset }: any) => {
+const ReservationTypeSelect = ({
+    register,
+    errors,
+    reset,
+    customRegisterName,
+    ReservationTypeID,
+    setReservationTypeID,
+}: any) => {
     const { data, error } = ReservationTypeSWR();
 
-    useEffect(() => {
-        if (data && data.length > 0) {
-            reset({ ReservationTypeID: data[0].ReservationTypeID });
-        }
-    }, [data]);
+    // useEffect(() => {
+    //     if (data && data.length > 0) {
+    //         reset({ ReservationTypeID: data[0].ReservationTypeID });
+    //     }
+    // }, [data]);
+
+    const onChange = (evt: any) => {
+        setReservationTypeID(evt.target.value);
+    };
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -28,14 +39,18 @@ const ReservationTypeSelect = ({ register, errors, reset }: any) => {
     return (
         <TextField
             fullWidth
-            id="ReservationTypeID"
+            id={customRegisterName ? customRegisterName : "ReservationTypeID"}
             label="Захиалгын төрөл"
-            {...register("ReservationTypeID")}
+            {...register(
+                customRegisterName ? customRegisterName : "ReservationTypeID"
+            )}
             select
             margin="dense"
             error={errors.ReservationTypeID?.message}
             helperText={errors.ReservationTypeID?.message}
             size="small"
+            value={ReservationTypeID}
+            onChange={onChange}
         >
             {data.map((element: any) => {
                 return (
