@@ -38,9 +38,6 @@ const NewEdit = ({
     resetField,
     reset,
     field,
-    dateStart,
-    roomType,
-    room,
 }: any) => {
     const [state]: any = useAppState();
     const [TransactionID, setTransactionID]: any = useState("");
@@ -80,10 +77,6 @@ const NewEdit = ({
     useEffect(() => {
         if (getValues(`TransactionDetail[${id}]`)) {
             if (id > 0) {
-                console.log(
-                    "testestsetsetse",
-                    getValues(`TransactionDetail[${id}]`)
-                );
             }
             if (getValues(`TransactionDetail[${id}].RoomTypeID`)) {
                 setRoomTypeID(
@@ -181,9 +174,9 @@ const NewEdit = ({
         setRoomID(r.RoomID);
     };
 
-    resetField(`TransactionDetail.${id}.RateModeID`, {
-        defaultValue: 1,
-    });
+    // resetField(`TransactionDetail.${id}.RateModeID`, {
+    //     defaultValue: 1,
+    // });
 
     return (
         <Grid key={id} container spacing={1}>

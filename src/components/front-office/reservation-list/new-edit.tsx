@@ -21,7 +21,7 @@ const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().notRequired(),
 });
 
-const NewEdit = ({ dateStart, roomType, room }: any) => {
+const NewEdit = () => {
     const [state]: any = useAppState();
 
     const {
@@ -68,9 +68,6 @@ const NewEdit = ({ dateStart, roomType, room }: any) => {
                                 resetField={resetField}
                                 reset={reset}
                                 field={field}
-                                dateStart={dateStart}
-                                roomType={roomType}
-                                room={room}
                             />
                         </CardContent>
                         {index != 0 && (
