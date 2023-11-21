@@ -231,7 +231,7 @@ const NewEdit = ({
                 <Controller
                     name={`TransactionDetail.${id}.ArrivalDate`}
                     control={control}
-                    defaultValue={ArrivalDate}
+                    defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
                             label="Эхлэх огноо"
