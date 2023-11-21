@@ -42,16 +42,13 @@ const NewEdit = ({
     roomType,
     room,
 }: any) => {
-    console.log("roomType", dateStart);
     const [state]: any = useAppState();
     const [TransactionID, setTransactionID]: any = useState("");
-    const [RoomTypeID, setRoomTypeID]: any = useState(roomType ? roomType : "");
+    const [RoomTypeID, setRoomTypeID]: any = useState("");
     const [RoomType, setRoomType]: any = useState("");
     const [RateTypeID, setRateTypeID]: any = useState("");
-    const [RoomID, setRoomID]: any = useState(room ? room : "");
-    const [ArrivalDate, setArrivalDate]: any = useState(
-        dateStart ? new Date(dateStart) : ""
-    );
+    const [RoomID, setRoomID]: any = useState("");
+    const [ArrivalDate, setArrivalDate]: any = useState("");
     const [DepartureDate, setDepartureDate]: any = useState("");
     const [Rate, setRate]: any = useState("");
     const [Nights, setNights]: any = useState("");
