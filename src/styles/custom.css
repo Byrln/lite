@@ -106,3 +106,8 @@ td.color-FF66FF {
     background-color: #FF66FF !important;
     border-radius: 10px;
 }
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root{
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+}

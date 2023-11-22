@@ -43,6 +43,16 @@ const NewEdit = ({ dateStart, roomType, room }: any) => {
         control,
         name: "TransactionDetail",
     });
+
+    const customResetEvent = (data: any) => {
+        console.log("data", data);
+        reset({
+            TransactionDetail: [data],
+        });
+
+        console.log("data", data);
+    };
+
     return (
         <NewEditForm
             api={ReservationAPI}
@@ -52,6 +62,7 @@ const NewEdit = ({ dateStart, roomType, room }: any) => {
             // }}
             reset={reset}
             handleSubmit={handleSubmit}
+            customResetEvent={customResetEvent}
         >
             <LocalizationProvider // @ts-ignore
                 dateAdapter={AdapterDateFns}

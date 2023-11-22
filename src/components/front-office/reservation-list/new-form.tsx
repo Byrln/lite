@@ -1,5 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
-import { Grid, TextField, Checkbox, FormControlLabel } from "@mui/material";
+import {
+    Grid,
+    TextField,
+    Checkbox,
+    FormControlLabel,
+    Typography,
+} from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -136,24 +142,18 @@ const NewEdit = ({
             //     );
             // }
 
-            if (getValues(`TransactionDetail[${id}].GuestDetail.GuestName`)) {
+            if (getValues(`TransactionDetail[${id}].GuestName`)) {
                 setSelectedGuest({
                     value: Number(
-                        Number(
-                            getValues(
-                                `TransactionDetail[${id}].GuestDetail.GuestID`
-                            )
-                        )
+                        Number(getValues(`TransactionDetail[${id}].GuestID`))
                     ),
-                    label: getValues(
-                        `TransactionDetail[${id}].GuestDetail.GuestName`
-                    ),
+                    label: getValues(`TransactionDetail[${id}].GuestName`),
                 });
                 console.log("2222222222222");
             }
             if (id > 0) {
                 console.log(
-                    "getValues(`TransactionDetail[${id}].GuestDetail.GuestID`)",
+                    "getValues(`TransactionDetail[${id}].GuestID`)",
                     selectedGuest
                 );
             }
@@ -180,6 +180,11 @@ const NewEdit = ({
 
     return (
         <Grid key={id} container spacing={1}>
+            <Grid item xs={12}>
+                <Typography variant="subtitle1" component="div">
+                    Захиалгын мэдээлэл
+                </Typography>
+            </Grid>
             <input
                 type="hidden"
                 {...register(`TransactionDetail.${id}.Nights`)}
@@ -312,21 +317,11 @@ const NewEdit = ({
                     )}
                 />
             </Grid>
-            <Grid item xs={4} sm={4}>
-                <RoomTypeSelect
-                    register={register}
-                    errors={errors}
-                    onRoomTypeChange={onRoomTypeChange}
-                    customRegisterName={`TransactionDetail.${id}.RoomTypeID`}
-                    baseStay={{ RoomTypeID: RoomTypeID }}
-                    RoomTypeID={RoomTypeID}
-                />
-            </Grid>
-            <Grid item xs={4} sm={4}>
+            <Grid item xs={4} sm={3}>
                 <input
                     type="hidden"
-                    {...register(`TransactionDetail.${id}.GuestDetail.GuestID`)}
-                    name={`TransactionDetail.${id}.GuestDetail.GuestID`}
+                    {...register(`TransactionDetail.${id}.GuestID`)}
+                    name={`TransactionDetail.${id}.GuestID`}
                     value={
                         selectedGuest &&
                         selectedGuest.value &&
@@ -371,7 +366,7 @@ const NewEdit = ({
                     register={register}
                     errors={errors}
                     onRoomTypeChange={onRoomTypeChange}
-                    customRegisterName={`TransactionDetail.${id}.GuestDetail.GuestName`}
+                    customRegisterName={`TransactionDetail.${id}.GuestName`}
                     baseStay={{ RoomTypeID: RoomTypeID }}
                     RoomTypeID={RoomTypeID}
                     resetField={resetField}
@@ -382,6 +377,17 @@ const NewEdit = ({
                     id={id}
                 />
             </Grid>
+            <Grid item xs={4} sm={3}>
+                <RoomTypeSelect
+                    register={register}
+                    errors={errors}
+                    onRoomTypeChange={onRoomTypeChange}
+                    customRegisterName={`TransactionDetail.${id}.RoomTypeID`}
+                    baseStay={{ RoomTypeID: RoomTypeID }}
+                    RoomTypeID={RoomTypeID}
+                />
+            </Grid>
+
             {selectedGuest &&
             (selectedGuest.value == null ||
                 selectedGuest.value == "" ||
@@ -512,9 +518,6 @@ const NewEdit = ({
                             }
                             label="Өглөөний цай"
                         />
-                    </Grid>
-
-                    <Grid item xs={6} sm={2}>
                         <FormControlLabel
                             control={
                                 <Controller
@@ -562,6 +565,11 @@ const NewEdit = ({
 
                     {id == 0 ? (
                         <>
+                            <Grid item xs={12}>
+                                <Typography variant="subtitle1" component="div">
+                                    Төлбөр тооцоо
+                                </Typography>
+                            </Grid>
                             <Grid item xs={6} sm={2}>
                                 <PaymentMethodSelect
                                     register={register}

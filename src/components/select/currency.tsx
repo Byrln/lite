@@ -14,6 +14,7 @@ const CurrencySelect = ({
     entity,
     setEntity,
     nameKey,
+    disabled = false,
 }: any) => {
     const { data, error } = CurrencySWR();
 
@@ -34,6 +35,7 @@ const CurrencySelect = ({
             label="Валют"
             {...register(nameKey)}
             select
+            disabled={disabled}
             margin="dense"
             error={errors[nameKey]?.message}
             helperText={errors[nameKey]?.message}

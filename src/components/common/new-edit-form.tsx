@@ -22,12 +22,13 @@ const NewEditForm = ({
     stateEditIdNotAffected = false,
     dateKeys,
     customSubmitTitle,
+    customResetEvent,
 }: any) => {
     const [state]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
     const [loadingData, setLoadingData] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    console.log("state.editId", state.editId);
     useEffect(() => {
         const fetchDatas = async () => {
             if (state.editId) {
@@ -62,7 +63,12 @@ const NewEditForm = ({
                     if (setEntity) {
                         setEntity(arr[0]);
                     }
-                    reset(arr[0]);
+                    if (customResetEvent) {
+                        customResetEvent(arr);
+                    }
+                    {
+                        reset(arr[0]);
+                    }
                 } finally {
                     setLoadingData(false);
                 }

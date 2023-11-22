@@ -66,7 +66,7 @@ const GuestSelect = ({
             resetField(`TransactionDetail.${id}.GuestDetail.GuestName`, {
                 defaultValue: newValue.label,
             });
-            resetField(`TransactionDetail.${id}.GuestDetail.GuestID`, {
+            resetField(`TransactionDetail.${id}.GuestID`, {
                 defaultValue: null,
             });
             console.log("1111", newValue.value);
@@ -75,7 +75,7 @@ const GuestSelect = ({
             resetField(`TransactionDetail.${id}.GuestDetail.GuestName`, {
                 defaultValue: newValue.label,
             });
-            resetField(`TransactionDetail.${id}.GuestDetail.GuestID`, {
+            resetField(`TransactionDetail.${id}.GuestID`, {
                 defaultValue: newValue.value,
             });
             console.log("2222", newValue.value);

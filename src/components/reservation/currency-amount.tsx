@@ -53,8 +53,11 @@ const CurrencyAmount = ({
             } else {
                 return;
             }
-
             setCurrencyAmount(amount);
+            resetField(`TransactionDetail.${id}.CurrencyID`, {
+                defaultValue: rates[0].CurrencyID,
+            });
+            setCurrency({ CurrencyID: rates[0].CurrencyID });
 
             resetField(`TransactionDetail.${id}.CurrencyAmount`, {
                 defaultValue: amount,
@@ -88,11 +91,27 @@ const CurrencyAmount = ({
                         nameKey={`TransactionDetail.${id}.CurrencyID`}
                         entity={Currency}
                         setEntity={setCurrency}
+                        disabled={true}
                     />
                 </Grid>
             )}
 
             <Grid item xs={6} sm={2}>
+                <TextField
+                    id="CurrencyAmount"
+                    label="CurrencyAmount"
+                    type="number"
+                    disabled={isCurrencyAmountEditable ? false : true}
+                    {...register(`TransactionDetail.${id}.CurrencyAmount`)}
+                    margin="dense"
+                    error={errors.CurrencyAmount?.message}
+                    helperText={errors.CurrencyAmount?.message}
+                    InputLabelProps={{
+                        shrink: currencyAmount,
+                    }}
+                    size="small"
+                    style={{ width: "100%" }}
+                />
                 <FormControlLabel
                     control={
                         <Controller
@@ -116,24 +135,6 @@ const CurrencyAmount = ({
                         />
                     }
                     label="Гараар"
-                />
-            </Grid>
-
-            <Grid item xs={6} sm={2}>
-                <TextField
-                    id="CurrencyAmount"
-                    label="CurrencyAmount"
-                    type="number"
-                    disabled={isCurrencyAmountEditable ? false : true}
-                    {...register(`TransactionDetail.${id}.CurrencyAmount`)}
-                    margin="dense"
-                    error={errors.CurrencyAmount?.message}
-                    helperText={errors.CurrencyAmount?.message}
-                    InputLabelProps={{
-                        shrink: currencyAmount,
-                    }}
-                    size="small"
-                    style={{ width: "100%" }}
                 />
             </Grid>
         </>
