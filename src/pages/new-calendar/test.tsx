@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 import Page from "components/page";
 // import NewCalendar from "components/new-calendar";
 import { FrontOfficeAPI } from "lib/api/front-office";
-import MyScheduler from "components/new-calendar/test";
 
 // const Scheduler = dynamic(() => import("components/Scheduler"), { ssr: false });
 
@@ -80,7 +79,7 @@ const Index = () => {
                     />
                 )} */}
 
-                <MyScheduler />
+                {/* <MyScheduler /> */}
             </Page>
         </>
     );
