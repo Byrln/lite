@@ -32,6 +32,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({});
     const { data: rooms, error: roomSwrError } = RoomSWR({});
+    // const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR(
+    //     //@ts-ignore
+    //     dateToCustomFormat(timeStart, "yyyy MMM dd"),
+    //     dateToCustomFormat(timeEnd, "yyyy MMM dd")
+    // );
     const [resources, setResources] = useState<any>(null);
     const [itemData, setItemData] = useState<any>(null);
 
@@ -60,6 +65,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     start: obj.StartDate,
                     end: obj.EndDate,
                     resourceId: obj.RoomID,
+                    roomTypeID: obj.RoomTypeID,
                     editable: true,
                 };
             });
@@ -96,15 +102,24 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleEventDrop = (info: any) => {
         console.log("Event dropped", info.event);
+        const newEventObject = {
+            title: "New Event",
+            start: info.event._instance.range.start,
+            end: info.event._instance.range.end,
+            roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
+            roomID: Number(info.event._def.resourceIds[0]),
+        };
+        console.log("newEventObject", newEventObject);
         handleModal(
             true,
             `New Reservation`,
             <NewReservation
-            // dateStart={start}
-            // // @ts-ignore
-            // roomType={resourceId}
-            // // @ts-ignore
-            // room={resourceId}
+                dateStart={newEventObject.start}
+                dateEnd={newEventObject.end}
+                // // @ts-ignore
+                roomType={newEventObject.roomTypeID}
+                // // @ts-ignore
+                room={newEventObject.roomID}
             />,
             null,
             "large"
@@ -114,15 +129,24 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const handleEventResize = (info: any) => {
         console.log("Event resized", info.event);
         console.log("info", info);
+        const newEventObject = {
+            title: "New Event",
+            start: info.event._instance.range.start,
+            end: info.event._instance.range.end,
+            roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
+            roomID: Number(info.event._def.resourceIds[0]),
+        };
+        console.log("newEventObject", newEventObject);
         handleModal(
             true,
             `New Reservation`,
             <NewReservation
-            // dateStart={start}
-            // // @ts-ignore
-            // roomType={resourceId}
-            // // @ts-ignore
-            // room={resourceId}
+                dateStart={newEventObject.start}
+                dateEnd={newEventObject.end}
+                // // @ts-ignore
+                roomType={newEventObject.roomTypeID}
+                // // @ts-ignore
+                room={newEventObject.roomID}
             />,
             null,
             "large"
@@ -131,7 +155,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleSelect = (info: any) => {
         const { start, end, resourceId } = info;
-
+        console.log("info", info);
         const newEventObject = {
             title: "New Event",
             start: start,
@@ -144,21 +168,23 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         console.log("newEventObject", newEventObject);
 
         setNewEvent(newEventObject);
-        console.log("newEvent", newEvent);
-        handleModal(
-            true,
-            `New Reservation`,
-            <NewReservation
-                dateStart={start}
-                dateEnd={end}
-                // // @ts-ignore
-                roomType={newEventObject.roomTypeID}
-                // // @ts-ignore
-                room={newEventObject.roomID}
-            />,
-            null,
-            "large"
-        );
+
+        if (newEventObject.roomID) {
+            handleModal(
+                true,
+                `New Reservation`,
+                <NewReservation
+                    dateStart={start}
+                    dateEnd={end}
+                    // // @ts-ignore
+                    roomType={newEventObject.roomTypeID}
+                    // // @ts-ignore
+                    room={newEventObject.roomID}
+                />,
+                null,
+                "large"
+            );
+        }
     };
 
     const slotLabelContent = (args: any) => {
