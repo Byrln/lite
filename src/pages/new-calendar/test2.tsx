@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 
 import Page from "components/page";
-import HandsOnTable from "components/handsontable";
-import MyCalendar from "components/new-calendar/test2";
 import { FrontOfficeAPI } from "lib/api/front-office";
+import MyScheduler from "components/new-calendar/test2";
 
 const title = "Календар";
 
@@ -32,12 +32,10 @@ const Index = () => {
             <Page>
                 <Container maxWidth="xl">
                     {workingDate && (
-                        <MyCalendar //@ts-ignore
+                        <MyScheduler //@ts-ignore
                             workingDate={workingDate}
                         />
                     )}
-
-                    {/* {workingDate && <HandsOnTable workingDate={workingDate} />} */}
                 </Container>
             </Page>
         </>

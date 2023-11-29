@@ -10,7 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import NewEditForm from "components/common/new-edit-form";
 import { ReservationAPI, listUrl } from "lib/api/reservation";
@@ -21,9 +21,9 @@ const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().notRequired(),
 });
 
-const NewEdit = ({ dateStart, roomType, room }: any) => {
+const NewEdit = ({ dateStart, dateEnd, roomType, room }: any) => {
     const [state]: any = useAppState();
-
+    console.log("roomType", roomType);
     const {
         register,
         reset,
@@ -34,7 +34,16 @@ const NewEdit = ({ dateStart, roomType, room }: any) => {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            TransactionDetail: [{}],
+            TransactionDetail: [
+                dateStart && dateEnd && roomType && room
+                    ? {
+                          ArrivalDate: dateStart,
+                          DepartureDate: dateEnd,
+                          RoomTypeID: roomType,
+                          RoomID: room,
+                      }
+                    : {},
+            ],
         },
         resolver: yupResolver(validationSchema),
     });
@@ -52,6 +61,14 @@ const NewEdit = ({ dateStart, roomType, room }: any) => {
 
         console.log("data", data);
     };
+    console.log("dateStart", dateStart);
+    // useEffect(() => {
+    //     if (dateStart) {
+    //         resetField(`TransactionDetail.${0}.ArrivalDate`, {
+    //             defaultValue: dateStart,
+    //         });
+    //     }
+    // }, [dateStart]);
 
     return (
         <NewEditForm

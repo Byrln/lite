@@ -1,15 +1,15 @@
 import axios from "../utils/axios";
 import useSWR from "swr";
-import {listUrl} from "./room";
+import { listUrl } from "./room";
 
 const uri = "/api/FrontOffice/StayView2";
 
-export const StayView2SWR = (date: any, dayCount: string = "30") => {
+export const StayView2SWR = (date: any, dayCount: any = "30") => {
     const values = {
         CurrDate: date,
         NumberOfDays: parseInt(dayCount),
         RoomTypeID: 0,
-        IncludeRoomBlock: true
+        IncludeRoomBlock: true,
     };
 
     const fetcher = async (url: any) =>
