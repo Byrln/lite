@@ -57,7 +57,7 @@ const TimelinePms = ({ props, workingDate }: any) => {
     const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({});
     const { data: rooms, error: roomSwrError } = RoomSWR({});
     const { data: items, error: itemsError } = FrontOfficeSWR(workingDate);
-    const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR();
+    const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR("", "");
     const { handleModal }: any = useContext(ModalContext);
 
     const [timelineData, setTimelineData] = useState({

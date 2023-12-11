@@ -36,7 +36,7 @@ const columns = [
 ];
 
 const RoomBlockList = ({ title }: any) => {
-    const { data, error } = RoomBlockSWR();
+    const { data, error } = RoomBlockSWR("", "");
 
     return (
         <CustomTable
