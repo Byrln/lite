@@ -120,7 +120,6 @@ const NewEdit = () => {
                 <LocalizationProvider // @ts-ignore
                     dateAdapter={AdapterDateFns}
                 >
-                    {" "}
                     <Grid item xs={6}>
                         <Controller
                             name="BeginDate"
@@ -195,7 +194,7 @@ const NewEdit = () => {
                                     )}
                                 />
                             )}
-                        />{" "}
+                        />
                     </Grid>
                 </LocalizationProvider>
             </Grid>

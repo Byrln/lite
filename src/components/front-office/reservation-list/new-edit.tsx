@@ -54,7 +54,6 @@ const NewEdit = ({ dateStart, dateEnd, roomType, room }: any) => {
     });
 
     const customResetEvent = (data: any) => {
-        console.log("data", data);
         reset({
             TransactionDetail: [data],
         });

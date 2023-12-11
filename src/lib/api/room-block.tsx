@@ -5,11 +5,11 @@ import { date } from "yup/lib/locale";
 const urlPrefix = "/api/RoomBlock";
 export const listUrl = `${urlPrefix}/List`;
 
-export const RoomBlockSWR = () => {
+export const RoomBlockSWR = (startDate: any, endDate: any) => {
     const values = {
         RoomBlockID: 0,
-        StartDate: date,
-        EndDate: date,
+        StartDate: startDate,
+        EndDate: endDate,
         RoomID: 0,
     };
 

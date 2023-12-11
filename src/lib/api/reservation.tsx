@@ -61,8 +61,27 @@ export const GroupReservationSWR = () => {
     return useSWR(listUrl, fetcher);
 };
 
+export const PendingReservationSWR = () => {
+    const fetcher = async (url: any) =>
+        await axios
+            .get(`${urlPrefix}/PendingReservation`)
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(listUrl, fetcher);
+};
+
+export const PendingDueOutSWR = () => {
+    const fetcher = async (url: any) =>
+        await axios
+            .get(`${urlPrefix}/PendingDueOut`)
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(listUrl, fetcher);
+};
+
 export const ReservationAPI = {
     get: async (id: any) => {
+        console.log("id", id);
         const values = {
             CustomerID: 0,
             ReservationTypeID: 0,

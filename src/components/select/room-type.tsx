@@ -37,7 +37,7 @@ const RoomTypeSelect = ({
             }
         }
 
-        onRoomTypeChange(roomType);
+        onRoomTypeChange && onRoomTypeChange(roomType);
     };
 
     useEffect(() => {

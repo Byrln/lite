@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction"; // Import the interaction plugin
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
-import { RoomTypeSWR } from "../../lib/api/room-type";
-import { RoomSWR } from "lib/api/room";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import { mutate } from "swr";
 import {
@@ -12,43 +13,97 @@ import {
     RadioGroup,
     Radio,
 } from "@mui/material";
+
+import { RoomTypeSWR } from "../../lib/api/room-type";
+import { RoomSWR } from "lib/api/room";
 import { StayView2SWR } from "lib/api/stay-view2";
 import { FrontOfficeAPI, FrontOfficeSWR, listUrl } from "lib/api/front-office";
 import NewReservation from "components/front-office/reservation-list/new-edit";
 import { ModalContext } from "lib/context/modal";
+import { RoomBlockSWR } from "lib/api/room-block";
+import { dateToCustomFormat } from "lib/utils/format-time";
+import { useAppState } from "lib/context/app";
+import Search from "./search";
+import CustomSearch from "components/common/custom-search";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
+    const [state, dispatch]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
-
     const [dayCount, setDayCount] = useState(15);
+
+    const [search, setSearch] = useState({
+        CurrDate: workingDate,
+        NumberOfDays: dayCount,
+        RoomTypeID: 0,
+    });
+
     const {
         data: items,
         mutate: mutateItems,
         error: itemsError,
     } = FrontOfficeSWR({
-        CurrDate: workingDate,
-        NumberOfDays: 15,
+        CurrDate: search.CurrDate ? search.CurrDate : workingDate,
+        NumberOfDays: search.NumberOfDays,
+        RoomTypeID: search.RoomTypeID,
     });
+    const [timeStart, setTimeStart] = useState(new Date(workingDate));
+    const [timeEnd, setTimeEnd] = useState(
+        new Date(
+            new Date(workingDate).setDate(new Date(workingDate).getDate() + 7)
+        )
+    );
 
-    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({});
+    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({
+        RoomTypeID: search.RoomTypeID,
+    });
     const { data: rooms, error: roomSwrError } = RoomSWR({});
-    // const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR(
-    //     //@ts-ignore
-    //     dateToCustomFormat(timeStart, "yyyy MMM dd"),
-    //     dateToCustomFormat(timeEnd, "yyyy MMM dd")
-    // );
+
+    const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR(
+        //@ts-ignore
+        dateToCustomFormat(timeStart, "yyyy MMM dd"),
+        dateToCustomFormat(timeEnd, "yyyy MMM dd")
+    );
     const [resources, setResources] = useState<any>(null);
     const [itemData, setItemData] = useState<any>(null);
 
     const [height, setHeight] = useState<any>(null);
     const { data: availableRooms, error: availableRoomsError } = StayView2SWR(
-        workingDate,
+        search.CurrDate ? search.CurrDate : workingDate,
         dayCount
     );
     console.log("availableRooms", availableRooms);
 
+    const validationSchema = yup.object().shape({
+        CurrDate: yup.string().nullable(),
+        NumberOfDays: yup.string().nullable(),
+        RoomTypeID: yup.string().nullable(),
+    });
+    const formOptions = { resolver: yupResolver(validationSchema) };
+    const {
+        reset,
+        register,
+        handleSubmit,
+        formState: { errors },
+        control,
+    } = useForm(formOptions);
+
+    useEffect(() => {
+        (async () => {
+            setTimeStart(new Date(search.CurrDate));
+            setTimeEnd(
+                new Date(
+                    new Date(search.CurrDate).setDate(
+                        new Date(search.CurrDate).getDate() + 7
+                    )
+                )
+            );
+
+            await mutate("/api/RoomType/List");
+            await mutate("/api/FrontOffice/StayView2");
+        })();
+    }, [search]);
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        let value = Number((event.target as HTMLInputElement).value);
         console.log("event", (event.target as HTMLInputElement).value);
         setDayCount(Number((event.target as HTMLInputElement).value));
 
@@ -58,6 +113,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     useEffect(() => {
         if (items) {
+            let itemDataConcated = null;
             const newItemDta = items.map((obj: any) => {
                 return {
                     id: obj.TransactionID,
@@ -66,10 +122,33 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     end: obj.EndDate,
                     resourceId: obj.RoomID,
                     roomTypeID: obj.RoomTypeID,
+                    transactionID: obj.TransactionID,
                     editable: true,
+                    color: "#804fe6",
                 };
             });
-            setItemData(newItemDta);
+            if (roomBlocks) {
+                const newRoomBlockDta = roomBlocks.map((obj: any) => {
+                    return {
+                        id: obj.RoomBlockID,
+                        title: "Blocked",
+                        start: obj.BeginDate,
+                        end: obj.EndDate,
+                        resourceId: obj.RoomID,
+                        roomTypeID: obj.RoomTypeID,
+                        editable: false,
+                        color: "black",
+                        block: true,
+                    };
+                });
+
+                itemDataConcated = newItemDta.concat(newRoomBlockDta);
+                console.log("newItemDta", newItemDta);
+                console.log("newRoomBlockDta", newRoomBlockDta);
+                console.log("itemDataConcated", itemDataConcated);
+            }
+
+            setItemData(itemDataConcated ? itemDataConcated : newItemDta);
         }
     }, [items]);
 
@@ -109,21 +188,36 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
             roomID: Number(info.event._def.resourceIds[0]),
         };
+
+        if (Number(info.event._def.extendedProps.transactionID)) {
+            dispatch({
+                type: "editId",
+                editId: Number(info.event._def.extendedProps.transactionID),
+            });
+        } else {
+            dispatch({
+                type: "editId",
+                editId: "",
+            });
+        }
+
         console.log("newEventObject", newEventObject);
-        handleModal(
-            true,
-            `New Reservation`,
-            <NewReservation
-                dateStart={newEventObject.start}
-                dateEnd={newEventObject.end}
-                // // @ts-ignore
-                roomType={newEventObject.roomTypeID}
-                // // @ts-ignore
-                room={newEventObject.roomID}
-            />,
-            null,
-            "large"
-        );
+        if (!info.event.extendedProps.block) {
+            handleModal(
+                true,
+                `New Reservation`,
+                <NewReservation
+                    dateStart={newEventObject.start}
+                    dateEnd={newEventObject.end}
+                    // // @ts-ignore
+                    roomType={newEventObject.roomTypeID}
+                    // // @ts-ignore
+                    room={newEventObject.roomID}
+                />,
+                null,
+                "large"
+            );
+        }
     };
 
     const handleEventResize = (info: any) => {
@@ -136,7 +230,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
             roomID: Number(info.event._def.resourceIds[0]),
         };
-        console.log("newEventObject", newEventObject);
+
         handleModal(
             true,
             `New Reservation`,
@@ -186,23 +280,28 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             );
         }
     };
-
-    const slotLabelContent = (args: any) => {
-        // Calculate index based on the start time of the view and the time duration of each slot
-        const slotDuration = args.view.options.slotDuration; // Duration of each time slot
-        const viewStart = args.view.currentStart; // Start time of the view
-        const slotIndex = Math.floor((args.date - viewStart) / slotDuration);
-
-        return (
-            <div>
-                <div>{args.date.toLocaleTimeString()}</div>
-                <div>Slot Index: {slotIndex}</div>
-            </div>
-        );
-    };
-
+    console.log("timeStart", timeStart);
     return (
         <>
+            <CustomSearch
+                listUrl={listUrl}
+                search={search}
+                setSearch={setSearch}
+                handleSubmit={handleSubmit}
+                reset={reset}
+                searchInitialState={{
+                    CurrDate: workingDate,
+                    NumberOfDays: dayCount,
+                    RoomTypeID: 0,
+                }}
+            >
+                <Search
+                    register={register}
+                    errors={errors}
+                    control={control}
+                    reset={reset}
+                />
+            </CustomSearch>
             <FormControl>
                 <RadioGroup
                     row
@@ -230,7 +329,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 </RadioGroup>
             </FormControl>
 
-            {resources && dayCount && (
+            {resources && dayCount && timeStart && (
                 <FullCalendar
                     plugins={[resourceTimelinePlugin, interactionPlugin]}
                     initialView="resourceTimeline"
@@ -240,7 +339,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         right: "",
                     }}
                     resources={resources}
-                    initialDate={workingDate}
+                    initialDate={timeStart ? timeStart : workingDate}
                     events={itemData}
                     selectable={true}
                     select={handleSelect}
@@ -249,10 +348,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     eventResize={handleEventResize}
                     height={height}
                     visibleRange={{
-                        start: workingDate,
-                        end: moment(workingDate)
-                            .add(30, "days")
-                            .format("YYYY-MM-DD"),
+                        start: timeStart ? timeStart : workingDate,
+                        end: timeEnd
+                            ? timeEnd
+                            : moment(workingDate)
+                                  .add(dayCount, "days")
+                                  .format("YYYY-MM-DD"),
                     }}
                     slotDuration="12:00:00"
                     slotLabelInterval={{ hours: 24 }}
@@ -263,7 +364,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             slotLabelContent: (arg: any) => {
                                 var Difference_In_Time =
                                     arg.date.getTime() -
-                                    new Date(workingDate).getTime();
+                                    (timeStart
+                                        ? timeStart.getTime()
+                                        : new Date(workingDate).getTime());
 
                                 var Difference_In_Days =
                                     Difference_In_Time / (1000 * 3600 * 24);

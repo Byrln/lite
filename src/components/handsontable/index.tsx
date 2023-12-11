@@ -133,6 +133,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
         dateToCustomFormat(timeStart, "yyyy MMM dd"),
         dateToCustomFormat(timeEnd, "yyyy MMM dd")
     );
+
     const [excelData, setExcelData] = useState({
         records: [] as any,
     });
