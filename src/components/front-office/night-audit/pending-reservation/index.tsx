@@ -1,8 +1,14 @@
 import { Button, Stack } from "@mui/material";
 
 import CustomTable from "components/common/custom-table";
-import { PendingReservationSWR, listUrl } from "lib/api/reservation";
+import { PendingReservationSWR, urlPrefix } from "lib/api/reservation";
 import NewEdit from "./new-edit";
+import AmendStay from "./additional-actions/amend-stay";
+import Cancel from "./additional-actions/cancel";
+import CheckIn from "./additional-actions/checkin";
+import NoShow from "./additional-actions/no-show";
+import RoomMove from "./additional-actions/room-move";
+import Void from "./additional-actions/void";
 
 const columns = [
     {
@@ -52,29 +58,53 @@ const columns = [
         render: function render(id: any, record: any, entity: any) {
             return (
                 <Stack direction="row" spacing={1}>
-                    <Button key={id} onClick={() => {}}>
-                        Зочин буулгах
-                    </Button>
+                    {entity.CheckIn == true && (
+                        <CheckIn
+                            key={`checkin-${id}`}
+                            TransactionID={entity.TransactionID}
+                            listUrl={`${urlPrefix}/PendingReservation`}
+                        />
+                    )}
 
-                    <Button key={id} onClick={() => {}}>
-                        Өрөө шилжих
-                    </Button>
+                    {entity.MoveRoom == true && (
+                        <RoomMove
+                            key={`move-room-${id}`}
+                            entity={entity}
+                            listUrl={`${urlPrefix}/PendingReservation`}
+                        />
+                    )}
 
-                    <Button key={id} onClick={() => {}}>
-                        Хугацаа өөрчлөх
-                    </Button>
+                    {entity.AmendStay == true && (
+                        <AmendStay
+                            key={`amend-stay-${id}`}
+                            entity={entity}
+                            listUrl={`${urlPrefix}/PendingReservation`}
+                        />
+                    )}
 
-                    <Button key={id} onClick={() => {}}>
-                        Ирээгүй
-                    </Button>
+                    {entity.NoShow == true && (
+                        <NoShow
+                            key={`no-show-${id}`}
+                            entity={entity}
+                            listUrl={`${urlPrefix}/PendingReservation`}
+                        />
+                    )}
 
-                    <Button key={id} onClick={() => {}}>
-                        Захиалга цуцлах
-                    </Button>
+                    {entity.Cancel == true && (
+                        <Cancel
+                            key={`cancel-${id}`}
+                            entity={entity}
+                            listUrl={`${urlPrefix}/PendingReservation`}
+                        />
+                    )}
 
-                    <Button key={id} onClick={() => {}}>
-                        Устгах
-                    </Button>
+                    {entity.Void == true && (
+                        <Void
+                            key={`void-${id}`}
+                            entity={entity}
+                            listUrl={`${urlPrefix}/PendingReservation`}
+                        />
+                    )}
                 </Stack>
             );
         },
@@ -94,7 +124,7 @@ const PendingReservation = ({ title }: any) => {
             hasUpdate={false}
             hasDelete={false}
             id="ReservationID"
-            listUrl={listUrl}
+            listUrl={`${urlPrefix}/PendingReservation`}
             modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}

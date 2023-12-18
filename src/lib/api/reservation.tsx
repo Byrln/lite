@@ -4,7 +4,7 @@ import { fToUniversal } from "lib/utils/format-time";
 import { date } from "yup/lib/locale";
 import { SearchTwoTone } from "@mui/icons-material";
 
-const urlPrefix = "/api/Reservation";
+export const urlPrefix = "/api/Reservation";
 export const listUrl = `${urlPrefix}/List`;
 
 export const ReservationSWR = (search: any) => {
@@ -62,12 +62,12 @@ export const GroupReservationSWR = () => {
 };
 
 export const PendingReservationSWR = () => {
-    const fetcher = async (url: any) =>
+    const fetcher = async () =>
         await axios
             .get(`${urlPrefix}/PendingReservation`)
             .then((res: any) => res.data.JsonData);
 
-    return useSWR(listUrl, fetcher);
+    return useSWR(`${urlPrefix}/PendingReservation`, fetcher);
 };
 
 export const PendingDueOutSWR = () => {
@@ -141,7 +141,6 @@ export const ReservationAPI = {
     },
     amendStay: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/AmendStay`, values);
-        console.log(res);
         return res;
     },
     cancel: async (values: any) => {
@@ -170,10 +169,7 @@ export const ReservationAPI = {
         };
         const res = await axios.post(`${urlPrefix}/RoomUnassign`, values);
     },
-    roomMove: async (TransactionID: any) => {
-        const values = {
-            TransactionID: TransactionID,
-        };
+    roomMove: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/RoomMove`, values);
     },
     updateReservationType: async (TransactionID: any) => {

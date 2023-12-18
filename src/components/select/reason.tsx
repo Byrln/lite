@@ -10,6 +10,7 @@ const ReasonTypeSelect = ({
     errors,
     label,
     ReasonTypeID = 0,
+    nameKey,
 }: any) => {
     const { data, error } = ReasonSWR({ ReasonTypeID: ReasonTypeID });
 
@@ -27,7 +28,7 @@ const ReasonTypeSelect = ({
         <CustomSelect
             register={register}
             errors={errors}
-            field="ReasonTypeID"
+            field={nameKey ? nameKey : "ReasonTypeID"}
             label={label}
             options={data}
             optionValue="ReasonTypeID"
