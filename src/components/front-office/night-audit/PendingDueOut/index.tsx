@@ -1,10 +1,9 @@
 import { Stack } from "@mui/material";
-import { useContext } from "react";
+import { useEffect } from "react";
 
 import CustomTable from "components/common/custom-table";
 import { PendingDueOutSWR, urlPrefix } from "lib/api/reservation";
 import NewEdit from "./new-edit";
-import { ModalContext } from "lib/context/modal";
 import AmendStay from "../pending-reservation/additional-actions/amend-stay";
 import Checkout from "./additional-actions/checkout";
 
@@ -69,8 +68,14 @@ const columns = [
     },
 ];
 
-const PendingDueOutList = ({ title }: any) => {
+const PendingDueOutList = ({ title, setPendingDueOutCompleted }: any) => {
     const { data, error } = PendingDueOutSWR();
+
+    useEffect(() => {
+        if (data && data.length == 0) {
+            setPendingDueOutCompleted(true);
+        }
+    }, [data]);
 
     return (
         <CustomTable

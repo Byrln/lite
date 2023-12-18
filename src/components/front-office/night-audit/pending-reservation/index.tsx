@@ -1,4 +1,5 @@
 import { Button, Stack } from "@mui/material";
+import { useEffect } from "react";
 
 import CustomTable from "components/common/custom-table";
 import { PendingReservationSWR, urlPrefix } from "lib/api/reservation";
@@ -111,8 +112,14 @@ const columns = [
     },
 ];
 
-const PendingReservation = ({ title }: any) => {
+const PendingReservation = ({ title, setPendingReservationCompleted }: any) => {
     const { data, error } = PendingReservationSWR();
+
+    useEffect(() => {
+        if (data && data.length == 0) {
+            setPendingReservationCompleted(true);
+        }
+    }, [data]);
 
     return (
         <CustomTable

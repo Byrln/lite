@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Stepper, Step, StepLabel, Button, Box } from "@mui/material";
+import { toast } from "react-toastify";
 
 import CustomTable from "components/common/custom-table";
 import { NightAuditSWR, NightAuditAPI, listUrl } from "lib/api/night-audit";
@@ -17,9 +18,26 @@ const steps = [
 
 const NightAuditList = ({ title }: any) => {
     const [activeStep, setActiveStep] = useState(0);
+    const [pendingReservationCompleted, setPendingReservationCompleted] =
+        useState(false);
+    const [pendingDueOutCompleted, setPendingDueOutCompleted] = useState(false);
 
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        if (activeStep == 0) {
+            if (pendingReservationCompleted) {
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            } else {
+                toast("Хүлээгдэж буй захиалга.");
+            }
+        } else if (activeStep == 1) {
+            if (pendingDueOutCompleted) {
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            } else {
+                toast("Хүлээгдэж буй гарах зочид.");
+            }
+        } else {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
     };
 
     const handleBack = () => {
@@ -37,11 +55,17 @@ const NightAuditList = ({ title }: any) => {
             </Stepper>
             {activeStep == 0 ? (
                 <Box sx={{ pt: 2 }}>
-                    <PendingReservation />
+                    <PendingReservation
+                        setPendingReservationCompleted={
+                            setPendingReservationCompleted
+                        }
+                    />
                 </Box>
             ) : activeStep == 1 ? (
                 <Box sx={{ pt: 2 }}>
-                    <PendingDueOut />
+                    <PendingDueOut
+                        setPendingDueOutCompleted={setPendingDueOutCompleted}
+                    />
                 </Box>
             ) : activeStep == 2 ? (
                 <Box sx={{ pt: 2 }}>
