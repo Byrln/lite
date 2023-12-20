@@ -210,20 +210,6 @@ const RateList = ({ title }: any) => {
 
     return (
         <>
-            <CustomSearch
-                listUrl={listUrl}
-                search={search}
-                setSearch={setSearch}
-                handleSubmit={handleSubmit}
-                reset={reset}
-            >
-                <Search
-                    register={register}
-                    errors={errors}
-                    control={control}
-                    reset={reset}
-                />
-            </CustomSearch>
             <LoadingButton loading={loading}>
                 <Switch
                     checked={isChecked}
@@ -239,6 +225,22 @@ const RateList = ({ title }: any) => {
                 error={error}
                 modalTitle={title}
                 excelName={title}
+                search={
+                    <CustomSearch
+                        listUrl={listUrl}
+                        search={search}
+                        setSearch={setSearch}
+                        handleSubmit={handleSubmit}
+                        reset={reset}
+                    >
+                        <Search
+                            register={register}
+                            errors={errors}
+                            control={control}
+                            reset={reset}
+                        />
+                    </CustomSearch>
+                }
             />
             <Grid container spacing={1}>
                 <Grid item xs={5}></Grid>

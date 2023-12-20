@@ -16,17 +16,18 @@ const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;
 
 const SearchbarStyle = styled("div")(({ theme }: any) => ({
+    padding: "20px !important",
     top: 0,
     left: 0,
-    zIndex: 99,
+    zIndex: 1200,
     width: "100%",
     display: "flex",
     position: "absolute",
     alignItems: "center",
-    height: APPBAR_MOBILE,
+    height: "auto !important",
     backdropFilter: "blur(6px)",
     WebkitBackdropFilter: "blur(6px)", // Fix on Mobile
-    padding: theme.spacing(0, 3),
+    // padding: theme.spacing(0, 3),
     boxShadow: theme.customShadows.z8,
     backgroundColor: `${alpha(theme.palette.background.default, 0.72)}`,
     [theme.breakpoints.up("md")]: {
@@ -35,7 +36,7 @@ const SearchbarStyle = styled("div")(({ theme }: any) => ({
     },
 }));
 
-export default function Searchbar() {
+export default function Searchbar({ children }: any) {
     const [isOpen, setOpen] = useState(false);
 
     const handleOpen = () => {
@@ -47,7 +48,11 @@ export default function Searchbar() {
     };
 
     return (
-        <ClickAwayListener onClickAway={handleClose}>
+        <ClickAwayListener
+            mouseEvent="onMouseDown"
+            touchEvent="onTouchStart"
+            onClickAway={handleClose}
+        >
             <div>
                 {!isOpen && (
                     <IconButton onClick={handleOpen}>
@@ -56,31 +61,7 @@ export default function Searchbar() {
                 )}
 
                 <Slide direction="down" in={isOpen} mountOnEnter unmountOnExit>
-                    <SearchbarStyle>
-                        <Input
-                            autoFocus
-                            fullWidth
-                            disableUnderline
-                            placeholder="Search…"
-                            startAdornment={
-                                <InputAdornment position="start">
-                                    <Box
-                                        component={Icon}
-                                        icon={searchFill}
-                                        sx={{
-                                            color: "text.disabled",
-                                            width: 20,
-                                            height: 20,
-                                        }}
-                                    />
-                                </InputAdornment>
-                            }
-                            sx={{ mr: 1, fontWeight: "fontWeightBold" }}
-                        />
-                        <Button variant="contained" onClick={handleClose}>
-                            Search
-                        </Button>
-                    </SearchbarStyle>
+                    <SearchbarStyle>{children}</SearchbarStyle>
                 </Slide>
             </div>
         </ClickAwayListener>

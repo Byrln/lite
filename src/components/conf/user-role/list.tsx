@@ -63,21 +63,6 @@ const UserRoleList = ({ title }: any) => {
 
     return (
         <>
-            <CustomSearch
-                listUrl={listUrl}
-                search={search}
-                setSearch={setSearch}
-                handleSubmit={handleSubmit}
-                reset={reset}
-            >
-                <Search
-                    register={register}
-                    errors={errors}
-                    control={control}
-                    reset={reset}
-                />
-            </CustomSearch>
-
             <CustomTable
                 columns={columns}
                 data={data}
@@ -91,6 +76,22 @@ const UserRoleList = ({ title }: any) => {
                 modalTitle={title}
                 modalContent={<NewEdit />}
                 excelName={title}
+                search={
+                    <CustomSearch
+                        listUrl={listUrl}
+                        search={search}
+                        setSearch={setSearch}
+                        handleSubmit={handleSubmit}
+                        reset={reset}
+                    >
+                        <Search
+                            register={register}
+                            errors={errors}
+                            control={control}
+                            reset={reset}
+                        />
+                    </CustomSearch>
+                }
             />
         </>
     );

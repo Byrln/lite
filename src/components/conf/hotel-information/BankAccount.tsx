@@ -15,7 +15,7 @@ const columns = [
     {
         title: "Банк",
         key: "Bank",
-        dataIndex: "Bank"
+        dataIndex: "Bank",
     },
     {
         title: "Дансны дугаар",
@@ -58,27 +58,12 @@ const BankAccountList = ({ title }: any) => {
         control,
     } = useForm(formOptions);
 
-    const [search, setSearch] = useState({Status: true});
+    const [search, setSearch] = useState({ Status: true });
 
     const { data, error } = BankAccountSWR(search);
 
     return (
         <>
-            <CustomSearch
-                listUrl={listUrl}
-                search={search}
-                setSearch={setSearch}
-                handleSubmit={handleSubmit}
-                reset={reset}
-            >
-                <Search
-                    register={register}
-                    errors={errors}
-                    control={control}
-                    reset={reset}
-                />
-            </CustomSearch>
-
             <CustomTable
                 columns={columns}
                 data={data}
@@ -92,6 +77,22 @@ const BankAccountList = ({ title }: any) => {
                 modalTitle={title}
                 modalContent={<BankAccountNewEdit />}
                 excelName={title}
+                search={
+                    <CustomSearch
+                        listUrl={listUrl}
+                        search={search}
+                        setSearch={setSearch}
+                        handleSubmit={handleSubmit}
+                        reset={reset}
+                    >
+                        <Search
+                            register={register}
+                            errors={errors}
+                            control={control}
+                            reset={reset}
+                        />
+                    </CustomSearch>
+                }
             />
         </>
     );

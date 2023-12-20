@@ -32,9 +32,10 @@ import { format } from "date-fns";
 import { DashboardSWR, dailyUrl, weeklyUrl } from "lib/api/dashboard";
 import DashboardCard from "components/common/dashboard-card";
 
-const Dashboard = () => {
+const Dashboard = ({ workingDate }: any) => {
+    console.log("workingDate", workingDate);
     const [dashboardType, setDashboardType] = useState("daily");
-    const [dashboardDate, setDashboardDate] = useState(new Date());
+    const [dashboardDate, setDashboardDate] = useState(new Date(workingDate));
 
     const { data, error } = DashboardSWR(dashboardType, dashboardDate);
 

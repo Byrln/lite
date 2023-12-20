@@ -60,21 +60,6 @@ const HouseStatusList = ({ title }: any) => {
 
     return (
         <>
-            <CustomSearch
-                listUrl={listRoomUrl}
-                search={search}
-                setSearch={setSearch}
-                handleSubmit={handleSubmit}
-                reset={reset}
-            >
-                <Search
-                    register={register}
-                    errors={errors}
-                    control={control}
-                    reset={reset}
-                />
-            </CustomSearch>
-
             <CustomTable
                 columns={columns}
                 data={data}
@@ -85,6 +70,22 @@ const HouseStatusList = ({ title }: any) => {
                 modalTitle={title}
                 modalContent={<NewEdit />}
                 excelName={title}
+                search={
+                    <CustomSearch
+                        listUrl={listRoomUrl}
+                        search={search}
+                        setSearch={setSearch}
+                        handleSubmit={handleSubmit}
+                        reset={reset}
+                    >
+                        <Search
+                            register={register}
+                            errors={errors}
+                            control={control}
+                            reset={reset}
+                        />
+                    </CustomSearch>
+                }
             />
         </>
     );

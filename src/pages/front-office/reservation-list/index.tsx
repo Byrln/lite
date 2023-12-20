@@ -14,8 +14,8 @@ const Index = () => (
 
         <Page>
             <Container maxWidth="xl">
-                <Box sx={{ pb: 5 }}>
-                    <Typography variant="h4">{title}</Typography>
+                <Box sx={{ pb: 1 }}>
+                    <Typography variant="h6">{title}</Typography>
                 </Box>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>

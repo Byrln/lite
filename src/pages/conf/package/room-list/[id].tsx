@@ -26,8 +26,8 @@ const Index = () => {
 
             <Page>
                 <Container maxWidth="xl">
-                    <Box sx={{ pb: 5 }}>
-                        <Typography variant="h4">
+                    <Box sx={{ pb: 1 }}>
+                        <Typography variant="h6">
                             {data && data[0] && data[0].PackageName
                                 ? data[0].PackageName
                                 : title}

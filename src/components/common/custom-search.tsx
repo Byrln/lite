@@ -5,6 +5,7 @@ import { Card, CardContent } from "@mui/material";
 import { Icon } from "@iconify/react";
 import searchFill from "@iconify/icons-eva/search-fill";
 import trash2Fill from "@iconify/icons-eva/trash-2-fill";
+import Searchbar from "components/layouts/dashboard/search-bar";
 
 const CustomSelect = ({
     children,
@@ -36,9 +37,14 @@ const CustomSelect = ({
     }, [search]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Card className="mb-3">
-                <CardContent>
+        <>
+            <Searchbar>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    style={{ width: "100%" }}
+                >
+                    {/* <Card className="mb-3">
+                        <CardContent> */}
                     {children}
 
                     <div className="search-button-position">
@@ -67,9 +73,11 @@ const CustomSelect = ({
                             Хайх
                         </LoadingButton>
                     </div>
-                </CardContent>
-            </Card>
-        </form>
+                    {/* </CardContent>
+                    </Card> */}
+                </form>
+            </Searchbar>
+        </>
     );
 };
 

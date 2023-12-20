@@ -44,7 +44,7 @@ export default function DashboardNavbar({ onOpenSidebar }: any) {
                     </IconButton>
                 </MHidden>
 
-                <Searchbar />
+                {/* <Searchbar /> */}
                 <Box sx={{ flexGrow: 1 }} />
 
                 <Stack

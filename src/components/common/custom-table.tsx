@@ -38,12 +38,12 @@ const CustomTable = ({
     hasPrint = true,
     hasExcel = true,
     hasShow = true,
-
     id,
     listUrl,
     modalTitle,
     modalContent,
     excelName,
+    search,
 }: any) => {
     const [state, dispatch]: any = useAppState();
     // const [excelColumns, setExcelColumns]: any = useState(null);
@@ -111,54 +111,58 @@ const CustomTable = ({
         <>
             {(hasNew || hasPrint || hasExcel) && (
                 <>
-                    {hasNew && api && (
-                        <Button
-                            variant="contained"
-                            className="mr-3"
-                            onClick={() => {
-                                handleModal(
-                                    true,
-                                    `${modalTitle} нэмэх`,
-                                    modalContent,
-                                    null,
-                                    "large"
-                                );
-                                dispatch({
-                                    type: "editId",
-                                    editId: null,
-                                });
-                                dispatch({
-                                    type: "isShow",
-                                    isShow: null,
-                                });
-                            }}
-                            startIcon={<Icon icon={plusFill} />}
-                        >
-                            Нэмэх
-                        </Button>
-                    )}
+                    <Box sx={{ display: "flex" }}>
+                        {hasNew && api && (
+                            <Button
+                                variant="contained"
+                                className="mr-3"
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        `${modalTitle} нэмэх`,
+                                        modalContent,
+                                        null,
+                                        "large"
+                                    );
+                                    dispatch({
+                                        type: "editId",
+                                        editId: null,
+                                    });
+                                    dispatch({
+                                        type: "isShow",
+                                        isShow: null,
+                                    });
+                                }}
+                                startIcon={<Icon icon={plusFill} />}
+                            >
+                                Нэмэх
+                            </Button>
+                        )}
 
-                    {hasPrint && (
-                        <Button
-                            variant="outlined"
-                            onClick={handlePrint}
-                            className="mr-3"
-                            startIcon={<PrintIcon />}
-                        >
-                            Хэвлэх
-                        </Button>
-                    )}
+                        {hasPrint && (
+                            <Button
+                                variant="outlined"
+                                onClick={handlePrint}
+                                className="mr-3"
+                                startIcon={<PrintIcon />}
+                            >
+                                Хэвлэх
+                            </Button>
+                        )}
 
-                    {hasExcel && (
-                        <Button
-                            variant="outlined"
-                            onClick={downloadExcel}
-                            startIcon={<CloudDownloadIcon />}
-                        >
-                            Excel татах
-                        </Button>
-                    )}
+                        {hasExcel && (
+                            <Button
+                                variant="outlined"
+                                onClick={downloadExcel}
+                                startIcon={<CloudDownloadIcon />}
+                                className="mr-3"
+                            >
+                                Excel татах
+                            </Button>
+                        )}
 
+                        {search && search}
+                    </Box>
                     <Divider className="mt-3 mb-3" />
                 </>
             )}
