@@ -6,12 +6,16 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
+import { Icon } from "@iconify/react";
+import plusFill from "@iconify/icons-eva/plus-fill";
 import { mutate } from "swr";
 import {
     FormControl,
     FormControlLabel,
     RadioGroup,
     Radio,
+    Box,
+    Button,
 } from "@mui/material";
 
 import { RoomTypeSWR } from "../../lib/api/room-type";
@@ -124,7 +128,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     roomTypeID: obj.RoomTypeID,
                     transactionID: obj.TransactionID,
                     editable: true,
-                    color: "#804fe6",
+                    color: `#${obj.StatusColor}`,
                 };
             });
             if (roomBlocks) {
@@ -283,52 +287,70 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     console.log("timeStart", timeStart);
     return (
         <>
-            <CustomSearch
-                listUrl={listUrl}
-                search={search}
-                setSearch={setSearch}
-                handleSubmit={handleSubmit}
-                reset={reset}
-                searchInitialState={{
-                    CurrDate: workingDate,
-                    NumberOfDays: dayCount,
-                    RoomTypeID: 0,
-                }}
-            >
-                <Search
-                    register={register}
-                    errors={errors}
-                    control={control}
-                    reset={reset}
-                />
-            </CustomSearch>
-            <FormControl>
-                <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                    value={dayCount}
-                    onChange={handleChange}
-                    defaultValue={15}
+            <Box sx={{ display: "flex" }}>
+                <Button
+                    variant="contained"
+                    className="mr-3"
+                    onClick={() => {
+                        handleModal(
+                            true,
+                            `Захиалга нэмэх`,
+                            <NewReservation />,
+                            null,
+                            "large"
+                        );
+                    }}
+                    startIcon={<Icon icon={plusFill} />}
                 >
-                    <FormControlLabel
-                        value={7}
-                        control={<Radio />}
-                        label="7 хоног"
-                    />
-                    <FormControlLabel
-                        value={15}
-                        control={<Radio />}
-                        label="15 хоног"
-                    />
-                    <FormControlLabel
-                        value={30}
-                        control={<Radio />}
-                        label="30 хоног"
-                    />
-                </RadioGroup>
-            </FormControl>
+                    Нэмэх
+                </Button>
 
+                <FormControl>
+                    <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        value={dayCount}
+                        onChange={handleChange}
+                        defaultValue={15}
+                    >
+                        <FormControlLabel
+                            value={7}
+                            control={<Radio />}
+                            label="7 хоног"
+                        />
+                        <FormControlLabel
+                            value={15}
+                            control={<Radio />}
+                            label="15 хоног"
+                        />
+                        <FormControlLabel
+                            value={30}
+                            control={<Radio />}
+                            label="30 хоног"
+                        />
+                    </RadioGroup>
+                </FormControl>
+                <CustomSearch
+                    listUrl={listUrl}
+                    search={search}
+                    setSearch={setSearch}
+                    handleSubmit={handleSubmit}
+                    reset={reset}
+                    searchInitialState={{
+                        CurrDate: workingDate,
+                        NumberOfDays: dayCount,
+                        RoomTypeID: 0,
+                    }}
+                >
+                    <Search
+                        register={register}
+                        errors={errors}
+                        control={control}
+                        reset={reset}
+                    />
+                </CustomSearch>
+            </Box>
             {resources && dayCount && timeStart && (
                 <FullCalendar
                     plugins={[resourceTimelinePlugin, interactionPlugin]}
