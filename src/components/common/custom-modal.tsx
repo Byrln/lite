@@ -7,6 +7,7 @@ import Divider from "@mui/material/Divider";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
+import { useAppState } from "lib/context/app";
 
 import { ModalContext } from "lib/context/modal";
 
@@ -59,6 +60,8 @@ const styles = {
 };
 
 const CustomModal = () => {
+    const [state, dispatch]: any = useAppState();
+
     const {
         visible,
         modalTitle,
@@ -131,7 +134,13 @@ const CustomModal = () => {
                                     size="small"
                                     variant="outlined"
                                     key="back"
-                                    onClick={() => handleModal()}
+                                    onClick={() => (
+                                        handleModal(),
+                                        dispatch({
+                                            type: "editId",
+                                            editId: "",
+                                        })
+                                    )}
                                 >
                                     Хаах
                                 </Button>

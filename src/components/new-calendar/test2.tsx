@@ -82,6 +82,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     );
     const [resources, setResources] = useState<any>(null);
     const [itemData, setItemData] = useState<any>(null);
+    const [rerenderKey, setRerenderKey] = useState(0);
 
     const [height, setHeight] = useState<any>(null);
     const { data: availableRooms, error: availableRoomsError } = StayView2SWR(
@@ -114,9 +115,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     )
                 )
             );
+            setRerenderKey((prevKey) => prevKey + 1);
 
             await mutate("/api/RoomType/List");
             await mutate("/api/FrontOffice/StayView2");
+            await mutate("/api/FrontOffice/ReservationDetailsByDate");
         })();
     }, [search]);
 
@@ -205,7 +208,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
             roomID: Number(info.event._def.resourceIds[0]),
         };
-
+        console.log(
+            "Number(info.event._def.extendedProps.transactionID)",
+            Number(info.event._def.extendedProps.transactionID)
+        );
         if (Number(info.event._def.extendedProps.transactionID)) {
             dispatch({
                 type: "editId",
@@ -240,6 +246,18 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const handleEventResize = (info: any) => {
         console.log("Event resized", info.event);
         console.log("info", info);
+
+        if (Number(info.event._def.extendedProps.transactionID)) {
+            dispatch({
+                type: "editId",
+                editId: Number(info.event._def.extendedProps.transactionID),
+            });
+        } else {
+            dispatch({
+                type: "editId",
+                editId: "",
+            });
+        }
         const newEventObject = {
             title: "New Event",
             start: info.event._instance.range.start,
@@ -267,6 +285,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const handleSelect = (info: any) => {
         const { start, end, resourceId } = info;
         console.log("info", info);
+
+        dispatch({
+            type: "editId",
+            editId: "",
+        });
+
         const newEventObject = {
             title: "New Event",
             start: start,
@@ -300,145 +324,162 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     console.log("timeStart", timeStart);
 
     return (
-        <>
-            <Box sx={{ display: "flex" }}>
-                <Button
-                    variant="contained"
-                    className="mr-3"
-                    onClick={() => {
-                        handleModal(
-                            true,
-                            `Захиалга нэмэх`,
-                            <NewReservation />,
-                            null,
-                            "large"
-                        );
-                    }}
-                    startIcon={<Icon icon={plusFill} />}
-                >
-                    Нэмэх
-                </Button>
-
-                <FormControl>
-                    <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
-                        value={dayCount}
-                        onChange={handleChange}
-                        defaultValue={15}
+        timeStart && (
+            <>
+                <Box sx={{ display: "flex" }}>
+                    <Button
+                        variant="contained"
+                        className="mr-3"
+                        onClick={() => {
+                            handleModal(
+                                true,
+                                `Захиалга нэмэх`,
+                                <NewReservation />,
+                                null,
+                                "large"
+                            );
+                        }}
+                        startIcon={<Icon icon={plusFill} />}
                     >
-                        <FormControlLabel
-                            value={7}
-                            control={<Radio />}
-                            label="7 хоног"
-                        />
-                        <FormControlLabel
-                            value={15}
-                            control={<Radio />}
-                            label="15 хоног"
-                        />
-                        <FormControlLabel
-                            value={30}
-                            control={<Radio />}
-                            label="30 хоног"
-                        />
-                    </RadioGroup>
-                </FormControl>
-                <CustomSearch
-                    listUrl={listUrl}
-                    search={search}
-                    setSearch={setSearch}
-                    handleSubmit={handleSubmit}
-                    reset={reset}
-                    searchInitialState={{
-                        CurrDate: workingDate,
-                        NumberOfDays: dayCount,
-                        RoomTypeID: 0,
-                    }}
-                >
-                    <Search
-                        register={register}
-                        errors={errors}
-                        control={control}
+                        Нэмэх
+                    </Button>
+
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                            value={dayCount}
+                            onChange={handleChange}
+                            defaultValue={15}
+                        >
+                            <FormControlLabel
+                                value={7}
+                                control={<Radio />}
+                                label="7 хоног"
+                            />
+                            <FormControlLabel
+                                value={15}
+                                control={<Radio />}
+                                label="15 хоног"
+                            />
+                            <FormControlLabel
+                                value={30}
+                                control={<Radio />}
+                                label="30 хоног"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                    <CustomSearch
+                        listUrl={listUrl}
+                        search={search}
+                        setSearch={setSearch}
+                        handleSubmit={handleSubmit}
                         reset={reset}
-                    />
-                </CustomSearch>
-            </Box>
-            <Typography variant="subtitle2" className="mt-2">
-                {format(timeStart, "yyyy/MM/dd ") + " - "}
-                {format(
-                    moment(workingDate)
-                        .add(dayCount - 1, "days")
-                        .toDate(),
-                    "yyyy/MM/dd "
-                )}
-            </Typography>
-            {resources && dayCount && timeStart && (
-                <FullCalendar
-                    plugins={[resourceTimelinePlugin, interactionPlugin]}
-                    initialView="resourceTimeline"
-                    headerToolbar={{
-                        left: "",
-                        center: "",
-                        right: "",
-                    }}
-                    resources={resources}
-                    initialDate={timeStart ? timeStart : workingDate}
-                    events={itemData}
-                    selectable={true}
-                    select={handleSelect}
-                    editable={true}
-                    eventDrop={handleEventDrop}
-                    eventResize={handleEventResize}
-                    height={height}
-                    visibleRange={{
-                        start: timeStart ? timeStart : workingDate,
-                        end: moment(workingDate)
-                            .add(dayCount, "days")
-                            .format("YYYY-MM-DD"),
-                    }}
-                    slotDuration="12:00:00"
-                    slotLabelInterval={{ hours: 24 }}
-                    views={{
-                        timeline: {
-                            type: "resourceTimeline",
-                            duration: { days: dayCount },
-                            dayHeaderContent: customHeader,
-                            slotLabelContent: (arg: any) => {
-                                console.log("arg", arg);
-                                var Difference_In_Time =
-                                    arg.date.getTime() -
-                                    (timeStart
-                                        ? timeStart.getTime()
-                                        : new Date(workingDate).getTime());
+                        searchInitialState={{
+                            CurrDate: workingDate,
+                            NumberOfDays: dayCount,
+                            RoomTypeID: 0,
+                        }}
+                    >
+                        <Search
+                            register={register}
+                            errors={errors}
+                            control={control}
+                            reset={reset}
+                        />
+                    </CustomSearch>
+                </Box>
+                <Typography variant="subtitle2" className="mt-2">
+                    {format(timeStart, "yyyy/MM/dd ") + " - "}
+                    {format(
+                        moment(timeStart).add(dayCount, "days").toDate(),
+                        "yyyy/MM/dd "
+                    )}
+                </Typography>
+                {resources && dayCount && timeStart && (
+                    <FullCalendar
+                        key={rerenderKey}
+                        plugins={[resourceTimelinePlugin, interactionPlugin]}
+                        initialView="resourceTimeline"
+                        headerToolbar={{
+                            left: "",
+                            center: "",
+                            right: "",
+                        }}
+                        resources={resources}
+                        initialDate={timeStart}
+                        events={itemData}
+                        selectable={true}
+                        select={handleSelect}
+                        editable={true}
+                        eventDrop={handleEventDrop}
+                        eventResize={handleEventResize}
+                        height={height}
+                        visibleRange={{
+                            start: timeStart,
+                            end: moment(timeStart)
+                                .add(dayCount, "days")
+                                .format("YYYY-MM-DD"),
+                        }}
+                        slotDuration="12:00:00"
+                        slotLabelInterval={{ hours: 24 }}
+                        views={{
+                            timeline: {
+                                type: "resourceTimeline",
+                                duration: { days: dayCount },
+                                dayHeaderContent: customHeader,
+                                slotLabelContent: (arg: any) => {
+                                    arg.date.setHours(8);
+                                    console.log("arg", arg);
+                                    console.log("timeStart", timeStart);
+                                    var Difference_In_Time =
+                                        arg.date.getTime() -
+                                        timeStart.getTime();
+                                    var Difference_In_Days = Math.floor(
+                                        Difference_In_Time / (1000 * 3600 * 24)
+                                    );
+                                    console.log(
+                                        "Difference_In_Days",
+                                        Difference_In_Time / (1000 * 3600 * 24)
+                                    );
+                                    console.log(
+                                        "Difference_In_Days_Floor",
+                                        Difference_In_Days
+                                    );
+                                    console.log(
+                                        "availableRooms",
+                                        availableRooms
+                                    );
 
-                                var Difference_In_Days =
-                                    Difference_In_Time / (1000 * 3600 * 24);
-
-                                return arg.level == 1 ? (
-                                    availableRooms &&
-                                        availableRooms[0] &&
-                                        availableRooms[0][
-                                            `D` + (Difference_In_Days + 1)
-                                        ]
-                                ) : (
-                                    <div>
+                                    return arg.level == 1 ? (
+                                        availableRooms &&
+                                            availableRooms[0] &&
+                                            availableRooms[0][
+                                                `D` + (Difference_In_Days + 1)
+                                            ]
+                                    ) : (
                                         <div>
-                                            {arg.date.toString().split(" ")[0]}
+                                            <div>
+                                                {
+                                                    arg.date
+                                                        .toString()
+                                                        .split(" ")[0]
+                                                }
+                                            </div>
+                                            <div>{arg.date.getDate()}</div>
                                         </div>
-                                        <div>{arg.date.getDate()}</div>
-                                    </div>
-                                );
+                                    );
+                                },
                             },
-                        },
-                        resourceTimeline: {
-                            dayHeaderContent: customHeader,
-                        },
-                    }}
-                />
-            )}
-        </>
+                            resourceTimeline: {
+                                dayHeaderContent: customHeader,
+                            },
+                        }}
+                    />
+                )}
+            </>
+        )
     );
 };
 
