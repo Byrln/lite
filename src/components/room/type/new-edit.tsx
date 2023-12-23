@@ -387,6 +387,7 @@ const NewEdit = () => {
                                 fullWidth
                                 id="BookingDescription"
                                 label="Товч тайлбар (Онлайн захиалга)"
+                                multiline
                                 {...register("BookingDescription")}
                                 margin="dense"
                                 value={entity && entity.BookingDescription}
@@ -762,6 +763,7 @@ const NewEdit = () => {
                                             fullWidth
                                             id="BookingDescription"
                                             label="Товч тайлбар (Онлайн захиалга)"
+                                            multiline
                                             {...register("BookingDescription")}
                                             margin="dense"
                                             value={

@@ -221,7 +221,7 @@ const NewEdit = () => {
                             type="number"
                             fullWidth
                             id="Priority"
-                            label="Эрэмбэлэх"
+                            label="Зэрэглэл"
                             {...register("Priority")}
                             margin="dense"
                             error={errors.Priority?.message}

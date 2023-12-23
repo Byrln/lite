@@ -125,7 +125,7 @@ export default function AccountPopover() {
                         variant="outlined"
                         onClick={() =>
                             signOut({
-                                callbackUrl: "http://localhost:3000",
+                                callbackUrl: "http://pms2.horecasot.mn",
                             })
                         }
                     >

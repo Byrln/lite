@@ -45,7 +45,7 @@ const columns = [
             );
         },
     },
-    { title: "Эрэмбэлэх", key: "Priority", dataIndex: "Priority" },
+    { title: "Зэрэглэл", key: "Priority", dataIndex: "Priority" },
     {
         title: "Төлөв",
         key: "Status",
