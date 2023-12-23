@@ -158,5 +158,6 @@ export function dateStringToObj(date: any) {
     //     new Date(date.replace(/ /g, "T")).getTime() +
     //         new Date(date.replace(/ /g, "T")).getTimezoneOffset() * 60 * 1000
     // );
+    console.log(date);
     return new Date(date.replace(/ /g, "T"));
 }

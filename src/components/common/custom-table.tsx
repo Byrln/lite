@@ -1,4 +1,4 @@
-import { useRef, useContext, useState } from "react";
+import { useRef, useContext, useState, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Alert from "@mui/material/Alert";
@@ -46,9 +46,15 @@ const CustomTable = ({
     search,
 }: any) => {
     const [state, dispatch]: any = useAppState();
+    const [height, setHeight] = useState<any>(null);
     // const [excelColumns, setExcelColumns]: any = useState(null);
     const { handleModal }: any = useContext(ModalContext);
     const componentRef: any = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setHeight(window.innerHeight - 240);
+    }, [window.innerHeight]);
+
     const customizedColumns: any = [
         {
             title: "№",
@@ -174,8 +180,11 @@ const CustomTable = ({
                         nativeMobileScroll={true}
                         ref={componentRef}
                     >
-                        <TableContainer component={Paper}>
-                            <Table>
+                        <TableContainer
+                            component={Paper}
+                            sx={{ maxHeight: height }}
+                        >
+                            <Table size="small" stickyHeader>
                                 <TableHead>
                                     <TableRow>
                                         {customizedColumns.map(

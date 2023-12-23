@@ -16,7 +16,9 @@ import {
     Radio,
     Box,
     Button,
+    Typography,
 } from "@mui/material";
+import { format } from "date-fns";
 
 import { RoomTypeSWR } from "../../lib/api/room-type";
 import { RoomSWR } from "lib/api/room";
@@ -29,6 +31,7 @@ import { dateToCustomFormat } from "lib/utils/format-time";
 import { useAppState } from "lib/context/app";
 import Search from "./search";
 import CustomSearch from "components/common/custom-search";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [state, dispatch]: any = useAppState();
@@ -40,6 +43,16 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         NumberOfDays: dayCount,
         RoomTypeID: 0,
     });
+
+    const customHeader = (info: any) => {
+        const dateText = info.currentRange.start.toISOString().slice(0, 10);
+        return (
+            <div>
+                <div>{info.dayHeader.text}</div>
+                <div>{dateText}</div>
+            </div>
+        );
+    };
 
     const {
         data: items,
@@ -285,6 +298,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         }
     };
     console.log("timeStart", timeStart);
+
     return (
         <>
             <Box sx={{ display: "flex" }}>
@@ -351,6 +365,15 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     />
                 </CustomSearch>
             </Box>
+            <Typography variant="subtitle2" className="mt-2">
+                {format(timeStart, "yyyy/MM/dd ") + " - "}
+                {format(
+                    moment(workingDate)
+                        .add(dayCount - 1, "days")
+                        .toDate(),
+                    "yyyy/MM/dd "
+                )}
+            </Typography>
             {resources && dayCount && timeStart && (
                 <FullCalendar
                     plugins={[resourceTimelinePlugin, interactionPlugin]}
@@ -371,11 +394,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     height={height}
                     visibleRange={{
                         start: timeStart ? timeStart : workingDate,
-                        end: timeEnd
-                            ? timeEnd
-                            : moment(workingDate)
-                                  .add(dayCount, "days")
-                                  .format("YYYY-MM-DD"),
+                        end: moment(workingDate)
+                            .add(dayCount, "days")
+                            .format("YYYY-MM-DD"),
                     }}
                     slotDuration="12:00:00"
                     slotLabelInterval={{ hours: 24 }}
@@ -383,7 +404,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         timeline: {
                             type: "resourceTimeline",
                             duration: { days: dayCount },
+                            dayHeaderContent: customHeader,
                             slotLabelContent: (arg: any) => {
+                                console.log("arg", arg);
                                 var Difference_In_Time =
                                     arg.date.getTime() -
                                     (timeStart
@@ -393,14 +416,24 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 var Difference_In_Days =
                                     Difference_In_Time / (1000 * 3600 * 24);
 
-                                return arg.level == 1
-                                    ? availableRooms &&
-                                          availableRooms[0] &&
-                                          availableRooms[0][
-                                              `D` + (Difference_In_Days + 1)
-                                          ]
-                                    : arg.text;
+                                return arg.level == 1 ? (
+                                    availableRooms &&
+                                        availableRooms[0] &&
+                                        availableRooms[0][
+                                            `D` + (Difference_In_Days + 1)
+                                        ]
+                                ) : (
+                                    <div>
+                                        <div>
+                                            {arg.date.toString().split(" ")[0]}
+                                        </div>
+                                        <div>{arg.date.getDate()}</div>
+                                    </div>
+                                );
                             },
+                        },
+                        resourceTimeline: {
+                            dayHeaderContent: customHeader,
                         },
                     }}
                 />

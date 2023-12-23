@@ -98,7 +98,8 @@ const DeparturedListList = ({ title }: any) => {
                 api={ReservationAPI}
                 hasNew={true}
                 hasUpdate={true}
-                hasDelete={true}
+                hasDelete={false}
+                hasShow={false}
                 id="TransactionID"
                 listUrl={listUrl}
                 modalTitle={title}
