@@ -119,3 +119,9 @@ td.color-FF66FF {
 .fc .fc-toolbar.fc-header-toolbar{
     margin-bottom:0px !important;
 }
+
+
+.fc, .fc *, .fc ::after, .fc ::before
+    {
+  font-size: 11px;
+}

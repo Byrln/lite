@@ -60,7 +60,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         error: itemsError,
     } = FrontOfficeSWR({
         CurrDate: search.CurrDate ? search.CurrDate : workingDate,
-        NumberOfDays: search.NumberOfDays,
+        NumberOfDays: dayCount,
         RoomTypeID: search.RoomTypeID,
     });
     const [timeStart, setTimeStart] = useState(new Date(workingDate));
@@ -124,11 +124,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     }, [search]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("event", (event.target as HTMLInputElement).value);
-        setDayCount(Number((event.target as HTMLInputElement).value));
+        (async () => {
+            console.log("event", (event.target as HTMLInputElement).value);
+            setDayCount(Number((event.target as HTMLInputElement).value));
 
-        mutate("/api/FrontOffice/StayView2");
-        console.log("dayCount", dayCount);
+            await mutate("/api/RoomType/List");
+            await mutate("/api/FrontOffice/StayView2");
+            await mutate("/api/FrontOffice/ReservationDetailsByDate");
+        })();
     };
 
     useEffect(() => {
