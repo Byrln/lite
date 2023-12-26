@@ -17,6 +17,7 @@ import {
     Box,
     Button,
     Typography,
+    Grid,
 } from "@mui/material";
 import { format } from "date-fns";
 
@@ -74,7 +75,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         RoomTypeID: search.RoomTypeID,
     });
     const { data: rooms, error: roomSwrError } = RoomSWR({});
-
     const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR(
         //@ts-ignore
         dateToCustomFormat(timeStart, "yyyy MMM dd"),
@@ -83,13 +83,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [resources, setResources] = useState<any>(null);
     const [itemData, setItemData] = useState<any>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
-
     const [height, setHeight] = useState<any>(null);
     const { data: availableRooms, error: availableRoomsError } = StayView2SWR(
         search.CurrDate ? search.CurrDate : workingDate,
         dayCount
     );
-    console.log("availableRooms", availableRooms);
 
     const validationSchema = yup.object().shape({
         CurrDate: yup.string().nullable(),
@@ -125,7 +123,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         (async () => {
-            console.log("event", (event.target as HTMLInputElement).value);
             setDayCount(Number((event.target as HTMLInputElement).value));
 
             await mutate("/api/RoomType/List");
@@ -143,7 +140,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     title: obj.GuestName,
                     start: obj.StartDate,
                     end: obj.EndDate,
-                    resourceId: obj.RoomID,
+                    resourceId: obj.RoomID
+                        ? obj.RoomID
+                        : `${obj.RoomTypeName}-${obj.RoomTypeID}`,
                     roomTypeID: obj.RoomTypeID,
                     transactionID: obj.TransactionID,
                     editable: true,
@@ -166,9 +165,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 });
 
                 itemDataConcated = newItemDta.concat(newRoomBlockDta);
-                console.log("newItemDta", newItemDta);
-                console.log("newRoomBlockDta", newRoomBlockDta);
-                console.log("itemDataConcated", itemDataConcated);
             }
 
             setItemData(itemDataConcated ? itemDataConcated : newItemDta);
@@ -197,13 +193,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     }, [roomTypes, rooms]);
 
     useEffect(() => {
-        setHeight(window.innerHeight - 200);
+        setHeight(window.innerHeight - 225);
     }, [window.innerHeight]);
 
     const [newEvent, setNewEvent] = useState<any>(null);
 
     const handleEventDrop = (info: any) => {
-        console.log("Event dropped", info.event);
         const newEventObject = {
             title: "New Event",
             start: info.event._instance.range.start,
@@ -211,10 +206,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
             roomID: Number(info.event._def.resourceIds[0]),
         };
-        console.log(
-            "Number(info.event._def.extendedProps.transactionID)",
-            Number(info.event._def.extendedProps.transactionID)
-        );
+
         if (Number(info.event._def.extendedProps.transactionID)) {
             dispatch({
                 type: "editId",
@@ -227,7 +219,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             });
         }
 
-        console.log("newEventObject", newEventObject);
         if (!info.event.extendedProps.block) {
             handleModal(
                 true,
@@ -247,9 +238,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     const handleEventResize = (info: any) => {
-        console.log("Event resized", info.event);
-        console.log("info", info);
-
         if (Number(info.event._def.extendedProps.transactionID)) {
             dispatch({
                 type: "editId",
@@ -287,7 +275,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleSelect = (info: any) => {
         const { start, end, resourceId } = info;
-        console.log("info", info);
 
         dispatch({
             type: "editId",
@@ -303,7 +290,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             ),
             roomID: Number(info.resource._resource.id),
         };
-        console.log("newEventObject", newEventObject);
 
         setNewEvent(newEventObject);
 
@@ -324,7 +310,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             );
         }
     };
-    console.log("timeStart", timeStart);
 
     return (
         timeStart && (
@@ -434,25 +419,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 dayHeaderContent: customHeader,
                                 slotLabelContent: (arg: any) => {
                                     arg.date.setHours(8);
-                                    console.log("arg", arg);
-                                    console.log("timeStart", timeStart);
                                     var Difference_In_Time =
                                         arg.date.getTime() -
                                         timeStart.getTime();
                                     var Difference_In_Days = Math.floor(
                                         Difference_In_Time / (1000 * 3600 * 24)
-                                    );
-                                    console.log(
-                                        "Difference_In_Days",
-                                        Difference_In_Time / (1000 * 3600 * 24)
-                                    );
-                                    console.log(
-                                        "Difference_In_Days_Floor",
-                                        Difference_In_Days
-                                    );
-                                    console.log(
-                                        "availableRooms",
-                                        availableRooms
                                     );
 
                                     return arg.level == 1 ? (
@@ -481,6 +452,166 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         }}
                     />
                 )}
+                <Grid container direction="row" className="mt-2">
+                    <Grid
+                        item
+                        xs={12}
+                        style={{ display: "flex", flexWrap: "wrap" }}
+                    >
+                        <div
+                            className="mr-3 pl-1 pr-1 mb-1"
+                            style={{
+                                borderRadius: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "15px",
+                                    height: "15px",
+                                    backgroundColor: "#330011",
+                                    borderRadius: "4px",
+                                }}
+                                className="mr-1"
+                            ></div>
+                            Ирсэн
+                        </div>
+                        <div
+                            className="mr-3 pl-1 pr-1 mb-1"
+                            style={{
+                                borderRadius: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "15px",
+                                    height: "15px",
+                                    backgroundColor: "#991100",
+                                    borderRadius: "4px",
+                                }}
+                                className="mr-1"
+                            ></div>
+                            Гарсан
+                        </div>
+                        <div
+                            className="mr-3 pl-1 pr-1 mb-1"
+                            style={{
+                                borderRadius: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "15px",
+                                    height: "15px",
+                                    backgroundColor: "#6699FF",
+                                    borderRadius: "4px",
+                                }}
+                                className="mr-1"
+                            ></div>
+                            Гарах
+                        </div>
+                        <div
+                            className="mr-3 pl-1 pr-1 mb-1"
+                            style={{
+                                borderRadius: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "15px",
+                                    height: "15px",
+                                    backgroundColor: "#009933",
+                                    borderRadius: "4px",
+                                }}
+                                className="mr-1"
+                            ></div>
+                            Баталгаажсан
+                        </div>
+                        <div
+                            className="mr-3 pl-1 pr-1 mb-1"
+                            style={{
+                                borderRadius: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "15px",
+                                    height: "15px",
+                                    backgroundColor: "#000000",
+                                    borderRadius: "4px",
+                                }}
+                                className="mr-1"
+                            ></div>
+                            Блок
+                        </div>
+                        <div
+                            className="mr-3 pl-1 pr-1 mb-1"
+                            style={{
+                                borderRadius: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "15px",
+                                    height: "15px",
+                                    backgroundColor: "#CCFF00",
+                                    borderRadius: "4px",
+                                }}
+                                className="mr-1"
+                            ></div>
+                            Дахин хонох
+                        </div>
+                        <div
+                            className="mr-3 pl-1 pr-1 mb-1"
+                            style={{
+                                borderRadius: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "15px",
+                                    height: "15px",
+                                    backgroundColor: "#009933",
+                                    borderRadius: "4px",
+                                }}
+                                className="mr-1"
+                            ></div>
+                            Өдрөөр захиалга
+                        </div>
+                        <div
+                            className="mr-3 pl-1 pr-1 mb-1"
+                            style={{
+                                borderRadius: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "15px",
+                                    height: "15px",
+                                    backgroundColor: "#FF66FF",
+                                    borderRadius: "4px",
+                                }}
+                                className="mr-1"
+                            ></div>
+                            Өдрөөр ашиглах
+                        </div>
+                    </Grid>
+                </Grid>
             </>
         )
     );

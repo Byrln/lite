@@ -5,7 +5,7 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/Rate";
 export const listUrl = `${urlPrefix}/List`;
 
-export const RateSWR = (search: any) => {
+export const RateSWR = (search: any, TaxIncluded: any) => {
     if (!search.RoomTypeID) {
         search.RoomTypeID = 0;
     }
@@ -24,12 +24,12 @@ export const RateSWR = (search: any) => {
     if (!search.CustomerID) {
         search.CustomerID = 0;
     }
-    if (!search.TaxIncluded) {
-        search.TaxIncluded = false;
-    }
+
     if (!search.RoomChargeDuration) {
         search.RoomChargeDuration = 0;
     }
+
+    search.TaxIncluded = TaxIncluded;
 
     const fetcher = async (url: any) =>
         await axios.post(url, search).then((res: any) => {

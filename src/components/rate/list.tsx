@@ -30,10 +30,10 @@ const RateList = ({ title }: any) => {
         control,
     } = useForm(formOptions);
     const [isChecked, setIsChecked] = useState(true);
-    const [search, setSearch] = useState({ TaxIncluded: isChecked });
+    const [search, setSearch] = useState({});
     const [entity, setEntity] = useState<any>({});
     const [loading, setLoading] = useState(false);
-    const { data, error } = RateSWR(search);
+    const { data, error } = RateSWR(search, isChecked);
 
     useEffect(() => {
         if (data) {
@@ -44,16 +44,11 @@ const RateList = ({ title }: any) => {
     const onToggleChecked = async () => {
         setLoading(true);
         try {
-            // await api.toggleChecked(id, !checked, apiUrl, toggleKey);
-
             setIsChecked(!isChecked);
             setSearch({
                 ...search,
                 TaxIncluded: !isChecked,
             });
-            // await mutate(listUrl);
-
-            console.log("isChecked", isChecked);
         } finally {
             setLoading(false);
         }
