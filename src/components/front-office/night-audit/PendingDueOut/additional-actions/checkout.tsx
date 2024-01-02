@@ -34,6 +34,7 @@ const CheckOut = ({ id, TransactionID, listUrl }: any) => {
             handleClose();
         } catch (error) {
             setLoading(false);
+            handleClose();
         }
     };
 
