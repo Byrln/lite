@@ -403,6 +403,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         editable={true}
                         eventDrop={handleEventDrop}
                         eventResize={handleEventResize}
+                        now={timeStart}
+                        nowIndicator={true}
                         height={height}
                         visibleRange={{
                             start: timeStart,

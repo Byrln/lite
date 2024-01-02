@@ -121,7 +121,6 @@ td.color-FF66FF {
 }
 
 
-.fc, .fc *, .fc ::after, .fc ::before
-    {
-  font-size: 11px;
+.fc, .fc *, .fc ::after, .fc ::before{
+    font-size: 11px;
 }
