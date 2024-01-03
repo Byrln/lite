@@ -25,7 +25,7 @@ const validationSchema = yup.object().shape({
     NewRate: yup.number(),
 });
 
-const NewEdit = ({ handleModal, entity, listUrl }: any) => {
+const NewEdit = ({ handleModal, entity, listUrl, workingDate }: any) => {
     const [loading, setLoading] = useState(false);
     const [Nights, setNights]: any = useState("");
     const [ArrivalDate, setArrivalDate]: any = useState("");
@@ -143,6 +143,7 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
                                         <DatePicker
                                             label="Эхлэх огноо"
                                             value={value}
+                                            minDate={new Date(workingDate)}
                                             onChange={(value) => (
                                                 onChange(
                                                     moment(
@@ -203,6 +204,7 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
                                         <DatePicker
                                             label="Гарах огноо"
                                             value={value}
+                                            minDate={new Date(workingDate)}
                                             onChange={(value) => (
                                                 onChange(
                                                     moment(

@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import { ModalContext } from "lib/context/modal";
 import NewEdit from "./new-edit";
 
-const AmendStay = ({ id, entity, listUrl }: any) => {
+const AmendStay = ({ id, entity, listUrl, workingDate }: any) => {
     const { handleModal }: any = useContext(ModalContext);
 
     return (
@@ -18,6 +18,7 @@ const AmendStay = ({ id, entity, listUrl }: any) => {
                         handleModal={handleModal}
                         entity={entity}
                         listUrl={listUrl}
+                        workingDate={workingDate}
                     />,
                     ""
                 );

@@ -16,7 +16,7 @@ const steps = [
     "Шинэ өдөр эхлүүлэх",
 ];
 
-const NightAuditList = ({ title }: any) => {
+const NightAuditList = ({ title, workingDate }: any) => {
     const [activeStep, setActiveStep] = useState(0);
     const [pendingReservationCompleted, setPendingReservationCompleted] =
         useState(false);
@@ -59,12 +59,14 @@ const NightAuditList = ({ title }: any) => {
                         setPendingReservationCompleted={
                             setPendingReservationCompleted
                         }
+                        workingDate={workingDate}
                     />
                 </Box>
             ) : activeStep == 1 ? (
                 <Box sx={{ pt: 2 }}>
                     <PendingDueOut
                         setPendingDueOutCompleted={setPendingDueOutCompleted}
+                        workingDate={workingDate}
                     />
                 </Box>
             ) : activeStep == 2 ? (

@@ -7,68 +7,11 @@ import NewEdit from "./new-edit";
 import AmendStay from "../pending-reservation/additional-actions/amend-stay";
 import Checkout from "./additional-actions/checkout";
 
-const columns = [
-    {
-        title: "Өрөө",
-        key: "RoomFullName",
-        dataIndex: "RoomFullName",
-    },
-    {
-        title: "Зочин",
-        key: "GuestName",
-        dataIndex: "GuestName",
-    },
-
-    {
-        title: "Ирэх өдөр",
-        key: "ArrivalDate",
-        dataIndex: "ArrivalDate",
-    },
-    {
-        title: "Гарах өдөр",
-        key: "DepartureDate",
-        dataIndex: "DepartureDate",
-    },
-    {
-        title: "Нийлбэр",
-        key: "TotalAmount",
-        dataIndex: "TotalAmount",
-    },
-    {
-        title: "Үлд.Төлбөр",
-        key: "CurrentBalance",
-        dataIndex: "CurrentBalance",
-    },
-    {
-        title: "Төлөв",
-        key: "StDescription",
-        dataIndex: "StDescription",
-    },
-    {
-        title: "Нэмэлт үйлдэл",
-        key: "Action",
-        dataIndex: "Action",
-        render: function render(id: any, record: any, entity: any) {
-            return (
-                <Stack direction="row" spacing={1}>
-                    <Checkout
-                        key={`checkout-${id}`}
-                        TransactionID={entity.TransactionID}
-                        listUrl={`${urlPrefix}/PendingReservation`}
-                    />
-
-                    <AmendStay
-                        key={`amend-stay-${id}`}
-                        entity={entity}
-                        listUrl={`${urlPrefix}/PedingDueOut`}
-                    />
-                </Stack>
-            );
-        },
-    },
-];
-
-const PendingDueOutList = ({ title, setPendingDueOutCompleted }: any) => {
+const PendingDueOutList = ({
+    title,
+    setPendingDueOutCompleted,
+    workingDate,
+}: any) => {
     const { data, error } = PendingDueOutSWR();
 
     useEffect(() => {
@@ -76,6 +19,68 @@ const PendingDueOutList = ({ title, setPendingDueOutCompleted }: any) => {
             setPendingDueOutCompleted(true);
         }
     }, [data]);
+
+    const columns = [
+        {
+            title: "Өрөө",
+            key: "RoomFullName",
+            dataIndex: "RoomFullName",
+        },
+        {
+            title: "Зочин",
+            key: "GuestName",
+            dataIndex: "GuestName",
+        },
+
+        {
+            title: "Ирэх өдөр",
+            key: "ArrivalDate",
+            dataIndex: "ArrivalDate",
+        },
+        {
+            title: "Гарах өдөр",
+            key: "DepartureDate",
+            dataIndex: "DepartureDate",
+        },
+        {
+            title: "Нийлбэр",
+            key: "TotalAmount",
+            dataIndex: "TotalAmount",
+        },
+        {
+            title: "Үлд.Төлбөр",
+            key: "CurrentBalance",
+            dataIndex: "CurrentBalance",
+        },
+        {
+            title: "Төлөв",
+            key: "StDescription",
+            dataIndex: "StDescription",
+        },
+        {
+            title: "Нэмэлт үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            render: function render(id: any, record: any, entity: any) {
+                return (
+                    <Stack direction="row" spacing={1}>
+                        <Checkout
+                            key={`checkout-${id}`}
+                            TransactionID={entity.TransactionID}
+                            listUrl={`${urlPrefix}/PendingReservation`}
+                        />
+
+                        <AmendStay
+                            key={`amend-stay-${id}`}
+                            entity={entity}
+                            listUrl={`${urlPrefix}/PedingDueOut`}
+                            workingDate={workingDate}
+                        />
+                    </Stack>
+                );
+            },
+        },
+    ];
 
     return (
         <CustomTable
