@@ -15,14 +15,10 @@ import RoomAssign from "components/reservation/room-assign";
 
 const buttonStyle = {
     borderBottom: "1px solid #efefef",
+    width: "100%",
 };
 
-const ReservationNav = ({
-    reservation,
-    itemInfo,
-    transactionInfo,
-    reloadDetailInfo,
-}: any) => {
+const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
     const { handleModal }: any = useContext(ModalContext);
 
     const finishCall = async (msg: string) => {
@@ -37,7 +33,7 @@ const ReservationNav = ({
         if (!confirm("Are you sure?")) {
             return;
         }
-        var res = await ReservationAPI.checkIn(transactionInfo.TransactionID);
+        var res = await ReservationAPI.checkIn(reservation.TransactionID);
         await mutate(calendarItemsURL);
         finishCall("Амжилттай");
     };
@@ -46,9 +42,7 @@ const ReservationNav = ({
         if (!confirm("Are you sure?")) {
             return;
         }
-        var res = await ReservationAPI.roomUnassign(
-            transactionInfo.TransactionID
-        );
+        var res = await ReservationAPI.roomUnassign(reservation.TransactionID);
         await mutate(calendarItemsURL);
         finishCall("Амжилттай");
     };
@@ -61,10 +55,10 @@ const ReservationNav = ({
                 border: "1px solid #efefef",
             }}
         >
-            <Button variant={"text"} size="small" sx={buttonStyle}>
+            {/* <Button variant={"text"} size="small" sx={buttonStyle}>
                 Card
-            </Button>
-            {transactionInfo.CheckIn && (
+            </Button> */}
+            {reservation.CheckIn && (
                 <Button
                     variant={"text"}
                     size="small"
@@ -74,29 +68,29 @@ const ReservationNav = ({
                     Check In
                 </Button>
             )}
-            {transactionInfo.NoShow && (
+            {reservation.NoShow && (
                 <Button variant={"text"} size="small" sx={buttonStyle}>
                     Mark No Show
                 </Button>
             )}
-            {transactionInfo.IsEdit && (
+            {reservation.IsEdit && (
                 <a href={`transaction/edit/${reservation.TransactionID}`}>
                     <Button variant={"text"} size="small" sx={buttonStyle}>
                         Edit Transaction
                     </Button>
                 </a>
             )}
-            {transactionInfo.GroupOperation && (
+            {reservation.GroupOperation && (
                 <Button variant={"text"} size="small" sx={buttonStyle}>
                     Extra Charge
                 </Button>
             )}
-            {transactionInfo.GroupOperation && (
+            {reservation.GroupOperation && (
                 <Button variant={"text"} size="small" sx={buttonStyle}>
                     Edit Group
                 </Button>
             )}
-            {transactionInfo.MoveRoom && (
+            {reservation.MoveRoom && (
                 <Button
                     variant={"text"}
                     size="small"
@@ -106,7 +100,7 @@ const ReservationNav = ({
                             true,
                             "Room Move",
                             <RoomMoveForm
-                                transactionInfo={transactionInfo}
+                                transactionInfo={reservation}
                                 reservation={reservation}
                             />
                         );
@@ -115,7 +109,7 @@ const ReservationNav = ({
                     Room Move
                 </Button>
             )}
-            {transactionInfo.AmendStay && (
+            {reservation.AmendStay && (
                 <Button
                     variant={"text"}
                     size="small"
@@ -124,7 +118,7 @@ const ReservationNav = ({
                             true,
                             "Amend Stay",
                             <AmendStayForm
-                                transactionInfo={transactionInfo}
+                                transactionInfo={reservation}
                                 reservation={reservation}
                             />
                         );
@@ -134,14 +128,14 @@ const ReservationNav = ({
                     Amend Stay
                 </Button>
             )}
-            {/*{transactionInfo.SetMessage && (*/}
+            {/*{reservation.SetMessage && (*/}
             {/*    <Button*/}
             {/*        variant={"text"}*/}
             {/*        size="small"*/}
             {/*        sx={buttonStyle}*/}
             {/*    >Set Message</Button>*/}
             {/*)}*/}
-            {transactionInfo.Void && (
+            {reservation.Void && (
                 <Button
                     variant={"text"}
                     size="small"
@@ -150,7 +144,7 @@ const ReservationNav = ({
                             true,
                             "Void Transaction",
                             <VoidTransactionForm
-                                transactionInfo={transactionInfo}
+                                transactionInfo={reservation}
                                 reservation={reservation}
                             />
                         );
@@ -160,7 +154,7 @@ const ReservationNav = ({
                     Void Transaction
                 </Button>
             )}
-            {transactionInfo.Cancel && (
+            {reservation.Cancel && (
                 <Button
                     variant={"text"}
                     size="small"
@@ -170,7 +164,7 @@ const ReservationNav = ({
                             true,
                             "Cancel Reservation",
                             <CancelReservationForm
-                                transactionInfo={transactionInfo}
+                                transactionInfo={reservation}
                                 reservation={reservation}
                             />
                         );
@@ -179,7 +173,7 @@ const ReservationNav = ({
                     Cancel Reservation
                 </Button>
             )}
-            {transactionInfo.Assign && (
+            {reservation.Assign && (
                 <Button
                     variant={"text"}
                     size="small"
@@ -189,7 +183,7 @@ const ReservationNav = ({
                             true,
                             "Assign Room",
                             <RoomAssign
-                                transactionInfo={transactionInfo}
+                                transactionInfo={reservation}
                                 reservation={reservation}
                             />
                         );
@@ -198,7 +192,7 @@ const ReservationNav = ({
                     Assign Room
                 </Button>
             )}
-            {transactionInfo.Unassign && (
+            {reservation.Unassign && (
                 <Button
                     variant={"text"}
                     size="small"
@@ -208,7 +202,7 @@ const ReservationNav = ({
                     Unassign Room
                 </Button>
             )}
-            {transactionInfo.AuditTrail && (
+            {reservation.AuditTrail && (
                 <Button variant={"text"} size="small" sx={buttonStyle}>
                     AuditTrail
                 </Button>

@@ -54,7 +54,7 @@ const VoidTransactionForm = ({ transactionInfo, reservation }: any) => {
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input type="text" {...register("TransactionID")} />
+                <input type="hidden" {...register("TransactionID")} />
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>

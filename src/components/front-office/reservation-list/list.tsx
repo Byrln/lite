@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import CustomTable from "components/common/custom-table";
 import CustomSearch from "components/common/custom-search";
 import { ReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
-import NewEdit from "./new-edit";
+import NewEdit from "./new";
 import Search from "./search";
 
 const columns = [

@@ -37,26 +37,10 @@ const styleNight = {
     },
 };
 
-const ItemDetail = ({ itemInfo }: any) => {
-    const [reservation, setReservation]: any = useState(null);
-    const [transactionInfo, setTransactionInfo]: any = useState(null);
-
-    const reloadDetailInfo = async () => {
-        var res = await ReservationAPI.get(itemInfo.detail.TransactionID);
-        var trs = await FrontOfficeAPI.transactionInfo(
-            itemInfo.detail.TransactionID
-        );
-        setReservation(res);
-        setTransactionInfo(trs);
-    };
-
-    useEffect(() => {
-        reloadDetailInfo();
-    }, [itemInfo]);
-
+const ItemDetail = ({ reservation, reloadDetailInfo }: any) => {
     return (
         <>
-            {transactionInfo ? (
+            {reservation ? (
                 <Box>
                     <Grid container spacing={2} sx={{ mb: 2 }}>
                         <Grid item xs={6}>
@@ -75,36 +59,38 @@ const ItemDetail = ({ itemInfo }: any) => {
                                         sx={{
                                             px: 1,
                                             backgroundColor:
-                                                "#" +
-                                                transactionInfo.StatusColor,
+                                                "#" + reservation.StatusColor,
                                             color: "white",
                                             mb: 1,
                                         }}
                                     >
                                         <Typography>
                                             {reservation &&
-                                                reservation.ReservationTypeName}
+                                                reservation.StatusCode}
                                         </Typography>
                                     </Paper>
+                                    <p style={{ fontSize: "12px" }}>
+                                        Check In No {reservation.CheckinNo}
+                                    </p>
                                 </div>
                             </Box>
                         </Grid>
                     </Grid>
 
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={12} md={6}>
                             <Grid container spacing={0}>
                                 <Grid item xs={3}>
                                     <Box sx={styleTime}>
                                         <p>
                                             {fToCustom(
-                                                transactionInfo.ArrivalDate,
+                                                reservation.ArrivalDate,
                                                 "MMM dd"
                                             )}
                                         </p>
                                         <p>
                                             {fToCustom(
-                                                transactionInfo.ArrivalDate,
+                                                reservation.ArrivalDate,
                                                 "kk:mm:ss"
                                             )}
                                         </p>
@@ -112,8 +98,8 @@ const ItemDetail = ({ itemInfo }: any) => {
                                     <Box sx={styleNight}>
                                         <p>
                                             {countNights(
-                                                transactionInfo.ArrivalDate,
-                                                transactionInfo.DepartureDate
+                                                reservation.ArrivalDate,
+                                                reservation.DepartureDate
                                             )}
                                         </p>
                                         <p>Night</p>
@@ -121,13 +107,13 @@ const ItemDetail = ({ itemInfo }: any) => {
                                     <Box sx={styleTime}>
                                         <p>
                                             {fToCustom(
-                                                transactionInfo.DepartureDate,
+                                                reservation.DepartureDate,
                                                 "MMM dd"
                                             )}
                                         </p>
                                         <p>
                                             {fToCustom(
-                                                transactionInfo.DepartureDate,
+                                                reservation.DepartureDate,
                                                 "kk:mm:ss"
                                             )}
                                         </p>
@@ -141,9 +127,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>ReservationNo</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {
-                                                        transactionInfo.ReservationNo
-                                                    }
+                                                    {reservation.ReservationNo}
                                                 </TableCell>
                                             </TableRow>
 
@@ -152,7 +136,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>GroupCode</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.GroupCode}
+                                                    {reservation.GroupCode}
                                                 </TableCell>
                                             </TableRow>
 
@@ -161,7 +145,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>Folio No</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.FolioNo}
+                                                    {reservation.FolioNo}
                                                 </TableCell>
                                             </TableRow>
 
@@ -170,7 +154,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>VoucherNo</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.VoucherNo}
+                                                    {reservation.VoucherNo}
                                                 </TableCell>
                                             </TableRow>
 
@@ -179,7 +163,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>Room No/Room Type</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.RoomFullNo}
+                                                    {reservation.RoomFullNo}
                                                 </TableCell>
                                             </TableRow>
                                         </TableBody>
@@ -188,12 +172,12 @@ const ItemDetail = ({ itemInfo }: any) => {
                             </Grid>
 
                             <RemarkList
-                                TransactionID={transactionInfo.TransactionID}
+                                TransactionID={reservation.TransactionID}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={12} md={6}>
                             <Grid container spacing={2}>
-                                <Grid item xs={9}>
+                                <Grid item xs={8}>
                                     <Table aria-label="simple table">
                                         <TableBody>
                                             <TableRow>
@@ -201,7 +185,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>Room Charge</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.FolioNo}
+                                                    {reservation.FolioNo}
                                                 </TableCell>
                                             </TableRow>
 
@@ -210,7 +194,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>Extra Charge</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.VoucherNo}
+                                                    {reservation.VoucherNo}
                                                 </TableCell>
                                             </TableRow>
 
@@ -221,7 +205,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     Mini bar
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.VoucherNo}
+                                                    {reservation.VoucherNo}
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow>
@@ -231,7 +215,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     Restaurant
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.VoucherNo}
+                                                    {reservation.VoucherNo}
                                                 </TableCell>
                                             </TableRow>
 
@@ -240,7 +224,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>Total Amount</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.RoomFullNo}
+                                                    {reservation.RoomFullNo}
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow>
@@ -248,7 +232,7 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>Deposit</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.RoomFullNo}
+                                                    {reservation.RoomFullNo}
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow>
@@ -256,17 +240,16 @@ const ItemDetail = ({ itemInfo }: any) => {
                                                     <b>Balance</b>
                                                 </TableCell>
                                                 <TableCell>
-                                                    {transactionInfo.RoomFullNo}
+                                                    {reservation.RoomFullNo}
                                                 </TableCell>
                                             </TableRow>
                                         </TableBody>
                                     </Table>
                                 </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={4}>
                                     <ReservationNav
                                         reservation={reservation}
-                                        itemInfo={itemInfo}
-                                        transactionInfo={transactionInfo}
+                                        itemInfo={reservation}
                                         reloadDetailInfo={reloadDetailInfo}
                                     />
                                 </Grid>

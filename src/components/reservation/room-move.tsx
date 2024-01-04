@@ -157,7 +157,7 @@ const RoomMoveForm = ({ transactionInfo, reservation }: any) => {
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input
-                    type="text"
+                    type="hidden"
                     {...register("TransactionID")}
                     value={transactionInfo.TransactionID}
                 />

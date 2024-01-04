@@ -25,7 +25,7 @@ import { RoomTypeSWR } from "../../lib/api/room-type";
 import { RoomSWR } from "lib/api/room";
 import { StayView2SWR } from "lib/api/stay-view2";
 import { FrontOfficeAPI, FrontOfficeSWR, listUrl } from "lib/api/front-office";
-import NewReservation from "components/front-office/reservation-list/new-edit";
+import NewReservation from "components/front-office/reservation-list/new";
 import { ModalContext } from "lib/context/modal";
 import { RoomBlockSWR } from "lib/api/room-block";
 import { dateToCustomFormat } from "lib/utils/format-time";
@@ -33,6 +33,7 @@ import { useAppState } from "lib/context/app";
 import Search from "./search";
 import CustomSearch from "components/common/custom-search";
 import { dateStringToObj } from "lib/utils/helpers";
+import ReservationEdit from "components/front-office/reservation-list/edit";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [state, dispatch]: any = useAppState();
@@ -197,6 +198,23 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     }, [window.innerHeight]);
 
     const [newEvent, setNewEvent] = useState<any>(null);
+
+    const handleEventClick = (info: any) => {
+        // `info` contains information about the clicked event
+        handleModal(
+            true,
+            `Захиалга`,
+            <ReservationEdit
+                transactionID={info.event._def.extendedProps.transactionID}
+            />,
+            null,
+            "large"
+        );
+        console.log(
+            "Event clicked:",
+            info.event._def.extendedProps.transactionID
+        );
+    };
 
     const handleEventDrop = (info: any) => {
         const newEventObject = {
@@ -403,6 +421,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         editable={true}
                         eventDrop={handleEventDrop}
                         eventResize={handleEventResize}
+                        eventClick={handleEventClick}
                         now={timeStart}
                         nowIndicator={true}
                         height={height}

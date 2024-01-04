@@ -157,8 +157,8 @@ const AmendStayForm = ({ transactionInfo, reservation }: any) => {
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input type="text" {...register("TransactionID")} />
-                <input type="text" {...register("NewNights")} />
+                <input type="hidden" {...register("TransactionID")} />
+                <input type="hidden" {...register("NewNights")} />
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>

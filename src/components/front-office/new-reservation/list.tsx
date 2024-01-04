@@ -7,7 +7,7 @@ import {
     NewRevervationAPI,
     listUrl,
 } from "lib/api/new-revervation";
-import NewEdit from "components/front-office/reservation-list/new-edit";
+import NewEdit from "components/front-office/reservation-list/new";
 
 const columns = [
     {
