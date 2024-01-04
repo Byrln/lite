@@ -1,71 +1,101 @@
 // import { format } from "date-fns";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Button } from "@mui/material";
 
 import CustomTable from "components/common/custom-table";
 import CustomSearch from "components/common/custom-search";
 import { ReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
 import NewEdit from "./new";
 import Search from "./search";
-
-const columns = [
-    {
-        title: "Зах.Дугаар",
-        key: "ReservationID",
-        dataIndex: "ReservationID",
-    },
-
-    {
-        title: "Ирэх",
-        key: "ArrivalDate",
-        dataIndex: "ArrivalDate",
-    },
-    {
-        title: "Гарах",
-        key: "DepartureDate",
-        dataIndex: "DepartureDate",
-    },
-    {
-        title: "Зочин",
-        key: "GuestName",
-        dataIndex: "GuestName",
-    },
-    {
-        title: "Өрөө",
-        key: "RoomFullName",
-        dataIndex: "RoomFullName",
-    },
-    {
-        title: "Компани",
-        key: "CustomerName",
-        dataIndex: "CustomerName",
-    },
-    {
-        title: "Нийлбэр",
-        key: "TotalAmount",
-        dataIndex: "TotalAmount",
-    },
-    {
-        title: "Төлсөн",
-        key: "CurrentBalance",
-        dataIndex: "CurrentBalance",
-    },
-
-    {
-        title: "Зах.төрөл",
-        key: "ReservationTypeName",
-        dataIndex: "ReservationTypeName",
-    },
-    {
-        title: "Хэрэглэгч",
-        key: "UserName",
-        dataIndex: "UserName",
-    },
-];
+import ReservationEdit from "components/front-office/reservation-list/edit";
+import { ModalContext } from "lib/context/modal";
 
 const DeparturedListList = ({ title }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
+
+    const columns = [
+        {
+            title: "Зах.Дугаар",
+            key: "ReservationID",
+            dataIndex: "ReservationID",
+        },
+
+        {
+            title: "Ирэх",
+            key: "ArrivalDate",
+            dataIndex: "ArrivalDate",
+        },
+        {
+            title: "Гарах",
+            key: "DepartureDate",
+            dataIndex: "DepartureDate",
+        },
+        {
+            title: "Зочин",
+            key: "GuestName",
+            dataIndex: "GuestName",
+        },
+        {
+            title: "Өрөө",
+            key: "RoomFullName",
+            dataIndex: "RoomFullName",
+        },
+        {
+            title: "Компани",
+            key: "CustomerName",
+            dataIndex: "CustomerName",
+        },
+        {
+            title: "Нийлбэр",
+            key: "TotalAmount",
+            dataIndex: "TotalAmount",
+        },
+        {
+            title: "Төлсөн",
+            key: "CurrentBalance",
+            dataIndex: "CurrentBalance",
+        },
+
+        {
+            title: "Зах.төрөл",
+            key: "ReservationTypeName",
+            dataIndex: "ReservationTypeName",
+        },
+        {
+            title: "Хэрэглэгч",
+            key: "UserName",
+            dataIndex: "UserName",
+        },
+        {
+            title: "Нэмэлт үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            render: function render(id: any, record: any, element: any) {
+                return (
+                    <Button
+                        key={id}
+                        onClick={() =>
+                            handleModal(
+                                true,
+                                `Захиалга`,
+                                <ReservationEdit
+                                    transactionID={element.TransactionID}
+                                />,
+                                null,
+                                "large"
+                            )
+                        }
+                    >
+                        Засах
+                    </Button>
+                );
+            },
+        },
+    ];
+
     const validationSchema = yup.object().shape({
         StartDate: yup.date().nullable(),
         EndDate: yup.date().nullable(),
@@ -97,7 +127,7 @@ const DeparturedListList = ({ title }: any) => {
                 error={error}
                 api={ReservationAPI}
                 hasNew={true}
-                hasUpdate={true}
+                hasUpdate={false}
                 hasDelete={false}
                 hasShow={false}
                 id="TransactionID"

@@ -36,7 +36,6 @@ const NewEdit = ({ transactionID }: any) => {
         reloadDetailInfo();
     }, [transactionID]);
 
-    console.log("reservation", reservation);
     return (
         <div>
             {reservation && (

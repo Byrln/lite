@@ -210,10 +210,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             null,
             "large"
         );
-        console.log(
-            "Event clicked:",
-            info.event._def.extendedProps.transactionID
-        );
     };
 
     const handleEventDrop = (info: any) => {
