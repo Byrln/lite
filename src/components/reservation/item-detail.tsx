@@ -70,7 +70,8 @@ const ItemDetail = ({ reservation, reloadDetailInfo }: any) => {
                                         </Typography>
                                     </Paper>
                                     <p style={{ fontSize: "12px" }}>
-                                        Check In No {reservation.CheckinNo}
+                                        Бүртгэлийн дугаар{" "}
+                                        {reservation.CheckinNo}
                                     </p>
                                 </div>
                             </Box>
@@ -103,7 +104,7 @@ const ItemDetail = ({ reservation, reloadDetailInfo }: any) => {
                                         reservation.DepartureDate
                                     )}
                                 </p>
-                                <p>Night</p>
+                                <p>Хоног</p>
                             </Box>
                             <Box sx={styleTime}>
                                 <p>
@@ -125,7 +126,7 @@ const ItemDetail = ({ reservation, reloadDetailInfo }: any) => {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell>
-                                            <b>ReservationNo</b>
+                                            <b>Тооцооны дугаар</b>
                                         </TableCell>
                                         <TableCell>
                                             {reservation.ReservationNo}
@@ -152,7 +153,7 @@ const ItemDetail = ({ reservation, reloadDetailInfo }: any) => {
 
                                     <TableRow>
                                         <TableCell>
-                                            <b>VoucherNo</b>
+                                            <b>Ваучер №</b>
                                         </TableCell>
                                         <TableCell>
                                             {reservation.VoucherNo}
@@ -161,7 +162,7 @@ const ItemDetail = ({ reservation, reloadDetailInfo }: any) => {
 
                                     <TableRow>
                                         <TableCell>
-                                            <b>Room No/Room Type</b>
+                                            <b>Өрөө.дугаар/Төрөл</b>
                                         </TableCell>
                                         <TableCell>
                                             {reservation.RoomFullNo}
