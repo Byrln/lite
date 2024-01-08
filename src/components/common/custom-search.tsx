@@ -15,6 +15,7 @@ const CustomSelect = ({
     handleSubmit,
     reset,
     searchInitialState = {},
+    hideButtons = false,
 }: any) => {
     const [loading, setLoading] = useState(false);
 
@@ -46,33 +47,35 @@ const CustomSelect = ({
                     {/* <Card className="mb-3">
                         <CardContent> */}
                     {children}
+                    {hideButtons == false && (
+                        <div className="search-button-position">
+                            <LoadingButton
+                                variant="outlined"
+                                size="small"
+                                loading={loading}
+                                className="mt-3 mr-3"
+                                onClick={() => (
+                                    reset(), setSearch(searchInitialState)
+                                )}
+                                startIcon={<Icon icon={trash2Fill} />}
+                            >
+                                Хайлт цэвэрлэх
+                            </LoadingButton>
 
-                    <div className="search-button-position">
-                        <LoadingButton
-                            variant="outlined"
-                            size="small"
-                            loading={loading}
-                            className="mt-3 mr-3"
-                            onClick={() => (
-                                reset(), setSearch(searchInitialState)
-                            )}
-                            startIcon={<Icon icon={trash2Fill} />}
-                        >
-                            Хайлт цэвэрлэх
-                        </LoadingButton>
+                            <LoadingButton
+                                size="small"
+                                type="submit"
+                                variant="contained"
+                                loading={loading}
+                                className="mt-3"
+                                // onClick={onSubmit}
+                                startIcon={<Icon icon={searchFill} />}
+                            >
+                                Хайх
+                            </LoadingButton>
+                        </div>
+                    )}
 
-                        <LoadingButton
-                            size="small"
-                            type="submit"
-                            variant="contained"
-                            loading={loading}
-                            className="mt-3"
-                            // onClick={onSubmit}
-                            startIcon={<Icon icon={searchFill} />}
-                        >
-                            Хайх
-                        </LoadingButton>
-                    </div>
                     {/* </CardContent>
                     </Card> */}
                 </form>

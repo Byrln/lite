@@ -39,12 +39,13 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [state, dispatch]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
     const [dayCount, setDayCount] = useState(15);
-
     const [search, setSearch] = useState({
         CurrDate: workingDate,
         NumberOfDays: dayCount,
         RoomTypeID: 0,
     });
+    const [searchCurrDate, setSearchCurrDate] = useState(workingDate);
+    const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
 
     const customHeader = (info: any) => {
         const dateText = info.currentRange.start.toISOString().slice(0, 10);
@@ -61,9 +62,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         mutate: mutateItems,
         error: itemsError,
     } = FrontOfficeSWR({
-        CurrDate: search.CurrDate ? search.CurrDate : workingDate,
+        CurrDate: searchCurrDate ? searchCurrDate : workingDate,
         NumberOfDays: dayCount,
-        RoomTypeID: search.RoomTypeID,
+        RoomTypeID: searchRoomTypeID,
     });
     const [timeStart, setTimeStart] = useState(new Date(workingDate));
     const [timeEnd, setTimeEnd] = useState(
@@ -73,7 +74,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     );
 
     const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({
-        RoomTypeID: search.RoomTypeID,
+        RoomTypeID: searchRoomTypeID,
     });
     const { data: rooms, error: roomSwrError } = RoomSWR({});
     const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR(
@@ -86,7 +87,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [rerenderKey, setRerenderKey] = useState(0);
     const [height, setHeight] = useState<any>(null);
     const { data: availableRooms, error: availableRoomsError } = StayView2SWR(
-        search.CurrDate ? search.CurrDate : workingDate,
+        searchCurrDate ? searchCurrDate : workingDate,
         dayCount
     );
 
@@ -106,11 +107,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     useEffect(() => {
         (async () => {
-            setTimeStart(new Date(search.CurrDate));
+            setTimeStart(new Date(searchCurrDate));
             setTimeEnd(
                 new Date(
-                    new Date(search.CurrDate).setDate(
-                        new Date(search.CurrDate).getDate() + 7
+                    new Date(searchCurrDate).setDate(
+                        new Date(searchCurrDate).getDate() + 7
                     )
                 )
             );
@@ -120,7 +121,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             await mutate("/api/FrontOffice/StayView2");
             await mutate("/api/FrontOffice/ReservationDetailsByDate");
         })();
-    }, [search]);
+    }, [searchCurrDate, searchRoomTypeID, dayCount]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         (async () => {
@@ -200,40 +201,81 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [newEvent, setNewEvent] = useState<any>(null);
 
     const handleEventClick = (info: any) => {
-        // `info` contains information about the clicked event
-        handleModal(
-            true,
-            `Захиалга`,
-            <ReservationEdit
-                transactionID={info.event._def.extendedProps.transactionID}
-            />,
-            null,
-            "large"
-        );
+        if (info.event._instance.range.end > new Date(workingDate)) {
+            handleModal(
+                true,
+                `Захиалга`,
+                <ReservationEdit
+                    transactionID={info.event._def.extendedProps.transactionID}
+                />,
+                null,
+                "large"
+            );
+        }
     };
 
     const handleEventDrop = (info: any) => {
-        const newEventObject = {
-            title: "New Event",
-            start: info.event._instance.range.start,
-            end: info.event._instance.range.end,
-            roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
-            roomID: Number(info.event._def.resourceIds[0]),
-        };
+        if (info.event._instance.range.end > new Date(workingDate)) {
+            const newEventObject = {
+                title: "New Event",
+                start: info.event._instance.range.start,
+                end: info.event._instance.range.end,
+                roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
+                roomID: Number(info.event._def.resourceIds[0]),
+            };
 
-        if (Number(info.event._def.extendedProps.transactionID)) {
-            dispatch({
-                type: "editId",
-                editId: Number(info.event._def.extendedProps.transactionID),
-            });
-        } else {
-            dispatch({
-                type: "editId",
-                editId: "",
-            });
+            if (Number(info.event._def.extendedProps.transactionID)) {
+                dispatch({
+                    type: "editId",
+                    editId: Number(info.event._def.extendedProps.transactionID),
+                });
+            } else {
+                dispatch({
+                    type: "editId",
+                    editId: "",
+                });
+            }
+
+            if (!info.event.extendedProps.block) {
+                handleModal(
+                    true,
+                    `New Reservation`,
+                    <NewReservation
+                        dateStart={newEventObject.start}
+                        dateEnd={newEventObject.end}
+                        // // @ts-ignore
+                        roomType={newEventObject.roomTypeID}
+                        // // @ts-ignore
+                        room={newEventObject.roomID}
+                    />,
+                    null,
+                    "large"
+                );
+            }
         }
+    };
 
-        if (!info.event.extendedProps.block) {
+    const handleEventResize = (info: any) => {
+        if (info.event._instance.range.end > new Date(workingDate)) {
+            if (Number(info.event._def.extendedProps.transactionID)) {
+                dispatch({
+                    type: "editId",
+                    editId: Number(info.event._def.extendedProps.transactionID),
+                });
+            } else {
+                dispatch({
+                    type: "editId",
+                    editId: "",
+                });
+            }
+            const newEventObject = {
+                title: "New Event",
+                start: info.event._instance.range.start,
+                end: info.event._instance.range.end,
+                roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
+                roomID: Number(info.event._def.resourceIds[0]),
+            };
+
             handleModal(
                 true,
                 `New Reservation`,
@@ -251,77 +293,43 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         }
     };
 
-    const handleEventResize = (info: any) => {
-        if (Number(info.event._def.extendedProps.transactionID)) {
-            dispatch({
-                type: "editId",
-                editId: Number(info.event._def.extendedProps.transactionID),
-            });
-        } else {
+    const handleSelect = (info: any) => {
+        const { start, end, resourceId } = info;
+
+        if (start > new Date(workingDate)) {
             dispatch({
                 type: "editId",
                 editId: "",
             });
-        }
-        const newEventObject = {
-            title: "New Event",
-            start: info.event._instance.range.start,
-            end: info.event._instance.range.end,
-            roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
-            roomID: Number(info.event._def.resourceIds[0]),
-        };
 
-        handleModal(
-            true,
-            `New Reservation`,
-            <NewReservation
-                dateStart={newEventObject.start}
-                dateEnd={newEventObject.end}
-                // // @ts-ignore
-                roomType={newEventObject.roomTypeID}
-                // // @ts-ignore
-                room={newEventObject.roomID}
-            />,
-            null,
-            "large"
-        );
-    };
+            const newEventObject = {
+                title: "New Event",
+                start: start,
+                end: end,
+                roomTypeID: Number(
+                    info.resource._resource.extendedProps.roomTypeId
+                ),
+                roomID: Number(info.resource._resource.id),
+            };
 
-    const handleSelect = (info: any) => {
-        const { start, end, resourceId } = info;
+            setNewEvent(newEventObject);
 
-        dispatch({
-            type: "editId",
-            editId: "",
-        });
-
-        const newEventObject = {
-            title: "New Event",
-            start: start,
-            end: end,
-            roomTypeID: Number(
-                info.resource._resource.extendedProps.roomTypeId
-            ),
-            roomID: Number(info.resource._resource.id),
-        };
-
-        setNewEvent(newEventObject);
-
-        if (newEventObject.roomID) {
-            handleModal(
-                true,
-                `New Reservation`,
-                <NewReservation
-                    dateStart={start}
-                    dateEnd={end}
-                    // // @ts-ignore
-                    roomType={newEventObject.roomTypeID}
-                    // // @ts-ignore
-                    room={newEventObject.roomID}
-                />,
-                null,
-                "large"
-            );
+            if (newEventObject.roomID) {
+                handleModal(
+                    true,
+                    `New Reservation`,
+                    <NewReservation
+                        dateStart={start}
+                        dateEnd={end}
+                        // // @ts-ignore
+                        roomType={newEventObject.roomTypeID}
+                        // // @ts-ignore
+                        room={newEventObject.roomID}
+                    />,
+                    null,
+                    "large"
+                );
+            }
         }
     };
 
@@ -383,12 +391,16 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             NumberOfDays: dayCount,
                             RoomTypeID: 0,
                         }}
+                        hideButtons={true}
                     >
                         <Search
                             register={register}
                             errors={errors}
                             control={control}
                             reset={reset}
+                            workingDate={workingDate}
+                            setSearchCurrDate={setSearchCurrDate}
+                            setSearchRoomTypeID={setSearchRoomTypeID}
                         />
                     </CustomSearch>
                 </Box>
@@ -418,7 +430,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         eventDrop={handleEventDrop}
                         eventResize={handleEventResize}
                         eventClick={handleEventClick}
-                        now={timeStart}
+                        now={new Date(workingDate)}
                         nowIndicator={true}
                         height={height}
                         visibleRange={{

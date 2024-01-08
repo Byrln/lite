@@ -5,21 +5,37 @@ import moment from "moment";
 
 import { dateStringToObj } from "lib/utils/helpers";
 import RoomTypeSelect from "components/select/room-type";
-const Search = ({ register, errors, control, reset }: any) => {
+const Search = ({
+    register,
+    errors,
+    control,
+    reset,
+    workingDate,
+    setSearch,
+    setSearchCurrDate,
+    setSearchRoomTypeID,
+}: any) => {
+    const onRoomTypeChange = (rt: any, index: number) => {
+        setSearchRoomTypeID(rt.RoomTypeID);
+    };
+
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
                 <Controller
                     name="CurrDate"
                     control={control}
-                    defaultValue={null}
+                    defaultValue={workingDate}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
                             label="Эхлэх огноо"
                             value={value}
-                            onChange={(value) =>
-                                onChange(moment(value).format("YYYY-MM-DD"))
-                            }
+                            onChange={(value) => (
+                                onChange(moment(value).format("YYYY-MM-DD")),
+                                setSearchCurrDate(
+                                    moment(value).format("YYYY-MM-DD")
+                                )
+                            )}
                             renderInput={(params) => (
                                 <TextField
                                     size="small"
@@ -38,7 +54,11 @@ const Search = ({ register, errors, control, reset }: any) => {
             </Grid>
 
             <Grid item xs={3}>
-                <RoomTypeSelect register={register} errors={errors} />
+                <RoomTypeSelect
+                    register={register}
+                    errors={errors}
+                    onRoomTypeChange={onRoomTypeChange}
+                />
             </Grid>
         </Grid>
     );

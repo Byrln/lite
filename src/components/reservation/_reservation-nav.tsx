@@ -55,9 +55,9 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
                 border: "1px solid #efefef",
             }}
         >
-            {/* <Button variant={"text"} size="small" sx={buttonStyle}>
+            <Button variant={"text"} size="small" sx={buttonStyle}>
                 Card
-            </Button> */}
+            </Button>
             {reservation.CheckIn && (
                 <Button
                     variant={"text"}
