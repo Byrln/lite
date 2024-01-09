@@ -34,7 +34,7 @@ const NumberSelect = ({
             error={errors[nameKey]?.message}
             helperText={errors[nameKey]?.message}
             size="small"
-            value={defaultValue ? defaultValue : 0}
+            defaultValue={defaultValue ? defaultValue : 0}
         >
             {data.map((num: any) => {
                 return (

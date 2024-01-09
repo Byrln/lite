@@ -23,7 +23,7 @@ const validationSchema = yup.object().shape({
 
 const NewEdit = ({ dateStart, dateEnd, roomType, room }: any) => {
     const [state]: any = useAppState();
-    console.log("roomType", roomType);
+
     const {
         register,
         reset,
