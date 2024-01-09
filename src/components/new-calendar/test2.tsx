@@ -107,14 +107,28 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     useEffect(() => {
         (async () => {
-            setTimeStart(new Date(searchCurrDate));
-            setTimeEnd(
-                new Date(
-                    new Date(searchCurrDate).setDate(
-                        new Date(searchCurrDate).getDate() + 7
+            if (searchCurrDate == "Invalid date") {
+                setSearchCurrDate(new Date(workingDate));
+
+                setTimeStart(new Date(workingDate));
+                setTimeEnd(
+                    new Date(
+                        new Date(workingDate).setDate(
+                            new Date(workingDate).getDate() + 7
+                        )
                     )
-                )
-            );
+                );
+            } else {
+                setTimeStart(new Date(searchCurrDate));
+                setTimeEnd(
+                    new Date(
+                        new Date(searchCurrDate).setDate(
+                            new Date(searchCurrDate).getDate() + 7
+                        )
+                    )
+                );
+            }
+
             setRerenderKey((prevKey) => prevKey + 1);
 
             await mutate("/api/RoomType/List");
