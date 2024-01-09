@@ -38,6 +38,7 @@
         "jquery": "^3.7.1",
         "mdi-material-ui": "^7.7.0",
         "moment": "^2.29.3",
+        "mui-color-input": "^2.0.1",
         "next": "12.1.6",
         "next-auth": "^4.5.0",
         "nprogress": "^0.2.0",

@@ -23,6 +23,7 @@ const NewEditForm = ({
     dateKeys,
     customSubmitTitle,
     customResetEvent,
+    customModificationBeforeSubmit,
 }: any) => {
     const [state]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
@@ -84,6 +85,10 @@ const NewEditForm = ({
             // console.log(values);
             if (additionalValues) {
                 values = Object.assign(values, additionalValues);
+            }
+
+            if (customModificationBeforeSubmit) {
+                customModificationBeforeSubmit(values);
             }
 
             if (state.editId && !stateEditIdNotAffected) {

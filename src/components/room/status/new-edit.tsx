@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { MuiColorInput } from "mui-color-input";
+import { useState, useEffect } from "react";
 
 import NewEditForm from "components/common/new-edit-form";
 import { RoomStatusAPI, listUrl } from "lib/api/room-status";
@@ -22,6 +24,27 @@ const NewEdit = () => {
     } = useForm({
         resolver: yupResolver(validationSchema),
     });
+    const [entity, setEntity] = useState<any>();
+
+    const [value, setValue] = useState("#ffffff");
+
+    useEffect(() => {
+        if (entity && entity.StatusColor) {
+            setValue(entity.StatusColor);
+        }
+    }, [entity]);
+
+    const handleChange = (newValue: any) => {
+        setValue(newValue);
+    };
+
+    const beforeSubmit = (values: any) => {
+        if (values.StatusColor) {
+            if (values.StatusColor[0] == "#") {
+                values.StatusColor = values.StatusColor.slice(1);
+            }
+        }
+    };
 
     return (
         <NewEditForm
@@ -30,6 +53,8 @@ const NewEdit = () => {
             additionalValues={{ RoomStatusID: state.editId }}
             reset={reset}
             handleSubmit={handleSubmit}
+            setEntity={setEntity}
+            customModificationBeforeSubmit={beforeSubmit}
         >
             <Grid container spacing={1}>
                 <Grid item xs={4}>
@@ -46,6 +71,21 @@ const NewEdit = () => {
                     />
                 </Grid>
                 <Grid item xs={4}>
+                    <MuiColorInput
+                        size="small"
+                        fullWidth
+                        id="StatusColor"
+                        label="Өнгө"
+                        {...register("StatusColor")}
+                        margin="dense"
+                        error={errors.StatusColor?.message}
+                        helperText={errors.StatusColor?.message}
+                        value={value}
+                        onChange={handleChange}
+                        format="hex"
+                    />
+                </Grid>
+                {/* <Grid item xs={4}>
                     <TextField
                         size="small"
                         fullWidth
@@ -56,7 +96,7 @@ const NewEdit = () => {
                         error={errors.StatusColor?.message}
                         helperText={errors.StatusColor?.message}
                     />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={4}>
                     <TextField
                         size="small"
