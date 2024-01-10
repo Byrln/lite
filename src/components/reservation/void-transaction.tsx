@@ -11,7 +11,11 @@ import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
 import ReasonSelect from "../select/reason";
 
-const VoidTransactionForm = ({ transactionInfo, reservation }: any) => {
+const VoidTransactionForm = ({
+    transactionInfo,
+    reservation,
+    customMutateUrl,
+}: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
 
@@ -27,7 +31,7 @@ const VoidTransactionForm = ({ transactionInfo, reservation }: any) => {
         formState: { errors },
         reset,
     } = useForm(formOptions);
-
+    console.log("transactionInfo", transactionInfo);
     useEffect(() => {
         reset({
             TransactionID: transactionInfo.TransactionID,
@@ -39,7 +43,7 @@ const VoidTransactionForm = ({ transactionInfo, reservation }: any) => {
         try {
             const res = await ReservationAPI.void(values);
 
-            await mutate(listUrl);
+            await mutate(customMutateUrl ? customMutateUrl : listUrl);
 
             toast("Амжилттай.");
 

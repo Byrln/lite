@@ -30,12 +30,15 @@ const Search = ({
                         <DatePicker
                             label="Эхлэх огноо"
                             value={value}
-                            onChange={(value) => (
-                                onChange(moment(value).format("YYYY-MM-DD")),
+                            onChange={(value) =>
+                                value &&
+                                value > new Date("1900-01-01") &&
+                                (onChange(moment(value).format("YYYY-MM-DD")),
                                 setSearchCurrDate(
                                     moment(value).format("YYYY-MM-DD")
-                                )
-                            )}
+                                ))
+                            }
+                            minDate={new Date("1900-01-01")}
                             renderInput={(params) => (
                                 <TextField
                                     size="small"

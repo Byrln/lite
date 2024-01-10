@@ -11,7 +11,11 @@ import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
 import ReasonSelect from "../select/reason";
 
-const CancelReservationForm = ({ transactionInfo, reservation }: any) => {
+const CancelReservationForm = ({
+    transactionInfo,
+    reservation,
+    customMutateUrl,
+}: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
 
@@ -41,7 +45,7 @@ const CancelReservationForm = ({ transactionInfo, reservation }: any) => {
         try {
             const res = await ReservationAPI.cancel(values);
 
-            await mutate(listUrl);
+            await mutate(customMutateUrl ? customMutateUrl : listUrl);
 
             toast("Амжилттай.", {
                 position: "top-right",

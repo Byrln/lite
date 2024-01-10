@@ -15,7 +15,11 @@ const PendingDueOutList = ({
     const { data, error } = PendingDueOutSWR();
 
     useEffect(() => {
-        if (data && data.length == 0) {
+        if (
+            data &&
+            data.filter((element: any) => element.IsPending == "true").length ==
+                0
+        ) {
             setPendingDueOutCompleted(true);
         }
     }, [data]);
@@ -67,7 +71,7 @@ const PendingDueOutList = ({
                         <Checkout
                             key={`checkout-${id}`}
                             TransactionID={entity.TransactionID}
-                            listUrl={`${urlPrefix}/PendingReservation`}
+                            listUrl={`${urlPrefix}/PedingDueOut`}
                         />
 
                         <AmendStay

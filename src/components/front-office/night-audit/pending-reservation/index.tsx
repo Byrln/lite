@@ -116,7 +116,7 @@ const PendingReservation = ({
                         {entity.Void == true && (
                             <Void
                                 key={`void-${id}`}
-                                entity={entity}
+                                TransactionID={entity.TransactionID}
                                 listUrl={`${urlPrefix}/PendingReservation`}
                             />
                         )}

@@ -1,6 +1,17 @@
 import { ReservationAPI } from "lib/api/reservation";
 import { useState, useEffect, useContext } from "react";
-import { Grid, Box, Paper, Typography, Button } from "@mui/material";
+import {
+    Grid,
+    Box,
+    Paper,
+    Typography,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from "@mui/material";
 import { fToCustom } from "lib/utils/format-time";
 import { listUrl as calendarItemsURL } from "lib/api/front-office";
 import { mutate } from "swr";
@@ -12,6 +23,7 @@ import VoidTransactionForm from "components/reservation/void-transaction";
 import CancelReservationForm from "components/reservation/cancel-reservation";
 import RoomMoveForm from "components/reservation/room-move";
 import RoomAssign from "components/reservation/room-assign";
+import { listUrl } from "lib/api/front-office";
 
 const buttonStyle = {
     borderBottom: "1px solid #efefef",
@@ -20,6 +32,28 @@ const buttonStyle = {
 
 const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
     const { handleModal }: any = useContext(ModalContext);
+    const [openNoShow, setOpenNoShow] = useState(false);
+    const handleClickOpenNoShow = () => {
+        setOpenNoShow(true);
+    };
+    const [loading, setLoading] = useState(false);
+
+    const handleOnClickNoShow = async () => {
+        setLoading(true);
+        try {
+            await ReservationAPI.noShow(reservation.TransactionID);
+            await mutate(listUrl);
+            setLoading(false);
+            toast("Амжилттай.");
+            handleCloseNoShow();
+        } catch (error) {
+            setLoading(false);
+        }
+    };
+
+    const handleCloseNoShow = () => {
+        setOpenNoShow(false);
+    };
 
     const finishCall = async (msg: string) => {
         await mutate(calendarItemsURL);
@@ -73,6 +107,25 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
                     Mark No Show
                 </Button>
             )}
+            <Dialog
+                open={openNoShow}
+                onClose={handleCloseNoShow}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Ирээгүй</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Та итгэлтэй байна уу
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseNoShow}>Үгүй</Button>
+                    <Button onClick={handleOnClickNoShow} autoFocus>
+                        Тийм
+                    </Button>
+                </DialogActions>
+            </Dialog>
             {reservation.IsEdit && (
                 <a href={`transaction/edit/${reservation.TransactionID}`}>
                     <Button variant={"text"} size="small" sx={buttonStyle}>

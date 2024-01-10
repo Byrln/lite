@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 
 import { ModalContext } from "lib/context/modal";
 import NewEdit from "./new-edit";
+import CancelReservationForm from "components/reservation/cancel-reservation";
 
 const Cancel = ({ id, entity, listUrl }: any) => {
     const { handleModal }: any = useContext(ModalContext);
@@ -14,11 +15,12 @@ const Cancel = ({ id, entity, listUrl }: any) => {
                 handleModal(
                     true,
                     `Захиалга цуцлах`,
-                    <NewEdit
-                        handleModal={handleModal}
-                        entity={entity}
-                        listUrl={listUrl}
+                    <CancelReservationForm
+                        transactionInfo={entity}
+                        reservation={entity}
+                        customMutateUrl={listUrl}
                     />,
+
                     ""
                 );
             }}

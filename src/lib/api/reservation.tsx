@@ -76,7 +76,7 @@ export const PendingDueOutSWR = () => {
             .get(`${urlPrefix}/PendingDueOut`)
             .then((res: any) => res.data.JsonData);
 
-    return useSWR(listUrl, fetcher);
+    return useSWR(`${urlPrefix}/PendingDueOut`, fetcher);
 };
 
 export const ReservationAPI = {

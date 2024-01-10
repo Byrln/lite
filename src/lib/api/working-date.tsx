@@ -2,24 +2,21 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Charge";
-export const listUrl = `${urlPrefix}/List`;
-export const listUrl2 = `${urlPrefix}/PendingRoomCharge`;
+const urlPrefix = "/api/WorkingDate";
+export const listUrl = `${urlPrefix}/Current`;
 
-export const PendingRoomChargeSWR = () => {
+export const WorkingDateSWR = () => {
     const fetcher = async (url: any) =>
-        await axios.get(listUrl2).then((res: any) => res.data.JsonData);
+        await axios.post(url).then((res: any) => res.data.JsonData);
 
-    return useSWR(listUrl2, fetcher);
+    return useSWR(listUrl, fetcher);
 };
 
-export const ChargeAPI = {
-    get: async (id: any, additionalValues: any) => {
-        let values = {
-            RoomChargeTypeID: id,
+export const WorkingDateAPI = {
+    get: async (id: any) => {
+        const values = {
+            TaxID: id,
         };
-
-        values = Object.assign(values, additionalValues);
 
         const res = await axios.post(listUrl, values);
 
@@ -27,22 +24,7 @@ export const ChargeAPI = {
     },
 
     new: async (values: any) => {
-        values = Object.assign(values, { Status: true });
-
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
-
-        return {
-            data,
-            status,
-        };
-    },
-
-    send: async (values: any) => {
-        console.log("valuestest", values);
-        const { data, status } = await axios.post(
-            `${urlPrefix}/PostPendingCharge`,
-            values
-        );
 
         return {
             data,
@@ -64,7 +46,7 @@ export const ChargeAPI = {
 
     delete: async (id: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
-            RoomChargeTypeID: id,
+            TaxID: id,
         });
 
         return {
@@ -73,15 +55,10 @@ export const ChargeAPI = {
         };
     },
 
-    toggleChecked: async (
-        id: any,
-        checked: boolean,
-        apiUrl: string,
-        toggleKey: string
-    ) => {
+    toggleChecked: async (id: any, checked: boolean, apiUrl: string) => {
         const values = {
-            RoomChargeTypeID: id,
-            [toggleKey]: checked,
+            TaxID: id,
+            Status: checked,
         };
 
         const { data, status } = await axios.post(

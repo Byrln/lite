@@ -6,13 +6,17 @@ import {
     DialogContentText,
     DialogTitle,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
+import { ModalContext } from "lib/context/modal";
 
 import { ReservationAPI } from "lib/api/reservation";
+import VoidTransactionForm from "components/reservation/void-transaction";
 
 const Void = ({ id, TransactionID, listUrl }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
+
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -39,7 +43,23 @@ const Void = ({ id, TransactionID, listUrl }: any) => {
 
     return (
         <>
-            <Button key={id} onClick={handleClickOpen}>
+            <Button
+                key={id}
+                onClick={(evt: any) => {
+                    handleModal(
+                        true,
+                        "Void Transaction",
+                        <VoidTransactionForm
+                            transactionInfo={{ TransactionID: TransactionID }}
+                            reservation={{ TransactionID: TransactionID }}
+                            customMutateUrl={listUrl}
+                        />
+                    );
+                }}
+            >
+                Устгах
+            </Button>
+            {/* <Button key={id} onClick={handleClickOpen}>
                 Устгах
             </Button>
             <Dialog
@@ -60,7 +80,7 @@ const Void = ({ id, TransactionID, listUrl }: any) => {
                         Тийм
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog> */}
         </>
     );
 };

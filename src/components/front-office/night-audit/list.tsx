@@ -21,6 +21,10 @@ const NightAuditList = ({ title, workingDate }: any) => {
     const [pendingReservationCompleted, setPendingReservationCompleted] =
         useState(false);
     const [pendingDueOutCompleted, setPendingDueOutCompleted] = useState(false);
+    const [
+        pendingPendingRoomChargeCompleted,
+        setPendingPendingRoomChargeCompleted,
+    ] = useState(false);
 
     const handleNext = () => {
         if (activeStep == 0) {
@@ -29,17 +33,25 @@ const NightAuditList = ({ title, workingDate }: any) => {
             } else {
                 toast("Хүлээгдэж буй захиалга.");
             }
-        } else if (activeStep == 1) {
-            if (pendingDueOutCompleted) {
+        }
+        // else if (activeStep == 1) {
+        //     if (pendingDueOutCompleted) {
+        //         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        //     } else {
+        //         toast("Хүлээгдэж буй гарах зочид.");
+        //     }
+        // }
+        else if (activeStep == 2) {
+            if (pendingPendingRoomChargeCompleted) {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             } else {
-                toast("Хүлээгдэж буй гарах зочид.");
+                toast("Хоногийн төлбөр.");
             }
         } else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
     };
-
+    console.log("activeStep", activeStep);
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
@@ -71,11 +83,15 @@ const NightAuditList = ({ title, workingDate }: any) => {
                 </Box>
             ) : activeStep == 2 ? (
                 <Box sx={{ pt: 2 }}>
-                    <PendingRoomCharge />
+                    <PendingRoomCharge
+                        setPendingPendingRoomChargeCompleted={
+                            setPendingPendingRoomChargeCompleted
+                        }
+                    />
                 </Box>
             ) : activeStep == 3 ? (
                 <Box sx={{ pt: 2 }}>
-                    <NewWorkingDate />
+                    <NewWorkingDate workingDate={workingDate} />
                 </Box>
             ) : (
                 <></>
@@ -91,9 +107,13 @@ const NightAuditList = ({ title, workingDate }: any) => {
                 </Button>
                 <Box sx={{ flex: "1 1 auto" }} />
 
-                <Button onClick={handleNext}>
-                    {activeStep === steps.length - 1 ? "Дуусгах" : "Дараагийнх"}
-                </Button>
+                {activeStep < 3 && (
+                    <Button onClick={handleNext}>
+                        {activeStep === steps.length - 1
+                            ? "Дуусгах"
+                            : "Дараагийнх"}
+                    </Button>
+                )}
             </Box>
         </>
     );
