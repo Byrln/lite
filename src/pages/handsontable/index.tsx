@@ -51,6 +51,7 @@ const Index = () => {
                             {data &&
                                 data.map((element: any, index: any) => (
                                     <div
+                                        key={element.RoomStatusID}
                                         className="mr-3 pl-1 pr-1 mb-1"
                                         style={{
                                             borderRadius: "4px",
