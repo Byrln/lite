@@ -16,6 +16,17 @@ export const RoomStatusSWR = (search: any) => {
     return useSWR(listUrl, fetcher);
 };
 
+export const RoomStatus1SWR = (search: any) => {
+    if (!search.RoomTypeID) {
+        search.RoomTypeID = 0;
+    }
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
+
+    return useSWR(listUrl + "1", fetcher);
+};
+
 export const RoomStatusAPI = {
     get: async (id: any) => {
         const values = {

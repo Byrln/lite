@@ -201,6 +201,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     roomTypeId: obj.RoomTypeID,
                     id: obj.RoomID,
                     title: obj.RoomNo,
+                    MaxAdult: obj.MaxAdult,
+                    MaxChild: obj.MaxChild,
+                    BaseAdult: obj.BaseAdult,
+                    BaseChild: obj.BaseChild,
                 };
             });
 
@@ -309,7 +313,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleSelect = (info: any) => {
         const { start, end, resourceId } = info;
-
+        console.log("infoinfo", info);
         if (start > new Date(workingDate)) {
             dispatch({
                 type: "editId",
@@ -324,6 +328,18 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     info.resource._resource.extendedProps.roomTypeId
                 ),
                 roomID: Number(info.resource._resource.id),
+                BaseAdult: Number(
+                    info.resource._resource.extendedProps.BaseAdult
+                ),
+                BaseChild: Number(
+                    info.resource._resource.extendedProps.BaseChild
+                ),
+                MaxAdult: Number(
+                    info.resource._resource.extendedProps.MaxAdult
+                ),
+                MaxChild: Number(
+                    info.resource._resource.extendedProps.MaxChild
+                ),
             };
 
             setNewEvent(newEventObject);
@@ -339,6 +355,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         roomType={newEventObject.roomTypeID}
                         // // @ts-ignore
                         room={newEventObject.roomID}
+                        BaseAdult={newEventObject.BaseAdult}
+                        BaseChild={newEventObject.BaseChild}
+                        MaxAdult={newEventObject.MaxAdult}
+                        MaxChild={newEventObject.MaxChild}
                     />,
                     null,
                     "large"
@@ -495,7 +515,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         }}
                     />
                 )}
-                <Grid container direction="row" className="mt-2">
+                {/* <Grid container direction="row" className="mt-2">
                     <Grid
                         item
                         xs={12}
@@ -654,7 +674,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             Өдрөөр ашиглах
                         </div>
                     </Grid>
-                </Grid>
+                </Grid> */}
             </>
         )
     );

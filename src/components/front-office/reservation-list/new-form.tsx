@@ -44,6 +44,10 @@ const NewEdit = ({
     resetField,
     reset,
     field,
+    BaseAdult,
+    BaseChild,
+    MaxAdult,
+    MaxChild,
 }: any) => {
     const [state]: any = useAppState();
     const [TransactionID, setTransactionID]: any = useState("");
@@ -152,11 +156,47 @@ const NewEdit = ({
                 console.log("2222222222222");
             }
             if (id > 0) {
-                console.log(
-                    "getValues(`TransactionDetail[${id}].GuestID`)",
-                    selectedGuest
-                );
+                let baseAdult = 0;
+                let baseChild = 0;
+                if (getValues(`TransactionDetail[${id}].Adult`)) {
+                    baseAdult = getValues(`TransactionDetail[${id}].Adult`);
+                }
+
+                if (getValues(`TransactionDetail[${id}].Child`)) {
+                    baseChild = getValues(`TransactionDetail[${id}].Child`);
+                }
+
+                setRoomType({
+                    BaseAdult: baseAdult,
+                    BaseChild: baseChild,
+                });
+            } else {
+                setRoomType({
+                    BaseAdult: BaseAdult,
+                    BaseChild: BaseChild,
+                    MaxAdult: MaxAdult,
+                    MaxChild: MaxChild,
+                });
             }
+
+            // if (getValues(`TransactionDetail[${id}].Adult`)) {
+            //     baseAdult = getValues(`TransactionDetail[${id}].Adult`);
+            // }
+
+            // if (getValues(`TransactionDetail[${id}].Child`)) {
+            //     baseChild = getValues(`TransactionDetail[${id}].Child`);
+            // }
+
+            // setRoomType({
+            //     BaseAdult: baseAdult,
+            //     BaseChild: baseChild,
+            // });
+            // console.log("baseAdult`)", baseAdult);
+            // console.log("baseChild`)", baseChild);
+            // console.log(
+            //     "getValues(`TransactionDetail[${id}].Adult`)",
+            //     getValues(`TransactionDetail[${id}]`)
+            // );
         }
     }, [id]);
 

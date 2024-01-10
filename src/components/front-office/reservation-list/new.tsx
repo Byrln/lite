@@ -21,7 +21,16 @@ const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().notRequired(),
 });
 
-const NewEdit = ({ dateStart, dateEnd, roomType, room }: any) => {
+const NewEdit = ({
+    dateStart,
+    dateEnd,
+    roomType,
+    room,
+    BaseAdult,
+    BaseChild,
+    MaxAdult,
+    MaxChild,
+}: any) => {
     const [state]: any = useAppState();
 
     const {
@@ -60,7 +69,7 @@ const NewEdit = ({ dateStart, dateEnd, roomType, room }: any) => {
 
         console.log("data", data);
     };
-    console.log("dateStart", dateStart);
+    console.log("TransactionDetail", getValues("TransactionDetail"));
     // useEffect(() => {
     //     if (dateStart) {
     //         resetField(`TransactionDetail.${0}.ArrivalDate`, {
@@ -95,6 +104,10 @@ const NewEdit = ({ dateStart, dateEnd, roomType, room }: any) => {
                                 resetField={resetField}
                                 reset={reset}
                                 field={field}
+                                BaseAdult={BaseAdult}
+                                BaseChild={BaseChild}
+                                MaxAdult={MaxAdult}
+                                MaxChild={MaxChild}
                             />
                         </CardContent>
                         {index != 0 && (
