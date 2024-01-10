@@ -65,8 +65,9 @@ const NewEdit = ({
     const [BreakfastIncluded, setBreakfastIncluded]: any = useState("");
     const [selectedGuest, setSelectedGuest]: any = useState(null);
     const [PaymentMethodID, setPaymentMethodID]: any = useState(null);
-
     const [ReservationTypeID, setReservationTypeID]: any = useState("");
+    const [selectedAdult, setSelectedAdult]: any = useState(1);
+    const [selectedChild, setSelectedChild]: any = useState(0);
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -217,6 +218,14 @@ const NewEdit = ({
     // resetField(`TransactionDetail.${id}.RateModeID`, {
     //     defaultValue: 1,
     // });
+
+    const onAdultChange = (evt: any) => {
+        setSelectedAdult(evt.target.value);
+    };
+
+    const onChildChange = (evt: any) => {
+        setSelectedChild(evt.target.value);
+    };
 
     return (
         <Grid key={id} container spacing={1}>
@@ -490,6 +499,7 @@ const NewEdit = ({
                             register={register}
                             errors={errors}
                             label={"Том хүн"}
+                            onChange={onAdultChange}
                         />
                     </Grid>
                     <Grid item xs={2} sm={1}>
@@ -505,6 +515,7 @@ const NewEdit = ({
                             register={register}
                             errors={errors}
                             label={"Хүүхэд"}
+                            onChange={onChildChange}
                         />
                     </Grid>
 
@@ -601,6 +612,8 @@ const NewEdit = ({
                         Currency={Currency}
                         control={control}
                         Controller={Controller}
+                        selectedAdult={selectedAdult}
+                        selectedChild={selectedChild}
                     />
 
                     {id == 0 ? (

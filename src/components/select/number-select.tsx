@@ -13,6 +13,7 @@ const NumberSelect = ({
     numberMin,
     numberMax,
     defaultValue,
+    onChange,
 }: any) => {
     const [data, setData]: any = useState([]);
     useEffect(() => {
@@ -35,6 +36,7 @@ const NumberSelect = ({
             helperText={errors[nameKey]?.message}
             size="small"
             defaultValue={defaultValue ? defaultValue : 0}
+            onChange={onChange}
         >
             {data.map((num: any) => {
                 return (

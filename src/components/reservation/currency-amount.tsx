@@ -22,6 +22,8 @@ const CurrencyAmount = ({
     setCurrency,
     control,
     Controller,
+    selectedAdult,
+    selectedChild,
 }: any) => {
     const [isCurrencyAmountEditable, setIsCurrencyAmountEditable]: any =
         useState(false);
@@ -50,10 +52,23 @@ const CurrencyAmount = ({
                     defaultValue: rates[0].BaseRate,
                 });
                 amount = rates[0].BaseRate * Nights;
+                if (rates[0].BaseAdult < selectedAdult) {
+                    amount =
+                        (selectedAdult - rates[0].BaseAdult) *
+                            rates[0].ExtraAdult +
+                        amount;
+                }
+                if (rates[0].BaseChild < selectedChild) {
+                    amount =
+                        (selectedChild - rates[0].BaseChild) *
+                            rates[0].ExtraChild +
+                        amount;
+                }
             } else {
                 return;
             }
             setCurrencyAmount(amount);
+
             resetField(`TransactionDetail.${id}.CurrencyID`, {
                 defaultValue: rates[0].CurrencyID,
             });
@@ -67,7 +82,15 @@ const CurrencyAmount = ({
 
     useEffect(() => {
         calculateAmount();
-    }, [ArrivalDate, RoomTypeID, RateTypeID, TaxIncluded, Nights]);
+    }, [
+        ArrivalDate,
+        RoomTypeID,
+        RateTypeID,
+        TaxIncluded,
+        Nights,
+        selectedAdult,
+        selectedChild,
+    ]);
 
     // useEffect(() => {
     //     if (isCurrencyAmountEditable == true) {
