@@ -21,6 +21,8 @@ const PendingDueOutList = ({
                 0
         ) {
             setPendingDueOutCompleted(true);
+        } else {
+            setPendingDueOutCompleted(false);
         }
     }, [data]);
 

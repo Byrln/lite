@@ -33,15 +33,13 @@ const NightAuditList = ({ title, workingDate }: any) => {
             } else {
                 toast("Хүлээгдэж буй захиалга.");
             }
-        }
-        // else if (activeStep == 1) {
-        //     if (pendingDueOutCompleted) {
-        //         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        //     } else {
-        //         toast("Хүлээгдэж буй гарах зочид.");
-        //     }
-        // }
-        else if (activeStep == 2) {
+        } else if (activeStep == 1) {
+            if (pendingDueOutCompleted) {
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            } else {
+                toast("Хүлээгдэж буй гарах зочид.");
+            }
+        } else if (activeStep == 2) {
             if (pendingPendingRoomChargeCompleted) {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             } else {
