@@ -4,7 +4,7 @@ import { FormControlLabel, TextField, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import moment from "moment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -83,9 +83,8 @@ const NewEdit = () => {
                         <Controller
                             name="PMSStart"
                             control={control}
-                            defaultValue={null}
                             render={({ field: { onChange, value } }) => (
-                                <DatePicker
+                                <DesktopDatePicker
                                     label="PMS Эхлэх огноо"
                                     value={value}
                                     onChange={(value) =>
@@ -103,8 +102,8 @@ const NewEdit = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             size="small"
-                                            id="PMSStart"
-                                            {...register("PMSStart")}
+                                            id={`PMSStart`}
+                                            {...register(`PMSStart`)}
                                             margin="dense"
                                             fullWidth
                                             {...params}
@@ -124,7 +123,7 @@ const NewEdit = () => {
                             control={control}
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
-                                <DatePicker
+                                <DesktopDatePicker
                                     label="PMS Дуусах огноо"
                                     value={value}
                                     onChange={(value) =>

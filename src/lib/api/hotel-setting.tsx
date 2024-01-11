@@ -40,6 +40,7 @@ export const HotelSettingAPI = {
     },
 
     update: async (values: any) => {
+        console.log("values"), values;
         if (values.PMSStart) {
             values.PMSStart = moment(
                 dateStringToObj(moment(values.PMSStart).format("YYYY-MM-DD")),
