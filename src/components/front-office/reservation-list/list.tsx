@@ -105,6 +105,7 @@ const DeparturedListList = ({ title }: any) => {
         GuestName: yup.string(),
         GuestPhone: yup.string(),
         GuestEmail: yup.string(),
+        CustomerID: yup.string(),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
     const {

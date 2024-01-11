@@ -34,7 +34,7 @@ const columns = [
             );
         },
     },
-    { title: "Давхар", key: "FloorNo", dataIndex: "FloorNo" },
+    { title: "Давхар", key: "FloorNo", dataIndex: "FloorNo", sortable: true },
 ];
 
 const RoomList = ({ title }: any) => {
