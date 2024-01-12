@@ -426,23 +426,13 @@ const NewEdit = ({
                     id={id}
                 />
             </Grid>
-            <Grid item xs={4} sm={3}>
-                <RoomTypeSelect
-                    register={register}
-                    errors={errors}
-                    onRoomTypeChange={onRoomTypeChange}
-                    customRegisterName={`TransactionDetail.${id}.RoomTypeID`}
-                    baseStay={{ RoomTypeID: RoomTypeID }}
-                    RoomTypeID={RoomTypeID}
-                />
-            </Grid>
 
             {selectedGuest &&
             (selectedGuest.value == null ||
                 selectedGuest.value == "" ||
                 selectedGuest.value == "createNew") ? (
                 <>
-                    <Grid item xs={4} sm={4}>
+                    <Grid item xs={4} sm={2}>
                         <TextField
                             size="small"
                             fullWidth
@@ -450,6 +440,20 @@ const NewEdit = ({
                             label="Нэр"
                             {...register(
                                 `TransactionDetail.${id}.GuestDetail.Name`
+                            )}
+                            margin="dense"
+                        />
+                    </Grid>
+
+                    <Grid item xs={4} sm={2}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Email"
+                            label="Имэйл"
+                            type="email"
+                            {...register(
+                                `TransactionDetail.${id}.GuestDetail.Email`
                             )}
                             margin="dense"
                         />
@@ -471,6 +475,18 @@ const NewEdit = ({
             ) : (
                 ""
             )}
+
+            <Grid item xs={4} sm={3}>
+                <RoomTypeSelect
+                    register={register}
+                    errors={errors}
+                    onRoomTypeChange={onRoomTypeChange}
+                    customRegisterName={`TransactionDetail.${id}.RoomTypeID`}
+                    baseStay={{ RoomTypeID: RoomTypeID }}
+                    RoomTypeID={RoomTypeID}
+                />
+            </Grid>
+
             {RoomTypeID && (
                 <>
                     <Grid item xs={4} sm={2}>

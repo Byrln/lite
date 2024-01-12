@@ -69,7 +69,6 @@ const NewEdit = ({
 
         console.log("data", data);
     };
-    console.log("TransactionDetail", getValues("TransactionDetail"));
     // useEffect(() => {
     //     if (dateStart) {
     //         resetField(`TransactionDetail.${0}.ArrivalDate`, {

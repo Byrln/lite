@@ -28,9 +28,11 @@ import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { mutate } from "swr";
 import { format } from "date-fns";
+import moment from "moment";
 
 import { DashboardSWR, dailyUrl, weeklyUrl } from "lib/api/dashboard";
 import DashboardCard from "components/common/dashboard-card";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const Dashboard = ({ workingDate }: any) => {
     console.log("workingDate", workingDate);
@@ -70,19 +72,36 @@ const Dashboard = ({ workingDate }: any) => {
 
     return (
         <>
-            {/* <DatePicker
-                label="Эхлэх огноо"
-                value={dashboardDate}
-                onChange={(value) => handleDateChange(value)}
-                renderInput={(params) => (
-                    <TextField
-                        size="small"
-                        margin="dense"
-                        fullWidth
-                        {...params}
-                    />
-                )}
-            /> */}
+            <Typography variant="subtitle1">
+                {data &&
+                    data[0] && // @ts-ignore
+                    data[0][0] && // @ts-ignore
+                    data[0][0].ValueDate &&
+                    format(
+                        // @ts-ignore
+                        new Date(data[0][0].ValueDate.replace(/ /g, "T")),
+                        "yyyy/MM/dd"
+                    )}
+                {data &&
+                    data[0] && // @ts-ignore
+                    data[0][0] && // @ts-ignore
+                    data[0][0].StartDate &&
+                    format(
+                        // @ts-ignore
+                        new Date(data[0][0].StartDate.replace(/ /g, "T")),
+                        "yyyy/MM/dd"
+                    ) + " - "}
+                {data &&
+                    data[0] && // @ts-ignore
+                    data[0][0] && // @ts-ignore
+                    data[0][0].EndDate &&
+                    format(
+                        // @ts-ignore
+                        new Date(data[0][0].EndDate.replace(/ /g, "T")),
+                        "yyyy/MM/dd"
+                    )}
+            </Typography>
+
             <RadioGroup
                 row
                 aria-labelledby="demo-row-radio-buttons-group-label"
@@ -106,7 +125,6 @@ const Dashboard = ({ workingDate }: any) => {
                     label="Monthly"
                 />
             </RadioGroup>
-
             {data &&
                 data.map((element: any) => (
                     <Grid

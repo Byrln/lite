@@ -27,6 +27,7 @@ const columns = [
         title: "Эхлэх огноо",
         key: "BeginDate",
         dataIndex: "BeginDate",
+        excelRenderPass: true,
         render: function render(id: any, value: any) {
             return (
                 value &&
@@ -38,6 +39,8 @@ const columns = [
         title: "Дуусах огноо",
         key: "EndDate",
         dataIndex: "EndDate",
+        excelRenderPass: true,
+
         render: function render(id: any, value: any) {
             return (
                 value &&
@@ -50,6 +53,7 @@ const columns = [
         title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
+        excelRenderPass: true,
         render: function render(id: any, value: any) {
             return (
                 <ToggleChecked
