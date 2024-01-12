@@ -10,11 +10,12 @@ const columns = [
         title: "Зураг",
         key: "PictureFile",
         dataIndex: "PictureFile",
-        render: function render(id: any, value: any, element: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
                 <CustomPicture
-                    src={element.PictureFile}
-                    name={element.PictureName}
+                    src={element.row.PictureFile}
+                    name={element.row.PictureName}
                 />
             );
         },

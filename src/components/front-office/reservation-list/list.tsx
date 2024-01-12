@@ -73,17 +73,15 @@ const DeparturedListList = ({ title }: any) => {
             title: "Нэмэлт үйлдэл",
             key: "Action",
             dataIndex: "Action",
-            render: function render(id: any, record: any, element: any) {
+            renderCell: (element: any) => {
                 return (
                     <Button
-                        key={id}
+                        key={element.id}
                         onClick={() =>
                             handleModal(
                                 true,
                                 `Захиалга`,
-                                <ReservationEdit
-                                    transactionID={element.TransactionID}
-                                />,
+                                <ReservationEdit transactionID={element.id} />,
                                 null,
                                 "large"
                             )

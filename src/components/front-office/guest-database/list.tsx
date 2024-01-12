@@ -55,7 +55,10 @@ const GuestdatabaseList = ({ title }: any) => {
             title: "Нэмэлт үйлдэл",
             key: "Action",
             dataIndex: "Action",
-            render: function render(id: any, record: any) {
+            width: 250,
+            __ignore__: true,
+            excelRenderPass: true,
+            renderCell: (element: any) => {
                 return (
                     <>
                         <Button
@@ -63,7 +66,7 @@ const GuestdatabaseList = ({ title }: any) => {
                                 handleModal(
                                     true,
                                     `Upload Picture`,
-                                    <CustomUpload GuestID={id} />,
+                                    <CustomUpload GuestID={element.id} />,
                                     null,
                                     "large"
                                 );
@@ -77,7 +80,7 @@ const GuestdatabaseList = ({ title }: any) => {
                                     true,
                                     `Upload Document`,
                                     <CustomUpload
-                                        GuestID={id}
+                                        GuestID={element.id}
                                         IsDocument={true}
                                     />,
                                     null,

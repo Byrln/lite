@@ -18,11 +18,12 @@ const columns = [
         title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
                 <ToggleChecked
-                    id={id}
-                    checked={value}
+                    id={element.id}
+                    checked={element.row.Status}
                     api={TaxAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}

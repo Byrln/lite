@@ -19,7 +19,7 @@ export const ExchangeRateSWR = () => {
 export const ExchangeRateAPI = {
     get: async (id: any) => {
         const values = {
-            ExchangeRateID: id,
+            CurrencyID: id,
         };
 
         const res = await axios.post(listUrl, values);

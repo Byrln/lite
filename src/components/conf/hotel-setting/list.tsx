@@ -30,10 +30,14 @@ const columns = [
         title: "PMS эхлэх",
         key: "PMSStart",
         dataIndex: "PMSStart",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
-                value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+                element.row.PMSStart &&
+                format(
+                    new Date(element.row.PMSStart.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                )
             );
         },
     },
@@ -41,10 +45,14 @@ const columns = [
         title: "PMS дуусах",
         key: "PMSEnd",
         dataIndex: "PMSEnd",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
-                value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+                element.row.PMSEnd &&
+                format(
+                    new Date(element.row.PMSEnd.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                )
             );
         },
     },
@@ -52,16 +60,27 @@ const columns = [
         title: "Шууд захиалга",
         key: "BookingEngine",
         dataIndex: "BookingEngine",
-        render: function render(id: any, value: any) {
-            return <ToggleChecked id={id} checked={value} disabled={true} />;
+        excelRenderPass: true,
+        renderCell: (element: any) => {
+            return (
+                <ToggleChecked
+                    id={element.id}
+                    checked={element.row.BookingEngine}
+                    disabled={true}
+                />
+            );
         },
     },
     {
         title: "Шимтгэл",
         key: "RoomChargeDuration",
         dataIndex: "RoomChargeDuration",
-        render: function render(id: any, value: any) {
-            return formatPrice(value);
+        excelRenderPass: true,
+        renderCell: (element: any) => {
+            return (
+                element.row.RoomChargeDuration &&
+                formatPrice(element.row.RoomChargeDuration)
+            );
         },
     },
     {

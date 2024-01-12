@@ -18,19 +18,26 @@ const columns = [
         title: "Анхааруулга харуулах",
         key: "ShowWarning",
         dataIndex: "ShowWarning",
-        render: function render(id: any, value: any) {
-            return <ToggleChecked id={id} checked={value} disabled={true} />;
+        excelRenderPass: true,
+        renderCell: (element: any) => {
+            return (
+                <ToggleChecked
+                    id={element.id}
+                    checked={element.row.ShowWarning}
+                    disabled={true}
+                />
+            );
         },
     },
     {
         title: "Төлөв",
         key: "Status",
-        dataIndex: "Status",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
                 <ToggleChecked
-                    id={id}
-                    checked={value}
+                    id={element.id}
+                    checked={element.row.Status}
                     api={VipStatusAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}

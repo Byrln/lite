@@ -42,11 +42,12 @@ const ReservationSourceList = ({ title }: any) => {
             title: "Огноо өөрчлөх",
             key: "CreatedDate",
             dataIndex: "CreatedDate",
-            render: function render(id: any, value: any) {
+            excelRenderPass: true,
+            renderCell: (element: any) => {
                 return (
-                    value &&
+                    element.row.CreatedDate &&
                     format(
-                        new Date(value.replace(/ /g, "T")),
+                        new Date(element.row.CreatedDate.replace(/ /g, "T")),
                         "MM/dd/yyyy hh:mm:ss a"
                     )
                 );
@@ -61,11 +62,12 @@ const ReservationSourceList = ({ title }: any) => {
             title: "Төлөв",
             key: "Status",
             dataIndex: "Status",
-            render: function render(id: any, value: any) {
+            excelRenderPass: true,
+            renderCell: (element: any) => {
                 return (
                     <ToggleChecked
-                        id={id}
-                        checked={value}
+                        id={element.id}
+                        checked={element.row.Status}
                         api={ReservationSourceAPI}
                         apiUrl="UpdateStatus"
                         mutateUrl={`${listUrl}`}
@@ -77,17 +79,20 @@ const ReservationSourceList = ({ title }: any) => {
             title: "Нэмэлт үйлдэл",
             key: "Action",
             dataIndex: "Action",
-            render: function render(id: any, record: any, entity: any) {
-                return entity.ChannelID == 2 ? (
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return element.row.ChannelID == 2 ? (
                     <Stack direction="row" spacing={1}>
                         <Button
-                            key={id}
+                            key={element.id}
                             onClick={() => {
                                 handleModal(
                                     true,
                                     `Тохиргоо`,
                                     <ReservationStatus
-                                        ChannelSourceID={entity.ChannelSourceID}
+                                        ChannelSourceID={
+                                            element.row.ChannelSourceID
+                                        }
                                     />,
                                     null,
                                     "large"
@@ -98,13 +103,15 @@ const ReservationSourceList = ({ title }: any) => {
                         </Button>
 
                         <Button
-                            key={id}
+                            key={element.id}
                             onClick={() => {
                                 handleModal(
                                     true,
                                     `Холбоос`,
                                     <BeLink
-                                        ChannelSourceID={entity.ChannelSourceID}
+                                        ChannelSourceID={
+                                            element.row.ChannelSourceID
+                                        }
                                     />,
                                     null,
                                     "large"

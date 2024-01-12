@@ -130,6 +130,7 @@ const PendingRoomChargeList = ({
                 excelName={title}
                 hasPrint={false}
                 hasExcel={false}
+                datagrid={false}
             />
 
             <Grid container spacing={1}>

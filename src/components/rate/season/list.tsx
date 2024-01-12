@@ -28,10 +28,13 @@ const columns = [
         key: "BeginDate",
         dataIndex: "BeginDate",
         excelRenderPass: true,
-        render: function render(id: any, value: any) {
+        renderCell: (element: any) => {
             return (
-                value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+                element.row.BeginDate &&
+                format(
+                    new Date(element.row.BeginDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                )
             );
         },
     },
@@ -40,11 +43,13 @@ const columns = [
         key: "EndDate",
         dataIndex: "EndDate",
         excelRenderPass: true,
-
-        render: function render(id: any, value: any) {
+        renderCell: (element: any) => {
             return (
-                value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+                element.row.EndDate &&
+                format(
+                    new Date(element.row.EndDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                )
             );
         },
     },
@@ -54,11 +59,11 @@ const columns = [
         key: "Status",
         dataIndex: "Status",
         excelRenderPass: true,
-        render: function render(id: any, value: any) {
+        renderCell: (element: any) => {
             return (
                 <ToggleChecked
-                    id={id}
-                    checked={value}
+                    id={element.id}
+                    checked={element.row.Status}
                     api={SeasonAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}

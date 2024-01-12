@@ -28,8 +28,11 @@ const columns = [
         key: "RoomChargeTypeRate",
         dataIndex: "RoomChargeTypeRate",
         excelRenderPass: true,
-        render: function render(id: any, value: any) {
-            return formatPrice(value);
+        renderCell: (element: any) => {
+            return (
+                element.row.RoomChargeTypeRate &&
+                formatPrice(element.row.RoomChargeTypeRate)
+            );
         },
     },
     {
@@ -37,8 +40,14 @@ const columns = [
         key: "IsEditable",
         dataIndex: "IsEditable",
         excelRenderPass: true,
-        render: function render(id: any, value: any) {
-            return <ToggleChecked id={id} checked={value} disabled={true} />;
+        renderCell: (element: any) => {
+            return (
+                <ToggleChecked
+                    id={element.id}
+                    checked={element.row.IsEditable}
+                    disabled={true}
+                />
+            );
         },
     },
     {
@@ -51,11 +60,11 @@ const columns = [
         key: "Status",
         dataIndex: "Status",
         excelRenderPass: true,
-        render: function render(id: any, value: any) {
+        renderCell: (element: any) => {
             return (
                 <ToggleChecked
-                    id={id}
-                    checked={value}
+                    id={element.id}
+                    checked={element.row.Status}
                     api={ChargeTypeAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}
@@ -68,11 +77,11 @@ const columns = [
         key: "IsInclusion",
         dataIndex: "IsInclusion",
         excelRenderPass: true,
-        render: function render(id: any, value: any) {
+        renderCell: (element: any) => {
             return (
                 <ToggleChecked
-                    id={id}
-                    checked={value}
+                    id={element.id}
+                    checked={element.row.IsInclusion}
                     // api={ChargeTypeAPI}
                     // apiUrl="IsInclusion"
                     // mutateUrl={`${listUrl}`}

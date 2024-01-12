@@ -20,10 +20,14 @@ const columns = [
         title: "Эхлэх огноо",
         key: "BeginDate",
         dataIndex: "BeginDate",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
-                value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+                element.row.BeginDate &&
+                format(
+                    new Date(element.row.BeginDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                )
             );
         },
     },
@@ -31,10 +35,14 @@ const columns = [
         title: "Дуусах хугацаа",
         key: "EndDate",
         dataIndex: "EndDate",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
-                value &&
-                format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy")
+                element.row.EndDate &&
+                format(
+                    new Date(element.row.EndDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                )
             );
         },
     },
@@ -42,12 +50,13 @@ const columns = [
         title: "Available On",
         key: "AvailableOn",
         dataIndex: "AvailableOn",
-        render: function render(id: any, value: any) {
-            return value === 1
+        excelRenderPass: true,
+        renderCell: (element: any) => {
+            return element.row.AvailableOn === 1
                 ? "Өдөр бүр"
-                : value === 2
+                : element.row.AvailableOn === 2
                 ? "Эхний өдөр"
-                : value === 3
+                : element.row.AvailableOn === 3
                 ? "Сүүлийн өдөр"
                 : "";
         },
@@ -56,8 +65,11 @@ const columns = [
         title: "Week Days Enabled",
         key: "WeekDaysEnabled",
         dataIndex: "WeekDaysEnabled",
-        render: function render(id: any, value: any) {
-            return value ? "долоо хоногийн үнэ" : "энгийн";
+        excelRenderPass: true,
+        renderCell: (element: any) => {
+            return element.row.WeekDaysEnabled
+                ? "долоо хоногийн үнэ"
+                : "энгийн";
         },
     },
 ];

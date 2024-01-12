@@ -66,6 +66,7 @@ const HouseKeepingList = ({ title }: any) => {
             modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}
+            datagrid={false}
         />
     );
 };

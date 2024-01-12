@@ -34,11 +34,12 @@ const PackageList = ({ title }: any) => {
             title: "Begin Date",
             key: "BeginDate",
             dataIndex: "BeginDate",
-            render: function render(id: any, value: any) {
+            excelRenderPass: true,
+            renderCell: (element: any) => {
                 return (
-                    value &&
+                    element.row.BeginDate &&
                     format(
-                        new Date(value.replace(/ /g, "T")),
+                        new Date(element.row.BeginDate.replace(/ /g, "T")),
                         "MM/dd/yyyy hh:mm:ss a"
                     )
                 );
@@ -48,11 +49,12 @@ const PackageList = ({ title }: any) => {
             title: "End Date",
             key: "EndDate",
             dataIndex: "EndDate",
-            render: function render(id: any, value: any) {
+            excelRenderPass: true,
+            renderCell: (element: any) => {
                 return (
-                    value &&
+                    element.row.EndDate &&
                     format(
-                        new Date(value.replace(/ /g, "T")),
+                        new Date(element.row.EndDate.replace(/ /g, "T")),
                         "MM/dd/yyyy hh:mm:ss a"
                     )
                 );
@@ -67,16 +69,24 @@ const PackageList = ({ title }: any) => {
             title: "Room",
             key: "RoomAmount",
             dataIndex: "RoomAmount",
-            render: function render(id: any, value: any) {
-                return formatPrice(value);
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    element.row.RoomAmount &&
+                    formatPrice(element.row.RoomAmount)
+                );
             },
         },
         {
             title: "Extra Charge",
             key: "ExtraChargeAmount",
             dataIndex: "ExtraChargeAmount",
-            render: function render(id: any, value: any) {
-                return formatPrice(value);
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    element.row.ExtraChargeAmount &&
+                    formatPrice(element.row.ExtraChargeAmount)
+                );
             },
         },
         {
@@ -93,21 +103,22 @@ const PackageList = ({ title }: any) => {
             title: "Нэмэлт үйлдэл",
             key: "Action",
             dataIndex: "Action",
-            render: function render(id: any, record: any, element: any) {
+            excelRenderPass: true,
+            renderCell: (element: any) => {
                 return (
                     <>
                         <Link
-                            key={id}
-                            href={`/conf/package/room-list/${element.PackageID}`}
+                            key={element.id}
+                            href={`/conf/package/room-list/${element.row.PackageID}`}
                         >
-                            <Button key={id}>Room List</Button>
+                            <Button key={element.id}>Room List</Button>
                         </Link>
 
                         <Link
-                            key={id}
-                            href={`/conf/package/extra-charge/${element.PackageID}`}
+                            key={element.id}
+                            href={`/conf/package/extra-charge/${element.row.PackageID}`}
                         >
-                            <Button key={id}>Extra Charge</Button>
+                            <Button key={element.id}>Extra Charge</Button>
                         </Link>
                     </>
                 );

@@ -108,6 +108,7 @@ const WorkOrderList = ({ title }: any) => {
                         />
                     </CustomSearch>
                 }
+                datagrid={false}
             />
         </>
     );

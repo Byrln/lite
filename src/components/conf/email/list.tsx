@@ -39,15 +39,17 @@ const EmailList = ({ title }: any) => {
             title: "Үндсэн",
             key: "IsMain",
             dataIndex: "IsMain",
-            render: function render(id: any, value: any) {
-                return value && "Үндсэн";
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return element.row.IsMain && "Үндсэн";
             },
         },
         {
             title: "Нууц үг өөрчлөх",
             key: "ChangePassword",
             dataIndex: "ChangePassword",
-            render: function render(id: any, value: any) {
+            excelRenderPass: true,
+            renderCell: (element: any) => {
                 return (
                     <Button
                         size="small"
@@ -58,7 +60,7 @@ const EmailList = ({ title }: any) => {
                             handleModal(
                                 true,
                                 `Нууц үг өөрчлөх`,
-                                <ChangePassword id={id} />
+                                <ChangePassword id={element.id} />
                             );
                         }}
                     >

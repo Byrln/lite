@@ -20,12 +20,15 @@ import Stack from "@mui/material/Stack";
 import { Icon } from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 
 import { getCurrentDate } from "lib/utils/helpers";
 import EmptyAlert from "./empty-alert";
 import DeleteButton from "components/common/delete-button";
 import { ModalContext } from "lib/context/modal";
 import { useAppState } from "lib/context/app";
+import { DataUsageTwoTone } from "@mui/icons-material";
+import { calculateColumnsWidth } from "lib/utils/dynamic-columns-helper";
 
 const CustomTable = ({
     columns,
@@ -44,6 +47,8 @@ const CustomTable = ({
     modalContent,
     excelName,
     search,
+    pagination = true,
+    datagrid = true,
 }: any) => {
     const [state, dispatch]: any = useAppState();
     const [height, setHeight] = useState<any>(null);
@@ -55,16 +60,184 @@ const CustomTable = ({
         setHeight(window.innerHeight - 240);
     }, [window.innerHeight]);
 
-    const customizedColumns: any = [
-        {
-            title: "№",
-            key: "id",
-            dataIndex: "id",
-            render: function render(index: number) {
-                return index + 1;
+    const tempcolumns: any = columns
+        .map((obj: any) => ({
+            ...obj,
+        }))
+        .map((column: any, index: any) => {
+            if (column.title) {
+                column.headerName = column.title;
+            }
+            if (column.key) {
+                column.field = column.key;
+            }
+            return column;
+        });
+
+    // const customizedColumns: any = [].concat(columns);
+
+    // const customizedColumns: any = [columns];
+
+    // customizedColumns.push({
+    //     headerName: "Үйлдэл",
+    //     field: "actionButtons",
+    //     dataIndex: "actionButtons",
+    //     width: 300,
+    //     __ignore__: true,
+    //     className: "hide-print",
+    //     renderCell: (index: any) => {
+    //         return (
+    //             <Stack direction="row" spacing={1}>
+    //                 {hasUpdate && (
+    //                     <Button
+    //                         size="small"
+    //                         variant="outlined"
+    //                         color="primary"
+    //                         startIcon={<EditIcon />}
+    //                         onClick={() => {
+    //                             handleModal(
+    //                                 true,
+    //                                 `${modalTitle} засах`,
+    //                                 modalContent,
+    //                                 null,
+    //                                 "large"
+    //                             );
+    //                             dispatch({
+    //                                 type: "isShow",
+    //                                 isShow: null,
+    //                             });
+    //                             dispatch({
+    //                                 type: "editId",
+    //                                 editId: index.id,
+    //                             });
+    //                         }}
+    //                     >
+    //                         Засах
+    //                     </Button>
+    //                 )}
+
+    //                 {hasShow && (
+    //                     <Button
+    //                         size="small"
+    //                         variant="outlined"
+    //                         color="primary"
+    //                         startIcon={<VisibilityIcon />}
+    //                         onClick={() => {
+    //                             handleModal(
+    //                                 true,
+    //                                 `${modalTitle} харах`,
+    //                                 modalContent,
+    //                                 null,
+    //                                 "large"
+    //                             );
+    //                             dispatch({
+    //                                 type: "isShow",
+    //                                 isShow: true,
+    //                             });
+    //                             dispatch({
+    //                                 type: "editId",
+    //                                 editId: index.id,
+    //                             });
+    //                         }}
+    //                     >
+    //                         Харах
+    //                     </Button>
+    //                 )}
+
+    //                 {hasDelete && (
+    //                     <DeleteButton
+    //                         api={api}
+    //                         id={index.id}
+    //                         listUrl={listUrl}
+    //                     />
+    //                 )}
+    //             </Stack>
+    //         );
+    //     },
+    // });
+
+    (hasUpdate || hasShow || hasDelete) &&
+        tempcolumns.push({
+            headerName: "Үйлдэл",
+            field: "actionButtons",
+            dataIndex: "actionButtons",
+            width: hasUpdate && hasShow && hasDelete ? 270 : 200,
+            __ignore__: true,
+            className: "hide-print",
+            renderCell: (index: any) => {
+                return (
+                    <Stack direction="row" spacing={1}>
+                        {hasUpdate && (
+                            <Button
+                                size="small"
+                                variant="outlined"
+                                color="primary"
+                                startIcon={<EditIcon />}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        `${modalTitle} засах`,
+                                        modalContent,
+                                        null,
+                                        "large"
+                                    );
+                                    dispatch({
+                                        type: "isShow",
+                                        isShow: null,
+                                    });
+                                    dispatch({
+                                        type: "editId",
+                                        editId: index.id,
+                                    });
+                                }}
+                            >
+                                Засах
+                            </Button>
+                        )}
+
+                        {hasShow && (
+                            <Button
+                                size="small"
+                                variant="outlined"
+                                color="primary"
+                                startIcon={<VisibilityIcon />}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        `${modalTitle} харах`,
+                                        modalContent,
+                                        null,
+                                        "large"
+                                    );
+                                    dispatch({
+                                        type: "isShow",
+                                        isShow: true,
+                                    });
+                                    dispatch({
+                                        type: "editId",
+                                        editId: index.id,
+                                    });
+                                }}
+                            >
+                                Харах
+                            </Button>
+                        )}
+
+                        {hasDelete && (
+                            <DeleteButton
+                                api={api}
+                                id={index.id}
+                                listUrl={listUrl}
+                            />
+                        )}
+                    </Stack>
+                );
             },
-        },
-    ].concat(columns);
+        });
+
+    let customizedColumns: any = calculateColumnsWidth(tempcolumns, data, 300);
+
+    customizedColumns = customizedColumns.columns;
 
     const excelColumns: any = customizedColumns
         .map((obj: any) => ({
@@ -75,13 +248,6 @@ const CustomTable = ({
                 delete column["render"];
             }
             return column;
-        });
-
-    (hasUpdate || hasDelete) &&
-        customizedColumns.push({
-            title: "Үйлдэл",
-            key: "actionButtons",
-            dataIndex: "actionButtons",
         });
 
     const handlePrint = useReactToPrint({
@@ -180,170 +346,212 @@ const CustomTable = ({
                         nativeMobileScroll={true}
                         ref={componentRef}
                     >
-                        <TableContainer
-                            component={Paper}
-                            sx={{ maxHeight: height }}
-                        >
-                            <Table size="small" stickyHeader>
-                                <TableHead>
-                                    <TableRow>
-                                        {customizedColumns.map(
-                                            (column: any, index: number) => (
-                                                <TableCell
-                                                    key={index}
-                                                    className={
-                                                        column.key ===
-                                                        "actionButtons"
-                                                            ? "print-hide-buttons"
-                                                            : ""
-                                                    }
-                                                >
-                                                    {column.title}
-                                                </TableCell>
-                                            )
-                                        )}
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {data.map(
-                                        (element: any, dataIndex: number) => (
-                                            <TableRow key={dataIndex}>
-                                                {customizedColumns.map(
-                                                    (
-                                                        column: any,
-                                                        index: number
-                                                    ) => (
-                                                        <TableCell
-                                                            key={index}
-                                                            className={
-                                                                column.key ===
-                                                                "actionButtons"
-                                                                    ? "print-hide-buttons"
-                                                                    : ""
-                                                            }
-                                                        >
-                                                            {index == 0 ? (
-                                                                dataIndex + 1
-                                                            ) : column.key ===
-                                                                  "actionButtons" &&
-                                                              (hasUpdate ||
-                                                                  hasDelete) ? (
-                                                                <Stack
-                                                                    direction="row"
-                                                                    spacing={1}
-                                                                >
-                                                                    {hasUpdate && (
-                                                                        <Button
-                                                                            size="small"
-                                                                            variant="outlined"
-                                                                            color="primary"
-                                                                            startIcon={
-                                                                                <EditIcon />
-                                                                            }
-                                                                            onClick={() => {
-                                                                                handleModal(
-                                                                                    true,
-                                                                                    `${modalTitle} засах`,
-                                                                                    modalContent,
-                                                                                    null,
-                                                                                    "large"
-                                                                                );
-                                                                                dispatch(
-                                                                                    {
-                                                                                        type: "isShow",
-                                                                                        isShow: null,
-                                                                                    }
-                                                                                );
-                                                                                dispatch(
-                                                                                    {
-                                                                                        type: "editId",
-                                                                                        editId: element[
-                                                                                            id
-                                                                                        ],
-                                                                                    }
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            Засах
-                                                                        </Button>
-                                                                    )}
+                        {datagrid ? (
+                            <DataGrid
+                                checkboxSelection={false}
+                                rows={data}
+                                columns={customizedColumns}
+                                initialState={
+                                    pagination
+                                        ? {
+                                              pagination: {
+                                                  paginationModel: {
+                                                      page: 0,
+                                                      pageSize: 15,
+                                                  },
+                                              },
+                                          }
+                                        : {
+                                              pagination: {
+                                                  paginationModel: {
+                                                      pageSize: data.length, // Set the pageSize to the total number of rows
+                                                      page: 1,
+                                                  },
+                                              },
+                                          }
+                                }
+                                getRowId={(row) => (id ? row[id] : row["id"])}
+                                pageSizeOptions={[5, 10, 15, 30]}
+                                sx={{ maxHeight: height }}
+                            />
+                        ) : (
+                            <TableContainer
+                                component={Paper}
+                                sx={{ maxHeight: height }}
+                            >
+                                <Table size="small" stickyHeader>
+                                    <TableHead>
+                                        <TableRow>
+                                            {customizedColumns.map(
+                                                (
+                                                    column: any,
+                                                    index: number
+                                                ) => (
+                                                    <TableCell
+                                                        key={index}
+                                                        className={
+                                                            column.key ===
+                                                            "actionButtons"
+                                                                ? "print-hide-buttons"
+                                                                : ""
+                                                        }
+                                                    >
+                                                        {column.title}
+                                                    </TableCell>
+                                                )
+                                            )}
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {data.map(
+                                            (
+                                                element: any,
+                                                dataIndex: number
+                                            ) => (
+                                                <TableRow key={dataIndex}>
+                                                    {customizedColumns.map(
+                                                        (
+                                                            column: any,
+                                                            index: number
+                                                        ) => (
+                                                            <TableCell
+                                                                key={index}
+                                                                className={
+                                                                    column.key ===
+                                                                    "actionButtons"
+                                                                        ? "print-hide-buttons"
+                                                                        : ""
+                                                                }
+                                                            >
+                                                                {index == 0 ? (
+                                                                    dataIndex +
+                                                                    1
+                                                                ) : column.key ===
+                                                                      "actionButtons" &&
+                                                                  (hasUpdate ||
+                                                                      hasDelete) ? (
+                                                                    <Stack
+                                                                        direction="row"
+                                                                        spacing={
+                                                                            1
+                                                                        }
+                                                                    >
+                                                                        {hasUpdate && (
+                                                                            <Button
+                                                                                size="small"
+                                                                                variant="outlined"
+                                                                                color="primary"
+                                                                                startIcon={
+                                                                                    <EditIcon />
+                                                                                }
+                                                                                onClick={() => {
+                                                                                    handleModal(
+                                                                                        true,
+                                                                                        `${modalTitle} засах`,
+                                                                                        modalContent,
+                                                                                        null,
+                                                                                        "large"
+                                                                                    );
+                                                                                    dispatch(
+                                                                                        {
+                                                                                            type: "isShow",
+                                                                                            isShow: null,
+                                                                                        }
+                                                                                    );
+                                                                                    dispatch(
+                                                                                        {
+                                                                                            type: "editId",
+                                                                                            editId: element[
+                                                                                                id
+                                                                                            ],
+                                                                                        }
+                                                                                    );
+                                                                                }}
+                                                                            >
+                                                                                Засах
+                                                                            </Button>
+                                                                        )}
 
-                                                                    {hasShow && (
-                                                                        <Button
-                                                                            size="small"
-                                                                            variant="outlined"
-                                                                            color="primary"
-                                                                            startIcon={
-                                                                                <VisibilityIcon />
-                                                                            }
-                                                                            onClick={() => {
-                                                                                handleModal(
-                                                                                    true,
-                                                                                    `${modalTitle} харах`,
-                                                                                    modalContent,
-                                                                                    null,
-                                                                                    "large"
-                                                                                );
-                                                                                dispatch(
-                                                                                    {
-                                                                                        type: "isShow",
-                                                                                        isShow: true,
-                                                                                    }
-                                                                                );
-                                                                                dispatch(
-                                                                                    {
-                                                                                        type: "editId",
-                                                                                        editId: element[
-                                                                                            id
-                                                                                        ],
-                                                                                    }
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            Харах
-                                                                        </Button>
-                                                                    )}
+                                                                        {hasShow && (
+                                                                            <Button
+                                                                                size="small"
+                                                                                variant="outlined"
+                                                                                color="primary"
+                                                                                startIcon={
+                                                                                    <VisibilityIcon />
+                                                                                }
+                                                                                onClick={() => {
+                                                                                    handleModal(
+                                                                                        true,
+                                                                                        `${modalTitle} харах`,
+                                                                                        modalContent,
+                                                                                        null,
+                                                                                        "large"
+                                                                                    );
+                                                                                    dispatch(
+                                                                                        {
+                                                                                            type: "isShow",
+                                                                                            isShow: true,
+                                                                                        }
+                                                                                    );
+                                                                                    dispatch(
+                                                                                        {
+                                                                                            type: "editId",
+                                                                                            editId: element[
+                                                                                                id
+                                                                                            ],
+                                                                                        }
+                                                                                    );
+                                                                                }}
+                                                                            >
+                                                                                Харах
+                                                                            </Button>
+                                                                        )}
 
-                                                                    {hasDelete && (
-                                                                        <DeleteButton
-                                                                            api={
-                                                                                api
-                                                                            }
-                                                                            id={
-                                                                                element[
-                                                                                    id
-                                                                                ]
-                                                                            }
-                                                                            listUrl={
-                                                                                listUrl
-                                                                            }
-                                                                        />
-                                                                    )}
-                                                                </Stack>
-                                                            ) : column.render ? (
-                                                                column.render(
-                                                                    element[id],
+                                                                        {hasDelete && (
+                                                                            <DeleteButton
+                                                                                api={
+                                                                                    api
+                                                                                }
+                                                                                id={
+                                                                                    element[
+                                                                                        id
+                                                                                    ]
+                                                                                }
+                                                                                listUrl={
+                                                                                    listUrl
+                                                                                }
+                                                                            />
+                                                                        )}
+                                                                    </Stack>
+                                                                ) : column.render ? (
+                                                                    column.render(
+                                                                        element[
+                                                                            id
+                                                                        ],
+                                                                        element[
+                                                                            column
+                                                                                .key
+                                                                        ],
+                                                                        element,
+                                                                        dataIndex
+                                                                    )
+                                                                ) : (
                                                                     element[
                                                                         column
                                                                             .key
-                                                                    ],
-                                                                    element,
-                                                                    dataIndex
-                                                                )
-                                                            ) : (
-                                                                element[
-                                                                    column.key
-                                                                ]
-                                                            )}
-                                                        </TableCell>
-                                                    )
-                                                )}
-                                            </TableRow>
-                                        )
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                                                                    ]
+                                                                )}
+                                                            </TableCell>
+                                                        )
+                                                    )}
+                                                </TableRow>
+                                            )
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        )}
                     </ScrollContainer>
                 ) : (
                     <EmptyAlert />

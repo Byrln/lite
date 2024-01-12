@@ -29,12 +29,12 @@ const columns = [
     {
         title: "Огноо өөрчлөх",
         key: "CreatedDate",
-        dataIndex: "CreatedDate",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
-                value &&
+                element.row.CreatedDate &&
                 format(
-                    new Date(value.replace(/ /g, "T")),
+                    new Date(element.row.CreatedDate.replace(/ /g, "T")),
                     "MM/dd/yyyy hh:mm:ss a"
                 )
             );

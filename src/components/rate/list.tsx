@@ -220,6 +220,8 @@ const RateList = ({ title }: any) => {
                 error={error}
                 modalTitle={title}
                 excelName={title}
+                pagination={false}
+                datagrid={false}
                 search={
                     <CustomSearch
                         listUrl={listUrl}

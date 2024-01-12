@@ -30,11 +30,11 @@ const columns = [
         key: "Status",
         dataIndex: "Status",
         excelRenderPass: true,
-        render: function render(id: any, value: any) {
+        renderCell: (element: any) => {
             return (
                 <ToggleChecked
-                    id={id}
-                    checked={value}
+                    id={element.id}
+                    checked={element.row.Status}
                     api={ChargeTypeGroupAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}

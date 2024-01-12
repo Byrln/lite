@@ -26,8 +26,12 @@ const columns = [
         title: "Тариф",
         key: "RoomChargeTypeRate",
         dataIndex: "RoomChargeTypeRate",
-        render: function render(id: any, value: any) {
-            return formatPrice(value);
+        excelRenderPass: true,
+        renderCell: (element: any) => {
+            return (
+                element.row.RoomChargeTypeRate &&
+                formatPrice(element.row.RoomChargeTypeRate)
+            );
         },
     },
     {
@@ -39,11 +43,12 @@ const columns = [
         title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
                 <ToggleChecked
-                    id={id}
-                    checked={value}
+                    id={element.id}
+                    checked={element.row.Status}
                     api={ChargeTypeAPI}
                     apiUrl="UpdateStatus"
                     mutateUrl={`${listUrl}`}

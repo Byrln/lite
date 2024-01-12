@@ -61,6 +61,7 @@ const NotificationList = ({ title }: any) => {
             modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}
+            datagrid={false}
         />
     );
 };

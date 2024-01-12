@@ -20,8 +20,17 @@ const columns = [
         title: "Өглөөний цайтай эсэх",
         key: "BreakfastIncluded",
         dataIndex: "BreakfastIncluded",
-        render: function render(id: any, value: any) {
-            return <ToggleChecked id={id} checked={value} disabled={true} />;
+        excelRenderPass: true,
+        renderCell: (element: any) => {
+            return (
+                element.row.BreakfastIncluded && (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.BreakfastIncluded}
+                        disabled={true}
+                    />
+                )
+            );
         },
     },
     { title: "Суваг", key: "ChannelName", dataIndex: "ChannelName" },
@@ -29,15 +38,18 @@ const columns = [
         title: "Төлөв",
         key: "Status",
         dataIndex: "Status",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
-                <ToggleChecked
-                    id={id}
-                    checked={value}
-                    api={RateTypeAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
+                element.row.Status && (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.Status}
+                        api={RateTypeAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                )
             );
         },
     },

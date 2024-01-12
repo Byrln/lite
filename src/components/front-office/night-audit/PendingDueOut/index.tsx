@@ -104,6 +104,7 @@ const PendingDueOutList = ({
             excelName={title}
             hasPrint={false}
             hasExcel={false}
+            datagrid={false}
         />
     );
 };

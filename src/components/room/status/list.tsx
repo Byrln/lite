@@ -20,14 +20,26 @@ const columns = [
         title: "Өнгө",
         key: "StatusColor",
         dataIndex: "StatusColor",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
-                <Tooltip title={`#${value}`} placement="top">
+                <Tooltip
+                    title={`#${
+                        element.row.StatusColor
+                            ? element.row.StatusColor
+                            : "ffff"
+                    }`}
+                    placement="top"
+                >
                     <div
                         style={{
                             width: "40px",
                             height: "20px",
-                            background: `#${value}`,
+                            background: `#${
+                                element.row.StatusColor
+                                    ? element.row.StatusColor
+                                    : "ffff"
+                            }`,
                             borderRadius: "5px",
                         }}
                     ></div>

@@ -13,11 +13,12 @@ const columns = [
         title: "Өдөр",
         key: "BeginDate",
         dataIndex: "BeginDate",
-        render: function render(id: any, value: any) {
+        excelRenderPass: true,
+        renderCell: (element: any) => {
             return (
-                value &&
+                element.row.BeginDate &&
                 format(
-                    new Date(value.replace(/ /g, "T")),
+                    new Date(element.row.BeginDate.replace(/ /g, "T")),
                     "MM/dd/yyyy hh:mm:ss a"
                 )
             );
@@ -77,7 +78,7 @@ const ExchangeRateList = ({ title }: any) => {
             hasNew={true}
             hasUpdate={true}
             hasDelete={true}
-            id="ExchangeRateID"
+            id="CurrencyID"
             listUrl={listUrl}
             modalTitle={title}
             modalContent={<NewEdit />}
