@@ -161,3 +161,13 @@ export function dateStringToObj(date: any) {
     console.log(date);
     return new Date(date.replace(/ /g, "T"));
 }
+
+const formatNumber = (value: any) => {
+    if (!value) {
+        return "";
+    }
+    // Convert the input to a number and format as string
+    const formattedValue = parseFloat(value).toLocaleString("en-US");
+
+    return formattedValue;
+};

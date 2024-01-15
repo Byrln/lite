@@ -10,9 +10,8 @@ import { mutate } from "swr";
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import { RateSWR, listUrl, RateAPI } from "lib/api/rate";
-import NumberFormat from "react-number-format";
-
 import Search from "./search";
+import { formatNumber } from "lib/utils/helpers";
 
 const RateList = ({ title, taxData }: any) => {
     console.log("taxData", taxData);
@@ -55,16 +54,6 @@ const RateList = ({ title, taxData }: any) => {
         } finally {
             setLoading(false);
         }
-    };
-    const formatNumber = (value: any) => {
-        if (!value) {
-            return "";
-        }
-
-        // Convert the input to a number and format as string
-        const formattedValue = parseFloat(value).toLocaleString("en-US");
-
-        return formattedValue;
     };
 
     const columns = [
