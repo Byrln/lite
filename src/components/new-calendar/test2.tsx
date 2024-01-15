@@ -522,7 +522,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         style={{ display: "flex", flexWrap: "wrap" }}
                     >
                         <div
-                            className="mr-3 pl-1 pr-1 mb-1"
+                            className="pl-1 pr-1 mb-1 mr-3"
                             style={{
                                 borderRadius: "4px",
                                 display: "flex",
@@ -541,7 +541,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             Ирсэн
                         </div>
                         <div
-                            className="mr-3 pl-1 pr-1 mb-1"
+                            className="pl-1 pr-1 mb-1 mr-3"
                             style={{
                                 borderRadius: "4px",
                                 display: "flex",
@@ -560,7 +560,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             Гарсан
                         </div>
                         <div
-                            className="mr-3 pl-1 pr-1 mb-1"
+                            className="pl-1 pr-1 mb-1 mr-3"
                             style={{
                                 borderRadius: "4px",
                                 display: "flex",
@@ -579,7 +579,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             Гарах
                         </div>
                         <div
-                            className="mr-3 pl-1 pr-1 mb-1"
+                            className="pl-1 pr-1 mb-1 mr-3"
                             style={{
                                 borderRadius: "4px",
                                 display: "flex",
@@ -598,7 +598,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             Баталгаажсан
                         </div>
                         <div
-                            className="mr-3 pl-1 pr-1 mb-1"
+                            className="pl-1 pr-1 mb-1 mr-3"
                             style={{
                                 borderRadius: "4px",
                                 display: "flex",
@@ -617,7 +617,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             Блок
                         </div>
                         <div
-                            className="mr-3 pl-1 pr-1 mb-1"
+                            className="pl-1 pr-1 mb-1 mr-3"
                             style={{
                                 borderRadius: "4px",
                                 display: "flex",
@@ -636,7 +636,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             Дахин хонох
                         </div>
                         <div
-                            className="mr-3 pl-1 pr-1 mb-1"
+                            className="pl-1 pr-1 mb-1 mr-3"
                             style={{
                                 borderRadius: "4px",
                                 display: "flex",
@@ -655,7 +655,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             Өдрөөр захиалга
                         </div>
                         <div
-                            className="mr-3 pl-1 pr-1 mb-1"
+                            className="pl-1 pr-1 mb-1 mr-3"
                             style={{
                                 borderRadius: "4px",
                                 display: "flex",

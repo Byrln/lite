@@ -6,13 +6,16 @@ import {
     DialogContentText,
     DialogTitle,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
 
+import ReservationEdit from "components/front-office/reservation-list/edit";
 import { ReservationAPI } from "lib/api/reservation";
+import { ModalContext } from "lib/context/modal";
 
 const CheckOut = ({ id, TransactionID, listUrl }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -35,6 +38,13 @@ const CheckOut = ({ id, TransactionID, listUrl }: any) => {
         } catch (error) {
             setLoading(false);
             handleClose();
+            handleModal(
+                true,
+                `Захиалга`,
+                <ReservationEdit transactionID={TransactionID} />,
+                null,
+                "large"
+            );
         }
     };
 

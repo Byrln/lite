@@ -7,8 +7,15 @@ import { useEffect } from "react";
 
 import { CustomerSWR } from "lib/api/customer";
 import { elementAcceptingRef } from "@mui/utils";
+import CustomSelect from "components/common/custom-select";
 
-const CustomerSelect = ({ register, errors, entity, setEntity }: any) => {
+const CustomerSelect = ({
+    register,
+    errors,
+    entity,
+    setEntity,
+    isCustomSelect = false,
+}: any) => {
     const { data, error } = CustomerSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -21,7 +28,17 @@ const CustomerSelect = ({ register, errors, entity, setEntity }: any) => {
             </Box>
         );
 
-    return (
+    return isCustomSelect ? (
+        <CustomSelect
+            register={register}
+            errors={errors}
+            field="CustomerID"
+            label="Customer"
+            options={data}
+            optionValue="CustomerID"
+            optionLabel="CustomerName"
+        />
+    ) : (
         <TextField
             fullWidth
             id="CustomerID"

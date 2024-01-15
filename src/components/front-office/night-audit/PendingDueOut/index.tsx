@@ -73,13 +73,13 @@ const PendingDueOutList = ({
                         <Checkout
                             key={`checkout-${id}`}
                             TransactionID={entity.TransactionID}
-                            listUrl={`${urlPrefix}/PedingDueOut`}
+                            listUrl={`${urlPrefix}/PendingDueOut`}
                         />
 
                         <AmendStay
                             key={`amend-stay-${id}`}
                             entity={entity}
-                            listUrl={`${urlPrefix}/PedingDueOut`}
+                            listUrl={`${urlPrefix}/PendingDueOut`}
                             workingDate={workingDate}
                         />
                     </Stack>

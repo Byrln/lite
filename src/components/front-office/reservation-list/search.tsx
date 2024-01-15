@@ -163,7 +163,11 @@ const Search = ({ register, errors, control, reset }: any) => {
             </Grid>
 
             <Grid item xs={3}>
-                <CustomerSelect register={register} errors={errors} />
+                <CustomerSelect
+                    register={register}
+                    errors={errors}
+                    isCustomSelect={true}
+                />
             </Grid>
         </Grid>
     );
