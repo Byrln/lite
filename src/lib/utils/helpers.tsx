@@ -162,7 +162,7 @@ export function dateStringToObj(date: any) {
     return new Date(date.replace(/ /g, "T"));
 }
 
-const formatNumber = (value: any) => {
+export function formatNumber(value: any) {
     if (!value) {
         return "";
     }
@@ -170,4 +170,4 @@ const formatNumber = (value: any) => {
     const formattedValue = parseFloat(value).toLocaleString("en-US");
 
     return formattedValue;
-};
+}
