@@ -10,9 +10,12 @@ import { mutate } from "swr";
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import { RateSWR, listUrl, RateAPI } from "lib/api/rate";
+import NumberFormat from "react-number-format";
+
 import Search from "./search";
 
-const RateList = ({ title }: any) => {
+const RateList = ({ title, taxData }: any) => {
+    console.log("taxData", taxData);
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
         RoomTypeID: yup.string().nullable(),
@@ -52,6 +55,16 @@ const RateList = ({ title }: any) => {
         } finally {
             setLoading(false);
         }
+    };
+    const formatNumber = (value: any) => {
+        if (!value) {
+            return "";
+        }
+
+        // Convert the input to a number and format as string
+        const formattedValue = parseFloat(value).toLocaleString("en-US");
+
+        return formattedValue;
     };
 
     const columns = [
@@ -94,12 +107,11 @@ const RateList = ({ title }: any) => {
                 return (
                     <TextField
                         size="small"
-                        type="number"
                         fullWidth
                         value={
                             entity &&
                             entity[dataIndex] &&
-                            entity[dataIndex].BaseRate
+                            formatNumber(entity[dataIndex].BaseRate)
                         }
                         InputLabelProps={{
                             shrink: value || value == 0,
@@ -108,7 +120,7 @@ const RateList = ({ title }: any) => {
                         onChange={(evt: any) => {
                             let tempEntity = [...entity];
                             tempEntity[dataIndex].BaseRate = parseFloat(
-                                evt.target.value
+                                evt.target.value.replace(/[^0-9.]/g, "")
                             );
                             setEntity(tempEntity);
                         }}
@@ -129,12 +141,11 @@ const RateList = ({ title }: any) => {
                 return (
                     <TextField
                         size="small"
-                        type="number"
                         fullWidth
                         value={
                             entity &&
                             entity[dataIndex] &&
-                            entity[dataIndex].ExtraAdult
+                            formatNumber(entity[dataIndex].ExtraAdult)
                         }
                         InputLabelProps={{
                             shrink: value || value == 0,
@@ -143,7 +154,7 @@ const RateList = ({ title }: any) => {
                         onChange={(evt: any) => {
                             let tempEntity = [...entity];
                             tempEntity[dataIndex].ExtraAdult = parseFloat(
-                                evt.target.value
+                                evt.target.value.replace(/[^0-9.]/g, "")
                             );
                             setEntity(tempEntity);
                         }}
@@ -151,6 +162,7 @@ const RateList = ({ title }: any) => {
                 );
             },
         },
+
         {
             title: "Нэмэлт хүүхдийн тариф",
             key: "ExtraChild",
@@ -164,12 +176,12 @@ const RateList = ({ title }: any) => {
                 return (
                     <TextField
                         size="small"
-                        type="number"
+                        // type="number"
                         fullWidth
                         value={
                             entity &&
                             entity[dataIndex] &&
-                            entity[dataIndex].ExtraChild
+                            formatNumber(entity[dataIndex].ExtraChild)
                         }
                         InputLabelProps={{
                             shrink: value || value == 0,
@@ -178,7 +190,7 @@ const RateList = ({ title }: any) => {
                         onChange={(evt: any) => {
                             let tempEntity = [...entity];
                             tempEntity[dataIndex].ExtraChild = parseFloat(
-                                evt.target.value
+                                evt.target.value.replace(/[^0-9.]/g, "")
                             );
                             setEntity(tempEntity);
                         }}
@@ -212,7 +224,17 @@ const RateList = ({ title }: any) => {
                     onClick={onToggleChecked}
                 />
             </LoadingButton>
-            Өрөөний тариф нь 10% + 1% татвар агуулсан болно.
+            Өрөөний тариф нь{" "}
+            {taxData &&
+                taxData.map((item: any) => {
+                    return (
+                        <span key={item.TaxID}>
+                            {item.TaxID != 1 && "+"}
+                            {item.TaxAmount}%
+                        </span>
+                    );
+                })}{" "}
+            татвар агуулсан болно.
             <br />
             <CustomTable
                 columns={columns}

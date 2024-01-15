@@ -19,6 +19,7 @@ import ChannelSelect from "components/select/reference";
 import CurrencySelect from "components/select/currency";
 import SubmitButton from "components/common/submit-button";
 import BaseRateList from "./base-rate-list";
+import { TaxSWR } from "lib/api/tax";
 
 const validationSchema = yup.object().shape({
     RateTypeCode: yup.string().required("Бөглөнө үү"),
@@ -29,6 +30,8 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const { data, error } = TaxSWR();
+
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [loadingData, setLoadingData] = useState(false);
@@ -209,7 +212,18 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                label="Өрөөний тариф нь 10% + 1% татвар агуулсан болно."
+                label={
+                    "Өрөөний тариф нь" +
+                    " " +
+                    (data &&
+                        data.map((item: any) => {
+                            return `${item.TaxID != 1 ? "+" : ""}${
+                                item.TaxAmount
+                            }%`;
+                        })) +
+                    " " +
+                    "татвар агуулсан болно."
+                }
             />
 
             <BaseRateList
