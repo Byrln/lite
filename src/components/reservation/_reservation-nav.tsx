@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { fToCustom } from "lib/utils/format-time";
 import { listUrl as calendarItemsURL } from "lib/api/front-office";
+
 import { mutate } from "swr";
 import { ModalContext } from "lib/context/modal";
 import { toast } from "react-toastify";
@@ -30,7 +31,12 @@ const buttonStyle = {
     width: "100%",
 };
 
-const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
+const ReservationNav = ({
+    reservation,
+    itemInfo,
+    reloadDetailInfo,
+    additionalMutateUrl,
+}: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [openNoShow, setOpenNoShow] = useState(false);
     const handleClickOpenNoShow = () => {
@@ -43,6 +49,9 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
         try {
             await ReservationAPI.noShow(reservation.TransactionID);
             await mutate(listUrl);
+            if (additionalMutateUrl) {
+                await mutate(additionalMutateUrl);
+            }
             setLoading(false);
             toast("Амжилттай.");
             handleCloseNoShow();
@@ -69,6 +78,9 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
         }
         var res = await ReservationAPI.checkIn(reservation.TransactionID);
         await mutate(calendarItemsURL);
+        if (additionalMutateUrl) {
+            await mutate(additionalMutateUrl);
+        }
         finishCall("Амжилттай");
     };
 
@@ -78,6 +90,9 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
         }
         var res = await ReservationAPI.roomUnassign(reservation.TransactionID);
         await mutate(calendarItemsURL);
+        if (additionalMutateUrl) {
+            await mutate(additionalMutateUrl);
+        }
         finishCall("Амжилттай");
     };
 
@@ -155,6 +170,7 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
                             <RoomMoveForm
                                 transactionInfo={reservation}
                                 reservation={reservation}
+                                additionalMutateUrl={additionalMutateUrl}
                             />
                         );
                     }}
@@ -173,6 +189,7 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
                             <AmendStayForm
                                 transactionInfo={reservation}
                                 reservation={reservation}
+                                additionalMutateUrl={additionalMutateUrl}
                             />
                         );
                     }}
@@ -199,6 +216,7 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
                             <VoidTransactionForm
                                 transactionInfo={reservation}
                                 reservation={reservation}
+                                customMutateUrl={additionalMutateUrl}
                             />
                         );
                     }}
@@ -219,6 +237,7 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
                             <CancelReservationForm
                                 transactionInfo={reservation}
                                 reservation={reservation}
+                                customMutateUrl={additionalMutateUrl}
                             />
                         );
                     }}
@@ -238,6 +257,7 @@ const ReservationNav = ({ reservation, itemInfo, reloadDetailInfo }: any) => {
                             <RoomAssign
                                 transactionInfo={reservation}
                                 reservation={reservation}
+                                additionalMutateUrl={additionalMutateUrl}
                             />
                         );
                     }}

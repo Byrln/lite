@@ -24,7 +24,11 @@ import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
 import { RateAPI } from "../../lib/api/rate";
 
-const RoomMoveForm = ({ transactionInfo, reservation }: any) => {
+const RoomMoveForm = ({
+    transactionInfo,
+    reservation,
+    additionalMutateUrl,
+}: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [baseStay, setBaseStay]: any = useState({
@@ -92,7 +96,9 @@ const RoomMoveForm = ({ transactionInfo, reservation }: any) => {
             const res = await ReservationAPI.roomMove(values);
 
             await mutate(listUrl);
-
+            if (additionalMutateUrl) {
+                await mutate(additionalMutateUrl);
+            }
             toast("Амжилттай.");
 
             setLoading(false);

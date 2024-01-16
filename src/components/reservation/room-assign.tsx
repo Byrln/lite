@@ -15,7 +15,11 @@ import { listUrl } from "../../lib/api/front-office";
 import { toast } from "react-toastify";
 import { ModalContext } from "../../lib/context/modal";
 
-const RoomAssign = ({ transactionInfo, reservation }: any) => {
+const RoomAssign = ({
+    transactionInfo,
+    reservation,
+    additionalMutateUrl,
+}: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [roomAutoAssign, setRoomAutoAssign]: any = useState(false);
@@ -59,7 +63,9 @@ const RoomAssign = ({ transactionInfo, reservation }: any) => {
             const res = await ReservationAPI.roomAssign(values);
 
             await mutate(listUrl);
-
+            if (additionalMutateUrl) {
+                await mutate(additionalMutateUrl);
+            }
             toast("Амжилттай.");
 
             setLoading(false);

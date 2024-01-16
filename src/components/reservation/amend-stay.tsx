@@ -18,7 +18,11 @@ import {
     countNights,
 } from "lib/utils/format-time";
 
-const AmendStayForm = ({ transactionInfo, reservation }: any) => {
+const AmendStayForm = ({
+    transactionInfo,
+    reservation,
+    additionalMutateUrl,
+}: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [baseStay, setBaseStay]: any = useState({
@@ -143,6 +147,10 @@ const AmendStayForm = ({ transactionInfo, reservation }: any) => {
             const res = await ReservationAPI.amendStay(vals);
 
             await mutate(listUrl);
+
+            if (additionalMutateUrl) {
+                await mutate(additionalMutateUrl);
+            }
 
             toast("Амжилттай.");
 

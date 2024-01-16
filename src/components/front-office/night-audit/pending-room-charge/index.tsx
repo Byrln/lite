@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Checkbox, Grid } from "@mui/material";
+import { Controller } from "react-hook-form";
+import { Checkbox, Grid, FormControlLabel } from "@mui/material";
 import { toast } from "react-toastify";
 import { LoadingButton } from "@mui/lab";
 import { mutate } from "swr";
@@ -20,7 +21,8 @@ const PendingRoomChargeList = ({
     const { data, error } = PendingRoomChargeSWR();
     const [entity, setEntity] = useState<any>({});
     const [loading, setLoading] = useState(false);
-
+    const [allCheck, setAllCheck] = useState<any>(false);
+    console.log("entity", entity);
     useEffect(() => {
         if (data) {
             setEntity(data);
@@ -115,26 +117,52 @@ const PendingRoomChargeList = ({
 
     return (
         <>
-            <CustomTable
-                columns={columns}
-                data={data}
-                error={error}
-                // api={NightAuditAPI}
-                hasNew={false}
-                hasUpdate={false}
-                hasDelete={false}
-                id="RoomChargeID"
-                listUrl={listUrl}
-                modalTitle={title}
-                modalContent={<NewEdit />}
-                excelName={title}
-                hasPrint={false}
-                hasExcel={false}
-                datagrid={false}
-            />
+            {entity && (
+                <CustomTable
+                    columns={columns}
+                    data={data}
+                    error={error}
+                    // api={NightAuditAPI}
+                    hasNew={false}
+                    hasUpdate={false}
+                    hasDelete={false}
+                    id="RoomChargeID"
+                    listUrl={listUrl}
+                    modalTitle={title}
+                    modalContent={<NewEdit />}
+                    excelName={title}
+                    hasPrint={false}
+                    hasExcel={false}
+                    datagrid={false}
+                />
+            )}
 
             <Grid container spacing={1}>
-                <Grid item xs={5}></Grid>
+                <Grid item xs={5}>
+                    {" "}
+                    {/* <FormControlLabel
+                        control={ */}
+                    {/* <Checkbox
+                        checked={allCheck}
+                        onChange={(e: any) => {
+                            let tempEntity = [...entity];
+                            console.log("tempEntity", tempEntity);
+
+                            tempEntity.map(
+                                (element: any) => (
+                                    console.log("element", element),
+                                    (element.isChecked = e.target.checked)
+                                )
+                            );
+                            console.log("newtempEntity", tempEntity);
+                            setEntity(tempEntity);
+                            setAllCheck(e.target.checked);
+                        }}
+                    /> */}
+                    {/* }
+                        label="Бүгдийг сонгох"
+                    /> */}
+                </Grid>
                 <Grid item xs={2}>
                     <LoadingButton
                         loading={loading}

@@ -37,7 +37,11 @@ const styleNight = {
     },
 };
 
-const ItemDetail = ({ reservation, reloadDetailInfo }: any) => {
+const ItemDetail = ({
+    reservation,
+    reloadDetailInfo,
+    additionalMutateUrl,
+}: any) => {
     return (
         <>
             {reservation ? (
@@ -182,6 +186,7 @@ const ItemDetail = ({ reservation, reloadDetailInfo }: any) => {
                                 reservation={reservation}
                                 itemInfo={reservation}
                                 reloadDetailInfo={reloadDetailInfo}
+                                additionalMutateUrl={additionalMutateUrl}
                             />
                         </Grid>
 

@@ -23,7 +23,7 @@ const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().notRequired(),
 });
 
-const NewEdit = ({ transactionID }: any) => {
+const NewEdit = ({ transactionID, additionalMutateUrl }: any) => {
     const [reservation, setReservation]: any = useState(null);
 
     const reloadDetailInfo = async () => {
@@ -42,6 +42,7 @@ const NewEdit = ({ transactionID }: any) => {
                 <ReservationDetail
                     reservation={reservation}
                     reloadDetailInfo={reloadDetailInfo}
+                    additionalMutateUrl={additionalMutateUrl}
                 />
             )}
         </div>

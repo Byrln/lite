@@ -41,7 +41,10 @@ const CheckOut = ({ id, TransactionID, listUrl }: any) => {
             handleModal(
                 true,
                 `Захиалга`,
-                <ReservationEdit transactionID={TransactionID} />,
+                <ReservationEdit
+                    transactionID={TransactionID}
+                    additionalMutateUrl={listUrl}
+                />,
                 null,
                 "large"
             );
