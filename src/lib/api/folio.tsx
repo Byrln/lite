@@ -2,36 +2,19 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Charge";
+const urlPrefix = "/api/Folio";
 export const listUrl = `${urlPrefix}/List`;
-export const listUrl2 = `${urlPrefix}/PendingRoomCharge`;
 
-export const PendingRoomChargeSWR = () => {
-    const fetcher = async (url: any) =>
-        await axios.get(listUrl2).then((res: any) => res.data.JsonData);
-
-    return useSWR(listUrl2, fetcher);
-};
-
-export const ChargeSummarySWR = (TransactionID: any) => {
+export const FolioItemSWR = (FolioID: any) => {
     const fetcher = async (url: any) =>
         await axios
-            .post(`${urlPrefix}/Summary`, { TransactionID: TransactionID })
+            .post(`${urlPrefix}/Items`, { FolioID: FolioID })
             .then((res: any) => res.data.JsonData);
 
-    return useSWR(`${urlPrefix}/Summary`, fetcher);
+    return useSWR(`${urlPrefix}/Items`, fetcher);
 };
 
-export const RoomChargeSWR = (TransactionID: any) => {
-    const fetcher = async (url: any) =>
-        await axios
-            .post(`${urlPrefix}/RoomCharge`, { TransactionID: TransactionID })
-            .then((res: any) => res.data.JsonData);
-
-    return useSWR(`${urlPrefix}/RoomCharge`, fetcher);
-};
-
-export const ChargeAPI = {
+export const FolioAPI = {
     get: async (id: any, additionalValues: any) => {
         let values = {
             RoomChargeTypeID: id,

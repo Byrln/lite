@@ -2,13 +2,43 @@ import Box from "@mui/material/Box";
 
 const GuestInformation = ({ name, phone, email, address }: any) => {
     return (
-        <Box sx={{ p: 1, border: "1px solid grey" }}>
+        <Box>
             <Box sx={{ fontWeight: "bold" }}>{name}</Box>
-            Mobile : {phone}
-            <br />
-            Email : {email}
-            <br />
-            Address : {address}
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    flexWrap: "wrap",
+                }}
+                className="mb-1"
+            >
+                <div>Гар утас : </div>
+                <div style={{ fontWeight: "600" }}>{phone}</div>
+            </Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    flexWrap: "wrap",
+                }}
+                className="mb-1"
+            >
+                <div>Цахим шуудан : </div>
+                <div style={{ fontWeight: "600" }}>{email}</div>
+            </Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    flexWrap: "wrap",
+                }}
+            >
+                <div>Address : </div>
+                <div style={{ fontWeight: "600" }}>{address}</div>
+            </Box>
         </Box>
     );
 };

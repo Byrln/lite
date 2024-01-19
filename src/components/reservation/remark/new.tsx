@@ -62,7 +62,7 @@ const RemarkNew = ({ TransactionID, setEditMode }: any) => {
                 <div style={{ flexGrow: "1" }}>
                     <TextField
                         id={"Remarks"}
-                        label="Remark text"
+                        label="Тэмдэглэгээ"
                         size="small"
                         {...register("Remarks")}
                         error={errors.Remarks?.message}

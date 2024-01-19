@@ -6,7 +6,15 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Tabs, Tab } from "@mui/material";
+import {
+    Tabs,
+    Tab,
+    Container,
+    Paper,
+    Card,
+    CardContent,
+    Divider,
+} from "@mui/material";
 
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import { TransactionAPI } from "lib/api/transaction";
@@ -16,6 +24,9 @@ import OtherInformation from "components/transaction/other-information";
 import SharerInformation from "components/transaction/general-information/sharer-information";
 import Remarks from "components/transaction/general-information/remarks";
 import Summary from "components/transaction/general-information/summary";
+import RoomCharge from "components/transaction/room-charge";
+import Folio from "components/transaction/folio";
+import RemarkList from "components/reservation/remark/list";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -74,124 +85,241 @@ const TransactionEdit = () => {
         };
         fetchDatas();
     }, [router]);
-
+    console.log("transaction", transaction);
     return (
         <>
-            {loading ? (
-                <Box sx={{ width: "100%" }}>
-                    <Skeleton />
-                    <Skeleton animation="wave" />
-                    <Skeleton animation={false} />
-                </Box>
-            ) : transaction ? (
-                <>
-                    <Grid container spacing={2} className="mb-3">
-                        <Grid item xs={6}>
-                            <h2>Edit transaction</h2>
-                        </Grid>
-                        <Grid item xs={6}>
-                            Room № {transaction.RoomFullNo}
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={2} className="mb-3">
-                        <Grid item xs={4}>
-                            <h3 className="mb-1">Guest Information</h3>
-                            <GuestInformation
-                                name={transaction.GuestName}
-                                phone={transaction.BookerPhone}
-                                email="test@mail.com"
-                                address="test address"
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <h3 className="mb-1">Stay Information</h3>
-                            <StayInformation
-                                reservationDate="testDate"
-                                arrivalDate={transaction.ArrivalDate}
-                                departureDate={transaction.DepartureDate}
-                                pax="testPax"
-                                rateType="testRate"
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <h3 className="mb-1">Other Information</h3>
-                            <OtherInformation
-                                reservationNo={transaction.ReservationNo}
-                                folioNo={transaction.FolioNo}
-                                checkInNo="checkInNo"
-                                company="company"
-                            />
-                        </Grid>
-                    </Grid>
-
+            <Container maxWidth="xl">
+                {loading ? (
                     <Box sx={{ width: "100%" }}>
-                        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                            <Tabs
-                                value={value}
-                                onChange={handleChange}
-                                aria-label="basic tabs example"
+                        <Skeleton />
+                        <Skeleton animation="wave" />
+                        <Skeleton animation={false} />
+                    </Box>
+                ) : transaction ? (
+                    <>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                width: "100%",
+                            }}
+                        >
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    width: "fit-content",
+                                }}
                             >
-                                <Tab
-                                    label="General Information"
-                                    {...a11yProps(0)}
-                                />
-                                <Tab label="Room Charge" {...a11yProps(1)} />
-                                <Tab label="Folio" {...a11yProps(2)} />
-                            </Tabs>
+                                Гүйлгээ засах
+                            </Typography>
+                            <Box
+                                sx={{
+                                    width: "fit-content",
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        width: "fit-content",
+                                    }}
+                                >
+                                    {transaction.RoomTypeName} -{" "}
+                                    {transaction.RoomNo}
+                                </Box>
+                                <Paper
+                                    elevation={2}
+                                    sx={{
+                                        px: 1,
+                                        backgroundColor:
+                                            "#" + transaction.StatusColor,
+                                        color: "white",
+                                        mb: 3,
+                                        width: "fit-content",
+                                    }}
+                                >
+                                    <Typography>
+                                        {transaction.StatusCode}
+                                    </Typography>
+                                </Paper>
+                            </Box>
                         </Box>
 
-                        <TabPanel value={value} index={0}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={4}>
-                                    <SharerInformation />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Remarks />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Summary />
-                                </Grid>
-                            </Grid>
-                        </TabPanel>
+                        <Divider className="mb-3" />
 
-                        <TabPanel value={value} index={1}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <div>Date</div>
-                                    <div>Rate Type</div>
-                                    <div>Pax (A / C)</div>
-                                    <div>Override Rate</div>
-                                    <div>Rate</div>
-                                    <div>Apply to Selected Date</div>
-                                    <div>Apply to Whole Stay</div>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <div>TEST TABLE</div>
-                                </Grid>
+                        <Grid container spacing={2} className="mb-3">
+                            <Grid item xs={12} sm={4}>
+                                <Card>
+                                    <CardContent>
+                                        <Box
+                                            sx={{
+                                                fontWeight: "bold",
+                                            }}
+                                            className="mb-3"
+                                        >
+                                            Зочны мэдээлэл
+                                        </Box>
+                                        <GuestInformation
+                                            name={transaction.GuestName}
+                                            phone={transaction.BookerPhone}
+                                            email="test@mail.com"
+                                            address="test address"
+                                        />
+                                    </CardContent>
+                                </Card>
                             </Grid>
-                        </TabPanel>
+                            <Grid item xs={12} sm={4}>
+                                <Card>
+                                    <CardContent>
+                                        <Box
+                                            sx={{
+                                                fontWeight: "bold",
+                                            }}
+                                            className="mb-3"
+                                        >
+                                            Хоногийн мэдээлэл
+                                        </Box>
+                                        <StayInformation
+                                            reservationDate="testDate"
+                                            arrivalDate={
+                                                transaction.ArrivalDate
+                                            }
+                                            departureDate={
+                                                transaction.DepartureDate
+                                            }
+                                            pax="testPax"
+                                            rateType="testRate"
+                                        />
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Card>
+                                    <CardContent>
+                                        <Box
+                                            sx={{
+                                                fontWeight: "bold",
+                                            }}
+                                            className="mb-3"
+                                        >
+                                            Бусад мэдээлэл
+                                        </Box>
+                                        <OtherInformation
+                                            reservationNo={
+                                                transaction.ReservationNo
+                                            }
+                                            folioNo={transaction.FolioNo}
+                                            checkInNo="checkInNo"
+                                            company="company"
+                                        />
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        </Grid>
 
-                        <TabPanel value={value} index={2}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <div>CHARGE PAYMENT</div>
-                                    <div>Date</div>
-                                    <div>Type</div>
-                                    <div>Amount</div>
-                                    <div>Date</div>
-                                    <div>Folio</div>
-                                    <div>Description</div>
+                        <Divider className="mb-3" />
+
+                        <Box sx={{ width: "100%" }}>
+                            <Box
+                                sx={{ borderBottom: 1, borderColor: "divider" }}
+                            >
+                                <Tabs
+                                    value={value}
+                                    onChange={handleChange}
+                                    aria-label="basic tabs example"
+                                >
+                                    <Tab
+                                        label="Ерөнхий мэдээлэл"
+                                        {...a11yProps(0)}
+                                    />
+                                    <Tab
+                                        label="Өрөөний тооцоо"
+                                        {...a11yProps(1)}
+                                    />
+                                    <Tab label="Тооцоо" {...a11yProps(2)} />
+                                </Tabs>
+                            </Box>
+
+                            <TabPanel value={value} index={0}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={4}>
+                                        <Card>
+                                            <CardContent>
+                                                <SharerInformation />
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <Card>
+                                            <CardContent>
+                                                <RemarkList
+                                                    TransactionID={
+                                                        transaction.TransactionID
+                                                    }
+                                                />
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={4}>
+                                        <Card>
+                                            <CardContent>
+                                                <Summary
+                                                    TransactionID={
+                                                        transaction.TransactionID
+                                                    }
+                                                />
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <div>TEST TABLE</div>
-                                </Grid>
-                            </Grid>
-                        </TabPanel>
-                    </Box>
-                </>
-            ) : (
-                ""
-            )}
+                            </TabPanel>
+
+                            <TabPanel value={value} index={1}>
+                                {/* <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <div>Date</div>
+                                        <div>Rate Type</div>
+                                        <div>Pax (A / C)</div>
+                                        <div>Override Rate</div>
+                                        <div>Rate</div>
+                                        <div>Apply to Selected Date</div>
+                                        <div>Apply to Whole Stay</div>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                    <RoomCharge
+                                            TransactionID={
+                                                transaction.TransactionID
+                                            }
+                                        />
+                                    </Grid>
+                                </Grid> */}
+                                <RoomCharge
+                                    TransactionID={transaction.TransactionID}
+                                />
+                            </TabPanel>
+
+                            <TabPanel value={value} index={2}>
+                                <Folio FolioID={transaction.FolioID} />
+                                {/* <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <div>CHARGE PAYMENT</div>
+                                        <div>Date</div>
+                                        <div>Type</div>
+                                        <div>Amount</div>
+                                        <div>Date</div>
+                                        <div>Folio</div>
+                                        <div>Description</div>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <div>TEST TABLE</div>
+                                    </Grid>
+                                </Grid> */}
+                            </TabPanel>
+                        </Box>
+                    </>
+                ) : (
+                    ""
+                )}
+            </Container>
         </>
     );
 };

@@ -14,7 +14,6 @@ import Search from "./search";
 import { formatNumber } from "lib/utils/helpers";
 
 const RateList = ({ title, taxData }: any) => {
-    console.log("taxData", taxData);
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
         RoomTypeID: yup.string().nullable(),
