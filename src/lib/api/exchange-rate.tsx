@@ -17,18 +17,22 @@ export const ExchangeRateSWR = () => {
 };
 
 export const ExchangeRateAPI = {
-    get: async (id: any) => {
+    get: async (id: any, CountryID: any) => {
         const values = {
             CurrencyID: id,
+            CountryID: CountryID ? CountryID : null,
         };
 
-        const res = await axios.post(listUrl, values);
+        const res = await axios.post(`${urlPrefix}/ExchangeRate`, values);
 
         return res.data.JsonData;
     },
 
     new: async (values: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/New`, values);
+        const { data, status } = await axios.post(
+            `${urlPrefix}/ExchangeRate/InsertWU`,
+            values
+        );
 
         return {
             data,

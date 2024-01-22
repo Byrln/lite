@@ -16,17 +16,19 @@ import NewEditForm from "components/common/new-edit-form";
 import { ExchangeRateAPI, listUrl } from "lib/api/exchange-rate";
 import { useAppState } from "lib/context/app";
 import CountrySelect from "components/select/country";
+import { fetchData } from "next-auth/client/_utils";
 
 const validationSchema = yup.object().shape({
     ExchangeRateName: yup.string().required("Бөглөнө үү"),
-    Currency: yup.string().required("Бөглөнө үү"),
-    Code: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    Symbol: yup.string().required("Бөглөнө үү"),
+    CurrencyName: yup.string().required("Бөглөнө үү"),
+    CurrencyCode: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    CurrencySymbol: yup.string().required("Бөглөнө үү"),
     CountryID: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
     const [entity, setEntity]: any = useState(null);
+    const [values, setValues]: any = useState(null);
 
     const [state]: any = useAppState();
     const {
@@ -37,15 +39,45 @@ const NewEdit = () => {
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
 
+    useEffect(() => {
+        if (values) {
+            setEntity({ CountryID: values.CountryID });
+        }
+    }, [values]);
+
+    useEffect(() => {
+        if (entity) {
+            const fetchDatas = async () => {
+                try {
+                    const arr: any = await ExchangeRateAPI.get(
+                        null,
+                        entity.CountryID
+                    );
+                    if (values) {
+                        if (arr[0].CountryID != entity.CountryID) {
+                            reset(arr[0]);
+                        }
+                    }
+                    {
+                        reset(arr[0]);
+                    }
+                } finally {
+                }
+            };
+            fetchDatas();
+        }
+    }, [entity]);
+
     return (
         <NewEditForm
             api={ExchangeRateAPI}
             listUrl={listUrl}
             additionalValues={{
-                ExchangeRateID: state.editId,
+                CurrencyID: state.editId,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
+            setEntity={setValues}
         >
             <Grid container spacing={1}>
                 <Grid item xs={12} sm={3}>
@@ -60,36 +92,36 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="Currency"
-                        label="Currency"
-                        {...register("Currency")}
+                        id="CurrencyName"
+                        label="CurrencyName"
+                        {...register("CurrencyName")}
                         margin="dense"
-                        error={errors.Currency?.message}
-                        helperText={errors.Currency?.message}
+                        error={errors.CurrencyName?.message}
+                        helperText={errors.CurrencyName?.message}
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
                     <TextField
                         size="small"
                         fullWidth
-                        id="Code"
-                        label="Code"
-                        {...register("Code")}
+                        id="CurrencyCode"
+                        label="CurrencyCode"
+                        {...register("CurrencyCode")}
                         margin="dense"
-                        error={errors.Code?.message}
-                        helperText={errors.Code?.message}
+                        error={errors.CurrencyCode?.message}
+                        helperText={errors.CurrencyCode?.message}
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
                     <TextField
                         size="small"
                         fullWidth
-                        id="Symbol"
-                        label="Symbol"
-                        {...register("Symbol")}
+                        id="CurrencySymbol"
+                        label="CurrencySymbol"
+                        {...register("CurrencySymbol")}
                         margin="dense"
-                        error={errors.Symbol?.message}
-                        helperText={errors.Symbol?.message}
+                        error={errors.CurrencySymbol?.message}
+                        helperText={errors.CurrencySymbol?.message}
                     />
                 </Grid>
             </Grid>
