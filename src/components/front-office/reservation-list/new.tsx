@@ -1,22 +1,17 @@
-import { Controller, useForm, useFieldArray } from "react-hook-form";
-import { Grid, Card, CardContent } from "@mui/material";
+import { useForm, useFieldArray } from "react-hook-form";
+import { Card, CardContent, Button, IconButton, Tooltip } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import Tooltip from "@mui/material/Tooltip";
-
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { useState, useEffect } from "react";
 
 import NewEditForm from "components/common/new-edit-form";
 import { ReservationAPI, listUrl } from "lib/api/reservation";
 import { useAppState } from "lib/context/app";
-import { dateStringToObj } from "lib/utils/helpers";
 import NewForm from "./new-form";
+
 const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().notRequired(),
 });
@@ -69,21 +64,11 @@ const NewEdit = ({
 
         console.log("data", data);
     };
-    // useEffect(() => {
-    //     if (dateStart) {
-    //         resetField(`TransactionDetail.${0}.ArrivalDate`, {
-    //             defaultValue: dateStart,
-    //         });
-    //     }
-    // }, [dateStart]);
 
     return (
         <NewEditForm
             api={ReservationAPI}
             listUrl={listUrl}
-            // additionalValues={{
-            //     DeparturedListID: state.editId,
-            // }}
             reset={reset}
             handleSubmit={handleSubmit}
             customResetEvent={customResetEvent}

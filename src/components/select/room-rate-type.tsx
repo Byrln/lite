@@ -17,6 +17,8 @@ const RoomRateTypeSelect = ({
     customRegisterName,
     setRate,
     Rate,
+    setBreakfastIncluded,
+    setTaxIncluded,
 }: any) => {
     const [data, setData]: any = useState([]);
 
@@ -48,6 +50,12 @@ const RoomRateTypeSelect = ({
         }
         if (rate) {
             setRate(rate);
+            if (rate.BreakfastIncluded) {
+                setBreakfastIncluded(rate.BreakfastIncluded);
+            }
+            if (rate.TaxIncluded) {
+                setTaxIncluded(rate.TaxIncluded);
+            }
         }
     };
 

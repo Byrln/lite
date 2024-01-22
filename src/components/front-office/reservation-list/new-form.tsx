@@ -154,7 +154,6 @@ const NewEdit = ({
                     ),
                     label: getValues(`TransactionDetail[${id}].GuestName`),
                 });
-                console.log("2222222222222");
             }
             if (id > 0) {
                 let baseAdult = 0;
@@ -555,6 +554,8 @@ const NewEdit = ({
                             RoomTypeID={RoomTypeID}
                             setRate={setRate}
                             Rate={Rate}
+                            setBreakfastIncluded={setBreakfastIncluded}
+                            setTaxIncluded={setTaxIncluded}
                         />
                     </Grid>
 
