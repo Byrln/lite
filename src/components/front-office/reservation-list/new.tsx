@@ -69,6 +69,17 @@ const NewEdit = ({
             reset={reset}
             handleSubmit={handleSubmit}
             customResetEvent={customResetEvent}
+            additionalButtons={
+                <Button
+                    variant="outlined"
+                    //@ts-ignore
+                    onClick={() => append(getValues(`TransactionDetail[0]`))}
+                    size="small"
+                    className="mt-3 mr-3"
+                >
+                    + Өрөө нэмэх
+                </Button>
+            }
         >
             <LocalizationProvider // @ts-ignore
                 dateAdapter={AdapterDateFns}
@@ -127,14 +138,6 @@ const NewEdit = ({
                     </Card>
                 ))}
             </LocalizationProvider>
-            <Button
-                variant="outlined"
-                //@ts-ignore
-                onClick={() => append(getValues(`TransactionDetail[0]`))}
-                style={{ width: "100%" }}
-            >
-                + Өрөө нэмэх
-            </Button>
         </NewEditForm>
     );
 };

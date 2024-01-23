@@ -24,6 +24,7 @@ const NewEditForm = ({
     customSubmitTitle,
     customResetEvent,
     customModificationBeforeSubmit,
+    additionalButtons,
 }: any) => {
     const [state]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
@@ -122,9 +123,14 @@ const NewEditForm = ({
         <form onSubmit={handleSubmit(onSubmit)}>
             {children}
 
+            {additionalButtons}
             {state.isShow && !isShowNotAffected ? null : (
                 // <Box sx={{ width: "15%" }}>
-                <SubmitButton loading={loading} title={customSubmitTitle} />
+                <SubmitButton
+                    loading={loading}
+                    title={customSubmitTitle}
+                    fullWidth={false}
+                />
                 // </Box>
             )}
         </form>

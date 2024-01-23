@@ -23,7 +23,7 @@ import account from "components/_mocks_/account";
 const DRAWER_WIDTH = 280;
 
 const RootStyle = styled("div")(({ theme }) => ({
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.up("xl")]: {
         flexShrink: 0,
         width: DRAWER_WIDTH,
     },
@@ -150,19 +150,19 @@ export default function DashboardSidebar({
 
     return (
         <RootStyle>
-            <MHidden width="lgUp">
-                <Drawer
-                    open={isOpenSidebar}
-                    onClose={onCloseSidebar}
-                    PaperProps={{
-                        sx: { width: DRAWER_WIDTH },
-                    }}
-                >
-                    {renderContent}
-                </Drawer>
-            </MHidden>
+            {/* <MHidden width="lgUp"> */}
+            <Drawer
+                open={isOpenSidebar}
+                onClose={onCloseSidebar}
+                PaperProps={{
+                    sx: { width: DRAWER_WIDTH },
+                }}
+            >
+                {renderContent}
+            </Drawer>
+            {/* </MHidden> */}
 
-            <MHidden width="lgDown">
+            {/* <MHidden width="lgDown">
                 <Drawer
                     open
                     variant="persistent"
@@ -175,7 +175,7 @@ export default function DashboardSidebar({
                 >
                     {renderContent}
                 </Drawer>
-            </MHidden>
+            </MHidden> */}
         </RootStyle>
     );
 }
