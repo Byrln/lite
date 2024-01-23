@@ -23,10 +23,10 @@ import account from "components/_mocks_/account";
 const DRAWER_WIDTH = 280;
 
 const RootStyle = styled("div")(({ theme }) => ({
-    [theme.breakpoints.up("xl")]: {
-        flexShrink: 0,
-        width: DRAWER_WIDTH,
-    },
+    // [theme.breakpoints.up("xl")]: {
+    //     flexShrink: 0,
+    //     width: DRAWER_WIDTH,
+    // },
 }));
 
 const AccountStyle = styled("div")(({ theme }: any) => ({
