@@ -64,4 +64,27 @@ export const HouseKeepingAPI = {
             status,
         };
     },
+
+    assign: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Assign`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    unassign: async (id: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/Unassign`, {
+            RoomID: id,
+        });
+
+        return {
+            data,
+            status,
+        };
+    },
 };

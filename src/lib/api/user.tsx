@@ -4,6 +4,7 @@ import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/User";
 export const listUrl = `${urlPrefix}/ListByUser`;
+export const listByRoleUrl = `${urlPrefix}/ListByRole`;
 
 export const UserSWR = (search: any) => {
     if (!search.UserID) {
@@ -17,6 +18,20 @@ export const UserSWR = (search: any) => {
         await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
+};
+
+export const UserByRoleSWR = (search: any) => {
+    if (!search.UserID) {
+        search.UserID = null;
+    }
+    if (!search.EmptyRow) {
+        search.EmptyRow = 0;
+    }
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
+
+    return useSWR(listByRoleUrl, fetcher);
 };
 
 export const UserAPI = {

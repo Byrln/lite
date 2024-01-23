@@ -9,7 +9,6 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 import NewEditForm from "components/common/new-edit-form";
 import { ReservationAPI, listUrl } from "lib/api/reservation";
-import { useAppState } from "lib/context/app";
 import NewForm from "./new-form";
 
 const validationSchema = yup.object().shape({
@@ -26,8 +25,6 @@ const NewEdit = ({
     MaxAdult,
     MaxChild,
 }: any) => {
-    const [state]: any = useAppState();
-
     const {
         register,
         reset,
