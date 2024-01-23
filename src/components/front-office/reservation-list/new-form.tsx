@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import {
     Grid,
     TextField,
@@ -7,17 +7,12 @@ import {
     Typography,
 } from "@mui/material";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
 import { useEffect, useState } from "react";
 import NumberSelect from "components/select/number-select";
-import { fToUniversal } from "lib/utils/format-time";
 
-import NewEditForm from "components/common/new-edit-form";
-import { ReservationAPI, listUrl } from "lib/api/reservation";
 import { useAppState } from "lib/context/app";
 import { dateStringToObj } from "lib/utils/helpers";
 import RoomTypeSelect from "components/select/room-type";
@@ -30,10 +25,6 @@ import PaymentMethodSelect from "components/select/payment-method";
 import CurrencySelect from "components/select/currency";
 
 import { countNights } from "lib/utils/format-time";
-
-const validationSchema = yup.object().shape({
-    DeparturedListName: yup.string().required("Бөглөнө үү"),
-});
 
 const NewEdit = ({
     id,
@@ -49,11 +40,8 @@ const NewEdit = ({
     MaxAdult,
     MaxChild,
 }: any) => {
-    const [state]: any = useAppState();
-    const [TransactionID, setTransactionID]: any = useState("");
     const [RoomTypeID, setRoomTypeID]: any = useState("");
     const [RoomType, setRoomType]: any = useState("");
-    const [RateTypeID, setRateTypeID]: any = useState("");
     const [RoomID, setRoomID]: any = useState("");
     const [ArrivalDate, setArrivalDate]: any = useState("");
     const [DepartureDate, setDepartureDate]: any = useState("");
@@ -94,7 +82,7 @@ const NewEdit = ({
                     Number(getValues(`TransactionDetail[${id}].RoomTypeID`))
                 );
             }
-            if (getValues(`TransactionDetail[${id}].Room`)) {
+            if (getValues(`TransactionDetail[${id}].RoomID`)) {
                 setRoomID(Number(getValues(`TransactionDetail[${id}].RoomID`)));
             }
             if (getValues(`TransactionDetail[${id}].ArrivalDate`)) {
@@ -139,14 +127,6 @@ const NewEdit = ({
                 );
             }
 
-            // if (getValues(`TransactionDetail[${id}].PaymentMethodID`)) {
-            //     setPaymentMethodID(
-            //         Number(
-            //             getValues(`TransactionDetail[${id}].PaymentMethodID`)
-            //         )
-            //     );
-            // }
-
             if (getValues(`TransactionDetail[${id}].GuestName`)) {
                 setSelectedGuest({
                     value: Number(
@@ -178,25 +158,6 @@ const NewEdit = ({
                     MaxChild: MaxChild,
                 });
             }
-
-            // if (getValues(`TransactionDetail[${id}].Adult`)) {
-            //     baseAdult = getValues(`TransactionDetail[${id}].Adult`);
-            // }
-
-            // if (getValues(`TransactionDetail[${id}].Child`)) {
-            //     baseChild = getValues(`TransactionDetail[${id}].Child`);
-            // }
-
-            // setRoomType({
-            //     BaseAdult: baseAdult,
-            //     BaseChild: baseChild,
-            // });
-            // console.log("baseAdult`)", baseAdult);
-            // console.log("baseChild`)", baseChild);
-            // console.log(
-            //     "getValues(`TransactionDetail[${id}].Adult`)",
-            //     getValues(`TransactionDetail[${id}]`)
-            // );
         }
     }, [id]);
 
@@ -213,10 +174,6 @@ const NewEdit = ({
     const onRoomChange = (r: any, index: any) => {
         setRoomID(r.RoomID);
     };
-
-    // resetField(`TransactionDetail.${id}.RateModeID`, {
-    //     defaultValue: 1,
-    // });
 
     const onAdultChange = (evt: any) => {
         setSelectedAdult(evt.target.value);

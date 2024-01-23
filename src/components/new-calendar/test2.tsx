@@ -311,7 +311,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleSelect = (info: any) => {
         const { start, end, resourceId } = info;
-        console.log("infoinfo", info);
         if (start > new Date(workingDate)) {
             dispatch({
                 type: "editId",
