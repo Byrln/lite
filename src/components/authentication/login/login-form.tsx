@@ -176,7 +176,7 @@ export default function LoginForm() {
 
                 <LoadingButton
                     fullWidth
-                    size="small"
+                    size="large"
                     type="submit"
                     variant="contained"
                     loading={loading}

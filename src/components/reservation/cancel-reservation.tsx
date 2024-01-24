@@ -92,7 +92,7 @@ const CancelReservationForm = ({
                 </Grid>
 
                 <LoadingButton
-                    size="small"
+                    size="large"
                     type="submit"
                     variant="contained"
                     loading={loading}

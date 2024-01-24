@@ -79,7 +79,7 @@ const RoomMoveForm = ({
         RoomTypeID: yup.number().required("Сонгоно уу"),
         RoomID: yup.number().notRequired(),
         OverrideRate: yup.boolean().notRequired(),
-        NewRate: yup.number().required(""),
+        NewRate: yup.number().notRequired(),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -93,6 +93,10 @@ const RoomMoveForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
+            values.NewRoomTypeID = values.RoomTypeID;
+            values.NewRoomID = values.RoomID;
+            delete values.RoomTypeID;
+            delete values.RoomID;
             const res = await ReservationAPI.roomMove(values);
 
             await mutate(listUrl);
@@ -251,7 +255,7 @@ const RoomMoveForm = ({
                 </Grid>
 
                 <LoadingButton
-                    size="small"
+                    size="large"
                     type="submit"
                     variant="contained"
                     loading={loading}

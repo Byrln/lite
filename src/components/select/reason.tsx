@@ -32,7 +32,7 @@ const ReasonTypeSelect = ({
             label={label}
             options={data}
             optionValue="ReasonTypeID"
-            optionLabel="ReasonTypeName"
+            optionLabel="ReasonName"
         />
     );
 };

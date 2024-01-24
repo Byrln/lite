@@ -32,6 +32,7 @@ import { useAppState } from "lib/context/app";
 import Search from "./search";
 import CustomSearch from "components/common/custom-search";
 import ReservationEdit from "components/front-office/reservation-list/edit";
+import RoomMoveForm from "components/reservation/room-move";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [state, dispatch]: any = useAppState();
@@ -44,6 +45,21 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     });
     const [searchCurrDate, setSearchCurrDate] = useState(workingDate);
     const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
+
+    function extractNumberFromString(str: any) {
+        const parts = str.split("-");
+        const firstNumber = parseInt(parts[0], 10);
+
+        return firstNumber;
+    }
+
+    function areDatesOnSameDay(date1: any, date2: any) {
+        return (
+            date1.getFullYear() === date2.getFullYear() &&
+            date1.getMonth() === date2.getMonth() &&
+            date1.getDate() === date2.getDate()
+        );
+    }
 
     const customHeader = (info: any) => {
         const dateText = info.currentRange.start.toISOString().slice(0, 10);
@@ -189,13 +205,13 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         if (rooms && roomTypes) {
             const newRoomTypeData = roomTypes.map((obj: any) => {
                 return {
-                    id: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                    id: `${obj.RoomTypeID}-${obj.RoomTypeID}`,
                     title: obj.RoomTypeName,
                 };
             });
             const newData = rooms.map((obj: any) => {
                 return {
-                    parentId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                    parentId: `${obj.RoomTypeID}-${obj.RoomTypeID}`,
                     roomTypeId: obj.RoomTypeID,
                     id: obj.RoomID,
                     title: obj.RoomNo,
@@ -234,41 +250,31 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         if (info.event._instance.range.end > new Date(workingDate)) {
             const newEventObject = {
                 title: "New Event",
-                start: info.event._instance.range.start,
-                end: info.event._instance.range.end,
-                roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
-                roomID: Number(info.event._def.resourceIds[0]),
+                ArrivalDate: info.event._instance.range.start,
+                DepartureDate: info.event._instance.range.end,
+                RoomTypeID: extractNumberFromString(
+                    info.newResource._resource.parentId
+                ),
+                RoomID: Number(info.event._def.resourceIds[0]),
+                TransactionID: Number(
+                    info.event._def.extendedProps.transactionID
+                ),
             };
-
-            if (Number(info.event._def.extendedProps.transactionID)) {
-                dispatch({
-                    type: "editId",
-                    editId: Number(info.event._def.extendedProps.transactionID),
-                });
-            } else {
-                dispatch({
-                    type: "editId",
-                    editId: "",
-                });
-            }
 
             if (!info.event.extendedProps.block) {
                 handleModal(
                     true,
                     `New Reservation`,
-                    <NewReservation
-                        dateStart={newEventObject.start}
-                        dateEnd={newEventObject.end}
-                        // // @ts-ignore
-                        roomType={newEventObject.roomTypeID}
-                        // // @ts-ignore
-                        room={newEventObject.roomID}
+                    <RoomMoveForm
+                        transactionInfo={newEventObject}
+                        additionalMutateUrl="/api/Reservation/List"
                     />,
                     null,
                     "large"
                 );
             }
         }
+        setRerenderKey((prevKey) => prevKey + 1);
     };
 
     const handleEventResize = (info: any) => {
@@ -472,6 +478,22 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         }}
                         slotDuration="12:00:00"
                         slotLabelInterval={{ hours: 24 }}
+                        eventAllow={function (
+                            dropInfo: any,
+                            draggedEvent: any
+                        ) {
+                            if (
+                                areDatesOnSameDay(
+                                    dropInfo.start,
+                                    draggedEvent._instance.range.start
+                                ) == false ||
+                                new Date(workingDate) >
+                                    draggedEvent._instance.range.start
+                            ) {
+                                return false;
+                            }
+                            return true;
+                        }}
                         views={{
                             timeline: {
                                 type: "resourceTimeline",

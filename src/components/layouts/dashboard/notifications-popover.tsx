@@ -209,7 +209,7 @@ export default function NotificationsPopover() {
         <>
             <IconButton
                 ref={anchorRef}
-                size="small"
+                size="large"
                 color={open ? "primary" : "default"}
                 onClick={handleOpen}
                 sx={{

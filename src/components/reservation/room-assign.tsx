@@ -98,7 +98,7 @@ const RoomAssign = ({
                 </Grid>
 
                 <LoadingButton
-                    size="small"
+                    size="large"
                     variant="contained"
                     loading={loading}
                     className="mt-3"
@@ -110,7 +110,7 @@ const RoomAssign = ({
                 </LoadingButton>
 
                 <LoadingButton
-                    size="small"
+                    size="large"
                     type="submit"
                     variant="contained"
                     loading={loading}
