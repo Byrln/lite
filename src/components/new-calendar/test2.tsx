@@ -33,6 +33,7 @@ import Search from "./search";
 import CustomSearch from "components/common/custom-search";
 import ReservationEdit from "components/front-office/reservation-list/edit";
 import RoomMoveForm from "components/reservation/room-move";
+import AmendStayForm from "components/reservation/amend-stay";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [state, dispatch]: any = useAppState();
@@ -292,25 +293,21 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             }
             const newEventObject = {
                 title: "New Event",
-                start: info.event._instance.range.start,
-                end: info.event._instance.range.end,
-                roomTypeID: Number(info.event._def.extendedProps.roomTypeID),
-                roomID: Number(info.event._def.resourceIds[0]),
+                ArrivalDate: info.event._instance.range.start,
+                DepartureDate: info.event._instance.range.end,
+                RoomTypeID: Number(info.event._def.extendedProps.roomTypeID),
+                RoomID: Number(info.event._def.resourceIds[0]),
+                TransactionID: info.event._def.extendedProps.transactionID,
             };
 
             handleModal(
                 true,
-                `New Reservation`,
-                <NewReservation
-                    dateStart={newEventObject.start}
-                    dateEnd={newEventObject.end}
-                    // // @ts-ignore
-                    roomType={newEventObject.roomTypeID}
-                    // // @ts-ignore
-                    room={newEventObject.roomID}
-                />,
-                null,
-                "large"
+                "Amend Stay",
+                <AmendStayForm
+                    transactionInfo={newEventObject}
+                    reservation={newEventObject}
+                    additionalMutateUrl="/api/Reservation/List"
+                />
             );
         }
     };
@@ -482,6 +479,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             dropInfo: any,
                             draggedEvent: any
                         ) {
+                            console.log("dropw", dropInfo);
+                            console.log("draggedEvent", draggedEvent);
+
                             if (
                                 areDatesOnSameDay(
                                     dropInfo.start,
