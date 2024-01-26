@@ -24,7 +24,9 @@ const NewEdit = ({
     BaseChild,
     MaxAdult,
     MaxChild,
+    workingDate,
 }: any) => {
+    console.log("workingDate", workingDate);
     const {
         register,
         reset,
@@ -58,8 +60,6 @@ const NewEdit = ({
         reset({
             TransactionDetail: [data],
         });
-
-        console.log("data", data);
     };
 
     return (
@@ -100,6 +100,7 @@ const NewEdit = ({
                                 BaseChild={BaseChild}
                                 MaxAdult={MaxAdult}
                                 MaxChild={MaxChild}
+                                workingDate={workingDate}
                             />
                         </CardContent>
                         {index != 0 && (

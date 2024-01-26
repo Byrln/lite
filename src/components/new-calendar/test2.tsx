@@ -359,6 +359,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         BaseChild={newEventObject.BaseChild}
                         MaxAdult={newEventObject.MaxAdult}
                         MaxChild={newEventObject.MaxChild}
+                        workingDate={workingDate}
                     />,
                     null,
                     "large"
@@ -378,7 +379,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             handleModal(
                                 true,
                                 `Захиалга нэмэх`,
-                                <NewReservation />,
+                                <NewReservation workingDate={workingDate} />,
                                 null,
                                 "large"
                             );

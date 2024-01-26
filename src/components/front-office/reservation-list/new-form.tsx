@@ -39,6 +39,7 @@ const NewEdit = ({
     BaseChild,
     MaxAdult,
     MaxChild,
+    workingDate,
 }: any) => {
     const [RoomTypeID, setRoomTypeID]: any = useState("");
     const [RoomType, setRoomType]: any = useState("");
@@ -239,6 +240,7 @@ const NewEdit = ({
                         <DatePicker
                             label="Эхлэх огноо"
                             value={value}
+                            minDate={new Date(workingDate)}
                             onChange={(value) => (
                                 onChange(
                                     moment(
@@ -285,6 +287,7 @@ const NewEdit = ({
                         <DatePicker
                             label="Гарах огноо"
                             value={value}
+                            minDate={new Date(workingDate)}
                             onChange={(value) => (
                                 onChange(
                                     moment(
