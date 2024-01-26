@@ -480,9 +480,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             dropInfo: any,
                             draggedEvent: any
                         ) {
-                            console.log("dropw", dropInfo);
-                            console.log("draggedEvent", draggedEvent);
-
                             if (
                                 areDatesOnSameDay(
                                     dropInfo.start,

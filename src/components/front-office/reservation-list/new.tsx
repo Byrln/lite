@@ -26,7 +26,6 @@ const NewEdit = ({
     MaxChild,
     workingDate,
 }: any) => {
-    console.log("workingDate", workingDate);
     const {
         register,
         reset,
