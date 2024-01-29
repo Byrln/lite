@@ -43,6 +43,7 @@ const NewEdit = ({
                           DepartureDate: dateEnd,
                           RoomTypeID: roomType,
                           RoomID: room,
+                          ReservationTypeID: 1,
                       }
                     : {},
             ],

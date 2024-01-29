@@ -72,7 +72,7 @@ const VoidTransactionForm = ({
                 </Grid>
 
                 <LoadingButton
-                    size="large"
+                    size="small"
                     type="submit"
                     variant="contained"
                     loading={loading}

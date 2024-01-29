@@ -11,7 +11,7 @@ export default function AuthSocial() {
             <Stack direction="row" spacing={2}>
                 <Button
                     fullWidth
-                    size="large"
+                    size="small"
                     color="inherit"
                     variant="outlined"
                 >
@@ -20,7 +20,7 @@ export default function AuthSocial() {
 
                 <Button
                     fullWidth
-                    size="large"
+                    size="small"
                     color="inherit"
                     variant="outlined"
                 >
@@ -29,7 +29,7 @@ export default function AuthSocial() {
 
                 <Button
                     fullWidth
-                    size="large"
+                    size="small"
                     color="inherit"
                     variant="outlined"
                 >

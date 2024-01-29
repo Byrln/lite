@@ -114,7 +114,6 @@ const CurrencyAmount = ({
                         nameKey={`TransactionDetail.${id}.CurrencyID`}
                         entity={Currency}
                         setEntity={setCurrency}
-                        disabled={true}
                     />
                 </Grid>
             )}

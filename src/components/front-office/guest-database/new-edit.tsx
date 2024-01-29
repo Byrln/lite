@@ -78,6 +78,17 @@ const NewEdit = () => {
                     </TabList>
                 </Box>
                 <TabPanel value="1">
+                    <img //@ts-ignore
+                        src={`https://pmsapi.horecasoft.mn/images/guestpictures/hotel_${localStorage.getItem(
+                            "hotelId"
+                        )}/${state.editId}.jpeg`}
+                        alt={state.editId}
+                        style={{
+                            height: "100px",
+                            objectFit: "cover",
+                        }}
+                        className="mb-3"
+                    />
                     <NewEditForm
                         api={GuestdatabaseAPI}
                         listUrl={listUrl}

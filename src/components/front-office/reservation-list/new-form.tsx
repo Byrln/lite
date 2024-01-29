@@ -54,7 +54,7 @@ const NewEdit = ({
     const [BreakfastIncluded, setBreakfastIncluded]: any = useState("");
     const [selectedGuest, setSelectedGuest]: any = useState(null);
     const [PaymentMethodID, setPaymentMethodID]: any = useState(null);
-    const [ReservationTypeID, setReservationTypeID]: any = useState("");
+    const [ReservationTypeID, setReservationTypeID]: any = useState(1);
     const [selectedAdult, setSelectedAdult]: any = useState(1);
     const [selectedChild, setSelectedChild]: any = useState(0);
 
