@@ -591,6 +591,8 @@ const NewEdit = ({
                         Controller={Controller}
                         selectedAdult={selectedAdult}
                         selectedChild={selectedChild}
+                        rateCurrencyID={Rate.CurrencyID}
+                        getValues={getValues}
                     />
 
                     {id == 0 ? (

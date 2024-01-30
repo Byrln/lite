@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
-import { Grid, TextField, FormControlLabel, Checkbox } from "@mui/material";
+import {
+    Grid,
+    TextField,
+    FormControlLabel,
+    Checkbox,
+    InputAdornment,
+} from "@mui/material";
 import CurrencySelect from "../select/currency";
 import { RateAPI } from "../../lib/api/rate";
+import { CurrenctAPI } from "../../lib/api/currency";
 import { dateToCustomFormat } from "../../lib/utils/format-time";
 
 const CurrencyAmount = ({
@@ -24,11 +31,17 @@ const CurrencyAmount = ({
     Controller,
     selectedAdult,
     selectedChild,
+    rateCurrencyID,
+    getValues,
 }: any) => {
+    console.log("rateCurrencyID", rateCurrencyID);
     const [isCurrencyAmountEditable, setIsCurrencyAmountEditable]: any =
         useState(false);
 
+    const [defaultCurrencyAmount, setDefaultCurrencyAmount]: any = useState();
+
     const calculateAmount = async () => {
+        console.log("Currency", Currency);
         if (!(RoomTypeID && RateTypeID && ArrivalDate)) {
             return;
         }
@@ -67,6 +80,7 @@ const CurrencyAmount = ({
             } else {
                 return;
             }
+            setDefaultCurrencyAmount(amount);
             setCurrencyAmount(amount);
 
             resetField(`TransactionDetail.${id}.CurrencyID`, {
@@ -91,6 +105,35 @@ const CurrencyAmount = ({
         selectedAdult,
         selectedChild,
     ]);
+
+    const newCurrencyAmount = async () => {
+        if (Currency.CurrencyID) {
+            var values = {
+                CurrencyID: Currency.CurrencyID,
+            };
+
+            try {
+                var exchangeRate = await CurrenctAPI.exchangeRate(values);
+
+                resetField(`TransactionDetail.${id}.TestCurrencyAmount`, {
+                    defaultValue:
+                        defaultCurrencyAmount /
+                        exchangeRate[0].TargetCurrencyRate1,
+                });
+
+                setCurrencyAmount(
+                    defaultCurrencyAmount / exchangeRate[0].TargetCurrencyRate1
+                );
+            } catch (exp) {}
+            console.log("Currency", Currency.CurrencyID);
+            console.log("rateCurrencyID", rateCurrencyID);
+        }
+    };
+
+    useEffect(() => {
+        newCurrencyAmount();
+        // calculateAmount();
+    }, [Currency]);
 
     // useEffect(() => {
     //     if (isCurrencyAmountEditable == true) {
@@ -117,6 +160,27 @@ const CurrencyAmount = ({
                     />
                 </Grid>
             )}
+            {Currency.CurrencyID != rateCurrencyID && (
+                <Grid item xs={6} sm={2}>
+                    <TextField
+                        id="TestCurrencyAmount"
+                        label="CurrencyAmount"
+                        type="number"
+                        disabled={true}
+                        {...register(
+                            `TransactionDetail.${id}.TestCurrencyAmount`
+                        )}
+                        margin="dense"
+                        error={errors.TestCurrencyAmount?.message}
+                        helperText={errors.TestCurrencyAmount?.message}
+                        InputLabelProps={{
+                            shrink: currencyAmount,
+                        }}
+                        size="small"
+                        style={{ width: "100%" }}
+                    />
+                </Grid>
+            )}
 
             <Grid item xs={6} sm={2}>
                 <TextField
@@ -130,6 +194,11 @@ const CurrencyAmount = ({
                     helperText={errors.CurrencyAmount?.message}
                     InputLabelProps={{
                         shrink: currencyAmount,
+                    }}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">₮</InputAdornment>
+                        ),
                     }}
                     size="small"
                     style={{ width: "100%" }}

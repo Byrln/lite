@@ -21,4 +21,16 @@ export const CurrencySWR = () => {
 
 export const CurrenctAPI = {
     get: (id: any) => axios.get(`${urlPrefix}/${id}`),
+
+    exchangeRate: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/ExchangeRate`,
+            values
+        );
+        if (status != 200) {
+            return [];
+        }
+        var list = data.JsonData;
+        return list;
+    },
 };
