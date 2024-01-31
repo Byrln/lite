@@ -25,7 +25,7 @@ export const WorkOrderSWR = (search: any) => {
 export const WorkOrderAPI = {
     get: async (id: any) => {
         const values = {
-            WorkOrderID: id,
+            WorkOrderRegisterID: id,
         };
 
         const res = await axios.post(listUrl, values);

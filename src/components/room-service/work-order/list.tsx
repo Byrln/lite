@@ -86,8 +86,8 @@ const WorkOrderList = ({ title }: any) => {
                 api={WorkOrderAPI}
                 hasNew={true}
                 hasUpdate={true}
-                hasDelete={true}
-                id="WorkOrderID"
+                hasDelete={false}
+                id="WorkOrderRegisterID"
                 listUrl={listUrl}
                 modalTitle={title}
                 modalContent={<NewEdit />}
@@ -108,7 +108,7 @@ const WorkOrderList = ({ title }: any) => {
                         />
                     </CustomSearch>
                 }
-                datagrid={false}
+                datagrid={true}
             />
         </>
     );

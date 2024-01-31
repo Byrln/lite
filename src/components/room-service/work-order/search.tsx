@@ -4,6 +4,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 
 import RoomSelect from "components/select/room";
+import ReferenceSelect from "components/select/reference";
+import UserSelect from "components/select/user";
 
 const Search = ({ register, errors, control, reset }: any) => {
     return (
@@ -14,11 +16,42 @@ const Search = ({ register, errors, control, reset }: any) => {
                     errors={errors}
                     baseStay={{
                         TransactionID: 0,
-                        roomType: null,
-                        dateStart: null,
-                        dateEnd: null,
-                        nights: 0,
+                        roomType: "all",
+                        dateStart: new Date(),
+                        dateEnd: new Date(),
+                        nights: 1,
                     }}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <ReferenceSelect
+                    register={register}
+                    errors={errors}
+                    type="WorkOrderPriority"
+                    label="Чухал байдал"
+                    optionValue="WorkOrderPriorityID"
+                    optionLabel="Description"
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <UserSelect
+                    register={register}
+                    errors={errors}
+                    IsHouseKeeper={true}
+                    nameKey={"AssignedUserID"}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <ReferenceSelect
+                    register={register}
+                    errors={errors}
+                    type="WorkOrderStatus"
+                    label="Төлөв"
+                    optionValue="WorkOrderStatusID"
+                    optionLabel="Description"
                 />
             </Grid>
         </Grid>

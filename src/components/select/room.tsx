@@ -55,11 +55,15 @@ const RoomSelect = ({
         }
         var values = {
             TransactionID: baseStay.TransactionID,
-            RoomTypeID: baseStay.roomType?.RoomTypeID,
+            RoomTypeID:
+                baseStay.roomType?.RoomTypeID == "all"
+                    ? 0
+                    : baseStay.roomType?.RoomTypeID,
             StartDate: dateToSimpleFormat(baseStay.dateStart),
             EndDate: dateToSimpleFormat(baseStay.dateEnd),
         };
         var d = await RoomAPI.listAvailable(values);
+        console.log("da:", d);
         setData(d);
     };
 
@@ -109,15 +113,23 @@ const RoomSelect = ({
                 eventRoomChange(evt.target.value);
             }}
             value={baseStay?.room?.RoomID}
+            InputLabelProps={{
+                shrink: baseStay?.room?.RoomID,
+            }}
+            shrink
             size="small"
         >
             {data.map((room: any) => {
-                return (
+                return baseStay.roomType != "all" ? (
                     baseStay?.roomType?.RoomTypeID === room.RoomTypeID && (
                         <MenuItem key={room.RoomID} value={room.RoomID}>
                             {`${room.RoomFullName}`}
                         </MenuItem>
                     )
+                ) : (
+                    <MenuItem key={room.RoomID} value={room.RoomID}>
+                        {`${room.RoomFullName}`}
+                    </MenuItem>
                 );
             })}
         </TextField>

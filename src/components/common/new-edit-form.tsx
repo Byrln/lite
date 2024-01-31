@@ -30,7 +30,7 @@ const NewEditForm = ({
     const { handleModal }: any = useContext(ModalContext);
     const [loadingData, setLoadingData] = useState(false);
     const [loading, setLoading] = useState(false);
-    console.log("state.editId", state.editId);
+
     useEffect(() => {
         const fetchDatas = async () => {
             if (state.editId) {
