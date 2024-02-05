@@ -16,7 +16,6 @@ const RoomSelect = ({
     customRegisterName,
     groupIndex,
 }: any) => {
-    console.log("baseStay", baseStay);
     // const { data, error } = RoomSWR();
     const [data, setData]: any = useState([]);
 
@@ -63,7 +62,6 @@ const RoomSelect = ({
             EndDate: dateToSimpleFormat(baseStay.dateEnd),
         };
         var d = await RoomAPI.listAvailable(values);
-        console.log("da:", d);
         setData(d);
     };
 

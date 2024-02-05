@@ -128,11 +128,11 @@ const TimelineTable = ({ props, workingDate }: any) => {
         search.CurrDate ? search.CurrDate : workingDate,
         dayCount
     );
-    const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR(
+    const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR({
         //@ts-ignore
-        dateToCustomFormat(timeStart, "yyyy MMM dd"),
-        dateToCustomFormat(timeEnd, "yyyy MMM dd")
-    );
+        StartDate: dateToCustomFormat(timeStart, "yyyy MMM dd"),
+        EndDate: dateToCustomFormat(timeEnd, "yyyy MMM dd"),
+    });
 
     const [excelData, setExcelData] = useState({
         records: [] as any,

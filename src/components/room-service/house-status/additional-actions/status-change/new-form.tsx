@@ -44,8 +44,6 @@ const VoidTransactionForm = ({
         try {
             const res = await HouseKeepingAPI.update(values);
 
-            await mutate(customMutateUrl ? customMutateUrl : listUrl);
-
             toast("Амжилттай.");
 
             setLoading(false);
@@ -53,6 +51,8 @@ const VoidTransactionForm = ({
         } catch (error) {
             setLoading(false);
             handleModal();
+        } finally {
+            await mutate(customMutateUrl ? customMutateUrl : listUrl);
         }
     };
 

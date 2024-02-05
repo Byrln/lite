@@ -1,12 +1,17 @@
+import { useContext } from "react";
 import { Box } from "@mui/material";
+import Button from "@mui/material/Button";
 
 import CustomTable from "components/common/custom-table";
 import { RoomChargeSWR } from "lib/api/charge";
+import { ModalContext } from "lib/context/modal";
+import UpdateRateType from "./update-rate-type";
+import UpdatePox from "./update-pox";
+import UpdateRate from "./update-rate";
 
-const RoomCharge = ({ TransactionID }: any) => {
+const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
     const { data, error } = RoomChargeSWR(TransactionID);
-
-    console.log("RoomCharge", data);
 
     const columns = [
         {
@@ -53,6 +58,70 @@ const RoomCharge = ({ TransactionID }: any) => {
             title: "Хэрэглэгч",
             key: "UserName",
             dataIndex: "UserName",
+        },
+        {
+            title: "Нэмэлт үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            width: 250,
+            __ignore__: true,
+            excelRenderPass: true,
+            render: (id: any, value: any, element: any, dataIndex: any) => {
+                return (
+                    <>
+                        <Button
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Тариф өөрчлөх`,
+                                    <UpdateRateType
+                                        element={element}
+                                        RoomTypeID={RoomTypeID}
+                                    />,
+                                    null,
+                                    "large"
+                                );
+                            }}
+                        >
+                            Тариф өөрчлөх
+                        </Button>
+
+                        <Button
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Хүний тоо өөрчлөх`,
+                                    <UpdatePox
+                                        element={element}
+                                        RoomTypeID={RoomTypeID}
+                                    />,
+                                    null,
+                                    "large"
+                                );
+                            }}
+                        >
+                            Хүний тоо өөрчлөх
+                        </Button>
+
+                        <Button
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Үнэ өөрчлөх`,
+                                    <UpdateRate
+                                        element={element}
+                                        RoomTypeID={RoomTypeID}
+                                    />,
+                                    null,
+                                    "large"
+                                );
+                            }}
+                        >
+                            Үнэ өөрчлөх
+                        </Button>
+                    </>
+                );
+            },
         },
     ];
 

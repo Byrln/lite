@@ -276,15 +276,6 @@ const TransactionEdit = () => {
                             <TabPanel value={value} index={1}>
                                 {/* <Grid container spacing={2}>
                                     <Grid item xs={6}>
-                                        <div>Date</div>
-                                        <div>Rate Type</div>
-                                        <div>Pax (A / C)</div>
-                                        <div>Override Rate</div>
-                                        <div>Rate</div>
-                                        <div>Apply to Selected Date</div>
-                                        <div>Apply to Whole Stay</div>
-                                    </Grid>
-                                    <Grid item xs={6}>
                                     <RoomCharge
                                             TransactionID={
                                                 transaction.TransactionID
@@ -294,6 +285,7 @@ const TransactionEdit = () => {
                                 </Grid> */}
                                 <RoomCharge
                                     TransactionID={transaction.TransactionID}
+                                    RoomTypeID={transaction.RoomTypeID}
                                 />
                             </TabPanel>
 

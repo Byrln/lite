@@ -22,10 +22,13 @@ export const ChargeSummarySWR = (TransactionID: any) => {
     return useSWR(`${urlPrefix}/Summary`, fetcher);
 };
 
-export const RoomChargeSWR = (TransactionID: any) => {
+export const RoomChargeSWR = (TransactionID: any, RoomChargeID = null) => {
     const fetcher = async (url: any) =>
         await axios
-            .post(`${urlPrefix}/RoomCharge`, { TransactionID: TransactionID })
+            .post(`${urlPrefix}/RoomCharge`, {
+                TransactionID: TransactionID,
+                RoomChargeID: RoomChargeID,
+            })
             .then((res: any) => res.data.JsonData);
 
     return useSWR(`${urlPrefix}/RoomCharge`, fetcher);
@@ -56,7 +59,6 @@ export const ChargeAPI = {
     },
 
     send: async (values: any) => {
-        console.log("valuestest", values);
         const { data, status } = await axios.post(
             `${urlPrefix}/PostPendingCharge`,
             values
@@ -104,6 +106,42 @@ export const ChargeAPI = {
 
         const { data, status } = await axios.post(
             `${urlPrefix}/${apiUrl}`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    updateRateType: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/UpdateRateType`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    UpdatePax: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/UpdatePax`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    UpdateRate: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/UpdateRate`,
             values
         );
 

@@ -50,10 +50,10 @@ const RoomRateTypeSelect = ({
         }
         if (rate) {
             setRate(rate);
-            if (rate.BreakfastIncluded) {
+            if (rate.BreakfastIncluded && setBreakfastIncluded) {
                 setBreakfastIncluded(rate.BreakfastIncluded);
             }
-            if (rate.TaxIncluded) {
+            if (rate.TaxIncluded && setTaxIncluded) {
                 setTaxIncluded(rate.TaxIncluded);
             }
         }

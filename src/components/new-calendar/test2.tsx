@@ -92,11 +92,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         RoomTypeID: searchRoomTypeID,
     });
     const { data: rooms, error: roomSwrError } = RoomSWR({});
-    const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR(
+    const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR({
         //@ts-ignore
-        dateToCustomFormat(timeStart, "yyyy MMM dd"),
-        dateToCustomFormat(timeEnd, "yyyy MMM dd")
-    );
+        StartDate: dateToCustomFormat(timeStart, "yyyy MMM dd"),
+        EndDate: dateToCustomFormat(timeEnd, "yyyy MMM dd"),
+    });
     const [resources, setResources] = useState<any>(null);
     const [itemData, setItemData] = useState<any>(null);
     const [rerenderKey, setRerenderKey] = useState(0);

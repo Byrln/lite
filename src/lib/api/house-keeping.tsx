@@ -43,6 +43,9 @@ export const HouseKeepingAPI = {
     },
 
     update: async (values: any) => {
+        if (!values.Description) {
+            values.Description = "";
+        }
         const { data, status } = await axios.post(
             `${urlPrefix}/Update`,
             values

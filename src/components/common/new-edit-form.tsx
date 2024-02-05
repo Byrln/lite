@@ -98,13 +98,13 @@ const NewEditForm = ({
                 await api?.new(values);
             }
 
-            listUrl && (await mutate(listUrl));
-
             if (!handleModalNotAffected) {
                 handleModal();
             }
             toast("Амжилттай.");
         } finally {
+            listUrl && (await mutate(listUrl));
+
             setLoading(false);
         }
     };

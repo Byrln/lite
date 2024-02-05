@@ -5,16 +5,22 @@ import { date } from "yup/lib/locale";
 const urlPrefix = "/api/RoomBlock";
 export const listUrl = `${urlPrefix}/List`;
 
-export const RoomBlockSWR = (startDate: any, endDate: any) => {
-    const values = {
-        RoomBlockID: 0,
-        StartDate: startDate,
-        EndDate: endDate,
-        RoomID: 0,
-    };
+export const RoomBlockSWR = (search: any) => {
+    if (!search.RoomBlockID) {
+        search.RoomBlockID = 0;
+    }
+    if (!search.RoomID) {
+        search.RoomID = 0;
+    }
+    // const values = {
+    //     RoomBlockID: 0,
+    //     StartDate: startDate,
+    //     EndDate: endDate,
+    //     RoomID: 0,
+    // };
 
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => {
+        await axios.post(url, search).then((res: any) => {
             let list = res.data.JsonData;
             return list;
         });
