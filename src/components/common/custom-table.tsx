@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
+import Checkbox from "@mui/material/Checkbox";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -396,6 +397,19 @@ const CustomTable = ({
                                                                 : ""
                                                         }
                                                     >
+                                                        {column.withCheckBox && (
+                                                            <Checkbox
+                                                                onChange={(
+                                                                    e: any
+                                                                ) => {
+                                                                    column.onChange
+                                                                        ? column.onChange(
+                                                                              e
+                                                                          )
+                                                                        : null;
+                                                                }}
+                                                            />
+                                                        )}{" "}
                                                         {column.title}
                                                     </TableCell>
                                                 )

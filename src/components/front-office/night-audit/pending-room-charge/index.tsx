@@ -22,7 +22,8 @@ const PendingRoomChargeList = ({
     const [entity, setEntity] = useState<any>({});
     const [loading, setLoading] = useState(false);
     const [allCheck, setAllCheck] = useState<any>(false);
-    console.log("entity", entity);
+    const [rerenderKey, setRerenderKey] = useState(0);
+
     useEffect(() => {
         if (data) {
             setEntity(data);
@@ -32,6 +33,16 @@ const PendingRoomChargeList = ({
             setPendingPendingRoomChargeCompleted(true);
         }
     }, [data]);
+
+    const onCheckboxChange = (e: any) => {
+        let tempEntity = [...entity];
+        tempEntity.forEach(
+            (element: any) => (element.isChecked = e.target.checked)
+        );
+        setEntity(tempEntity);
+        setAllCheck(e.target.checked);
+        setRerenderKey((prevKey) => prevKey + 1);
+    };
 
     const columns = [
         {
@@ -63,6 +74,8 @@ const PendingRoomChargeList = ({
             title: "Тариф",
             key: "BaseRate",
             dataIndex: "BaseRate",
+            withCheckBox: true,
+            onChange: onCheckboxChange,
             render: function render(
                 id: any,
                 value: any,
@@ -71,6 +84,7 @@ const PendingRoomChargeList = ({
             ) {
                 return (
                     <Checkbox
+                        key={rerenderKey}
                         checked={
                             entity &&
                             entity[dataIndex] &&
@@ -119,6 +133,7 @@ const PendingRoomChargeList = ({
         <>
             {entity && (
                 <CustomTable
+                    // key={rerenderKey}
                     columns={columns}
                     data={data}
                     error={error}
@@ -138,31 +153,6 @@ const PendingRoomChargeList = ({
             )}
 
             <Grid container spacing={1}>
-                <Grid item xs={5}>
-                    {" "}
-                    {/* <FormControlLabel
-                        control={ */}
-                    {/* <Checkbox
-                        checked={allCheck}
-                        onChange={(e: any) => {
-                            let tempEntity = [...entity];
-                            console.log("tempEntity", tempEntity);
-
-                            tempEntity.map(
-                                (element: any) => (
-                                    console.log("element", element),
-                                    (element.isChecked = e.target.checked)
-                                )
-                            );
-                            console.log("newtempEntity", tempEntity);
-                            setEntity(tempEntity);
-                            setAllCheck(e.target.checked);
-                        }}
-                    /> */}
-                    {/* }
-                        label="Бүгдийг сонгох"
-                    /> */}
-                </Grid>
                 <Grid item xs={2}>
                     <LoadingButton
                         loading={loading}
