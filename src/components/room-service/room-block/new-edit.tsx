@@ -97,7 +97,6 @@ const NewEdit = () => {
     }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);
 
     const customSubmit = async (values: any) => {
-        console.log("values", values);
         try {
             values.RoomID.forEach((room: any, index: any) => {
                 if (room == true) {
@@ -108,9 +107,6 @@ const NewEdit = () => {
                         ReasonID: values.ReasonID,
                     };
                     RoomBlockAPI.new(tempValues);
-                    console.log("room", room);
-                    console.log("index", index);
-                    console.log("tempValues", tempValues);
                 }
             });
 
