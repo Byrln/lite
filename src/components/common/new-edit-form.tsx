@@ -25,6 +25,7 @@ const NewEditForm = ({
     customResetEvent,
     customModificationBeforeSubmit,
     additionalButtons,
+    customSubmit,
 }: any) => {
     const [state]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
@@ -92,14 +93,20 @@ const NewEditForm = ({
                 customModificationBeforeSubmit(values);
             }
 
-            if (state.editId && !stateEditIdNotAffected) {
-                await api?.update(values);
-            } else {
-                await api?.new(values);
+            if (!customSubmit) {
+                if (state.editId && !stateEditIdNotAffected) {
+                    await api?.update(values);
+                } else {
+                    await api?.new(values);
+                }
+            }
+
+            if (customSubmit) {
+                customSubmit(values);
             }
 
             if (!handleModalNotAffected) {
-                handleModal();
+                // handleModal();
             }
             toast("Амжилттай.");
         } finally {
