@@ -50,6 +50,7 @@ const CustomTable = ({
     search,
     pagination = true,
     datagrid = true,
+    additionalButtons,
 }: any) => {
     const [state, dispatch]: any = useAppState();
     const [height, setHeight] = useState<any>(null);
@@ -311,7 +312,6 @@ const CustomTable = ({
                                 Нэмэх
                             </Button>
                         )}
-
                         {hasPrint && (
                             <Button
                                 variant="outlined"
@@ -322,7 +322,6 @@ const CustomTable = ({
                                 Хэвлэх
                             </Button>
                         )}
-
                         {hasExcel && (
                             <Button
                                 variant="outlined"
@@ -333,7 +332,7 @@ const CustomTable = ({
                                 Excel татах
                             </Button>
                         )}
-
+                         {additionalButtons && additionalButtons}
                         {search && search}
                     </Box>
                     <Divider className="mt-3 mb-3" />

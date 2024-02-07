@@ -24,6 +24,8 @@ import VoidTransactionForm from "components/reservation/void-transaction";
 import CancelReservationForm from "components/reservation/cancel-reservation";
 import RoomMoveForm from "components/reservation/room-move";
 import RoomAssign from "components/reservation/room-assign";
+import AuditTrail from "components/reservation/audit-trail";
+
 import { listUrl } from "lib/api/front-office";
 
 const buttonStyle = {
@@ -276,8 +278,23 @@ const ReservationNav = ({
                 </Button>
             )}
             {reservation.AuditTrail && (
-                <Button variant={"text"} size="small" sx={buttonStyle}>
-                    AuditTrail
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                    onClick={(evt: any) => {
+                        handleModal(
+                            true,
+                            "Хяналт",
+                            <AuditTrail
+                                TransactionID={reservation.TransactionID}
+                            />,
+                            null,
+                            "large"
+                        );
+                    }}
+                >
+                    Хяналт
                 </Button>
             )}
         </Box>

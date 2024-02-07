@@ -21,7 +21,6 @@ const PendingRoomChargeList = ({
     const { data, error } = PendingRoomChargeSWR();
     const [entity, setEntity] = useState<any>({});
     const [loading, setLoading] = useState(false);
-    const [allCheck, setAllCheck] = useState<any>(false);
     const [rerenderKey, setRerenderKey] = useState(0);
 
     useEffect(() => {
@@ -40,11 +39,15 @@ const PendingRoomChargeList = ({
             (element: any) => (element.isChecked = e.target.checked)
         );
         setEntity(tempEntity);
-        setAllCheck(e.target.checked);
         setRerenderKey((prevKey) => prevKey + 1);
     };
 
     const columns = [
+        {
+            title: "№",
+            key: "test",
+            dataIndex: "test",
+        },
         {
             title: "Зочин",
             key: "GuestName",

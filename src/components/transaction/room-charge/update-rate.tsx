@@ -40,6 +40,9 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
         try {
             values.Override = true;
             values.RoomChargeID = element.RoomChargeID;
+            if (values.ApplytoAll == true) {
+                delete values.StayDate;
+            }
 
             await ChargeAPI?.UpdateRate(values);
 

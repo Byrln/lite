@@ -150,4 +150,15 @@ export const ChargeAPI = {
             status,
         };
     },
+
+    summary: async (TransactionID: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/Summary`, {
+            TransactionID: TransactionID,
+        });
+
+        return {
+            data,
+            status,
+        };
+    },
 };

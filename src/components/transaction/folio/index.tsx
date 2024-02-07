@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 
 import CustomTable from "components/common/custom-table";
-import { FolioItemSWR } from "lib/api/folio";
+import { FolioItemSWR, FolioAPI, listUrl } from "lib/api/folio";
+import NewEdit from "./new-edit";
 
 const RoomCharge = ({ FolioID }: any) => {
     const { data, error } = FolioItemSWR(FolioID);
@@ -58,7 +59,11 @@ const RoomCharge = ({ FolioID }: any) => {
                 datagrid={false}
                 hasPrint={false}
                 hasExcel={false}
+                hasNew={true}
                 id="RoomChargeID"
+                modalContent={<NewEdit />}
+                api={FolioAPI}
+                listUrl={listUrl}
             />
         </Box>
     );

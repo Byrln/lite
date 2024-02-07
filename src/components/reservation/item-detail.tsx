@@ -1,6 +1,6 @@
 import { ReservationAPI } from "lib/api/reservation";
 import { useState, useEffect } from "react";
-import { Grid, Box, Paper, Typography, Divider } from "@mui/material";
+import { Grid, Box, Paper, Typography, Divider, Button } from "@mui/material";
 import { fToCustom, countNights } from "lib/utils/format-time";
 import ReservationNav from "./_reservation-nav";
 import Table from "@mui/material/Table";
@@ -41,6 +41,7 @@ const ItemDetail = ({
     reservation,
     reloadDetailInfo,
     additionalMutateUrl,
+    summary,
 }: any) => {
     return (
         <>
@@ -174,6 +175,16 @@ const ItemDetail = ({
                                     </TableRow>
                                 </TableBody>
                             </Table>
+                            <Button
+                                variant={"text"}
+                                size="small"
+                                className="mr-3"
+                            >
+                                Батал.мэйл явуулах
+                            </Button>
+                            <Button variant={"text"} size="small">
+                                Бүрт.хэвлэх
+                            </Button>
                         </Grid>
 
                         <Grid
@@ -195,65 +206,73 @@ const ItemDetail = ({
                                 <TableBody>
                                     <TableRow>
                                         <TableCell>
-                                            <b>Room Charge</b>
+                                            <b>Өрөөний тооцоо</b>
                                         </TableCell>
                                         <TableCell>
-                                            {reservation.FolioNo}
+                                            {summary.RoomCharges}
                                         </TableCell>
                                     </TableRow>
 
                                     <TableRow>
                                         <TableCell>
-                                            <b>Extra Charge</b>
+                                            <b>Нэмэлт үйлчилгээ</b>
                                         </TableCell>
                                         <TableCell>
-                                            {reservation.VoucherNo}
+                                            {summary.ExtraCharges}
                                         </TableCell>
                                     </TableRow>
 
                                     <TableRow>
                                         <TableCell sx={{ textAlign: "right" }}>
-                                            Mini bar
+                                            Мини бар
                                         </TableCell>
                                         <TableCell>
-                                            {reservation.VoucherNo}
+                                            {summary.MiniBarCharges}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell sx={{ textAlign: "right" }}>
-                                            Restaurant
+                                            Ресторан
                                         </TableCell>
                                         <TableCell>
-                                            {reservation.VoucherNo}
+                                            {summary.RestaurantCharges}
                                         </TableCell>
                                     </TableRow>
 
                                     <TableRow>
                                         <TableCell>
-                                            <b>Total Amount</b>
+                                            <b>Нийт дүн</b>
                                         </TableCell>
                                         <TableCell>
-                                            {reservation.RoomFullNo}
+                                            {summary.TotalCharges}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>
-                                            <b>Deposit</b>
+                                            <b>Урьдчилгаа</b>
                                         </TableCell>
                                         <TableCell>
-                                            {reservation.RoomFullNo}
+                                            {summary.TotalPayments}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>
-                                            <b>Balance</b>
+                                            <b>Үлдэгдэл</b>
                                         </TableCell>
-                                        <TableCell>
-                                            {reservation.RoomFullNo}
-                                        </TableCell>
+                                        <TableCell>{summary.Balance}</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
+                            <Button
+                                variant={"text"}
+                                size="small"
+                                className="mr-3"
+                            >
+                                Нэх.хэвлэх
+                            </Button>
+                            <Button variant={"text"} size="small">
+                                Е-Баримт хэвлэх
+                            </Button>
                         </Grid>
                         <Grid
                             item

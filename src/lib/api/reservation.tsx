@@ -18,6 +18,15 @@ export const ReservationSWR = (search: any) => {
     return useSWR(listUrl, fetcher);
 };
 
+export const ReservationLogSWR = (id: any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(url, { TransactionID: id })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Log`, fetcher);
+};
+
 export const DepartureSWR = (values: any) => {
     // const values = {
     //     ReservationTypeID: ReservationTypeID,
@@ -81,7 +90,6 @@ export const PendingDueOutSWR = () => {
 
 export const ReservationAPI = {
     get: async (id: any) => {
-        console.log("id", id);
         const values = {
             CustomerID: 0,
             ReservationTypeID: 0,
@@ -95,7 +103,7 @@ export const ReservationAPI = {
         const res = await axios.post(listUrl, values);
         var list = res.data.JsonData;
         var item;
-
+        console.log("list", list);
         if (list.length === 1) {
             item = list[0];
         } else {

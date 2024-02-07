@@ -14,6 +14,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 import NewEditForm from "components/common/new-edit-form";
 import { FrontOfficeAPI, listUrl } from "lib/api/front-office";
+import { ChargeAPI } from "lib/api/charge";
+
 import { useAppState } from "lib/context/app";
 import { dateStringToObj } from "lib/utils/helpers";
 import NewForm from "./new-form";
@@ -25,24 +27,32 @@ const validationSchema = yup.object().shape({
 
 const NewEdit = ({ transactionID, additionalMutateUrl }: any) => {
     const [reservation, setReservation]: any = useState(null);
+    const [summary, setSummary]: any = useState(null);
 
     const reloadDetailInfo = async () => {
         var res = await FrontOfficeAPI.transactionInfo(transactionID);
 
         setReservation(res);
     };
+    const reloadReservationData = async () => {
+        var res = await ChargeAPI.summary(transactionID);
+
+        setSummary(res.data.JsonData[0]);
+    };
 
     useEffect(() => {
         reloadDetailInfo();
+        reloadReservationData();
     }, [transactionID]);
 
     return (
         <div>
-            {reservation && (
+            {reservation && summary && (
                 <ReservationDetail
                     reservation={reservation}
                     reloadDetailInfo={reloadDetailInfo}
                     additionalMutateUrl={additionalMutateUrl}
+                    summary={summary}
                 />
             )}
         </div>

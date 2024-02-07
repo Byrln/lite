@@ -3,47 +3,44 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import {
+    Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    Button,
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import Stack from "@mui/material/Stack";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { mutate } from "swr";
+import { toast } from "react-toastify";
 
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import { RoomBlockSWR, RoomBlockAPI, listUrl } from "lib/api/room-block";
 import NewEdit from "./new-edit";
 import Search from "./search";
-
-const columns = [
-    {
-        title: "Өрөө",
-        key: "RoomFullName",
-        dataIndex: "RoomFullName",
-    },
-    {
-        title: "Эхлэх огноо",
-        key: "BeginDate",
-        dataIndex: "BeginDate",
-    },
-    {
-        title: "Дуусах огноо",
-        key: "EndDate",
-        dataIndex: "EndDate",
-    },
-    {
-        title: "Блоклох",
-        key: "CreatedDate",
-        dataIndex: "CreatedDate",
-    },
-    {
-        title: "Блоклосон",
-        key: "UserName",
-        dataIndex: "UserName",
-    },
-    {
-        title: "Шалтгаан",
-        key: "Description",
-        dataIndex: "Description",
-    },
-];
+import Typography from "@mui/material/Typography";
 
 const RoomBlockList = ({ title, workingDate }: any) => {
+    const [entity, setEntity] = useState<any>({});
+    const [rerenderKey, setRerenderKey] = useState(0);
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [search, setSearch] = useState({
+        StartDate: moment(workingDate).format("YYYY-MM-DD"),
+        EndDate: moment(workingDate).add(1, "days").format("YYYY-MM-DD"),
+    });
+    const { data, error } = RoomBlockSWR(search);
+
+    useEffect(() => {
+        if (data) {
+            setEntity(data);
+        }
+    }, [data]);
+
     const validationSchema = yup.object().shape({
         StartDate: yup.string().nullable(),
         EndDate: yup.string().nullable(),
@@ -59,10 +56,13 @@ const RoomBlockList = ({ title, workingDate }: any) => {
         control,
     } = useForm(formOptions);
 
-    const [search, setSearch] = useState({
-        StartDate: moment(workingDate).format("YYYY-MM-DD"),
-        EndDate: moment(workingDate).add(1, "days").format("YYYY-MM-DD"),
-    });
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     useEffect(() => {
         reset({
@@ -71,8 +71,111 @@ const RoomBlockList = ({ title, workingDate }: any) => {
         });
     }, []);
 
-    const { data, error } = RoomBlockSWR(search);
+    const handleDelete = async () => {
+        setLoading(true);
 
+        try {
+            entity.forEach(async (room: any) => {
+                if (room.isChecked == true) {
+                    // TODO
+                    const tempValues = {
+                        RoomBlockID: room.RoomBlockID,
+                        Status: false,
+                    };
+                    RoomBlockAPI.updateStatus(tempValues);
+                    console.log("room", room);
+                }
+            });
+
+            await mutate(listUrl);
+
+            toast("Өрөөний блок болив.");
+
+            setLoading(false);
+            handleClose();
+        } catch {
+            setLoading(false);
+            handleClose();
+        }
+    };
+
+    const onCheckboxChange = (e: any) => {
+        let tempEntity = [...entity];
+        tempEntity.forEach(
+            (element: any) => (element.isChecked = e.target.checked)
+        );
+        setEntity(tempEntity);
+        setRerenderKey((prevKey) => prevKey + 1);
+    };
+
+    const columns = [
+        {
+            title: "№",
+            key: "test",
+            dataIndex: "test",
+        },
+        {
+            title: "",
+            key: "check",
+            dataIndex: "check",
+            withCheckBox: true,
+            onChange: onCheckboxChange,
+            render: function render(
+                id: any,
+                value: any,
+                element: any,
+                dataIndex: any
+            ) {
+                console.log("test", dataIndex);
+                return (
+                    <Checkbox
+                        key={rerenderKey}
+                        checked={
+                            entity &&
+                            entity[dataIndex] &&
+                            entity[dataIndex].isChecked
+                        }
+                        onChange={(e: any) => {
+                            let tempEntity = [...entity];
+                            tempEntity[dataIndex].isChecked = e.target.checked;
+                            setEntity(tempEntity);
+                        }}
+                    />
+                );
+            },
+        },
+        {
+            title: "Өрөө",
+            key: "RoomFullName",
+            dataIndex: "RoomFullName",
+        },
+        {
+            title: "Эхлэх огноо",
+            key: "BeginDate",
+            dataIndex: "BeginDate",
+        },
+        {
+            title: "Дуусах огноо",
+            key: "EndDate",
+            dataIndex: "EndDate",
+        },
+        {
+            title: "Блоклох",
+            key: "CreatedDate",
+            dataIndex: "CreatedDate",
+        },
+        {
+            title: "Блоклосон",
+            key: "UserName",
+            dataIndex: "UserName",
+        },
+        {
+            title: "Шалтгаан",
+            key: "Description",
+            dataIndex: "Description",
+        },
+    ];
+    console.log("entity", entity);
     return (
         <CustomTable
             columns={columns}
@@ -87,6 +190,7 @@ const RoomBlockList = ({ title, workingDate }: any) => {
             modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}
+            datagrid={false}
             search={
                 <CustomSearch
                     listUrl={listUrl}
@@ -102,6 +206,50 @@ const RoomBlockList = ({ title, workingDate }: any) => {
                         reset={reset}
                     />
                 </CustomSearch>
+            }
+            additionalButtons={
+                <>
+                    <Button
+                        disabled={loading}
+                        variant="outlined"
+                        onClick={handleClickOpen}
+                        className="mr-3"
+                    >
+                        Өр.Блок болих
+                    </Button>
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        {/*<DialogTitle id="alert-dialog-title" className=""></DialogTitle>*/}
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    gap={1}
+                                >
+                                    <HelpOutlineIcon />
+                                    <Typography>
+                                        Та итгэлтэй байна уу?
+                                    </Typography>
+                                </Stack>
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Үгүй</Button>
+                            <LoadingButton
+                                loading={loading}
+                                onClick={handleDelete}
+                                autoFocus
+                            >
+                                Тийм
+                            </LoadingButton>
+                        </DialogActions>
+                    </Dialog>
+                </>
             }
         />
     );

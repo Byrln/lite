@@ -1,7 +1,6 @@
 import "react-calendar-timeline/lib/Timeline.css";
 import { useRouter } from "next/router";
-import { useState, useEffect, useContext } from "react";
-import Alert from "@mui/material/Alert";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Grid from "@mui/material/Grid";
@@ -22,7 +21,6 @@ import GuestInformation from "components/transaction/guest-information";
 import StayInformation from "components/transaction/stay-information";
 import OtherInformation from "components/transaction/other-information";
 import SharerInformation from "components/transaction/general-information/sharer-information";
-import Remarks from "components/transaction/general-information/remarks";
 import Summary from "components/transaction/general-information/summary";
 import RoomCharge from "components/transaction/room-charge";
 import Folio from "components/transaction/folio";
@@ -83,9 +81,10 @@ const TransactionEdit = () => {
                 setLoading(false);
             }
         };
+
         fetchDatas();
     }, [router]);
-    console.log("transaction", transaction);
+
     return (
         <>
             <Container maxWidth="xl">

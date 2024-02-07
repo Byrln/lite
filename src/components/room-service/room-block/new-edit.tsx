@@ -221,9 +221,10 @@ const NewEdit = () => {
                             return (
                                 <Grid
                                     item
-                                    xs={12}
-                                    sm={4}
-                                    md={3}
+                                    xs={6}
+                                    sm={3}
+                                    md={2}
+                                    lg={1}
                                     key={room.RoomID}
                                 >
                                     <FormControlLabel
