@@ -12,8 +12,9 @@ const PaymentMethodSelect = ({
     customRegisterName,
     PaymentMethodID,
     setPaymentMethodID,
+    PaymentMethodGroupID,
 }: any) => {
-    const { data, error } = PaymentMethodSWR();
+    const { data, error } = PaymentMethodSWR(PaymentMethodGroupID);
 
     const onchange = (val: any) => {
         setPaymentMethodID(val);

@@ -5,7 +5,7 @@ import Skeleton from "@mui/material/Skeleton";
 import CustomSelect from "components/common/custom-select";
 import { PaymentMethodGroupSWR } from "lib/api/payment-method-group";
 
-const PaymentMethodGroupSelect = ({ register, errors }: any) => {
+const PaymentMethodGroupSelect = ({ register, errors, onChange }: any) => {
     const { data, error } = PaymentMethodGroupSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -27,6 +27,7 @@ const PaymentMethodGroupSelect = ({ register, errors }: any) => {
             options={data}
             optionValue="PaymentMethodGroupID"
             optionLabel="PaymentMethodGroupName"
+            onChange={onChange}
         />
     );
 };

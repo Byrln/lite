@@ -3,7 +3,7 @@ import useSWR from "swr";
 import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/Folio";
-export const listUrl = `${urlPrefix}/List`;
+export const listUrl = `${urlPrefix}/Items`;
 
 export const FolioItemSWR = (FolioID: any) => {
     const fetcher = async (url: any) =>
@@ -28,9 +28,10 @@ export const FolioAPI = {
     },
 
     new: async (values: any) => {
-        values = Object.assign(values, { Status: true });
-
-        const { data, status } = await axios.post(`${urlPrefix}/New`, values);
+        const { data, status } = await axios.post(
+            `${urlPrefix}/NewItem`,
+            values
+        );
 
         return {
             data,
@@ -53,7 +54,7 @@ export const FolioAPI = {
 
     update: async (values: any) => {
         const { data, status } = await axios.post(
-            `${urlPrefix}/Update`,
+            `${urlPrefix}/UpdateItem`,
             values
         );
 

@@ -36,11 +36,7 @@ const CustomSelect = ({
                     name: field,
                     id: field,
                 }}
-                onChange={(value) =>
-                    onChange &&
-                    (onChange(value.target.value),
-                    console.log("value", value.target.value))
-                }
+                onChange={(value) => onChange && onChange(value.target.value)}
             >
                 <option
                     key={

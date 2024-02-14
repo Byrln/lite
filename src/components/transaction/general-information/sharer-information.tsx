@@ -4,7 +4,7 @@ const SharerInformation = () => {
     return (
         <Box>
             <Box sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-                Хамтрагчын мэдээлэл
+                Хамтрагчийн мэдээлэл
             </Box>
         </Box>
     );

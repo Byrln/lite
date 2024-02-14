@@ -289,7 +289,10 @@ const TransactionEdit = () => {
                             </TabPanel>
 
                             <TabPanel value={value} index={2}>
-                                <Folio FolioID={transaction.FolioID} />
+                                <Folio
+                                    FolioID={transaction.FolioID}
+                                    TransactionID={transaction.TransactionID}
+                                />
                                 {/* <Grid container spacing={2}>
                                     <Grid item xs={6}>
                                         <div>CHARGE PAYMENT</div>

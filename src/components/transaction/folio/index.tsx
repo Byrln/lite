@@ -4,10 +4,8 @@ import CustomTable from "components/common/custom-table";
 import { FolioItemSWR, FolioAPI, listUrl } from "lib/api/folio";
 import NewEdit from "./new-edit";
 
-const RoomCharge = ({ FolioID }: any) => {
+const RoomCharge = ({ FolioID, TransactionID }: any) => {
     const { data, error } = FolioItemSWR(FolioID);
-
-    console.log("FolioItems", data);
 
     const columns = [
         {
@@ -56,12 +54,15 @@ const RoomCharge = ({ FolioID }: any) => {
                 modalTitle="Өрөөний тооцоо"
                 excelName="Өрөөний тооцоо"
                 pagination={false}
-                datagrid={false}
+                datagrid={true}
                 hasPrint={false}
                 hasExcel={false}
                 hasNew={true}
-                id="RoomChargeID"
-                modalContent={<NewEdit />}
+                hasUpdate={true}
+                id="CurrID"
+                modalContent={
+                    <NewEdit TransactionID={TransactionID} FolioID={FolioID} />
+                }
                 api={FolioAPI}
                 listUrl={listUrl}
             />

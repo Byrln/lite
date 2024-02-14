@@ -5,9 +5,9 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/PaymentMethod";
 export const listUrl = `${urlPrefix}/List`;
 
-export const PaymentMethodSWR = () => {
+export const PaymentMethodSWR = (PaymentMethodGroupID = 0) => {
     const values = {
-        PaymentMethodGroupID: 0,
+        PaymentMethodGroupID: PaymentMethodGroupID,
         SearchStr: "",
         IsCustomerRelated: false,
         Status: false,
