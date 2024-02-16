@@ -14,6 +14,15 @@ export const FolioItemSWR = (FolioID: any) => {
     return useSWR(`${urlPrefix}/Items`, fetcher);
 };
 
+export const FolioSWR = (TransactionID: any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(`${urlPrefix}/Details`, { TransactionID: TransactionID })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Details`, fetcher);
+};
+
 export const FolioAPI = {
     get: async (id: any, additionalValues: any) => {
         let values = {

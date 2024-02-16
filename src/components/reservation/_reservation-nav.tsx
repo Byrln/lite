@@ -25,6 +25,7 @@ import CancelReservationForm from "components/reservation/cancel-reservation";
 import RoomMoveForm from "components/reservation/room-move";
 import RoomAssign from "components/reservation/room-assign";
 import AuditTrail from "components/reservation/audit-trail";
+import ExtraCharge from "components/reservation/extra-charge";
 
 import { listUrl } from "lib/api/front-office";
 
@@ -151,7 +152,22 @@ const ReservationNav = ({
                 </a>
             )}
             {reservation.GroupOperation && (
-                <Button variant={"text"} size="small" sx={buttonStyle}>
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                    onClick={() => {
+                        handleModal(
+                            true,
+                            "Extra Charge",
+                            <ExtraCharge
+                                transactionInfo={reservation}
+                                reservation={reservation}
+                                additionalMutateUrl={additionalMutateUrl}
+                            />
+                        );
+                    }}
+                >
                     Extra Charge
                 </Button>
             )}

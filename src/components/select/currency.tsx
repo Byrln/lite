@@ -15,6 +15,8 @@ const CurrencySelect = ({
     setEntity,
     nameKey,
     disabled = false,
+    value,
+    onChange,
 }: any) => {
     const { data, error } = CurrencySWR();
 
@@ -39,14 +41,16 @@ const CurrencySelect = ({
             margin="dense"
             error={errors[nameKey]?.message}
             helperText={errors[nameKey]?.message}
-            value={entity && entity.CurrencyID}
+            value={value ? value : entity && entity.CurrencyID}
             size="small"
             onChange={(evt: any) => {
-                setEntity &&
-                    setEntity({
-                        ...entity,
-                        CurrencyID: evt.target.value,
-                    });
+                onChange
+                    ? onChange(evt)
+                    : setEntity &&
+                      setEntity({
+                          ...entity,
+                          CurrencyID: evt.target.value,
+                      });
             }}
         >
             {data.map((element: any) => {
