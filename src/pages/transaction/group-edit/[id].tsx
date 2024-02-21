@@ -25,7 +25,7 @@ import Summary from "components/transaction/group/general-information/summary";
 import RoomCharge from "components/transaction/room-charge";
 import Folio from "components/transaction/folio";
 import RemarkList from "components/reservation/remark/list";
-
+import RoomList from "components/transaction/group/room";
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -293,10 +293,15 @@ const TransactionEdit = () => {
                                         />
                                     </Grid>
                                 </Grid> */}
-                                <RoomCharge
+                                <RoomList
+                                    GroupID={transaction.GroupID}
+                                    arrivalDate={transaction.ArrivalDate}
+                                    departureDate={transaction.DepartureDate}
+                                />
+                                {/* <RoomCharge
                                     TransactionID={transaction.TransactionID}
                                     RoomTypeID={transaction.RoomTypeID}
-                                />
+                                /> */}
                             </TabPanel>
 
                             <TabPanel value={value} index={2}>

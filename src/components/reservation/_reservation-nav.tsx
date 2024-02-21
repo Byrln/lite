@@ -121,7 +121,12 @@ const ReservationNav = ({
                 </Button>
             )}
             {reservation.NoShow && (
-                <Button variant={"text"} size="small" sx={buttonStyle}>
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                    onClick={handleClickOpenNoShow}
+                >
                     Mark No Show
                 </Button>
             )}

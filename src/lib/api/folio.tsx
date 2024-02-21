@@ -14,10 +14,13 @@ export const FolioItemSWR = (FolioID: any) => {
     return useSWR(`${urlPrefix}/Items`, fetcher);
 };
 
-export const FolioSWR = (TransactionID: any) => {
+export const FolioSWR = (TransactionID: any, GroupID = null) => {
     const fetcher = async (url: any) =>
         await axios
-            .post(`${urlPrefix}/Details`, { TransactionID: TransactionID })
+            .post(`${urlPrefix}/Details`, {
+                TransactionID: TransactionID,
+                GroupID: GroupID,
+            })
             .then((res: any) => res.data.JsonData);
 
     return useSWR(`${urlPrefix}/Details`, fetcher);
