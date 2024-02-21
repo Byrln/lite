@@ -3,18 +3,10 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useState, useContext, useEffect } from "react";
-import { mutate } from "swr";
 import { toast } from "react-toastify";
-import { ReservationAPI } from "lib/api/reservation";
 import { ModalContext } from "lib/context/modal";
-import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
 
-import { ChargeTypeSWR } from "lib/api/charge-type";
-import ToggleChecked from "components/common/custom-switch";
-import CustomTable from "components/common/custom-table";
-import NewEdit from "../new-edit";
-import { formatPrice } from "lib/utils/helpers";
 import ChargeType from "./charge-type";
 import PaymentMethod from "./payment-method";
 import FolioSelect from "components/select/folio";

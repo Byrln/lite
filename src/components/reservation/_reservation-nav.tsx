@@ -172,9 +172,11 @@ const ReservationNav = ({
                 </Button>
             )}
             {reservation.GroupOperation && (
-                <Button variant={"text"} size="small" sx={buttonStyle}>
-                    Edit Group
-                </Button>
+                <a href={`transaction/group-edit/${reservation.TransactionID}`}>
+                    <Button variant={"text"} size="small" sx={buttonStyle}>
+                        Edit Group
+                    </Button>
+                </a>
             )}
             {reservation.MoveRoom && (
                 <Button

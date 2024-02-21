@@ -23,6 +23,15 @@ export const FolioSWR = (TransactionID: any) => {
     return useSWR(`${urlPrefix}/Details`, fetcher);
 };
 
+export const GroupSummarySWR = (GroupID: any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(`${urlPrefix}/Group/Summary`, { GroupID: GroupID })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Group/Summary`, fetcher);
+};
+
 export const FolioAPI = {
     get: async (id: any, additionalValues: any) => {
         let values = {
@@ -49,7 +58,6 @@ export const FolioAPI = {
     },
 
     send: async (values: any) => {
-        console.log("valuestest", values);
         const { data, status } = await axios.post(
             `${urlPrefix}/PostPendingCharge`,
             values
@@ -99,6 +107,23 @@ export const FolioAPI = {
             `${urlPrefix}/${apiUrl}`,
             values
         );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    cut: async (values: any) => {
+        if (!values.CheckRC) {
+            values.CheckRC = false;
+        }
+
+        if (!values.CheckEC) {
+            values.CheckEC = false;
+        }
+
+        const { data, status } = await axios.post(`${urlPrefix}/Cut`, values);
 
         return {
             data,

@@ -18,6 +18,15 @@ export const ReservationSWR = (search: any) => {
     return useSWR(listUrl, fetcher);
 };
 
+export const ReservationGroupRoomTypeSWR = (id: any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(url, { GroupID: id })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Group/RoomTypes`, fetcher);
+};
+
 export const ReservationLogSWR = (id: any) => {
     const fetcher = async (url: any) =>
         await axios

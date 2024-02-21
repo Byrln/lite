@@ -1,10 +1,16 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import { useContext } from "react";
 
-import CustomTable from "components/common/custom-table";
 import { FolioItemSWR, FolioAPI, listUrl } from "lib/api/folio";
+import CustomTable from "components/common/custom-table";
+import { ModalContext } from "lib/context/modal";
 import NewEdit from "./new-edit";
+import CutForm from "./cut";
+import BillTo from "./bill-to";
 
 const RoomCharge = ({ FolioID, TransactionID }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
+
     const { data, error } = FolioItemSWR(FolioID);
 
     const columns = [
@@ -65,6 +71,46 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
                 }
                 api={FolioAPI}
                 listUrl={listUrl}
+                additionalButtons={
+                    <>
+                        <Button
+                            key={2}
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Cut Folio`,
+                                    <CutForm
+                                        FolioID={FolioID}
+                                        handleModal={handleModal}
+                                    />,
+                                    null,
+                                    "small"
+                                );
+                            }}
+                        >
+                            Cut Folio
+                        </Button>
+
+                        <Button
+                            key={2}
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Cut Folio`,
+                                    <BillTo
+                                        TransactionID={TransactionID}
+                                        FolioID={FolioID}
+                                        handleModal={handleModal}
+                                    />,
+                                    null,
+                                    "medium"
+                                );
+                            }}
+                        >
+                            Bill To
+                        </Button>
+                    </>
+                }
             />
         </Box>
     );
