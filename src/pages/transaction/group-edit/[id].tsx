@@ -23,7 +23,8 @@ import OtherInformation from "components/transaction/other-information";
 import GroupRoomType from "components/transaction/group/general-information/room-type";
 import Summary from "components/transaction/group/general-information/summary";
 import RoomCharge from "components/transaction/room-charge";
-import Folio from "components/transaction/folio";
+import FolioSummary from "components/transaction/group/folio-summary";
+import FolioDetail from "components/transaction/group/folio-detail";
 import RemarkList from "components/reservation/remark/list";
 import RoomList from "components/transaction/group/room";
 interface TabPanelProps {
@@ -284,45 +285,25 @@ const TransactionEdit = () => {
                             </TabPanel>
 
                             <TabPanel value={value} index={1}>
-                                {/* <Grid container spacing={2}>
-                                    <Grid item xs={6}>
-                                    <RoomCharge
-                                            TransactionID={
-                                                transaction.TransactionID
-                                            }
-                                        />
-                                    </Grid>
-                                </Grid> */}
                                 <RoomList
                                     GroupID={transaction.GroupID}
                                     arrivalDate={transaction.ArrivalDate}
                                     departureDate={transaction.DepartureDate}
                                 />
-                                {/* <RoomCharge
-                                    TransactionID={transaction.TransactionID}
-                                    RoomTypeID={transaction.RoomTypeID}
-                                /> */}
                             </TabPanel>
 
                             <TabPanel value={value} index={2}>
-                                <Folio
-                                    FolioID={transaction.FolioID}
+                                <FolioSummary
+                                    GroupID={transaction.GroupID}
                                     TransactionID={transaction.TransactionID}
                                 />
-                                {/* <Grid container spacing={2}>
-                                    <Grid item xs={6}>
-                                        <div>CHARGE PAYMENT</div>
-                                        <div>Date</div>
-                                        <div>Type</div>
-                                        <div>Amount</div>
-                                        <div>Date</div>
-                                        <div>Folio</div>
-                                        <div>Description</div>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <div>TEST TABLE</div>
-                                    </Grid>
-                                </Grid> */}
+                            </TabPanel>
+
+                            <TabPanel value={value} index={3}>
+                                <FolioDetail
+                                    GroupID={transaction.GroupID}
+                                    TransactionID={transaction.TransactionID}
+                                />
                             </TabPanel>
                         </Box>
                     </>

@@ -35,10 +35,19 @@ export const GroupSummarySWR = (GroupID: any) => {
     return useSWR(`${urlPrefix}/Group/Summary`, fetcher);
 };
 
+export const GroupDetailSWR = (GroupID: any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(`${urlPrefix}/Group/Detail`, { GroupID: GroupID })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Group/Detail`, fetcher);
+};
+
 export const FolioAPI = {
     get: async (id: any, additionalValues: any) => {
         let values = {
-            RoomChargeTypeID: id,
+            FolioID: id,
         };
 
         values = Object.assign(values, additionalValues);
@@ -127,6 +136,20 @@ export const FolioAPI = {
         }
 
         const { data, status } = await axios.post(`${urlPrefix}/Cut`, values);
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    chargeToOwner: async (id: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Group/ChargeToOwner`,
+            {
+                GroupID: id,
+            }
+        );
 
         return {
             data,
