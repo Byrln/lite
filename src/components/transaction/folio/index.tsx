@@ -1,11 +1,15 @@
 import { Box, Button } from "@mui/material";
 import { useContext } from "react";
+import { format } from "date-fns";
 
 import { FolioItemSWR, FolioAPI, listUrl } from "lib/api/folio";
 import CustomTable from "components/common/custom-table";
 import { ModalContext } from "lib/context/modal";
+import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 import CutForm from "./cut";
+import SplitForm from "./split";
+
 import BillTo from "./bill-to";
 
 const RoomCharge = ({ FolioID, TransactionID }: any) => {
@@ -23,6 +27,14 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
             title: "Огноо",
             key: "CurrDate",
             dataIndex: "CurrDate",
+            __ignore__: true,
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return format(
+                    new Date(element.row.CurrDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                );
+            },
         },
         {
             title: "Өрөө",
@@ -38,6 +50,11 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
             title: "Дүн",
             key: "Amount1",
             dataIndex: "Amount1",
+            __ignore__: true,
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return formatPrice(element.row.Amount1);
+            },
         },
         {
             title: "Тайлбар",
@@ -74,11 +91,30 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
                 additionalButtons={
                     <>
                         <Button
-                            key={2}
+                            key={0}
                             onClick={() => {
                                 handleModal(
                                     true,
-                                    `Cut Folio`,
+                                    `Тооцоо хуваах`,
+                                    <SplitForm
+                                        FolioID={FolioID}
+                                        TransactionID={TransactionID}
+                                        handleModal={handleModal}
+                                    />,
+                                    null,
+                                    "large"
+                                );
+                            }}
+                        >
+                            Тооцоо хуваах
+                        </Button>
+
+                        <Button
+                            key={1}
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    `Тооцоо салгах`,
                                     <CutForm
                                         FolioID={FolioID}
                                         handleModal={handleModal}
@@ -88,7 +124,7 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
                                 );
                             }}
                         >
-                            Cut Folio
+                            Тооцоо салгах
                         </Button>
 
                         <Button
@@ -96,7 +132,7 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
                             onClick={() => {
                                 handleModal(
                                     true,
-                                    `Cut Folio`,
+                                    `Bill To`,
                                     <BillTo
                                         TransactionID={TransactionID}
                                         FolioID={FolioID}

@@ -6,7 +6,8 @@ import { useState } from "react";
 
 import NewEditForm from "components/common/new-edit-form";
 import { FolioAPI, listUrl } from "lib/api/folio";
-import FolioSelect from "components/select/folio";
+import GuestDefaultSelect from "components/select/guest-default";
+import CustomerSelect from "components/select/customer";
 
 const validationSchema = yup.object().shape({
     CheckRC: yup.string().notRequired(),
@@ -14,7 +15,9 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = ({ TransactionID, FolioID, handleModal }: any) => {
-    const [entity, setEntity]: any = useState(null);
+    const [entity, setEntity]: any = useState(true);
+    const [entity2, setEntity2]: any = useState(false);
+    const [guest, setGuest]: any = useState();
 
     const {
         register,
@@ -29,7 +32,16 @@ const NewEdit = ({ TransactionID, FolioID, handleModal }: any) => {
 
     const customSubmit = async (values: any) => {
         try {
-            FolioAPI.cut(values);
+            console.log("entity", entity);
+            if (entity == true) {
+                values.BillToGuest = true;
+            } else {
+                values.BillToGuest = false;
+            }
+            delete values.BillToGuest1;
+            delete values.BillToGuest2;
+
+            FolioAPI.billTo(values);
             handleModal();
         } finally {
             handleModal();
@@ -37,21 +49,35 @@ const NewEdit = ({ TransactionID, FolioID, handleModal }: any) => {
     };
 
     const handleBillToGuest = (e: any) => {
-        // @ts-ignore
-
-        console.log("testestses", e.target.checked);
         setEntity(e.target.checked);
+        setEntity2(e.target.checked === true ? false : true);
         resetField(`BillToGuest1`, {
             defaultValue: e.target.checked,
         });
         resetField(`BillToGuest2`, {
-            defaultValue: e.target.checked == true ? false : true,
+            defaultValue: e.target.checked === true ? false : true,
         });
-        // const changedPermissions = permissions.map((permission) => {
-        //     permission.Status = e.target.checked;
-        //     return permission;
-        // });
-        // setPermissions(changedPermissions);
+        if (e.target.checked == false) {
+            resetField(`GuestID`, {
+                defaultValue: null,
+            });
+        }
+    };
+
+    const handleBillToGuest2 = (e: any) => {
+        setEntity2(e.target.checked);
+        setEntity(e.target.checked === true ? false : true);
+        resetField(`BillToGuest2`, {
+            defaultValue: e.target.checked,
+        });
+        resetField(`BillToGuest1`, {
+            defaultValue: e.target.checked === true ? false : true,
+        });
+        if (e.target.checked == false) {
+            resetField(`CustomerID`, {
+                defaultValue: null,
+            });
+        }
     };
 
     return (
@@ -68,14 +94,14 @@ const NewEdit = ({ TransactionID, FolioID, handleModal }: any) => {
                     <FormControlLabel
                         control={
                             <Controller
-                                name="Bill to Guest"
+                                name="BillToGuest1"
                                 control={control}
                                 render={(props: any) => (
                                     <Checkbox
                                         key={`BillToGuest1`}
                                         {...register(`BillToGuest1`)}
                                         onChange={handleBillToGuest}
-                                        value={entity}
+                                        checked={entity}
                                     />
                                 )}
                             />
@@ -87,13 +113,14 @@ const NewEdit = ({ TransactionID, FolioID, handleModal }: any) => {
                     <FormControlLabel
                         control={
                             <Controller
-                                name="Bill to Customer"
+                                name="BillToGuest2"
                                 control={control}
                                 render={(props: any) => (
                                     <Checkbox
                                         key={`BillToGuest2`}
                                         {...register(`BillToGuest2`)}
-                                        value={!entity}
+                                        onChange={handleBillToGuest2}
+                                        checked={entity2}
                                     />
                                 )}
                             />
@@ -101,13 +128,26 @@ const NewEdit = ({ TransactionID, FolioID, handleModal }: any) => {
                         label="Bill to Customer"
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <FolioSelect
-                        register={register}
-                        errors={errors}
-                        TransactionID={TransactionID}
-                    />
-                </Grid>
+                {entity && (
+                    <Grid item xs={12} sm={12}>
+                        <GuestDefaultSelect
+                            register={register}
+                            errors={errors}
+                            entity={guest}
+                            setEntity={setGuest}
+                            search={{ TransactionID: TransactionID }}
+                        />
+                    </Grid>
+                )}
+                {entity2 && (
+                    <Grid item xs={12} sm={12}>
+                        <CustomerSelect
+                            register={register}
+                            errors={errors}
+                            isCustomSelect={true}
+                        />
+                    </Grid>
+                )}
             </Grid>
         </NewEditForm>
     );

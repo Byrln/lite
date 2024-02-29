@@ -7,7 +7,7 @@ import { ModalContext } from "lib/context/modal";
 import { useContext, useState } from "react";
 
 const GuestList = () => {
-    const { data, error } = GuestSWR();
+    const { data, error } = GuestSWR({});
     const { handleModal }: any = useContext(ModalContext);
     const [idEditing, setIdEditing]: any = useState(null);
 

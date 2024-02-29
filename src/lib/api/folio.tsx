@@ -156,4 +156,16 @@ export const FolioAPI = {
             status,
         };
     },
+
+    billTo: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/BillTo`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
 };

@@ -5,7 +5,7 @@ import Skeleton from "@mui/material/Skeleton";
 import CustomSelect from "components/common/custom-select";
 import { FolioSWR } from "lib/api/folio";
 
-const FolioSelect = ({ register, errors, TransactionID }: any) => {
+const FolioSelect = ({ register, errors, TransactionID, customField }: any) => {
     const { data, error } = FolioSWR(TransactionID);
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -22,7 +22,7 @@ const FolioSelect = ({ register, errors, TransactionID }: any) => {
         <CustomSelect
             register={register}
             errors={errors}
-            field="FolioID"
+            field={customField ? customField : "FolioID"}
             label="Тооцоо"
             options={data}
             optionValue="FolioID"

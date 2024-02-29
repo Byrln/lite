@@ -273,15 +273,6 @@ const TransactionEdit = () => {
                             </TabPanel>
 
                             <TabPanel value={value} index={1}>
-                                {/* <Grid container spacing={2}>
-                                    <Grid item xs={6}>
-                                    <RoomCharge
-                                            TransactionID={
-                                                transaction.TransactionID
-                                            }
-                                        />
-                                    </Grid>
-                                </Grid> */}
                                 <RoomCharge
                                     TransactionID={transaction.TransactionID}
                                     RoomTypeID={transaction.RoomTypeID}
@@ -293,20 +284,6 @@ const TransactionEdit = () => {
                                     FolioID={transaction.FolioID}
                                     TransactionID={transaction.TransactionID}
                                 />
-                                {/* <Grid container spacing={2}>
-                                    <Grid item xs={6}>
-                                        <div>CHARGE PAYMENT</div>
-                                        <div>Date</div>
-                                        <div>Type</div>
-                                        <div>Amount</div>
-                                        <div>Date</div>
-                                        <div>Folio</div>
-                                        <div>Description</div>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <div>TEST TABLE</div>
-                                    </Grid>
-                                </Grid> */}
                             </TabPanel>
                         </Box>
                     </>

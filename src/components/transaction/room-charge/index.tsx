@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
+import { format } from "date-fns";
 
 import CustomTable from "components/common/custom-table";
 import { RoomChargeSWR } from "lib/api/charge";
 import { ModalContext } from "lib/context/modal";
+import { formatPrice } from "lib/utils/helpers";
 import UpdateRateType from "./update-rate-type";
 import UpdatePox from "./update-pox";
 import UpdateRate from "./update-rate";
@@ -23,6 +25,11 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
             title: "Огноо",
             key: "StayDate",
             dataIndex: "StayDate",
+            __ignore__: true,
+            excelRenderPass: true,
+            render: (id: any, value: any, element: any, dataIndex: any) => {
+                return format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy");
+            },
         },
         {
             title: "Өрөө",
@@ -43,16 +50,27 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
             title: "Тооцоо",
             key: "Charge",
             dataIndex: "Charge",
+            __ignore__: true,
+            excelRenderPass: true,
+            render: (id: any, value: any, element: any, dataIndex: any) => {
+                return formatPrice(value);
+            },
         },
         {
             title: "Татвар",
             key: "Tax",
             dataIndex: "Tax",
+            render: (id: any, value: any, element: any, dataIndex: any) => {
+                return formatPrice(value);
+            },
         },
         {
             title: "Нийлбэр дүн",
             key: "RateAmount",
             dataIndex: "RateAmount",
+            render: (id: any, value: any, element: any, dataIndex: any) => {
+                return formatPrice(value);
+            },
         },
         {
             title: "Хэрэглэгч",

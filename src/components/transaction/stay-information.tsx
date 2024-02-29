@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 import Box from "@mui/material/Box";
 
 const StayInformation = ({
@@ -31,7 +33,12 @@ const StayInformation = ({
                 className="mb-1"
             >
                 <div>Ирэх хугацаа : </div>
-                <div style={{ fontWeight: "600" }}>{arrivalDate}</div>
+                <div style={{ fontWeight: "600" }}>
+                    {format(
+                        new Date(arrivalDate.replace(/ /g, "T")),
+                        "MM/dd/yyyy"
+                    )}
+                </div>
             </Box>
 
             <Box
@@ -44,7 +51,12 @@ const StayInformation = ({
                 className="mb-1"
             >
                 <div>Буух өдөр : </div>
-                <div style={{ fontWeight: "600" }}>{departureDate}</div>
+                <div style={{ fontWeight: "600" }}>
+                    {format(
+                        new Date(departureDate.replace(/ /g, "T")),
+                        "MM/dd/yyyy"
+                    )}
+                </div>
             </Box>
 
             <Box

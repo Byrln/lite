@@ -5,15 +5,15 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/Guest";
 export const listUrl = `${urlPrefix}/List`;
 
-export const GuestSWR = () => {
+export const GuestSWR = (search: any) => {
     const values = {
-        GuestID: 0,
-        GuestName: "",
-        CountryID: "0",
-        IdentityValue: "",
-        Phone: "",
-        TransactionID: "",
-        IsMainOnly: false,
+        GuestID: search.GuestID ? search.GuestID : 0,
+        GuestName: search.GuestName ? search.GuestName : "",
+        CountryID: search.CountryID ? search.CountryID : "0",
+        IdentityValue: search.IdentityValue ? search.IdentityValue : "",
+        Phone: search.Phone ? search.Phone : "",
+        TransactionID: search.TransactionID ? search.TransactionID : "",
+        IsMainOnly: search.IsMainOnly ? search.IsMainOnly : false,
     };
 
     const fetcher = async (url: any) =>
