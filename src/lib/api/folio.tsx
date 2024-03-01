@@ -26,6 +26,29 @@ export const FolioSWR = (TransactionID: any, GroupID = null) => {
     return useSWR(`${urlPrefix}/Details`, fetcher);
 };
 
+export const FolioByStatusSWR = (
+    TransactionID: any,
+    FolioID: any,
+    Stay = null,
+    Reservation = null,
+    CheckedOut = null,
+    EmptyRow = false
+) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(`${urlPrefix}/DetailsByStatus`, {
+                TransactionID: TransactionID,
+                FolioID: FolioID,
+                Stay: Stay,
+                Reservation: Reservation,
+                CheckedOut: CheckedOut,
+                EmptyRow: EmptyRow,
+            })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/DetailsByStatus`, fetcher);
+};
+
 export const GroupSummarySWR = (GroupID: any) => {
     const fetcher = async (url: any) =>
         await axios
@@ -162,6 +185,15 @@ export const FolioAPI = {
             `${urlPrefix}/BillTo`,
             values
         );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    split: async (values: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/Split`, values);
 
         return {
             data,
