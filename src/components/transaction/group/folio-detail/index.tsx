@@ -98,7 +98,7 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                 modalTitle="Өрөөний тооцоо"
                 excelName="Өрөөний тооцоо"
                 pagination={false}
-                datagrid={true}
+                datagrid={false}
                 hasPrint={true}
                 hasExcel={true}
                 hasNew={false}

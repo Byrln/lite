@@ -24,10 +24,6 @@ import { listUrl as paymentMethodUrl } from "lib/api/payment-method";
 import CurrencySelect from "components/select/currency";
 
 const validationSchema = yup.object().shape({
-    TypeID: yup.string().required("Бөглөнө үү"),
-    CurrDate: yup.string().required("Бөглөнө үү"),
-    PaymentMethodGroupID: yup.string().required("Бөглөнө үү"),
-    PaymentMethodID: yup.string().required("Бөглөнө үү"),
     PayCurrencyID: yup.string().required("Бөглөнө үү"),
     Amount: yup.string().required("Бөглөнө үү"),
     Description: yup.string().required("Бөглөнө үү"),
@@ -39,6 +35,8 @@ const baseStayDefault = {
 
 const NewEdit = ({ TransactionID, FolioID }: any) => {
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
+    const [entity, setEntity]: any = useState({});
+
     const [paymentMethodGroupID, setPaymentMethodGroupID]: any = useState(0);
     const [paymentMethodID, setPaymentMethodID]: any = useState(0);
 
@@ -46,6 +44,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
     const {
         register,
         reset,
+        resetField,
         handleSubmit,
         control,
         formState: { errors },
@@ -59,6 +58,42 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
         mutate(paymentMethodUrl);
     };
 
+    const customResetEvent = (data: any) => {
+        console.log("formdata", data[0]);
+        setEntity(data[0]);
+        resetField(`Amount`, {
+            defaultValue: data[0].Amount1,
+        });
+        resetField(`PayCurrencyID`, {
+            defaultValue: data[0].CurrencyID,
+        });
+
+        setBaseStay({
+            ...baseStay,
+            CurrencyID: data[0].CurrencyID,
+        });
+    };
+
+    const customSubmit = async (values: any) => {
+        try {
+            let tempValues = {
+                TransactionID: entity.TransactionID,
+                FolioID: entity.FolioID,
+                TypeID: entity.TypeID,
+                ItemID: entity.ItemID,
+                CurrDate: entity.CurrDate,
+                PayCurrencyID: values.PayCurrencyID,
+                Amount: values.Amount,
+                Quantity: values.Quantity ? values.Quantity : entity.Quantity,
+                Description: values.Description,
+                RateModeID: entity.RateModeID,
+                TaxIncluded: entity.TaxIncluded,
+            };
+            FolioAPI.update(tempValues);
+        } finally {
+        }
+    };
+    console.log("baseStay", entity);
     return (
         <NewEditForm
             api={FolioAPI}
@@ -71,6 +106,8 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
             reset={reset}
             handleSubmit={handleSubmit}
             setEntity={setBaseStay}
+            customResetEvent={customResetEvent}
+            customSubmit={customSubmit}
         >
             <LocalizationProvider
                 //@ts-ignore
@@ -78,21 +115,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                 adapterLocale={mn}
             >
                 <Grid container spacing={1}>
-                    <Grid item xs={3}>
-                        <CustomSelect
-                            register={register}
-                            errors={errors}
-                            field="TypeID"
-                            label="Төрөл"
-                            options={[
-                                { key: 1, value: "Тооцоо" },
-                                { key: 2, value: "Төлбөр" },
-                            ]}
-                            optionValue="key"
-                            optionLabel="value"
-                        />
-                    </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={12}>
                         <Controller
                             name="CurrDate"
                             control={control}
@@ -101,6 +124,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                                 <DatePicker
                                     label="Огноо"
                                     value={value}
+                                    disabled={true}
                                     onChange={(value) =>
                                         onChange(
                                             moment(
@@ -132,37 +156,44 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                         />
                     </Grid>
 
-                    <Grid item xs={3}>
-                        <PaymentMethodGroupSelect
-                            register={register}
-                            errors={errors}
-                            onChange={handleOnChange}
+                    <Grid item xs={12}>
+                        <TextField
+                            size="small"
+                            id="ItemName"
+                            {...register("ItemName")}
+                            margin="dense"
+                            fullWidth
+                            error={errors.ItemName?.message}
+                            helperText={errors.ItemName?.message}
+                            label={"Хэлбэр"}
+                            disabled={true}
                         />
                     </Grid>
 
-                    {paymentMethodGroupID ? (
-                        <Grid item xs={3}>
-                            <PaymentMethodSelect
-                                register={register}
-                                errors={errors}
-                                PaymentMethodGroupID={paymentMethodGroupID}
-                                setPaymentMethodID={setPaymentMethodID}
-                                PaymentMethodID={paymentMethodID}
-                            />
-                        </Grid>
-                    ) : (
-                        <></>
-                    )}
+                    <Grid item xs={12}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Description"
+                            label="Description"
+                            {...register("Description")}
+                            margin="dense"
+                            error={errors.Description?.message}
+                            helperText={errors.Description?.message}
+                        />
+                    </Grid>
 
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                         <CurrencySelect
                             register={register}
                             errors={errors}
                             nameKey={`PayCurrencyID`}
+                            entity={baseStay}
+                            setEntity={setBaseStay}
                         />
                     </Grid>
 
-                    <Grid item xs={3}>
+                    <Grid item xs={8}>
                         <TextField
                             type="number"
                             fullWidth
@@ -174,19 +205,6 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                             size="small"
                             error={errors.Amount?.message}
                             helperText={errors.Amount?.message}
-                        />
-                    </Grid>
-
-                    <Grid item xs={3}>
-                        <TextField
-                            size="small"
-                            fullWidth
-                            id="Description"
-                            label="Description"
-                            {...register("Description")}
-                            margin="dense"
-                            error={errors.Description?.message}
-                            helperText={errors.Description?.message}
                         />
                     </Grid>
                 </Grid>
