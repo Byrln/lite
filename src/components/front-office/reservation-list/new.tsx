@@ -8,7 +8,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 import NewEditForm from "components/common/new-edit-form";
-import { ReservationAPI, listUrl } from "lib/api/reservation";
+import { ReservationAPI } from "lib/api/reservation";
+import { listUrl } from "lib/api/front-office";
+
 import NewForm from "./new-form";
 
 const validationSchema = yup.object().shape({
@@ -69,6 +71,7 @@ const NewEdit = ({
             reset={reset}
             handleSubmit={handleSubmit}
             customResetEvent={customResetEvent}
+            customSubmitTitle="Захиалах"
             additionalButtons={
                 <Button
                     variant="outlined"

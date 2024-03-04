@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Box, Grid, Container, Typography } from "@mui/material";
+import { Grid, Container } from "@mui/material";
 import Head from "next/head";
 
 import Page from "components/page";
-import HandsOnTable from "components/handsontable";
 import MyCalendar from "components/new-calendar/test2";
 import { FrontOfficeAPI } from "lib/api/front-office";
 import { RoomStatus1SWR } from "lib/api/room-status";

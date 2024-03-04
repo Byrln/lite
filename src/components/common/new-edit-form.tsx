@@ -106,7 +106,7 @@ const NewEditForm = ({
             }
 
             if (!handleModalNotAffected) {
-                // handleModal();
+                handleModal();
             }
             toast("Амжилттай.");
         } finally {
