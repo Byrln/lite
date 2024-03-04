@@ -1,5 +1,6 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { Card, CardContent, Button, IconButton, Tooltip } from "@mui/material";
+import moment from "moment";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,6 +11,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import NewEditForm from "components/common/new-edit-form";
 import { ReservationAPI } from "lib/api/reservation";
 import { listUrl } from "lib/api/front-office";
+import { dateStringToObj } from "lib/utils/helpers";
 
 import NewForm from "./new-form";
 
@@ -41,13 +43,23 @@ const NewEdit = ({
             TransactionDetail: [
                 dateStart && dateEnd && roomType && room
                     ? {
-                          ArrivalDate: dateStart,
+                          ArrivalDate: workingDate,
                           DepartureDate: dateEnd,
                           RoomTypeID: roomType,
                           RoomID: room,
                           ReservationTypeID: 1,
                       }
-                    : {},
+                    : {
+                          ArrivalDate: workingDate,
+                          DepartureDate: moment(
+                              dateStringToObj(
+                                  moment(workingDate).format("YYYY-MM-DD")
+                              ),
+                              "YYYY-MM-DD"
+                          )
+                              .add(1, "days")
+                              .format("YYYY-MM-DD"),
+                      },
             ],
         },
         resolver: yupResolver(validationSchema),
