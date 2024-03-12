@@ -21,7 +21,13 @@ const StayInformation = ({
                 className="mb-1"
             >
                 <div>Захиалгын огноо : </div>
-                <div style={{ fontWeight: "600" }}>{reservationDate}</div>
+                <div style={{ fontWeight: "600" }}>
+                    {" "}
+                    {format(
+                        new Date(reservationDate.replace(/ /g, "T")),
+                        "MM/dd/yyyy"
+                    )}
+                </div>
             </Box>
             <Box
                 sx={{
