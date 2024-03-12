@@ -5,14 +5,10 @@ import {
     Checkbox,
     FormControlLabel,
     Typography,
-    Tooltip,
-    IconButton,
 } from "@mui/material";
 import * as yup from "yup";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import { useEffect, useState } from "react";
 import NumberSelect from "components/select/number-select";
@@ -44,8 +40,6 @@ const NewEdit = ({
     MaxAdult,
     MaxChild,
     workingDate,
-    remove,
-    append,
 }: any) => {
     const [RoomTypeID, setRoomTypeID]: any = useState("");
     const [RoomType, setRoomType]: any = useState("");
@@ -142,9 +136,7 @@ const NewEdit = ({
                     label: getValues(`TransactionDetail[${id}].GuestName`),
                 });
             }
-            console.log("id", getValues(`TransactionDetail[${id}].Adult`));
             if (id > 0) {
-                let tempRoomType: any = {};
                 let baseAdult = 0;
                 let baseChild = 0;
                 if (getValues(`TransactionDetail[${id}].Adult`)) {
@@ -154,11 +146,11 @@ const NewEdit = ({
                 if (getValues(`TransactionDetail[${id}].Child`)) {
                     baseChild = getValues(`TransactionDetail[${id}].Child`);
                 }
-                tempRoomType.BaseAdult = baseAdult;
-                tempRoomType.BaseChild = baseChild;
 
-                console.log("baseAdult", baseAdult);
-                setRoomType(tempRoomType);
+                setRoomType({
+                    BaseAdult: baseAdult,
+                    BaseChild: baseChild,
+                });
             } else {
                 setRoomType({
                     BaseAdult: BaseAdult,
@@ -194,6 +186,11 @@ const NewEdit = ({
 
     return (
         <Grid key={id} container spacing={1}>
+            <Grid item xs={12}>
+                <Typography variant="subtitle1" component="div">
+                    Захиалгын мэдээлэл
+                </Typography>
+            </Grid>
             <input
                 type="hidden"
                 {...register(`TransactionDetail.${id}.Nights`)}
@@ -210,82 +207,235 @@ const NewEdit = ({
                 name={`TransactionDetail.${id}.RateModeID`}
                 value={1}
             />
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.IsReserved`)}
-                name={`TransactionDetail.${id}.IsReserved`}
-                value={true}
-            />
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.IsCheckIn`)}
-                name={`TransactionDetail.${id}.IsCheckIn`}
-                value={false}
-            />
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.DurationEnabled`)}
-                name={`TransactionDetail.${id}.DurationEnabled`}
-                value={true}
-            />
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.ReservationSourceID`)}
-                name={`TransactionDetail.${id}.ReservationSourceID`}
-                value={1}
-            />
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.ArrivalDate`)}
-                name={`TransactionDetail.${id}.ArrivalDate`}
-            />
+            <Grid item xs={6} sm={2}>
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.IsReserved`)}
+                    name={`TransactionDetail.${id}.IsReserved`}
+                    value={true}
+                />
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.IsCheckIn`)}
+                    name={`TransactionDetail.${id}.IsCheckIn`}
+                    value={false}
+                />
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.DurationEnabled`)}
+                    name={`TransactionDetail.${id}.DurationEnabled`}
+                    value={true}
+                />
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.ReservationSourceID`)}
+                    name={`TransactionDetail.${id}.ReservationSourceID`}
+                    value={1}
+                />
+                <Controller
+                    name={`TransactionDetail.${id}.ArrivalDate`}
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Эхлэх огноо"
+                            value={value}
+                            minDate={new Date(workingDate)}
+                            onChange={(value) => (
+                                onChange(
+                                    moment(
+                                        dateStringToObj(
+                                            moment(value).format("YYYY-MM-DD")
+                                        ),
+                                        "YYYY-MM-DD"
+                                    )
+                                ),
+                                setArrivalDate(
+                                    moment(
+                                        dateStringToObj(
+                                            moment(value).format("YYYY-MM-DD")
+                                        ),
+                                        "YYYY-MM-DD"
+                                    ).format("YYYY-MM-DD")
+                                )
+                            )}
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id={`TransactionDetail.${id}.ArrivalDate`}
+                                    name={`TransactionDetail.${id}.ArrivalDate`}
+                                    {...register(
+                                        `TransactionDetail.${id}.ArrivalDate`
+                                    )}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.ArrivalDate?.message}
+                                    helperText={errors.ArrivalDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={6} sm={2}>
+                <Controller
+                    name={`TransactionDetail.${id}.DepartureDate`}
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Гарах огноо"
+                            value={value}
+                            minDate={new Date(workingDate)}
+                            onChange={(value) => (
+                                onChange(
+                                    moment(
+                                        dateStringToObj(
+                                            moment(value).format("YYYY-MM-DD")
+                                        ),
+                                        "YYYY-MM-DD"
+                                    )
+                                ),
+                                setDepartureDate(
+                                    moment(
+                                        dateStringToObj(
+                                            moment(value).format("YYYY-MM-DD")
+                                        ),
+                                        "YYYY-MM-DD"
+                                    ).format("YYYY-MM-DD")
+                                )
+                            )}
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id={`TransactionDetail.${id}.DepartureDate`}
+                                    name={`TransactionDetail.${id}.DepartureDate`}
+                                    {...register(
+                                        `TransactionDetail.${id}.DepartureDate`
+                                    )}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.DepartureDate?.message}
+                                    helperText={errors.DepartureDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={4} sm={3}>
+                <input
+                    type="hidden"
+                    {...register(`TransactionDetail.${id}.GuestID`)}
+                    name={`TransactionDetail.${id}.GuestID`}
+                    value={
+                        selectedGuest &&
+                        selectedGuest.value &&
+                        selectedGuest.value != "createNew"
+                            ? selectedGuest.value
+                            : null
+                    }
+                />
+                <input
+                    type="hidden"
+                    {...register(
+                        `TransactionDetail.${id}.GuestDetail.GuestTitleID`
+                    )}
+                    name={`TransactionDetail.${id}.GuestDetail.GuestTitleID`}
+                    value={0}
+                />
+                <input
+                    type="hidden"
+                    {...register(
+                        `TransactionDetail.${id}.GuestDetail.GenderID`
+                    )}
+                    name={`TransactionDetail.${id}.GuestDetail.GenderID`}
+                    value={0}
+                />
+                <input
+                    type="hidden"
+                    {...register(
+                        `TransactionDetail.${id}.GuestDetail.CountryID`
+                    )}
+                    name={`TransactionDetail.${id}.GuestDetail.CountryID`}
+                    value={0}
+                />
+                <input
+                    type="hidden"
+                    {...register(
+                        `TransactionDetail.${id}.GuestDetail.VipStatusID`
+                    )}
+                    name={`TransactionDetail.${id}.GuestDetail.VipStatusID`}
+                    value={0}
+                />
+                <GuestSelect
+                    register={register}
+                    errors={errors}
+                    onRoomTypeChange={onRoomTypeChange}
+                    customRegisterName={`TransactionDetail.${id}.GuestName`}
+                    baseStay={{ RoomTypeID: RoomTypeID }}
+                    RoomTypeID={RoomTypeID}
+                    resetField={resetField}
+                    control={control}
+                    field={field}
+                    selectedGuest={selectedGuest}
+                    setSelectedGuest={setSelectedGuest}
+                    id={id}
+                />
+            </Grid>
 
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.DepartureDate`)}
-                name={`TransactionDetail.${id}.DepartureDate`}
-            />
+            {selectedGuest &&
+            (selectedGuest.value == null ||
+                selectedGuest.value == "" ||
+                selectedGuest.value == "createNew") ? (
+                <>
+                    <Grid item xs={4} sm={2}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Name"
+                            label="Нэр"
+                            {...register(
+                                `TransactionDetail.${id}.GuestDetail.Name`
+                            )}
+                            margin="dense"
+                        />
+                    </Grid>
 
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.GuestID`)}
-                name={`TransactionDetail.${id}.GuestID`}
-                value={
-                    selectedGuest &&
-                    selectedGuest.value &&
-                    selectedGuest.value != "createNew"
-                        ? selectedGuest.value
-                        : null
-                }
-            />
-            <input
-                type="hidden"
-                {...register(
-                    `TransactionDetail.${id}.GuestDetail.GuestTitleID`
-                )}
-                name={`TransactionDetail.${id}.GuestDetail.GuestTitleID`}
-                value={0}
-            />
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.GuestDetail.GenderID`)}
-                name={`TransactionDetail.${id}.GuestDetail.GenderID`}
-                value={0}
-            />
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.GuestDetail.CountryID`)}
-                name={`TransactionDetail.${id}.GuestDetail.CountryID`}
-                value={0}
-            />
-            <input
-                type="hidden"
-                {...register(`TransactionDetail.${id}.GuestDetail.VipStatusID`)}
-                name={`TransactionDetail.${id}.GuestDetail.VipStatusID`}
-                value={0}
-            />
+                    <Grid item xs={4} sm={2}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Email"
+                            label="Имэйл"
+                            type="email"
+                            {...register(
+                                `TransactionDetail.${id}.GuestDetail.Email`
+                            )}
+                            margin="dense"
+                        />
+                    </Grid>
 
-            <Grid item xs={6} sm={4} md={2}>
+                    <Grid item xs={4} sm={2}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Mobile"
+                            label="Гар утас"
+                            {...register(
+                                `TransactionDetail.${id}.GuestDetail.Mobile`
+                            )}
+                            margin="dense"
+                        />
+                    </Grid>
+                </>
+            ) : (
+                ""
+            )}
+
+            <Grid item xs={4} sm={3}>
                 <RoomTypeSelect
                     register={register}
                     errors={errors}
@@ -296,48 +446,55 @@ const NewEdit = ({
                 />
             </Grid>
 
-            {/* {RoomTypeID && ( */}
-            <>
-                <Grid item xs={6} sm={4} md={1}>
-                    <RoomSelect
-                        register={register}
-                        errors={errors}
-                        DepartureDate={DepartureDate}
-                        RoomTypeID={RoomTypeID}
-                        onRoomChange={onRoomChange}
-                        customRegisterName={`TransactionDetail.${id}.RoomID`}
-                        TransactionID={""}
-                        ArrivalDate={ArrivalDate}
-                        RoomID={RoomID}
-                    />
-                </Grid>
-                <Grid item xs={6} sm={2} md={1}>
-                    <NumberSelect
-                        numberMin={1}
-                        numberMax={RoomType?.MaxAdult ? RoomType?.MaxAdult : 0}
-                        defaultValue={RoomType?.BaseAdult}
-                        nameKey={`TransactionDetail.${id}.Adult`}
-                        register={register}
-                        errors={errors}
-                        label={"Том хүн"}
-                        onChange={onAdultChange}
-                    />
-                </Grid>
+            {RoomTypeID && (
+                <>
+                    <Grid item xs={4} sm={2}>
+                        <RoomSelect
+                            register={register}
+                            errors={errors}
+                            DepartureDate={DepartureDate}
+                            RoomTypeID={RoomTypeID}
+                            onRoomChange={onRoomChange}
+                            customRegisterName={`TransactionDetail.${id}.RoomID`}
+                            TransactionID={""}
+                            ArrivalDate={ArrivalDate}
+                            RoomID={RoomID}
+                        />
+                    </Grid>
+                    <Grid item xs={2} sm={1}>
+                        <NumberSelect
+                            numberMin={1}
+                            numberMax={
+                                RoomType?.MaxAdult ? RoomType?.MaxAdult : 0
+                            }
+                            defaultValue={
+                                RoomType?.BaseAdult ? RoomType?.BaseAdult : 0
+                            }
+                            nameKey={`TransactionDetail.${id}.Adult`}
+                            register={register}
+                            errors={errors}
+                            label={"Том хүн"}
+                            onChange={onAdultChange}
+                        />
+                    </Grid>
+                    <Grid item xs={2} sm={1}>
+                        <NumberSelect
+                            numberMin={0}
+                            numberMax={
+                                RoomType?.MaxChild ? RoomType?.MaxChild : 0
+                            }
+                            defaultValue={
+                                RoomType?.BaseChild ? RoomType?.BaseChild : 0
+                            }
+                            nameKey={`TransactionDetail.${id}.Child`}
+                            register={register}
+                            errors={errors}
+                            label={"Хүүхэд"}
+                            onChange={onChildChange}
+                        />
+                    </Grid>
 
-                <Grid item xs={6} sm={2} md={1}>
-                    <NumberSelect
-                        numberMin={0}
-                        numberMax={RoomType?.MaxChild ? RoomType?.MaxChild : 0}
-                        defaultValue={RoomType?.BaseChild}
-                        nameKey={`TransactionDetail.${id}.Child`}
-                        register={register}
-                        errors={errors}
-                        label={"Хүүхэд"}
-                        onChange={onChildChange}
-                    />
-                </Grid>
-
-                {/* <Grid item xs={6} sm={2}>
+                    <Grid item xs={6} sm={2}>
                         <ReservationTypeSelect
                             register={register}
                             errors={errors}
@@ -346,23 +503,23 @@ const NewEdit = ({
                             ReservationTypeID={ReservationTypeID}
                             setReservationTypeID={setReservationTypeID}
                         />
-                    </Grid> */}
+                    </Grid>
 
-                <Grid item xs={6} sm={4} md={2}>
-                    <RoomRateTypeSelect
-                        register={register}
-                        errors={errors}
-                        reset={reset}
-                        customRegisterName={`TransactionDetail.${id}.RateTypeID`}
-                        RoomTypeID={RoomTypeID}
-                        setRate={setRate}
-                        Rate={Rate}
-                        setBreakfastIncluded={setBreakfastIncluded}
-                        setTaxIncluded={setTaxIncluded}
-                    />
-                </Grid>
+                    <Grid item xs={6} sm={2}>
+                        <RoomRateTypeSelect
+                            register={register}
+                            errors={errors}
+                            reset={reset}
+                            customRegisterName={`TransactionDetail.${id}.RateTypeID`}
+                            RoomTypeID={RoomTypeID}
+                            setRate={setRate}
+                            Rate={Rate}
+                            setBreakfastIncluded={setBreakfastIncluded}
+                            setTaxIncluded={setTaxIncluded}
+                        />
+                    </Grid>
 
-                {/* <Grid item xs={6} sm={2}>
+                    <Grid item xs={6} sm={2}>
                         <FormControlLabel
                             control={
                                 <Controller
@@ -413,9 +570,8 @@ const NewEdit = ({
                             }
                             label="Татвар"
                         />
-                    </Grid> */}
+                    </Grid>
 
-                <Grid item xs={6} sm={3} md={2}>
                     <CurrencyAmount
                         register={register}
                         errors={errors}
@@ -437,114 +593,9 @@ const NewEdit = ({
                         selectedChild={selectedChild}
                         rateCurrencyID={Rate.CurrencyID}
                         getValues={getValues}
-                        isRoomList={true}
                     />
-                </Grid>
-                <Grid item xs={11} sm={4} md={2}>
-                    <GuestSelect
-                        register={register}
-                        errors={errors}
-                        onRoomTypeChange={onRoomTypeChange}
-                        customRegisterName={`TransactionDetail.${id}.GuestName`}
-                        baseStay={{ RoomTypeID: RoomTypeID }}
-                        RoomTypeID={RoomTypeID}
-                        resetField={resetField}
-                        control={control}
-                        field={field}
-                        selectedGuest={selectedGuest}
-                        setSelectedGuest={setSelectedGuest}
-                        id={id}
-                    />
-                </Grid>
 
-                <Grid
-                    item
-                    xs={1}
-                    sm={1}
-                    lg={1}
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                    }}
-                >
-                    <Tooltip title="Duplicate">
-                        <IconButton
-                            aria-label="close"
-                            onClick={() =>
-                                append(
-                                    getValues(
-                                        //@ts-ignore
-                                        `TransactionDetail[${id}]`
-                                    )
-                                )
-                            }
-                        >
-                            <ContentCopyIcon />
-                        </IconButton>
-                    </Tooltip>
-
-                    <Tooltip title="Remove">
-                        <IconButton
-                            aria-label="close"
-                            onClick={() => remove(id)}
-                            disabled={id == 0}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-                </Grid>
-
-                {selectedGuest &&
-                (selectedGuest.value == null ||
-                    selectedGuest.value == "" ||
-                    selectedGuest.value == "createNew") ? (
-                    <>
-                        <Grid item xs={4}>
-                            <TextField
-                                size="small"
-                                fullWidth
-                                id="Name"
-                                label="Нэр"
-                                {...register(
-                                    `TransactionDetail.${id}.GuestDetail.Name`
-                                )}
-                                margin="dense"
-                            />
-                        </Grid>
-
-                        <Grid item xs={4}>
-                            <TextField
-                                size="small"
-                                fullWidth
-                                id="Email"
-                                label="Имэйл"
-                                type="email"
-                                {...register(
-                                    `TransactionDetail.${id}.GuestDetail.Email`
-                                )}
-                                margin="dense"
-                            />
-                        </Grid>
-
-                        <Grid item xs={4}>
-                            <TextField
-                                size="small"
-                                fullWidth
-                                id="Mobile"
-                                label="Гар утас"
-                                {...register(
-                                    `TransactionDetail.${id}.GuestDetail.Mobile`
-                                )}
-                                margin="dense"
-                            />
-                        </Grid>
-                    </>
-                ) : (
-                    ""
-                )}
-
-                {/* {id == 0 ? (
+                    {id == 0 ? (
                         <>
                             <Grid item xs={12}>
                                 <Typography variant="subtitle1" component="div">
@@ -585,9 +636,9 @@ const NewEdit = ({
                         </>
                     ) : (
                         ""
-                    )} */}
-            </>
-            {/* )} */}
+                    )}
+                </>
+            )}
         </Grid>
     );
 };

@@ -33,6 +33,7 @@ const CurrencyAmount = ({
     selectedChild,
     rateCurrencyID,
     getValues,
+    isRoomList = false,
 }: any) => {
     console.log("rateCurrencyID", rateCurrencyID);
     const [isCurrencyAmountEditable, setIsCurrencyAmountEditable]: any =
@@ -41,7 +42,6 @@ const CurrencyAmount = ({
     const [defaultCurrencyAmount, setDefaultCurrencyAmount]: any = useState();
 
     const calculateAmount = async () => {
-        console.log("Currency", Currency);
         if (!(RoomTypeID && RateTypeID && ArrivalDate)) {
             return;
         }
@@ -146,43 +146,63 @@ const CurrencyAmount = ({
     //         });
     //     }
     // }, [isCurrencyAmountEditable]);
-
+    console.log("currency", Currency);
     return (
         <>
-            {groupIndex == null && (
-                <Grid item xs={6} sm={2}>
-                    <CurrencySelect
-                        register={register}
-                        errors={errors}
-                        nameKey={`TransactionDetail.${id}.CurrencyID`}
-                        entity={Currency}
-                        setEntity={setCurrency}
+            {!isRoomList ? (
+                <>
+                    {groupIndex == null && (
+                        <Grid item xs={6} sm={2}>
+                            <CurrencySelect
+                                register={register}
+                                errors={errors}
+                                nameKey={`TransactionDetail.${id}.CurrencyID`}
+                                entity={Currency}
+                                setEntity={setCurrency}
+                            />
+                        </Grid>
+                    )}
+                    {Currency.CurrencyID != rateCurrencyID && (
+                        <Grid item xs={6} sm={2}>
+                            <TextField
+                                id="TestCurrencyAmount"
+                                label="CurrencyAmount"
+                                type="number"
+                                disabled={true}
+                                {...register(
+                                    `TransactionDetail.${id}.TestCurrencyAmount`
+                                )}
+                                margin="dense"
+                                error={errors.TestCurrencyAmount?.message}
+                                helperText={errors.TestCurrencyAmount?.message}
+                                InputLabelProps={{
+                                    shrink: currencyAmount,
+                                }}
+                                size="small"
+                                style={{ width: "100%" }}
+                            />
+                        </Grid>
+                    )}
+                </>
+            ) : (
+                <>
+                    {" "}
+                    <input
+                        type="hidden"
+                        {...register(`TransactionDetail.${id}.CurrencyID`)}
+                        name={`TransactionDetail.${id}.CurrencyID`}
                     />
-                </Grid>
-            )}
-            {Currency.CurrencyID != rateCurrencyID && (
-                <Grid item xs={6} sm={2}>
-                    <TextField
-                        id="TestCurrencyAmount"
-                        label="CurrencyAmount"
-                        type="number"
-                        disabled={true}
+                    <input
+                        type="hidden"
                         {...register(
                             `TransactionDetail.${id}.TestCurrencyAmount`
                         )}
-                        margin="dense"
-                        error={errors.TestCurrencyAmount?.message}
-                        helperText={errors.TestCurrencyAmount?.message}
-                        InputLabelProps={{
-                            shrink: currencyAmount,
-                        }}
-                        size="small"
-                        style={{ width: "100%" }}
+                        name={`TransactionDetail.${id}.TestCurrencyAmount`}
                     />
-                </Grid>
+                </>
             )}
 
-            <Grid item xs={6} sm={2}>
+            <Grid item xs={isRoomList ? 12 : 6} sm={isRoomList ? 12 : 2}>
                 <TextField
                     id="CurrencyAmount"
                     label="CurrencyAmount"

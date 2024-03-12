@@ -24,6 +24,7 @@ const NumberSelect = ({
         }
         setData(d);
     }, [numberMin, numberMax]);
+
     return (
         <TextField
             fullWidth

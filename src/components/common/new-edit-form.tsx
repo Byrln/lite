@@ -130,14 +130,22 @@ const NewEditForm = ({
         <form onSubmit={handleSubmit(onSubmit)}>
             {children}
 
-            {additionalButtons}
             {state.isShow && !isShowNotAffected ? null : (
                 // <Box sx={{ width: "15%" }}>
-                <SubmitButton
-                    loading={loading}
-                    title={customSubmitTitle}
-                    fullWidth={false}
-                />
+                <div
+                    style={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "flex-end",
+                    }}
+                >
+                    <SubmitButton
+                        loading={loading}
+                        title={customSubmitTitle}
+                        fullWidth={false}
+                    />
+                    {additionalButtons}
+                </div>
                 // </Box>
             )}
         </form>
