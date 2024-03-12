@@ -69,8 +69,10 @@ export const GroupDetailSWR = (GroupID: any) => {
 
 export const FolioAPI = {
     get: async (id: any, additionalValues: any) => {
+        console.log("id", id);
         let values = {
-            FolioID: id,
+            FolioID: id[0],
+            TypeID: id[1],
         };
 
         values = Object.assign(values, additionalValues);

@@ -33,7 +33,7 @@ const baseStayDefault = {
     TransactionID: 0,
 };
 
-const NewEdit = ({ TransactionID, FolioID }: any) => {
+const NewEdit = ({ TransactionID, FolioID, TypeID }: any) => {
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
     const [entity, setEntity]: any = useState({});
 
@@ -79,7 +79,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
             let tempValues = {
                 TransactionID: entity.TransactionID,
                 FolioID: entity.FolioID,
-                TypeID: entity.TypeID,
+                TypeID: TypeID,
                 ItemID: entity.ItemID,
                 CurrDate: entity.CurrDate,
                 PayCurrencyID: values.PayCurrencyID,
@@ -97,7 +97,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
     return (
         <NewEditForm
             api={FolioAPI}
-            listUrl={listUrl}
+            listUrl={"/api/Folio/Group/Details"}
             additionalValues={{
                 FolioID: FolioID,
                 TransactionID: TransactionID,
