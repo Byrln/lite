@@ -10,6 +10,7 @@ import {
 import Button from "@mui/material/Button";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 import CustomTable from "components/common/custom-table";
 import { FolioSWR } from "lib/api/folio";
@@ -144,11 +145,17 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             title: "Ирэх",
             key: "ArrivalDate",
             dataIndex: "ArrivalDate",
+            render: function render(id: any, value: any) {
+                return format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy");
+            },
         },
         {
             title: "Гарах",
             key: "DepartureDate",
             dataIndex: "DepartureDate",
+            render: function render(id: any, value: any) {
+                return format(new Date(value.replace(/ /g, "T")), "MM/dd/yyyy");
+            },
         },
         {
             title: "Төлөв",

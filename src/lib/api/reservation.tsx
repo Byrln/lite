@@ -207,4 +207,25 @@ export const ReservationAPI = {
             values
         );
     },
+
+    groupList: async (id: any) => {
+        const values = {
+            GroupID: id,
+        };
+        const res = await axios.post(`${urlPrefix}/GroupList`, values);
+
+        console.log(res);
+
+        var list = res.data.JsonData;
+        var item;
+
+        console.log(list);
+
+        if (list.length === 1) {
+            item = list[0];
+        } else {
+            item = null;
+        }
+        return item;
+    },
 };

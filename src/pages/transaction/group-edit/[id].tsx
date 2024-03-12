@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 
 import { ApiResponseModel } from "models/response/ApiResponseModel";
-import { TransactionAPI } from "lib/api/transaction";
+import { ReservationAPI } from "lib/api/reservation";
 import GuestInformation from "components/transaction/guest-information";
 import StayInformation from "components/transaction/stay-information";
 import OtherInformation from "components/transaction/other-information";
@@ -69,14 +69,13 @@ const TransactionEdit = () => {
     }
 
     const router = useRouter();
-
+    console.log("transaction", transaction);
     useEffect(() => {
         const fetchDatas = async () => {
             setLoading(true);
             try {
-                const response: ApiResponseModel = await TransactionAPI.get(
-                    router.query.id
-                );
+                const response: ApiResponseModel =
+                    await ReservationAPI.groupList(router.query.id);
                 setTransaction(response);
             } finally {
                 setLoading(false);
@@ -160,8 +159,8 @@ const TransactionEdit = () => {
                                         <GuestInformation
                                             name={transaction.GuestName}
                                             phone={transaction.BookerPhone}
-                                            email="test@mail.com"
-                                            address="test address"
+                                            email={transaction.GuestEmail}
+                                            address={transaction.GuestAddress}
                                         />
                                     </CardContent>
                                 </Card>
@@ -178,15 +177,22 @@ const TransactionEdit = () => {
                                             Хоногийн мэдээлэл
                                         </Box>
                                         <StayInformation
-                                            reservationDate="testDate"
+                                            reservationDate={
+                                                transaction.CreatedDate
+                                            }
                                             arrivalDate={
                                                 transaction.ArrivalDate
                                             }
                                             departureDate={
                                                 transaction.DepartureDate
                                             }
-                                            pax="testPax"
-                                            rateType="testRate"
+                                            pax={
+                                                `` +
+                                                transaction.Adult +
+                                                "/" +
+                                                transaction.Child
+                                            }
+                                            rateType={transaction.RateTypeName}
                                         />
                                     </CardContent>
                                 </Card>
@@ -207,8 +213,8 @@ const TransactionEdit = () => {
                                                 transaction.ReservationNo
                                             }
                                             folioNo={transaction.FolioNo}
-                                            checkInNo="checkInNo"
-                                            company="company"
+                                            checkInNo={transaction.CheckinNo}
+                                            company={transaction.CustomerName}
                                         />
                                     </CardContent>
                                 </Card>
