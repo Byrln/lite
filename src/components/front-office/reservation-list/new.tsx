@@ -1,32 +1,26 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { mutate } from "swr";
 
 import {
     Card,
     CardContent,
     Button,
-    IconButton,
-    Tooltip,
     Grid,
     TextField,
-    Box,
     Typography,
     Divider,
     Checkbox,
     FormControlLabel,
 } from "@mui/material";
-import { Icon } from "@iconify/react";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import moment from "moment";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { useEffect, useState } from "react";
-import RateTypeSelect from "components/select/rate-type";
+import { useState } from "react";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 
 import { ReservationTypeSelect } from "components/select";
@@ -34,7 +28,6 @@ import NewEditForm from "components/common/new-edit-form";
 import { ReservationAPI } from "lib/api/reservation";
 import { listUrl } from "lib/api/front-office";
 import { dateStringToObj } from "lib/utils/helpers";
-import GuestSelect from "components/select/guest-select";
 import PaymentMethodSelect from "components/select/payment-method";
 import CurrencySelect from "components/select/currency";
 
@@ -57,14 +50,11 @@ const NewEdit = ({
 }: any) => {
     const [ArrivalDate, setArrivalDate]: any = useState("");
     const [DepartureDate, setDepartureDate]: any = useState("");
-    const [rateType, setRateType]: any = useState("");
-    const [Rate, setRate]: any = useState("");
     const [BreakfastIncluded, setBreakfastIncluded]: any = useState("");
     const [TaxIncluded, setTaxIncluded]: any = useState("");
     const [selectedGuest, setSelectedGuest]: any = useState(null);
     const [ReservationTypeID, setReservationTypeID]: any = useState(1);
     const [PaymentMethodID, setPaymentMethodID]: any = useState(null);
-
     const {
         register,
         reset,
@@ -142,21 +132,28 @@ const NewEdit = ({
     const customSubmit = async (values: any) => {
         try {
             let tempValues = { ...values };
-            // values.TransactionDetail.forEach((detail: any, index: any) => {});
             tempValues.TransactionDetail[0].PayAmount = values.PayAmount;
             tempValues.TransactionDetail[0].PayCurrencyID =
                 values.PayCurrencyID;
             tempValues.TransactionDetail[0].PaymentMethodID =
                 values.PaymentMethodID;
-            tempValues.TransactionDetail[0].ReservationTypeID =
-                values.ReservationTypeID;
-            tempValues.TransactionDetail[0].TaxIncluded = values.TaxIncluded;
-            tempValues.TransactionDetail[0].BreakfastIncluded =
-                values.BreakfastIncluded;
-            console.log("new", tempValues);
-            ReservationAPI.new(tempValues);
 
-            //
+            values.TransactionDetail.forEach((detail: any, index: any) => {
+                tempValues.TransactionDetail[index].TaxIncluded = TaxIncluded;
+                tempValues.TransactionDetail[index].BreakfastIncluded =
+                    BreakfastIncluded;
+                tempValues.TransactionDetail[index].ReservationTypeID =
+                    values.ReservationTypeID;
+                tempValues.TransactionDetail[index].ArrivalDate =
+                    values.ArrivalDate;
+                tempValues.TransactionDetail[index].DepartureDate =
+                    values.DepartureDate;
+            });
+
+            await ReservationAPI.new(tempValues);
+            await mutate("/api/RoomType/List");
+            await mutate("/api/FrontOffice/StayView2");
+            await mutate("/api/FrontOffice/ReservationDetailsByDate");
         } finally {
         }
     };
@@ -440,6 +437,14 @@ const NewEdit = ({
                                     workingDate={workingDate}
                                     remove={remove}
                                     append={append}
+                                    BreakfastIncluded={BreakfastIncluded}
+                                    TaxIncluded={TaxIncluded}
+                                    setBreakfastIncluded={setBreakfastIncluded}
+                                    setTaxIncluded={setTaxIncluded}
+                                    ArrivalDate={ArrivalDate}
+                                    setArrivalDate={setArrivalDate}
+                                    DepartureDate={DepartureDate}
+                                    setDepartureDate={setDepartureDate}
                                 />
 
                                 {/* <Tooltip title="Remove">
