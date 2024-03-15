@@ -121,7 +121,7 @@ export const ReservationAPI = {
         const res = await axios.post(listUrl, values);
         var list = res.data.JsonData;
         var item;
-        console.log("list", list);
+
         if (list.length === 1) {
             item = list[0];
         } else {
@@ -138,17 +138,7 @@ export const ReservationAPI = {
                 fToUniversal(element.DepartureDate) + " 14:00";
         });
 
-        // vals.ArrivalDate = fToUniversal(values.ArrivalDate) + " 14:00";
-        // vals.DepartureDate = fToUniversal(values.DepartureDate) + " 14:00";
-
         const { data, status } = await axios.post(`${urlPrefix}/New`, vals);
-        console.log("values", values);
-        // return {
-        //     status: status,
-        //     code: data.Code,
-        //     msg: data.Message,
-        //     data: data.JsonData,
-        // };
         return {
             status: values,
         };
@@ -214,12 +204,8 @@ export const ReservationAPI = {
         };
         const res = await axios.post(`${urlPrefix}/GroupList`, values);
 
-        console.log(res);
-
         var list = res.data.JsonData;
         var item;
-
-        console.log(list);
 
         if (list.length === 1) {
             item = list[0];

@@ -87,7 +87,7 @@ const DeparturedListList = ({ title }: any) => {
             hasNew={true}
             hasUpdate={true}
             //hasDelete={true}
-            id="DeparturedListID"
+            id="TransactionID"
             listUrl={listUrl}
             modalTitle={title}
             modalContent={<NewEdit />}

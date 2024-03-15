@@ -9,6 +9,7 @@ const StayInformation = ({
     pax,
     rateType,
 }: any) => {
+    console.log("reservationDate", reservationDate);
     return (
         <Box>
             <Box
@@ -23,10 +24,11 @@ const StayInformation = ({
                 <div>Захиалгын огноо : </div>
                 <div style={{ fontWeight: "600" }}>
                     {" "}
-                    {format(
-                        new Date(reservationDate.replace(/ /g, "T")),
-                        "MM/dd/yyyy"
-                    )}
+                    {reservationDate &&
+                        format(
+                            new Date(reservationDate.replace(/ /g, "T")),
+                            "MM/dd/yyyy"
+                        )}
                 </div>
             </Box>
             <Box

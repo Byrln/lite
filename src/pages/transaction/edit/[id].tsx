@@ -177,7 +177,9 @@ const TransactionEdit = () => {
                                             Хоногийн мэдээлэл
                                         </Box>
                                         <StayInformation
-                                            reservationDate="testDate"
+                                            reservationDate={
+                                                transaction.CreatedDate
+                                            }
                                             arrivalDate={
                                                 transaction.ArrivalDate
                                             }
