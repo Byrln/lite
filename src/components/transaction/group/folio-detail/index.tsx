@@ -60,7 +60,7 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                 return (
                     <>
                         <Button
-                            variant={"text"}
+                            variant={"outlined"}
                             size="small"
                             onClick={() => {
                                 handleModal(

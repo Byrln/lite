@@ -7,6 +7,8 @@ import {
     DialogContentText,
     DialogTitle,
     Checkbox,
+    Menu,
+    MenuItem,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { mutate } from "swr";
@@ -28,6 +30,15 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
     const [newData, setNewData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [rerenderKey, setRerenderKey] = useState(0);
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const [openNoShow, setOpenNoShow] = useState(false);
     const handleClickOpenNoShow = () => {
@@ -236,91 +247,168 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             render: function render(id: any, record: any, element: any) {
                 return (
                     <>
-                        {element.StatusGroup == 1 && (
-                            <Button
-                                variant={"text"}
-                                size="small"
-                                onClick={() =>
-                                    onCheckInClick(element.TransactionID)
-                                }
-                            >
-                                Зочин буулгах
-                            </Button>
-                        )}
-
                         <Button
-                            variant={"text"}
+                            aria-controls={`menu${id}`}
+                            variant={"outlined"}
                             size="small"
-                            onClick={() => {
-                                handleModal(
-                                    true,
-                                    "Хугацаа өөрчлөх",
-                                    <AmendStayForm
-                                        transactionInfo={{
-                                            TransactionID:
-                                                element.TransactionID,
-                                            ArrivalDate: element.ArrivalDate,
-                                            DepartureDate:
-                                                element.DepartureDate,
-                                        }}
-                                        reservation={{
-                                            TransactionID:
-                                                element.TransactionID,
-                                            ArrivalDate: element.ArrivalDate,
-                                            DepartureDate:
-                                                element.DepartureDate,
-                                        }}
-                                        additionalMutateUrl={
-                                            "/api/Folio/Details"
-                                        }
-                                    />
-                                );
-                            }}
+                            onClick={handleClick}
                         >
-                            Хугацаа өөрчлөх
+                            Үйлдэл
                         </Button>
-
-                        <Button
-                            variant={"text"}
-                            size="small"
-                            onClick={() => {
-                                handleModal(
-                                    true,
-                                    "Room Move",
-                                    <RoomMoveForm
-                                        transactionInfo={{
-                                            TransactionID:
-                                                element.TransactionID,
-                                            ArrivalDate: element.ArrivalDate,
-                                            DepartureDate:
-                                                element.DepartureDate,
-                                        }}
-                                        reservation={{
-                                            TransactionID:
-                                                element.TransactionID,
-                                            ArrivalDate: element.ArrivalDate,
-                                            DepartureDate:
-                                                element.DepartureDate,
-                                        }}
-                                        additionalMutateUrl={
-                                            "/api/Folio/Details"
-                                        }
-                                    />
-                                );
-                            }}
+                        <Menu
+                            id={`menu${id}`}
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
                         >
-                            Өрөө шилжих
-                        </Button>
-
-                        {element.StatusGroup == 1 && (
-                            <Button
-                                variant={"text"}
-                                size="small"
-                                onClick={handleClickOpenNoShow}
+                            {element.StatusGroup == 1 && (
+                                <MenuItem
+                                    key={`checkIn${id}`}
+                                    onClick={() =>
+                                        onCheckInClick(element.TransactionID)
+                                    }
+                                >
+                                    Зочин буулгах
+                                </MenuItem>
+                            )}
+                            <MenuItem
+                                key={`amendStay${id}`}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        "Хугацаа өөрчлөх",
+                                        <AmendStayForm
+                                            transactionInfo={{
+                                                TransactionID:
+                                                    element.TransactionID,
+                                                ArrivalDate:
+                                                    element.ArrivalDate,
+                                                DepartureDate:
+                                                    element.DepartureDate,
+                                            }}
+                                            reservation={{
+                                                TransactionID:
+                                                    element.TransactionID,
+                                                ArrivalDate:
+                                                    element.ArrivalDate,
+                                                DepartureDate:
+                                                    element.DepartureDate,
+                                            }}
+                                            additionalMutateUrl={
+                                                "/api/Folio/Details"
+                                            }
+                                        />
+                                    );
+                                }}
                             >
-                                Ирээгүй
-                            </Button>
-                        )}
+                                Хугацаа өөрчлөх
+                            </MenuItem>
+
+                            <MenuItem
+                                key={`roomMove${id}`}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        "Room Move",
+                                        <RoomMoveForm
+                                            transactionInfo={{
+                                                TransactionID:
+                                                    element.TransactionID,
+                                                ArrivalDate:
+                                                    element.ArrivalDate,
+                                                DepartureDate:
+                                                    element.DepartureDate,
+                                            }}
+                                            reservation={{
+                                                TransactionID:
+                                                    element.TransactionID,
+                                                ArrivalDate:
+                                                    element.ArrivalDate,
+                                                DepartureDate:
+                                                    element.DepartureDate,
+                                            }}
+                                            additionalMutateUrl={
+                                                "/api/Folio/Details"
+                                            }
+                                        />
+                                    );
+                                }}
+                            >
+                                Өрөө шилжих
+                            </MenuItem>
+
+                            {element.StatusGroup == 1 && (
+                                <MenuItem
+                                    key={`roomMove${id}`}
+                                    onClick={handleClickOpenNoShow}
+                                >
+                                    Ирээгүй
+                                </MenuItem>
+                            )}
+
+                            <MenuItem
+                                key={`voidTransaction${id}`}
+                                onClick={(evt: any) => {
+                                    handleModal(
+                                        true,
+                                        "Void Transaction",
+                                        <VoidTransactionForm
+                                            transactionInfo={{
+                                                TransactionID:
+                                                    element.TransactionID,
+                                            }}
+                                            reservation={{
+                                                TransactionID:
+                                                    element.TransactionID,
+                                            }}
+                                            customMutateUrl={
+                                                "/api/Folio/Details"
+                                            }
+                                        />
+                                    );
+                                }}
+                            >
+                                Устгах
+                            </MenuItem>
+
+                            {element.StatusGroup == 1 && (
+                                <>
+                                    <MenuItem
+                                        key={`cancelReservation${id}`}
+                                        onClick={(evt: any) => {
+                                            handleModal(
+                                                true,
+                                                "Cancel Reservation",
+                                                <CancelReservationForm
+                                                    transactionInfo={{
+                                                        TransactionID:
+                                                            element.TransactionID,
+                                                    }}
+                                                    reservation={{
+                                                        TransactionID:
+                                                            element.TransactionID,
+                                                    }}
+                                                    customMutateUrl={
+                                                        "/api/Folio/Details"
+                                                    }
+                                                />
+                                            );
+                                        }}
+                                    >
+                                        Захиалга цуцлах
+                                    </MenuItem>
+
+                                    <MenuItem
+                                        key={`unassignRoom${id}`}
+                                        onClick={() =>
+                                            unassignRoom(element.TransactionID)
+                                        }
+                                    >
+                                        Өрөөг болих
+                                    </MenuItem>
+                                </>
+                            )}
+                        </Menu>
 
                         <Dialog
                             open={openNoShow}
@@ -352,70 +440,6 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                 </Button>
                             </DialogActions>
                         </Dialog>
-
-                        <Button
-                            variant={"text"}
-                            size="small"
-                            onClick={(evt: any) => {
-                                handleModal(
-                                    true,
-                                    "Void Transaction",
-                                    <VoidTransactionForm
-                                        transactionInfo={{
-                                            TransactionID:
-                                                element.TransactionID,
-                                        }}
-                                        reservation={{
-                                            TransactionID:
-                                                element.TransactionID,
-                                        }}
-                                        customMutateUrl={"/api/Folio/Details"}
-                                    />
-                                );
-                            }}
-                        >
-                            Устгах
-                        </Button>
-
-                        {element.StatusGroup == 1 && (
-                            <>
-                                <Button
-                                    variant={"text"}
-                                    size="small"
-                                    onClick={(evt: any) => {
-                                        handleModal(
-                                            true,
-                                            "Cancel Reservation",
-                                            <CancelReservationForm
-                                                transactionInfo={{
-                                                    TransactionID:
-                                                        element.TransactionID,
-                                                }}
-                                                reservation={{
-                                                    TransactionID:
-                                                        element.TransactionID,
-                                                }}
-                                                customMutateUrl={
-                                                    "/api/Folio/Details"
-                                                }
-                                            />
-                                        );
-                                    }}
-                                >
-                                    Захиалга цуцлах
-                                </Button>
-
-                                <Button
-                                    variant={"text"}
-                                    size="small"
-                                    onClick={() =>
-                                        unassignRoom(element.TransactionID)
-                                    }
-                                >
-                                    Өрөөг болих
-                                </Button>
-                            </>
-                        )}
                     </>
                 );
             },
@@ -425,16 +449,18 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
     return (
         <Box>
             <Button
-                variant={"text"}
+                variant={"outlined"}
                 size="small"
+                className="mr-2"
                 onClick={() => unassignRooms()}
             >
                 Өрөөг болих
             </Button>
 
             <Button
-                variant={"text"}
+                variant={"outlined"}
                 size="small"
+                className="mr-2"
                 onClick={(evt: any) => {
                     handleModal(
                         true,
@@ -451,8 +477,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             </Button>
 
             <Button
-                variant={"text"}
+                variant={"outlined"}
                 size="small"
+                className="mr-2"
                 onClick={(evt: any) => {
                     handleModal(
                         true,
@@ -469,8 +496,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             </Button>
 
             <Button
-                variant={"text"}
+                variant={"outlined"}
                 size="small"
+                className="mr-2"
                 onClick={() => {
                     handleModal(
                         true,

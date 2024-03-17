@@ -1,5 +1,5 @@
-import { Box, Button } from "@mui/material";
-import { useContext } from "react";
+import { Box, Button, Menu, MenuItem } from "@mui/material";
+import { useContext, useState } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
 
@@ -12,6 +12,15 @@ import { useAppState } from "lib/context/app";
 const RoomCharge = ({ GroupID, TransactionID }: any) => {
     const [state, dispatch]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const { data, error } = GroupSummarySWR(GroupID);
 
@@ -64,36 +73,52 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                 return (
                     <>
                         <Button
-                            variant={"text"}
+                            aria-controls={`menu${id}`}
+                            variant={"outlined"}
                             size="small"
-                            onClick={() => {}}
+                            onClick={handleClick}
                         >
-                            Нэх.хэвлэх
+                            Үйлдэл
                         </Button>
-                        <Button
-                            variant={"text"}
-                            size="small"
-                            onClick={() => {
-                                handleModal(
-                                    true,
-                                    "Засах",
-                                    <NewEdit
-                                        TransactionID={element.TransactionID}
-                                        FolioID={element.FolioID}
-                                    />
-                                );
-                                dispatch({
-                                    type: "isShow",
-                                    isShow: null,
-                                });
-                                dispatch({
-                                    type: "editId",
-                                    editId: element.FolioID,
-                                });
-                            }}
+
+                        <Menu
+                            id={`menu${id}`}
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
                         >
-                            Засах
-                        </Button>
+                            <MenuItem key={`neh${id}`} onClick={() => {}}>
+                                Нэх.хэвлэх
+                            </MenuItem>
+                            <MenuItem
+                                key={`payment${id}`}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        "Төлбөр төлөх",
+                                        <NewEdit
+                                            TransactionID={
+                                                element.TransactionID
+                                            }
+                                            FolioID={element.FolioID}
+                                        />
+                                    );
+                                    dispatch({
+                                        type: "isShow",
+                                        isShow: null,
+                                    });
+                                    dispatch({
+                                        type: "editId",
+                                        editId: [
+                                            element.FolioID,
+                                            element.TypeID,
+                                        ],
+                                    });
+                                }}
+                            >
+                                Төлбөр төлөх
+                            </MenuItem>
+                        </Menu>
                     </>
                 );
             },
@@ -129,10 +154,20 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                 listUrl={listUrl}
                 additionalButtons={
                     <>
-                        <Button key={1} onClick={() => {}}>
+                        <Button
+                            key={1}
+                            onClick={() => {}}
+                            variant={"outlined"}
+                            className="mr-3"
+                        >
                             Е-баримт хэвлэх
                         </Button>
-                        <Button key={2} onClick={() => {}}>
+                        <Button
+                            key={2}
+                            onClick={() => {}}
+                            variant={"outlined"}
+                            className="mr-3"
+                        >
                             Нэх.хэвлэх
                         </Button>
                         <Button
@@ -140,6 +175,8 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                             onClick={() => {
                                 onChargeToOwner(GroupID);
                             }}
+                            variant={"outlined"}
+                            className="mr-3"
                         >
                             Тооцоог группын ахлагч руу
                         </Button>

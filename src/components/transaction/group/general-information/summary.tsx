@@ -1,11 +1,70 @@
 import { Box } from "@mui/material";
-
+import { useState, useEffect } from "react";
 import { ChargeSummarySWR } from "lib/api/charge";
+import { GroupSummarySWR } from "lib/api/folio";
 
-const Summary = ({ TransactionID }: any) => {
-    const { data, error } = ChargeSummarySWR(TransactionID);
+const Summary = ({ TransactionID, GroupID }: any) => {
+    const { data, error } = GroupID
+        ? GroupSummarySWR(GroupID)
+        : ChargeSummarySWR(TransactionID);
+    const [newData, setNewData] = useState<any>();
+    useEffect(() => {
+        if (data) {
+            setNewData({
+                Balance: data.reduce(
+                    (acc: any, obj: any) => acc + obj.Balance,
+                    0
+                ),
+                TotalPayment: data[0].TotalPayments
+                    ? data.reduce(
+                          (acc: any, obj: any) => acc + obj.TotalPayments,
+                          0
+                      )
+                    : data.reduce(
+                          (acc: any, obj: any) => acc + obj.TotalPayment,
+                          0
+                      ),
+                TotalCharge: data[0].TotalCharges
+                    ? data.reduce(
+                          (acc: any, obj: any) => acc + obj.TotalCharges,
+                          0
+                      )
+                    : data.reduce(
+                          (acc: any, obj: any) => acc + obj.TotalCharge,
+                          0
+                      ),
+                MiniBarCharge: data[0].MiniBarCharges
+                    ? data.reduce(
+                          (acc: any, obj: any) => acc + obj.MiniBarCharges,
+                          0
+                      )
+                    : data.reduce(
+                          (acc: any, obj: any) => acc + obj.MiniBarCharge,
+                          0
+                      ),
+                ExtraCharge: data[0].ExtraCharges
+                    ? data.reduce(
+                          (acc: any, obj: any) => acc + obj.ExtraCharges,
+                          0
+                      )
+                    : data.reduce(
+                          (acc: any, obj: any) => acc + obj.ExtraCharge,
+                          0
+                      ),
+                RoomCharge: data[0].RoomCharges
+                    ? data.reduce(
+                          (acc: any, obj: any) => acc + obj.RoomCharges,
+                          0
+                      )
+                    : data.reduce(
+                          (acc: any, obj: any) => acc + obj.RoomCharge,
+                          0
+                      ),
+            });
+        }
+    }, [data]);
 
-    return data && data[0] ? (
+    return data && newData && newData ? (
         <Box>
             <Box sx={{ fontWeight: "bold", marginBottom: "10px" }}>
                 Хураангуй
@@ -20,7 +79,9 @@ const Summary = ({ TransactionID }: any) => {
                 className="mb-1"
             >
                 <div>Өрөөний тооцоо : </div>
-                <div style={{ fontWeight: "600" }}>{data[0].RoomCharges}</div>
+                <div style={{ fontWeight: "600" }}>
+                    {newData && newData.RoomCharge ? newData.RoomCharge : 0}
+                </div>
             </Box>
             <Box
                 sx={{
@@ -32,7 +93,9 @@ const Summary = ({ TransactionID }: any) => {
                 className="mb-1"
             >
                 <div>Нэмэлт үйлчилгээ : </div>
-                <div style={{ fontWeight: "600" }}>{data[0].ExtraCharges}</div>
+                <div style={{ fontWeight: "600" }}>
+                    {newData && newData.ExtraCharge ? newData.ExtraCharge : 0}
+                </div>
             </Box>
             <Box
                 sx={{
@@ -45,7 +108,9 @@ const Summary = ({ TransactionID }: any) => {
             >
                 <div>Мини бар : </div>
                 <div style={{ fontWeight: "600" }}>
-                    {data[0].MiniBarCharges}
+                    {newData && newData.MiniBarCharge
+                        ? newData.MiniBarCharge
+                        : 0}
                 </div>
             </Box>
             <Box
@@ -58,7 +123,9 @@ const Summary = ({ TransactionID }: any) => {
                 className="mb-1"
             >
                 <div>Нийт дүн : </div>
-                <div style={{ fontWeight: "600" }}>{data[0].TotalCharges}</div>
+                <div style={{ fontWeight: "600" }}>
+                    {newData && newData.TotalCharge ? newData.TotalCharge : 0}
+                </div>
             </Box>
             <Box
                 sx={{
@@ -70,7 +137,9 @@ const Summary = ({ TransactionID }: any) => {
                 className="mb-1"
             >
                 <div>Төлсөн : </div>
-                <div style={{ fontWeight: "600" }}>{data[0].TotalPayments}</div>
+                <div style={{ fontWeight: "600" }}>
+                    {newData && newData.TotalPayment ? newData.TotalPayment : 0}
+                </div>
             </Box>
             <Box
                 sx={{
@@ -81,7 +150,9 @@ const Summary = ({ TransactionID }: any) => {
                 }}
             >
                 <div>Үлдэгдэл : </div>
-                <div style={{ fontWeight: "600" }}>{data[0].Balance}</div>
+                <div style={{ fontWeight: "600" }}>
+                    {newData && newData.Balance ? newData.Balance : 0}
+                </div>
             </Box>
         </Box>
     ) : (

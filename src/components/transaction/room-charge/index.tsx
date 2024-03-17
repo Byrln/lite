@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { Box } from "@mui/material";
+import { useContext, useState } from "react";
+import { Box, Menu, MenuItem } from "@mui/material";
 import Button from "@mui/material/Button";
 import { format } from "date-fns";
 
@@ -14,6 +14,15 @@ import UpdateRate from "./update-rate";
 const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const { data, error } = RoomChargeSWR(TransactionID);
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const columns = [
         {
@@ -88,55 +97,72 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                 return (
                     <>
                         <Button
-                            onClick={() => {
-                                handleModal(
-                                    true,
-                                    `Тариф өөрчлөх`,
-                                    <UpdateRateType
-                                        element={element}
-                                        RoomTypeID={RoomTypeID}
-                                    />,
-                                    null,
-                                    "large"
-                                );
-                            }}
+                            aria-controls={`menu${id}`}
+                            variant={"outlined"}
+                            size="small"
+                            onClick={handleClick}
                         >
-                            Тариф өөрчлөх
+                            Үйлдэл
                         </Button>
+                        <Menu
+                            id={`menu${id}`}
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            <MenuItem
+                                key={`updateRate${id}`}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        `Тариф өөрчлөх`,
+                                        <UpdateRateType
+                                            element={element}
+                                            RoomTypeID={RoomTypeID}
+                                        />,
+                                        null,
+                                        "large"
+                                    );
+                                }}
+                            >
+                                Тариф өөрчлөх
+                            </MenuItem>
+                            <MenuItem
+                                key={`updatePox${id}`}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        `Хүний тоо өөрчлөх`,
+                                        <UpdatePox
+                                            element={element}
+                                            RoomTypeID={RoomTypeID}
+                                        />,
+                                        null,
+                                        "large"
+                                    );
+                                }}
+                            >
+                                Хүний тоо өөрчлөх
+                            </MenuItem>
 
-                        <Button
-                            onClick={() => {
-                                handleModal(
-                                    true,
-                                    `Хүний тоо өөрчлөх`,
-                                    <UpdatePox
-                                        element={element}
-                                        RoomTypeID={RoomTypeID}
-                                    />,
-                                    null,
-                                    "large"
-                                );
-                            }}
-                        >
-                            Хүний тоо өөрчлөх
-                        </Button>
-
-                        <Button
-                            onClick={() => {
-                                handleModal(
-                                    true,
-                                    `Үнэ өөрчлөх`,
-                                    <UpdateRate
-                                        element={element}
-                                        RoomTypeID={RoomTypeID}
-                                    />,
-                                    null,
-                                    "large"
-                                );
-                            }}
-                        >
-                            Үнэ өөрчлөх
-                        </Button>
+                            <MenuItem
+                                key={`updateRate${id}`}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        `Үнэ өөрчлөх`,
+                                        <UpdateRate
+                                            element={element}
+                                            RoomTypeID={RoomTypeID}
+                                        />,
+                                        null,
+                                        "large"
+                                    );
+                                }}
+                            >
+                                Үнэ өөрчлөх
+                            </MenuItem>
+                        </Menu>
                     </>
                 );
             },

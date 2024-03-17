@@ -84,7 +84,7 @@ const TransactionEdit = () => {
 
         fetchDatas();
     }, [router]);
-
+    console.log("transaction", transaction);
     return (
         <>
             <Container maxWidth="xl">
@@ -264,7 +264,8 @@ const TransactionEdit = () => {
                                             <CardContent>
                                                 <RemarkList
                                                     TransactionID={
-                                                        transaction.TransactionID
+                                                        router.query
+                                                            .transactionID
                                                     }
                                                 />
                                             </CardContent>
@@ -275,9 +276,7 @@ const TransactionEdit = () => {
                                         <Card>
                                             <CardContent>
                                                 <Summary
-                                                    TransactionID={
-                                                        transaction.TransactionID
-                                                    }
+                                                    GroupID={router.query.id}
                                                 />
                                             </CardContent>
                                         </Card>
@@ -296,14 +295,14 @@ const TransactionEdit = () => {
                             <TabPanel value={value} index={2}>
                                 <FolioSummary
                                     GroupID={transaction.GroupID}
-                                    TransactionID={transaction.TransactionID}
+                                    TransactionID={router.query.transactionID}
                                 />
                             </TabPanel>
 
                             <TabPanel value={value} index={3}>
                                 <FolioDetail
                                     GroupID={transaction.GroupID}
-                                    TransactionID={transaction.TransactionID}
+                                    TransactionID={router.query.transactionID}
                                 />
                             </TabPanel>
                         </Box>

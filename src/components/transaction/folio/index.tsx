@@ -139,6 +139,8 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
                     <>
                         <Button
                             key={0}
+                            variant={"outlined"}
+                            className="mr-3"
                             onClick={() => {
                                 handleModal(
                                     true,
@@ -159,6 +161,8 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
 
                         <Button
                             key={1}
+                            variant={"outlined"}
+                            className="mr-3"
                             onClick={() => {
                                 handleModal(
                                     true,
@@ -177,6 +181,8 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
 
                         <Button
                             key={2}
+                            variant={"outlined"}
+                            className="mr-3"
                             onClick={() => {
                                 handleModal(
                                     true,
