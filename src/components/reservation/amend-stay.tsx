@@ -125,26 +125,86 @@ const AmendStayForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            var vals: any = {
-                TransactionID: values.TransactionID,
-                ArrivalDate: null,
-                DepartureDate: null,
-                OverrideRate: values.OverrideRate,
-                NewNights: values.NewNights,
-            };
+            // var vals: any = {
+            //     TransactionID: values.TransactionID,
+            //     ArrivalDate: null,
+            //     DepartureDate: null,
+            //     OverrideRate: values.OverrideRate,
+            //     NewNights: values.NewNights,
+            // };
 
-            vals.ArrivalDate =
-                fToCustom(values.ArrivalDate.getTime(), "yyyy MMM dd") +
-                " " +
-                values.ArrivalTime +
-                ":00";
-            vals.DepartureDate =
-                fToCustom(values.DepartureDate.getTime(), "yyyy MMM dd") +
-                " " +
-                values.DepartureTime +
-                ":00";
+            // vals.ArrivalDate =
+            //     fToCustom(values.ArrivalDate.getTime(), "yyyy MMM dd") +
+            //     " " +
+            //     values.ArrivalTime +
+            //     ":00";
+            // vals.DepartureDate =
+            //     fToCustom(values.DepartureDate.getTime(), "yyyy MMM dd") +
+            //     " " +
+            //     values.DepartureTime +
+            //     ":00";
 
-            const res = await ReservationAPI.amendStay(vals);
+            // const res = await ReservationAPI.amendStay(vals);
+            console.log(
+                "transactionInfo.TrransactionID",
+                transactionInfo.TransactionID
+            );
+            if (
+                transactionInfo.TransactionID.length != "undefined" &&
+                transactionInfo.TransactionID.length > 0
+            ) {
+                transactionInfo.TransactionID.forEach(async (room: any) => {
+                    if (room.isChecked == true) {
+                        var vals: any = {
+                            TransactionID: room.TransactionID,
+                            ArrivalDate: null,
+                            DepartureDate: null,
+                            OverrideRate: values.OverrideRate,
+                            NewNights: values.NewNights,
+                        };
+
+                        vals.ArrivalDate =
+                            fToCustom(
+                                values.ArrivalDate.getTime(),
+                                "yyyy MMM dd"
+                            ) +
+                            " " +
+                            values.ArrivalTime +
+                            ":00";
+                        vals.DepartureDate =
+                            fToCustom(
+                                values.DepartureDate.getTime(),
+                                "yyyy MMM dd"
+                            ) +
+                            " " +
+                            values.DepartureTime +
+                            ":00";
+
+                        const res = await ReservationAPI.amendStay(vals);
+                    }
+                });
+            } else {
+                var vals: any = {
+                    TransactionID: transactionInfo.TransactionID,
+                    ArrivalDate: null,
+                    DepartureDate: null,
+                    OverrideRate: values.OverrideRate,
+                    NewNights: values.NewNights,
+                };
+
+                vals.ArrivalDate =
+                    fToCustom(values.ArrivalDate.getTime(), "yyyy MMM dd") +
+                    " " +
+                    values.ArrivalTime +
+                    ":00";
+                vals.DepartureDate =
+                    fToCustom(values.DepartureDate.getTime(), "yyyy MMM dd") +
+                    " " +
+                    values.DepartureTime +
+                    ":00";
+
+                const res = await ReservationAPI.amendStay(vals);
+            }
 
             await mutate(listUrl);
 
@@ -152,7 +212,7 @@ const AmendStayForm = ({
                 await mutate(additionalMutateUrl);
             }
 
-            toast("Амжилттай.");
+            // toast("Амжилттай.");
 
             setLoading(false);
             handleModal();

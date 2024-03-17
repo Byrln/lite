@@ -156,6 +156,7 @@ const TransactionEdit = () => {
                                         >
                                             Зочны мэдээлэл
                                         </Box>
+
                                         <GuestInformation
                                             name={transaction.GuestName}
                                             phone={transaction.BookerPhone}
@@ -186,8 +187,16 @@ const TransactionEdit = () => {
                                             departureDate={
                                                 transaction.DepartureDate
                                             }
-                                            pax="testPax"
-                                            rateType="testRate"
+                                            pax={
+                                                (transaction.Adult > 0
+                                                    ? transaction.Adult
+                                                    : "0") +
+                                                "/" +
+                                                (transaction.Child > 0
+                                                    ? transaction.Child
+                                                    : "0")
+                                            }
+                                            rateType={transaction.RateTypeName}
                                         />
                                     </CardContent>
                                 </Card>

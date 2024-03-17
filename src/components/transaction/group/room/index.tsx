@@ -6,6 +6,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    Checkbox,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { mutate } from "swr";
@@ -24,12 +25,32 @@ import CancelReservationForm from "components/reservation/cancel-reservation";
 const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const { data, error } = FolioSWR(null, GroupID);
-    const [newData, setNewData] = useState(null);
+    const [newData, setNewData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
+    const [rerenderKey, setRerenderKey] = useState(0);
 
     const [openNoShow, setOpenNoShow] = useState(false);
     const handleClickOpenNoShow = () => {
         setOpenNoShow(true);
+    };
+
+    const unassignRooms = async () => {
+        if (!confirm("Are you sure?")) {
+            return;
+        }
+
+        newData.forEach(async (room: any) => {
+            if (room.isChecked == true) {
+                await ReservationAPI.roomUnassign(room.TransactionID);
+            }
+        });
+        await mutate("/api/Folio/Details");
+
+        let tempEntity = [...newData];
+        tempEntity.forEach((element: any) => (element.isChecked = false));
+        setNewData(tempEntity);
+        setRerenderKey((prevKey) => prevKey + 1);
+        // toast("Амжилттай");
     };
 
     const unassignRoom = async (TransactionID: any) => {
@@ -120,11 +141,50 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
         }
     }, [data]);
 
+    const onCheckboxChange = (e: any) => {
+        let tempEntity = [...newData];
+        tempEntity.forEach(
+            (element: any) => (element.isChecked = e.target.checked)
+        );
+        setNewData(tempEntity);
+        setRerenderKey((prevKey) => prevKey + 1);
+    };
+
     const columns = [
         {
             title: "№",
             key: "№",
             dataIndex: "№",
+        },
+        {
+            title: "",
+            key: "check",
+            dataIndex: "check",
+            withCheckBox: true,
+            onChange: onCheckboxChange,
+            render: function render(
+                id: any,
+                value: any,
+                element: any,
+                dataIndex: any
+            ) {
+                console.log("test", dataIndex);
+                return (
+                    <Checkbox
+                        key={rerenderKey}
+                        checked={
+                            newData &&
+                            newData[dataIndex] &&
+                            newData[dataIndex].isChecked
+                        }
+                        onChange={(e: any) => {
+                            let tempEntity = [...newData];
+                            tempEntity[dataIndex].isChecked = e.target.checked;
+                            setNewData(tempEntity);
+                        }}
+                    />
+                );
+            },
         },
         {
             title: "Тооцооны дугаар",
@@ -364,6 +424,76 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
 
     return (
         <Box>
+            <Button
+                variant={"text"}
+                size="small"
+                onClick={() => unassignRooms()}
+            >
+                Өрөөг болих
+            </Button>
+
+            <Button
+                variant={"text"}
+                size="small"
+                onClick={(evt: any) => {
+                    handleModal(
+                        true,
+                        "Cancel Reservation",
+                        <CancelReservationForm
+                            transactionInfo={newData}
+                            reservation={newData}
+                            customMutateUrl={"/api/Folio/Details"}
+                        />
+                    );
+                }}
+            >
+                Захиалга цуцлах
+            </Button>
+
+            <Button
+                variant={"text"}
+                size="small"
+                onClick={(evt: any) => {
+                    handleModal(
+                        true,
+                        "Void Transaction",
+                        <VoidTransactionForm
+                            transactionInfo={newData}
+                            reservation={newData}
+                            customMutateUrl={"/api/Folio/Details"}
+                        />
+                    );
+                }}
+            >
+                Устгах
+            </Button>
+
+            <Button
+                variant={"text"}
+                size="small"
+                onClick={() => {
+                    handleModal(
+                        true,
+                        "Хугацаа өөрчлөх",
+                        <AmendStayForm
+                            transactionInfo={{
+                                TransactionID: newData,
+                                ArrivalDate: arrivalDate,
+                                DepartureDate: departureDate,
+                            }}
+                            reservation={{
+                                TransactionID: newData,
+                                ArrivalDate: arrivalDate,
+                                DepartureDate: departureDate,
+                            }}
+                            additionalMutateUrl={"/api/Folio/Details"}
+                        />
+                    );
+                }}
+            >
+                Хугацаа өөрчлөх
+            </Button>
+
             {newData && (
                 <CustomTable
                     columns={columns}

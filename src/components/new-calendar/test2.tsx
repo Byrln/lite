@@ -231,8 +231,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         setHeight(window.innerHeight - 225);
     }, [window.innerHeight]);
 
-    const [newEvent, setNewEvent] = useState<any>(null);
-
     const handleEventClick = (info: any) => {
         if (info.event._instance.range.end > new Date(workingDate)) {
             handleModal(
@@ -341,8 +339,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     info.resource._resource.extendedProps.MaxChild
                 ),
             };
-
-            setNewEvent(newEventObject);
 
             if (newEventObject.roomID) {
                 handleModal(
@@ -532,166 +528,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         }}
                     />
                 )}
-                {/* <Grid container direction="row" className="mt-2">
-                    <Grid
-                        item
-                        xs={12}
-                        style={{ display: "flex", flexWrap: "wrap" }}
-                    >
-                        <div
-                            className="pl-1 pr-1 mb-1 mr-3"
-                            style={{
-                                borderRadius: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    backgroundColor: "#330011",
-                                    borderRadius: "4px",
-                                }}
-                                className="mr-1"
-                            ></div>
-                            Ирсэн
-                        </div>
-                        <div
-                            className="pl-1 pr-1 mb-1 mr-3"
-                            style={{
-                                borderRadius: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    backgroundColor: "#991100",
-                                    borderRadius: "4px",
-                                }}
-                                className="mr-1"
-                            ></div>
-                            Гарсан
-                        </div>
-                        <div
-                            className="pl-1 pr-1 mb-1 mr-3"
-                            style={{
-                                borderRadius: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    backgroundColor: "#6699FF",
-                                    borderRadius: "4px",
-                                }}
-                                className="mr-1"
-                            ></div>
-                            Гарах
-                        </div>
-                        <div
-                            className="pl-1 pr-1 mb-1 mr-3"
-                            style={{
-                                borderRadius: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    backgroundColor: "#009933",
-                                    borderRadius: "4px",
-                                }}
-                                className="mr-1"
-                            ></div>
-                            Баталгаажсан
-                        </div>
-                        <div
-                            className="pl-1 pr-1 mb-1 mr-3"
-                            style={{
-                                borderRadius: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    backgroundColor: "#000000",
-                                    borderRadius: "4px",
-                                }}
-                                className="mr-1"
-                            ></div>
-                            Блок
-                        </div>
-                        <div
-                            className="pl-1 pr-1 mb-1 mr-3"
-                            style={{
-                                borderRadius: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    backgroundColor: "#CCFF00",
-                                    borderRadius: "4px",
-                                }}
-                                className="mr-1"
-                            ></div>
-                            Дахин хонох
-                        </div>
-                        <div
-                            className="pl-1 pr-1 mb-1 mr-3"
-                            style={{
-                                borderRadius: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    backgroundColor: "#009933",
-                                    borderRadius: "4px",
-                                }}
-                                className="mr-1"
-                            ></div>
-                            Өдрөөр захиалга
-                        </div>
-                        <div
-                            className="pl-1 pr-1 mb-1 mr-3"
-                            style={{
-                                borderRadius: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    backgroundColor: "#FF66FF",
-                                    borderRadius: "4px",
-                                }}
-                                className="mr-1"
-                            ></div>
-                            Өдрөөр ашиглах
-                        </div>
-                    </Grid>
-                </Grid> */}
             </>
         )
     );

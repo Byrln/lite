@@ -20,7 +20,7 @@ const VoidTransactionForm = ({
     const [loading, setLoading] = useState(false);
 
     const validationSchema = yup.object().shape({
-        TransactionID: yup.number().required("Сонгоно уу"),
+        TransactionID: yup.string().notRequired(),
         ReasonID: yup.number().required("Сонгоно уу"),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
@@ -41,11 +41,26 @@ const VoidTransactionForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            const res = await ReservationAPI.void(values);
+            if (
+                transactionInfo.length != "undefined" &&
+                transactionInfo.length > 0
+            ) {
+                transactionInfo.forEach(async (room: any) => {
+                    if (room.isChecked == true) {
+                        let tempValue: any = {};
+                        tempValue.ReasonID = values.ReasonID;
+                        tempValue.TransactionID = room.TransactionID;
+                        const res = await ReservationAPI.void(values);
+                    }
+                });
+            } else {
+                values.TransactionID = transactionInfo.TransactionID;
+                const res = await ReservationAPI.void(values);
+            }
 
             await mutate(customMutateUrl ? customMutateUrl : listUrl);
 
-            toast("Амжилттай.");
+            // toast("Амжилттай.");
 
             setLoading(false);
             handleModal();

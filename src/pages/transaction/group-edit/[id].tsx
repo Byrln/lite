@@ -69,7 +69,7 @@ const TransactionEdit = () => {
     }
 
     const router = useRouter();
-    console.log("transaction", transaction);
+
     useEffect(() => {
         const fetchDatas = async () => {
             setLoading(true);
@@ -186,12 +186,7 @@ const TransactionEdit = () => {
                                             departureDate={
                                                 transaction.DepartureDate
                                             }
-                                            pax={
-                                                `` +
-                                                transaction.Adult +
-                                                "/" +
-                                                transaction.Child
-                                            }
+                                            pax={transaction.Pax}
                                             rateType={transaction.RateTypeName}
                                         />
                                     </CardContent>

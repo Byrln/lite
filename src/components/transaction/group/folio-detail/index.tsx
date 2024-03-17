@@ -56,7 +56,7 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             title: "Үйлдэл",
             key: "Action",
             dataIndex: "Action",
-            render: function render(id: any, record: any, element: any) {
+            renderCell: (element: any) => {
                 return (
                     <>
                         <Button
@@ -67,9 +67,11 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                                     true,
                                     "Засах",
                                     <NewEdit
-                                        TransactionID={element.TransactionID}
-                                        FolioID={element.FolioID}
-                                        TypeID={element.TypeID}
+                                        TransactionID={
+                                            element.row.TransactionID
+                                        }
+                                        FolioID={element.row.FolioID}
+                                        TypeID={element.row.TypeID}
                                     />
                                 );
                                 dispatch({
@@ -78,7 +80,10 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                                 });
                                 dispatch({
                                     type: "editId",
-                                    editId: [element.FolioID, element.TypeID],
+                                    editId: [
+                                        element.row.FolioID,
+                                        element.row.TypeID,
+                                    ],
                                 });
                             }}
                         >
@@ -99,11 +104,11 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                 modalTitle="Өрөөний тооцоо"
                 excelName="Өрөөний тооцоо"
                 pagination={false}
-                datagrid={false}
+                datagrid={true}
                 hasPrint={true}
                 hasExcel={true}
                 hasNew={false}
-                hasUpdate={true}
+                hasUpdate={false}
                 hasShow={false}
                 id="FolioID"
                 id2="TypeID"
