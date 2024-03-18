@@ -26,12 +26,8 @@ export const TransactionAPI = {
         };
         const res = await axios.post(listUrl, values);
 
-        console.log(res);
-
         var list = res.data.JsonData;
         var item;
-
-        console.log(list);
 
         if (list.length === 1) {
             item = list[0];

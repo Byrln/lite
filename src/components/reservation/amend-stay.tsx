@@ -21,7 +21,7 @@ import {
 const AmendStayForm = ({
     transactionInfo,
     reservation,
-    additionalMutateUrl,
+    additionalMutateUrl = null,
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
@@ -32,7 +32,7 @@ const AmendStayForm = ({
         dateEnd: null,
         nights: 0,
     });
-
+    console.log("additionalMutateUrl", additionalMutateUrl);
     const validationSchema = yup.object().shape({
         ArrivalDate: yup.date().required("Сонгоно уу"),
         ArrivalTime: yup.string().required("Сонгоно уу"),
@@ -208,9 +208,7 @@ const AmendStayForm = ({
 
             await mutate(listUrl);
 
-            if (additionalMutateUrl) {
-                await mutate(additionalMutateUrl);
-            }
+            await mutate("/api/FrontOffice/TransactionInfo");
 
             // toast("Амжилттай.");
 

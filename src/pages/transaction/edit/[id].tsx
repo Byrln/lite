@@ -1,6 +1,6 @@
 import "react-calendar-timeline/lib/Timeline.css";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Grid from "@mui/material/Grid";
@@ -13,10 +13,14 @@ import {
     Card,
     CardContent,
     Divider,
+    Button,
+    Menu,
+    MenuItem,
 } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import { ApiResponseModel } from "models/response/ApiResponseModel";
-import { TransactionAPI } from "lib/api/transaction";
+import { TransactionSWR, TransactionAPI, listUrl } from "lib/api/transaction";
 import GuestInformation from "components/transaction/guest-information";
 import StayInformation from "components/transaction/stay-information";
 import OtherInformation from "components/transaction/other-information";
@@ -25,6 +29,12 @@ import Summary from "components/transaction/general-information/summary";
 import RoomCharge from "components/transaction/room-charge";
 import Folio from "components/transaction/folio";
 import RemarkList from "components/reservation/remark/list";
+import GuestNewEdit from "components/front-office/guest-database/new-edit";
+import GuestDocuments from "components/common/custom-upload";
+import AmendStayForm from "components/reservation/amend-stay";
+
+import { useAppState } from "lib/context/app";
+import { ModalContext } from "lib/context/modal";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -53,9 +63,34 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const TransactionEdit = () => {
+    const router = useRouter();
+
+    const { data, error } = TransactionSWR(router.query.id);
+
     const [transaction, setTransaction]: any = useState(null);
     const [loading, setLoading] = useState(false);
     const [value, setValue] = useState(0);
+    const [state, dispatch]: any = useAppState();
+    const { handleModal }: any = useContext(ModalContext);
+    const [guestAnchorEl, setGuestAnchorEl] = useState(null);
+    const [stayAnchorEl, setStayAnchorEl] = useState(null);
+
+    const handleGuestClick = (event: any) => {
+        setGuestAnchorEl(event.currentTarget);
+    };
+
+    const handleGuestClose = () => {
+        setGuestAnchorEl(null);
+    };
+
+    const handleStayClick = (event: any) => {
+        setStayAnchorEl(event.currentTarget);
+    };
+
+    const handleStayClose = () => {
+        setStayAnchorEl(null);
+    };
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -67,24 +102,13 @@ const TransactionEdit = () => {
         };
     }
 
-    const router = useRouter();
-
     useEffect(() => {
-        const fetchDatas = async () => {
-            setLoading(true);
-            try {
-                const response: ApiResponseModel = await TransactionAPI.get(
-                    router.query.id
-                );
-                setTransaction(response);
-            } finally {
-                setLoading(false);
-            }
-        };
+        if (data) {
+            setTransaction(data);
+        }
+    }, [data]);
 
-        fetchDatas();
-    }, [router]);
-
+    console.log("transaction", transaction);
     return (
         <>
             <Container maxWidth="xl">
@@ -151,10 +175,107 @@ const TransactionEdit = () => {
                                         <Box
                                             sx={{
                                                 fontWeight: "bold",
+                                                display: "flex",
+                                                justifyContent: "space-between",
                                             }}
-                                            className="mb-3"
                                         >
                                             Зочны мэдээлэл
+                                            <Button
+                                                key={2}
+                                                variant={"text"}
+                                                aria-controls={`guest`}
+                                                size="small"
+                                                onClick={handleGuestClick}
+                                            >
+                                                <KeyboardArrowDownIcon
+                                                    fontSize={"large"}
+                                                />
+                                            </Button>
+                                            <Menu
+                                                id={`guest`}
+                                                anchorEl={guestAnchorEl}
+                                                open={Boolean(guestAnchorEl)}
+                                                onClose={handleGuestClose}
+                                            >
+                                                <MenuItem key={`guestReplace`}>
+                                                    Зочин солих
+                                                </MenuItem>
+                                                <MenuItem
+                                                    key={`guestDetails`}
+                                                    onClick={() => {
+                                                        handleModal(
+                                                            true,
+                                                            "Зочны мэдээлэл",
+                                                            <GuestNewEdit />
+                                                        );
+                                                        dispatch({
+                                                            type: "isShow",
+                                                            isShow: true,
+                                                        });
+                                                        dispatch({
+                                                            type: "editId",
+                                                            editId: transaction.GuestID,
+                                                        });
+                                                    }}
+                                                >
+                                                    Зочны мэдээлэл харах
+                                                </MenuItem>
+                                                <MenuItem
+                                                    key={`guestEdit`}
+                                                    onClick={() => {
+                                                        handleModal(
+                                                            true,
+                                                            "Зочны мэдээлэл засах",
+                                                            <GuestNewEdit />
+                                                        );
+                                                        dispatch({
+                                                            type: "isShow",
+                                                            isShow: false,
+                                                        });
+                                                        dispatch({
+                                                            type: "editId",
+                                                            editId: transaction.GuestID,
+                                                        });
+                                                    }}
+                                                >
+                                                    Зочны мэдээлэл засах
+                                                </MenuItem>
+                                                <MenuItem
+                                                    key={`guestPictureImport`}
+                                                    onClick={() => {
+                                                        handleModal(
+                                                            true,
+                                                            "Зочны мэдээлэл засах",
+                                                            <GuestDocuments
+                                                                GuestID={
+                                                                    transaction.GuestID
+                                                                }
+                                                            />
+                                                        );
+                                                    }}
+                                                >
+                                                    Зураг оруулах
+                                                </MenuItem>
+                                                <MenuItem
+                                                    key={`guestDocumentImport`}
+                                                    onClick={() => {
+                                                        handleModal(
+                                                            true,
+                                                            "Зочны мэдээлэл засах",
+                                                            <GuestDocuments
+                                                                GuestID={
+                                                                    transaction.GuestID
+                                                                }
+                                                                IsDocument={
+                                                                    true
+                                                                }
+                                                            />
+                                                        );
+                                                    }}
+                                                >
+                                                    Бичиг баримт хуулах
+                                                </MenuItem>
+                                            </Menu>
                                         </Box>
 
                                         <GuestInformation
@@ -172,10 +293,52 @@ const TransactionEdit = () => {
                                         <Box
                                             sx={{
                                                 fontWeight: "bold",
+                                                display: "flex",
+                                                justifyContent: "space-between",
                                             }}
                                             className="mb-3"
                                         >
                                             Хоногийн мэдээлэл
+                                            <Button
+                                                key={2}
+                                                variant={"text"}
+                                                aria-controls={`stay`}
+                                                size="small"
+                                                onClick={handleStayClick}
+                                            >
+                                                <KeyboardArrowDownIcon
+                                                    fontSize={"large"}
+                                                />
+                                            </Button>
+                                            <Menu
+                                                id={`stay`}
+                                                anchorEl={stayAnchorEl}
+                                                open={Boolean(stayAnchorEl)}
+                                                onClose={handleStayClose}
+                                            >
+                                                <MenuItem
+                                                    key={`stayAmend`}
+                                                    onClick={() => {
+                                                        handleModal(
+                                                            true,
+                                                            "Хугацаа өөрчлөх",
+                                                            <AmendStayForm
+                                                                transactionInfo={{
+                                                                    TransactionID:
+                                                                        transaction.TransactionID,
+                                                                    ArrivalDate:
+                                                                        transaction.ArrivalDate,
+                                                                    DepartureDate:
+                                                                        transaction.DepartureDate,
+                                                                }}
+                                                                additionalMutateUrl="/api/FrontOffice/TransactionInfo"
+                                                            />
+                                                        );
+                                                    }}
+                                                >
+                                                    Зочны мэдээлэл харах
+                                                </MenuItem>
+                                            </Menu>
                                         </Box>
                                         <StayInformation
                                             reservationDate={
