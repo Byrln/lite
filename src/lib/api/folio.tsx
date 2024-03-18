@@ -73,6 +73,7 @@ export const FolioAPI = {
         let values = {
             FolioID: id[0],
             TypeID: id[1],
+            CurrID: id[2],
         };
 
         values = Object.assign(values, additionalValues);

@@ -1,5 +1,5 @@
 import { Box, Button, Menu, MenuItem } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
 
@@ -8,18 +8,35 @@ import CustomTable from "components/common/custom-table";
 import { ModalContext } from "lib/context/modal";
 import NewEdit from "./new-edit";
 import { useAppState } from "lib/context/app";
+import { FrontOfficeAPI } from "lib/api/front-office";
 
 const RoomCharge = ({ GroupID, TransactionID }: any) => {
+    const [workingDate, setWorkingDate] = useState(null);
+
+    useEffect(() => {
+        fetchDatas();
+    }, []);
+
+    const fetchDatas = async () => {
+        let response = await FrontOfficeAPI.workingDate();
+        if (response.status == 200) {
+            setWorkingDate(response.workingDate[0].WorkingDate);
+        }
+    };
+
     const [state, dispatch]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedRow, setSelectedRow] = useState<any>(null);
 
-    const handleClick = (event: any) => {
+    const handleClick = (event: any, row: any) => {
         setAnchorEl(event.currentTarget);
+        setSelectedRow(row);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
+        setSelectedRow(null);
     };
 
     const { data, error } = GroupSummarySWR(GroupID);
@@ -69,51 +86,54 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             title: "Үйлдэл",
             key: "Action",
             dataIndex: "Action",
-            render: function render(id: any, record: any, element: any) {
+            render: function render(id: any, record: any, entity: any) {
                 return (
                     <>
                         <Button
-                            aria-controls={`menu${id}`}
+                            aria-controls={`menu${entity.FolioID}`}
                             variant={"outlined"}
                             size="small"
-                            onClick={handleClick}
+                            onClick={(e) => handleClick(e, entity)}
                         >
                             Үйлдэл
                         </Button>
 
                         <Menu
-                            id={`menu${id}`}
+                            id={`menu${entity.FolioID}`}
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem key={`neh${id}`} onClick={() => {}}>
+                            <MenuItem
+                                key={`neh${entity.FolioID}`}
+                                onClick={() => {}}
+                            >
                                 Нэх.хэвлэх
                             </MenuItem>
                             <MenuItem
-                                key={`payment${id}`}
+                                key={`payment${entity.FolioID}`}
                                 onClick={() => {
                                     handleModal(
                                         true,
                                         "Төлбөр төлөх",
                                         <NewEdit
                                             TransactionID={
-                                                element.TransactionID
+                                                selectedRow &&
+                                                selectedRow.TransactionID
                                             }
-                                            FolioID={element.FolioID}
+                                            FolioID={
+                                                selectedRow &&
+                                                selectedRow.FolioID
+                                            }
+                                            workingDate={
+                                                workingDate && workingDate
+                                            }
+                                            Balance={
+                                                selectedRow &&
+                                                selectedRow.Balance
+                                            }
                                         />
                                     );
-                                    dispatch({
-                                        type: "isShow",
-                                        isShow: null,
-                                    });
-                                    dispatch({
-                                        type: "editId",
-                                        editId: [
-                                            element.FolioID,
-                                            element.TypeID,
-                                        ],
-                                    });
                                 }}
                             >
                                 Төлбөр төлөх

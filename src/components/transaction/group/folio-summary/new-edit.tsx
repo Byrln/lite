@@ -2,7 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
@@ -24,8 +24,8 @@ import { listUrl as paymentMethodUrl } from "lib/api/payment-method";
 import CurrencySelect from "components/select/currency";
 
 const validationSchema = yup.object().shape({
-    PayCurrencyID: yup.string().required("Бөглөнө үү"),
-    Amount: yup.string().required("Бөглөнө үү"),
+    CurrencyID: yup.string().required("Бөглөнө үү"),
+    Balance: yup.string().required("Бөглөнө үү"),
     Description: yup.string().required("Бөглөнө үү"),
 });
 
@@ -33,10 +33,17 @@ const baseStayDefault = {
     TransactionID: 0,
 };
 
-const NewEdit = ({ TransactionID, FolioID }: any) => {
+const NewEdit = ({
+    TransactionID,
+    FolioID,
+    CurrID,
+    workingDate,
+    Balance,
+}: any) => {
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
     const [entity, setEntity]: any = useState({});
-
+    console.log("workingDate", workingDate);
+    console.log("FolioID", FolioID);
     const [paymentMethodGroupID, setPaymentMethodGroupID]: any = useState(0);
     const [paymentMethodID, setPaymentMethodID]: any = useState(0);
 
@@ -61,12 +68,6 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
     const customResetEvent = (data: any) => {
         console.log("formdata", data[0]);
         setEntity(data[0]);
-        resetField(`Amount`, {
-            defaultValue: data[0].Amount1,
-        });
-        resetField(`PayCurrencyID`, {
-            defaultValue: data[0].CurrencyID,
-        });
 
         setBaseStay({
             ...baseStay,
@@ -74,16 +75,30 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
         });
     };
 
+    useEffect(() => {
+        if (workingDate) {
+            resetField(`CurrDate`, {
+                defaultValue: workingDate,
+            });
+        }
+
+        if (Balance) {
+            resetField(`Balance`, {
+                defaultValue: Balance,
+            });
+        }
+    }, [workingDate]);
+
     const customSubmit = async (values: any) => {
         try {
             let tempValues = {
-                TransactionID: entity.TransactionID,
-                FolioID: entity.FolioID,
+                TransactionID: TransactionID,
+                FolioID: FolioID,
                 TypeID: entity.TypeID,
                 ItemID: entity.ItemID,
-                CurrDate: entity.CurrDate,
-                PayCurrencyID: values.PayCurrencyID,
-                Amount: values.Amount,
+                CurrDate: workingDate,
+                PayCurrencyID: values.CurrencyID,
+                Amount: values.Balance,
                 Quantity: values.Quantity ? values.Quantity : entity.Quantity,
                 Description: values.Description,
                 RateModeID: entity.RateModeID,
@@ -91,7 +106,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                 PaymentMethodGroupID: values.PaymentMethodGroupID,
                 PaymentMethodID: values.PaymentMethodID,
             };
-            FolioAPI.update(tempValues);
+            await FolioAPI.new(tempValues);
         } finally {
         }
     };
@@ -99,10 +114,10 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
     return (
         <NewEditForm
             api={FolioAPI}
-            listUrl={listUrl}
+            listUrl="/api/Folio/Group/Summary"
             additionalValues={{
                 FolioID: FolioID,
-                TransactionID: TransactionID,
+                TransactiaonID: TransactionID,
                 ItemID: state.editId,
             }}
             reset={reset}
@@ -184,7 +199,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                         <CurrencySelect
                             register={register}
                             errors={errors}
-                            nameKey={`PayCurrencyID`}
+                            nameKey={`CurrencyID`}
                             entity={baseStay}
                             setEntity={setBaseStay}
                         />
@@ -194,14 +209,14 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                         <TextField
                             type="number"
                             fullWidth
-                            id="Amount"
+                            id="Balance"
                             label="Дүн"
                             InputProps={{ inputProps: { min: 0 } }}
-                            {...register("Amount")}
+                            {...register("Balance")}
                             margin="dense"
                             size="small"
-                            error={errors.Amount?.message}
-                            helperText={errors.Amount?.message}
+                            error={errors.Balance?.message}
+                            helperText={errors.Balance?.message}
                         />
                     </Grid>
 

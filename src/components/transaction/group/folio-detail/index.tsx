@@ -72,6 +72,7 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                                         }
                                         FolioID={element.row.FolioID}
                                         TypeID={element.row.TypeID}
+                                        CurrID={element.row.CurrID}
                                     />
                                 );
                                 dispatch({
@@ -83,6 +84,7 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                                     editId: [
                                         element.row.FolioID,
                                         element.row.TypeID,
+                                        element.row.CurrID,
                                     ],
                                 });
                             }}
@@ -110,8 +112,7 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                 hasNew={false}
                 hasUpdate={false}
                 hasShow={false}
-                id="FolioID"
-                id2="TypeID"
+                id="CurrID"
                 api={FolioAPI}
                 listUrl={listUrl}
             />

@@ -15,13 +15,16 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const { data, error } = RoomChargeSWR(TransactionID);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedRow, setSelectedRow] = useState<any>(null);
 
-    const handleClick = (event: any) => {
+    const handleClick = (event: any, row: any) => {
         setAnchorEl(event.currentTarget);
+        setSelectedRow(row);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
+        setSelectedRow(null);
     };
 
     const columns = [
@@ -100,7 +103,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                             aria-controls={`menu${id}`}
                             variant={"outlined"}
                             size="small"
-                            onClick={handleClick}
+                            onClick={(e) => handleClick(e, element)}
                         >
                             Үйлдэл
                         </Button>
@@ -117,7 +120,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                         true,
                                         `Тариф өөрчлөх`,
                                         <UpdateRateType
-                                            element={element}
+                                            element={selectedRow}
                                             RoomTypeID={RoomTypeID}
                                         />,
                                         null,
@@ -134,7 +137,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                         true,
                                         `Хүний тоо өөрчлөх`,
                                         <UpdatePox
-                                            element={element}
+                                            element={selectedRow}
                                             RoomTypeID={RoomTypeID}
                                         />,
                                         null,
@@ -152,7 +155,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                         true,
                                         `Үнэ өөрчлөх`,
                                         <UpdateRate
-                                            element={element}
+                                            element={selectedRow}
                                             RoomTypeID={RoomTypeID}
                                         />,
                                         null,

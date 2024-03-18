@@ -24,8 +24,8 @@ import { listUrl as paymentMethodUrl } from "lib/api/payment-method";
 import CurrencySelect from "components/select/currency";
 
 const validationSchema = yup.object().shape({
-    PayCurrencyID: yup.string().required("Бөглөнө үү"),
-    Amount: yup.string().required("Бөглөнө үү"),
+    CurrencyID: yup.string().required("Бөглөнө үү"),
+    Amount1: yup.string().required("Бөглөнө үү"),
     Description: yup.string().required("Бөглөнө үү"),
 });
 
@@ -33,7 +33,7 @@ const baseStayDefault = {
     TransactionID: 0,
 };
 
-const NewEdit = ({ TransactionID, FolioID, TypeID }: any) => {
+const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
     const [entity, setEntity]: any = useState({});
 
@@ -59,14 +59,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID }: any) => {
     };
 
     const customResetEvent = (data: any) => {
-        console.log("formdata", data[0]);
         setEntity(data[0]);
-        resetField(`Amount`, {
-            defaultValue: data[0].Amount1,
-        });
-        resetField(`PayCurrencyID`, {
-            defaultValue: data[0].CurrencyID,
-        });
 
         setBaseStay({
             ...baseStay,
@@ -82,12 +75,13 @@ const NewEdit = ({ TransactionID, FolioID, TypeID }: any) => {
                 TypeID: TypeID,
                 ItemID: entity.ItemID,
                 CurrDate: entity.CurrDate,
-                PayCurrencyID: values.PayCurrencyID,
-                Amount: values.Amount,
+                PayCurrencyID: values.CurrencyID,
+                Amount: values.Amount1,
                 Quantity: values.Quantity ? values.Quantity : entity.Quantity,
                 Description: values.Description,
                 RateModeID: entity.RateModeID,
                 TaxIncluded: entity.TaxIncluded,
+                CurrID: CurrID,
             };
             FolioAPI.update(tempValues);
         } finally {
@@ -97,7 +91,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID }: any) => {
     return (
         <NewEditForm
             api={FolioAPI}
-            listUrl={"/api/Folio/Group/Details"}
+            listUrl={"/api/Folio/Group/Detail"}
             additionalValues={{
                 FolioID: FolioID,
                 TransactionID: TransactionID,
@@ -187,7 +181,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID }: any) => {
                         <CurrencySelect
                             register={register}
                             errors={errors}
-                            nameKey={`PayCurrencyID`}
+                            nameKey={`CurrencyID`}
                             entity={baseStay}
                             setEntity={setBaseStay}
                         />
@@ -197,14 +191,14 @@ const NewEdit = ({ TransactionID, FolioID, TypeID }: any) => {
                         <TextField
                             type="number"
                             fullWidth
-                            id="Amount"
+                            id="Amount1"
                             label="Дүн"
                             InputProps={{ inputProps: { min: 0 } }}
-                            {...register("Amount")}
+                            {...register("Amount1")}
                             margin="dense"
                             size="small"
-                            error={errors.Amount?.message}
-                            helperText={errors.Amount?.message}
+                            error={errors.Amount1?.message}
+                            helperText={errors.Amount1?.message}
                         />
                     </Grid>
                 </Grid>

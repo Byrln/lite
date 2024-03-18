@@ -31,13 +31,16 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
     const [loading, setLoading] = useState(false);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedRow, setSelectedRow] = useState<any>(null);
 
-    const handleClick = (event: any) => {
+    const handleClick = (event: any, row: any) => {
         setAnchorEl(event.currentTarget);
+        setSelectedRow(row);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
+        setSelectedRow(null);
     };
 
     const [openNoShow, setOpenNoShow] = useState(false);
@@ -251,7 +254,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                             aria-controls={`menu${id}`}
                             variant={"outlined"}
                             size="small"
-                            onClick={handleClick}
+                            onClick={(e) => handleClick(e, element)}
                         >
                             Үйлдэл
                         </Button>
@@ -265,7 +268,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                 <MenuItem
                                     key={`checkIn${id}`}
                                     onClick={() =>
-                                        onCheckInClick(element.TransactionID)
+                                        onCheckInClick(
+                                            selectedRow.TransactionID
+                                        )
                                     }
                                 >
                                     Зочин буулгах
@@ -280,19 +285,19 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                         <AmendStayForm
                                             transactionInfo={{
                                                 TransactionID:
-                                                    element.TransactionID,
+                                                    selectedRow.TransactionID,
                                                 ArrivalDate:
-                                                    element.ArrivalDate,
+                                                    selectedRow.ArrivalDate,
                                                 DepartureDate:
-                                                    element.DepartureDate,
+                                                    selectedRow.DepartureDate,
                                             }}
                                             reservation={{
                                                 TransactionID:
-                                                    element.TransactionID,
+                                                    selectedRow.TransactionID,
                                                 ArrivalDate:
-                                                    element.ArrivalDate,
+                                                    selectedRow.ArrivalDate,
                                                 DepartureDate:
-                                                    element.DepartureDate,
+                                                    selectedRow.DepartureDate,
                                             }}
                                             additionalMutateUrl={
                                                 "/api/Folio/Details"
@@ -313,19 +318,19 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                         <RoomMoveForm
                                             transactionInfo={{
                                                 TransactionID:
-                                                    element.TransactionID,
+                                                    selectedRow.TransactionID,
                                                 ArrivalDate:
-                                                    element.ArrivalDate,
+                                                    selectedRow.ArrivalDate,
                                                 DepartureDate:
-                                                    element.DepartureDate,
+                                                    selectedRow.DepartureDate,
                                             }}
                                             reservation={{
                                                 TransactionID:
-                                                    element.TransactionID,
+                                                    selectedRow.TransactionID,
                                                 ArrivalDate:
-                                                    element.ArrivalDate,
+                                                    selectedRow.ArrivalDate,
                                                 DepartureDate:
-                                                    element.DepartureDate,
+                                                    selectedRow.DepartureDate,
                                             }}
                                             additionalMutateUrl={
                                                 "/api/Folio/Details"
@@ -355,11 +360,11 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                         <VoidTransactionForm
                                             transactionInfo={{
                                                 TransactionID:
-                                                    element.TransactionID,
+                                                    selectedRow.TransactionID,
                                             }}
                                             reservation={{
                                                 TransactionID:
-                                                    element.TransactionID,
+                                                    selectedRow.TransactionID,
                                             }}
                                             customMutateUrl={
                                                 "/api/Folio/Details"
@@ -382,11 +387,11 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                                 <CancelReservationForm
                                                     transactionInfo={{
                                                         TransactionID:
-                                                            element.TransactionID,
+                                                            selectedRow.TransactionID,
                                                     }}
                                                     reservation={{
                                                         TransactionID:
-                                                            element.TransactionID,
+                                                            selectedRow.TransactionID,
                                                     }}
                                                     customMutateUrl={
                                                         "/api/Folio/Details"
@@ -401,7 +406,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                     <MenuItem
                                         key={`unassignRoom${id}`}
                                         onClick={() =>
-                                            unassignRoom(element.TransactionID)
+                                            unassignRoom(
+                                                selectedRow.TransactionID
+                                            )
                                         }
                                     >
                                         Өрөөг болих
@@ -431,7 +438,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                 <Button
                                     onClick={() =>
                                         handleOnClickNoShow(
-                                            element.TransactionID
+                                            selectedRow.TransactionID
                                         )
                                     }
                                     autoFocus
