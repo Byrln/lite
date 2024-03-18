@@ -336,7 +336,7 @@ const TransactionEdit = () => {
                                                         );
                                                     }}
                                                 >
-                                                    Зочны мэдээлэл харах
+                                                    Хугацаа өөрчлөх
                                                 </MenuItem>
                                             </Menu>
                                         </Box>
