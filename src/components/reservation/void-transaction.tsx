@@ -47,10 +47,11 @@ const VoidTransactionForm = ({
             ) {
                 transactionInfo.forEach(async (room: any) => {
                     if (room.isChecked == true) {
+                        console.log("room", room);
                         let tempValue: any = {};
                         tempValue.ReasonID = values.ReasonID;
                         tempValue.TransactionID = room.TransactionID;
-                        const res = await ReservationAPI.void(values);
+                        const res = await ReservationAPI.void(tempValue);
                     }
                 });
             } else {

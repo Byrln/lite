@@ -240,6 +240,8 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                     ? "Баталгаажсан захиалга"
                     : value == 2
                     ? "Ирсэн"
+                    : value == 0
+                    ? "Цуцалсан"
                     : value;
             },
         },
@@ -267,11 +269,12 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                             {element.StatusGroup == 1 && (
                                 <MenuItem
                                     key={`checkIn${id}`}
-                                    onClick={() =>
+                                    onClick={() => {
                                         onCheckInClick(
                                             selectedRow.TransactionID
-                                        )
-                                    }
+                                        );
+                                        handleClose();
+                                    }}
                                 >
                                     Зочин буулгах
                                 </MenuItem>
@@ -304,6 +307,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             }
                                         />
                                     );
+                                    handleClose();
                                 }}
                             >
                                 Хугацаа өөрчлөх
@@ -337,6 +341,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             }
                                         />
                                     );
+                                    handleClose();
                                 }}
                             >
                                 Өрөө шилжих
@@ -345,7 +350,10 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                             {element.StatusGroup == 1 && (
                                 <MenuItem
                                     key={`roomMove${id}`}
-                                    onClick={handleClickOpenNoShow}
+                                    onClick={() => {
+                                        handleClickOpenNoShow();
+                                        handleClose();
+                                    }}
                                 >
                                     Ирээгүй
                                 </MenuItem>
@@ -371,6 +379,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             }
                                         />
                                     );
+                                    handleClose();
                                 }}
                             >
                                 Устгах
@@ -398,6 +407,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                                     }
                                                 />
                                             );
+                                            handleClose();
                                         }}
                                     >
                                         Захиалга цуцлах
@@ -405,11 +415,12 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
 
                                     <MenuItem
                                         key={`unassignRoom${id}`}
-                                        onClick={() =>
+                                        onClick={() => {
                                             unassignRoom(
                                                 selectedRow.TransactionID
-                                            )
-                                        }
+                                            );
+                                            handleClose();
+                                        }}
                                     >
                                         Өрөөг болих
                                     </MenuItem>

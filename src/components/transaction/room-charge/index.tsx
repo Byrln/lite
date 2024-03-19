@@ -126,6 +126,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                         null,
                                         "large"
                                     );
+                                    handleClose();
                                 }}
                             >
                                 Тариф өөрчлөх
@@ -143,6 +144,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                         null,
                                         "large"
                                     );
+                                    handleClose();
                                 }}
                             >
                                 Хүний тоо өөрчлөх
@@ -161,6 +163,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                         null,
                                         "large"
                                     );
+                                    handleClose();
                                 }}
                             >
                                 Үнэ өөрчлөх

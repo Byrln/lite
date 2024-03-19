@@ -16,51 +16,56 @@ const Summary = ({ TransactionID, GroupID }: any) => {
                     (acc: any, obj: any) => acc + obj.Balance,
                     0
                 ),
-                TotalPayment: data[0].TotalPayments
-                    ? data.reduce(
-                          (acc: any, obj: any) => acc + obj.TotalPayments,
-                          0
-                      )
-                    : data.reduce(
-                          (acc: any, obj: any) => acc + obj.TotalPayment,
-                          0
-                      ),
-                TotalCharge: data[0].TotalCharges
-                    ? data.reduce(
-                          (acc: any, obj: any) => acc + obj.TotalCharges,
-                          0
-                      )
-                    : data.reduce(
-                          (acc: any, obj: any) => acc + obj.TotalCharge,
-                          0
-                      ),
-                MiniBarCharge: data[0].MiniBarCharges
-                    ? data.reduce(
-                          (acc: any, obj: any) => acc + obj.MiniBarCharges,
-                          0
-                      )
-                    : data.reduce(
-                          (acc: any, obj: any) => acc + obj.MiniBarCharge,
-                          0
-                      ),
-                ExtraCharge: data[0].ExtraCharges
-                    ? data.reduce(
-                          (acc: any, obj: any) => acc + obj.ExtraCharges,
-                          0
-                      )
-                    : data.reduce(
-                          (acc: any, obj: any) => acc + obj.ExtraCharge,
-                          0
-                      ),
-                RoomCharge: data[0].RoomCharges
-                    ? data.reduce(
-                          (acc: any, obj: any) => acc + obj.RoomCharges,
-                          0
-                      )
-                    : data.reduce(
-                          (acc: any, obj: any) => acc + obj.RoomCharge,
-                          0
-                      ),
+                TotalPayment:
+                    data && data[0] && data[0].TotalPayments
+                        ? data.reduce(
+                              (acc: any, obj: any) => acc + obj.TotalPayments,
+                              0
+                          )
+                        : data.reduce(
+                              (acc: any, obj: any) => acc + obj.TotalPayment,
+                              0
+                          ),
+                TotalCharge:
+                    data && data[0] && data[0].TotalCharges
+                        ? data.reduce(
+                              (acc: any, obj: any) => acc + obj.TotalCharges,
+                              0
+                          )
+                        : data.reduce(
+                              (acc: any, obj: any) => acc + obj.TotalCharge,
+                              0
+                          ),
+                MiniBarCharge:
+                    data && data[0] && data[0].MiniBarCharges
+                        ? data.reduce(
+                              (acc: any, obj: any) => acc + obj.MiniBarCharges,
+                              0
+                          )
+                        : data.reduce(
+                              (acc: any, obj: any) => acc + obj.MiniBarCharge,
+                              0
+                          ),
+                ExtraCharge:
+                    data && data[0] && data[0].ExtraCharges
+                        ? data.reduce(
+                              (acc: any, obj: any) => acc + obj.ExtraCharges,
+                              0
+                          )
+                        : data.reduce(
+                              (acc: any, obj: any) => acc + obj.ExtraCharge,
+                              0
+                          ),
+                RoomCharge:
+                    data && data[0] && data[0].RoomCharges
+                        ? data.reduce(
+                              (acc: any, obj: any) => acc + obj.RoomCharges,
+                              0
+                          )
+                        : data.reduce(
+                              (acc: any, obj: any) => acc + obj.RoomCharge,
+                              0
+                          ),
             });
         }
     }, [data]);

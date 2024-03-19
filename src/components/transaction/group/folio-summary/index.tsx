@@ -119,7 +119,9 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                         >
                             <MenuItem
                                 key={`neh${entity.FolioID}`}
-                                onClick={() => {}}
+                                onClick={() => {
+                                    handleClose();
+                                }}
                             >
                                 Нэх.хэвлэх
                             </MenuItem>
@@ -147,6 +149,7 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                                             }
                                         />
                                     );
+                                    handleClose();
                                 }}
                             >
                                 Төлбөр төлөх
