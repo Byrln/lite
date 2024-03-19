@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { useState, useEffect } from "react";
 import { ChargeSummarySWR } from "lib/api/charge";
 import { GroupSummarySWR } from "lib/api/folio";
+import { formatPrice } from "lib/utils/helpers";
 
 const Summary = ({ TransactionID, GroupID }: any) => {
     const { data, error } = GroupID
@@ -80,7 +81,9 @@ const Summary = ({ TransactionID, GroupID }: any) => {
             >
                 <div>Өрөөний тооцоо : </div>
                 <div style={{ fontWeight: "600" }}>
-                    {newData && newData.RoomCharge ? newData.RoomCharge : 0}
+                    {newData && newData.RoomCharge
+                        ? formatPrice(newData.RoomCharge)
+                        : 0}
                 </div>
             </Box>
             <Box
@@ -94,7 +97,9 @@ const Summary = ({ TransactionID, GroupID }: any) => {
             >
                 <div>Нэмэлт үйлчилгээ : </div>
                 <div style={{ fontWeight: "600" }}>
-                    {newData && newData.ExtraCharge ? newData.ExtraCharge : 0}
+                    {newData && newData.ExtraCharge
+                        ? formatPrice(newData.ExtraCharge)
+                        : 0}
                 </div>
             </Box>
             <Box
@@ -109,7 +114,7 @@ const Summary = ({ TransactionID, GroupID }: any) => {
                 <div>Мини бар : </div>
                 <div style={{ fontWeight: "600" }}>
                     {newData && newData.MiniBarCharge
-                        ? newData.MiniBarCharge
+                        ? formatPrice(newData.MiniBarCharge)
                         : 0}
                 </div>
             </Box>
@@ -124,7 +129,9 @@ const Summary = ({ TransactionID, GroupID }: any) => {
             >
                 <div>Нийт дүн : </div>
                 <div style={{ fontWeight: "600" }}>
-                    {newData && newData.TotalCharge ? newData.TotalCharge : 0}
+                    {newData && newData.TotalCharge
+                        ? formatPrice(newData.TotalCharge)
+                        : 0}
                 </div>
             </Box>
             <Box
@@ -138,7 +145,9 @@ const Summary = ({ TransactionID, GroupID }: any) => {
             >
                 <div>Төлсөн : </div>
                 <div style={{ fontWeight: "600" }}>
-                    {newData && newData.TotalPayment ? newData.TotalPayment : 0}
+                    {newData && newData.TotalPayment
+                        ? formatPrice(newData.TotalPayment)
+                        : 0}
                 </div>
             </Box>
             <Box
@@ -151,7 +160,9 @@ const Summary = ({ TransactionID, GroupID }: any) => {
             >
                 <div>Үлдэгдэл : </div>
                 <div style={{ fontWeight: "600" }}>
-                    {newData && newData.Balance ? newData.Balance : 0}
+                    {newData && newData.Balance
+                        ? formatPrice(newData.Balance)
+                        : 0}
                 </div>
             </Box>
         </Box>

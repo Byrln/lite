@@ -9,6 +9,7 @@ import { ModalContext } from "lib/context/modal";
 import NewEdit from "./new-edit";
 import { useAppState } from "lib/context/app";
 import { FrontOfficeAPI } from "lib/api/front-office";
+import { formatPrice } from "lib/utils/helpers";
 
 const RoomCharge = ({ GroupID, TransactionID }: any) => {
     const [workingDate, setWorkingDate] = useState(null);
@@ -66,21 +67,33 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             title: "Өрөөний тооцоо",
             key: "RoomCharge",
             dataIndex: "RoomCharge",
+            render: function render(id: any, record: any, entity: any) {
+                return formatPrice(record);
+            },
         },
         {
             title: "Нэмэлт үйлчилгээ",
             key: "ExtraCharge",
             dataIndex: "ExtraCharge",
+            render: function render(id: any, record: any, entity: any) {
+                return formatPrice(record);
+            },
         },
         {
             title: "Төлсөн",
             key: "Paid",
             dataIndex: "Paid",
+            render: function render(id: any, record: any, entity: any) {
+                return formatPrice(record);
+            },
         },
         {
             title: "Үлд.төлбөр",
             key: "Balance",
             dataIndex: "Balance",
+            render: function render(id: any, record: any, entity: any) {
+                return formatPrice(record);
+            },
         },
         {
             title: "Үйлдэл",

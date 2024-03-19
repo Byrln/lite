@@ -7,6 +7,7 @@ import CustomTable from "components/common/custom-table";
 import { ModalContext } from "lib/context/modal";
 import NewEdit from "./new-edit";
 import { useAppState } from "lib/context/app";
+import { formatPrice } from "lib/utils/helpers";
 
 const RoomCharge = ({ GroupID, TransactionID }: any) => {
     const [state, dispatch]: any = useAppState();
@@ -45,6 +46,9 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             title: "Дүн",
             key: "Amount1",
             dataIndex: "Amount1",
+            renderCell: (element: any) => {
+                return formatPrice(element.row.Amount1);
+            },
         },
         {
             title: "Тайлбар",

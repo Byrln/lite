@@ -10,7 +10,6 @@ import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 import CutForm from "./cut";
 import SplitForm from "./split";
-
 import BillTo from "./bill-to";
 
 const RoomCharge = ({ FolioID, TransactionID }: any) => {
