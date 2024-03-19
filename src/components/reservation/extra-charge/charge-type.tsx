@@ -12,6 +12,7 @@ const ExtraCharge = ({ additionalMutateUrl, entity, setEntity }: any) => {
     const { data, error } = ChargeTypeSWR({});
 
     useEffect(() => {
+        setEntity(null);
         if (data) {
             setEntity(data);
         }

@@ -76,9 +76,9 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
             dataIndex: "CurrDate",
             __ignore__: true,
             excelRenderPass: true,
-            renderCell: (element: any) => {
+            render: function render(id: any, record: any) {
                 return format(
-                    new Date(element.row.CurrDate.replace(/ /g, "T")),
+                    new Date(record.replace(/ /g, "T")),
                     "MM/dd/yyyy"
                 );
             },
@@ -99,8 +99,8 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
             dataIndex: "Amount1",
             __ignore__: true,
             excelRenderPass: true,
-            renderCell: (element: any) => {
-                return formatPrice(element.row.Amount1);
+            render: function render(id: any, record: any, entity: any) {
+                return formatPrice(record);
             },
         },
         {

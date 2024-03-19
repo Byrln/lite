@@ -57,6 +57,7 @@ const RoomMoveForm = ({
     };
 
     const onRoomTypeChange = (rt: any) => {
+        console.log("rt", rt);
         setBaseStay({
             ...baseStay,
             roomType: rt,
@@ -181,14 +182,16 @@ const RoomMoveForm = ({
                             baseStay={baseStay}
                         />
                     </Grid>
-                    <Grid item xs={4}>
-                        <RoomSelect
-                            register={register}
-                            errors={errors}
-                            baseStay={baseStay}
-                            onRoomChange={onRoomChange}
-                        />
-                    </Grid>
+                    {baseStay.roomType && (
+                        <Grid item xs={4}>
+                            <RoomSelect
+                                register={register}
+                                errors={errors}
+                                baseStay={baseStay}
+                                onRoomChange={onRoomChange}
+                            />
+                        </Grid>
+                    )}
                 </Grid>
 
                 <Grid container spacing={2}>

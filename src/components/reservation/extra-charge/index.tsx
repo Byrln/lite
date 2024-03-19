@@ -19,12 +19,12 @@ const ExtraCharge = ({
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
-    const [chargeTypes, setChargeTypes] = useState<any>({});
-    const [paymentMethods, setPaymentMethods] = useState<any>({});
+    const [chargeTypes, setChargeTypes] = useState<any>(null);
+    const [paymentMethods, setPaymentMethods] = useState<any>(null);
 
     const validationSchema = yup.object().shape({});
     const formOptions = { resolver: yupResolver(validationSchema) };
-    console.log("chargeTypes", chargeTypes);
+
     const {
         register,
         handleSubmit,

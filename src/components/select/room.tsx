@@ -62,6 +62,7 @@ const RoomSelect = ({
             EndDate: dateToSimpleFormat(baseStay.dateEnd),
         };
         var d = await RoomAPI.listAvailable(values);
+        console.log("values", values), console.log("d", d);
         setData(d);
     };
 

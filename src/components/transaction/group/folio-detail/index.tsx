@@ -1,7 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { useContext } from "react";
-import { mutate } from "swr";
-import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 import { GroupDetailSWR, FolioAPI, listUrl } from "lib/api/folio";
 import CustomTable from "components/common/custom-table";
@@ -25,6 +24,12 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             title: "Өдөр",
             key: "CurrDate",
             dataIndex: "CurrDate",
+            renderCell: (element: any) => {
+                return format(
+                    new Date(element.row.CurrDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                );
+            },
         },
         {
             title: "Өрөө",
