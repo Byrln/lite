@@ -51,8 +51,19 @@ const NewEdit = ({
     MaxChild,
     workingDate,
 }: any) => {
-    const [ArrivalDate, setArrivalDate]: any = useState("");
-    const [DepartureDate, setDepartureDate]: any = useState("");
+    const [ArrivalDate, setArrivalDate]: any = useState(
+        dateStart && dateEnd && roomType && room ? dateStart : workingDate
+    );
+    const [DepartureDate, setDepartureDate]: any = useState(
+        dateStart && dateEnd && roomType && room
+            ? dateEnd
+            : moment(
+                  dateStringToObj(moment(workingDate).format("YYYY-MM-DD")),
+                  "YYYY-MM-DD"
+              )
+                  .add(1, "days")
+                  .format("YYYY-MM-DD")
+    );
     const [BreakfastIncluded, setBreakfastIncluded]: any = useState("");
     const [TaxIncluded, setTaxIncluded]: any = useState("");
     const [selectedGuest, setSelectedGuest]: any = useState(null);

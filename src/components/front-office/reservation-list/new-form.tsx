@@ -56,6 +56,8 @@ const NewEdit = ({
     const [ReservationTypeID, setReservationTypeID]: any = useState(1);
     const [selectedAdult, setSelectedAdult]: any = useState(1);
     const [selectedChild, setSelectedChild]: any = useState(0);
+    console.log("ArrivalDate", ArrivalDate);
+    console.log("DepartureDate", DepartureDate);
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
