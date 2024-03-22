@@ -75,6 +75,7 @@ const NewEdit = ({
     const [newGroupCount, setNewGroupCount]: any = useState(1);
     const [newRoomTypeID, setNewRoomTypeID]: any = useState<any>(null);
     const [nights, setNights]: any = useState<any>(1);
+    const [totalAmount, setTotalAmount]: any = useState<any>(0);
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -157,6 +158,18 @@ const NewEdit = ({
         control,
         name: "TransactionDetail",
     });
+
+    useEffect(() => {
+        if (getValues() && getValues().TransactionDetail) {
+            setTotalAmount(
+                getValues().TransactionDetail.reduce(
+                    (acc: any, obj: any) =>
+                        acc + (obj.CurrencyAmount ? obj.CurrencyAmount : 0),
+                    0
+                )
+            );
+        }
+    }, [getValues()]);
 
     const customResetEvent = (data: any) => {
         reset({
@@ -777,22 +790,7 @@ const NewEdit = ({
                                                 gutterBottom
                                             >
                                                 Нийт тооцоо:{" "}
-                                                {fields &&
-                                                fields[0] &&
-                                                //@ts-ignore
-                                                fields[0].CurrencyAmount
-                                                    ? formatPrice(
-                                                          fields.reduce(
-                                                              (
-                                                                  acc: any,
-                                                                  obj: any
-                                                              ) =>
-                                                                  acc +
-                                                                  obj.CurrencyAmount,
-                                                              0
-                                                          )
-                                                      )
-                                                    : "0"}
+                                                {formatPrice(totalAmount)}
                                             </Typography>
                                         </Grid>
                                     </Grid>
