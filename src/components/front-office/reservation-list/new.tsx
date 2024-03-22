@@ -20,7 +20,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 
 import { ReservationTypeSelect } from "components/select";
@@ -30,6 +30,9 @@ import { listUrl } from "lib/api/front-office";
 import { dateStringToObj } from "lib/utils/helpers";
 import PaymentMethodSelect from "components/select/payment-method";
 import CurrencySelect from "components/select/currency";
+import RoomTypeSelect from "components/select/room-type";
+import { formatPrice } from "lib/utils/helpers";
+import { countNights } from "lib/utils/format-time";
 
 import NewForm from "./new-form";
 
@@ -54,6 +57,22 @@ const NewEdit = ({
     const [TaxIncluded, setTaxIncluded]: any = useState("");
     const [selectedGuest, setSelectedGuest]: any = useState(null);
     const [ReservationTypeID, setReservationTypeID]: any = useState(1);
+    const [newGroupCount, setNewGroupCount]: any = useState(1);
+    const [newRoomTypeID, setNewRoomTypeID]: any = useState<any>(null);
+    const [nights, setNights]: any = useState<any>(1);
+
+    const setRange = (dateStart: Date, dateEnd: Date) => {
+        var nights: number;
+        nights = countNights(dateStart, dateEnd);
+        setNights(nights);
+    };
+
+    useEffect(() => {
+        if (ArrivalDate && DepartureDate) {
+            setRange(ArrivalDate, DepartureDate);
+        }
+    }, [ArrivalDate, DepartureDate]);
+
     const [PaymentMethodID, setPaymentMethodID]: any = useState(null);
     const {
         register,
@@ -373,6 +392,7 @@ const NewEdit = ({
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "space-between",
+                                flexWrap: "wrap",
                             }}
                         >
                             <div
@@ -406,16 +426,82 @@ const NewEdit = ({
                                 </Typography>
                             </div>
 
-                            <Button
-                                variant="outlined"
-                                onClick={() =>
-                                    //@ts-ignore
-                                    append(getValues(`TransactionDetail[0]`))
-                                }
-                                size="small"
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "flex-end",
+                                    flexWrap: "wrap",
+                                }}
                             >
-                                + Өрөө нэмэх
-                            </Button>
+                                <div
+                                    style={{
+                                        width: "150px",
+                                        marginRight: "10px",
+                                    }}
+                                >
+                                    <RoomTypeSelect
+                                        register={register}
+                                        errors={errors}
+                                        onRoomTypeChange={setNewRoomTypeID}
+                                        RoomTypeID={
+                                            newRoomTypeID &&
+                                            newRoomTypeID.RoomTypeID
+                                                ? newRoomTypeID.RoomTypeID
+                                                : null
+                                        }
+                                    />
+                                </div>
+                                <TextField
+                                    label="Нэмэх тоо"
+                                    type="number"
+                                    margin="dense"
+                                    size="small"
+                                    style={{
+                                        width: "100px",
+                                        marginRight: "10px",
+                                    }}
+                                    value={newGroupCount}
+                                    onChange={(e: any) => {
+                                        setNewGroupCount(e.target.value);
+                                    }}
+                                />
+                                <Button
+                                    variant="outlined"
+                                    onClick={() =>
+                                        //@ts-ignore
+                                        {
+                                            let tempValue = getValues(
+                                                //@ts-ignore
+                                                `TransactionDetail[0]`
+                                            );
+                                            if (newRoomTypeID) {
+                                                tempValue.RoomTypeID =
+                                                    newRoomTypeID.RoomTypeID;
+                                                tempValue.Adult =
+                                                    newRoomTypeID.BaseAdult;
+                                                tempValue.Child =
+                                                    newRoomTypeID.BaseChild;
+                                            }
+                                            for (
+                                                let i = 0;
+                                                i < newGroupCount;
+                                                i++
+                                            ) {
+                                                append(tempValue);
+                                            }
+                                            setNewGroupCount(1);
+                                        }
+                                    }
+                                    size="small"
+                                    style={{
+                                        height: "34.25px",
+                                        width: "120px",
+                                        marginBottom: "4px",
+                                    }}
+                                >
+                                    + Өрөө нэмэх
+                                </Button>
+                            </div>
                         </div>
 
                         {fields.map((field, index) => (
@@ -478,7 +564,7 @@ const NewEdit = ({
                     </CardContent>
                 </Card>
 
-                <Card className="mb-3" key={"Room"}>
+                <Card className="mb-3" key={"Payment"}>
                     <CardContent>
                         <div
                             style={{
@@ -606,6 +692,46 @@ const NewEdit = ({
                                                 }
                                                 label="Татвар"
                                             />
+                                        </Grid>
+                                        <Grid item sm={12} md={4}>
+                                            <Typography
+                                                variant="caption"
+                                                gutterBottom
+                                            >
+                                                Өдөр: {nights}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item sm={12} md={4}>
+                                            <Typography
+                                                variant="caption"
+                                                gutterBottom
+                                            >
+                                                Нийт өрөө: {fields.length}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item sm={12} md={4}>
+                                            <Typography
+                                                variant="caption"
+                                                gutterBottom
+                                            >
+                                                Нийт тооцоо:{" "}
+                                                {fields &&
+                                                fields[0] &&
+                                                //@ts-ignore
+                                                fields[0].CurrencyAmount
+                                                    ? formatPrice(
+                                                          fields.reduce(
+                                                              (
+                                                                  acc: any,
+                                                                  obj: any
+                                                              ) =>
+                                                                  acc +
+                                                                  obj.CurrencyAmount,
+                                                              0
+                                                          )
+                                                      )
+                                                    : "0"}
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </div>

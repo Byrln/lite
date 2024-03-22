@@ -22,16 +22,9 @@ export const FrontOfficeSWR = (search: any) => {
 };
 
 export const WorkingDateSWR = () => {
-    // const values = {
-    //     CurrDate: date,
-    //     NumberOfDays: parseInt(dayCount),
-    //     RoomTypeID: 0,
-    // };
-
     const fetcher = async (url: any) =>
         await axios.post(url).then((res: any) => {
             let workingDate = res.data.JsonData;
-            console.log("workingDateworkingDate", workingDate);
             return workingDate;
         });
 
