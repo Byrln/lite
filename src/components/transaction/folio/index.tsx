@@ -7,7 +7,7 @@ import { FolioItemSWR, FolioAPI, listUrl } from "lib/api/folio";
 import CustomTable from "components/common/custom-table";
 import { ModalContext } from "lib/context/modal";
 import { formatPrice } from "lib/utils/helpers";
-import NewEdit from "./new-edit";
+import NewEdit from "./new-edit-test";
 import CutForm from "./cut";
 import SplitForm from "./split";
 import BillTo from "./bill-to";
