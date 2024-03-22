@@ -3,6 +3,7 @@ import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { mutate } from "swr";
 
+import ReservationSourceSelect from "components/select/reservation-source";
 import {
     Card,
     CardContent,
@@ -66,6 +67,9 @@ const NewEdit = ({
     );
     const [BreakfastIncluded, setBreakfastIncluded]: any = useState("");
     const [TaxIncluded, setTaxIncluded]: any = useState("");
+    const [ReservationSourceChecked, setReservationSourceChecked]: any =
+        useState(false);
+
     const [selectedGuest, setSelectedGuest]: any = useState(null);
     const [ReservationTypeID, setReservationTypeID]: any = useState(1);
     const [newGroupCount, setNewGroupCount]: any = useState(1);
@@ -95,6 +99,7 @@ const NewEdit = ({
         formState: { errors },
     } = useForm({
         defaultValues: {
+            ReservationSourceChecked: null,
             TaxIncluded: null,
             BreakfastIncluded: null,
             PayAmount: null,
@@ -167,6 +172,8 @@ const NewEdit = ({
                 values.PayCurrencyID;
             tempValues.TransactionDetail[0].PaymentMethodID =
                 values.PaymentMethodID;
+            tempValues.TransactionDetail[0].ReservationSourceID =
+                values.ReservationSourceID;
 
             values.TransactionDetail.forEach((detail: any, index: any) => {
                 tempValues.TransactionDetail[index].TaxIncluded = TaxIncluded;
@@ -174,6 +181,8 @@ const NewEdit = ({
                     BreakfastIncluded;
                 tempValues.TransactionDetail[index].ReservationTypeID =
                     values.ReservationTypeID;
+                tempValues.TransactionDetail[index].ReservationSourceID =
+                    values.ReservationSourceID;
                 tempValues.TransactionDetail[index].ArrivalDate =
                     values.ArrivalDate;
                 tempValues.TransactionDetail[index].DepartureDate =
@@ -641,7 +650,6 @@ const NewEdit = ({
                                                 }
                                             />
                                         </Grid>
-
                                         <Grid item xs={12}>
                                             <FormControlLabel
                                                 control={
@@ -704,6 +712,49 @@ const NewEdit = ({
                                                 label="Татвар"
                                             />
                                         </Grid>
+
+                                        {ReservationSourceChecked ? (
+                                            <Grid item sm={12}>
+                                                <ReservationSourceSelect
+                                                    register={register}
+                                                    errors={errors}
+                                                    ChannelID={2}
+                                                />
+                                            </Grid>
+                                        ) : (
+                                            <></>
+                                        )}
+
+                                        <Grid item xs={12}>
+                                            <FormControlLabel
+                                                control={
+                                                    <Controller
+                                                        name={`ReservationSourceChecked`}
+                                                        control={control}
+                                                        render={(
+                                                            props: any
+                                                        ) => (
+                                                            <Checkbox
+                                                                checked={
+                                                                    ReservationSourceChecked ==
+                                                                    true
+                                                                        ? true
+                                                                        : false
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setReservationSourceChecked(
+                                                                        e.target
+                                                                            .checked
+                                                                    )
+                                                                }
+                                                            />
+                                                        )}
+                                                    />
+                                                }
+                                                label="Захиалгын эх сурвалж"
+                                            />
+                                        </Grid>
+
                                         <Grid item sm={12} md={4}>
                                             <Typography
                                                 variant="caption"
