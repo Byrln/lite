@@ -5,8 +5,8 @@ import { FolioItemSWR } from "lib/api/folio";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import mn from "date-fns/locale/mn";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import Grid from '@mui/material/Grid'
-import  TextField  from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 import Tabs from "@mui/material/Tabs";
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -14,11 +14,11 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import FolioCharge from "./charge";
 
-const NewEditTest = ({FolioID}: any) => {
 
 
     
 
+const NewEditTest = ({ FolioID }: any) => {
     const [workingDate, setWorkingDate] = useState(null);
     const [entity, setEntity] = useState<any>({});
     const [rerenderKey, setRerenderKey] = useState(0);

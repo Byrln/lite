@@ -17,6 +17,8 @@ import RoomSelect from "components/select/room-select";
 import RoomRateTypeSelect from "components/select/room-rate-type";
 import CurrencyAmount from "components/reservation/currency-amount";
 import GuestSelect from "components/select/guest-select";
+import CountrySelect from "components/select/country";
+import VipStatusSelect from "components/select/vip-status";
 
 import { countNights } from "lib/utils/format-time";
 
@@ -56,6 +58,9 @@ const NewEdit = ({
     const [ReservationTypeID, setReservationTypeID]: any = useState(1);
     const [selectedAdult, setSelectedAdult]: any = useState(1);
     const [selectedChild, setSelectedChild]: any = useState(0);
+    const [country, setCountry]: any = useState(null);
+    const [vip, setVip]: any = useState(null);
+
     console.log("ArrivalDate", ArrivalDate);
     console.log("DepartureDate", DepartureDate);
 
@@ -125,6 +130,21 @@ const NewEdit = ({
                 });
             }
 
+            if (getValues(`TransactionDetail.${id}.GuestDetail.CountryID`)) {
+                setCountry({
+                    CountryID: getValues(
+                        `TransactionDetail.${id}.GuestDetail.CountryID`
+                    ),
+                });
+            }
+
+            if (getValues(`TransactionDetail.${id}.GuestDetail.VipStatusID`)) {
+                setVip({
+                    VipStatusID: getValues(
+                        `TransactionDetail.${id}.GuestDetail.VipStatusID`
+                    ),
+                });
+            }
             if (id > 0) {
                 let tempRoomType: any = {};
                 let baseAdult = 0;
@@ -150,6 +170,7 @@ const NewEdit = ({
             }
         }
     }, [id]);
+    console.log("id" + id, country);
 
     const onRoomTypeChange = (rt: any, index: number) => {
         setRoomTypeID(rt.RoomTypeID);
@@ -224,6 +245,12 @@ const NewEdit = ({
                 type="hidden"
                 {...register(`TransactionDetail.${id}.DepartureDate`)}
                 name={`TransactionDetail.${id}.DepartureDate`}
+            />
+            <input
+                type="hidden"
+                {...register(`TransactionDetail.${id}.ReservationSourceID`)}
+                name={`TransactionDetail.${id}.ReservationSourceID`}
+                value={1}
             />
             <input
                 type="hidden"
@@ -422,7 +449,7 @@ const NewEdit = ({
                         selectedGuest.value == "" ||
                         selectedGuest.value == "createNew") ? (
                         <>
-                            <Grid item xs={4}>
+                            <Grid item xs={6} sm={3} md={2}>
                                 <TextField
                                     size="small"
                                     fullWidth
@@ -435,7 +462,20 @@ const NewEdit = ({
                                 />
                             </Grid>
 
-                            <Grid item xs={4}>
+                            <Grid item xs={6} sm={3} md={2}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="Surname"
+                                    label="Овог"
+                                    {...register(
+                                        `TransactionDetail.${id}.GuestDetail.Surname`
+                                    )}
+                                    margin="dense"
+                                />
+                            </Grid>
+
+                            <Grid item xs={6} sm={3} md={2}>
                                 <TextField
                                     size="small"
                                     fullWidth
@@ -449,7 +489,7 @@ const NewEdit = ({
                                 />
                             </Grid>
 
-                            <Grid item xs={4}>
+                            <Grid item xs={6} sm={3} md={2}>
                                 <TextField
                                     size="small"
                                     fullWidth
@@ -457,6 +497,36 @@ const NewEdit = ({
                                     label="Гар утас"
                                     {...register(
                                         `TransactionDetail.${id}.GuestDetail.Mobile`
+                                    )}
+                                    margin="dense"
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={4} md={1}>
+                                <CountrySelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={country}
+                                    setEntity={setCountry}
+                                    customRegisterName={`TransactionDetail.${id}.GuestDetail.CountryID`}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={4} md={1}>
+                                <VipStatusSelect
+                                    register={register}
+                                    errors={errors}
+                                    entity={vip}
+                                    setEntity={setVip}
+                                    customRegisterName={`TransactionDetail.${id}.GuestDetail.VipStatusID`}
+                                />
+                            </Grid>
+                            <Grid item xs={6} sm={4} md={2}>
+                                <TextField
+                                    size="small"
+                                    fullWidth
+                                    id="RegistryNo"
+                                    label="Регистрийн дугаар"
+                                    {...register(
+                                        "TransactionDetail.${id}.GuestDetail.RegistryNo"
                                     )}
                                     margin="dense"
                                 />

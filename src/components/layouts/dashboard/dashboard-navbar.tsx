@@ -41,7 +41,7 @@ export default function DashboardNavbar({ onOpenSidebar }: any) {
                     onClick={onOpenSidebar}
                     sx={{ mr: 1, color: "text.primary", fontSize: "18px" }}
                 >
-                    <Icon icon={menu2Fill} />
+                    <Icon icon={menu2Fill} width={28} height={28} />
                 </IconButton>
                 {/* </MHidden> */}
 

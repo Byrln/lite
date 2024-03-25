@@ -34,6 +34,7 @@ import CurrencySelect from "components/select/currency";
 import RoomTypeSelect from "components/select/room-type";
 import { formatPrice } from "lib/utils/helpers";
 import { countNights } from "lib/utils/format-time";
+import ReferenceSelect from "components/select/reference";
 
 import NewForm from "./new-form";
 
@@ -76,6 +77,7 @@ const NewEdit = ({
     const [newRoomTypeID, setNewRoomTypeID]: any = useState<any>(null);
     const [nights, setNights]: any = useState<any>(1);
     const [totalAmount, setTotalAmount]: any = useState<any>(0);
+    const [billingInfo, setBillingInfo]: any = useState<any>(null);
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -726,18 +728,6 @@ const NewEdit = ({
                                             />
                                         </Grid>
 
-                                        {ReservationSourceChecked ? (
-                                            <Grid item sm={12}>
-                                                <ReservationSourceSelect
-                                                    register={register}
-                                                    errors={errors}
-                                                    ChannelID={2}
-                                                />
-                                            </Grid>
-                                        ) : (
-                                            <></>
-                                        )}
-
                                         <Grid item xs={12}>
                                             <FormControlLabel
                                                 control={
@@ -767,6 +757,18 @@ const NewEdit = ({
                                                 label="Захиалгын эх сурвалж"
                                             />
                                         </Grid>
+
+                                        {ReservationSourceChecked ? (
+                                            <Grid item sm={12}>
+                                                <ReservationSourceSelect
+                                                    register={register}
+                                                    errors={errors}
+                                                    ChannelID={2}
+                                                />
+                                            </Grid>
+                                        ) : (
+                                            <></>
+                                        )}
 
                                         <Grid item sm={12} md={4}>
                                             <Typography
@@ -839,6 +841,19 @@ const NewEdit = ({
                                                 style={{
                                                     width: "100%",
                                                 }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <ReferenceSelect
+                                                register={register}
+                                                errors={errors}
+                                                type="BillingInfo"
+                                                label="Тооцоо төрөл"
+                                                optionValue="BillingID"
+                                                optionLabel="BillingName"
+                                                customField="GroupBillTo"
+                                                entity={billingInfo}
+                                                setEntity={setBillingInfo}
                                             />
                                         </Grid>
                                     </Grid>

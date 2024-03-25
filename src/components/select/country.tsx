@@ -6,7 +6,13 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { CountrySWR } from "lib/api/country";
 
-const CountrySelect = ({ register, errors, entity, setEntity }: any) => {
+const CountrySelect = ({
+    register,
+    errors,
+    entity,
+    setEntity,
+    customRegisterName,
+}: any) => {
     const { data, error } = CountrySWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -25,7 +31,7 @@ const CountrySelect = ({ register, errors, entity, setEntity }: any) => {
             fullWidth
             id="CountryID"
             label="Улс сонгох"
-            {...register("CountryID")}
+            {...register(customRegisterName ? customRegisterName : "CountryID")}
             select
             margin="dense"
             error={errors.CountryID?.message}
