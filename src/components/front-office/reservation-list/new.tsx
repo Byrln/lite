@@ -3,6 +3,7 @@ import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { mutate } from "swr";
 
+import ReservationSourceSelect from "components/select/reservation-source";
 import {
     Card,
     CardContent,
@@ -20,7 +21,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 
 import { ReservationTypeSelect } from "components/select";
@@ -30,6 +31,9 @@ import { listUrl } from "lib/api/front-office";
 import { dateStringToObj } from "lib/utils/helpers";
 import PaymentMethodSelect from "components/select/payment-method";
 import CurrencySelect from "components/select/currency";
+import RoomTypeSelect from "components/select/room-type";
+import { formatPrice } from "lib/utils/helpers";
+import { countNights } from "lib/utils/format-time";
 
 import NewForm from "./new-form";
 
@@ -48,12 +52,43 @@ const NewEdit = ({
     MaxChild,
     workingDate,
 }: any) => {
-    const [ArrivalDate, setArrivalDate]: any = useState("");
-    const [DepartureDate, setDepartureDate]: any = useState("");
+    const [ArrivalDate, setArrivalDate]: any = useState(
+        dateStart && dateEnd && roomType && room ? dateStart : workingDate
+    );
+    const [DepartureDate, setDepartureDate]: any = useState(
+        dateStart && dateEnd && roomType && room
+            ? dateEnd
+            : moment(
+                  dateStringToObj(moment(workingDate).format("YYYY-MM-DD")),
+                  "YYYY-MM-DD"
+              )
+                  .add(1, "days")
+                  .format("YYYY-MM-DD")
+    );
     const [BreakfastIncluded, setBreakfastIncluded]: any = useState("");
     const [TaxIncluded, setTaxIncluded]: any = useState("");
+    const [ReservationSourceChecked, setReservationSourceChecked]: any =
+        useState(false);
+
     const [selectedGuest, setSelectedGuest]: any = useState(null);
     const [ReservationTypeID, setReservationTypeID]: any = useState(1);
+    const [newGroupCount, setNewGroupCount]: any = useState(1);
+    const [newRoomTypeID, setNewRoomTypeID]: any = useState<any>(null);
+    const [nights, setNights]: any = useState<any>(1);
+    const [totalAmount, setTotalAmount]: any = useState<any>(0);
+
+    const setRange = (dateStart: Date, dateEnd: Date) => {
+        var nights: number;
+        nights = countNights(dateStart, dateEnd);
+        setNights(nights);
+    };
+
+    useEffect(() => {
+        if (ArrivalDate && DepartureDate) {
+            setRange(ArrivalDate, DepartureDate);
+        }
+    }, [ArrivalDate, DepartureDate]);
+
     const [PaymentMethodID, setPaymentMethodID]: any = useState(null);
     const {
         register,
@@ -65,6 +100,7 @@ const NewEdit = ({
         formState: { errors },
     } = useForm({
         defaultValues: {
+            ReservationSourceChecked: null,
             TaxIncluded: null,
             BreakfastIncluded: null,
             PayAmount: null,
@@ -123,6 +159,18 @@ const NewEdit = ({
         name: "TransactionDetail",
     });
 
+    useEffect(() => {
+        if (getValues() && getValues().TransactionDetail) {
+            setTotalAmount(
+                getValues().TransactionDetail.reduce(
+                    (acc: any, obj: any) =>
+                        acc + (obj.CurrencyAmount ? obj.CurrencyAmount : 0),
+                    0
+                )
+            );
+        }
+    }, [getValues()]);
+
     const customResetEvent = (data: any) => {
         reset({
             TransactionDetail: [data],
@@ -137,6 +185,8 @@ const NewEdit = ({
                 values.PayCurrencyID;
             tempValues.TransactionDetail[0].PaymentMethodID =
                 values.PaymentMethodID;
+            tempValues.TransactionDetail[0].ReservationSourceID =
+                values.ReservationSourceID;
 
             values.TransactionDetail.forEach((detail: any, index: any) => {
                 tempValues.TransactionDetail[index].TaxIncluded = TaxIncluded;
@@ -144,6 +194,8 @@ const NewEdit = ({
                     BreakfastIncluded;
                 tempValues.TransactionDetail[index].ReservationTypeID =
                     values.ReservationTypeID;
+                tempValues.TransactionDetail[index].ReservationSourceID =
+                    values.ReservationSourceID;
                 tempValues.TransactionDetail[index].ArrivalDate =
                     values.ArrivalDate;
                 tempValues.TransactionDetail[index].DepartureDate =
@@ -373,6 +425,7 @@ const NewEdit = ({
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "space-between",
+                                flexWrap: "wrap",
                             }}
                         >
                             <div
@@ -406,16 +459,82 @@ const NewEdit = ({
                                 </Typography>
                             </div>
 
-                            <Button
-                                variant="outlined"
-                                onClick={() =>
-                                    //@ts-ignore
-                                    append(getValues(`TransactionDetail[0]`))
-                                }
-                                size="small"
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "flex-end",
+                                    flexWrap: "wrap",
+                                }}
                             >
-                                + Өрөө нэмэх
-                            </Button>
+                                <div
+                                    style={{
+                                        width: "150px",
+                                        marginRight: "10px",
+                                    }}
+                                >
+                                    <RoomTypeSelect
+                                        register={register}
+                                        errors={errors}
+                                        onRoomTypeChange={setNewRoomTypeID}
+                                        RoomTypeID={
+                                            newRoomTypeID &&
+                                            newRoomTypeID.RoomTypeID
+                                                ? newRoomTypeID.RoomTypeID
+                                                : null
+                                        }
+                                    />
+                                </div>
+                                <TextField
+                                    label="Нэмэх тоо"
+                                    type="number"
+                                    margin="dense"
+                                    size="small"
+                                    style={{
+                                        width: "100px",
+                                        marginRight: "10px",
+                                    }}
+                                    value={newGroupCount}
+                                    onChange={(e: any) => {
+                                        setNewGroupCount(e.target.value);
+                                    }}
+                                />
+                                <Button
+                                    variant="outlined"
+                                    onClick={() =>
+                                        //@ts-ignore
+                                        {
+                                            let tempValue = getValues(
+                                                //@ts-ignore
+                                                `TransactionDetail[0]`
+                                            );
+                                            if (newRoomTypeID) {
+                                                tempValue.RoomTypeID =
+                                                    newRoomTypeID.RoomTypeID;
+                                                tempValue.Adult =
+                                                    newRoomTypeID.BaseAdult;
+                                                tempValue.Child =
+                                                    newRoomTypeID.BaseChild;
+                                            }
+                                            for (
+                                                let i = 0;
+                                                i < newGroupCount;
+                                                i++
+                                            ) {
+                                                append(tempValue);
+                                            }
+                                            setNewGroupCount(1);
+                                        }
+                                    }
+                                    size="small"
+                                    style={{
+                                        height: "34.25px",
+                                        width: "120px",
+                                        marginBottom: "4px",
+                                    }}
+                                >
+                                    + Өрөө нэмэх
+                                </Button>
+                            </div>
                         </div>
 
                         {fields.map((field, index) => (
@@ -478,7 +597,7 @@ const NewEdit = ({
                     </CardContent>
                 </Card>
 
-                <Card className="mb-3" key={"Room"}>
+                <Card className="mb-3" key={"Payment"}>
                     <CardContent>
                         <div
                             style={{
@@ -544,7 +663,6 @@ const NewEdit = ({
                                                 }
                                             />
                                         </Grid>
-
                                         <Grid item xs={12}>
                                             <FormControlLabel
                                                 control={
@@ -606,6 +724,74 @@ const NewEdit = ({
                                                 }
                                                 label="Татвар"
                                             />
+                                        </Grid>
+
+                                        {ReservationSourceChecked ? (
+                                            <Grid item sm={12}>
+                                                <ReservationSourceSelect
+                                                    register={register}
+                                                    errors={errors}
+                                                    ChannelID={2}
+                                                />
+                                            </Grid>
+                                        ) : (
+                                            <></>
+                                        )}
+
+                                        <Grid item xs={12}>
+                                            <FormControlLabel
+                                                control={
+                                                    <Controller
+                                                        name={`ReservationSourceChecked`}
+                                                        control={control}
+                                                        render={(
+                                                            props: any
+                                                        ) => (
+                                                            <Checkbox
+                                                                checked={
+                                                                    ReservationSourceChecked ==
+                                                                    true
+                                                                        ? true
+                                                                        : false
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setReservationSourceChecked(
+                                                                        e.target
+                                                                            .checked
+                                                                    )
+                                                                }
+                                                            />
+                                                        )}
+                                                    />
+                                                }
+                                                label="Захиалгын эх сурвалж"
+                                            />
+                                        </Grid>
+
+                                        <Grid item sm={12} md={4}>
+                                            <Typography
+                                                variant="caption"
+                                                gutterBottom
+                                            >
+                                                Өдөр: {nights}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item sm={12} md={4}>
+                                            <Typography
+                                                variant="caption"
+                                                gutterBottom
+                                            >
+                                                Нийт өрөө: {fields.length}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item sm={12} md={4}>
+                                            <Typography
+                                                variant="caption"
+                                                gutterBottom
+                                            >
+                                                Нийт тооцоо:{" "}
+                                                {formatPrice(totalAmount)}
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </div>

@@ -108,7 +108,6 @@ const TransactionEdit = () => {
         }
     }, [data]);
 
-    console.log("transaction", transaction);
     return (
         <>
             <Container maxWidth="xl">

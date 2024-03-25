@@ -11,7 +11,6 @@ const RoomTypeSelect = ({
     onRoomTypeChange,
     baseStay,
     customRegisterName,
-    groupIndex,
     RoomTypeID,
 }: any) => {
     const [data, setData]: any = useState([]);
