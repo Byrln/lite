@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { useMemo } from 'react'; 
 
 import axios from "lib/utils/axios";
 
@@ -32,4 +33,37 @@ export const PaymentMethodGroupAPI = {
             status,
         };
     },
+};
+
+export function useGetPaymentMethodGroupAPI(){
+
+    const values = {
+        PaymentMethodGroupID: 0,
+        SearchStr: "",
+        IsCustomerRelated: false,
+        Status: false,
+        EmptyRow: false,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, values).then((res: any) => {
+            let paymentMethodGroup = res.data.JsonData;
+            return paymentMethodGroup;
+        });
+
+    const hotelID:any=(localStorage.getItem('HotelID')?localStorage.getItem('HotelID'):1)
+    
+
+    
+    const {data, error, isValidating}=useSWR(`${listUrl}`, fetcher);
+    const memoizedValue = useMemo(
+        () => ({
+            paymentgroup: data ,
+            
+            paymentgroupError: error,
+            paymentgroupValidating: isValidating,
+        }),
+        [data, error, isValidating]
+        );
+        return memoizedValue;
 };
