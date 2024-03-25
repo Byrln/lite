@@ -4,12 +4,11 @@ import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/Customer";
 export const listUrl = `${urlPrefix}/List`;
-
-export const CustomerSWR = () => {
+export const CustomerSWR = (CustomerGroupID = 0) => {
     const values = {
         CustomerID: null,
         CustomerTypeID: 0,
-        CustomerGroupID: 0,
+        CustomerGroupID: CustomerGroupID,
         SearchStr: "",
         CountryID: 0,
         EmptyRow: null,

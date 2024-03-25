@@ -20,25 +20,26 @@ const RoomRateTypeSelect = ({
     setBreakfastIncluded,
     setTaxIncluded,
 }: any) => {
-    const [data, setData]: any = useState([]);
+    // const [data, setData]: any = useState([]);
+    const { data, error } = RateTypeSWR({});
 
-    const fetchRoomTypeRates = async () => {
-        let d = await RateAPI.list({
-            RoomTypeID: RoomTypeID,
-            RateTypeID: 0,
-            ChannelID: 0,
-            SourceID: 0,
-            CustomerID: 0,
-            TaxIncluded: true,
-            RoomChargeDurationID: 0,
-        });
-        setData(d);
-    };
+    // const fetchRoomTypeRates = async () => {
+    //     let d = await RateAPI.list({
+    //         RoomTypeID: RoomTypeID,
+    //         RateTypeID: 0,
+    //         ChannelID: 0,
+    //         SourceID: 0,
+    //         CustomerID: 0,
+    //         TaxIncluded: true,
+    //         RoomChargeDurationID: 0,
+    //     });
+    //     setData(d);
+    // };
 
-    useEffect(() => {
-        fetchRoomTypeRates();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [RoomTypeID]);
+    // useEffect(() => {
+    //     fetchRoomTypeRates();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [RoomTypeID]);
 
     const onChange = (evt: any) => {
         var rate = null;
@@ -48,6 +49,8 @@ const RoomRateTypeSelect = ({
                 break;
             }
         }
+        console.log("rateraterateraterate", rate);
+
         if (rate) {
             setRate(rate);
             if (rate.BreakfastIncluded && setBreakfastIncluded) {
@@ -58,7 +61,7 @@ const RoomRateTypeSelect = ({
             }
         }
     };
-
+    console.log("data", data);
     return (
         <TextField
             fullWidth
@@ -75,16 +78,17 @@ const RoomRateTypeSelect = ({
             size="small"
             value={Rate.RateTypeID}
         >
-            {data.map((element: any) => {
-                return (
-                    <MenuItem
-                        key={element.RateTypeID}
-                        value={element.RateTypeID}
-                    >
-                        {`${element.RateTypeName}`}
-                    </MenuItem>
-                );
-            })}
+            {data &&
+                data.map((element: any) => {
+                    return (
+                        <MenuItem
+                            key={element.RateTypeID}
+                            value={element.RateTypeID}
+                        >
+                            {`${element.RateTypeName}`}
+                        </MenuItem>
+                    );
+                })}
         </TextField>
     );
 };

@@ -45,6 +45,7 @@ const NewEdit = ({
     setArrivalDate,
     DepartureDate,
     setDepartureDate,
+    CustomerID,
 }: any) => {
     const [RoomTypeID, setRoomTypeID]: any = useState("");
     const [RoomType, setRoomType]: any = useState("");
@@ -60,9 +61,6 @@ const NewEdit = ({
     const [selectedChild, setSelectedChild]: any = useState(0);
     const [country, setCountry]: any = useState(null);
     const [vip, setVip]: any = useState(null);
-
-    console.log("ArrivalDate", ArrivalDate);
-    console.log("DepartureDate", DepartureDate);
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -145,6 +143,7 @@ const NewEdit = ({
                     ),
                 });
             }
+
             if (id > 0) {
                 let tempRoomType: any = {};
                 let baseAdult = 0;
@@ -170,7 +169,6 @@ const NewEdit = ({
             }
         }
     }, [id]);
-    console.log("id" + id, country);
 
     const onRoomTypeChange = (rt: any, index: number) => {
         setRoomTypeID(rt.RoomTypeID);
@@ -387,6 +385,8 @@ const NewEdit = ({
                             rateCurrencyID={Rate.CurrencyID}
                             getValues={getValues}
                             isRoomList={true}
+                            CustomerID={CustomerID}
+                            ContractRate={Rate.ContractRate}
                         />
                     </Grid>
                     <Grid item xs={11} sm={4} md={2}>

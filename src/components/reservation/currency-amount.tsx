@@ -34,8 +34,9 @@ const CurrencyAmount = ({
     rateCurrencyID,
     getValues,
     isRoomList = false,
+    CustomerID = 0,
+    ContractRate,
 }: any) => {
-    console.log("rateCurrencyID", rateCurrencyID);
     const [isCurrencyAmountEditable, setIsCurrencyAmountEditable]: any =
         useState(false);
 
@@ -51,7 +52,7 @@ const CurrencyAmount = ({
             RateTypeID: RateTypeID,
             ChannelID: 0,
             SourceID: 0,
-            CustomerID: 0,
+            CustomerID: ContractRate == true ? CustomerID : 0,
             TaxIncluded: TaxIncluded,
             RoomChargeDuration: 1,
             ContractRate: false,
@@ -104,6 +105,7 @@ const CurrencyAmount = ({
         Nights,
         selectedAdult,
         selectedChild,
+        CustomerID,
     ]);
 
     const newCurrencyAmount = async () => {

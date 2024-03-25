@@ -15,8 +15,9 @@ const CustomerSelect = ({
     entity,
     setEntity,
     isCustomSelect = false,
+    CustomerGroupID,
 }: any) => {
-    const { data, error } = CustomerSWR();
+    const { data, error } = CustomerSWR(CustomerGroupID);
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -37,6 +38,7 @@ const CustomerSelect = ({
             options={data}
             optionValue="CustomerID"
             optionLabel="CustomerName"
+            onChange={setEntity}
         />
     ) : (
         <TextField

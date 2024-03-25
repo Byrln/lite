@@ -37,7 +37,19 @@ export function dateToCustomFormat(date: Date, formatStr: string) {
 export function countNights(d1: any, d2: any) {
     var date1 = new Date(d1);
     var date2 = new Date(d2);
-    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-    var numberOfNights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    var timeDiff = date2.getTime() - date1.getTime();
+    const endAtMidnight =
+        date2.getHours() === 0 &&
+        date2.getMinutes() === 0 &&
+        date2.getSeconds() === 0 &&
+        date2.getMilliseconds() === 0;
+
+    var numberOfNights = Math.floor(timeDiff / (1000 * 3600 * 24));
+
+    // if (!endAtMidnight) {
+    //     numberOfNights--;
+    // }
+
     return numberOfNights;
 }

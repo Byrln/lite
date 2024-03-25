@@ -35,8 +35,9 @@ import RoomTypeSelect from "components/select/room-type";
 import { formatPrice } from "lib/utils/helpers";
 import { countNights } from "lib/utils/format-time";
 import ReferenceSelect from "components/select/reference";
-
 import NewForm from "./new-form";
+import CustomerGroupSelect from "components/select/customer-group";
+import CustomerSelect from "components/select/customer";
 
 const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().notRequired(),
@@ -53,18 +54,14 @@ const NewEdit = ({
     MaxChild,
     workingDate,
 }: any) => {
+    const [CustomerID, setCustomerID]: any = useState(0);
     const [ArrivalDate, setArrivalDate]: any = useState(
         dateStart && dateEnd && roomType && room ? dateStart : workingDate
     );
     const [DepartureDate, setDepartureDate]: any = useState(
         dateStart && dateEnd && roomType && room
             ? dateEnd
-            : moment(
-                  dateStringToObj(moment(workingDate).format("YYYY-MM-DD")),
-                  "YYYY-MM-DD"
-              )
-                  .add(1, "days")
-                  .format("YYYY-MM-DD")
+            : moment(dateStringToObj(workingDate)).add(1, "days").startOf("day")
     );
     const [BreakfastIncluded, setBreakfastIncluded]: any = useState("");
     const [TaxIncluded, setTaxIncluded]: any = useState("");
@@ -189,6 +186,7 @@ const NewEdit = ({
                 values.PaymentMethodID;
             tempValues.TransactionDetail[0].ReservationSourceID =
                 values.ReservationSourceID;
+            tempValues.TransactionDetail[0].CustomerID = values.CustomerID;
 
             values.TransactionDetail.forEach((detail: any, index: any) => {
                 tempValues.TransactionDetail[index].TaxIncluded = TaxIncluded;
@@ -202,6 +200,8 @@ const NewEdit = ({
                     values.ArrivalDate;
                 tempValues.TransactionDetail[index].DepartureDate =
                     values.DepartureDate;
+                tempValues.TransactionDetail[index].CustomerID =
+                    values.CustomerID;
             });
 
             await ReservationAPI.new(tempValues);
@@ -242,28 +242,32 @@ const NewEdit = ({
                                             minDate={new Date(workingDate)}
                                             onChange={(value) => (
                                                 onChange(
-                                                    moment(
-                                                        dateStringToObj(
-                                                            moment(
-                                                                value
-                                                            ).format(
-                                                                "YYYY-MM-DD"
-                                                            )
-                                                        ),
-                                                        "YYYY-MM-DD"
-                                                    )
+                                                    moment(value, "YYYY-MM-DD")
+
+                                                    // moment(
+                                                    //     dateStringToObj(
+                                                    //         moment(
+                                                    //             value
+                                                    //         ).format(
+                                                    //             "YYYY-MM-DD"
+                                                    //         )
+                                                    //     ),
+                                                    //     "YYYY-MM-DD"
+                                                    // )
                                                 ),
                                                 setArrivalDate(
-                                                    moment(
-                                                        dateStringToObj(
-                                                            moment(
-                                                                value
-                                                            ).format(
-                                                                "YYYY-MM-DD"
-                                                            )
-                                                        ),
-                                                        "YYYY-MM-DD"
-                                                    ).format("YYYY-MM-DD")
+                                                    moment(value, "YYYY-MM-DD")
+
+                                                    // moment(
+                                                    //     dateStringToObj(
+                                                    //         moment(
+                                                    //             value
+                                                    //         ).format(
+                                                    //             "YYYY-MM-DD"
+                                                    //         )
+                                                    //     ),
+                                                    //     "YYYY-MM-DD"
+                                                    // ).format("YYYY-MM-DD")
                                                 )
                                             )}
                                             renderInput={(params) => (
@@ -302,28 +306,30 @@ const NewEdit = ({
                                             minDate={new Date(workingDate)}
                                             onChange={(value) => (
                                                 onChange(
-                                                    moment(
-                                                        dateStringToObj(
-                                                            moment(
-                                                                value
-                                                            ).format(
-                                                                "YYYY-MM-DD"
-                                                            )
-                                                        ),
-                                                        "YYYY-MM-DD"
-                                                    )
+                                                    // moment(
+                                                    //     dateStringToObj(
+                                                    //         moment(
+                                                    //             value
+                                                    //         ).format(
+                                                    //             "YYYY-MM-DD"
+                                                    //         )
+                                                    //     ),
+                                                    //     "YYYY-MM-DD"
+                                                    // )
+                                                    moment(value, "YYYY-MM-DD")
                                                 ),
                                                 setDepartureDate(
-                                                    moment(
-                                                        dateStringToObj(
-                                                            moment(
-                                                                value
-                                                            ).format(
-                                                                "YYYY-MM-DD"
-                                                            )
-                                                        ),
-                                                        "YYYY-MM-DD"
-                                                    ).format("YYYY-MM-DD")
+                                                    moment(value, "YYYY-MM-DD")
+                                                    // moment(
+                                                    //     dateStringToObj(
+                                                    //         moment(
+                                                    //             value
+                                                    //         ).format(
+                                                    //             "YYYY-MM-DD"
+                                                    //         )
+                                                    //     ),
+                                                    //     "YYYY-MM-DD"
+                                                    // ).format("YYYY-MM-DD")
                                                 )
                                             )}
                                             renderInput={(params) => (
@@ -350,6 +356,16 @@ const NewEdit = ({
                                     )}
                                 />
                             </Grid>
+
+                            <Grid item xs={6}>
+                                <CustomerSelect
+                                    register={register}
+                                    errors={errors}
+                                    setEntity={setCustomerID}
+                                    isCustomSelect={true}
+                                />
+                            </Grid>
+
                             {/* <Grid item sm={4} xs={6}>
                                 <RateTypeSelect
                                     register={register}
@@ -566,6 +582,7 @@ const NewEdit = ({
                                     setArrivalDate={setArrivalDate}
                                     DepartureDate={DepartureDate}
                                     setDepartureDate={setDepartureDate}
+                                    CustomerID={CustomerID}
                                 />
 
                                 {/* <Tooltip title="Remove">
