@@ -57,12 +57,17 @@ const RateList = ({ title, taxData }: any) => {
 
     const columns = [
         {
-            title: "Нэр",
+            title: "№",
+            key: "test",
+            dataIndex: "test",
+        },
+        {
+            title: "Өрөөний төрөл",
             key: "RateTypeName",
             dataIndex: "RateTypeName",
         },
         {
-            title: "Өрөөний төрөл",
+            title: "Нэр",
             key: "RoomTypeName",
             dataIndex: "RoomTypeName",
         },
