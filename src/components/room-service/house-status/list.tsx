@@ -142,6 +142,7 @@ const HouseStatusList = ({ title }: any) => {
                     </CustomSearch>
                 }
                 datagrid={false}
+                rowColor="HKStatusColor"
             />
         </>
     );
