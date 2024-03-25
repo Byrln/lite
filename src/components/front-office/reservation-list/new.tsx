@@ -38,6 +38,7 @@ import ReferenceSelect from "components/select/reference";
 import NewForm from "./new-form";
 import CustomerGroupSelect from "components/select/customer-group";
 import CustomerSelect from "components/select/customer";
+import AvailableRoomTypes from "./available-room-types";
 
 const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().notRequired(),
@@ -222,6 +223,13 @@ const NewEdit = ({
             customSubmitTitle="Захиалах"
             customSubmit={customSubmit}
         >
+            {ArrivalDate && DepartureDate && (
+                <AvailableRoomTypes
+                    ArrivalDate={ArrivalDate}
+                    DepartureDate={DepartureDate}
+                />
+            )}
+
             <LocalizationProvider // @ts-ignore
                 dateAdapter={AdapterDateFns}
             >

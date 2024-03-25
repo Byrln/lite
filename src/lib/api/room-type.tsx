@@ -20,6 +20,20 @@ export const RoomTypeSWR = (search: any) => {
     return useSWR(listUrl, fetcher);
 };
 
+export const RoomTypeAvailableSWR = (search: any) => {
+    if (!search.RoomTypeID) {
+        search.RoomTypeID = 0;
+    }
+    if (!search.EmptyRow) {
+        search.EmptyRow = 0;
+    }
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Available`, fetcher);
+};
+
 export const RoomTypeAPI = {
     get: async (id: any) => {
         const values = {
@@ -152,5 +166,18 @@ export const RoomTypeAPI = {
             data,
             status,
         };
+    },
+
+    listAvailable: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Available`,
+            values
+        );
+
+        if (status !== 200) {
+            return [];
+        }
+
+        return data.JsonData;
     },
 };
