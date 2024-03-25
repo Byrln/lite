@@ -6,7 +6,13 @@ import Skeleton from "@mui/material/Skeleton";
 
 import { VipStatusSWR } from "lib/api/vip-status";
 
-const VipStatusSelect = ({ register, errors, entity, setEntity }: any) => {
+const VipStatusSelect = ({
+    register,
+    errors,
+    entity,
+    setEntity,
+    customRegisterName,
+}: any) => {
     const { data, error } = VipStatusSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -24,7 +30,9 @@ const VipStatusSelect = ({ register, errors, entity, setEntity }: any) => {
             fullWidth
             id="VipStatusID"
             label="ВИП төрөл"
-            {...register("VipStatusID")}
+            {...register(
+                customRegisterName ? customRegisterName : "VipStatusID"
+            )}
             select
             margin="dense"
             error={errors.VipStatusID?.message}
