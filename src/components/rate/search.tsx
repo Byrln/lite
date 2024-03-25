@@ -8,13 +8,22 @@ import SeasonSelect from "components/select/season";
 import ReservationSourceSelect from "components/select/reservation-source";
 import RoomChargeDurationSelect from "components/select/duration";
 import CustomerSelect from "components/select/customer";
+import { RateTypeSWR } from "lib/api/rate-type";
 
 const Search = ({ register, errors, control, reset }: any) => {
+    const { data, error } = RateTypeSWR({});
+
     const [customerVisibility, setCustomerVisibility] = useState(false);
 
     const onRateTypeChange = (evt: any) => {
-        console.log("onChildChange", evt.target.value);
-        if (evt.target.value == 6) {
+        let contractRates = data.filter(
+            (entity: any) => entity.ContractRate === true
+        );
+        if (
+            contractRates &&
+            contractRates[0] &&
+            contractRates[0].RateTypeID == evt.target.value
+        ) {
             setCustomerVisibility(true);
         } else {
             setCustomerVisibility(false);

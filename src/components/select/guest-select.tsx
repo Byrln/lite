@@ -78,7 +78,6 @@ const GuestSelect = ({
         option.label.toLowerCase().includes(inputValue.toLowerCase())
     );
     const handleCountryChange = (event: any, newValue: any) => {
-        console.log("newValue", newValue);
         if (newValue.value == "createNew") {
             setSelectedGuest(newValue);
             resetField(`TransactionDetail.${id}.GuestDetail.GuestName`, {
@@ -96,10 +95,13 @@ const GuestSelect = ({
             resetField(`TransactionDetail.${id}.GuestID`, {
                 defaultValue: newValue.value,
             });
-            setVipName(newValue.VipStatusName);
-            handleClickOpen();
-            console.log("testesteses", newValue.VipStatusName);
-            console.log("2222", newValue.value);
+            if (
+                newValue.VipStatusName != null &&
+                newValue.VipStatusName != ""
+            ) {
+                setVipName(newValue.VipStatusName);
+                handleClickOpen();
+            }
         }
     };
 
