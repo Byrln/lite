@@ -51,6 +51,7 @@ const CustomTable = ({
     pagination = true,
     datagrid = true,
     additionalButtons,
+    rowColor,
 }: any) => {
     const [state, dispatch]: any = useAppState();
     const [height, setHeight] = useState<any>(null);
@@ -373,6 +374,13 @@ const CustomTable = ({
                                 getRowId={(row) => (id ? row[id] : row["id"])}
                                 pageSizeOptions={[5, 10, 15, 30]}
                                 sx={{ maxHeight: height }}
+                                getRowClassName={(params) => {
+                                    return params.indexRelativeToCurrentPage %
+                                        2 ===
+                                        0
+                                        ? "even"
+                                        : "odd";
+                                }}
                             />
                         ) : (
                             <TableContainer
@@ -421,7 +429,23 @@ const CustomTable = ({
                                                 element: any,
                                                 dataIndex: number
                                             ) => (
-                                                <TableRow key={dataIndex}>
+                                                <TableRow
+                                                    key={dataIndex}
+                                                    sx={
+                                                        rowColor
+                                                            ? {
+                                                                  backgroundColor: `#${element[rowColor]}50`,
+                                                              }
+                                                            : {
+                                                                  backgroundColor:
+                                                                      dataIndex %
+                                                                          2 ===
+                                                                      0
+                                                                          ? "#f9f9f9"
+                                                                          : "#ffffff",
+                                                              }
+                                                    }
+                                                >
                                                     {customizedColumns.map(
                                                         (
                                                             column: any,

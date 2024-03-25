@@ -11,6 +11,25 @@
     color: #804fe6 !important;
 }
 
+.MuiDataGrid-root {
+    overflow: hidden;
+}
+
+.MuiTableCell-head,
+.MuiDataGrid-columnHeaders,
+.MuiDataGrid-footerContainer {
+    background-color: #804fe6 !important;
+    color: #fff !important;
+
+    & svg {
+        color: #fff !important;
+    }
+}
+
+.MuiTablePagination-root {
+    color: #fff !important;
+}
+
 #nprogress {
     position: relative;
     z-index: 9999999;
@@ -1603,93 +1622,91 @@
     }
 }
 
-.css-utm9vu-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root{
-    background-color: #804FE6 !important;
+.css-utm9vu-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
+    background-color: #804fe6 !important;
 }
 
-.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected{
-    color: #804FE6 !important;
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: #804fe6 !important;
 }
 
-.css-1aquho2-MuiTabs-indicator{
-    background-color: #804FE6 !important;
+.css-1aquho2-MuiTabs-indicator {
+    background-color: #804fe6 !important;
 }
 
-.css-1rwt2y5-MuiButtonBase-root-MuiButton-root{
-    color: #804FE6 !important;
-    border: 1px solid #804FE6 !important;
+.css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
+    color: #804fe6 !important;
+    border: 1px solid #804fe6 !important;
 }
 
-.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
-    border-color: #804FE6 !important;
+.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused
+    .MuiOutlinedInput-notchedOutline {
+    border-color: #804fe6 !important;
 }
 
-.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused{
-    color: #804FE6 !important;
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: #804fe6 !important;
 }
 
-.css-u4tvz2-MuiFormLabel-root.Mui-focused{
-    color: #804FE6 !important;
+.css-u4tvz2-MuiFormLabel-root.Mui-focused {
+    color: #804fe6 !important;
 }
 
-.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate{
-    color: #804FE6 !important;
-
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+    color: #804fe6 !important;
 }
 
-.css-vqmohf-MuiButtonBase-root-MuiRadio-root.Mui-checked{
-    color: #804FE6 !important;
+.css-vqmohf-MuiButtonBase-root-MuiRadio-root.Mui-checked {
+    color: #804fe6 !important;
 }
 
-.css-1e6y48t-MuiButtonBase-root-MuiButton-root{
-    color: #804FE6 !important;
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+    color: #804fe6 !important;
 }
 
-.css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover{
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover {
     background-color: rgba(128, 79, 230, 0.04) !important;
 }
 
-.MuiInputLabel-sizeSmall
-{
+.MuiInputLabel-sizeSmall {
     font-size: 12px;
 }
 
-.MuiInputBase-input
-{
-    font-size: 12px,
+.MuiInputBase-input {
+    font-size: 12px;
 }
 
-.MuiInputBase-input :focus
-{
-    font-size: 12px,
+.MuiInputBase-input :focus {
+    font-size: 12px;
 }
 
-.MuiMenuItem-root{
-    font-size: 12px,
+.MuiMenuItem-root {
+    font-size: 12px;
 }
 
-.MuiSvgIcon-root{
-    font-size: 12px,
+.MuiSvgIcon-root {
+    font-size: 12px;
 }
 
-.MuiButtonBase-root{
-    font-size: 12px,
+.MuiButtonBase-root {
+    font-size: 12px;
 }
 
-.MuiAccordionSummary-root{
+.MuiAccordionSummary-root {
     margin: 0px;
 }
 
-.MuiAccordionDetails-root{
+.MuiAccordionDetails-root {
     padding: 0px;
-    margin:0px
+    margin: 0px;
 }
 
-.MuiListItemText-root{
+.MuiListItemText-root {
     font-size: 12px;
 }
 
-.MuiFormControlLabel-label{
+.MuiFormControlLabel-label {
     font-size: 12px;
 }
 
@@ -1698,94 +1715,111 @@
 }
 
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
-    color: #804FE6 !important;
+    color: #804fe6 !important;
 }
 
-.css-11qr2p8-MuiButtonBase-root-MuiButton-root{
-    background-color: #804FE6 !important;
+.css-11qr2p8-MuiButtonBase-root-MuiButton-root {
+    background-color: #804fe6 !important;
 }
 
-.css-6m3mwv-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root{
-    color: #804FE6 !important;
-    border:1px solid rgba(128,79,230, 0.5)
+.css-6m3mwv-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
+    color: #804fe6 !important;
+    border: 1px solid rgba(128, 79, 230, 0.5);
 }
 
-.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed{
-    color: #804FE6 !important;
+.css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed {
+    color: #804fe6 !important;
 }
 
-.css-1k23hlb-MuiButtonBase-root-MuiButton-root{
-    color: #804FE6 !important;
-    border:1px solid rgba(128,79,230, 0.5)
+.css-1k23hlb-MuiButtonBase-root-MuiButton-root {
+    color: #804fe6 !important;
+    border: 1px solid rgba(128, 79, 230, 0.5);
 }
 
-.css-sghohy-MuiButtonBase-root-MuiButton-root{
-    background-color: #804FE6 !important;
+.css-sghohy-MuiButtonBase-root-MuiButton-root {
+    background-color: #804fe6 !important;
 }
 
-.search-button-position{
+.search-button-position {
     text-align: right;
 }
 
-.css-13xrqc3-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root{
-    background-color: #804FE6 !important;
+.css-13xrqc3-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
+    background-color: #804fe6 !important;
 }
 
-.css-1fu7jd5-MuiButtonBase-root-MuiButton-root{
-    background-color: #804FE6 !important;
+.css-1fu7jd5-MuiButtonBase-root-MuiButton-root {
+    background-color: #804fe6 !important;
 }
-.handsontable td, .handsontable th{
+.handsontable td,
+.handsontable th {
     text-align: center;
 }
-.MuiSvgIcon-root{
+.MuiSvgIcon-root {
     font-size: 16px;
 }
-.handsontable td, .handsontable th {
+.handsontable td,
+.handsontable th {
     height: 15px !important;
 }
-.handsontable{
+.handsontable {
     border-radius: 20px 20px 0 0;
 }
 
-
-.ht_clone_top_inline_start_corner{
+.ht_clone_top_inline_start_corner {
     height: 62px !important;
 }
-.ht_master:not(.innerBorderTop):not(.innerBorderBottom) thead tr.lastChild th, .ht_master:not(.innerBorderTop):not(.innerBorderBottom) thead tr:last-child th, .ht_master:not(.innerBorderTop):not(.innerBorderBottom)~.handsontable thead tr.lastChild th, .ht_master:not(.innerBorderTop):not(.innerBorderBottom)~.handsontable thead tr:last-child th {
+.ht_master:not(.innerBorderTop):not(.innerBorderBottom) thead tr.lastChild th,
+.ht_master:not(.innerBorderTop):not(.innerBorderBottom) thead tr:last-child th,
+.ht_master:not(.innerBorderTop):not(.innerBorderBottom)
+    ~ .handsontable
+    thead
+    tr.lastChild
+    th,
+.ht_master:not(.innerBorderTop):not(.innerBorderBottom)
+    ~ .handsontable
+    thead
+    tr:last-child
+    th {
     height: 52px !important;
 }
 
-
-.handsontable tr:first-child td, .handsontable tr:first-child th {
+.handsontable tr:first-child td,
+.handsontable tr:first-child th {
     height: 52px !important;
 }
 
-.handsontable td, .handsontable th{
+.handsontable td,
+.handsontable th {
     vertical-align: middle !important;
 }
 
 .inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
 }
 
 .inputfile + label {
     // color: white;
     border: 1px solid rgba(128, 79, 230, 0.5);
-    color: #804FE6;
+    color: #804fe6;
     display: inline-block;
-    padding:0px 10px;
-border-right: 0px;
-    -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    padding: 0px 10px;
+    border-right: 0px;
+    -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+        box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+        border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+        box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+        border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: 500;
     padding-top: 2.5px;
-    padding-bottom:5.5px;
+    padding-bottom: 5.5px;
     font-size: 0.8125rem !important;
     // line-height: 1.75;
     // letter-spacing: 0.02857em;
@@ -1795,28 +1829,29 @@ border-right: 0px;
 
 .inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: #804FE6;
-    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+    background-color: #804fe6;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     color: white;
 }
 
 .inputfile + label {
-	cursor: pointer; /* "hand" cursor */
+    cursor: pointer; /* "hand" cursor */
 }
 .inputfile:focus + label {
-	outline: 1px dotted #000;
-	outline: -webkit-focus-ring-color auto 5px;
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
 }
-.rightBorderRadius{
+.rightBorderRadius {
     border-radius: 0 10px 10px 0;
     margin-top: 3px;
     height: 29px;
 }
 
-.css-a32pmb-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root{
-    background-color: #804FE6 !important;
+.css-a32pmb-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
+    background-color: #804fe6 !important;
 }
 
-.css-nmbo2d{
-    background-color: #804FE6 !important;
+.css-nmbo2d {
+    background-color: #804fe6 !important;
 }
