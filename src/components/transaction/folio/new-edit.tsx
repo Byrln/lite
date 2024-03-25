@@ -54,7 +54,6 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
     });
 
     const handleOnChange = (value: any) => {
-        console.log("value", value);
         setPaymentMethodGroupID(value);
         mutate(paymentMethodUrl);
     };
@@ -101,7 +100,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                                 <DatePicker
                                     label="Огноо"
                                     value={value}
-                                    onChange={(value) =>
+                                    onChange={(value:any) =>
                                         onChange(
                                             moment(
                                                 dateStringToObj(
@@ -113,7 +112,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                                             )
                                         )
                                     }
-                                    renderInput={(params) => (
+                                    renderInput={(params:any) => (
                                         <TextField
                                             size="small"
                                             id="CurrDate"

@@ -87,7 +87,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
         } finally {
         }
     };
-    console.log("baseStay", entity);
+
     return (
         <NewEditForm
             api={FolioAPI}

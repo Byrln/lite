@@ -1,5 +1,11 @@
 import { Controller } from "react-hook-form";
-import { Grid, TextField, Tooltip, IconButton } from "@mui/material";
+import {
+    Grid,
+    TextField,
+    Tooltip,
+    IconButton,
+    Typography,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
@@ -50,6 +56,8 @@ const NewEdit = ({
     const [ReservationTypeID, setReservationTypeID]: any = useState(1);
     const [selectedAdult, setSelectedAdult]: any = useState(1);
     const [selectedChild, setSelectedChild]: any = useState(0);
+    console.log("ArrivalDate", ArrivalDate);
+    console.log("DepartureDate", DepartureDate);
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -212,13 +220,11 @@ const NewEdit = ({
                 {...register(`TransactionDetail.${id}.ArrivalDate`)}
                 name={`TransactionDetail.${id}.ArrivalDate`}
             />
-
             <input
                 type="hidden"
                 {...register(`TransactionDetail.${id}.DepartureDate`)}
                 name={`TransactionDetail.${id}.DepartureDate`}
             />
-
             <input
                 type="hidden"
                 {...register(`TransactionDetail.${id}.GuestID`)}
@@ -257,7 +263,11 @@ const NewEdit = ({
                 name={`TransactionDetail.${id}.GuestDetail.VipStatusID`}
                 value={0}
             />
-
+            <Grid item xs={12}>
+                <Typography variant="caption" gutterBottom>
+                    Өрөө {id + 1}
+                </Typography>
+            </Grid>
             <Grid item xs={6} sm={4} md={2}>
                 <RoomTypeSelect
                     register={register}
@@ -268,7 +278,6 @@ const NewEdit = ({
                     RoomTypeID={RoomTypeID}
                 />
             </Grid>
-
             {RoomTypeID && (
                 <>
                     <Grid item xs={6} sm={4} md={1}>
