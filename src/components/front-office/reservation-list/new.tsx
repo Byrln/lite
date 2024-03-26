@@ -39,6 +39,7 @@ import NewForm from "./new-form";
 import CustomerGroupSelect from "components/select/customer-group";
 import CustomerSelect from "components/select/customer";
 import AvailableRoomTypes from "./available-room-types";
+import ColorPicker from "components/select/color";
 
 const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().notRequired(),
@@ -76,6 +77,9 @@ const NewEdit = ({
     const [nights, setNights]: any = useState<any>(1);
     const [totalAmount, setTotalAmount]: any = useState<any>(0);
     const [billingInfo, setBillingInfo]: any = useState<any>(null);
+    const [isBooker, setIsBooker]: any = useState<any>(false);
+    const [isGuide, setIsGuide]: any = useState<any>(false);
+    const [groupColor, setGroupColor]: any = useState("#0033ff");
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -100,6 +104,13 @@ const NewEdit = ({
         formState: { errors },
     } = useForm({
         defaultValues: {
+            Description: null,
+            BookerName: null,
+            BookerPhone: null,
+            GuideName: null,
+            GuidePhone: null,
+            IsBooker: null,
+            IsGuide: null,
             ReservationSourceChecked: null,
             TaxIncluded: null,
             BreakfastIncluded: null,
@@ -188,6 +199,25 @@ const NewEdit = ({
             tempValues.TransactionDetail[0].ReservationSourceID =
                 values.ReservationSourceID;
             tempValues.TransactionDetail[0].CustomerID = values.CustomerID;
+            tempValues.TransactionDetail[0].GroupColor = groupColor;
+            tempValues.TransactionDetail[0].Description = values.Description;
+
+            if (isBooker == true) {
+                tempValues.TransactionDetail[0].BookerName = values.BookerName;
+                tempValues.TransactionDetail[0].BookerPhone =
+                    values.BookerPhone;
+            } else {
+                delete tempValues.BookerName;
+                delete tempValues.BookerPhone;
+            }
+
+            if (isGuide == true) {
+                tempValues.TransactionDetail[0].GuideName = values.GuideName;
+                tempValues.TransactionDetail[0].GuidePhone = values.GuidePhone;
+            } else {
+                delete tempValues.GuideName;
+                delete tempValues.GuidePhone;
+            }
 
             values.TransactionDetail.forEach((detail: any, index: any) => {
                 tempValues.TransactionDetail[index].TaxIncluded = TaxIncluded;
@@ -203,6 +233,23 @@ const NewEdit = ({
                     values.DepartureDate;
                 tempValues.TransactionDetail[index].CustomerID =
                     values.CustomerID;
+
+                if (isBooker == true) {
+                    tempValues.TransactionDetail[index].BookerName =
+                        values.BookerName;
+                    tempValues.TransactionDetail[index].BookerPhone =
+                        values.BookerPhone;
+                }
+
+                if (isGuide == true) {
+                    tempValues.TransactionDetail[index].GuideName =
+                        values.GuideName;
+                    tempValues.TransactionDetail[index].GuidePhone =
+                        values.GuidePhone;
+                }
+                tempValues.TransactionDetail[index].GroupColor = groupColor;
+                tempValues.TransactionDetail[index].Description =
+                    values.Description;
             });
 
             await ReservationAPI.new(tempValues);
@@ -211,6 +258,11 @@ const NewEdit = ({
             await mutate("/api/FrontOffice/ReservationDetailsByDate");
         } finally {
         }
+    };
+
+    const onColorChange = (color: any) => {
+        console.log("color", color);
+        setGroupColor(color);
     };
 
     return (
@@ -365,7 +417,7 @@ const NewEdit = ({
                                 />
                             </Grid>
 
-                            <Grid item xs={6}>
+                            <Grid item xs={12}>
                                 <CustomerSelect
                                     register={register}
                                     errors={errors}
@@ -373,6 +425,108 @@ const NewEdit = ({
                                     isCustomSelect={true}
                                 />
                             </Grid>
+
+                            <Grid item xs={16}>
+                                <FormControlLabel
+                                    control={
+                                        <Controller
+                                            name={`IsBooker`}
+                                            control={control}
+                                            render={(props: any) => (
+                                                <Checkbox
+                                                    checked={
+                                                        isBooker == true
+                                                            ? true
+                                                            : false
+                                                    }
+                                                    onChange={(e) =>
+                                                        setIsBooker(
+                                                            e.target.checked
+                                                        )
+                                                    }
+                                                />
+                                            )}
+                                        />
+                                    }
+                                    label="Захиалагчийн мэдээлэл"
+                                />
+                            </Grid>
+
+                            {isBooker ? (
+                                <>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="BookerName"
+                                            label="Нэр"
+                                            {...register(`BookerName`)}
+                                            margin="dense"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="BookerPhone"
+                                            label="Гар утас"
+                                            {...register(`BookerPhone`)}
+                                            margin="dense"
+                                        />
+                                    </Grid>
+                                </>
+                            ) : null}
+
+                            <Grid item xs={16}>
+                                <FormControlLabel
+                                    control={
+                                        <Controller
+                                            name={`IsGuide`}
+                                            control={control}
+                                            render={(props: any) => (
+                                                <Checkbox
+                                                    checked={
+                                                        isGuide == true
+                                                            ? true
+                                                            : false
+                                                    }
+                                                    onChange={(e) =>
+                                                        setIsGuide(
+                                                            e.target.checked
+                                                        )
+                                                    }
+                                                />
+                                            )}
+                                        />
+                                    }
+                                    label="Хөтөчийн мэдээлэл"
+                                />
+                            </Grid>
+
+                            {isGuide ? (
+                                <>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="GuideName"
+                                            label="Нэр"
+                                            {...register(`GuideName`)}
+                                            margin="dense"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="GuidePhone"
+                                            label="Гар утас"
+                                            {...register(`GuidePhone`)}
+                                            margin="dense"
+                                        />
+                                    </Grid>
+                                </>
+                            ) : null}
 
                             {/* <Grid item sm={4} xs={6}>
                                 <RateTypeSelect
@@ -524,6 +678,8 @@ const NewEdit = ({
                                         setNewGroupCount(e.target.value);
                                     }}
                                 />
+                                {/* <ColorPicker onColorChange={onColorChange} /> */}
+
                                 <Button
                                     variant="outlined"
                                     onClick={() =>
@@ -833,7 +989,7 @@ const NewEdit = ({
                                     }}
                                 >
                                     <Grid container spacing={1}>
-                                        <Grid item xs={12}>
+                                        <Grid item xs={12} sm={6}>
                                             <PaymentMethodSelect
                                                 register={register}
                                                 errors={errors}
@@ -847,7 +1003,7 @@ const NewEdit = ({
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12}>
+                                        <Grid item xs={12} sm={6}>
                                             <CurrencySelect
                                                 register={register}
                                                 errors={errors}
@@ -855,7 +1011,7 @@ const NewEdit = ({
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12}>
+                                        <Grid item xs={12} sm={6}>
                                             <TextField
                                                 id={`PayAmount`}
                                                 label="PayAmount"
@@ -868,7 +1024,7 @@ const NewEdit = ({
                                                 }}
                                             />
                                         </Grid>
-                                        <Grid item xs={12}>
+                                        <Grid item xs={12} sm={6}>
                                             <ReferenceSelect
                                                 register={register}
                                                 errors={errors}
@@ -879,6 +1035,18 @@ const NewEdit = ({
                                                 customField="GroupBillTo"
                                                 entity={billingInfo}
                                                 setEntity={setBillingInfo}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                size="small"
+                                                fullWidth
+                                                id="Description"
+                                                label="Мессеж үлдээх"
+                                                {...register(`Description`)}
+                                                margin="dense"
+                                                multiline
+                                                maxRows={3}
                                             />
                                         </Grid>
                                     </Grid>

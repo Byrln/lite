@@ -1612,7 +1612,6 @@ const NewEdit = ({
                         }}
                     >
                         <ColorPicker onColorChange={onColorChange} />
-
                         <GroupAdd
                             baseStay={baseStay}
                             baseGroupStay={baseGroupStay}

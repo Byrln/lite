@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { SketchPicker } from "react-color";
 import { Box } from "@mui/material";
 import styles1 from "./styles/color.module.scss";
+import CloseIcon from "@mui/icons-material/Close";
 
 const hexToRGBA = (h: string) => {
     let r: any = 0,
@@ -30,7 +31,7 @@ const hexToRGBA = (h: string) => {
 };
 
 const ColorPicker = ({ onColorChange }: any) => {
-    const colorDefault = "#f17013";
+    const colorDefault = "#0033ff";
 
     const [state, setState] = useState({
         displayColorPicker: false,
@@ -67,23 +68,22 @@ const ColorPicker = ({ onColorChange }: any) => {
     const styles = {
         color: {
             width: "40px",
-            height: "22px",
+            height: "34px",
             borderRadius: "2px",
             background: `rgba(${state.color.r}, ${state.color.g}, ${state.color.b}, ${state.color.a})`,
         },
         swatch: {
-            padding: "5px",
             background: "#fff",
             borderRadius: "1px",
-            boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
+            // boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
             display: "inline-block",
             cursor: "pointer",
-            mt: 1.5,
         },
         popover: {
             position: "absolute",
             zIndex: "2",
             bottom: "80px",
+            backgroundColor: "white",
         },
         cover: {
             position: "fixed",
@@ -95,13 +95,27 @@ const ColorPicker = ({ onColorChange }: any) => {
     };
 
     return (
-        <Box>
+        <Box
+            style={{ height: "34px", marginBottom: "4px", marginRight: "10px" }}
+        >
             <Box sx={styles.swatch} onClick={handleClick}>
                 <Box sx={styles.color} />
             </Box>
             {state.displayColorPicker ? (
                 <Box className={styles1.popover}>
-                    <Box onClick={handleClose} />
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row-reverse",
+                            paddingRight: "10px",
+                            paddingTop: "5px",
+                        }}
+                    >
+                        <Box onClick={handleClose}>
+                            <CloseIcon />
+                        </Box>
+                    </Box>
+
                     <SketchPicker color={state.color} onChange={handleChange} />
                 </Box>
             ) : null}
