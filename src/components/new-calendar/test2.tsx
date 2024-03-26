@@ -19,6 +19,7 @@ import {
     Typography,
 } from "@mui/material";
 import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 import { RoomTypeSWR } from "../../lib/api/room-type";
 import { RoomSWR } from "lib/api/room";
@@ -260,23 +261,42 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 ),
             };
 
+            let filteredItemData = itemData.filter(
+                (event: any) =>
+                    event.roomTypeID ===
+                        extractNumberFromString(
+                            info.newResource._resource.parentId
+                        ) &&
+                    event.resourceId ==
+                        Number(info.event._def.resourceIds[0]) &&
+                    event.id != info.event._def.extendedProps.transactionID &&
+                    new Date(event.start) <=
+                        new Date(info.event._instance.range.end) &&
+                    new Date(event.end) >
+                        new Date(info.event._instance.range.start)
+            );
+
             if (!info.event.extendedProps.block) {
-                handleModal(
-                    true,
-                    `New Reservation`,
-                    <RoomMoveForm
-                        transactionInfo={newEventObject}
-                        additionalMutateUrl="/api/Reservation/List"
-                    />,
-                    null,
-                    "large"
-                );
+                if (filteredItemData.length > 0) {
+                    toast("Захиалга давхцаж байна.");
+                } else {
+                    handleModal(
+                        true,
+                        `New Reservation`,
+                        <RoomMoveForm
+                            transactionInfo={newEventObject}
+                            additionalMutateUrl="/api/Reservation/List"
+                        />,
+                        null,
+                        "large"
+                    );
+                }
             }
         }
         setRerenderKey((prevKey) => prevKey + 1);
     };
 
-    const handleEventResize = (info: any) => {
+    const handleEventResize = async (info: any) => {
         if (info.event._instance.range.end > new Date(workingDate)) {
             if (Number(info.event._def.extendedProps.transactionID)) {
                 dispatch({
@@ -297,16 +317,33 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 RoomID: Number(info.event._def.resourceIds[0]),
                 TransactionID: info.event._def.extendedProps.transactionID,
             };
-
-            handleModal(
-                true,
-                "Amend Stay",
-                <AmendStayForm
-                    transactionInfo={newEventObject}
-                    reservation={newEventObject}
-                    additionalMutateUrl="/api/Reservation/List"
-                />
+            let filteredItemData = itemData.filter(
+                (event: any) =>
+                    event.roomTypeID ===
+                        Number(info.event._def.extendedProps.roomTypeID) &&
+                    event.resourceId ==
+                        Number(info.event._def.resourceIds[0]) &&
+                    event.id != info.event._def.extendedProps.transactionID &&
+                    new Date(event.start) <=
+                        new Date(info.event._instance.range.end) &&
+                    new Date(event.end) >
+                        new Date(info.event._instance.range.start)
             );
+
+            if (filteredItemData.length > 0) {
+                toast("Захиалга давхцаж байна.");
+            } else {
+                handleModal(
+                    true,
+                    "Amend Stay",
+                    <AmendStayForm
+                        transactionInfo={newEventObject}
+                        reservation={newEventObject}
+                        additionalMutateUrl="/api/Reservation/List"
+                    />
+                );
+            }
+            setRerenderKey((prevKey) => prevKey + 1);
         }
     };
 
