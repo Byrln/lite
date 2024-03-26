@@ -104,7 +104,7 @@ const NewEdit = ({
         formState: { errors },
     } = useForm({
         defaultValues: {
-            Description: null,
+            Remarks: null,
             BookerName: null,
             BookerPhone: null,
             GuideName: null,
@@ -200,7 +200,7 @@ const NewEdit = ({
                 values.ReservationSourceID;
             tempValues.TransactionDetail[0].CustomerID = values.CustomerID;
             tempValues.TransactionDetail[0].GroupColor = groupColor;
-            tempValues.TransactionDetail[0].Description = values.Description;
+            tempValues.TransactionDetail[0].Remarks = values.Remarks;
 
             if (isBooker == true) {
                 tempValues.TransactionDetail[0].BookerName = values.BookerName;
@@ -248,8 +248,7 @@ const NewEdit = ({
                         values.GuidePhone;
                 }
                 tempValues.TransactionDetail[index].GroupColor = groupColor;
-                tempValues.TransactionDetail[index].Description =
-                    values.Description;
+                tempValues.TransactionDetail[index].Remarks = values.Remarks;
             });
 
             await ReservationAPI.new(tempValues);
@@ -1041,9 +1040,9 @@ const NewEdit = ({
                                             <TextField
                                                 size="small"
                                                 fullWidth
-                                                id="Description"
+                                                id="Remarks"
                                                 label="Мессеж үлдээх"
-                                                {...register(`Description`)}
+                                                {...register(`Remarks`)}
                                                 margin="dense"
                                                 multiline
                                                 maxRows={3}
