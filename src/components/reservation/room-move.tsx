@@ -28,6 +28,7 @@ const RoomMoveForm = ({
     transactionInfo,
     reservation,
     additionalMutateUrl,
+    customRerender,
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
@@ -106,6 +107,9 @@ const RoomMoveForm = ({
             }
             toast("Амжилттай.");
 
+            if (customRerender) {
+                customRerender();
+            }
             setLoading(false);
             handleModal();
         } catch (error) {

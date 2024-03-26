@@ -279,6 +279,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             if (!info.event.extendedProps.block) {
                 if (filteredItemData.length > 0) {
                     toast("Захиалга давхцаж байна.");
+                    setRerenderKey((prevKey) => prevKey + 1);
                 } else {
                     handleModal(
                         true,
@@ -286,6 +287,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         <RoomMoveForm
                             transactionInfo={newEventObject}
                             additionalMutateUrl="/api/Reservation/List"
+                            customRerender={setRerenderKey(
+                                (prevKey) => prevKey + 1
+                            )}
                         />,
                         null,
                         "large"
@@ -293,7 +297,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 }
             }
         }
-        setRerenderKey((prevKey) => prevKey + 1);
     };
 
     const handleEventResize = async (info: any) => {
