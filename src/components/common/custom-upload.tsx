@@ -78,6 +78,8 @@ const GuestSelect = ({
             }
             if (IsLogo) {
                 formData.append("IsLogo", IsLogo);
+            } else {
+                formData.append("IsLogo", "false");
             }
             if (IsDocument) {
                 formData.append("IsDocument", IsDocument);

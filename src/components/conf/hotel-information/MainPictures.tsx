@@ -40,7 +40,6 @@ const BankAccountList = () => {
                 modalTitle="Main"
                 modalContent={
                     <CustomUpload
-                        IsMain={true}
                         IsBanner={false}
                         listUrl={listUrl}
                         mutateBody={{ IsMain: true }}
