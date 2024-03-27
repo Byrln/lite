@@ -106,6 +106,7 @@ const GroupReservationList = ({ title }: any) => {
     const [search, setSearch] = useState({
         StartDate: moment(new Date()).format("YYYY-MM-DD"),
         EndDate: moment(new Date()).format("YYYY-MM-DD"),
+        GroupInReserv: true,
     });
 
     const { data, error } = GroupReservationSWR(search);
@@ -119,6 +120,7 @@ const GroupReservationList = ({ title }: any) => {
         defaultValues: {
             StartDate: moment(new Date()).format("YYYY-MM-DD"),
             EndDate: moment(new Date()).format("YYYY-MM-DD"),
+            GroupInReserv: true,
         },
     };
     const {

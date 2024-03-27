@@ -300,10 +300,6 @@ const sidebarConfig = [
                 title: "зочин",
                 path: "/front-office/guest-database",
             },
-            {
-                title: "групп захиалгын жагсаалт",
-                path: "/group-operation/group-reservations-list",
-            },
 
             // {
             //     title: "depature list",
@@ -313,6 +309,24 @@ const sidebarConfig = [
             //     title: "departured list",
             //     path: "/front-office/departured-list",
             // },
+        ],
+    },
+    {
+        title: "бүлэг",
+        icon: getIcon(peopleFill),
+        children: [
+            {
+                title: "групп захиалгын жагсаалт",
+                path: "/group-operation/group-reservations-list",
+            },
+            {
+                title: "байрлаж буй групп",
+                path: "/group-operation/in-house-group",
+            },
+            {
+                title: "гарсан групп",
+                path: "/group-operation/departed-group",
+            },
         ],
     },
     {
@@ -598,24 +612,6 @@ const sidebarConfig = [
     //         {
     //             title: "accounting",
     //             path: "/integration/accounting",
-    //         },
-    //     ],
-    // },
-    // {
-    //     title: "бүлэг",
-    //     icon: getIcon(peopleFill),
-    //     children: [
-    //         // {
-    //         //     title: "групп захиалгын жагсаалт",
-    //         //     path: "/group-operation/group-reservations-list",
-    //         // },
-    //         {
-    //             title: "байрлаж буй групп",
-    //             path: "/group-operation/in-house-group",
-    //         },
-    //         {
-    //             title: "гарсан групп",
-    //             path: "/group-operation/departed-group",
     //         },
     //     ],
     // },

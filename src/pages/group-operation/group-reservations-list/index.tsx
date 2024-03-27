@@ -4,7 +4,7 @@ import Head from "next/head";
 import Page from "components/page";
 import GroupReservations from "components/group-opretion/group-reservations-list/list";
 
-const title = "Group Reservations List";
+const title = "Групп захиалга";
 
 const Index = () => (
     <>
