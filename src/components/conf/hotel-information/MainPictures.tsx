@@ -22,7 +22,7 @@ const columns = [
 ];
 
 const BankAccountList = () => {
-    const { data, error } = PictureSWR({ IsMain: true, IsBanner: false });
+    const { data, error } = PictureSWR({ IsMain: null, IsBanner: false });
 
     return (
         <>
@@ -41,6 +41,7 @@ const BankAccountList = () => {
                 modalContent={
                     <CustomUpload
                         IsBanner={false}
+                        IsMain={true}
                         listUrl={listUrl}
                         mutateBody={{ IsMain: true }}
                     />
