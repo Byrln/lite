@@ -2,6 +2,7 @@ import CustomTable from "components/common/custom-table";
 import { ReservationLogSWR, listUrl } from "lib/api/reservation";
 
 const columns = [
+    { title: "Өрөө", key: "RoomFullNo", dataIndex: "RoomFullNo" },
     { title: "Үйлдэл", key: "Action", dataIndex: "Action" },
     {
         title: "Тайлбар",
@@ -13,8 +14,8 @@ const columns = [
     { title: "Сүлжээний хаяг", key: "IPAddress", dataIndex: "IPAddress" },
 ];
 
-const RoomList = ({ TransactionID }: any) => {
-    const { data, error } = ReservationLogSWR(TransactionID, null);
+const RoomList = ({ GroupID }: any) => {
+    const { data, error } = ReservationLogSWR(null, GroupID);
 
     return (
         <>

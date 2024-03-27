@@ -53,7 +53,6 @@ const GuestSelect = ({
         reset,
         getValues,
     } = useForm(formOptions);
-
     const onSubmit = async (values: any) => {
         try {
             setLoading(true);
@@ -71,7 +70,11 @@ const GuestSelect = ({
                 formData.append("IsMain", IsMain);
             }
             if (IsBanner) {
+                console.log("isBanner", IsBanner);
+
                 formData.append("IsBanner", IsBanner);
+            } else {
+                formData.append("IsBanner", "false");
             }
             if (IsLogo) {
                 formData.append("IsLogo", IsLogo);

@@ -17,7 +17,7 @@ const Index = () => {
     useEffect(() => {
         fetchDatas();
     }, []);
-    console.log("data", data);
+
     const fetchDatas = async () => {
         let response = await FrontOfficeAPI.workingDate();
         if (response.status == 200) {

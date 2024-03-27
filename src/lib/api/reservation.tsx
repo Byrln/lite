@@ -36,10 +36,10 @@ export const ReservationGroupRoomSWR = (id: any) => {
     return useSWR(`${urlPrefix}/Group/Rooms`, fetcher);
 };
 
-export const ReservationLogSWR = (id: any) => {
+export const ReservationLogSWR = (id: any, groupID: any) => {
     const fetcher = async (url: any) =>
         await axios
-            .post(url, { TransactionID: id })
+            .post(url, { TransactionID: id, GroupID: groupID })
             .then((res: any) => res.data.JsonData);
 
     return useSWR(`${urlPrefix}/Log`, fetcher);

@@ -22,7 +22,7 @@ const columns = [
 ];
 
 const BankAccountList = () => {
-    const { data, error } = PictureSWR({ IsMain: true });
+    const { data, error } = PictureSWR({ IsMain: true, IsBanner: false });
 
     return (
         <>
@@ -41,11 +41,12 @@ const BankAccountList = () => {
                 modalContent={
                     <CustomUpload
                         IsMain={true}
+                        IsBanner={false}
                         listUrl={listUrl}
                         mutateBody={{ IsMain: true }}
                     />
                 }
-                excelName="Banner"
+                excelName="Main"
             />
         </>
     );

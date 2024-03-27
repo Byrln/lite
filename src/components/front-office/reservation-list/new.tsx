@@ -55,13 +55,15 @@ const NewEdit = ({
     MaxAdult,
     MaxChild,
     workingDate,
+    groupID,
 }: any) => {
+    console.log("dateStart", dateStart);
     const [CustomerID, setCustomerID]: any = useState(0);
     const [ArrivalDate, setArrivalDate]: any = useState(
-        dateStart && dateEnd && roomType && room ? dateStart : workingDate
+        dateStart ? dateStart : workingDate
     );
     const [DepartureDate, setDepartureDate]: any = useState(
-        dateStart && dateEnd && roomType && room
+        dateEnd
             ? dateEnd
             : moment(dateStringToObj(workingDate)).add(1, "days").startOf("day")
     );
@@ -115,21 +117,15 @@ const NewEdit = ({
             TaxIncluded: null,
             BreakfastIncluded: null,
             PayAmount: null,
-            ArrivalDate:
-                dateStart && dateEnd && roomType && room
-                    ? dateStart
-                    : workingDate,
-            DepartureDate:
-                dateStart && dateEnd && roomType && room
-                    ? dateEnd
-                    : moment(
-                          dateStringToObj(
-                              moment(workingDate).format("YYYY-MM-DD")
-                          ),
-                          "YYYY-MM-DD"
-                      )
-                          .add(1, "days")
-                          .format("YYYY-MM-DD"),
+            ArrivalDate: dateStart ? dateStart : workingDate,
+            DepartureDate: dateEnd
+                ? dateEnd
+                : moment(
+                      dateStringToObj(moment(workingDate).format("YYYY-MM-DD")),
+                      "YYYY-MM-DD"
+                  )
+                      .add(1, "days")
+                      .format("YYYY-MM-DD"),
             TransactionDetail: [
                 dateStart && dateEnd && roomType && room
                     ? {
@@ -145,15 +141,17 @@ const NewEdit = ({
                           },
                       }
                     : {
-                          ArrivalDate: workingDate,
-                          DepartureDate: moment(
-                              dateStringToObj(
-                                  moment(workingDate).format("YYYY-MM-DD")
-                              ),
-                              "YYYY-MM-DD"
-                          )
-                              .add(1, "days")
-                              .format("YYYY-MM-DD"),
+                          ArrivalDate: dateStart ? dateStart : workingDate,
+                          DepartureDate: dateEnd
+                              ? dateEnd
+                              : moment(
+                                    dateStringToObj(
+                                        moment(workingDate).format("YYYY-MM-DD")
+                                    ),
+                                    "YYYY-MM-DD"
+                                )
+                                    .add(1, "days")
+                                    .format("YYYY-MM-DD"),
                           GuestDetail: {
                               Name: null,
                               Email: null,
@@ -203,6 +201,12 @@ const NewEdit = ({
             tempValues.TransactionDetail[0].GroupColor = groupColor;
             tempValues.TransactionDetail[0].Remarks = values.Remarks;
 
+            if (groupID) {
+                tempValues.IsGroup = true;
+                tempValues.IsGroup = groupID;
+                tempValues.TransactionDetail[0].IsGroup = true;
+                tempValues.TransactionDetail[0].GroupID = groupID;
+            }
             if (isBooker == true) {
                 tempValues.TransactionDetail[0].BookerName = values.BookerName;
                 tempValues.TransactionDetail[0].BookerPhone =
@@ -248,6 +252,12 @@ const NewEdit = ({
                     tempValues.TransactionDetail[index].GuidePhone =
                         values.GuidePhone;
                 }
+
+                if (groupID) {
+                    tempValues.TransactionDetail[index].IsGroup = true;
+                    tempValues.TransactionDetail[index].GroupID = groupID;
+                }
+
                 tempValues.TransactionDetail[index].GroupColor = groupColor;
                 tempValues.TransactionDetail[index].Remarks = values.Remarks;
             });
