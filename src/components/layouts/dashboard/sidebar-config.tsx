@@ -300,6 +300,10 @@ const sidebarConfig = [
                 title: "зочин",
                 path: "/front-office/guest-database",
             },
+            {
+                title: "групп захиалгын жагсаалт",
+                path: "/group-operation/group-reservations-list",
+            },
 
             // {
             //     title: "depature list",

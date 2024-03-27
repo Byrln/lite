@@ -9,7 +9,6 @@ import {
 import CurrencySelect from "../select/currency";
 import { RateAPI } from "../../lib/api/rate";
 import { CurrenctAPI } from "../../lib/api/currency";
-import { dateToCustomFormat } from "../../lib/utils/format-time";
 
 const CurrencyAmount = ({
     id,
@@ -127,28 +126,13 @@ const CurrencyAmount = ({
                     defaultCurrencyAmount / exchangeRate[0].TargetCurrencyRate1
                 );
             } catch (exp) {}
-            console.log("Currency", Currency.CurrencyID);
-            console.log("rateCurrencyID", rateCurrencyID);
         }
     };
 
     useEffect(() => {
         newCurrencyAmount();
-        // calculateAmount();
     }, [Currency]);
 
-    // useEffect(() => {
-    //     if (isCurrencyAmountEditable == true) {
-    //         resetField(`TransactionDetail.${id}.RateModeID`, {
-    //             defaultValue: 2,
-    //         });
-    //     } else {
-    //         resetField(`TransactionDetail.${id}.RateModeID`, {
-    //             defaultValue: 1,
-    //         });
-    //     }
-    // }, [isCurrencyAmountEditable]);
-    console.log("currency", Currency);
     return (
         <>
             {!isRoomList ? (
@@ -224,6 +208,11 @@ const CurrencyAmount = ({
                     }}
                     size="small"
                     style={{ width: "100%" }}
+                    onChange={(e) =>
+                        resetField(`TransactionDetail.${id}.CurrencyAmount`, {
+                            defaultValue: e.target.value,
+                        })
+                    }
                 />
                 <FormControlLabel
                     control={

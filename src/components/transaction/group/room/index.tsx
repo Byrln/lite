@@ -9,6 +9,7 @@ import {
     Checkbox,
     Menu,
     MenuItem,
+    Divider,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { mutate } from "swr";
@@ -466,79 +467,83 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
 
     return (
         <Box>
-            <Button
-                variant={"outlined"}
-                size="small"
-                className="mr-2"
-                onClick={() => unassignRooms()}
-            >
-                Өрөөг болих
-            </Button>
+            <Box>
+                <Button
+                    variant={"outlined"}
+                    size="small"
+                    className="mr-2"
+                    onClick={() => unassignRooms()}
+                >
+                    Өрөөг болих
+                </Button>
 
-            <Button
-                variant={"outlined"}
-                size="small"
-                className="mr-2"
-                onClick={(evt: any) => {
-                    handleModal(
-                        true,
-                        "Cancel Reservation",
-                        <CancelReservationForm
-                            transactionInfo={newData}
-                            reservation={newData}
-                            customMutateUrl={"/api/Folio/Details"}
-                        />
-                    );
-                }}
-            >
-                Захиалга цуцлах
-            </Button>
+                <Button
+                    variant={"outlined"}
+                    size="small"
+                    className="mr-2"
+                    onClick={(evt: any) => {
+                        handleModal(
+                            true,
+                            "Cancel Reservation",
+                            <CancelReservationForm
+                                transactionInfo={newData}
+                                reservation={newData}
+                                customMutateUrl={"/api/Folio/Details"}
+                            />
+                        );
+                    }}
+                >
+                    Захиалга цуцлах
+                </Button>
 
-            <Button
-                variant={"outlined"}
-                size="small"
-                className="mr-2"
-                onClick={(evt: any) => {
-                    handleModal(
-                        true,
-                        "Void Transaction",
-                        <VoidTransactionForm
-                            transactionInfo={newData}
-                            reservation={newData}
-                            customMutateUrl={"/api/Folio/Details"}
-                        />
-                    );
-                }}
-            >
-                Устгах
-            </Button>
+                <Button
+                    variant={"outlined"}
+                    size="small"
+                    className="mr-2"
+                    onClick={(evt: any) => {
+                        handleModal(
+                            true,
+                            "Void Transaction",
+                            <VoidTransactionForm
+                                transactionInfo={newData}
+                                reservation={newData}
+                                customMutateUrl={"/api/Folio/Details"}
+                            />
+                        );
+                    }}
+                >
+                    Устгах
+                </Button>
 
-            <Button
-                variant={"outlined"}
-                size="small"
-                className="mr-2"
-                onClick={() => {
-                    handleModal(
-                        true,
-                        "Хугацаа өөрчлөх",
-                        <AmendStayForm
-                            transactionInfo={{
-                                TransactionID: newData,
-                                ArrivalDate: arrivalDate,
-                                DepartureDate: departureDate,
-                            }}
-                            reservation={{
-                                TransactionID: newData,
-                                ArrivalDate: arrivalDate,
-                                DepartureDate: departureDate,
-                            }}
-                            additionalMutateUrl={"/api/Folio/Details"}
-                        />
-                    );
-                }}
-            >
-                Хугацаа өөрчлөх
-            </Button>
+                <Button
+                    variant={"outlined"}
+                    size="small"
+                    className="mr-2"
+                    onClick={() => {
+                        handleModal(
+                            true,
+                            "Хугацаа өөрчлөх",
+                            <AmendStayForm
+                                transactionInfo={{
+                                    TransactionID: newData,
+                                    ArrivalDate: arrivalDate,
+                                    DepartureDate: departureDate,
+                                }}
+                                reservation={{
+                                    TransactionID: newData,
+                                    ArrivalDate: arrivalDate,
+                                    DepartureDate: departureDate,
+                                }}
+                                additionalMutateUrl={"/api/Folio/Details"}
+                            />
+                        );
+                    }}
+                >
+                    Хугацаа өөрчлөх
+                </Button>
+            </Box>
+
+            <Divider className="mt-3 mb-3" />
 
             {newData && (
                 <CustomTable

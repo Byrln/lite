@@ -175,7 +175,8 @@ const NewEdit = ({
             setTotalAmount(
                 getValues().TransactionDetail.reduce(
                     (acc: any, obj: any) =>
-                        acc + (obj.CurrencyAmount ? obj.CurrencyAmount : 0),
+                        Number(acc) +
+                        (obj.CurrencyAmount ? Number(obj.CurrencyAmount) : 0),
                     0
                 )
             );
@@ -260,7 +261,6 @@ const NewEdit = ({
     };
 
     const onColorChange = (color: any) => {
-        console.log("color", color);
         setGroupColor(color);
     };
 

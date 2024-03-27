@@ -210,6 +210,9 @@ const AmendStayForm = ({
 
             await mutate("/api/FrontOffice/TransactionInfo");
 
+            if (additionalMutateUrl) {
+                await mutate(additionalMutateUrl);
+            }
             // toast("Амжилттай.");
 
             setLoading(false);

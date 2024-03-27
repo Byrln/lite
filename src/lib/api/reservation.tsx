@@ -71,18 +71,10 @@ export const DepartedListSWR = () => {
     return useSWR(listUrl, fetcher);
 };
 
-export const GroupReservationSWR = () => {
-    const values = {
-        StartDate: date,
-        EndDate: date,
-    };
-    // const values = {
-    //     ReservationTypeID: ReservationTypeID,
-    // };
-
+export const GroupReservationSWR = (search: any) => {
     const fetcher = async (url: any) =>
         await axios
-            .post(`${urlPrefix}/GroupList`, values)
+            .post(`${urlPrefix}/GroupList`, search)
             .then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
