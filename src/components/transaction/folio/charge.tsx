@@ -21,85 +21,76 @@ import { useGetChargeTypeGroupAPI } from "lib/api/charge-type-group";
 import { useGetChargeTypeAPI, ChargeTypeAPI } from "lib/api/charge-type";
 import { AnyMxRecord } from "dns";
 
-export default function FolioCharge({FolioID, TransactionID,
-register,
-remove,
-id,
-resetField,
+export default function FolioCharge({
+    FolioID,
+    TransactionID,
+    register,
+    remove,
+    id,
+    resetField,
+}: any) {
+    const { chargegroup } = useGetChargeTypeGroupAPI();
 
+    const [groupPick, setGroupPick] = useState("");
+    const [typePick, setTypePick] = useState("");
+    const [filteredData, setFilteredData] = useState<any>({});
 
-}: any){
+    const [quantity, setQuantity] = useState(1);
 
-    const {chargegroup}=useGetChargeTypeGroupAPI();
-
-
-
-
-
-    const [groupPick, setGroupPick]=useState('');
-    const [typePick, setTypePick]=useState('');
-    const [filteredData, setFilteredData]=useState<any>({});
-
-    const [quantity, setQuantity]=useState(1);
-
-
-
-    const [newchargeType, setNewChargeType]=useState<any>(null)
+    const [newchargeType, setNewChargeType] = useState<any>(null);
 
     const handleChange = (event: SelectChangeEvent) => {
         setGroupPick(event.target.value as string);
-        resetField(`charge.${id}.Groupid`,{
+        resetField(`charge.${id}.Groupid`, {
             defaultValue: event.target.value as string,
-        })
-      };
-
-      const fetchTest = async () => {
-        const chargetype = await ChargeTypeAPI.get(null,{RoomChargeTypeGroupID:groupPick});
-
-        setNewChargeType(chargetype)
-        setTypePick('');
-
-
+        });
     };
 
+    const fetchTest = async () => {
+        const chargetype = await ChargeTypeAPI.get(null, {
+            RoomChargeTypeGroupID: groupPick,
+        });
 
-    const [enableDate, setEnableDate] = useState(true);
+        setNewChargeType(chargetype);
+        setTypePick("");
+    };
 
     const [chekedTrue, setChekedTrue] = useState(false);
 
     const handleTypeChange = (event: SelectChangeEvent) => {
         setTypePick(event.target.value as string);
-        resetField(`charge.${id}.ItemID`,{
+        resetField(`charge.${id}.ItemID`, {
             defaultValue: event.target.value as string,
-        })
+        });
 
         // resetField(`charge.${id}.Amount`,{
         //     defaultValue: typePickFilter && typePickFilter[0] && typePickFilter[0].RoomChargeTypeRate
         // })
 
         // console.log(typePickFilter)
-      };
+    };
 
-      useEffect(() => {
-         fetchTest()
-
+    useEffect(() => {
+        fetchTest();
     }, [groupPick]);
 
+    useEffect(() => {
+        if (typePick) {
+            let tempfiltered = newchargeType?.filter(
+                (obj: { RoomChargeTypeID: any }) =>
+                    obj.RoomChargeTypeID == typePick
+            );
+            setFilteredData(tempfiltered);
 
-
-  useEffect(() => {
-if(typePick){
-    let tempfiltered = newchargeType?.filter((obj: { RoomChargeTypeID: any; })=>obj.RoomChargeTypeID==typePick)
-    setFilteredData(tempfiltered)
-
-    resetField(`charge.${id}.Amount`,{
-        defaultValue: tempfiltered && tempfiltered[0] && tempfiltered[0].RoomChargeTypeRate && tempfiltered[0].RoomChargeTypeRate
-    })
-
-}
+            resetField(`charge.${id}.Amount`, {
+                defaultValue:
+                    tempfiltered &&
+                    tempfiltered[0] &&
+                    tempfiltered[0].RoomChargeTypeRate &&
+                    tempfiltered[0].RoomChargeTypeRate,
+            });
+        }
     }, [typePick]);
-
-
 
     return (
         <div>
@@ -108,102 +99,94 @@ if(typePick){
                 dateAdapter={AdapterDateFns}
                 adapterLocale={mn}
             >
-                <Stack direction="column" spacing={1}>
+                <Stack direction="column" spacing={1} mb={1}>
                     <Stack direction="row" spacing={2} alignItems="center">
-                        <Typography>Date</Typography>
-                        <TextField
-                            disabled
-                            value={moment(workingDate).format("YYYY-MM-DD")}
-                        />
+                        <Typography>Type</Typography>
 
-                        <Typography>Date</Typography>
-
-                        <Checkbox
-                            checked={chekedTrue}
-                            onChange={handleChekbox}
-                        />
-
-
-    return <div>
-        <LocalizationProvider dateAdapter={AdapterDateFns}
-        adapterLocale={mn}>
-        <Stack direction='column' spacing={1} mb={1}>
-
-
-                <Stack direction='row' spacing={2}  alignItems='center'>
-
-                <Typography>
-                    Type
-                </Typography>
-
-                <Select value={groupPick}
-                {...register(`charge.${id}.GroupID`)}
-                onChange={handleChange} fullWidth>
-
-{
-    chargegroup?.map((element : any) => {
-
-        return(
-        <MenuItem key={element.RoomChargeTypeGroupID} value={element.RoomChargeTypeGroupID}>
-        {element.RoomChargeTypeGroupName}
-        </MenuItem>
-        )
-    })}
-
-
-</Select>
-{groupPick?
-<Select value={typePick} {...register(`charge.${id}.ItemID`)}
-onChange={handleTypeChange}
-fullWidth >
-{
-    newchargeType?.map((element : any) => {
-
-        return(
-        <MenuItem key={element.RoomChargeTypeID} value={element.RoomChargeTypeID}>
-        {element.RoomChargeTypeName}
-        </MenuItem>
-        )
-    })}
-    </Select>:<div></div>}
-
-
-                </Stack>
-
-
-                {typePick?<div>
-                    <Stack direction='column' spacing={1}>
-                    <Stack direction='row' spacing={2}  alignItems='center'>
-
-                <Typography>
-                    Price
-                </Typography>
-
-
-                <TextField disabled={filteredData&& filteredData[0] && !filteredData[0].IsEditable}
-                {...register(`charge.${id}.Amount`)}
-                name={`charge.${id}.Amount`}
-                fullWidth/>
-                </Stack>
-                <Stack direction='row' spacing={2}  alignItems='center'>
-                <Typography>
-                    Quantity
-                </Typography>
-
-                <TextField fullWidth
-                {...register(`charge.${id}.Quantity`)}
-                name={`charge.${id}.Quantity`}
-
-                onChange={(newvalue:any)=>setQuantity(newvalue)}/>
-
+                        <Select
+                            value={groupPick}
+                            {...register(`charge.${id}.GroupID`)}
+                            onChange={handleChange}
+                            fullWidth
+                        >
+                            {chargegroup?.map((element: any) => {
+                                return (
+                                    <MenuItem
+                                        key={element.RoomChargeTypeGroupID}
+                                        value={element.RoomChargeTypeGroupID}
+                                    >
+                                        {element.RoomChargeTypeGroupName}
+                                    </MenuItem>
+                                );
+                            })}
+                        </Select>
+                        {groupPick ? (
+                            <Select
+                                value={typePick}
+                                {...register(`charge.${id}.ItemID`)}
+                                onChange={handleTypeChange}
+                                fullWidth
+                            >
+                                {newchargeType?.map((element: any) => {
+                                    return (
+                                        <MenuItem
+                                            key={element.RoomChargeTypeID}
+                                            value={element.RoomChargeTypeID}
+                                        >
+                                            {element.RoomChargeTypeName}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        ) : (
+                            <div></div>
+                        )}
                     </Stack>
-                    </Stack>
-                    </div>:<div>
 
-                        </div>}
+                    {typePick ? (
+                        <div>
+                            <Stack direction="column" spacing={1}>
+                                <Stack
+                                    direction="row"
+                                    spacing={2}
+                                    alignItems="center"
+                                >
+                                    <Typography>Price</Typography>
 
+                                    <TextField
+                                        disabled={
+                                            filteredData &&
+                                            filteredData[0] &&
+                                            !filteredData[0].IsEditable
+                                        }
+                                        {...register(`charge.${id}.Amount`)}
+                                        name={`charge.${id}.Amount`}
+                                        fullWidth
+                                    />
+                                </Stack>
+                                <Stack
+                                    direction="row"
+                                    spacing={2}
+                                    alignItems="center"
+                                >
+                                    <Typography>Quantity</Typography>
 
-        </Stack>
-        </LocalizationProvider>
-    </div>
+                                    <TextField
+                                        fullWidth
+                                        {...register(`charge.${id}.Quantity`)}
+                                        name={`charge.${id}.Quantity`}
+                                        onChange={(newvalue: any) =>
+                                            setQuantity(newvalue)
+                                        }
+                                    />
+                                </Stack>
+                            </Stack>
+                        </div>
+                    ) : (
+                        <div></div>
+                    )}
+                </Stack>
+            </LocalizationProvider>
+        </div>
+    );
 }

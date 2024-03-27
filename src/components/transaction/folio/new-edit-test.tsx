@@ -85,6 +85,7 @@ const NewEditTest = ({ FolioID, TransactionID, handleModal }: any) => {
     return (
         <div>
             <LocalizationProvider
+                //@ts-ignore
                 dateAdapter={AdapterDateFns}
                 adapterLocale={mn}
             >
