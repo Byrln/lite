@@ -50,24 +50,27 @@ export const calculateColumnsWidth = (
     // Since we have a minimum width (column's width already calculated),
     // now we are going to verify if the cell value is bigger
     // than the column width which is already set
-    source?.map((entry: any) => {
-        columnsWithWidth.map((column: any, indexColumn: number) => {
-            const columnWidth = column.width;
-            const cellValue = entry[column.dataIndex];
+    console.log("source", source);
+    source &&
+        source.length > 0 &&
+        source?.map((entry: any) => {
+            columnsWithWidth.map((column: any, indexColumn: number) => {
+                const columnWidth = column.width;
+                const cellValue = entry[column.dataIndex];
 
-            // Get the string width based on chars length
-            let cellWidth = getTextWidth(cellValue, true);
+                // Get the string width based on chars length
+                let cellWidth = getTextWidth(cellValue, true);
 
-            // Verify if the cell value is smaller than column's width
-            if (cellWidth < columnWidth) cellWidth = columnWidth;
+                // Verify if the cell value is smaller than column's width
+                if (cellWidth < columnWidth) cellWidth = columnWidth;
 
-            // Verify if the cell value width is bigger than our max width flag
-            if (cellWidth > maxWidthPerCell) cellWidth = maxWidthPerCell;
+                // Verify if the cell value width is bigger than our max width flag
+                if (cellWidth > maxWidthPerCell) cellWidth = maxWidthPerCell;
 
-            // Update the column width
-            columnsWithWidth[indexColumn].width = cellWidth;
+                // Update the column width
+                columnsWithWidth[indexColumn].width = cellWidth;
+            });
         });
-    });
 
     // Sum of all columns width to determine the table max width
     const tableWidth = !_.isEmpty(columnsWithWidth)
