@@ -15,15 +15,7 @@ import Stack from "@mui/material/Stack";
 import FolioCharge from "./charge";
 import ChargeFormArray from "./charge-form-array";
 
-<<<<<<< Updated upstream
-const NewEditTest = ({ FolioID }: any) => {
-=======
-
-
-    
-
-const NewEditTest = ({ FolioID, TransactionID,handleModal }: any) => {
->>>>>>> Stashed changes
+const NewEditTest = ({ FolioID, TransactionID, handleModal }: any) => {
     const [workingDate, setWorkingDate] = useState(null);
     const [entity, setEntity] = useState<any>({});
     const [rerenderKey, setRerenderKey] = useState(0);
@@ -80,19 +72,19 @@ const NewEditTest = ({ FolioID, TransactionID,handleModal }: any) => {
         },
         {
             value: "Тооцоо",
-<<<<<<< Updated upstream
-            label: <FolioCharge FolioID={FolioID} />,
-=======
-            label: <ChargeFormArray FolioID={FolioID} TransactionID={TransactionID} handleModal={handleModal}/>,
->>>>>>> Stashed changes
+            label: (
+                <ChargeFormArray
+                    FolioID={FolioID}
+                    TransactionID={TransactionID}
+                    handleModal={handleModal}
+                />
+            ),
         },
     ];
 
-<<<<<<< Updated upstream
     return (
         <div>
             <LocalizationProvider
-                //@ts-ignore
                 dateAdapter={AdapterDateFns}
                 adapterLocale={mn}
             >
@@ -120,80 +112,26 @@ const NewEditTest = ({ FolioID, TransactionID,handleModal }: any) => {
                         ))}
                     </Tabs>
 
-                    <Grid container>
-                        <Grid item xs={12} md={6}>
-                            {TABS.slice(0, 5).map(
-                                (tab) =>
-                                    tab.value === currentTab && (
-                                        <Box
-                                            key={tab.value}
-                                            sx={{
-                                                p: 2,
-                                                borderRadius: 1,
-                                            }}
-                                        >
-                                            {tab.label}
-                                        </Box>
-                                    )
-                            )}
-                        </Grid>
-                        <Grid item xs={12} md={6}></Grid>
-                    </Grid>
+                    <Box>
+                        {TABS.slice(0, 5).map(
+                            (tab) =>
+                                tab.value === currentTab && (
+                                    <Box
+                                        key={tab.value}
+                                        sx={{
+                                            p: 2,
+                                            borderRadius: 1,
+                                        }}
+                                    >
+                                        {tab.label}
+                                    </Box>
+                                )
+                        )}
+                    </Box>
                 </Stack>
             </LocalizationProvider>
         </div>
     );
-=======
-
-    return <div>
-        <LocalizationProvider 
-        dateAdapter={AdapterDateFns}
-        adapterLocale={mn}>
-            <Stack direction='column' spacing={2}>
-
-
-            <Tabs value={currentTab} onChange={handleChangeTab} 
-                
-                TabIndicatorProps={{
-                  style: {
-                    backgroundColor: "secondary",
-                  }
-                }}
-                orientation="horizontal"
-                >
-                    {TABS.slice(0, 2).map((tab) => (
-                  <Tab key={tab.value} value={tab.value} label={tab.value} sx={{
-                    fontSize: '14px',
-                    justifyContent: "start",
-                  }}/>
-                ))}
-
-                </Tabs>
-            
-                  <Box>
-                {TABS.slice(0, 5).map(
-                (tab) =>
-                  tab.value === currentTab && ( 
-                    <Box
-                      key={tab.value}
-                      sx={{
-                        p: 2,
-                        borderRadius: 1,
-                      }}
-                    >
-                      {tab.label}
-                      
-                    </Box>
-                  )
-              )}</Box>
-                
-
-            </Stack>
-
-        
-        </LocalizationProvider>
-    </div>;
->>>>>>> Stashed changes
 };
 
 export default NewEditTest;

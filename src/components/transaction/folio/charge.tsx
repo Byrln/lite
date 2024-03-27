@@ -21,25 +21,6 @@ import { useGetChargeTypeGroupAPI } from "lib/api/charge-type-group";
 import { useGetChargeTypeAPI, ChargeTypeAPI } from "lib/api/charge-type";
 import { AnyMxRecord } from "dns";
 
-<<<<<<< Updated upstream
-export default function FolioCharge({ FolioID }: any) {
-    const { register, control, handleSubmit, reset, watch } = useForm({
-        defaultValues: {
-            charge: [{ firstName: "", lastName: "" }],
-        },
-    });
-
-    const { fields, append, remove, replace } = useFieldArray({
-        control,
-        name: "charge",
-    });
-
-    const [workingDate, setWorkingDate] = useState(null);
-
-    useEffect(() => {
-        fetchDatas();
-    }, []);
-=======
 export default function FolioCharge({FolioID, TransactionID,
 register,
 remove,
@@ -51,10 +32,9 @@ resetField,
 
     const {chargegroup}=useGetChargeTypeGroupAPI();
 
-    
->>>>>>> Stashed changes
 
-    
+
+
 
     const [groupPick, setGroupPick]=useState('');
     const [typePick, setTypePick]=useState('');
@@ -79,22 +59,14 @@ resetField,
         setNewChargeType(chargetype)
         setTypePick('');
 
-        
+
     };
 
 
-<<<<<<< Updated upstream
     const [enableDate, setEnableDate] = useState(true);
-=======
-
-    
->>>>>>> Stashed changes
 
     const [chekedTrue, setChekedTrue] = useState(false);
 
-<<<<<<< Updated upstream
-    const { paymentgroup } = useGetPaymentMethodGroupAPI();
-=======
     const handleTypeChange = (event: SelectChangeEvent) => {
         setTypePick(event.target.value as string);
         resetField(`charge.${id}.ItemID`,{
@@ -107,26 +79,14 @@ resetField,
 
         // console.log(typePickFilter)
       };
-      
+
       useEffect(() => {
          fetchTest()
 
     }, [groupPick]);
 
->>>>>>> Stashed changes
 
 
-<<<<<<< Updated upstream
-    const handleChekbox = () => {
-        if (chekedTrue == true) {
-            setChekedTrue(false);
-            setEnableDate(true);
-        } else {
-            setChekedTrue(true);
-            setEnableDate(false);
-        }
-    };
-=======
   useEffect(() => {
 if(typePick){
     let tempfiltered = newchargeType?.filter((obj: { RoomChargeTypeID: any; })=>obj.RoomChargeTypeID==typePick)
@@ -139,8 +99,7 @@ if(typePick){
 }
     }, [typePick]);
 
-    
->>>>>>> Stashed changes
+
 
     return (
         <div>
@@ -164,41 +123,20 @@ if(typePick){
                             onChange={handleChekbox}
                         />
 
-<<<<<<< Updated upstream
-                        <DateTimePicker
-                            disabled={enableDate}
-                            value={setedDate}
-                            onChange={(newValue) =>
-                                setSetedDate(newValue ? newValue : new Date())
-                            }
-                            renderInput={(params) => <TextField {...params} />}
-                        />
-                    </Stack>
-                    <Grid container>
-                        <Grid></Grid>
-                        <Grid></Grid>
-                        <Grid></Grid>
-                    </Grid>
-                </Stack>
-            </LocalizationProvider>
-        </div>
-    );
-}
-=======
 
     return <div>
         <LocalizationProvider dateAdapter={AdapterDateFns}
         adapterLocale={mn}>
         <Stack direction='column' spacing={1} mb={1}>
-            
 
-                <Stack direction='row' spacing={2}  alignItems='center'> 
+
+                <Stack direction='row' spacing={2}  alignItems='center'>
 
                 <Typography>
                     Type
                 </Typography>
 
-                <Select value={groupPick} 
+                <Select value={groupPick}
                 {...register(`charge.${id}.GroupID`)}
                 onChange={handleChange} fullWidth>
 
@@ -214,9 +152,9 @@ if(typePick){
 
 
 </Select>
-{groupPick? 
+{groupPick?
 <Select value={typePick} {...register(`charge.${id}.ItemID`)}
-onChange={handleTypeChange} 
+onChange={handleTypeChange}
 fullWidth >
 {
     newchargeType?.map((element : any) => {
@@ -240,9 +178,9 @@ fullWidth >
                 <Typography>
                     Price
                 </Typography>
-                
-                    
-                <TextField disabled={filteredData&& filteredData[0] && !filteredData[0].IsEditable} 
+
+
+                <TextField disabled={filteredData&& filteredData[0] && !filteredData[0].IsEditable}
                 {...register(`charge.${id}.Amount`)}
                 name={`charge.${id}.Amount`}
                 fullWidth/>
@@ -252,21 +190,20 @@ fullWidth >
                     Quantity
                 </Typography>
 
-                <TextField fullWidth 
+                <TextField fullWidth
                 {...register(`charge.${id}.Quantity`)}
                 name={`charge.${id}.Quantity`}
-                
+
                 onChange={(newvalue:any)=>setQuantity(newvalue)}/>
 
                     </Stack>
                     </Stack>
                     </div>:<div>
-                        
+
                         </div>}
-                
-                
+
+
         </Stack>
         </LocalizationProvider>
     </div>
 }
->>>>>>> Stashed changes
