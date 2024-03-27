@@ -43,7 +43,7 @@ const BankAccountList = () => {
                         IsBanner={false}
                         IsMain={true}
                         listUrl={listUrl}
-                        mutateBody={{ IsMain: true }}
+                        mutateBody={{ IsMain: null, IsBanner: false }}
                     />
                 }
                 excelName="Main"
