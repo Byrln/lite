@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { useMemo } from "react";
 
 import axios from "lib/utils/axios";
 
@@ -32,6 +33,26 @@ export const ChargeTypeGroupSWR = (search: any) => {
         await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
+};
+
+export function useGetChargeTypeGroupAPI(){
+
+
+    const fetcher = async (url: any) =>
+        await axios.post(url).then((res: any) => res.data.JsonData);
+
+  
+    const {data, error, isValidating}=useSWR(`${listUrl}`, fetcher);
+    const memoizedValue = useMemo(
+        () => ({
+            chargegroup: data ,
+            
+            chargegroupError: error,
+            chargegroupValidating: isValidating,
+        }),
+        [data, error, isValidating]
+        );
+        return memoizedValue;
 };
 
 export const ChargeTypeGroupAPI = {

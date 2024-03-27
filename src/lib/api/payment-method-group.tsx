@@ -51,7 +51,6 @@ export function useGetPaymentMethodGroupAPI(){
             return paymentMethodGroup;
         });
 
-    const hotelID:any=(localStorage.getItem('HotelID')?localStorage.getItem('HotelID'):1)
     
 
     

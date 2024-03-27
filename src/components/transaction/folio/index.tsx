@@ -19,6 +19,8 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
 
     const { data, error } = FolioItemSWR(FolioID);
 
+    console.log(data, 'folioid')
+
     useEffect(() => {
         if (data) {
             setEntity(data);
@@ -130,7 +132,7 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
                 hasUpdate={true}
                 id="CurrID"
                 modalContent={
-                    <NewEdit TransactionID={TransactionID} FolioID={FolioID} />
+                    <NewEdit TransactionID={TransactionID} FolioID={FolioID} handleModal={handleModal}/>
                 }
                 api={FolioAPI}
                 listUrl={listUrl}
