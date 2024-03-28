@@ -38,6 +38,7 @@ export default function FolioCharge({
     const [quantity, setQuantity] = useState(1);
 
     const [newchargeType, setNewChargeType] = useState<any>(null);
+    const [summary, setSummary] = useState<any>(null);
 
     const handleChange = (event: SelectChangeEvent) => {
         setGroupPick(event.target.value as string);

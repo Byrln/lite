@@ -55,6 +55,8 @@ const ExtraCharge = ({
             chargeTypes.forEach((element: any) => {
                 console.log("element.isChecked", element.isChecked);
                 if (element.isChecked && element.isChecked == true) {
+                    console.log("element2", element);
+
                     tempValue.TransactionID = values.TransactionID
                         ? values.TransactionID
                         : null;
@@ -83,30 +85,30 @@ const ExtraCharge = ({
 
             paymentMethods.forEach((element: any) => {
                 if (element.isChecked && element.isChecked == true) {
+                    console.log("element", element);
                     tempValue.TransactionID = values.TransactionID
                         ? values.TransactionID
                         : null;
                     tempValue.FolioID = values.FolioID ? values.FolioID : null;
-                    tempValue.TypeID = 1;
+                    tempValue.TypeID = 2;
                     tempValue.CurrDate = transactionInfo.WorkingDate
                         ? transactionInfo.WorkingDate
                         : null;
-                    tempValue.GroupID = element.RoomChargeTypeGroupID
-                        ? element.RoomChargeTypeGroupID
+                    tempValue.GroupID = element.PaymentMethodGroupID
+                        ? element.PaymentMethodGroupID
                         : null;
-                    tempValue.ItemID = element.RoomChargeTypeID
-                        ? element.RoomChargeTypeID
+                    tempValue.ItemID = element.PaymentMethodID
+                        ? element.PaymentMethodID
                         : null;
-                    tempValue.Amount = element.Total ? element.Total : null;
+                    tempValue.Amount = element.Amount ? element.Amount : null;
                     tempValue.Quantity = element.BaseRate
                         ? element.BaseRate
                         : null;
                     tempValue.PayCurrencyID = element.CurrencyID
                         ? element.CurrencyID
                         : null;
-                    tempValue.Amount = element.Total ? element.Total : null;
-                    tempValue.Description = element.ServiceDescription
-                        ? element.ServiceDescription
+                    tempValue.Description = element.PaymentMethodName
+                        ? element.PaymentMethodName
                         : "";
 
                     FolioAPI.new(tempValue);

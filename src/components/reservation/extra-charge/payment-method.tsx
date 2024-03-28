@@ -26,9 +26,14 @@ const PaymentMethod = ({
 
     const onCheckboxChange = (e: any) => {
         let tempEntity = [...entity];
-        tempEntity.forEach(
-            (element: any) => (element.isChecked = e.target.checked)
-        );
+        tempEntity.forEach((element: any) => {
+            element.isChecked = e.target.checked;
+            if (e.target.checked) {
+                element.CurrencyID = 154;
+            } else {
+                element.CurrencyID = null;
+            }
+        });
         setEntity(tempEntity);
         setRerenderKey((prevKey) => prevKey + 1);
     };
@@ -62,6 +67,7 @@ const PaymentMethod = ({
                         onChange={(e: any) => {
                             let tempEntity = [...entity];
                             tempEntity[dataIndex].isChecked = e.target.checked;
+                            tempEntity[dataIndex].CurrencyID = 154;
 
                             setEntity(tempEntity);
                         }}

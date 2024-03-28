@@ -1,0 +1,102 @@
+import useSWR from "swr";
+
+import axios from "lib/utils/axios";
+
+const urlPrefix = "/api/CashierSession";
+export const listUrl = `${urlPrefix}/List`;
+export const detailUrl = `${urlPrefix}/Detail`;
+export const summaryUrl = `${urlPrefix}/Summary`;
+
+export const CashierSessionListSWR = () => {
+    const fetcher = async (url: any) =>
+        await axios.post(url).then((res: any) => res.data.JsonData);
+
+    return useSWR(listUrl, fetcher);
+};
+
+export const CashierSessionSummarySWR = (id: any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(url, { SessionID: id })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(summaryUrl, fetcher);
+};
+
+export const CashierSessionDetailSWR = (id: any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(url, { SessionID: id })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(detailUrl, fetcher);
+};
+
+export const CashierSessionAPI = {
+    get: async (id: any) => {
+        const values = {
+            SessionID: id,
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return res.data.JsonData;
+    },
+
+    new: async (values: any) => {
+        const { data, status } = await axios.post(
+            values.isAdd == true
+                ? `${urlPrefix}/CashAdd`
+                : `${urlPrefix}/CashRemove`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    update: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    delete: async (id: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
+            SessionID: id,
+        });
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    detail: async (id: any) => {
+        const values = {
+            SessionID: id,
+        };
+
+        const res = await axios.post(detailUrl, values);
+
+        return res.data.JsonData;
+    },
+
+    summary: async (id: any) => {
+        const values = {
+            SessionID: id,
+        };
+
+        const res = await axios.post(summaryUrl, values);
+
+        return res.data.JsonData;
+    },
+};

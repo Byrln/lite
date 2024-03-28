@@ -3,7 +3,6 @@ import { useMemo } from "react";
 
 import axios from "lib/utils/axios";
 
-
 const urlPrefix = "/api/ChargeType";
 export const listUrl = `${urlPrefix}/List`;
 
@@ -39,26 +38,24 @@ export const ChargeTypeSWR = (search: any) => {
     return useSWR(listUrl, fetcher);
 };
 
-export function useGetChargeTypeAPI(RoomChargeTypeID:any){
-
-
+export function useGetChargeTypeAPI(RoomChargeTypeID: any) {
     const fetcher = async (url: any) =>
-        await axios.post(url, {RoomChargeTypeID:RoomChargeTypeID}).then((res: any) => res.data.JsonData);
+        await axios
+            .post(url, { RoomChargeTypeID: RoomChargeTypeID })
+            .then((res: any) => res.data.JsonData);
 
-  
-    const {data, error, isValidating}=useSWR(`${listUrl}`, fetcher);
+    const { data, error, isValidating } = useSWR(`${listUrl}`, fetcher);
     const memoizedValue = useMemo(
         () => ({
-            chargetype: data ,
-            
+            chargetype: data,
+
             chargetypeError: error,
             chargetypeValidating: isValidating,
         }),
         [data, error, isValidating]
-        );
-        return memoizedValue;
-};
-
+    );
+    return memoizedValue;
+}
 
 export const ChargeTypeAPI = {
     get: async (id: any, additionalValues: any) => {
@@ -69,7 +66,6 @@ export const ChargeTypeAPI = {
         values = Object.assign(values, additionalValues);
 
         const res = await axios.post(listUrl, values);
-console.log("res",res)
         return res.data.JsonData;
     },
 
