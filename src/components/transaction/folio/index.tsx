@@ -96,14 +96,15 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
         },
         {
             title: "Дүн",
-            key: "Amount1",
-            dataIndex: "Amount1",
+            key: "Amount2",
+            dataIndex: "Amount2",
             __ignore__: true,
             excelRenderPass: true,
             render: function render(id: any, record: any, entity: any) {
                 return formatPrice(record);
             },
         },
+        
         {
             title: "Тайлбар",
             key: "Description",

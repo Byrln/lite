@@ -114,7 +114,7 @@ export default function PaymentFormArray({
             });
 
 
-            data.payment[index].Amount=data.payment[index].Amount*exchangeRate[0].BuyRate
+            data.payment[index].Amount=data.payment[index].Amount
             data.payment[index].TransactionID = TransactionID;
             data.payment[index].FolioID = FolioID;
             data.payment[index].TypeID = 2;
