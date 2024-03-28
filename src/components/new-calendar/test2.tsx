@@ -177,6 +177,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         : `${obj.RoomTypeName}-${obj.RoomTypeID}`,
                     roomTypeID: obj.RoomTypeID,
                     transactionID: obj.TransactionID,
+                    startDate: obj.StartDate,
+                    endDate: obj.EndDate,
+
                     editable: true,
                     color: `#${obj.StatusColor}`,
                 };
@@ -271,9 +274,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         Number(info.event._def.resourceIds[0]) &&
                     event.id != info.event._def.extendedProps.transactionID &&
                     new Date(event.start) <=
-                        new Date(info.event._instance.range.end) &&
+                        new Date(info.oldEvent._def.extendedProps.endDate) &&
                     new Date(event.end) >
-                        new Date(info.event._instance.range.start)
+                        new Date(info.oldEvent._def.extendedProps.startDate)
             );
 
             if (!info.event.extendedProps.block) {

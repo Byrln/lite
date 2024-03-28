@@ -124,11 +124,11 @@ export const ReservationAPI = {
 
     new: async (values: any) => {
         var vals = values;
-        vals.TransactionDetail.map((element: any) => {
-            element.ArrivalDate = fToUniversal(element.ArrivalDate) + " 14:00";
-            element.DepartureDate =
-                fToUniversal(element.DepartureDate) + " 14:00";
-        });
+        // vals.TransactionDetail.map((element: any) => {
+        //     element.ArrivalDate = fToUniversal(element.ArrivalDate) + " 14:00";
+        //     element.DepartureDate =
+        //         fToUniversal(element.DepartureDate) + " 14:00";
+        // });
 
         const { data, status } = await axios.post(`${urlPrefix}/New`, vals);
         return {

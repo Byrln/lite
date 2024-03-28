@@ -1,6 +1,8 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+
 import { mutate } from "swr";
 
 import ReservationSourceSelect from "components/select/reservation-source";
@@ -57,11 +59,15 @@ const NewEdit = ({
     workingDate,
     groupID,
 }: any) => {
-    console.log("dateStart", dateStart);
     const [CustomerID, setCustomerID]: any = useState(0);
     const [ArrivalDate, setArrivalDate]: any = useState(
         dateStart ? dateStart : workingDate
     );
+    const [ArrivalTime, setArrivalTime]: any = useState();
+    const [DepartureTime, setDepartureTime]: any = useState();
+
+    console.log("ArrivalTime", ArrivalTime);
+
     const [DepartureDate, setDepartureDate]: any = useState(
         dateEnd
             ? dateEnd
@@ -106,6 +112,8 @@ const NewEdit = ({
         formState: { errors },
     } = useForm({
         defaultValues: {
+            ArrivalTime: null,
+            DepartureTime: null,
             Remarks: null,
             BookerName: null,
             BookerPhone: null,
@@ -117,7 +125,12 @@ const NewEdit = ({
             TaxIncluded: null,
             BreakfastIncluded: null,
             PayAmount: null,
-            ArrivalDate: dateStart ? dateStart : workingDate,
+            ArrivalDate: dateStart
+                ? dateStart
+                : moment(
+                      dateStringToObj(moment(workingDate).format("YYYY-MM-DD")),
+                      "YYYY-MM-DD"
+                  ).format("YYYY-MM-DD"),
             DepartureDate: dateEnd
                 ? dateEnd
                 : moment(
@@ -200,6 +213,10 @@ const NewEdit = ({
             tempValues.TransactionDetail[0].CustomerID = values.CustomerID;
             tempValues.TransactionDetail[0].GroupColor = groupColor;
             tempValues.TransactionDetail[0].Remarks = values.Remarks;
+            tempValues.ArrivalDate =
+                values.ArrivalDate + " " + values.ArrivalTime;
+            tempValues.DepartureDate =
+                values.DepartureDate + " " + values.DepartureTime;
 
             if (groupID) {
                 tempValues.IsGroup = true;
@@ -233,9 +250,9 @@ const NewEdit = ({
                 tempValues.TransactionDetail[index].ReservationSourceID =
                     values.ReservationSourceID;
                 tempValues.TransactionDetail[index].ArrivalDate =
-                    values.ArrivalDate;
+                    values.ArrivalDate + " " + values.ArrivalTime;
                 tempValues.TransactionDetail[index].DepartureDate =
-                    values.DepartureDate;
+                    values.DepartureDate + " " + values.DepartureTime;
                 tempValues.TransactionDetail[index].CustomerID =
                     values.CustomerID;
 
@@ -261,7 +278,6 @@ const NewEdit = ({
                 tempValues.TransactionDetail[index].GroupColor = groupColor;
                 tempValues.TransactionDetail[index].Remarks = values.Remarks;
             });
-
             await ReservationAPI.new(tempValues);
             await mutate("/api/RoomType/List");
             await mutate("/api/FrontOffice/StayView2");
@@ -297,7 +313,7 @@ const NewEdit = ({
                 <Card className="mb-3">
                     <CardContent>
                         <Grid key="General" container spacing={1}>
-                            <Grid item sm={6} xs={6}>
+                            <Grid item sm={4} xs={8}>
                                 <Controller
                                     name={`ArrivalDate`}
                                     control={control}
@@ -361,7 +377,24 @@ const NewEdit = ({
                                     )}
                                 />
                             </Grid>
-                            <Grid item sm={6} xs={6}>
+                            <Grid item sm={2} xs={4}>
+                                <TextField
+                                    id="ArrivalTime"
+                                    label="Ирэх цаг"
+                                    type="time"
+                                    margin="dense"
+                                    {...register("ArrivalTime")}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    sx={{ width: "100%" }}
+                                    size="small"
+                                    onChange={(value) =>
+                                        setArrivalTime(value.target.value)
+                                    }
+                                />
+                            </Grid>
+                            <Grid item sm={4} xs={8}>
                                 <Controller
                                     name={`DepartureDate`}
                                     control={control}
@@ -425,7 +458,23 @@ const NewEdit = ({
                                     )}
                                 />
                             </Grid>
-
+                            <Grid item sm={2} xs={4}>
+                                <TextField
+                                    id="DepartureTime"
+                                    label="Гарах цаг"
+                                    type="time"
+                                    margin="dense"
+                                    {...register("DepartureTime")}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    sx={{ width: "100%" }}
+                                    size="small"
+                                    onChange={(value) =>
+                                        setDepartureTime(value.target.value)
+                                    }
+                                />
+                            </Grid>
                             <Grid item xs={12}>
                                 <CustomerSelect
                                     register={register}

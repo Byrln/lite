@@ -44,10 +44,10 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
         },
         {
             title: "Дүн",
-            key: "Amount1",
-            dataIndex: "Amount1",
+            key: "Amount2",
+            dataIndex: "Amount2",
             renderCell: (element: any) => {
-                return formatPrice(element.row.Amount1);
+                return formatPrice(element.row.Amount2);
             },
         },
         {

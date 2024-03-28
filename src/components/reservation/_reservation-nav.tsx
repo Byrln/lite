@@ -150,7 +150,7 @@ const ReservationNav = ({
                 </DialogActions>
             </Dialog>
             {reservation.IsEdit && (
-                <a href={`transaction/edit/${reservation.TransactionID}`}>
+                <a href={`/transaction/edit/${reservation.TransactionID}`}>
                     <Button variant={"text"} size="small" sx={buttonStyle}>
                         Edit Transaction
                     </Button>
