@@ -14,6 +14,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import FolioCharge from "./charge";
 import ChargeFormArray from "./charge-form-array";
+import PaymentFormArray from "./payment-from-array";
 
 const NewEditTest = ({ FolioID, TransactionID, handleModal }: any) => {
     const [workingDate, setWorkingDate] = useState(null);
@@ -69,6 +70,13 @@ const NewEditTest = ({ FolioID, TransactionID, handleModal }: any) => {
     const TABS = [
         {
             value: "Төлбөр",
+            label:(
+                <PaymentFormArray
+                    FolioID={FolioID}
+                    TransactionID={TransactionID}
+                    handleModal={handleModal}
+                />
+            )
         },
         {
             value: "Тооцоо",
