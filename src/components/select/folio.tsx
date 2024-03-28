@@ -1,6 +1,7 @@
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
+import { useState, useEffect } from "react";
 
 import CustomSelect from "components/common/custom-select";
 import { FolioSWR } from "lib/api/folio";
@@ -11,8 +12,18 @@ const FolioSelect = ({
     TransactionID,
     customField,
     groupID = null,
+    resetField,
 }: any) => {
     const { data, error } = FolioSWR(TransactionID, groupID);
+
+    useEffect(() => {
+        if (resetField && data && data.length > 0) {
+            resetField(`FolioID`, {
+                defaultValue:
+                    data && data[0] && data[0].FolioID ? data[0].FolioID : 0,
+            });
+        }
+    }, [data]);
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 

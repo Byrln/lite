@@ -30,33 +30,17 @@ const ExtraCharge = ({
         handleSubmit,
         formState: { errors },
         reset,
+        resetField,
     } = useForm(formOptions);
 
     const onSubmit = (values: any) => {
         setLoading(true);
 
         try {
-            // values.NewRoomTypeID = values.RoomTypeID;
-            // values.NewRoomID = values.RoomID;
-            // delete values.RoomTypeID;
-            // delete values.RoomID;
-            // const res = await ReservationAPI.roomMove(values);
-
-            // await mutate(listUrl);
-            // if (additionalMutateUrl) {
-            //     await mutate(additionalMutateUrl);
-            // }
-            console.log("values", values);
-            console.log("chargeTypes", chargeTypes);
-            console.log("paymentMethods", paymentMethods);
-
             let tempValue: any = {};
 
             chargeTypes.forEach((element: any) => {
-                console.log("element.isChecked", element.isChecked);
                 if (element.isChecked && element.isChecked == true) {
-                    console.log("element2", element);
-
                     tempValue.TransactionID = values.TransactionID
                         ? values.TransactionID
                         : null;
@@ -85,7 +69,6 @@ const ExtraCharge = ({
 
             paymentMethods.forEach((element: any) => {
                 if (element.isChecked && element.isChecked == true) {
-                    console.log("element", element);
                     tempValue.TransactionID = values.TransactionID
                         ? values.TransactionID
                         : null;
@@ -144,6 +127,7 @@ const ExtraCharge = ({
                     register={register}
                     errors={errors}
                     TransactionID={transactionInfo.TransactionID}
+                    resetField={resetField}
                 />
                 <ChargeType
                     additionalMutateUrl={additionalMutateUrl}
