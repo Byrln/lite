@@ -15,6 +15,8 @@ import {
 import { styled } from "@mui/material/styles";
 import { ModalContext } from "lib/context/modal";
 import CashAddForm from "./actions/cash-add";
+import StartForm from "./actions/start";
+import EndForm from "./actions/end";
 
 const historyColumn = [
     {
@@ -185,6 +187,10 @@ const CashierList = ({ title }: any) => {
 
                     setSummary(summaryResponse);
                 }
+            } else {
+                setActiveSessionID(null);
+                setDetailData(null);
+                setSummary(null);
             }
         }
     };
@@ -204,13 +210,38 @@ const CashierList = ({ title }: any) => {
                         width: "100%",
                     }}
                 >
-                    <Button variant="outlined" className="mr-3 mb-3">
+                    <Button
+                        variant="outlined"
+                        className="mr-3 mb-3"
+                        onClick={() => {
+                            handleModal(
+                                true,
+                                `Ээлж эхлэх`,
+                                <StartForm
+                                    setDetailData={setDetailData}
+                                    setSummary={setSummary}
+                                    setActiveSessionID={setActiveSessionID}
+                                />,
+                                null,
+                                "medium"
+                            );
+                        }}
+                    >
                         Ээлж эхлэх
                     </Button>
                     <Button
                         variant="outlined"
                         className="mr-3 mb-3"
                         disabled={activeSessionID ? false : true}
+                        onClick={() => {
+                            handleModal(
+                                true,
+                                `Ээлж эхлэх`,
+                                <EndForm SessionID={activeSessionID} />,
+                                null,
+                                "medium"
+                            );
+                        }}
                     >
                         Ээлж дуусгах
                     </Button>

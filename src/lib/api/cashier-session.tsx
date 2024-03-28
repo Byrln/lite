@@ -57,6 +57,24 @@ export const CashierSessionAPI = {
         };
     },
 
+    end: async (values: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/End`, values);
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    start: async (values: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/Start`, values);
+
+        return {
+            data,
+            status,
+        };
+    },
+
     update: async (values: any) => {
         const { data, status } = await axios.post(
             `${urlPrefix}/Update`,
