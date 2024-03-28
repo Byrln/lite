@@ -43,7 +43,7 @@ export default function FolioPayment({
     const [groupPick, setGroupPick] = useState("");
     const [typePick, setTypePick] = useState("");
    
-    const [exchangeRatePick, setExchangeRatePick]=useState("");
+    const [exchangeRatePick, setExchangeRatePick]=useState("154");
 
 
 
