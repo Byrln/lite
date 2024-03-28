@@ -74,6 +74,9 @@ dependencies:
   change-case:
     specifier: ^4.1.2
     version: 4.1.2
+  chart.js:
+    specifier: ^4.4.2
+    version: 4.4.2
   dayjs:
     specifier: ^1.11.9
     version: 1.11.9
@@ -125,6 +128,9 @@ dependencies:
   react-calendar-timeline:
     specifier: ^0.28.0
     version: 0.28.0(interactjs@1.10.14)(moment@2.29.3)(prop-types@15.8.1)(react-dom@18.1.0)(react@18.1.0)
+  react-chartjs-2:
+    specifier: ^5.2.0
+    version: 5.2.0(chart.js@4.4.2)(react@18.1.0)
   react-color:
     specifier: ^2.19.3
     version: 2.19.3(react@18.1.0)
@@ -883,6 +889,10 @@ packages:
 
   /@juggle/resize-observer@3.3.1:
     resolution: {integrity: sha512-zMM9Ds+SawiUkakS7y94Ymqx+S0ORzpG3frZirN3l+UlXUmSUR7hF4wxCVqW+ei94JzV5kt0uXBcoOEAuiydrw==}
+    dev: false
+
+  /@kurkle/color@0.3.2:
+    resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
     dev: false
 
   /@mui/base@5.0.0-alpha.84(@types/react@18.0.12)(react-dom@18.1.0)(react@18.1.0):
@@ -1941,6 +1951,13 @@ packages:
       sentence-case: 3.0.4
       snake-case: 3.0.4
       tslib: 2.4.0
+    dev: false
+
+  /chart.js@4.4.2:
+    resolution: {integrity: sha512-6GD7iKwFpP5kbSD4MeRRRlTnQvxfQREy36uEtm1hzHzcOqwWx0YEHuspuoNlslu+nciLIB7fjjsHkUv/FzFcOg==}
+    engines: {pnpm: '>=8'}
+    dependencies:
+      '@kurkle/color': 0.3.2
     dev: false
 
   /chevrotain@6.5.0:
@@ -3796,6 +3813,16 @@ packages:
       prop-types: 15.8.1
       react: 18.1.0
       react-dom: 18.1.0(react@18.1.0)
+    dev: false
+
+  /react-chartjs-2@5.2.0(chart.js@4.4.2)(react@18.1.0):
+    resolution: {integrity: sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      chart.js: 4.4.2
+      react: 18.1.0
     dev: false
 
   /react-color@2.19.3(react@18.1.0):

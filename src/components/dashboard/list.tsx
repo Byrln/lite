@@ -24,10 +24,13 @@ import {
     Sell,
     Task,
 } from "@mui/icons-material";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 import { DashboardSWR } from "lib/api/dashboard";
 
 import { fNumber } from "lib/utils/format-number";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = ({ workingDate }: any) => {
     const [dashboardType, setDashboardType] = useState("daily");
@@ -232,7 +235,7 @@ const Dashboard = ({ workingDate }: any) => {
                                                 </h2>
                                             </div>
                                         </div>
-                                        {index !== 2 && (
+                                        {index !== 2 ? (
                                             <div
                                                 style={{
                                                     position: "relative",
@@ -290,6 +293,77 @@ const Dashboard = ({ workingDate }: any) => {
                                                     progressColorFrom="#804fe6"
                                                     progressColorTo="#804fe6"
                                                     hideLabelValue
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div
+                                                style={{
+                                                    width: "200px",
+                                                    height: "200px",
+                                                    position: "relative",
+                                                }}
+                                            >
+                                                <Pie
+                                                    width="200px"
+                                                    height="200px"
+                                                    style={{
+                                                        width: "100%",
+                                                        height: "100%",
+                                                    }}
+                                                    options={{
+                                                        plugins: {
+                                                            legend: {
+                                                                display: false,
+                                                            },
+                                                        },
+                                                    }}
+                                                    data={{
+                                                        labels: filterData(
+                                                            element,
+                                                            index
+                                                        ).map(
+                                                            ({
+                                                                ParameterName,
+                                                            }: any) => {
+                                                                if (
+                                                                    ParameterName !==
+                                                                        "Mini Bar" &&
+                                                                    ParameterName !==
+                                                                        "Restaurant"
+                                                                ) {
+                                                                    return ParameterName;
+                                                                }
+                                                            }
+                                                        ),
+                                                        datasets: [
+                                                            {
+                                                                data: filterData(
+                                                                    element,
+                                                                    index
+                                                                ).map(
+                                                                    ({
+                                                                        ParameterValue,
+                                                                        ParameterName,
+                                                                    }: any) => {
+                                                                        if (
+                                                                            ParameterName !==
+                                                                                "Mini Bar" &&
+                                                                            ParameterName !==
+                                                                                "Restaurant"
+                                                                        ) {
+                                                                            return ParameterValue;
+                                                                        }
+                                                                    }
+                                                                ),
+                                                                backgroundColor:
+                                                                    [
+                                                                        "#7856DE",
+                                                                        "#00CFE8",
+                                                                        "#28C76F",
+                                                                    ],
+                                                            },
+                                                        ],
+                                                    }}
                                                 />
                                             </div>
                                         )}
