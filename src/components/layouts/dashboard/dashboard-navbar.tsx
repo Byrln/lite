@@ -35,7 +35,7 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 export default function DashboardNavbar({ onOpenSidebar }: any) {
     return (
         <RootStyle>
-            <ToolbarStyle>
+            <ToolbarStyle sx={{ borderBottom: "1px solid #E6E8EE" }}>
                 {/* <MHidden width="lgUp"> */}
                 <IconButton
                     onClick={onOpenSidebar}
