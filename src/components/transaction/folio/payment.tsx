@@ -71,7 +71,14 @@ export default function FolioPayment({
             PaymentMethodGroupID: groupPick,
         });
 
-        setNewChargeType(chargetype);
+        let tempfiltered = chargetype?.filter(
+            (obj: { PaymentMethodGroupID: any }) =>
+                obj.PaymentMethodGroupID == groupPick
+        );
+        
+        setNewChargeType(tempfiltered);
+
+        console.log(tempfiltered);
         setTypePick("");
     };
 
