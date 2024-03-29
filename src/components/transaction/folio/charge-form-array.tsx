@@ -46,7 +46,7 @@ export default function ChargeFormArray({
         }
     };
 
-    const [setedDate, setSetedDate] = useState<Date>(new Date());
+    const [setedDate, setSetedDate] = useState<Date>(workingDate);
 
     const [enableDate, setEnableDate] = useState(true);
 
@@ -102,8 +102,6 @@ export default function ChargeFormArray({
             data.charge[index].TransactionID = TransactionID;
             data.charge[index].FolioID = FolioID;
             data.charge[index].TypeID = 1;
-            data.charge[index].Amount =
-                data.charge[index].Amount * Number(data.charge[index].Quantity);
             await FolioAPI?.new(data.charge[index]);
         }
         await mutate(`/api/Folio/Items`);

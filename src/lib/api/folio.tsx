@@ -13,6 +13,14 @@ export const FolioItemSWR = (FolioID: any) => {
 
     return useSWR(`${urlPrefix}/Items`, fetcher);
 };
+export const FolioItemEditSWR = ({FolioID, CurrID}:any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(`${urlPrefix}/Items`, { FolioID:FolioID, CurrID:CurrID })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Items`, fetcher);
+};
 
 export const FolioSWR = (TransactionID: any, GroupID = null) => {
     const fetcher = async (url: any) =>
@@ -86,6 +94,15 @@ export const FolioAPI = {
     items: async (FolioID: any) => {
         const res = await axios.post(`${urlPrefix}/Items`, {
             FolioID: FolioID,
+        });
+
+        return res.data.JsonData;
+    },
+    edits: async (FolioID: any, CurrID:any, TypeID: any) => {
+        const res = await axios.post(`${urlPrefix}/Items`, {
+            FolioID: FolioID,
+            CurrID: CurrID,
+            TypeID: TypeID
         });
 
         return res.data.JsonData;

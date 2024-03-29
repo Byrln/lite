@@ -15,6 +15,7 @@ import NewEdit from "./new-edit-test";
 import CutForm from "./cut";
 import SplitForm from "./split";
 import BillTo from "./bill-to";
+import EditFolioTransaction from "./edit-transaction";
 
 const RoomCharge = ({ TransactionID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
@@ -172,10 +173,10 @@ const RoomCharge = ({ TransactionID }: any) => {
                                             handleModal(
                                                 true,
                                                 `Засах`,
-                                                <div>{selectedRow.CurrID}</div>,
+                                                <div><EditFolioTransaction TransactionID={TransactionID} FolioID={selectedRow.FolioID} CurrID={selectedRow.CurrID} TypeID={selectedRow.TypeID} handleModal={handleModal}/></div>,
                                                 null,
                                                 "large"
-                                            );
+                                            );handleClose();
                                         }}
                                     >
                                         Засах

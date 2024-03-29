@@ -176,10 +176,26 @@ export default function FolioPayment({
 
                                     <Typography>Amount</Typography>
 
-                                    <TextField
+                                    <TextField  type="number" min={0}
                                         {...register(`payment.${id}.Amount`)}
                                         name={`payment.${id}.Amount`}
                                         fullWidth
+                                    />
+                                </Stack>
+
+                                <Stack
+                                    direction="column"
+                                    spacing={2}
+                                    alignItems="center"
+                                >
+                                    <Typography>Description</Typography>
+
+                                    <TextField 
+                                        fullWidth
+                                        {...register(`payment.${id}.Description`)}
+                                        name={`payment.${id}.Description`}
+                                        multiline
+                                        rows={3}
                                     />
                                 </Stack>
                             </Stack>

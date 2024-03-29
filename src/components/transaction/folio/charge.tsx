@@ -154,7 +154,7 @@ export default function FolioCharge({
                                 >
                                     <Typography>Price</Typography>
 
-                                    <TextField
+                                    <TextField  type="number" min={0}
                                         disabled={
                                             filteredData &&
                                             filteredData[0] &&
@@ -172,13 +172,28 @@ export default function FolioCharge({
                                 >
                                     <Typography>Quantity</Typography>
 
-                                    <TextField
+                                    <TextField  type="number" min={0}
                                         fullWidth
                                         {...register(`charge.${id}.Quantity`)}
                                         name={`charge.${id}.Quantity`}
                                         onChange={(newvalue: any) =>
                                             setQuantity(newvalue)
                                         }
+                                    />
+                                </Stack>
+                                <Stack
+                                    direction="column"
+                                    spacing={2}
+                                    alignItems="center"
+                                >
+                                    <Typography>Description</Typography>
+
+                                    <TextField 
+                                        fullWidth
+                                        {...register(`charge.${id}.Description`)}
+                                        name={`charge.${id}.Description`}
+                                        multiline
+                                        rows={3}
                                     />
                                 </Stack>
                             </Stack>

@@ -48,7 +48,7 @@ export default function PaymentFormArray({
         }
     };
 
-    const [setedDate, setSetedDate] = useState<Date>(new Date());
+    const [setedDate, setSetedDate] = useState<Date>(workingDate);
 
     const [enableDate, setEnableDate] = useState(true);
 
