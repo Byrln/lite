@@ -133,3 +133,6 @@ td.color-FF66FF {
     box-shadow: none !important;
     padding-top: 0px !important;
 }
+
+@media print {
+}

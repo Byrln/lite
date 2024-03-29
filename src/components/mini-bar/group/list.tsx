@@ -57,7 +57,7 @@ const MiniBarGroupList = ({ title }: any) => {
         control,
     } = useForm(formOptions);
 
-    const [search, setSearch] = useState({});
+    const [search, setSearch] = useState({ IsMiniBar: true });
 
     const { data, error } = ChargeTypeGroupSWR(search);
 
