@@ -170,7 +170,9 @@ adapterLocale={mn}
         Quantity
     </Typography>
 
-    <TextField type="number" value={quantity} onChange={(newvalue: any) =>setQuantity(newvalue.target.value)}/>
+    <TextField type="number" value={quantity} onChange={(newvalue: any) =>setQuantity(newvalue.target.value)}
+    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+    />
 
     </Stack>
         </div>:<div>
@@ -198,7 +200,9 @@ adapterLocale={mn}
     </Typography>
     <Stack direction='row' spacing={1} alignItems='center'>
 
-    <TextField type="number" disabled={!EditableRate} value={amount} onChange={(newvalue: any) =>(setAmount(newvalue.target.value))}/>
+    <TextField type="number" disabled={!EditableRate} value={amount} onChange={(newvalue: any) =>(setAmount(newvalue.target.value))}
+    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+    />
     {
         (tType==1)? <div><Typography>
         {currency}

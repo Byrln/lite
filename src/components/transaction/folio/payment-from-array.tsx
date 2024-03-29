@@ -48,7 +48,7 @@ export default function PaymentFormArray({
         }
     };
 
-    const [setedDate, setSetedDate] = useState<Date>(workingDate);
+    const [setedDate, setSetedDate] = useState<Date>(new Date());
 
     const [enableDate, setEnableDate] = useState(true);
 
@@ -107,12 +107,10 @@ export default function PaymentFormArray({
             const exchangeRate = await CurrenctAPI.exchangeRate({
                 CurrencyID: data.payment[index].PayCurrencyID,
             });
-
-            data.payment[index].Amount = data.payment[index].Amount;
             data.payment[index].TransactionID = TransactionID;
             data.payment[index].FolioID = FolioID;
             data.payment[index].TypeID = 2;
-            // data.payment[index].CurrDate = setedDate;
+            
             await FolioAPI?.new(data.payment[index]);
         }
         await mutate(`/api/Folio/Items`);

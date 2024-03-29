@@ -180,6 +180,7 @@ export default function FolioPayment({
                                         {...register(`payment.${id}.Amount`)}
                                         name={`payment.${id}.Amount`}
                                         fullWidth
+                                        onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                     />
                                 </Stack>
 
