@@ -1,74 +1,89 @@
-import { Grid, Typography, TextField } from "@mui/material";
-import Poll from "mdi-material-ui/Poll";
-import DoorOpen from "mdi-material-ui/DoorOpen";
-import DoorClosedLock from "mdi-material-ui/DoorClosedLock";
-import Door from "mdi-material-ui/Door";
-import Doorbell from "mdi-material-ui/Doorbell";
-import BedQueen from "mdi-material-ui/BedQueen";
-import StoreCheck from "mdi-material-ui/StoreCheck";
-import StoreMinus from "mdi-material-ui/StoreMinus";
-import StoreRemove from "mdi-material-ui/StoreRemove";
-import StoreClock from "mdi-material-ui/StoreClock";
-import StoreAlert from "mdi-material-ui/StoreAlert";
-import StoreOff from "mdi-material-ui/StoreOff";
-import Store from "mdi-material-ui/Store";
-import Cancel from "mdi-material-ui/Cancel";
-import AccountCancel from "mdi-material-ui/AccountCancel";
-import CashMultiple from "mdi-material-ui/CashMultiple";
-import CashCheck from "mdi-material-ui/CashCheck";
-import RoomService from "mdi-material-ui/RoomService";
-import Sale from "mdi-material-ui/Sale";
-import GlassCocktail from "mdi-material-ui/GlassCocktail";
-import SilverwareForkKnife from "mdi-material-ui/SilverwareForkKnife";
+import { Grid, Typography, TextField, CardContent, Card } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
 import { useState } from "react";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { mutate } from "swr";
 import { format } from "date-fns";
-import moment from "moment";
+import CircularSlider from "@fseehawer/react-circular-slider";
+import {
+    Check,
+    ChevronRight,
+    Close,
+    CreditCard,
+    Delete,
+    Discount,
+    DoNotDisturb,
+    DryCleaning,
+    HourglassEmpty,
+    Key,
+    Lock,
+    Logout,
+    Pending,
+    PersonOff,
+    Receipt,
+    Sell,
+    Task,
+} from "@mui/icons-material";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
-import { DashboardSWR, dailyUrl, weeklyUrl } from "lib/api/dashboard";
-import DashboardCard from "components/common/dashboard-card";
-import { dateStringToObj } from "lib/utils/helpers";
+import { DashboardSWR } from "lib/api/dashboard";
+
+import { fNumber } from "lib/utils/format-number";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = ({ workingDate }: any) => {
-    console.log("workingDate", workingDate);
     const [dashboardType, setDashboardType] = useState("daily");
-    const [dashboardDate, setDashboardDate] = useState(new Date(workingDate));
 
-    const { data, error } = DashboardSWR(dashboardType, dashboardDate);
-
-    const randColor = () => {
-        return (
-            "#" +
-            Math.floor(Math.random() * 16777215)
-                .toString(16)
-                .padStart(6, "0")
-                .toUpperCase()
-        );
-    };
+    const { data } = DashboardSWR(dashboardType, new Date(workingDate));
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        // @ts-ignore
         let value = (event.target as HTMLInputElement).value;
         setDashboardType(value);
     };
 
-    const handleDateChange = (value: any) => {
-        // @ts-ignore
-        // let value = (event.target as HTMLInputElement).value;
-        // console.log(value);
-        setDashboardDate(value);
-        // if (dashboardType == "daily") {
-        //     mutate(dailyUrl, { CurrDate: format(value, "yyyy-MM-dd") });
-        // } else {
-        //     mutate(weeklyUrl, { CurrDate: format(value, "yyyy-MM-dd") });
-        // }
-        // setDashboardType(value);
-    };
+    function roomOccupancy(element: any) {
+        return element.find(
+            (item: any) => item.ParameterName === "Room Occupancy"
+        ).ParameterValue;
+    }
+
+    function filterData(element: any, index: number) {
+        switch (index) {
+            case 0:
+                return element.filter(
+                    (item: any) =>
+                        item.ParameterName !== "Room Occupancy" &&
+                        item.ParameterName !== "Total Rooms"
+                );
+            case 1:
+                return element.filter(
+                    (item: any) =>
+                        item.ParameterName !== "Checked In" &&
+                        item.ParameterName !== "Booking Occupancy"
+                );
+            case 2:
+                return element.filter(
+                    (item: any) => item.ParameterName !== "Total Charges"
+                );
+        }
+    }
+
+    function mainIcon(index: number) {
+        const style = {
+            fontSize: "24px",
+            color: "#7856DE",
+        };
+
+        switch (index) {
+            case 0:
+                return <DryCleaning style={style} />;
+            case 1:
+                return <Task style={style} />;
+            case 2:
+                return <Receipt style={style} />;
+        }
+    }
 
     return (
         <>
@@ -125,106 +140,521 @@ const Dashboard = ({ workingDate }: any) => {
                     label="Monthly"
                 />
             </RadioGroup>
-            {data &&
-                data.map((element: any) => (
-                    <Grid
-                        container
-                        spacing={2}
-                        style={{ marginBottom: "20px" }}
-                        key={element[0].ParameterGroupName}
-                    >
-                        <Grid item xs={12}>
-                            <Typography variant="h6" gutterBottom>
-                                {element[0].ParameterGroupName}
-                            </Typography>
-                        </Grid>
-
-                        {element.map((childElement: any) => (
-                            <Grid
-                                item
-                                xs={4}
-                                sm={3}
-                                md={2}
-                                key={childElement.ParameterName}
-                            >
-                                <DashboardCard
-                                    title={childElement.ParameterName}
-                                    stats={childElement.ParameterValue}
-                                    icon={
-                                        childElement.ParameterName ==
-                                        "Total Rooms" ? (
-                                            <DoorOpen />
-                                        ) : childElement.ParameterName ==
-                                          "Blocked Rooms" ? (
-                                            <DoorClosedLock
-                                                sx={{ fontSize: 40 }}
-                                            />
-                                        ) : childElement.ParameterName ==
-                                          "Sold Rooms" ? (
-                                            <Door />
-                                        ) : childElement.ParameterName ==
-                                          "Available Rooms" ? (
-                                            <BedQueen />
-                                        ) : childElement.ParameterName ==
-                                          "Room Occupancy" ? (
-                                            <Doorbell />
-                                        ) : childElement.ParameterName ==
-                                          "Checked In" ? (
-                                            <StoreCheck />
-                                        ) : childElement.ParameterName ==
-                                          "Checked Out" ? (
-                                            <StoreMinus />
-                                        ) : childElement.ParameterName ==
-                                          "Unconfirmed Reservations" ? (
-                                            <StoreRemove />
-                                        ) : childElement.ParameterName ==
-                                          "Pending Reservations" ? (
-                                            <StoreClock />
-                                        ) : childElement.ParameterName ==
-                                          "Due Out" ? (
-                                            <StoreAlert />
-                                        ) : childElement.ParameterName ==
-                                          "Deleted Bookings" ? (
-                                            <StoreOff />
-                                        ) : childElement.ParameterName ==
-                                          "Void Bookings" ? (
-                                            <Store />
-                                        ) : childElement.ParameterName ==
-                                          "Cancelled Bookings" ? (
-                                            <Cancel />
-                                        ) : childElement.ParameterName ==
-                                          "No Show" ? (
-                                            <AccountCancel />
-                                        ) : childElement.ParameterName ==
-                                          "Total Charges" ? (
-                                            <CashCheck />
-                                        ) : childElement.ParameterName ==
-                                          "Extra Charges" ? (
-                                            <CashMultiple />
-                                        ) : childElement.ParameterName ==
-                                          "Room Charges" ? (
-                                            <RoomService />
-                                        ) : childElement.ParameterName ==
-                                          "Discount" ? (
-                                            <Sale />
-                                        ) : childElement.ParameterName ==
-                                          "Mini Bar" ? (
-                                            <GlassCocktail />
-                                        ) : childElement.ParameterName ==
-                                          "Restaurant" ? (
-                                            <SilverwareForkKnife />
+            <Grid container spacing={2} sx={{ width: "100%" }} mt={0.5}>
+                {data &&
+                    data.map((element: any, index: number) => (
+                        <Grid
+                            item
+                            xl={4}
+                            md={6}
+                            sm={12}
+                            key={element.id}
+                            sx={{ backgroundColor: "#fff" }}
+                        >
+                            <Card sx={{ height: "100%" }}>
+                                <CardContent>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            marginBottom: "16px",
+                                            paddingBottom: "16px",
+                                            borderBottom: "1px solid #E6E8EE",
+                                            minHeight: "224px",
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                justifyContent: "space-between",
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: "16px",
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        width: "48px",
+                                                        height: "48px",
+                                                        borderRadius: "8px",
+                                                        backgroundColor:
+                                                            "#8028D20D",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent:
+                                                            "center",
+                                                    }}
+                                                >
+                                                    {mainIcon(index)}
+                                                </div>
+                                                <h2
+                                                    style={{
+                                                        fontSize: "32px",
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    {
+                                                        element[0]
+                                                            .ParameterGroupName
+                                                    }
+                                                </h2>
+                                            </div>
+                                            <div>
+                                                <p style={{ color: "#888A99" }}>
+                                                    {
+                                                        element.find(
+                                                            (item: any) =>
+                                                                item.ParameterID ===
+                                                                1
+                                                        ).ParameterName
+                                                    }
+                                                </p>
+                                                <h2
+                                                    style={{
+                                                        fontSize: "40px",
+                                                    }}
+                                                >
+                                                    {index !== 2
+                                                        ? element.find(
+                                                              (item: any) =>
+                                                                  item.ParameterID ===
+                                                                  1
+                                                          ).ParameterValue
+                                                        : fNumber(
+                                                              element.find(
+                                                                  (item: any) =>
+                                                                      item.ParameterID ===
+                                                                      1
+                                                              ).ParameterValue
+                                                          ) + "₮"}
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        {index !== 2 ? (
+                                            <div
+                                                style={{
+                                                    position: "relative",
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        position: "absolute",
+                                                        inset: 0,
+                                                        display: "flex",
+                                                        justifyContent:
+                                                            "center",
+                                                        alignItems: "center",
+                                                        flexDirection: "column",
+                                                        gap: "4px",
+                                                    }}
+                                                >
+                                                    <p
+                                                        style={{
+                                                            color: "#888A99",
+                                                            fontSize: "14px",
+                                                        }}
+                                                    >
+                                                        {index === 0
+                                                            ? "Room Occupancy"
+                                                            : "Booking Occupancy"}
+                                                    </p>
+                                                    <h4
+                                                        style={{
+                                                            fontSize: "24px",
+                                                        }}
+                                                    >
+                                                        {index === 0
+                                                            ? `${roomOccupancy(
+                                                                  element
+                                                              )}%`
+                                                            : "0%"}
+                                                    </h4>
+                                                </div>
+                                                <CircularSlider
+                                                    max={100}
+                                                    dataIndex={
+                                                        index === 0
+                                                            ? roomOccupancy(
+                                                                  element
+                                                              )
+                                                            : 0
+                                                    }
+                                                    hideKnob
+                                                    knobDraggable={false}
+                                                    trackSize={20}
+                                                    width={200}
+                                                    progressSize={20}
+                                                    trackColor="#F0F0F0"
+                                                    progressColorFrom="#804fe6"
+                                                    progressColorTo="#804fe6"
+                                                    hideLabelValue
+                                                />
+                                            </div>
                                         ) : (
-                                            <Poll />
-                                        )
-                                    }
-                                    color={randColor()}
-                                />
-                            </Grid>
-                        ))}
-                    </Grid>
-                ))}
+                                            <div
+                                                style={{
+                                                    width: "200px",
+                                                    height: "200px",
+                                                    position: "relative",
+                                                }}
+                                            >
+                                                <Pie
+                                                    width="200px"
+                                                    height="200px"
+                                                    style={{
+                                                        width: "100%",
+                                                        height: "100%",
+                                                    }}
+                                                    options={{
+                                                        plugins: {
+                                                            legend: {
+                                                                display: false,
+                                                            },
+                                                        },
+                                                    }}
+                                                    data={{
+                                                        labels: filterData(
+                                                            element,
+                                                            index
+                                                        ).map(
+                                                            ({
+                                                                ParameterName,
+                                                            }: any) => {
+                                                                if (
+                                                                    ParameterName !==
+                                                                        "Mini Bar" &&
+                                                                    ParameterName !==
+                                                                        "Restaurant"
+                                                                ) {
+                                                                    return ParameterName;
+                                                                }
+                                                            }
+                                                        ),
+                                                        datasets: [
+                                                            {
+                                                                data: filterData(
+                                                                    element,
+                                                                    index
+                                                                ).map(
+                                                                    ({
+                                                                        ParameterValue,
+                                                                        ParameterName,
+                                                                    }: any) => {
+                                                                        if (
+                                                                            ParameterName !==
+                                                                                "Mini Bar" &&
+                                                                            ParameterName !==
+                                                                                "Restaurant"
+                                                                        ) {
+                                                                            return ParameterValue;
+                                                                        }
+                                                                    }
+                                                                ),
+                                                                backgroundColor:
+                                                                    [
+                                                                        "#7856DE",
+                                                                        "#00CFE8",
+                                                                        "#28C76F",
+                                                                    ],
+                                                            },
+                                                        ],
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <Grid container spacing={2}>
+                                        {filterData(element, index).map(
+                                            (childElement: any) => (
+                                                <Grid
+                                                    item
+                                                    xs={index === 0 ? 6 : 12}
+                                                    key={
+                                                        childElement.ParameterID
+                                                    }
+                                                >
+                                                    <DashboardCard
+                                                        item={childElement}
+                                                        isSmall={index === 0}
+                                                        isCharges={index === 2}
+                                                        list={element}
+                                                    />
+                                                </Grid>
+                                            )
+                                        )}
+                                    </Grid>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+            </Grid>
         </>
     );
 };
 
 export default Dashboard;
+
+function DashboardCard({ item, isSmall, isCharges, list }: any) {
+    const iconStyle = {
+        color: "#FFFFFF",
+        fontSize: "16px",
+    };
+
+    function cardIcon(name: string) {
+        switch (name) {
+            case "Blocked Rooms":
+                return {
+                    icon: <Sell sx={iconStyle} />,
+                    color: "#EE5C78",
+                };
+            case "Sold Rooms":
+                return {
+                    icon: <Check sx={iconStyle} />,
+                    color: "#7856DE",
+                };
+            case "Available Rooms":
+                return {
+                    icon: <Lock sx={iconStyle} />,
+                    color: "#55C7EB",
+                };
+            case "Checked Out":
+                return {
+                    icon: <Logout sx={iconStyle} />,
+                    color: "#000000",
+                };
+            case "Pending Reservations":
+                return {
+                    icon: <HourglassEmpty sx={iconStyle} />,
+                    color: "#FF9F43",
+                };
+            case "Unconfirmed Reservations":
+                return {
+                    icon: <Pending sx={iconStyle} />,
+                    color: "#EE5C78",
+                };
+            case "Due Out":
+                return {
+                    icon: <Logout sx={iconStyle} />,
+                    color: "#00CFE8",
+                };
+            case "Deleted Bookings":
+                return {
+                    icon: <Delete sx={iconStyle} />,
+                    color: "#EE5C78",
+                };
+            case "Void Bookings":
+                return {
+                    icon: <Sell sx={iconStyle} />,
+                    color: "#7856DE",
+                };
+            case "Cancelled Bookings":
+                return {
+                    icon: <Close sx={iconStyle} />,
+                    color: "#EE5C78",
+                };
+            case "No Show":
+                return {
+                    icon: <PersonOff sx={iconStyle} />,
+                    color: "#000000",
+                };
+            case "Blocked":
+                return {
+                    icon: <DoNotDisturb sx={iconStyle} />,
+                    color: "#EE5C78",
+                };
+            case "Room Charges":
+                return {
+                    icon: <Key sx={iconStyle} />,
+                    color: "#7856DE",
+                };
+            case "Extra Charges":
+                return {
+                    icon: <CreditCard sx={iconStyle} />,
+                    color: "#00CFE8",
+                };
+            case "Discount":
+                return {
+                    icon: <Discount sx={iconStyle} />,
+                    color: "#28C76F",
+                };
+        }
+    }
+
+    if (
+        item.ParameterName === "Mini Bar" ||
+        item.ParameterName === "Restaurant"
+    ) {
+        return null;
+    }
+
+    const currentItem = cardIcon(item.ParameterName);
+
+    const extraCharges = list.filter(
+        ({ ParameterName }: any) =>
+            ParameterName === "Mini Bar" || ParameterName === "Restaurant"
+    );
+
+    if (isSmall) {
+        return (
+            <Card sx={{ padding: "1rem" }}>
+                <div
+                    style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "100%",
+                        backgroundColor: currentItem?.color,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                    }}
+                >
+                    {currentItem?.icon}
+                </div>
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem",
+                        flex: 1,
+                        marginTop: "16px",
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            fontSize: "16px",
+                            fontWeight: 600,
+                            width: "172px",
+                        }}
+                    >
+                        {item.ParameterName}
+                    </Typography>
+                    <Typography
+                        sx={{
+                            fontSize: "20px",
+                            fontWeight: 600,
+                        }}
+                    >
+                        {isCharges
+                            ? fNumber(item.ParameterValue) + "₮"
+                            : item.ParameterValue}
+                    </Typography>
+                </div>
+            </Card>
+        );
+    }
+
+    return (
+        <Card sx={{ padding: "1rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <div
+                    style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "100%",
+                        backgroundColor: currentItem?.color,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                    }}
+                >
+                    {currentItem?.icon}
+                </div>
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem",
+                        flex: 1,
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            fontSize: "16px",
+                            fontWeight: 600,
+                            width: "172px",
+                        }}
+                    >
+                        {item.ParameterName}
+                    </Typography>
+                    <Typography
+                        sx={{
+                            fontSize: "20px",
+                            fontWeight: 600,
+                        }}
+                    >
+                        {isCharges
+                            ? fNumber(item.ParameterValue) + "₮"
+                            : item.ParameterValue}
+                    </Typography>
+                </div>
+                <div
+                    style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "100%",
+                        backgroundColor: "#F8F9FA",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                    }}
+                >
+                    <ChevronRight sx={{ fontSize: "16px" }} />
+                </div>
+            </div>
+            {isCharges && item.ParameterName === "Extra Charges" && (
+                <div
+                    style={{
+                        marginTop: "16px",
+                        borderTop: "1px solid #E6E8EE",
+                        paddingTop: "16px",
+                        paddingLeft: "56px",
+                        flexDirection: "column",
+                        display: "flex",
+                        gap: "16px",
+                    }}
+                >
+                    {extraCharges.map((item: any) => (
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "1rem",
+                                flex: 1,
+                                color: "#888A99",
+                            }}
+                            key={item.ParameterID}
+                        >
+                            <Typography
+                                sx={{
+                                    fontSize: "16px",
+                                    fontWeight: 600,
+                                    width: "172px",
+                                }}
+                            >
+                                {item.ParameterName}
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontSize: "20px",
+                                    fontWeight: 600,
+                                }}
+                            >
+                                {isCharges
+                                    ? fNumber(item.ParameterValue) + "₮"
+                                    : item.ParameterValue}
+                            </Typography>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </Card>
+    );
+}
