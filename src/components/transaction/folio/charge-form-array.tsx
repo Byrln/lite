@@ -46,7 +46,9 @@ export default function ChargeFormArray({
         }
     };
 
-    const [setedDate, setSetedDate] = useState<Date>(workingDate);
+    const [setedDate, setSetedDate] = useState<Date>(
+        workingDate ? workingDate : new Datse()
+    );
 
     const [enableDate, setEnableDate] = useState(true);
 
