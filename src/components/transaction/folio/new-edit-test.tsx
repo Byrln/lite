@@ -16,6 +16,7 @@ import FolioCharge from "./charge";
 import ChargeFormArray from "./charge-form-array";
 import PaymentFormArray from "./payment-from-array";
 
+
 const NewEditTest = ({ FolioID, TransactionID, handleModal }: any) => {
     const [workingDate, setWorkingDate] = useState(null);
     const [entity, setEntity] = useState<any>({});
