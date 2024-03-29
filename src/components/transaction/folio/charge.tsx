@@ -163,6 +163,7 @@ export default function FolioCharge({
                                         {...register(`charge.${id}.Amount`)}
                                         name={`charge.${id}.Amount`}
                                         fullWidth
+                                        onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                     />
                                 </Stack>
                                 <Stack
@@ -179,6 +180,7 @@ export default function FolioCharge({
                                         onChange={(newvalue: any) =>
                                             setQuantity(newvalue)
                                         }
+                                        onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                     />
                                 </Stack>
                                 <Stack
