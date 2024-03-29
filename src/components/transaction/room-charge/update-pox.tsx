@@ -41,10 +41,18 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
+            let tempValues = {
+                RoomChargeID: values.RoomChargeID,
+                StayDate: values.StayDate,
+                Adult: values.Adult,
+                Child: values.Child,
+                Override: values.Override,
+                ApplytoAll: values.ApplytoAll == true ? 2 : 1,
+            };
             if (values.ApplytoAll == true) {
                 delete values.StayDate;
             }
-            await ChargeAPI?.UpdatePax(values);
+            await ChargeAPI?.UpdatePax(tempValues);
 
             reset();
         } catch (error) {

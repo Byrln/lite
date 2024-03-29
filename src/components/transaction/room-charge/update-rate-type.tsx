@@ -40,11 +40,15 @@ const UpdateRateType = ({ element, RoomTypeID }: any) => {
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            if (values.ApplytoAll == true) {
-                delete values.StayDate;
-            }
-            await ChargeAPI?.updateRateType(values);
+            let tempValues = {
+                RoomChargeID: values.RoomChargeID,
+                StayDate: values.StayDate,
+                RateTypeID: values.RateTypeID,
+                Override: values.Override,
+                ApplytoAll: values.ApplytoAll == true ? 2 : 1,
+            };
 
+            await ChargeAPI?.updateRateType(tempValues);
             reset();
         } catch (error) {
             setLoading(false);

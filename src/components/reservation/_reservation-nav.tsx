@@ -149,13 +149,11 @@ const ReservationNav = ({
                     </Button>
                 </DialogActions>
             </Dialog>
-            {reservation.IsEdit && (
-                <a href={`/transaction/edit/${reservation.TransactionID}`}>
-                    <Button variant={"text"} size="small" sx={buttonStyle}>
-                        Edit Transaction
-                    </Button>
-                </a>
-            )}
+            <a href={`/transaction/edit/${reservation.TransactionID}`}>
+                <Button variant={"text"} size="small" sx={buttonStyle}>
+                    Edit Transaction
+                </Button>
+            </a>
             {reservation.GroupOperation && (
                 <Button
                     variant={"text"}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import CustomTable from "components/common/custom-table";
-import { PictureSWR, PictureAPI, listUrl } from "lib/api/picture";
+import { PictureAPI, listUrl } from "lib/api/picture";
 import CustomPicture from "components/common/custom-picture";
 import CustomUpload from "components/common/custom-upload";
 
