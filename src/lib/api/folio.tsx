@@ -83,6 +83,14 @@ export const FolioAPI = {
         return res.data.JsonData;
     },
 
+    items: async (FolioID: any) => {
+        const res = await axios.post(`${urlPrefix}/Items`, {
+            FolioID: FolioID,
+        });
+
+        return res.data.JsonData;
+    },
+
     new: async (values: any) => {
         const { data, status } = await axios.post(
             `${urlPrefix}/NewItem`,

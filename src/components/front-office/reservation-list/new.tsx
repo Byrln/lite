@@ -63,8 +63,8 @@ const NewEdit = ({
     const [ArrivalDate, setArrivalDate]: any = useState(
         dateStart ? dateStart : workingDate
     );
-    const [ArrivalTime, setArrivalTime]: any = useState();
-    const [DepartureTime, setDepartureTime]: any = useState();
+    const [ArrivalTime, setArrivalTime]: any = useState("14:00");
+    const [DepartureTime, setDepartureTime]: any = useState("12:00");
 
     console.log("ArrivalTime", ArrivalTime);
 
@@ -112,8 +112,8 @@ const NewEdit = ({
         formState: { errors },
     } = useForm({
         defaultValues: {
-            ArrivalTime: null,
-            DepartureTime: null,
+            ArrivalTime: "14:00",
+            DepartureTime: "12:00",
             Remarks: null,
             BookerName: null,
             BookerPhone: null,

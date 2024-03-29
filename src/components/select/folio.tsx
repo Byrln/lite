@@ -13,6 +13,7 @@ const FolioSelect = ({
     customField,
     groupID = null,
     resetField,
+    onChange,
 }: any) => {
     const { data, error } = FolioSWR(TransactionID, groupID);
 
@@ -22,6 +23,11 @@ const FolioSelect = ({
                 defaultValue:
                     data && data[0] && data[0].FolioID ? data[0].FolioID : 0,
             });
+            if (onChange) {
+                onChange(
+                    data && data[0] && data[0].FolioID ? data[0].FolioID : 0
+                );
+            }
         }
     }, [data]);
 
@@ -44,6 +50,7 @@ const FolioSelect = ({
             options={data}
             optionValue="FolioID"
             optionLabel="FolioFullName"
+            onChange={onChange}
         />
     );
 };

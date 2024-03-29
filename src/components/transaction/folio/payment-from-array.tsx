@@ -91,8 +91,6 @@ export default function PaymentFormArray({
                     Quantity: 1,
                     Description: " ",
                     PayCurrencyID: null,
-                    
-
                 },
             ],
         },
@@ -105,16 +103,12 @@ export default function PaymentFormArray({
     });
 
     const onSubmit = async (data: any) => {
-
-        
         for (const index in data.payment) {
-
-            const exchangeRate = await CurrenctAPI.exchangeRate( {
-                CurrencyID: data.payment[index].PayCurrencyID
+            const exchangeRate = await CurrenctAPI.exchangeRate({
+                CurrencyID: data.payment[index].PayCurrencyID,
             });
 
-
-            data.payment[index].Amount=data.payment[index].Amount
+            data.payment[index].Amount = data.payment[index].Amount;
             data.payment[index].TransactionID = TransactionID;
             data.payment[index].FolioID = FolioID;
             data.payment[index].TypeID = 2;
@@ -124,7 +118,7 @@ export default function PaymentFormArray({
         await mutate(`/api/Folio/Items`);
         handleModal();
 
-        console.log(data)
+        console.log(data);
     };
 
     return (
@@ -160,12 +154,12 @@ export default function PaymentFormArray({
                     {fields.map((field, index) => (
                         <>
                             <FolioPayment
-                            id={index}
-                            register={register}
-                            remove={remove}
-                            FolioID={FolioID}
-                            TransactionID={TransactionID}
-                            resetField={resetField}
+                                id={index}
+                                register={register}
+                                remove={remove}
+                                FolioID={FolioID}
+                                TransactionID={TransactionID}
+                                resetField={resetField}
                             />
                         </>
                     ))}

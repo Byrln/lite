@@ -454,7 +454,6 @@ const TransactionEdit = () => {
 
                             <TabPanel value={value} index={2}>
                                 <Folio
-                                    FolioID={transaction.FolioID}
                                     TransactionID={transaction.TransactionID}
                                 />
                             </TabPanel>

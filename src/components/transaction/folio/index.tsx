@@ -1,10 +1,14 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Checkbox } from "@mui/material";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 
 import { FolioItemSWR, FolioAPI, listUrl } from "lib/api/folio";
 import CustomTable from "components/common/custom-table";
+import FolioSelect from "components/select/folio";
 import { ModalContext } from "lib/context/modal";
 import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit-test";
@@ -12,14 +16,14 @@ import CutForm from "./cut";
 import SplitForm from "./split";
 import BillTo from "./bill-to";
 
-const RoomCharge = ({ FolioID, TransactionID }: any) => {
+const RoomCharge = ({ TransactionID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [entity, setEntity] = useState<any>({});
     const [rerenderKey, setRerenderKey] = useState(0);
+    const [userTypeID, setUserTypeID]: any = useState(null);
+    const [FolioID, setFolioID] = useState(0);
 
     const { data, error } = FolioItemSWR(FolioID);
-
-    console.log(data, 'folioid')
 
     useEffect(() => {
         if (data) {
@@ -35,6 +39,17 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
         setEntity(tempEntity);
         setRerenderKey((prevKey) => prevKey + 1);
     };
+    const validationSchema = yup.object().shape({});
+
+    const formOptions = { resolver: yupResolver(validationSchema) };
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+        resetField,
+    } = useForm(formOptions);
 
     const columns = [
         {
@@ -104,7 +119,7 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
                 return formatPrice(record);
             },
         },
-        
+
         {
             title: "Тайлбар",
             key: "Description",
@@ -117,11 +132,25 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
         },
     ];
 
+    useEffect(() => {
+        const fetchDatas = async () => {
+            if (FolioID) {
+                try {
+                    const response = await FolioAPI.items(FolioID);
+                    setEntity(response);
+                } finally {
+                }
+            }
+        };
+
+        fetchDatas();
+    }, [FolioID]);
+
     return (
         <Box>
             <CustomTable
                 columns={columns}
-                data={data}
+                data={entity ? entity : {}}
                 error={error}
                 modalTitle="Өрөөний тооцоо"
                 excelName="Өрөөний тооцоо"
@@ -133,7 +162,11 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
                 hasUpdate={true}
                 id="CurrID"
                 modalContent={
-                    <NewEdit TransactionID={TransactionID} FolioID={FolioID} handleModal={handleModal}/>
+                    <NewEdit
+                        TransactionID={TransactionID}
+                        FolioID={FolioID}
+                        handleModal={handleModal}
+                    />
                 }
                 api={FolioAPI}
                 listUrl={listUrl}
@@ -201,9 +234,38 @@ const RoomCharge = ({ FolioID, TransactionID }: any) => {
                         >
                             Bill To
                         </Button>
+                        <div style={{ width: "200px" }}>
+                            <FolioSelect
+                                register={register}
+                                errors={errors}
+                                TransactionID={TransactionID}
+                                resetField={resetField}
+                                onChange={setFolioID}
+                            />
+                        </div>
                     </>
                 }
             />
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                    marginTop: "10px",
+                }}
+            >
+                <Typography variant="subtitle1">
+                    Үлдэгдэл{" "}
+                    {entity && entity.length > 0
+                        ? formatPrice(
+                              entity.reduce(
+                                  (acc: any, obj: any) =>
+                                      Number(acc) + Number(obj.Amount2),
+                                  0
+                              )
+                          )
+                        : 0}
+                </Typography>
+            </Box>
         </Box>
     );
 };
