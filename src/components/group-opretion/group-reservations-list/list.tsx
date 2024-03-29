@@ -19,7 +19,6 @@ import { dateStringToObj } from "lib/utils/helpers";
 import AuditTrail from "../audit-trail";
 
 const GroupReservationList = ({ title, workingDate }: any) => {
-    console.log("workingDate", workingDate);
     const [search, setSearch] = useState({
         StartDate: workingDate,
         EndDate: moment(
@@ -37,7 +36,7 @@ const GroupReservationList = ({ title, workingDate }: any) => {
         setAnchorEl(event.currentTarget);
         setSelectedRow(row.row);
     };
-    console.log("selectedrow", selectedRow);
+
     const handleClose = () => {
         setAnchorEl(null);
         setSelectedRow(null);

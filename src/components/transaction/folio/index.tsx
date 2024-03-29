@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Menu, MenuItem } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import { format } from "date-fns";
 import { Checkbox } from "@mui/material";
@@ -22,6 +22,19 @@ const RoomCharge = ({ TransactionID }: any) => {
     const [rerenderKey, setRerenderKey] = useState(0);
     const [userTypeID, setUserTypeID]: any = useState(null);
     const [FolioID, setFolioID] = useState(0);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedRow, setSelectedRow] = useState<any>(null);
+
+    const handleClick = (event: any, row: any) => {
+        console.log("row", row);
+        setAnchorEl(event.currentTarget);
+        setSelectedRow(row);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+        setSelectedRow(null);
+    };
 
     const { data, error } = FolioItemSWR(FolioID);
 
@@ -129,6 +142,50 @@ const RoomCharge = ({ TransactionID }: any) => {
             title: "Хэрэглэгч",
             key: "Username",
             dataIndex: "Username",
+        },
+        {
+            title: "Үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            render: function render(id: any, value: any, entity: any) {
+                return (
+                    <>
+                        <Button
+                            aria-controls={`menu${entity.CurrID}`}
+                            variant={"outlined"}
+                            size="small"
+                            onClick={(e) => handleClick(e, entity)}
+                        >
+                            Үйлдэл
+                        </Button>
+                        <Menu
+                            id={`menu${entity.CurrID}`}
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            {selectedRow && (
+                                <>
+                                    <MenuItem
+                                        key={`newOrder${selectedRow.CurrID}`}
+                                        onClick={() => {
+                                            handleModal(
+                                                true,
+                                                `Засах`,
+                                                <div>{selectedRow.CurrID}</div>,
+                                                null,
+                                                "large"
+                                            );
+                                        }}
+                                    >
+                                        Засах
+                                    </MenuItem>
+                                </>
+                            )}
+                        </Menu>
+                    </>
+                );
+            },
         },
     ];
 
