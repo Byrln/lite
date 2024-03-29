@@ -13,7 +13,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { toast } from "react-toastify";
 
-const DeleteButton = ({ api, id, listUrl }: any) => {
+const DeleteButton = ({ api, id, listUrl, functionAfterSubmit }: any) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -33,6 +33,10 @@ const DeleteButton = ({ api, id, listUrl }: any) => {
             await mutate(listUrl);
 
             toast("Амжилттай устгагдлаа.");
+
+            if (functionAfterSubmit) {
+                functionAfterSubmit();
+            }
 
             setLoading(false);
             handleClose();

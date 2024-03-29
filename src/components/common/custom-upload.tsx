@@ -23,6 +23,7 @@ const GuestSelect = ({
     id,
     listUrl,
     mutateBody,
+    functionAfterSubmit,
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [imageUrl, setImageUrl] = useState(null);
@@ -91,6 +92,11 @@ const GuestSelect = ({
             if (listUrl) {
                 mutate(listUrl, mutateBody);
             }
+
+            if (functionAfterSubmit) {
+                functionAfterSubmit();
+            }
+
             toast("Амжилттай.");
         } finally {
             setLoading(false);

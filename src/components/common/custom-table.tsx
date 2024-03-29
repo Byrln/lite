@@ -52,6 +52,7 @@ const CustomTable = ({
     datagrid = true,
     additionalButtons,
     rowColor,
+    functionAfterSubmit,
 }: any) => {
     const [state, dispatch]: any = useAppState();
     const [height, setHeight] = useState<any>(null);
@@ -231,6 +232,7 @@ const CustomTable = ({
                                 api={api}
                                 id={index.id}
                                 listUrl={listUrl}
+                                functionAfterSubmit={functionAfterSubmit}
                             />
                         )}
                     </Stack>

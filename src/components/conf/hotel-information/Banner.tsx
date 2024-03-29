@@ -1,7 +1,7 @@
-import ToggleChecked from "components/common/custom-switch";
+import { useEffect, useState } from "react";
+
 import CustomTable from "components/common/custom-table";
-import { PictureSWR, PictureAPI, listUrl } from "lib/api/picture";
-import Tooltip from "@mui/material/Tooltip";
+import { PictureAPI, listUrl } from "lib/api/picture";
 import CustomPicture from "components/common/custom-picture";
 import CustomUpload from "components/common/custom-upload";
 
@@ -23,14 +23,27 @@ const columns = [
 ];
 
 const BankAccountList = () => {
-    const { data, error } = PictureSWR({ IsBanner: true });
+    const [entity, setEntity]: any = useState(null);
+
+    const fetchDatas = async () => {
+        try {
+            const arr: any = await PictureAPI.get({ IsBanner: true });
+            if (arr) {
+                setEntity(arr);
+            }
+        } finally {
+        }
+    };
+
+    useEffect(() => {
+        fetchDatas();
+    }, []);
 
     return (
         <>
             <CustomTable
                 columns={columns}
-                data={data}
-                error={error}
+                data={entity}
                 api={PictureAPI}
                 hasNew={true}
                 hasUpdate={false}
@@ -44,9 +57,11 @@ const BankAccountList = () => {
                         IsBanner={true}
                         listUrl={listUrl}
                         mutateBody={{ IsBanner: true }}
+                        functionAfterSubmit={fetchDatas}
                     />
                 }
                 excelName="Banner"
+                functionAfterSubmit={fetchDatas}
             />
         </>
     );
