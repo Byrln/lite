@@ -32,6 +32,8 @@ import RemarkList from "components/reservation/remark/list";
 import GuestNewEdit from "components/front-office/guest-database/new-edit";
 import GuestDocuments from "components/common/custom-upload";
 import AmendStayForm from "components/reservation/amend-stay";
+import GuestReplace from "./guest-replace";
+import CustomerReplace from "./customer-replace";
 
 import { useAppState } from "lib/context/app";
 import { ModalContext } from "lib/context/modal";
@@ -74,6 +76,7 @@ const TransactionEdit = () => {
     const { handleModal }: any = useContext(ModalContext);
     const [guestAnchorEl, setGuestAnchorEl] = useState(null);
     const [stayAnchorEl, setStayAnchorEl] = useState(null);
+    const [customerAnchorEl, setCustomerAnchorEl] = useState(null);
 
     const handleGuestClick = (event: any) => {
         setGuestAnchorEl(event.currentTarget);
@@ -89,6 +92,14 @@ const TransactionEdit = () => {
 
     const handleStayClose = () => {
         setStayAnchorEl(null);
+    };
+
+    const handleCustomerClick = (event: any) => {
+        setCustomerAnchorEl(event.currentTarget);
+    };
+
+    const handleCustomerClose = () => {
+        setCustomerAnchorEl(null);
     };
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -196,7 +207,21 @@ const TransactionEdit = () => {
                                                 open={Boolean(guestAnchorEl)}
                                                 onClose={handleGuestClose}
                                             >
-                                                <MenuItem key={`guestReplace`}>
+                                                <MenuItem
+                                                    key={`guestReplace`}
+                                                    onClick={() => {
+                                                        handleModal(
+                                                            true,
+                                                            "Зочин солих",
+                                                            <GuestReplace
+                                                                TransactionID={
+                                                                    router.query
+                                                                        .id
+                                                                }
+                                                            />
+                                                        );
+                                                    }}
+                                                >
                                                     Зочин солих
                                                 </MenuItem>
                                                 <MenuItem
@@ -373,14 +398,49 @@ const TransactionEdit = () => {
                                             className="mb-3"
                                         >
                                             Бусад мэдээлэл
+                                            <Button
+                                                key={2}
+                                                variant={"text"}
+                                                aria-controls={`other`}
+                                                size="small"
+                                                onClick={handleCustomerClick}
+                                            >
+                                                <KeyboardArrowDownIcon
+                                                    fontSize={"large"}
+                                                />
+                                            </Button>
+                                            <Menu
+                                                id={`other`}
+                                                anchorEl={customerAnchorEl}
+                                                open={Boolean(customerAnchorEl)}
+                                                onClose={handleCustomerClose}
+                                            >
+                                                <MenuItem
+                                                    key={`other`}
+                                                    onClick={() => {
+                                                        handleModal(
+                                                            true,
+                                                            "Бусад засвар",
+                                                            <CustomerReplace
+                                                                TransactionID={
+                                                                    router.query
+                                                                        .id
+                                                                }
+                                                            />
+                                                        );
+                                                    }}
+                                                >
+                                                    Бусад засвар
+                                                </MenuItem>
+                                            </Menu>
                                         </Box>
                                         <OtherInformation
                                             reservationNo={
                                                 transaction.ReservationNo
                                             }
                                             folioNo={transaction.FolioNo}
-                                            checkInNo="checkInNo"
-                                            company="company"
+                                            checkInNo={transaction.CheckinNo}
+                                            company={transaction.CustomerName}
                                         />
                                     </CardContent>
                                 </Card>
@@ -415,7 +475,11 @@ const TransactionEdit = () => {
                                     <Grid item xs={12} sm={4}>
                                         <Card>
                                             <CardContent>
-                                                <SharerInformation />
+                                                <SharerInformation
+                                                    TransactionID={
+                                                        transaction.TransactionID
+                                                    }
+                                                />
                                             </CardContent>
                                         </Card>
                                     </Grid>

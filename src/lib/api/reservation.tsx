@@ -98,6 +98,15 @@ export const PendingDueOutSWR = () => {
     return useSWR(`${urlPrefix}/PendingDueOut`, fetcher);
 };
 
+export const SharerListSWR = (TransactionID: any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(`${urlPrefix}/Sharer/List`, { TransactionID: TransactionID })
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/Sharer/List`, fetcher);
+};
+
 export const ReservationAPI = {
     get: async (id: any) => {
         const values = {
@@ -205,5 +214,29 @@ export const ReservationAPI = {
             item = null;
         }
         return item;
+    },
+
+    guestReplace: async (values: any) => {
+        var vals = values;
+
+        const { data, status } = await axios.post(
+            `${urlPrefix}/UpdateGuest`,
+            values
+        );
+        return {
+            status: values,
+        };
+    },
+
+    customerReplace: async (values: any) => {
+        var vals = values;
+
+        const { data, status } = await axios.post(
+            `${urlPrefix}/UpdateCustomer`,
+            values
+        );
+        return {
+            status: values,
+        };
     },
 };

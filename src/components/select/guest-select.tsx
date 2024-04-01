@@ -78,24 +78,30 @@ const GuestSelect = ({
         option.label.toLowerCase().includes(inputValue.toLowerCase())
     );
     const handleCountryChange = (event: any, newValue: any) => {
-        if (newValue.value == "createNew") {
+        if (newValue && newValue.value && newValue.value == "createNew") {
             setSelectedGuest(newValue);
-            resetField(`TransactionDetail.${id}.GuestDetail.GuestName`, {
-                defaultValue: newValue.label,
-            });
-            resetField(`TransactionDetail.${id}.GuestID`, {
-                defaultValue: null,
-            });
-            console.log("1111", newValue.value);
+
+            if (resetField) {
+                resetField(`TransactionDetail.${id}.GuestDetail.GuestName`, {
+                    defaultValue: newValue.label,
+                });
+                resetField(`TransactionDetail.${id}.GuestID`, {
+                    defaultValue: null,
+                });
+            }
         } else {
             setSelectedGuest(newValue);
-            resetField(`TransactionDetail.${id}.GuestDetail.GuestName`, {
-                defaultValue: newValue.label,
-            });
-            resetField(`TransactionDetail.${id}.GuestID`, {
-                defaultValue: newValue.value,
-            });
+            if (resetField) {
+                resetField(`TransactionDetail.${id}.GuestDetail.GuestName`, {
+                    defaultValue: newValue.label,
+                });
+                resetField(`TransactionDetail.${id}.GuestID`, {
+                    defaultValue: newValue.value,
+                });
+            }
+
             if (
+                newValue &&
                 newValue.VipStatusName != null &&
                 newValue.VipStatusName != ""
             ) {
