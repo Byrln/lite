@@ -144,10 +144,8 @@ export const FolioAPI = {
         };
     },
 
-    delete: async (id: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
-            RoomChargeTypeID: id,
-        });
+    VoidItem: async (values: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/VoidItem`, values);
 
         return {
             data,

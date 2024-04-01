@@ -16,6 +16,7 @@ import CutForm from "./cut";
 import SplitForm from "./split";
 import BillTo from "./bill-to";
 import EditFolioTransaction from "./edit-transaction";
+import DeleteFolio from "./delete-folio";
 
 const RoomCharge = ({ TransactionID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
@@ -180,6 +181,20 @@ const RoomCharge = ({ TransactionID }: any) => {
                                         }}
                                     >
                                         Засах
+                                    </MenuItem>
+                                    <MenuItem
+                                        key={`newOrder${selectedRow.CurrID}`}
+                                        onClick={() => {
+                                            handleModal(
+                                                true,
+                                                `Устгах`,
+                                                <div><DeleteFolio TransactionID={TransactionID} FolioID={selectedRow.FolioID} CurrID={selectedRow.CurrID} TypeID={selectedRow.TypeID} handleModal={handleModal}/></div>,
+                                                null,
+                                                "large"
+                                            );handleClose();
+                                        }}
+                                    >
+                                        Устгах
                                     </MenuItem>
                                 </>
                             )}
