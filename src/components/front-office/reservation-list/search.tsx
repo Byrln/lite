@@ -147,14 +147,14 @@ const Search = ({ register, errors, control, reset }: any) => {
                     helperText={errors.StatusGroup?.message}
                     size="small"
                 >
+                    <MenuItem key={1} value={1}>
+                        Reservations
+                    </MenuItem>
                     <MenuItem key={3} value={3}>
                         Checked out
                     </MenuItem>
                     <MenuItem key={2} value={2}>
                         Arrived, Stay over, Due out
-                    </MenuItem>
-                    <MenuItem key={1} value={1}>
-                        Reservations
                     </MenuItem>
                     <MenuItem key={0} value={0}>
                         Cancel, Void, No Show

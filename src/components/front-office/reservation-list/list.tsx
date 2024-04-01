@@ -105,7 +105,12 @@ const DeparturedListList = ({ title }: any) => {
         GuestEmail: yup.string(),
         CustomerID: yup.string(),
     });
-    const formOptions = { resolver: yupResolver(validationSchema) };
+    const formOptions = {
+        defaultValues: {
+            StatusGroup: 1,
+        },
+        resolver: yupResolver(validationSchema),
+    };
     const {
         reset,
         register,
@@ -114,7 +119,7 @@ const DeparturedListList = ({ title }: any) => {
         control,
     } = useForm(formOptions);
 
-    const [search, setSearch] = useState({});
+    const [search, setSearch] = useState({ StatusGroup: 1 });
 
     const { data, error } = ReservationSWR(search);
 

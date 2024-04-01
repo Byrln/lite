@@ -212,6 +212,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 return {
                     id: `${obj.RoomTypeID}-${obj.RoomTypeID}`,
                     title: obj.RoomTypeName,
+                    SortOrder: obj.SortOrder,
                 };
             });
             const newData = rooms.map((obj: any) => {
@@ -490,6 +491,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         key={rerenderKey}
                         plugins={[resourceTimelinePlugin, interactionPlugin]}
                         initialView="resourceTimeline"
+                        resourceOrder="SortOrder"
                         headerToolbar={{
                             left: "",
                             center: "",
