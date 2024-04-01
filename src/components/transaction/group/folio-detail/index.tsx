@@ -8,6 +8,7 @@ import { ModalContext } from "lib/context/modal";
 import NewEdit from "./new-edit";
 import { useAppState } from "lib/context/app";
 import { formatPrice } from "lib/utils/helpers";
+import EditFolioTransaction from "components/transaction/folio/edit-transaction";
 
 const RoomCharge = ({ GroupID, TransactionID }: any) => {
     const [state, dispatch]: any = useAppState();
@@ -75,13 +76,22 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                                 handleModal(
                                     true,
                                     "Засах",
-                                    <NewEdit
+                                    // <NewEdit
+                                    //     TransactionID={
+                                    //         element.row.TransactionID
+                                    //     }
+                                    //     FolioID={element.row.FolioID}
+                                    //     TypeID={element.row.TypeID}
+                                    //     CurrID={element.row.CurrID}
+                                    // />
+                                    <EditFolioTransaction
                                         TransactionID={
                                             element.row.TransactionID
                                         }
                                         FolioID={element.row.FolioID}
-                                        TypeID={element.row.TypeID}
                                         CurrID={element.row.CurrID}
+                                        TypeID={element.row.TypeID}
+                                        handleModal={handleModal}
                                     />
                                 );
                                 dispatch({

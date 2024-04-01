@@ -34,6 +34,7 @@ export default function PaymentFormArray({
     FolioID,
     TransactionID,
     handleModal,
+    Amount,
 }: any) {
     const [workingDate, setWorkingDate] = useState(null);
 
@@ -89,7 +90,7 @@ export default function PaymentFormArray({
                 {
                     GroupID: null,
                     ItemID: null,
-                    Amount: null,
+                    Amount: Amount ? Amount : null,
                     Quantity: 1,
                     Description: " ",
                     PayCurrencyID: null,
@@ -112,7 +113,7 @@ export default function PaymentFormArray({
             data.payment[index].TransactionID = TransactionID;
             data.payment[index].FolioID = FolioID;
             data.payment[index].TypeID = 2;
-            
+
             await FolioAPI?.new(data.payment[index]);
         }
         await mutate(`/api/Folio/Items`);

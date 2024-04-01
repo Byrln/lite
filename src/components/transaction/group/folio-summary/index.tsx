@@ -10,6 +10,7 @@ import NewEdit from "./new-edit";
 import { useAppState } from "lib/context/app";
 import { FrontOfficeAPI } from "lib/api/front-office";
 import { formatPrice } from "lib/utils/helpers";
+import PaymentFormArray from "components/transaction/folio/payment-from-array";
 
 const RoomCharge = ({ GroupID, TransactionID }: any) => {
     const [workingDate, setWorkingDate] = useState(null);
@@ -131,6 +132,23 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                                     handleModal(
                                         true,
                                         "Төлбөр төлөх",
+                                        // <PaymentFormArray
+                                        //     FolioID={
+                                        //         selectedRow &&
+                                        //         selectedRow.FolioID
+                                        //     }
+                                        //     TransactionID={
+                                        //         selectedRow &&
+                                        //         selectedRow.TransactionID
+                                        //     }
+                                        //     Amount={
+                                        //         selectedRow &&
+                                        //         selectedRow.Balance
+                                        //     }
+                                        //     handleModal={handleModal}
+                                        // />,
+                                        // null,
+                                        // "large"
                                         <NewEdit
                                             TransactionID={
                                                 selectedRow &&

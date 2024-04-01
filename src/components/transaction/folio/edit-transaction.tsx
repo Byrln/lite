@@ -248,7 +248,9 @@ export default function EditFolioTransaction({
 
                     <TextField
                         value={description}
-                        onChange={(newvalue: any) => setDescription(newvalue)}
+                        onChange={(newvalue: any) =>
+                            setDescription(newvalue.target.value)
+                        }
                         fullWidth
                         multiline
                         rows={3}

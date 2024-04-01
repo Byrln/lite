@@ -174,10 +174,29 @@ const RoomCharge = ({ TransactionID }: any) => {
                                             handleModal(
                                                 true,
                                                 `Засах`,
-                                                <div><EditFolioTransaction TransactionID={TransactionID} FolioID={selectedRow.FolioID} CurrID={selectedRow.CurrID} TypeID={selectedRow.TypeID} handleModal={handleModal}/></div>,
+                                                <div>
+                                                    <EditFolioTransaction
+                                                        TransactionID={
+                                                            TransactionID
+                                                        }
+                                                        FolioID={
+                                                            selectedRow.FolioID
+                                                        }
+                                                        CurrID={
+                                                            selectedRow.CurrID
+                                                        }
+                                                        TypeID={
+                                                            selectedRow.TypeID
+                                                        }
+                                                        handleModal={
+                                                            handleModal
+                                                        }
+                                                    />
+                                                </div>,
                                                 null,
                                                 "large"
-                                            );handleClose();
+                                            );
+                                            handleClose();
                                         }}
                                     >
                                         Засах
@@ -188,10 +207,29 @@ const RoomCharge = ({ TransactionID }: any) => {
                                             handleModal(
                                                 true,
                                                 `Устгах`,
-                                                <div><DeleteFolio TransactionID={TransactionID} FolioID={selectedRow.FolioID} CurrID={selectedRow.CurrID} TypeID={selectedRow.TypeID} handleModal={handleModal}/></div>,
+                                                <div>
+                                                    <DeleteFolio
+                                                        TransactionID={
+                                                            TransactionID
+                                                        }
+                                                        FolioID={
+                                                            selectedRow.FolioID
+                                                        }
+                                                        CurrID={
+                                                            selectedRow.CurrID
+                                                        }
+                                                        TypeID={
+                                                            selectedRow.TypeID
+                                                        }
+                                                        handleModal={
+                                                            handleModal
+                                                        }
+                                                    />
+                                                </div>,
                                                 null,
                                                 "large"
-                                            );handleClose();
+                                            );
+                                            handleClose();
                                         }}
                                     >
                                         Устгах

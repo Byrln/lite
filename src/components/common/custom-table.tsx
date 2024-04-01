@@ -21,7 +21,7 @@ import Stack from "@mui/material/Stack";
 import { Icon } from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 
 import { getCurrentDate } from "lib/utils/helpers";
 import EmptyAlert from "./empty-alert";
@@ -353,6 +353,7 @@ const CustomTable = ({
                             <DataGrid
                                 checkboxSelection={false}
                                 rows={data}
+                                density="compact"
                                 columns={customizedColumns}
                                 initialState={
                                     pagination
