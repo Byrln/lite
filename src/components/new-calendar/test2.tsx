@@ -225,6 +225,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     MaxChild: obj.MaxChild,
                     BaseAdult: obj.BaseAdult,
                     BaseChild: obj.BaseChild,
+                    SortOrder: Number(obj.RoomNo),
                 };
             });
 
