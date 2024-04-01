@@ -144,7 +144,7 @@ const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
 });
 
 const CashierList = ({ title }: any) => {
-    const [activeSessionID, setActiveSessionID] = useState(null);
+    const [activeSessionID, setActiveSessionID] = useState<any>(null);
     const [detailData, setDetailData] = useState(null);
     const [summary, setSummary] = useState(null);
     const { handleModal }: any = useContext(ModalContext);
@@ -161,12 +161,12 @@ const CashierList = ({ title }: any) => {
                 (event: any) => event.IsActive === true
             );
             if (filteredItemData && filteredItemData.length) {
-                setActiveSessionID(filteredItemData[0].SessionID);
+                setActiveSessionID(listData[0].SessionID);
                 const response = await CashierSessionAPI.detail(
-                    filteredItemData[0].SessionID
+                    listData[0].SessionID
                 );
                 const summaryResponse = await CashierSessionAPI.summary(
-                    filteredItemData[0].SessionID
+                    listData[0].SessionID
                 );
                 if (response) {
                     setDetailData(response);
@@ -180,17 +180,52 @@ const CashierList = ({ title }: any) => {
                                 ? "Хүлээн авсан дүн"
                                 : summary.ActionID == 3
                                 ? "Төлбөрт гарсан дүн"
+                                : summary.ActionID == 4
+                                ? "Withdraw"
+                                : summary.ActionID == 5
+                                ? "End"
                                 : summary.ActionID == 6
                                 ? "Одоогийн дүн"
+                                : summary.ActionID == 7
+                                ? "Start Balance"
+                                : summary.ActionID == 8
+                                ? "End Balance"
                                 : "";
                     });
 
                     setSummary(summaryResponse);
                 }
             } else {
-                setActiveSessionID(null);
-                setDetailData(null);
-                setSummary(null);
+                setActiveSessionID("-1");
+                const response = await CashierSessionAPI.detail("-1");
+                const summaryResponse = await CashierSessionAPI.summary("-1");
+                if (response) {
+                    setDetailData(response);
+                }
+                if (summaryResponse) {
+                    summaryResponse.forEach(async (summary: any) => {
+                        summary.name =
+                            summary.ActionID == 1
+                                ? "Эхлэх дүн"
+                                : summary.ActionID == 2
+                                ? "Хүлээн авсан дүн"
+                                : summary.ActionID == 3
+                                ? "Төлбөрт гарсан дүн"
+                                : summary.ActionID == 4
+                                ? "Withdraw"
+                                : summary.ActionID == 5
+                                ? "End"
+                                : summary.ActionID == 6
+                                ? "Одоогийн дүн"
+                                : summary.ActionID == 7
+                                ? "Start Balance"
+                                : summary.ActionID == 8
+                                ? "End Balance"
+                                : "";
+                    });
+
+                    setSummary(summaryResponse);
+                }
             }
         }
     };
@@ -232,7 +267,11 @@ const CashierList = ({ title }: any) => {
                     <Button
                         variant="outlined"
                         className="mr-3 mb-3"
-                        disabled={activeSessionID ? false : true}
+                        disabled={
+                            activeSessionID && activeSessionID != "-1"
+                                ? false
+                                : true
+                        }
                         onClick={() => {
                             handleModal(
                                 true,
@@ -324,7 +363,11 @@ const CashierList = ({ title }: any) => {
                     <Button
                         variant="outlined"
                         className="mb-3"
-                        disabled={activeSessionID ? false : true}
+                        disabled={
+                            activeSessionID && activeSessionID != "-1"
+                                ? false
+                                : true
+                        }
                         onClick={() => {
                             handleModal(
                                 true,
