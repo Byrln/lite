@@ -34,6 +34,7 @@ export default function ChargeFormArray({
     handleModal,
 }: any) {
     const [workingDate, setWorkingDate] = useState(null);
+    const [newGroupCount, setNewGroupCount]: any = useState(1);
 
     useEffect(() => {
         fetchDatas();
@@ -158,15 +159,40 @@ export default function ChargeFormArray({
                         justifyContent="flex-end"
                         alignItems="flex-end"
                     >
+                        <TextField
+                            label="Нэмэх тоо"
+                            type="number"
+                            margin="dense"
+                            size="small"
+                            style={{
+                                width: "100px",
+                                marginRight: "10px",
+                            }}
+                            value={newGroupCount}
+                            onChange={(e: any) => {
+                                setNewGroupCount(e.target.value);
+                            }}
+                        />
+
                         <Button
                             onClick={() => {
-                                append({
-                                    GroupID: null,
-                                    ItemID: null,
-                                    Amount: null,
-                                    Quantity: 1,
-                                    Description: " ",
-                                });
+                                // append({
+                                //     GroupID: null,
+                                //     ItemID: null,
+                                //     Amount: null,
+                                //     Quantity: 1,
+                                //     Description: " ",
+                                // });
+                                for (let i = 0; i < newGroupCount; i++) {
+                                    append({
+                                        GroupID: null,
+                                        ItemID: null,
+                                        Amount: null,
+                                        Quantity: 1,
+                                        Description: " ",
+                                    });
+                                }
+                                setNewGroupCount(1);
                             }}
                         >
                             Add charge
