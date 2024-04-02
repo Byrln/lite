@@ -16,6 +16,7 @@ const CustomerSelect = ({
     setEntity,
     isCustomSelect = false,
     CustomerGroupID,
+    isNA,
 }: any) => {
     const { data, error } = CustomerSWR(CustomerGroupID);
 
@@ -39,6 +40,7 @@ const CustomerSelect = ({
             optionValue="CustomerID"
             optionLabel="CustomerName"
             onChange={setEntity}
+            isNA={isNA}
         />
     ) : (
         <TextField
@@ -52,6 +54,14 @@ const CustomerSelect = ({
             helperText={errors.CustomerID?.message}
             size="small"
         >
+            {isNA == true ? (
+                <MenuItem key="0" value="0">
+                    N/A
+                </MenuItem>
+            ) : (
+                <></>
+            )}
+
             {data.map((element: any) => {
                 return (
                     <MenuItem

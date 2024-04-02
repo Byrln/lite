@@ -1,0 +1,127 @@
+import { TextField, Grid, MenuItem } from "@mui/material";
+
+import { Controller } from "react-hook-form";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import moment from "moment";
+
+import ReservationTypeSelect from "components/select/reservation-type";
+import ReservationSourceSelect from "components/select/reservation-source";
+import { dateStringToObj } from "lib/utils/helpers";
+import CustomerSelect from "components/select/customer";
+
+const Search = ({
+    register,
+    errors,
+    control,
+    reset,
+    setArrivalTime,
+    setDepartureTime,
+    ArrivalTime,
+    DepartureTime,
+}: any) => {
+    return (
+        <Grid container spacing={1}>
+            <Grid item xs={3}>
+                <Controller
+                    name="StartDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Эхлэх огноо"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value, "YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id="StartDate"
+                                    {...register("StartDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.StartDate?.message}
+                                    helperText={errors.StartDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <TextField
+                    id="StartTime"
+                    label="Эхлэх цаг"
+                    type="time"
+                    margin="dense"
+                    {...register("StartTime")}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    sx={{ width: "100%" }}
+                    size="small"
+                    value={ArrivalTime}
+                    onChange={(value) => setArrivalTime(value.target.value)}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <Controller
+                    name="EndDate"
+                    control={control}
+                    defaultValue={null}
+                    render={({ field: { onChange, value } }) => (
+                        <DatePicker
+                            label="Дуусах огноо"
+                            value={value}
+                            onChange={(value) =>
+                                onChange(moment(value, "YYYY-MM-DD"))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    size="small"
+                                    id="EndDate"
+                                    {...register("EndDate")}
+                                    margin="dense"
+                                    fullWidth
+                                    {...params}
+                                    error={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <TextField
+                    id="EndTime"
+                    label="Дуусах цаг"
+                    type="time"
+                    margin="dense"
+                    {...register("EndTime")}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    sx={{ width: "100%" }}
+                    size="small"
+                    value={DepartureTime}
+                    onChange={(value) => setDepartureTime(value.target.value)}
+                />
+            </Grid>
+            <Grid item xs={3}>
+                <CustomerSelect
+                    register={register}
+                    errors={errors}
+                    isCustomSelect={true}
+                    isNA={true}
+                />
+            </Grid>
+        </Grid>
+    );
+};
+
+export default Search;

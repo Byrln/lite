@@ -1,13 +1,30 @@
 import useSWR from "swr";
 import axios from "lib/utils/axios";
 import { date } from "yup/lib/locale";
+import moment from "moment";
 
 const urlPrefix = "/api/Report";
 export const balanceUrl = `${urlPrefix}/Balance`;
 
-export const ReportBalanceSWR = (search: any) => {
+export const ReportBalanceSWR = (search: any, workingDate: any) => {
+    let tempSearch = {
+        StartDate:
+            moment(search.StartDate, "YYYY-MM-DD")
+                .format("YYYY-MM-DD")
+                .toString() +
+            " " +
+            (search.StartTime ? search.StartTime.toString() + ":00" : ":00"),
+        EndDate:
+            moment(search.EndDate, "YYYY-MM-DD")
+                .format("YYYY-MM-DD")
+                .toString() +
+            " " +
+            (search.EndTime ? search.EndTime.toString() + ":59" : ":59"),
+        CustomerID: Number(search.CustomerID),
+    };
+
     const fetcher = async (url: any) =>
-        await axios.post(url, search).then((res: any) => {
+        await axios.post(url, tempSearch).then((res: any) => {
             let list = res.data.JsonData;
             return list;
         });

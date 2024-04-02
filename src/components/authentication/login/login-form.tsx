@@ -77,7 +77,8 @@ export default function LoginForm() {
                         "Authorization"
                     ] = `Bearer ${session.token}`;
                     localStorage.setItem("hotelId", values.hotel);
-
+                    localStorage.setItem("username", values.username);
+                    // console.log("value", values);
                     router.replace("/");
                 } else {
                     window.location.href = "/auth/signin";

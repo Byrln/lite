@@ -17,6 +17,7 @@ const CustomSelect = ({
     dense = true,
     entity,
     onChange,
+    isNA,
 }: any) => {
     return (
         <FormControl
@@ -54,6 +55,11 @@ const CustomSelect = ({
                         options[entity[field]] &&
                         options[entity[field]][optionLabel]}
                 </option>
+                {isNA && (
+                    <option key={0} value={0}>
+                        N/A
+                    </option>
+                )}
                 {options.map((element: any) => (
                     <option
                         key={element[optionValue]}
