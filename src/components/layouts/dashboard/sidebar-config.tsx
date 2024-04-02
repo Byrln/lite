@@ -283,6 +283,7 @@ const sidebarConfig = [
         title: "дашбоард",
         path: "/",
         icon: getIcon(pieChart2Fill),
+        oldPath: "FrontOffice/StayView.aspx",
     },
     {
         title: "захиалга",
@@ -291,14 +292,17 @@ const sidebarConfig = [
             {
                 title: "захиалгын жагсаалт",
                 path: "/front-office/reservation-list",
+                oldPath: "FrontOffice/ReservationList.aspx",
             },
             {
                 title: "өдрийн өндөрлөгөө",
                 path: "/front-office/night-audit",
+                oldPath: "FrontOffice/NightAudit.aspx",
             },
             {
                 title: "зочин",
                 path: "/front-office/guest-database",
+                oldPath: "FrontOffice/Guests.aspx",
             },
 
             // {
@@ -318,14 +322,17 @@ const sidebarConfig = [
             {
                 title: "групп захиалгын жагсаалт",
                 path: "/group-operation/group-reservations-list",
+                oldPath: "FrontOffice/GroupReservations.aspx",
             },
             {
                 title: "байрлаж буй групп",
                 path: "/group-operation/in-house-group",
+                oldPath: "FrontOffice/GroupInHouse.aspx",
             },
             {
                 title: "гарсан групп",
                 path: "/group-operation/departed-group",
+                oldPath: "FrontOffice/GroupDeparted.aspx",
             },
         ],
     },
@@ -333,6 +340,7 @@ const sidebarConfig = [
         title: "календар",
         path: "/handsontable",
         icon: getIcon(calendarFill),
+        oldPath: "FrontOffice/StayView.aspx",
     },
     {
         title: "тариф",
@@ -341,22 +349,27 @@ const sidebarConfig = [
             {
                 title: "улирал",
                 path: "/rate/season",
+                oldPath: "Configuration/Seasons.aspx",
             },
             {
                 title: "тарифын төрөл",
                 path: "/rate/type",
+                oldPath: "Configuration/RateType.aspx",
             },
             {
                 title: "тариф",
                 path: "/rate",
+                oldPath: "Configuration/Rates.aspx",
             },
             {
                 title: "нэмэлт үйлчилгээ грүпп",
                 path: "/rate/extra-charge-group",
+                oldPath: "Configuration/ExtraChargeGroup.aspx",
             },
             {
                 title: "нэмэлт үйлчилгээ",
                 path: "/rate/extra-charge",
+                oldPath: "Configuration/ExtraCharges.aspx",
             },
             // {
             //     title: "inclusion",
@@ -371,10 +384,12 @@ const sidebarConfig = [
             {
                 title: "өрөөний онцлог",
                 path: "/room/amenities",
+                oldPath: "Configuration/Amenities.aspx",
             },
             {
                 title: "өрөөний төлөв",
                 path: "/room/status",
+                oldPath: "Configuration/RoomStatus.aspx",
             },
             // {
             //     title: "хаалганы цоож",
@@ -383,10 +398,12 @@ const sidebarConfig = [
             {
                 title: "өрөөний төрөл",
                 path: "/room/type",
+                oldPath: "Configuration/RoomType.aspx",
             },
             {
                 title: "өрөө",
                 path: "/room",
+                oldPath: "Configuration/Rooms.aspx",
             },
         ],
     },
@@ -397,22 +414,27 @@ const sidebarConfig = [
             {
                 title: "байгууллага",
                 path: "/payment/company-database",
+                oldPath: "FrontOffice/Customer.aspx",
             },
             {
                 title: "касс (бэлэн мөнгө)",
                 path: "/payment/cashier",
+                oldPath: "FrontOffice/Cashier.aspx",
             },
             {
                 title: "валютын ханш",
                 path: "/payment/exchange-rate",
+                oldPath: "FrontOffice/CurrencyRate.aspx",
             },
             {
                 title: "татвар",
                 path: "/rate/tax",
+                oldPath: "Configuration/Taxes.aspx",
             },
             {
                 title: "төлбөрийн хэлбэр",
                 path: "/rate/payment-method",
+                oldPath: "Configuration/PaymentMethod.aspx",
             },
         ],
     },
@@ -423,95 +445,118 @@ const sidebarConfig = [
             {
                 title: "боломжит өрөө",
                 path: "/report/available-room",
+                oldPath: "~/Report/ReportAvailableRooms.aspx",
             },
             {
                 title: "баланс",
                 path: "/report/balance",
+                oldPath: "~/Report/ReportBalance.aspx",
             },
             {
                 title: "өглөөний цай",
                 path: "/report/breakfast",
+                oldPath: "~/Report/ReportBreakfast.aspx",
             },
             {
                 title: "гарах зочид (өдөр тутам)",
                 path: "/report/daily/checked-out",
+                oldPath: "~/Report/ReportCheckedOutDetailed.aspx",
             },
             {
                 title: "устгалын тайлбар (өдөр тутам)",
                 path: "/report/daily/deleted-reservations",
+                oldPath: "~/Report/ReportVoidReservation.aspx",
             },
             {
                 title: "нэмэлт төлбөр (өдөр тутам)",
                 path: "/report/daily/extra-charge",
+                oldPath: "~/Report/ReportExtraChargeDetail.aspx",
             },
             {
                 title: "Төлбөрийн тайлан (өдөр тутам)",
                 path: "/report/daily/payment",
+                oldPath: "",
             },
             {
                 title: "өрөөний төлбөр (өдөр тутам)",
                 path: "/report/daily/room-charge",
+                oldPath: "",
             },
             {
                 title: "устгалын тайлан",
                 path: "/report/deleted-reservations",
+                oldPath: "",
             },
             {
                 title: "нэмэлт төлбөрийн (дэлгэрэнгүй)",
                 path: "/report/extra-charge/detailed",
+                oldPath: "",
             },
             {
                 title: "нэмэлт төлбөр (хураангуй)",
                 path: "/report/extra-charge/summary",
+                oldPath: "",
             },
             {
                 title: "байгууллага хоорондын тооцоо",
                 path: "/report/interagency",
+                oldPath: "",
             },
             {
                 title: "сарын тайлан",
                 path: "/report/monthly",
+                oldPath: "",
             },
             {
                 title: "сарын тайлан (орлогоор)",
                 path: "/report/monthly-revenue",
+                oldPath: "",
             },
             {
                 title: "ресепшний буух зочдын тайлан",
                 path: "/report/reception/checked-in",
+                oldPath: "",
             },
             {
                 title: "ресепшний гарах зочдын тайлан",
                 path: "/report/reception/checked-out",
+                oldPath: "",
             },
             {
                 title: "ресепшний устгалын тайлан",
                 path: "/report/reception/deleted-reservations",
+                oldPath: "",
             },
             {
                 title: "ресепшний хугацаа дуусах, үлдэх тайлан",
                 path: "/report/reception/dueout-stayover",
+                oldPath: "",
             },
             {
                 title: "ресепшний нэмэлт төлбөрийн тайлан",
                 path: "/report/reception/extra-charge",
+                oldPath: "",
             },
             {
                 title: "ресепшний төлбөрийн тайлан",
                 path: "/report/reception/payment",
+                oldPath: "",
             },
             {
                 title: "ресепшний өрөөний төлбөр",
                 path: "/report/reception/room-charge",
+                oldPath: "",
             },
             {
                 title: "захиалгын тайлан",
                 path: "/report/reservations",
+                oldPath: "",
             },
 
             {
                 title: "stayview",
                 path: "/report/stayview",
+                oldPath: "",
             },
         ],
     },
@@ -522,26 +567,32 @@ const sidebarConfig = [
             {
                 title: "зочид буудлын мэдээлэл",
                 path: "/conf/hotel-information",
+                oldPath: "",
             },
             {
                 title: "э-шуудан тохиргоо",
                 path: "/conf/email",
+                oldPath: "",
             },
             {
                 title: "хэрэглэгчийн төрөл",
                 path: "/conf/user-role",
+                oldPath: "",
             },
             {
                 title: "хэрэглэгч",
                 path: "/conf/user",
+                oldPath: "",
             },
             {
                 title: "шалтгаан",
                 path: "/conf/reason",
+                oldPath: "",
             },
             {
                 title: "захиалгын эх сурвалж",
                 path: "/conf/reservation-source",
+                oldPath: "",
             },
             // {
             //     title: "pos api тохиргоо",
@@ -550,35 +601,43 @@ const sidebarConfig = [
             {
                 title: "вип төлөв",
                 path: "/conf/vip-status",
+                oldPath: "",
             },
             {
                 title: "харилцагчийн бүлэг",
                 path: "/conf/customer-group",
+                oldPath: "",
             },
             {
                 title: "зочид буудлын тохиргоо",
                 path: "/conf/hotel-setting",
+                oldPath: "",
             },
             {
                 title: "notification",
                 path: "/conf/notification",
+                oldPath: "",
             },
 
             {
                 title: "урамшуулал",
                 path: "/conf/promotion",
+                oldPath: "",
             },
             {
                 title: "багц",
                 path: "/conf/package",
+                oldPath: "",
             },
             {
                 title: "мини бар бүлэг",
                 path: "/mini-bar/group",
+                oldPath: "",
             },
             {
                 title: "мини бар бараа",
                 path: "/mini-bar/item",
+                oldPath: "",
             },
         ],
     },
@@ -589,18 +648,22 @@ const sidebarConfig = [
             {
                 title: "house keeping",
                 path: "/room-service/house-keeping",
+                oldPath: "",
             },
             {
                 title: "өрөөний төлөв",
                 path: "/room-service/house-status",
+                oldPath: "",
             },
             {
                 title: "ажлын даалгавар",
                 path: "/room-service/work-order",
+                oldPath: "",
             },
             {
                 title: "өрөө блоклох",
                 path: "/room-service/room-block",
+                oldPath: "",
             },
         ],
     },

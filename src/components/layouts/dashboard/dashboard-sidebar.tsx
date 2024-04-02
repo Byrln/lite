@@ -40,6 +40,7 @@ const AccountStyle = styled("div")(({ theme }: any) => ({
 export default function DashboardSidebar({
     isOpenSidebar,
     onCloseSidebar,
+    sideBarData,
 }: any) {
     const router = useRouter();
     const { data: session } = useSession();
@@ -101,7 +102,8 @@ export default function DashboardSidebar({
                 </Link>
             </Box> */}
 
-            <NavSection navConfig={sidebarConfig} />
+            {sideBarData ? <NavSection navConfig={sideBarData} /> : <></>}
+            {/* <NavSection navConfig={sidebarConfig} /> */}
 
             <Box sx={{ flexGrow: 1 }} />
 

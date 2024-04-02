@@ -203,6 +203,7 @@ const NewEdit = ({
     const customSubmit = async (values: any) => {
         try {
             let tempValues = { ...values };
+            console.log("values", values);
             tempValues.TransactionDetail[0].PayAmount = values.PayAmount;
             tempValues.TransactionDetail[0].PayCurrencyID =
                 values.PayCurrencyID;
@@ -327,7 +328,7 @@ const NewEdit = ({
                                             minDate={new Date(workingDate)}
                                             onChange={(value) => (
                                                 onChange(
-                                                    moment(value, "YYYY-MM-DD")
+                                                    // moment(value, "YYYY-MM-DD")
 
                                                     // moment(
                                                     //     dateStringToObj(
@@ -339,9 +340,12 @@ const NewEdit = ({
                                                     //     ),
                                                     //     "YYYY-MM-DD"
                                                     // )
+                                                    moment(value).format(
+                                                        "YYYY-MM-DD"
+                                                    )
                                                 ),
                                                 setArrivalDate(
-                                                    moment(value, "YYYY-MM-DD")
+                                                    // moment(value, "YYYY-MM-DD")
 
                                                     // moment(
                                                     //     dateStringToObj(
@@ -353,6 +357,9 @@ const NewEdit = ({
                                                     //     ),
                                                     //     "YYYY-MM-DD"
                                                     // ).format("YYYY-MM-DD")
+                                                    moment(value).format(
+                                                        "YYYY-MM-DD"
+                                                    )
                                                 )
                                             )}
                                             renderInput={(params) => (
@@ -405,9 +412,12 @@ const NewEdit = ({
                                         <DatePicker
                                             label="Гарах огноо"
                                             value={value}
-                                            minDate={new Date(workingDate)}
+                                            minDate={new Date(ArrivalDate)}
                                             onChange={(value) => (
                                                 onChange(
+                                                    moment(value).format(
+                                                        "YYYY-MM-DD"
+                                                    )
                                                     // moment(
                                                     //     dateStringToObj(
                                                     //         moment(
@@ -418,10 +428,10 @@ const NewEdit = ({
                                                     //     ),
                                                     //     "YYYY-MM-DD"
                                                     // )
-                                                    moment(value, "YYYY-MM-DD")
+                                                    // moment(value, "YYYY-MM-DD")
                                                 ),
                                                 setDepartureDate(
-                                                    moment(value, "YYYY-MM-DD")
+                                                    // moment(value, "YYYY-MM-DD")
                                                     // moment(
                                                     //     dateStringToObj(
                                                     //         moment(
@@ -432,6 +442,9 @@ const NewEdit = ({
                                                     //     ),
                                                     //     "YYYY-MM-DD"
                                                     // ).format("YYYY-MM-DD")
+                                                    moment(value).format(
+                                                        "YYYY-MM-DD"
+                                                    )
                                                 )
                                             )}
                                             renderInput={(params) => (

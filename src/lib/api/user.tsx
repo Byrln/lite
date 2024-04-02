@@ -20,6 +20,15 @@ export const UserSWR = (search: any) => {
     return useSWR(listUrl, fetcher);
 };
 
+export const GetPrivilegesSWR = () => {
+    const fetcher = async (url: any) =>
+        await axios
+            .get(`${urlPrefix}/GetPrivileges`)
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(listUrl, fetcher);
+};
+
 export const UserByRoleSWR = (search: any) => {
     if (!search.UserID) {
         search.UserID = null;

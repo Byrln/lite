@@ -116,7 +116,6 @@ const ReportingList = ({ title, workingDate }: any) => {
                 } else {
                     setCustomerName("Бүгд");
                 }
-                console.log("customerTempData", customerTempData);
             } else {
                 if (search.CustomerID == "0") {
                     setCustomerName("N/A");
