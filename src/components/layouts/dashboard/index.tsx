@@ -83,7 +83,7 @@ export default function DashboardLayout({ children }: any) {
             <DashboardSidebar
                 isOpenSidebar={open}
                 onCloseSidebar={() => setOpen(false)}
-                sideBarData={sideBarData}
+                sideBarData={sidebarConfig}
             />
             <MainStyle>{children}</MainStyle>
         </RootStyle>

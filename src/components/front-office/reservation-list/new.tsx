@@ -42,6 +42,7 @@ import CustomerGroupSelect from "components/select/customer-group";
 import CustomerSelect from "components/select/customer";
 import AvailableRoomTypes from "./available-room-types";
 import ColorPicker from "components/select/color";
+import { RateTypeSWR } from "lib/api/rate-type";
 
 const validationSchema = yup.object().shape({
     DeparturedListName: yup.string().notRequired(),
@@ -65,6 +66,7 @@ const NewEdit = ({
     );
     const [ArrivalTime, setArrivalTime]: any = useState("14:00");
     const [DepartureTime, setDepartureTime]: any = useState("12:00");
+    const { data: rateTypeData, error: rateTypeError } = RateTypeSWR({});
 
     console.log("ArrivalTime", ArrivalTime);
 
@@ -818,6 +820,7 @@ const NewEdit = ({
                                     DepartureDate={DepartureDate}
                                     setDepartureDate={setDepartureDate}
                                     CustomerID={CustomerID}
+                                    rateTypeData={rateTypeData}
                                 />
 
                                 {/* <Tooltip title="Remove">

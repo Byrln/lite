@@ -49,7 +49,6 @@ const RoomRateTypeSelect = ({
                 break;
             }
         }
-        console.log("rateraterateraterate", rate);
 
         if (rate) {
             setRate(rate);
@@ -61,7 +60,7 @@ const RoomRateTypeSelect = ({
             }
         }
     };
-    console.log("data", data);
+
     return (
         <TextField
             fullWidth

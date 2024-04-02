@@ -42,6 +42,10 @@ const CurrencyAmount = ({
     const [defaultCurrencyAmount, setDefaultCurrencyAmount]: any = useState();
 
     const calculateAmount = async () => {
+        console.log("id", id);
+        console.log("ContractRate", ContractRate);
+        console.log("CustomerID", CustomerID);
+
         if (!(RoomTypeID && RateTypeID && ArrivalDate)) {
             return;
         }
@@ -105,6 +109,7 @@ const CurrencyAmount = ({
         selectedAdult,
         selectedChild,
         CustomerID,
+        ContractRate,
     ]);
 
     const newCurrencyAmount = async () => {

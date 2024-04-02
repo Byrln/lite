@@ -46,6 +46,7 @@ const NewEdit = ({
     DepartureDate,
     setDepartureDate,
     CustomerID,
+    rateTypeData,
 }: any) => {
     const [RoomTypeID, setRoomTypeID]: any = useState("");
     const [RoomType, setRoomType]: any = useState("");
@@ -87,11 +88,33 @@ const NewEdit = ({
             }
 
             if (getValues(`TransactionDetail[${id}].RateTypeID`)) {
-                setRate({
-                    RateTypeID: Number(
-                        getValues(`TransactionDetail[${id}].RateTypeID`)
-                    ),
-                });
+                var rate = null;
+                if (rateTypeData) {
+                    for (var r of rateTypeData) {
+                        if (
+                            r.RateTypeID ===
+                            getValues(`TransactionDetail[${id}].RateTypeID`)
+                        ) {
+                            rate = r;
+                            break;
+                        }
+                    }
+                    if (rate) {
+                        setRate(rate);
+                        if (rate.BreakfastIncluded && setBreakfastIncluded) {
+                            setBreakfastIncluded(rate.BreakfastIncluded);
+                        }
+                        if (rate.TaxIncluded && setTaxIncluded) {
+                            setTaxIncluded(rate.TaxIncluded);
+                        }
+                    }
+                }
+
+                // setRate({
+                //     RateTypeID: Number(
+                //         getValues(`TransactionDetail[${id}].RateTypeID`)
+                //     ),
+                // });
             }
             if (getValues(`TransactionDetail[${id}].CurrencyAmount`)) {
                 setCurrencyAmount(
