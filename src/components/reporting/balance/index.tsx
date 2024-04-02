@@ -22,6 +22,7 @@ import { ReportBalanceSWR, balanceUrl } from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
 import { formatPrice } from "lib/utils/helpers";
 import CustomSearch from "components/common/custom-search";
+import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
 
 const ReportingList = ({ title, workingDate }: any) => {
@@ -31,6 +32,8 @@ const ReportingList = ({ title, workingDate }: any) => {
     const [ArrivalTime, setArrivalTime]: any = useState("00:00");
     const [DepartureTime, setDepartureTime]: any = useState("23:59");
     const [rerenderKey, setRerenderKey] = useState(0);
+    const { data: customerData, error: customerError } = CustomerSWR(0);
+    const [customerName, setCustomerName]: any = useState("Бүгд");
 
     const [search, setSearch] = useState({
         StartDate: moment(dateStringToObj(workingDate)).startOf("day"),
@@ -39,6 +42,7 @@ const ReportingList = ({ title, workingDate }: any) => {
             .startOf("day"),
         StartTime: "00:00",
         EndTime: "23:59",
+        CustomerID: null,
     });
 
     const { data, error } = ReportBalanceSWR(search, workingDate);
@@ -98,6 +102,28 @@ const ReportingList = ({ title, workingDate }: any) => {
             }
             setTotalBalance(tempTotal);
             setRerenderKey((prevKey) => prevKey + 1);
+            if (
+                search &&
+                search.CustomerID &&
+                search.CustomerID != "" &&
+                search.CustomerID != "0"
+            ) {
+                let customerTempData = customerData.filter(
+                    (element: any) => element.CustomerID == search.CustomerID
+                );
+                if (customerTempData.length > 0) {
+                    setCustomerName(customerTempData[0].CustomerName);
+                } else {
+                    setCustomerName("Бүгд");
+                }
+                console.log("customerTempData", customerTempData);
+            } else {
+                if (search.CustomerID == "0") {
+                    setCustomerName("N/A");
+                } else {
+                    setCustomerName("Бүгд");
+                }
+            }
         }
     }, [data]);
 
@@ -116,6 +142,7 @@ const ReportingList = ({ title, workingDate }: any) => {
         },
         resolver: yupResolver(validationSchema),
     };
+
     const {
         reset,
         register,
@@ -123,7 +150,7 @@ const ReportingList = ({ title, workingDate }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
-
+    console.log("reportData", reportData && Object.keys(reportData).length);
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -214,7 +241,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                                 {" "}
                                 Харилцагч :{" "}
                             </span>{" "}
-                            Бүгд
+                            {customerName}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
