@@ -14,7 +14,7 @@ import ReservationEdit from "components/front-office/reservation-list/edit";
 import { ReservationAPI } from "lib/api/reservation";
 import { ModalContext } from "lib/context/modal";
 
-const CheckOut = ({ id, TransactionID, listUrl }: any) => {
+const CheckOut = ({ id, TransactionID, listUrl, buttonVariant }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -53,7 +53,7 @@ const CheckOut = ({ id, TransactionID, listUrl }: any) => {
 
     return (
         <>
-            <Button key={id} onClick={handleClickOpen}>
+            <Button key={id} onClick={handleClickOpen} variant={buttonVariant}>
                 Зочин гаргах
             </Button>
             <Dialog

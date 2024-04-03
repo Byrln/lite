@@ -26,6 +26,7 @@ import RoomMoveForm from "components/reservation/room-move";
 import RoomAssign from "components/reservation/room-assign";
 import AuditTrail from "components/reservation/audit-trail";
 import ExtraCharge from "components/reservation/extra-charge";
+import Checkout from "components/front-office/night-audit/PendingDueOut/additional-actions/checkout";
 
 import { listUrl } from "lib/api/front-office";
 
@@ -247,6 +248,15 @@ const ReservationNav = ({
                 >
                     Void Transaction
                 </Button>
+            )}
+
+            {reservation.CheckOut && (
+                <Checkout
+                    key={`checkout-${reservation.TransactionID}`}
+                    TransactionID={reservation.TransactionID}
+                    listUrl={additionalMutateUrl}
+                    buttonVariant="text"
+                />
             )}
             {reservation.Cancel && (
                 <Button

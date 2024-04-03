@@ -136,3 +136,7 @@ td.color-FF66FF {
 
 @media print {
 }
+
+.MuiButton-root {
+    color: #804fe6 !important;
+}
