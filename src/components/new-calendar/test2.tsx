@@ -400,7 +400,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     info.resource._resource.extendedProps.MaxChild
                 ),
             };
-            handleCashierOpen();
+            cashierActive &&
+                cashierActive[0] &&
+                cashierActive[0].IsActive == false &&
+                handleCashierOpen();
 
             if (newEventObject.roomID) {
                 handleModal(
