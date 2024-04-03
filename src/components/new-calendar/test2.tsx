@@ -26,6 +26,7 @@ import {
 import { format } from "date-fns";
 import { toast } from "react-toastify";
 import InfoIcon from "@mui/icons-material/Info";
+import { useRouter } from "next/router";
 
 import { RoomTypeSWR } from "../../lib/api/room-type";
 import { RoomSWR } from "lib/api/room";
@@ -44,6 +45,7 @@ import AmendStayForm from "components/reservation/amend-stay";
 import { CashierSessionActiveSWR } from "lib/api/cashier-session";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
+    const router = useRouter();
     const [state, dispatch]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
     const [dayCount, setDayCount] = useState(15);
@@ -429,8 +431,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         setCashierOpen(true);
     };
 
-    const handleCashierClose = () => {
+    const handleCashierClose = async () => {
+        handleModal();
         setCashierOpen(false);
+        router.replace("/payment/cashier");
     };
 
     return (

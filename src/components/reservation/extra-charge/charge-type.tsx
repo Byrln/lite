@@ -3,20 +3,25 @@ import { useState, useEffect } from "react";
 
 import { listUrl } from "lib/api/front-office";
 import { formatNumber } from "lib/utils/helpers";
-import { ChargeTypeSWR } from "lib/api/charge-type";
+import { ChargeTypeAPI } from "lib/api/charge-type";
 import CustomTable from "components/common/custom-table";
 
-const ExtraCharge = ({ additionalMutateUrl, entity, setEntity }: any) => {
+const ExtraCharge = ({ entity, setEntity }: any) => {
     const [rerenderKey, setRerenderKey] = useState(0);
 
-    const { data, error } = ChargeTypeSWR({});
+    const fetchDatas = async () => {
+        try {
+            const arr: any = await ChargeTypeAPI.list({ IsExtraCharge: true });
+            if (arr) {
+                setEntity(arr);
+            }
+        } finally {
+        }
+    };
 
     useEffect(() => {
-        setEntity(null);
-        if (data) {
-            setEntity(data);
-        }
-    }, [data]);
+        fetchDatas();
+    }, []);
 
     const onCheckboxChange = (e: any) => {
         let tempEntity = [...entity];
@@ -193,17 +198,15 @@ const ExtraCharge = ({ additionalMutateUrl, entity, setEntity }: any) => {
     return (
         <CustomTable
             columns={columns}
-            data={data}
-            error={error}
-            hasNew={true}
-            //hasUpdate={true}
-            //hasDelete={true}
+            data={entity}
+            hasNew={false}
             id="RoomChargeTypeID"
             listUrl={listUrl}
             excelName="Нэмэлт төлбөр"
             datagrid={false}
             hasPrint={false}
             hasExcel={false}
+            customHeight="none"
         />
     );
 };

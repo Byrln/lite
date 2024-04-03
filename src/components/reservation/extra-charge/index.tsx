@@ -24,6 +24,8 @@ const ExtraCharge = ({
 
     const validationSchema = yup.object().shape({});
     const formOptions = { resolver: yupResolver(validationSchema) };
+    console.log("chargeTypes", chargeTypes);
+    console.log("paymentMethods", paymentMethods);
 
     const {
         register,
@@ -129,12 +131,18 @@ const ExtraCharge = ({
                     TransactionID={transactionInfo.TransactionID}
                     resetField={resetField}
                 />
+                <br />
+                <br />
                 <ChargeType
                     additionalMutateUrl={additionalMutateUrl}
                     entity={chargeTypes}
                     setEntity={setChargeTypes}
                 />
+                <br />
+                <br />
                 Төлбөр
+                <br />
+                <br />
                 <PaymentMethod
                     additionalMutateUrl={additionalMutateUrl}
                     entity={paymentMethods}

@@ -13,10 +13,10 @@ export const FolioItemSWR = (FolioID: any) => {
 
     return useSWR(`${urlPrefix}/Items`, fetcher);
 };
-export const FolioItemEditSWR = ({FolioID, CurrID}:any) => {
+export const FolioItemEditSWR = ({ FolioID, CurrID }: any) => {
     const fetcher = async (url: any) =>
         await axios
-            .post(`${urlPrefix}/Items`, { FolioID:FolioID, CurrID:CurrID })
+            .post(`${urlPrefix}/Items`, { FolioID: FolioID, CurrID: CurrID })
             .then((res: any) => res.data.JsonData);
 
     return useSWR(`${urlPrefix}/Items`, fetcher);
@@ -98,11 +98,11 @@ export const FolioAPI = {
 
         return res.data.JsonData;
     },
-    edits: async (FolioID: any, CurrID:any, TypeID: any) => {
+    edits: async (FolioID: any, CurrID: any, TypeID: any) => {
         const res = await axios.post(`${urlPrefix}/Items`, {
             FolioID: FolioID,
             CurrID: CurrID,
-            TypeID: TypeID
+            TypeID: TypeID,
         });
 
         return res.data.JsonData;
@@ -145,7 +145,10 @@ export const FolioAPI = {
     },
 
     VoidItem: async (values: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/VoidItem`, values);
+        const { data, status } = await axios.post(
+            `${urlPrefix}/VoidItem`,
+            values
+        );
 
         return {
             data,

@@ -124,4 +124,11 @@ export const ChargeTypeAPI = {
             status,
         };
     },
+
+    list: async (values: any) => {
+        values = Object.assign(values, values);
+
+        const res = await axios.post(listUrl, values);
+        return res.data.JsonData;
+    },
 };

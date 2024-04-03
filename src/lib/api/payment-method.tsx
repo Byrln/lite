@@ -31,6 +31,12 @@ export const PaymentMethodAPI = {
         return res.data.JsonData;
     },
 
+    list: async (values: any) => {
+        const res = await axios.post(listUrl, values);
+
+        return res.data.JsonData;
+    },
+
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 

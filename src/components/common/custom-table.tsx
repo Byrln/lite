@@ -53,6 +53,7 @@ const CustomTable = ({
     additionalButtons,
     rowColor,
     functionAfterSubmit,
+    customHeight,
 }: any) => {
     const [state, dispatch]: any = useAppState();
     const [height, setHeight] = useState<any>(null);
@@ -388,7 +389,11 @@ const CustomTable = ({
                         ) : (
                             <TableContainer
                                 component={Paper}
-                                sx={{ maxHeight: height }}
+                                sx={{
+                                    maxHeight: customHeight
+                                        ? customHeight
+                                        : height,
+                                }}
                             >
                                 <Table size="small" stickyHeader>
                                     <TableHead>

@@ -114,6 +114,7 @@ const TransactionEdit = () => {
 
     const handleCashierClose = () => {
         setCashierOpen(false);
+        router.replace("/payment/cashier");
     };
 
     return (

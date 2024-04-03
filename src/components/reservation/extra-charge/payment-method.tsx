@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { listUrl } from "lib/api/front-office";
 
 import { formatNumber } from "lib/utils/helpers";
-import { PaymentMethodSWR } from "lib/api/payment-method";
+import { PaymentMethodAPI } from "lib/api/payment-method";
 import CustomTable from "components/common/custom-table";
 import CurrencySelect from "components/select/currency";
 
@@ -16,13 +16,19 @@ const PaymentMethod = ({
 }: any) => {
     const [rerenderKey, setRerenderKey] = useState(0);
 
-    const { data, error } = PaymentMethodSWR();
+    const fetchDatas = async () => {
+        try {
+            const arr: any = await PaymentMethodAPI.list({});
+            if (arr) {
+                setEntity(arr);
+            }
+        } finally {
+        }
+    };
 
     useEffect(() => {
-        if (data) {
-            setEntity(data);
-        }
-    }, [data]);
+        fetchDatas();
+    }, []);
 
     const onCheckboxChange = (e: any) => {
         let tempEntity = [...entity];
@@ -160,9 +166,8 @@ const PaymentMethod = ({
     return (
         <CustomTable
             columns={columns}
-            data={data}
-            error={error}
-            hasNew={true}
+            data={entity}
+            hasNew={false}
             //hasUpdate={true}
             //hasDelete={true}
             id="PaymentMethodID"
@@ -170,6 +175,7 @@ const PaymentMethod = ({
             datagrid={false}
             hasPrint={false}
             hasExcel={false}
+            customHeight="none"
         />
     );
 };

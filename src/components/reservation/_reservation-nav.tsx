@@ -168,7 +168,9 @@ const ReservationNav = ({
                                 transactionInfo={reservation}
                                 reservation={reservation}
                                 additionalMutateUrl={additionalMutateUrl}
-                            />
+                            />,
+                            null,
+                            "large"
                         );
                     }}
                 >
