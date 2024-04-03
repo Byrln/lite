@@ -6,12 +6,20 @@ const urlPrefix = "/api/CashierSession";
 export const listUrl = `${urlPrefix}/List`;
 export const detailUrl = `${urlPrefix}/Detail`;
 export const summaryUrl = `${urlPrefix}/Summary`;
+export const activeUrl = `${urlPrefix}/Active`;
 
 export const CashierSessionListSWR = () => {
     const fetcher = async (url: any) =>
         await axios.post(url).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
+};
+
+export const CashierSessionActiveSWR = () => {
+    const fetcher = async (url: any) =>
+        await axios.get(url).then((res: any) => res.data.JsonData);
+
+    return useSWR(activeUrl, fetcher);
 };
 
 export const CashierSessionSummarySWR = (id: any) => {

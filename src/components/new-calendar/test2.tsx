@@ -17,9 +17,15 @@ import {
     Box,
     Button,
     Typography,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    Stack,
 } from "@mui/material";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
+import InfoIcon from "@mui/icons-material/Info";
 
 import { RoomTypeSWR } from "../../lib/api/room-type";
 import { RoomSWR } from "lib/api/room";
@@ -35,6 +41,7 @@ import CustomSearch from "components/common/custom-search";
 import ReservationEdit from "components/front-office/reservation-list/edit";
 import RoomMoveForm from "components/reservation/room-move";
 import AmendStayForm from "components/reservation/amend-stay";
+import { CashierSessionActiveSWR } from "lib/api/cashier-session";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [state, dispatch]: any = useAppState();
@@ -93,6 +100,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         RoomTypeID: searchRoomTypeID,
     });
     const { data: rooms, error: roomSwrError } = RoomSWR({});
+    const { data: cashierActive, error: cashierActiveError } =
+        CashierSessionActiveSWR();
+
     const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR({
         //@ts-ignore
         StartDate: dateToCustomFormat(timeStart, "yyyy MMM dd"),
@@ -239,6 +249,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleEventClick = (info: any) => {
         if (info.event._instance.range.end > new Date(workingDate)) {
+            cashierActive &&
+                cashierActive[0] &&
+                cashierActive[0].IsActive == false &&
+                handleCashierOpen();
             handleModal(
                 true,
                 `Захиалга`,
@@ -409,6 +423,16 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         }
     };
 
+    const [cashierOpen, setCashierOpen] = useState(false);
+
+    const handleCashierOpen = () => {
+        setCashierOpen(true);
+    };
+
+    const handleCashierClose = () => {
+        setCashierOpen(false);
+    };
+
     return (
         timeStart && (
             <>
@@ -417,6 +441,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         variant="contained"
                         className="mr-3"
                         onClick={() => {
+                            cashierActive &&
+                                cashierActive[0] &&
+                                cashierActive[0].IsActive == false &&
+                                handleCashierOpen();
                             handleModal(
                                 true,
                                 `Захиалга нэмэх`,
@@ -574,6 +602,36 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         }}
                     />
                 )}
+
+                <Dialog
+                    open={cashierOpen}
+                    onClose={handleCashierClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    {/*<DialogTitle id="alert-dialog-title" className=""></DialogTitle>*/}
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            <Stack direction="column" gap={1}>
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    gap={1}
+                                >
+                                    <InfoIcon />
+                                    <Typography variant="h6">
+                                        Ээлж эхлүүлнэ үү!
+                                    </Typography>
+                                </Stack>
+                            </Stack>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCashierClose} autoFocus>
+                            ОК
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </>
         )
     );

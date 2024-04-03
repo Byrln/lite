@@ -13,7 +13,14 @@ import {
     Card,
     CardContent,
     Divider,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    Stack,
+    Button,
 } from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
 
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import { ReservationAPI } from "lib/api/reservation";
@@ -27,6 +34,8 @@ import FolioSummary from "components/transaction/group/folio-summary";
 import FolioDetail from "components/transaction/group/folio-detail";
 import RemarkList from "components/reservation/remark/list";
 import RoomList from "components/transaction/group/room";
+import { CashierSessionActiveSWR } from "lib/api/cashier-session";
+
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -60,6 +69,8 @@ const TransactionEdit = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+    const { data: cashierActive, error: cashierActiveError } =
+        CashierSessionActiveSWR();
 
     function a11yProps(index: number) {
         return {
@@ -84,7 +95,27 @@ const TransactionEdit = () => {
 
         fetchDatas();
     }, [router]);
-    console.log("transaction", transaction);
+
+    const [cashierOpen, setCashierOpen] = useState(false);
+
+    useEffect(() => {
+        if (
+            cashierActive &&
+            cashierActive[0] &&
+            cashierActive[0].IsActive == false
+        ) {
+            setCashierOpen(true);
+        }
+    }, [cashierActive]);
+
+    const handleCashierOpen = () => {
+        setCashierOpen(true);
+    };
+
+    const handleCashierClose = () => {
+        setCashierOpen(false);
+    };
+
     return (
         <>
             <Container maxWidth="xl">
@@ -141,9 +172,7 @@ const TransactionEdit = () => {
                                 </Paper>
                             </Box> */}
                         </Box>
-
                         <Divider className="mb-3" />
-
                         <Grid container spacing={2} className="mb-3">
                             <Grid item xs={12} sm={4}>
                                 <Card>
@@ -215,9 +244,7 @@ const TransactionEdit = () => {
                                 </Card>
                             </Grid>
                         </Grid>
-
                         <Divider className="mb-3" />
-
                         <Box sx={{ width: "100%" }}>
                             <Box
                                 sx={{ borderBottom: 1, borderColor: "divider" }}
@@ -306,6 +333,36 @@ const TransactionEdit = () => {
                                 />
                             </TabPanel>
                         </Box>
+                        <Dialog
+                            open={cashierOpen}
+                            onClose={handleCashierClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            {/*<DialogTitle id="alert-dialog-title" className=""></DialogTitle>*/}
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    <Stack direction="column" gap={1}>
+                                        <Stack
+                                            direction="row"
+                                            alignItems="center"
+                                            gap={1}
+                                        >
+                                            <InfoIcon />
+                                            <Typography variant="h6">
+                                                Ээлж эхлүүлнэ үү!
+                                            </Typography>
+                                        </Stack>
+                                    </Stack>
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleCashierClose} autoFocus>
+                                    ОК
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                        aa
                     </>
                 ) : (
                     ""

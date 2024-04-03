@@ -16,8 +16,14 @@ import {
     Button,
     Menu,
     MenuItem,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    Stack,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import InfoIcon from "@mui/icons-material/Info";
 
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import { TransactionSWR, TransactionAPI, listUrl } from "lib/api/transaction";
@@ -37,6 +43,7 @@ import CustomerReplace from "./customer-replace";
 
 import { useAppState } from "lib/context/app";
 import { ModalContext } from "lib/context/modal";
+import { CashierSessionActiveSWR } from "lib/api/cashier-session";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -68,6 +75,8 @@ const TransactionEdit = () => {
     const router = useRouter();
 
     const { data, error } = TransactionSWR(router.query.id);
+    const { data: cashierActive, error: cashierActiveError } =
+        CashierSessionActiveSWR();
 
     const [transaction, setTransaction]: any = useState(null);
     const [loading, setLoading] = useState(false);
@@ -118,6 +127,26 @@ const TransactionEdit = () => {
             setTransaction(data);
         }
     }, [data]);
+
+    const [cashierOpen, setCashierOpen] = useState(false);
+
+    useEffect(() => {
+        if (
+            cashierActive &&
+            cashierActive[0] &&
+            cashierActive[0].IsActive == false
+        ) {
+            setCashierOpen(true);
+        }
+    }, [cashierActive]);
+
+    const handleCashierOpen = () => {
+        setCashierOpen(true);
+    };
+
+    const handleCashierClose = () => {
+        setCashierOpen(false);
+    };
 
     return (
         <>
@@ -522,6 +551,35 @@ const TransactionEdit = () => {
                                 />
                             </TabPanel>
                         </Box>
+                        <Dialog
+                            open={cashierOpen}
+                            onClose={handleCashierClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            {/*<DialogTitle id="alert-dialog-title" className=""></DialogTitle>*/}
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    <Stack direction="column" gap={1}>
+                                        <Stack
+                                            direction="row"
+                                            alignItems="center"
+                                            gap={1}
+                                        >
+                                            <InfoIcon />
+                                            <Typography variant="h6">
+                                                Ээлж эхлүүлнэ үү!
+                                            </Typography>
+                                        </Stack>
+                                    </Stack>
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleCashierClose} autoFocus>
+                                    ОК
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
                     </>
                 ) : (
                     ""
