@@ -167,6 +167,7 @@ export const ReservationAPI = {
     noShow: async (TransactionID: any) => {
         const values = {
             TransactionID: TransactionID,
+            Description: " ",
         };
         const res = await axios.post(`${urlPrefix}/NoShow`, values);
     },

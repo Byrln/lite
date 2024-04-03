@@ -33,18 +33,15 @@ const RoomMoveForm = ({
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [baseStay, setBaseStay]: any = useState({
-        roomType: {
-            RoomTypeID: transactionInfo.RoomTypeID,
-        },
-        room: {
-            RoomID: transactionInfo.RoomID,
-        },
-        // rate: null,
+        roomType: null,
+        room: null,
+        rate: null,
         dateStart: new Date(transactionInfo.ArrivalDate),
         dateEnd: new Date(transactionInfo.DepartureDate),
         NewRate: 0,
         // Nights: 1,
     });
+    const [roomType, setRoomType]: any = useState(null);
 
     const [rateCondition, setRateCondition] = useState({
         overrideRate: false,
@@ -57,23 +54,14 @@ const RoomMoveForm = ({
         );
     };
 
-    const onRoomTypeChange = (rt: any) => {
-        console.log("rt", rt);
-        setBaseStay({
-            ...baseStay,
-            roomType: rt,
-        });
-
-        if (!isManualRate()) {
-            calculateAmount();
-        }
-    };
-
     const onRoomChange = (r: any) => {
         setBaseStay({
             ...baseStay,
             room: r,
         });
+        // if (!isManualRate()) {
+        //     calculateAmount();
+        // }
     };
 
     const validationSchema = yup.object().shape({
@@ -132,10 +120,11 @@ const RoomMoveForm = ({
         });
     };
 
-    const calculateAmount = async () => {
+    const calculateAmount = async (rt: any) => {
+        console.log("baseStay", baseStay);
         var values = {
-            CurrDate: dateToCustomFormat(baseStay.dateStart, "yyyy MMM dd"),
-            RoomTypeID: baseStay.roomType.RoomTypeID,
+            CurrDate: dateToCustomFormat(baseStay.dateStart, "yyyy-MM-dd"),
+            RoomTypeID: rt.RoomTypeID,
             RateTypeID: transactionInfo.RateTypeID,
             ChannelID: 0,
             SourceID: 0,
@@ -146,7 +135,7 @@ const RoomMoveForm = ({
             ContractRate: false,
             EmptyRow: false,
         };
-
+        console.log("values", values);
         try {
             var rates = await RateAPI.listByDate(values);
 
@@ -168,6 +157,19 @@ const RoomMoveForm = ({
         } catch (exp) {}
     };
 
+    const onRoomTypeChange = (rt: any) => {
+        console.log("rt", rt);
+        setBaseStay({
+            ...baseStay,
+            roomType: rt,
+        });
+        setRoomType(rt);
+
+        if (!isManualRate()) {
+            calculateAmount(rt);
+        }
+    };
+
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -186,13 +188,14 @@ const RoomMoveForm = ({
                             baseStay={baseStay}
                         />
                     </Grid>
-                    {baseStay.roomType && (
+                    {roomType && (
                         <Grid item xs={4}>
                             <RoomSelect
                                 register={register}
                                 errors={errors}
                                 baseStay={baseStay}
                                 onRoomChange={onRoomChange}
+                                roomType={roomType}
                             />
                         </Grid>
                     )}

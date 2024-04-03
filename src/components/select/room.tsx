@@ -15,6 +15,7 @@ const RoomSelect = ({
     roomAutoAssign,
     customRegisterName,
     groupIndex,
+    roomType,
 }: any) => {
     // const { data, error } = RoomSWR();
     const [data, setData]: any = useState([]);
@@ -40,12 +41,12 @@ const RoomSelect = ({
             }
         }
     };
-
+    console.log("roomSelectBaseStay", baseStay);
     const fetchRooms = async () => {
         if (
             !(
                 baseStay &&
-                baseStay.roomType &&
+                (baseStay.roomType || roomType) &&
                 baseStay.dateStart &&
                 baseStay.dateEnd
             )
@@ -54,10 +55,11 @@ const RoomSelect = ({
         }
         var values = {
             TransactionID: baseStay.TransactionID,
-            RoomTypeID:
-                baseStay.roomType?.RoomTypeID == "all"
-                    ? 0
-                    : baseStay.roomType?.RoomTypeID,
+            RoomTypeID: roomType
+                ? roomType.RoomTypeID
+                : baseStay.roomType?.RoomTypeID == "all"
+                ? 0
+                : baseStay.roomType?.RoomTypeID,
             StartDate: dateToSimpleFormat(baseStay.dateStart),
             EndDate: dateToSimpleFormat(baseStay.dateEnd),
         };
@@ -120,10 +122,16 @@ const RoomSelect = ({
         >
             {data.map((room: any) => {
                 return baseStay.roomType != "all" ? (
-                    baseStay?.roomType?.RoomTypeID === room.RoomTypeID && (
+                    roomType && roomType?.RoomTypeID === room.RoomTypeID ? (
                         <MenuItem key={room.RoomID} value={room.RoomID}>
                             {`${room.RoomFullName}`}
                         </MenuItem>
+                    ) : (
+                        baseStay?.roomType?.RoomTypeID === room.RoomTypeID && (
+                            <MenuItem key={room.RoomID} value={room.RoomID}>
+                                {`${room.RoomFullName}`}
+                            </MenuItem>
+                        )
                     )
                 ) : (
                     <MenuItem key={room.RoomID} value={room.RoomID}>

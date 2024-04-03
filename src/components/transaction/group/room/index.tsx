@@ -18,6 +18,8 @@ import { format } from "date-fns";
 
 import CustomTable from "components/common/custom-table";
 import { FolioSWR } from "lib/api/folio";
+import { TransactionInfoSWR } from "lib/api/front-office";
+import NewReservation from "components/front-office/reservation-list/new";
 import { ModalContext } from "lib/context/modal";
 import AmendStayForm from "components/reservation/amend-stay";
 import { ReservationAPI } from "lib/api/reservation";
@@ -26,8 +28,13 @@ import VoidTransactionForm from "components/reservation/void-transaction";
 import CancelReservationForm from "components/reservation/cancel-reservation";
 
 const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
+    console.log("ArrivalDate", arrivalDate);
+    console.log("departureDate", departureDate);
+
     const { handleModal }: any = useContext(ModalContext);
-    const { data, error } = FolioSWR(null, GroupID);
+    // const { data, error } = FolioSWR(null, GroupID);
+    const { data, error } = TransactionInfoSWR({ GroupID: GroupID });
+
     const [newData, setNewData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [rerenderKey, setRerenderKey] = useState(0);
@@ -59,7 +66,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                 await ReservationAPI.roomUnassign(room.TransactionID);
             }
         });
-        await mutate("/api/Folio/Details");
+        await mutate("/api/FrontOffice/TransactionInfo");
 
         let tempEntity = [...newData];
         tempEntity.forEach((element: any) => (element.isChecked = false));
@@ -73,7 +80,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             return;
         }
         var res = await ReservationAPI.roomUnassign(TransactionID);
-        await mutate("/api/Folio/Details");
+        await mutate("/api/FrontOffice/TransactionInfo");
 
         toast("Амжилттай");
     };
@@ -82,7 +89,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
         setLoading(true);
         try {
             await ReservationAPI.noShow(TransactionID);
-            await mutate("/api/Folio/Details");
+            await mutate("/api/FrontOffice/TransactionInfo");
 
             setLoading(false);
             toast("Амжилттай.");
@@ -101,7 +108,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             return;
         }
         var res = await ReservationAPI.checkIn(TransactionID);
-        await mutate("/api/Folio/Details");
+        await mutate("/api/FrontOffice/TransactionInfo");
         toast("Амжилттай");
     };
 
@@ -121,38 +128,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
 
     useEffect(() => {
         if (data) {
-            let tempData = groupByRoom(data);
-            let tempData2: any = [];
-            let i: any = 0;
-
-            if (tempData) {
-                Object.keys(tempData).forEach((entity: any, test: any) => {
-                    tempData[entity];
-                    tempData2[i] = [];
-                    tempData2[i].FolioNo = "";
-                    Object.keys(tempData[entity]).forEach(
-                        (entityChild: any) => {
-                            tempData2[i].RoomFullNo =
-                                tempData[entity][entityChild].RoomFullNo;
-                            tempData2[i].FolioNo =
-                                tempData2[i].FolioNo +
-                                tempData[entity][entityChild].FolioNo +
-                                ", ";
-                            tempData2[i].BillTo =
-                                tempData[entity][entityChild].BillTo;
-                            tempData2[i].ArrivalDate = arrivalDate;
-                            tempData2[i].DepartureDate = departureDate;
-                            tempData2[i].StatusGroup =
-                                tempData[entity][entityChild].StatusGroup;
-                            tempData2[i].TransactionID =
-                                tempData[entity][entityChild].TransactionID;
-                        }
-                    );
-                    i = i + 1;
-                });
-            }
-
-            setNewData(tempData2);
+            setNewData(data);
         }
     }, [data]);
 
@@ -213,8 +189,8 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
         },
         {
             title: "Зочны нэр",
-            key: "BillTo",
-            dataIndex: "BillTo",
+            key: "GuestName",
+            dataIndex: "GuestName",
         },
         {
             title: "Ирэх",
@@ -234,15 +210,15 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
         },
         {
             title: "Төлөв",
-            key: "StatusGroup",
-            dataIndex: "StatusGroup",
+            key: "StatusCode",
+            dataIndex: "StatusCode",
             render: function render(id: any, value: any) {
-                return value == 1
+                return value == "StatusConfirmReservation"
                     ? "Баталгаажсан захиалга"
-                    : value == 2
-                    ? "Ирсэн"
-                    : value == 0
-                    ? "Цуцалсан"
+                    : value == "StatusCancel"
+                    ? "Цуцлах"
+                    : value == "StatusVoid"
+                    ? "Устгасан"
                     : value;
             },
         },
@@ -261,133 +237,63 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                         >
                             Үйлдэл
                         </Button>
-                        <Menu
-                            id={`menu${id}`}
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                        >
-                            {element.StatusGroup == 1 && (
-                                <MenuItem
-                                    key={`checkIn${id}`}
-                                    onClick={() => {
-                                        onCheckInClick(
-                                            selectedRow.TransactionID
-                                        );
-                                        handleClose();
-                                    }}
-                                >
-                                    Зочин буулгах
-                                </MenuItem>
-                            )}
-                            <MenuItem
-                                key={`amendStay${id}`}
-                                onClick={() => {
-                                    handleModal(
-                                        true,
-                                        "Хугацаа өөрчлөх",
-                                        <AmendStayForm
-                                            transactionInfo={{
-                                                TransactionID:
-                                                    selectedRow.TransactionID,
-                                                ArrivalDate:
-                                                    selectedRow.ArrivalDate,
-                                                DepartureDate:
-                                                    selectedRow.DepartureDate,
-                                            }}
-                                            reservation={{
-                                                TransactionID:
-                                                    selectedRow.TransactionID,
-                                                ArrivalDate:
-                                                    selectedRow.ArrivalDate,
-                                                DepartureDate:
-                                                    selectedRow.DepartureDate,
-                                            }}
-                                            additionalMutateUrl={
-                                                "/api/Folio/Details"
-                                            }
-                                        />
-                                    );
-                                    handleClose();
-                                }}
+                        {selectedRow && (
+                            <Menu
+                                id={`menu${id}`}
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}
                             >
-                                Хугацаа өөрчлөх
-                            </MenuItem>
+                                {selectedRow.CheckIn && (
+                                    <MenuItem
+                                        key={`checkIn${id}`}
+                                        onClick={() => {
+                                            onCheckInClick(
+                                                selectedRow.TransactionID
+                                            );
+                                            handleClose();
+                                        }}
+                                    >
+                                        Зочин буулгах
+                                    </MenuItem>
+                                )}
 
-                            <MenuItem
-                                key={`roomMove${id}`}
-                                onClick={() => {
-                                    handleModal(
-                                        true,
-                                        "Room Move",
-                                        <RoomMoveForm
-                                            transactionInfo={{
-                                                TransactionID:
-                                                    selectedRow.TransactionID,
-                                                ArrivalDate:
-                                                    selectedRow.ArrivalDate,
-                                                DepartureDate:
-                                                    selectedRow.DepartureDate,
-                                            }}
-                                            reservation={{
-                                                TransactionID:
-                                                    selectedRow.TransactionID,
-                                                ArrivalDate:
-                                                    selectedRow.ArrivalDate,
-                                                DepartureDate:
-                                                    selectedRow.DepartureDate,
-                                            }}
-                                            additionalMutateUrl={
-                                                "/api/Folio/Details"
-                                            }
-                                        />
-                                    );
-                                    handleClose();
-                                }}
-                            >
-                                Өрөө шилжих
-                            </MenuItem>
-
-                            {element.StatusGroup == 1 && (
-                                <MenuItem
-                                    key={`roomMove${id}`}
-                                    onClick={() => {
-                                        handleClickOpenNoShow();
-                                        handleClose();
-                                    }}
-                                >
-                                    Ирээгүй
-                                </MenuItem>
-                            )}
-
-                            <MenuItem
-                                key={`voidTransaction${id}`}
-                                onClick={(evt: any) => {
-                                    handleModal(
-                                        true,
-                                        "Void Transaction",
-                                        <VoidTransactionForm
-                                            transactionInfo={{
-                                                TransactionID:
-                                                    selectedRow.TransactionID,
-                                            }}
-                                            reservation={{
-                                                TransactionID:
-                                                    selectedRow.TransactionID,
-                                            }}
-                                            customMutateUrl={
-                                                "/api/Folio/Details"
-                                            }
-                                        />
-                                    );
-                                    handleClose();
-                                }}
-                            >
-                                Устгах
-                            </MenuItem>
-
-                            {element.StatusGroup == 1 && (
-                                <>
+                                {selectedRow.AmendStay && (
+                                    <MenuItem
+                                        key={`amendStay${id}`}
+                                        onClick={() => {
+                                            handleModal(
+                                                true,
+                                                "Хугацаа өөрчлөх",
+                                                <AmendStayForm
+                                                    transactionInfo={{
+                                                        TransactionID:
+                                                            selectedRow.TransactionID,
+                                                        ArrivalDate:
+                                                            selectedRow.ArrivalDate,
+                                                        DepartureDate:
+                                                            selectedRow.DepartureDate,
+                                                    }}
+                                                    reservation={{
+                                                        TransactionID:
+                                                            selectedRow.TransactionID,
+                                                        ArrivalDate:
+                                                            selectedRow.ArrivalDate,
+                                                        DepartureDate:
+                                                            selectedRow.DepartureDate,
+                                                    }}
+                                                    additionalMutateUrl={
+                                                        "/api/FrontOffice/TransactionInfo"
+                                                    }
+                                                />
+                                            );
+                                            handleClose();
+                                        }}
+                                    >
+                                        Хугацаа өөрчлөх
+                                    </MenuItem>
+                                )}
+                                {selectedRow.Cancel && (
                                     <MenuItem
                                         key={`cancelReservation${id}`}
                                         onClick={(evt: any) => {
@@ -404,7 +310,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                                             selectedRow.TransactionID,
                                                     }}
                                                     customMutateUrl={
-                                                        "/api/Folio/Details"
+                                                        "/api/FrontOffice/TransactionInfo"
                                                     }
                                                 />
                                             );
@@ -413,7 +319,61 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                     >
                                         Захиалга цуцлах
                                     </MenuItem>
+                                )}
 
+                                {selectedRow.MoveRoom && (
+                                    <MenuItem
+                                        key={`roomMove${id}`}
+                                        onClick={() => {
+                                            handleModal(
+                                                true,
+                                                "Room Move",
+                                                <RoomMoveForm
+                                                    transactionInfo={{
+                                                        TransactionID:
+                                                            selectedRow.TransactionID,
+                                                        ArrivalDate:
+                                                            selectedRow.ArrivalDate,
+                                                        DepartureDate:
+                                                            selectedRow.DepartureDate,
+                                                        RateTypeID:
+                                                            selectedRow.RateTypeID,
+                                                    }}
+                                                    reservation={{
+                                                        TransactionID:
+                                                            selectedRow.TransactionID,
+                                                        ArrivalDate:
+                                                            selectedRow.ArrivalDate,
+                                                        DepartureDate:
+                                                            selectedRow.DepartureDate,
+                                                        RateTypeID:
+                                                            selectedRow.RateTypeID,
+                                                    }}
+                                                    additionalMutateUrl={
+                                                        "/api/FrontOffice/TransactionInfo"
+                                                    }
+                                                />
+                                            );
+                                            handleClose();
+                                        }}
+                                    >
+                                        Өрөө шилжих
+                                    </MenuItem>
+                                )}
+
+                                {selectedRow.NoShow && (
+                                    <MenuItem
+                                        key={`roomMove${id}`}
+                                        onClick={() => {
+                                            handleClickOpenNoShow();
+                                            handleClose();
+                                        }}
+                                    >
+                                        Ирээгүй
+                                    </MenuItem>
+                                )}
+
+                                {selectedRow.Unassign && (
                                     <MenuItem
                                         key={`unassignRoom${id}`}
                                         onClick={() => {
@@ -425,49 +385,100 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                     >
                                         Өрөөг болих
                                     </MenuItem>
-                                </>
-                            )}
-                        </Menu>
+                                )}
 
-                        <Dialog
-                            open={openNoShow}
-                            onClose={handleCloseNoShow}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">
-                                Ирээгүй
-                            </DialogTitle>
-                            <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                    Та итгэлтэй байна уу
-                                </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleCloseNoShow}>
-                                    Үгүй
-                                </Button>
-                                <Button
-                                    onClick={() =>
-                                        handleOnClickNoShow(
-                                            selectedRow.TransactionID
-                                        )
-                                    }
-                                    autoFocus
-                                >
-                                    Тийм
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
+                                {selectedRow.Void && (
+                                    <MenuItem
+                                        key={`voidTransaction${id}`}
+                                        onClick={(evt: any) => {
+                                            handleModal(
+                                                true,
+                                                "Void Transaction",
+                                                <VoidTransactionForm
+                                                    transactionInfo={{
+                                                        TransactionID:
+                                                            selectedRow.TransactionID,
+                                                    }}
+                                                    reservation={{
+                                                        TransactionID:
+                                                            selectedRow.TransactionID,
+                                                    }}
+                                                    customMutateUrl={
+                                                        "/api/FrontOffice/TransactionInfo"
+                                                    }
+                                                />
+                                            );
+                                            handleClose();
+                                        }}
+                                    >
+                                        Устгах
+                                    </MenuItem>
+                                )}
+                            </Menu>
+                        )}
+
+                        {selectedRow && (
+                            <Dialog
+                                open={openNoShow}
+                                onClose={handleCloseNoShow}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">
+                                    Ирээгүй
+                                </DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description">
+                                        Та итгэлтэй байна уу
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseNoShow}>
+                                        Үгүй
+                                    </Button>
+                                    <Button
+                                        onClick={() =>
+                                            handleOnClickNoShow(
+                                                selectedRow.TransactionID
+                                            )
+                                        }
+                                        autoFocus
+                                    >
+                                        Тийм
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        )}
                     </>
                 );
             },
         },
     ];
-
     return (
         <Box>
             <Box>
+                <Button
+                    variant={"outlined"}
+                    size="small"
+                    className="mr-2"
+                    onClick={() =>
+                        handleModal(
+                            true,
+                            `New Reservation`,
+                            <NewReservation
+                                dateStart={arrivalDate}
+                                dateEnd={departureDate}
+                                // workingDate={workingDate}
+                                groupID={GroupID}
+                            />,
+                            null,
+                            "large"
+                        )
+                    }
+                >
+                    Шинэ зочин нэмэх
+                </Button>
+
                 <Button
                     variant={"outlined"}
                     size="small"
@@ -488,7 +499,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                             <CancelReservationForm
                                 transactionInfo={newData}
                                 reservation={newData}
-                                customMutateUrl={"/api/Folio/Details"}
+                                customMutateUrl={
+                                    "/api/FrontOffice/TransactionInfo"
+                                }
                             />
                         );
                     }}
@@ -507,7 +520,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                             <VoidTransactionForm
                                 transactionInfo={newData}
                                 reservation={newData}
-                                customMutateUrl={"/api/Folio/Details"}
+                                customMutateUrl={
+                                    "/api/FrontOffice/TransactionInfo"
+                                }
                             />
                         );
                     }}
@@ -534,7 +549,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                     ArrivalDate: arrivalDate,
                                     DepartureDate: departureDate,
                                 }}
-                                additionalMutateUrl={"/api/Folio/Details"}
+                                additionalMutateUrl={
+                                    "/api/FrontOffice/TransactionInfo"
+                                }
                             />
                         );
                     }}

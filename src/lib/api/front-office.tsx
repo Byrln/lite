@@ -31,6 +31,16 @@ export const WorkingDateSWR = () => {
     return useSWR(`${urlPrefix}/WorkingDate`, fetcher);
 };
 
+export const TransactionInfoSWR = (search: any) => {
+    const fetcher = async (url: any) =>
+        await axios.post(url, search).then((res: any) => {
+            let rates = res.data.JsonData;
+            return rates;
+        });
+
+    return useSWR(`${urlPrefix}/TransactionInfo`, fetcher);
+};
+
 export const FrontOfficeAPI = {
     transactionInfo: async (id: any) => {
         const values = {

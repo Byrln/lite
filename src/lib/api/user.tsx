@@ -26,7 +26,7 @@ export const GetPrivilegesSWR = () => {
             .get(`${urlPrefix}/GetPrivileges`)
             .then((res: any) => res.data.JsonData);
 
-    return useSWR(listUrl, fetcher);
+    return useSWR(`${urlPrefix}/GetPrivileges`, fetcher);
 };
 
 export const UserByRoleSWR = (search: any) => {
