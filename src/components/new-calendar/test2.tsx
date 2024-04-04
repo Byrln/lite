@@ -585,21 +585,49 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                     );
 
                                     return arg.level == 1 ? (
-                                        availableRooms &&
-                                            availableRooms[0] &&
-                                            availableRooms[0][
-                                                `D` + (Difference_In_Days + 1)
-                                            ]
+                                        <div
+                                            style={{
+                                                textAlign: "center",
+                                                fontWeight: "normal",
+                                                margin: "12px 0px",
+                                                fontSize: "12px",
+                                            }}
+                                        >
+                                            {availableRooms &&
+                                                availableRooms[0] &&
+                                                availableRooms[0][
+                                                    `D` +
+                                                        (Difference_In_Days + 1)
+                                                ]}
+                                        </div>
                                     ) : (
-                                        <div>
-                                            <div>
+                                        <div
+                                            style={{
+                                                padding: "12px",
+                                                fontSize: "12px",
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    fontWeight: "normal",
+                                                    textAlign: "left",
+                                                    marginBottom: "5px",
+                                                }}
+                                            >
                                                 {
                                                     arg.date
                                                         .toString()
                                                         .split(" ")[0]
                                                 }
                                             </div>
-                                            <div>{arg.date.getDate()}</div>
+                                            <div
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    textAlign: "left",
+                                                }}
+                                            >
+                                                {arg.date.getDate()}
+                                            </div>
                                         </div>
                                     );
                                 },

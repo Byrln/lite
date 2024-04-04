@@ -137,6 +137,30 @@ td.color-FF66FF {
 @media print {
 }
 
-.css-16ypvfb-MuiButtonBase-root-MuiButton-root {
-    color: #804fe6;
+.fc-scrollgrid-section-header {
+    background: #f2edfc;
+}
+
+.fc .fc-resource-timeline-divider {
+    width: 0px;
+}
+
+.fc-resource-cell {
+    box-sizing: border-box;
+}
+
+.fc-timeline-slot-cushion {
+    color: black;
+}
+
+.fc .fc-timeline-slot-frame {
+    height: fit-content !important;
+}
+
+.fc .fc-timeline-slot-cushion {
+    width: 100%;
+}
+
+.fc-event {
+    height: 100%;
 }

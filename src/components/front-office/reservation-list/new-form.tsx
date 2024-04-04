@@ -443,13 +443,26 @@ const NewEdit = ({
                             <IconButton
                                 aria-label="close"
                                 onClick={() =>
-                                    append(
-                                        getValues(
+                                    //@ts-ignore
+                                    {
+                                        let tempValue = getValues(
                                             //@ts-ignore
                                             `TransactionDetail[${id}]`
-                                        )
-                                    )
+                                        );
+
+                                        tempValue.RoomID = null;
+
+                                        append(tempValue);
+                                    }
                                 }
+                                // onClick={() =>
+                                //     append(
+                                //         getValues(
+                                //             //@ts-ignore
+                                //             `TransactionDetail[${id}]`
+                                //         )
+                                //     )
+                                // }
                             >
                                 <ContentCopyIcon />
                             </IconButton>

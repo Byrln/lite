@@ -128,13 +128,19 @@ const NewEdit = ({
             BreakfastIncluded: null,
             PayAmount: null,
             ArrivalDate: dateStart
-                ? dateStart
+                ? moment(
+                      dateStringToObj(moment(dateStart).format("YYYY-MM-DD")),
+                      "YYYY-MM-DD"
+                  ).format("YYYY-MM-DD")
                 : moment(
                       dateStringToObj(moment(workingDate).format("YYYY-MM-DD")),
                       "YYYY-MM-DD"
                   ).format("YYYY-MM-DD"),
             DepartureDate: dateEnd
-                ? dateEnd
+                ? moment(
+                      dateStringToObj(moment(dateEnd).format("YYYY-MM-DD")),
+                      "YYYY-MM-DD"
+                  ).format("YYYY-MM-DD")
                 : moment(
                       dateStringToObj(moment(workingDate).format("YYYY-MM-DD")),
                       "YYYY-MM-DD"
@@ -320,7 +326,6 @@ const NewEdit = ({
                                 <Controller
                                     name={`ArrivalDate`}
                                     control={control}
-                                    defaultValue={null}
                                     render={({
                                         field: { onChange, value },
                                     }) => (
@@ -373,7 +378,7 @@ const NewEdit = ({
                                                     fullWidth
                                                     {...params}
                                                     error={
-                                                        errors.ArrivalDate
+                                                        !!errors.ArrivalDate
                                                             ?.message
                                                     }
                                                     helperText={
@@ -407,7 +412,6 @@ const NewEdit = ({
                                 <Controller
                                     name={`DepartureDate`}
                                     control={control}
-                                    defaultValue={null}
                                     render={({
                                         field: { onChange, value },
                                     }) => (
@@ -460,7 +464,7 @@ const NewEdit = ({
                                                     fullWidth
                                                     {...params}
                                                     error={
-                                                        errors.DepartureDate
+                                                        !!errors.DepartureDate
                                                             ?.message
                                                     }
                                                     helperText={
@@ -770,6 +774,7 @@ const NewEdit = ({
                                                 tempValue.Child =
                                                     newRoomTypeID.BaseChild;
                                             }
+                                            tempValue.RoomID = null;
                                             for (
                                                 let i = 0;
                                                 i < newGroupCount;
