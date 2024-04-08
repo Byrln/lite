@@ -443,6 +443,36 @@ const sidebarConfig = [
         icon: getIcon(bookOpenFill),
         children: [
             {
+                title: "өглөөний цай",
+                path: "/report/breakfast",
+                oldPath: "~/Report/ReportBreakfast.aspx",
+            },
+            {
+                title: "төлбөр",
+                path: "/report/folio",
+                oldPath: "",
+            },
+            {
+                title: "өдрийн мэдээ",
+                path: "/report/daily",
+                oldPath: "",
+            },
+            {
+                title: "буудлын борлуулалт",
+                path: "/report/borluulalt",
+                oldPath: "",
+            },
+            {
+                title: "сарын мэдээ",
+                path: "/report/month",
+                oldPath: "",
+            },
+            {
+                title: "бүртгэлийн хуудас",
+                path: "/report/transaction",
+                oldPath: "",
+            },
+            {
                 title: "боломжит өрөө",
                 path: "/report/available-room",
                 oldPath: "~/Report/ReportAvailableRooms.aspx",
@@ -452,11 +482,7 @@ const sidebarConfig = [
                 path: "/report/balance",
                 oldPath: "~/Report/ReportBalance.aspx",
             },
-            {
-                title: "өглөөний цай",
-                path: "/report/breakfast",
-                oldPath: "~/Report/ReportBreakfast.aspx",
-            },
+
             {
                 title: "гарах зочид (өдөр тутам)",
                 path: "/report/daily/checked-out",

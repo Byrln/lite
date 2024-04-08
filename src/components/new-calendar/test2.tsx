@@ -400,6 +400,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     info.resource._resource.extendedProps.MaxChild
                 ),
             };
+
             cashierActive &&
                 cashierActive[0] &&
                 cashierActive[0].IsActive == false &&
@@ -430,6 +431,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     const [cashierOpen, setCashierOpen] = useState(false);
+    console.log("cashierActive", cashierActive);
 
     const handleCashierOpen = () => {
         setCashierOpen(true);
@@ -452,6 +454,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             cashierActive &&
                                 cashierActive[0] &&
                                 cashierActive[0].IsActive == false &&
+                                cashierActive[0].SessionID == "-1" &&
                                 handleCashierOpen();
                             handleModal(
                                 true,

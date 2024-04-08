@@ -36,7 +36,7 @@ export default function DashboardLayout({ children }: any) {
     function filterMenu(menu: any, uniqueMenuLinks: any) {
         return menu.reduce((filteredMenu: any, item: any) => {
             // Check if the 'path' property exists and if it's included in the uniqueMenuLinks array
-            if (item.oldPath && uniqueMenuLinks.includes(item.oldPath)) {
+            if (item.path && uniqueMenuLinks.includes(item.path)) {
                 // If the item passes the filter, add it to the filteredMenu
                 filteredMenu.push(item);
             }
@@ -63,7 +63,7 @@ export default function DashboardLayout({ children }: any) {
         if (data) {
             // Extracting MenuLink values
             let menuLinks = data
-                .map((action: any) => action.MenuLink)
+                .map((action: any) => action.MenuLink2)
                 .filter((link: any) => link); // Filter out null or undefined values
 
             // Removing duplicates

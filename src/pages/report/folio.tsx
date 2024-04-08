@@ -3,10 +3,10 @@ import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
 
 import Page from "components/page";
-import Breakfast from "components/reporting/breakfast";
+import Folio from "components/reporting/folio";
 import { FrontOfficeAPI } from "lib/api/front-office";
 
-const title = "Өглөөний цай";
+const title = "Төлбөрийн бүртгэлийн тайлан";
 
 // @ts-ignore
 const Index = () => {
@@ -46,7 +46,7 @@ const Index = () => {
                                 type="application/html"
                             /> */}
                             {workingDate && (
-                                <Breakfast
+                                <Folio
                                     title={title}
                                     workingDate={workingDate}
                                 />

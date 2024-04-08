@@ -164,3 +164,7 @@ td.color-FF66FF {
 .fc-event {
     height: 100%;
 }
+
+.fc-timeline-lane {
+    height: -webkit-fill-available;
+}

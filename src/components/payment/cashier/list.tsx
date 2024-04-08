@@ -248,6 +248,11 @@ const CashierList = ({ title }: any) => {
                     <Button
                         variant="outlined"
                         className="mr-3 mb-3"
+                        disabled={
+                            activeSessionID && activeSessionID == "-1"
+                                ? false
+                                : true
+                        }
                         onClick={() => {
                             handleModal(
                                 true,
