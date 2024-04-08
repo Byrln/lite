@@ -34,7 +34,10 @@ import FolioSummary from "components/transaction/group/folio-summary";
 import FolioDetail from "components/transaction/group/folio-detail";
 import RemarkList from "components/reservation/remark/list";
 import RoomList from "components/transaction/group/room";
-import { CashierSessionActiveSWR } from "lib/api/cashier-session";
+import {
+    CashierSessionActiveSWR,
+    CashierSessionListSWR,
+} from "lib/api/cashier-session";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -71,6 +74,9 @@ const TransactionEdit = () => {
     };
     const { data: cashierActive, error: cashierActiveError } =
         CashierSessionActiveSWR();
+    const [activeSessionID, setActiveSessionID] = useState<any>(null);
+
+    const { data: listData, error: listError } = CashierSessionListSWR();
 
     function a11yProps(index: number) {
         return {
@@ -98,15 +104,28 @@ const TransactionEdit = () => {
 
     const [cashierOpen, setCashierOpen] = useState(false);
 
+    const fetchTest = async () => {
+        if (listData) {
+            let filteredItemData = listData.filter(
+                (event: any) => event.IsActive === true
+            );
+            if (filteredItemData && filteredItemData.length) {
+                setActiveSessionID(listData[0].SessionID);
+            } else {
+                setActiveSessionID("-1");
+            }
+        }
+    };
+
     useEffect(() => {
-        if (
-            cashierActive &&
-            cashierActive[0] &&
-            cashierActive[0].IsActive == false
-        ) {
+        fetchTest();
+    }, [listData]);
+
+    useEffect(() => {
+        if (activeSessionID && activeSessionID == "-1") {
             setCashierOpen(true);
         }
-    }, [cashierActive]);
+    }, [cashierActive, activeSessionID]);
 
     const handleCashierOpen = () => {
         setCashierOpen(true);

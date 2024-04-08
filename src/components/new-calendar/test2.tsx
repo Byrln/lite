@@ -42,7 +42,10 @@ import CustomSearch from "components/common/custom-search";
 import ReservationEdit from "components/front-office/reservation-list/edit";
 import RoomMoveForm from "components/reservation/room-move";
 import AmendStayForm from "components/reservation/amend-stay";
-import { CashierSessionActiveSWR } from "lib/api/cashier-session";
+import {
+    CashierSessionActiveSWR,
+    CashierSessionListSWR,
+} from "lib/api/cashier-session";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const router = useRouter();
@@ -56,6 +59,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     });
     const [searchCurrDate, setSearchCurrDate] = useState(workingDate);
     const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
+    const [activeSessionID, setActiveSessionID] = useState<any>(null);
 
     function extractNumberFromString(str: any) {
         const parts = str.split("-");
@@ -102,6 +106,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         RoomTypeID: searchRoomTypeID,
     });
     const { data: rooms, error: roomSwrError } = RoomSWR({});
+    const { data: listData, error: listError } = CashierSessionListSWR();
+
     const { data: cashierActive, error: cashierActiveError } =
         CashierSessionActiveSWR();
 
@@ -249,12 +255,26 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         setHeight(window.innerHeight - 225);
     }, [window.innerHeight]);
 
+    const fetchTest = async () => {
+        if (listData) {
+            let filteredItemData = listData.filter(
+                (event: any) => event.IsActive === true
+            );
+            if (filteredItemData && filteredItemData.length) {
+                setActiveSessionID(listData[0].SessionID);
+            } else {
+                setActiveSessionID("-1");
+            }
+        }
+    };
+
+    useEffect(() => {
+        fetchTest();
+    }, [listData]);
+
     const handleEventClick = (info: any) => {
         if (info.event._instance.range.end > new Date(workingDate)) {
-            cashierActive &&
-                cashierActive[0] &&
-                cashierActive[0].IsActive == false &&
-                handleCashierOpen();
+            activeSessionID && activeSessionID == "-1" && handleCashierOpen();
             handleModal(
                 true,
                 `Захиалга`,
@@ -401,10 +421,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 ),
             };
 
-            cashierActive &&
-                cashierActive[0] &&
-                cashierActive[0].IsActive == false &&
-                handleCashierOpen();
+            activeSessionID && activeSessionID == "-1" && handleCashierOpen();
 
             if (newEventObject.roomID) {
                 handleModal(
@@ -451,10 +468,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         variant="contained"
                         className="mr-3"
                         onClick={() => {
-                            cashierActive &&
-                                cashierActive[0] &&
-                                cashierActive[0].IsActive == false &&
-                                cashierActive[0].SessionID == "-1" &&
+                            activeSessionID &&
+                                activeSessionID == "-1" &&
                                 handleCashierOpen();
                             handleModal(
                                 true,

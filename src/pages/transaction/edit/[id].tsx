@@ -43,7 +43,10 @@ import CustomerReplace from "./customer-replace";
 
 import { useAppState } from "lib/context/app";
 import { ModalContext } from "lib/context/modal";
-import { CashierSessionActiveSWR } from "lib/api/cashier-session";
+import {
+    CashierSessionActiveSWR,
+    CashierSessionListSWR,
+} from "lib/api/cashier-session";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -86,6 +89,9 @@ const TransactionEdit = () => {
     const [guestAnchorEl, setGuestAnchorEl] = useState(null);
     const [stayAnchorEl, setStayAnchorEl] = useState(null);
     const [customerAnchorEl, setCustomerAnchorEl] = useState(null);
+    const [activeSessionID, setActiveSessionID] = useState<any>(null);
+
+    const { data: listData, error: listError } = CashierSessionListSWR();
 
     const handleGuestClick = (event: any) => {
         setGuestAnchorEl(event.currentTarget);
@@ -130,15 +136,28 @@ const TransactionEdit = () => {
 
     const [cashierOpen, setCashierOpen] = useState(false);
 
+    const fetchTest = async () => {
+        if (listData) {
+            let filteredItemData = listData.filter(
+                (event: any) => event.IsActive === true
+            );
+            if (filteredItemData && filteredItemData.length) {
+                setActiveSessionID(listData[0].SessionID);
+            } else {
+                setActiveSessionID("-1");
+            }
+        }
+    };
+
     useEffect(() => {
-        if (
-            cashierActive &&
-            cashierActive[0] &&
-            cashierActive[0].IsActive == false
-        ) {
+        fetchTest();
+    }, [listData]);
+
+    useEffect(() => {
+        if (activeSessionID && activeSessionID == "-1") {
             setCashierOpen(true);
         }
-    }, [cashierActive]);
+    }, [cashierActive, activeSessionID]);
 
     const handleCashierOpen = () => {
         setCashierOpen(true);
