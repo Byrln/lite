@@ -105,7 +105,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                 });
 
                 setTotalNonMandatory({
-                    Total: mand.length,
+                    Total: nonmand.length,
                     RoomCount: Object.keys(tempNonValueRoom).length,
                     GuestCount: Object.keys(tempNonValueGuest).length,
                 });
