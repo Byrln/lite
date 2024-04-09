@@ -15,11 +15,15 @@ import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 
 import { FrontOfficeAPI } from "lib/api/front-office";
+import Iconify from "components/iconify/iconify";
 import axios from "lib/utils/axios";
 import moment from "moment";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Divider from "@mui/material/Divider";
+
+import Box from "@mui/material/Box";
 
 import { useGetPaymentMethodGroupAPI } from "lib/api/payment-method-group";
 import { useGetChargeTypeGroupAPI } from "lib/api/charge-type-group";
@@ -27,6 +31,7 @@ import { useGetChargeTypeAPI, ChargeTypeAPI } from "lib/api/charge-type";
 import FolioCharge from "./charge";
 import { FolioAPI } from "lib/api/folio";
 import { mutate } from "swr";
+
 
 export default function ChargeFormArray({
     FolioID,
@@ -119,27 +124,44 @@ export default function ChargeFormArray({
                 dateAdapter={AdapterDateFns}
                 adapterLocale={mn}
             >
-                <Stack direction="row" spacing={2} alignItems="center" mb={2}>
-                    <Typography>Date</Typography>
-                    <TextField
-                        disabled
-                        value={moment(workingDate).format("YYYY-MM-DD")}
-                        fullWidth
-                    />
+                <Stack direction='column' spacing={3} mt={-3}>
 
-                    <Typography>Date</Typography>
+                
+                <Stack direction='column' spacing='8px' px='30px'>
 
-                    <Checkbox checked={chekedTrue} onChange={handleChekbox} />
+                <Typography fontSize='16px' fontWeight={400}>Date</Typography>
 
-                    <DateTimePicker
+                
+                <Stack direction="row" spacing='30px' alignItems="center" >
+
+                <DateTimePicker
                         disabled={enableDate}
                         value={setedDate}
                         onChange={(newValue: any) => setSetedDate(newValue)}
                         renderInput={(params) => (
-                            <TextField fullWidth {...params} />
+                            <TextField  {...params} sx={{
+                                fontSize: '16px',
+                                width: '300px',
+                                fontWeight: 400,
+                            }} />
                         )}
                     />
+                    
+                    <Stack direction="row" spacing={1.5} alignItems="center" >
+
+                    <Checkbox checked={chekedTrue} onChange={handleChekbox}  sx={{ '& .MuiSvgIcon-root': { fontSize: 24 } }}/>
+
+                    <Typography fontSize='16px' fontWeight={400}>Огноо өөрчлөх</Typography>
+
+                    </Stack>
+                    </Stack>
+
+                    
                 </Stack>
+
+                <Divider  />
+
+                <Box px='30px'>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     {fields.map((field, index) => (
@@ -154,19 +176,20 @@ export default function ChargeFormArray({
                             />
                         </>
                     ))}
+                    
                     <Stack
                         direction="row"
                         justifyContent="flex-end"
                         alignItems="flex-end"
+                        spacing={0}
                     >
                         <TextField
-                            label="Нэмэх тоо"
+                            
                             type="number"
                             margin="dense"
                             size="small"
                             style={{
-                                width: "100px",
-                                marginRight: "10px",
+                                width: "40px",
                             }}
                             value={newGroupCount}
                             onChange={(e: any) => {
@@ -195,12 +218,18 @@ export default function ChargeFormArray({
                                 setNewGroupCount(1);
                             }}
                         >
-                            Add charge
+                            <Typography fontSize={20} fontWeight={700}>
+                                +
+                            </Typography>
                         </Button>
                     </Stack>
-
-                    <Button type="submit">submit</Button>
+                    <Stack alignItems='flex-end' mt={1}>
+                    <Button variant="contained" type="submit" >Хадгалах</Button>
+                    </Stack>
                 </form>
+                </Box>
+
+                </Stack>
             </LocalizationProvider>
         </div>
     );

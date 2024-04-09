@@ -18,8 +18,10 @@ import { FrontOfficeAPI } from "lib/api/front-office";
 import axios from "lib/utils/axios";
 import moment from "moment";
 import MenuItem from "@mui/material/MenuItem";
+import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Divider from "@mui/material/Divider";
 
 import { useGetPaymentMethodGroupAPI } from "lib/api/payment-method-group";
 import { useGetChargeTypeGroupAPI } from "lib/api/charge-type-group";
@@ -29,6 +31,8 @@ import { FolioAPI } from "lib/api/folio";
 import { mutate } from "swr";
 import FolioPayment from "./payment";
 import { CurrenctAPI } from "lib/api/currency";
+
+import PaymentCustomTableData from "./payment-custom-table";
 
 export default function PaymentFormArray({
     FolioID,
@@ -130,29 +134,42 @@ export default function PaymentFormArray({
                 dateAdapter={AdapterDateFns}
                 adapterLocale={mn}
             >
-                <Stack direction="row" spacing={2} alignItems="center" mb={2}>
-                    <Typography>Date</Typography>
-                    <TextField
-                        disabled
-                        value={moment(workingDate).format("YYYY-MM-DD")}
-                        fullWidth
-                    />
+            <Grid container>
+                <Grid item xs={12} md={6} lg={6}>
 
-                    <Typography>Date</Typography>
+                <PaymentCustomTableData FolioID={FolioID}/>
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
+                    <Stack direction='column' spacing='8px' px='30px'>
 
-                    <Checkbox checked={chekedTrue} onChange={handleChekbox} />
+                <Typography fontSize='16px' fontWeight={400}>Date</Typography>
 
-                    <DateTimePicker
+                
+                <Stack direction="row" spacing='30px' alignItems="center" >
+
+                <DateTimePicker
                         disabled={enableDate}
                         value={setedDate}
                         onChange={(newValue: any) => setSetedDate(newValue)}
                         renderInput={(params) => (
-                            <TextField fullWidth {...params} />
+                            <TextField  {...params} sx={{
+                                fontSize: '16px',
+                                width: '300px',
+                                fontWeight: 400,
+                            }} />
                         )}
                     />
-                </Stack>
+                    
+                    <Stack direction="row" spacing={1.5} alignItems="center" >
 
-                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Checkbox checked={chekedTrue} onChange={handleChekbox}  sx={{ '& .MuiSvgIcon-root': { fontSize: 24 } }}/>
+
+                    <Typography fontSize='16px' fontWeight={400}>Огноо өөрчлөх</Typography>
+
+                    </Stack>
+                    </Stack>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <Box height={300} overflow='auto'>
                     {fields.map((field, index) => (
                         <>
                             <FolioPayment
@@ -165,25 +182,31 @@ export default function PaymentFormArray({
                             />
                         </>
                     ))}
+                    
+
+                    </Box>
+
                     <Stack
                         direction="row"
                         justifyContent="flex-end"
                         alignItems="flex-end"
+                        spacing={0}
                     >
                         <TextField
-                            label="Нэмэх тоо"
+                            
                             type="number"
                             margin="dense"
                             size="small"
                             style={{
-                                width: "100px",
-                                marginRight: "10px",
+                                width: "40px",
                             }}
                             value={newGroupCount}
                             onChange={(e: any) => {
                                 setNewGroupCount(e.target.value);
                             }}
                         />
+
+                        
 
                         <Button
                             onClick={() => {
@@ -193,7 +216,6 @@ export default function PaymentFormArray({
                                 //     Amount: null,
                                 //     Quantity: 1,
                                 //     Description: " ",
-                                //     PayCurrencyID: null,
                                 // });
                                 for (let i = 0; i < newGroupCount; i++) {
                                     append({
@@ -208,12 +230,29 @@ export default function PaymentFormArray({
                                 setNewGroupCount(1);
                             }}
                         >
-                            Add charge
+                            <Typography fontSize={20} fontWeight={700}>
+                                +
+                            </Typography>
                         </Button>
                     </Stack>
+                    
 
-                    <Button type="submit">submit</Button>
+                    <Stack alignItems='flex-end' mt={1}>
+                    <Button variant="contained" type="submit" >Хадгалах</Button>
+                    </Stack>
                 </form>
+
+                    
+                </Stack>
+                
+                
+
+                </Grid>
+            </Grid>
+
+
+
+
             </LocalizationProvider>
         </div>
     );
