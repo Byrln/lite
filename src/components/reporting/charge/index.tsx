@@ -30,12 +30,17 @@ const Folio = ({ title, workingDate }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [reportData, setReportData] = useState<any>(null);
     const [totalBalance, setTotalBalance] = useState<any>(null);
-
+    const [ArrivalTime, setArrivalTime]: any = useState("00:00");
+    const [DepartureTime, setDepartureTime]: any = useState("23:59");
     const [rerenderKey, setRerenderKey] = useState(0);
+    const { data: customerData, error: customerError } = CustomerSWR(0);
+    const [customerName, setCustomerName]: any = useState("Бүгд");
 
     const [search, setSearch] = useState({
         StartDate: moment(dateStringToObj(workingDate)),
         EndDate: moment(dateStringToObj(workingDate)).add(1, "months"),
+
+        // CustomerID: null,
     });
 
     const { data, error } = CheckedOutDetailedSWR(search, workingDate);
@@ -89,15 +94,11 @@ const Folio = ({ title, workingDate }: any) => {
                                 tempTotal +
                                 tempValue[key].reduce(
                                     (acc: any, obj: any) =>
-                                        Number(acc) +
-                                        Number(obj.PayCash) +
-                                        Number(obj.PayInvoice) +
-                                        Number(obj.PayBank),
+                                        acc + obj.TotalCharge,
                                     0
                                 ))
                     );
             }
-
             setTotalBalance(tempTotal);
             setRerenderKey((prevKey) => prevKey + 1);
             // if (
@@ -171,6 +172,10 @@ const Folio = ({ title, workingDate }: any) => {
                         register={register}
                         errors={errors}
                         control={control}
+                        setArrivalTime={setArrivalTime}
+                        ArrivalTime={ArrivalTime}
+                        setDepartureTime={setDepartureTime}
+                        DepartureTime={DepartureTime}
                     />
                 </CustomSearch>
             </div>
@@ -191,7 +196,7 @@ const Folio = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            Төлбөрийн бүртгэлийн тайлан
+                            Буудлын борлуулалт
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
@@ -228,7 +233,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Өрөө
+                                        №
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -242,21 +247,14 @@ const Folio = ({ title, workingDate }: any) => {
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Овог нэр
+                                        Зочин
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Буусан
-                                    </TableCell>
-                                    <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                        rowSpan={2}
-                                    >
-                                        Хоног
+                                        Ирсэн
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -270,45 +268,31 @@ const Folio = ({ title, workingDate }: any) => {
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Өрөөн дүн
+                                        Хөнгөлөлт
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Үйлчилгээ дүн
+                                        Буудлын орлого
                                     </TableCell>
-                                    <TableCell
-                                        align="right"
-                                        style={{ fontWeight: "bold" }}
-                                        rowSpan={2}
-                                    >
-                                        Нийт төлөх
-                                    </TableCell>
-                                    {/* <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                        rowSpan={2}
-                                    >
-                                        Нийт төлөх (НӨТ-тэй)
-                                    </TableCell> */}
                                     <TableCell
                                         align="left"
                                         style={{
                                             fontWeight: "bold",
                                             textAlign: "center",
                                         }}
-                                        colSpan={4}
+                                        colSpan={2}
                                     >
-                                        Төлбөрийн хэлбэр
+                                        Үйлчилгээ
                                     </TableCell>
                                     <TableCell
-                                        align="left"
+                                        align="right"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Төлбөрийн хаалт
+                                        Нийт
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
@@ -316,25 +300,13 @@ const Folio = ({ title, workingDate }: any) => {
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Бэлэн мөнгө
+                                        Мини бар
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Нэхэмжлэх
-                                    </TableCell>
-                                    <TableCell
-                                        align="right"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Картаар
-                                    </TableCell>
-                                    <TableCell
-                                        style={{ fontWeight: "bold" }}
-                                        align="right"
-                                    >
-                                        А/Авлага
+                                        Ресторан
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -356,7 +328,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         component="th"
                                                         scope="row"
                                                     >
-                                                        {element.RoomFullNo}
+                                                        {index + 1}
                                                     </TableCell>
                                                     <TableCell
                                                         component="th"
@@ -389,10 +361,11 @@ const Folio = ({ title, workingDate }: any) => {
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
+                                                        align="right"
                                                     >
-                                                        {moment(
-                                                            element.Departure
-                                                        ).format("YYYY-MM-DD")}
+                                                        {formatPrice(
+                                                            element.Discount
+                                                        )}
                                                     </TableCell>
                                                     <TableCell
                                                         component="th"
@@ -409,15 +382,18 @@ const Folio = ({ title, workingDate }: any) => {
                                                         align="right"
                                                     >
                                                         {formatPrice(
-                                                            element.ExtraCharge
+                                                            element.MiniBar
                                                         )}
                                                     </TableCell>
-                                                    {/* <TableCell
+                                                    <TableCell
                                                         component="th"
                                                         scope="row"
+                                                        align="right"
                                                     >
-                                                        {element.TotalCharge}
-                                                    </TableCell> */}
+                                                        {formatPrice(
+                                                            element.Restaurant
+                                                        )}
+                                                    </TableCell>
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
@@ -426,45 +402,6 @@ const Folio = ({ title, workingDate }: any) => {
                                                         {formatPrice(
                                                             element.TotalCharge
                                                         )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        align="right"
-                                                    >
-                                                        {formatPrice(
-                                                            element.PayCash
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        align="right"
-                                                        scope="row"
-                                                    >
-                                                        {formatPrice(
-                                                            element.PayInvoice
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        align="right"
-                                                    >
-                                                        {formatPrice(
-                                                            element.PayBank
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                    >
-                                                        {/* {element.RateTypeName} */}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                    >
-                                                        {element.RateTypeName}
                                                     </TableCell>
                                                 </TableRow>
                                             </>
@@ -492,7 +429,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         align="right"
                                         colSpan={15}
                                     >
-                                        НХАТ: {formatPrice(totalBalance)}
+                                        {formatPrice(totalBalance)}
                                     </TableCell>
                                 </TableRow>
 

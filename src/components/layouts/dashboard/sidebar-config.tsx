@@ -459,7 +459,7 @@ const sidebarConfig = [
             },
             {
                 title: "буудлын борлуулалт",
-                path: "/report/borluulalt",
+                path: "/report/charge",
                 oldPath: "",
             },
             {

@@ -6,6 +6,7 @@ import moment from "moment";
 const urlPrefix = "/api/Report";
 export const balanceUrl = `${urlPrefix}/Balance`;
 export const checkedOutDetailedUrl = `${urlPrefix}/CheckedOut/Detailed`;
+export const breakfastUrl = `${urlPrefix}/Breakfast`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -51,4 +52,29 @@ export const CheckedOutDetailedSWR = (search: any, workingDate: any) => {
         });
 
     return useSWR(checkedOutDetailedUrl, fetcher);
+};
+
+export const BreakfastSWR = (search: any, workingDate: any) => {
+    let tempSearch = {
+        CurrDate: moment(search.CurrDate, "YYYY-MM-DD")
+            .format("YYYY-MM-DD")
+            .toString(),
+        Mandatory: search.Mandatory,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(breakfastUrl, fetcher);
+};
+
+export const ReportAPI = {
+    breakfast: async (search: any) => {
+        const res = await axios.post(`${breakfastUrl}`, search);
+
+        return res.data.JsonData;
+    },
 };

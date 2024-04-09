@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { ReportBalanceSWR, balanceUrl } from "lib/api/report";
+import { ReportAPI, breakfastUrl } from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
 import { formatPrice } from "lib/utils/helpers";
 import CustomSearch from "components/common/custom-search";
@@ -35,18 +35,63 @@ const Breakfast = ({ title, workingDate }: any) => {
     const [rerenderKey, setRerenderKey] = useState(0);
     const { data: customerData, error: customerError } = CustomerSWR(0);
     const [customerName, setCustomerName]: any = useState("Бүгд");
+    const [mandatoryData, setMandatoryData]: any = useState(null);
+    const [totalMandatory, setTotalMandatory]: any = useState(null);
 
-    const [search, setSearch] = useState({
-        StartDate: moment(dateStringToObj(workingDate)).startOf("day"),
-        EndDate: moment(dateStringToObj(workingDate))
-            .add(1, "months")
-            .startOf("day"),
-        StartTime: "00:00",
-        EndTime: "23:59",
-        CustomerID: null,
+    const [nonMandatoryData, setNonMandatoryData]: any = useState(null);
+    const [search, setSearch] = useState<any>({
+        CurrDate: moment(dateStringToObj(workingDate)),
     });
 
-    const { data, error } = ReportBalanceSWR(search, workingDate);
+    const groupBy = (items: any, key: any) =>
+        items.reduce(
+            (result: any, item: any) => ({
+                ...result,
+                [item[key]]: [...(result[item[key]] || []), item],
+            }),
+            {}
+        );
+
+    const fetchDatas = async () => {
+        try {
+            const mand: any = await ReportAPI.breakfast({
+                CurrDate: search.CurrDate,
+                Mandatory: true,
+            });
+            if (mand) {
+                // setTotalMandatory(mand.length);
+                let tempValue = groupBy(mand, "RoomTypeName");
+                let tempValueRoom = groupBy(mand, "RoomNo");
+
+                let tempRoomCount = 0;
+                Object.keys(tempValueRoom).forEach((roomType) => {
+                    // Get the length of the array for each room type
+                    tempValue[roomType]                    const length = tempValue[roomType].length;
+                    tempRoomCount = tempRoomCount + length;
+                });
+                setTotalMandatory({
+                    Total: mand.length,
+                    RoomCount: tempRoomCount,
+                });
+
+                setMandatoryData(tempValue);
+            }
+            const nonmand: any = await ReportAPI.breakfast({
+                CurrDate: search.CurrDate,
+                Mandatory: false,
+            });
+            if (nonmand) {
+                setNonMandatoryData(nonmand);
+            }
+        } finally {
+        }
+    };
+
+    useEffect(() => {
+        fetchDatas();
+    }, [search]);
+
+    // const { data, error } = BreakfastSWR(search, workingDate);
 
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
@@ -73,60 +118,51 @@ const Breakfast = ({ title, workingDate }: any) => {
         content: () => componentRef.current,
     });
 
-    const groupBy = (items: any, key: any) =>
-        items.reduce(
-            (result: any, item: any) => ({
-                ...result,
-                [item[key]]: [...(result[item[key]] || []), item],
-            }),
-            {}
-        );
+    // useEffect(() => {
+    //     if (data) {
+    //         let tempValue = groupBy(data, "CustomerName");
 
-    useEffect(() => {
-        if (data) {
-            let tempValue = groupBy(data, "CustomerName");
+    //         setReportData(tempValue);
 
-            setReportData(tempValue);
-
-            let tempTotal = 0;
-            {
-                tempValue &&
-                    Object.keys(tempValue).forEach(
-                        (key) =>
-                            (tempTotal =
-                                tempTotal +
-                                tempValue[key].reduce(
-                                    (acc: any, obj: any) => acc + obj.Balance,
-                                    0
-                                ))
-                    );
-            }
-            setTotalBalance(tempTotal);
-            setRerenderKey((prevKey) => prevKey + 1);
-            if (
-                search &&
-                search.CustomerID &&
-                search.CustomerID != "" &&
-                search.CustomerID != "0"
-            ) {
-                let customerTempData = customerData.filter(
-                    (element: any) => element.CustomerID == search.CustomerID
-                );
-                if (customerTempData.length > 0) {
-                    setCustomerName(customerTempData[0].CustomerName);
-                } else {
-                    setCustomerName("Бүгд");
-                }
-            } else {
-                if (search.CustomerID == "0") {
-                    setCustomerName("N/A");
-                } else {
-                    setCustomerName("Бүгд");
-                }
-            }
-        }
-    }, [data]);
-
+    //         let tempTotal = 0;
+    //         {
+    //             tempValue &&
+    //                 Object.keys(tempValue).forEach(
+    //                     (key) =>
+    //                         (tempTotal =
+    //                             tempTotal +
+    //                             tempValue[key].reduce(
+    //                                 (acc: any, obj: any) => acc + obj.Balance,
+    //                                 0
+    //                             ))
+    //                 );
+    //         }
+    //         setTotalBalance(tempTotal);
+    //         setRerenderKey((prevKey) => prevKey + 1);
+    //         if (
+    //             search &&
+    //             search.CustomerID &&
+    //             search.CustomerID != "" &&
+    //             search.CustomerID != "0"
+    //         ) {
+    //             let customerTempData = customerData.filter(
+    //                 (element: any) => element.CustomerID == search.CustomerID
+    //             );
+    //             if (customerTempData.length > 0) {
+    //                 setCustomerName(customerTempData[0].CustomerName);
+    //             } else {
+    //                 setCustomerName("Бүгд");
+    //             }
+    //         } else {
+    //             if (search.CustomerID == "0") {
+    //                 setCustomerName("N/A");
+    //             } else {
+    //                 setCustomerName("Бүгд");
+    //             }
+    //         }
+    //     }
+    // }, [data]);
+    // console.log("mandatoryData", Object.keys(mandatoryData).length);
     const validationSchema = yup.object().shape({
         StartDate: yup.date().nullable(),
         EndDate: yup.date().nullable(),
@@ -150,7 +186,7 @@ const Breakfast = ({ title, workingDate }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
-    console.log("reportData", reportData && Object.keys(reportData).length);
+
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -164,7 +200,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                 </Button>
 
                 <CustomSearch
-                    listUrl={balanceUrl}
+                    listUrl={breakfastUrl}
                     search={search}
                     setSearch={setSearch}
                     handleSubmit={handleSubmit}
@@ -206,18 +242,10 @@ const Breakfast = ({ title, workingDate }: any) => {
                             {" "}
                             Тайлант үе :{" "}
                         </span>{" "}
-                        (
-                        {search.StartDate &&
-                            moment(search.StartDate, "YYYY.MM.DD").format(
+                        {search.CurrDate &&
+                            moment(search.CurrDate, "YYYY.MM.DD").format(
                                 "YYYY.MM.DD"
                             )}
-                        {" - "}
-                        {search.EndDate
-                            ? moment(search.EndDate, "YYYY.MM.DD").format(
-                                  "YYYY.MM.DD"
-                              )
-                            : " "}
-                        )
                     </Typography>
                 </Box>
                 <div
@@ -243,12 +271,12 @@ const Breakfast = ({ title, workingDate }: any) => {
                                     <TableCell style={{ fontWeight: "bold" }}>
                                         №
                                     </TableCell>
-                                    <TableCell
+                                    {/* <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
                                         Төрөл
-                                    </TableCell>
+                                    </TableCell> */}
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
@@ -267,12 +295,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                     >
                                         Улс
                                     </TableCell>
-                                    <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Өрөөний төрөл
-                                    </TableCell>
+
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
@@ -283,13 +306,13 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Ө.Ц тооцоо
+                                        Ө.Ц тоо
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {reportData &&
-                                    Object.keys(reportData).map(
+                                {mandatoryData &&
+                                    Object.keys(mandatoryData).map(
                                         (key) => (
                                             <>
                                                 <TableRow
@@ -311,10 +334,10 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                         {key}
                                                     </TableCell>
                                                 </TableRow>
-                                                {reportData[key] &&
+                                                {mandatoryData[key] &&
                                                     Object.keys(
-                                                        reportData[key]
-                                                    ).map((key2) => (
+                                                        mandatoryData[key]
+                                                    ).map((key2, index) => (
                                                         <>
                                                             <TableRow
                                                                 key={key}
@@ -329,11 +352,17 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                                     component="th"
                                                                     scope="row"
                                                                 >
+                                                                    {index + 1}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                >
                                                                     {
-                                                                        reportData[
+                                                                        mandatoryData[
                                                                             key
                                                                         ][key2]
-                                                                            .RoomFullName
+                                                                            .CustomerName
                                                                     }
                                                                 </TableCell>
                                                                 <TableCell
@@ -341,7 +370,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                 >
                                                                     {
-                                                                        reportData[
+                                                                        mandatoryData[
                                                                             key
                                                                         ][key2]
                                                                             .GuestName
@@ -352,47 +381,10 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                 >
                                                                     {
-                                                                        reportData[
+                                                                        mandatoryData[
                                                                             key
                                                                         ][key2]
-                                                                            .StatusDescription
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {moment(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .Arrival
-                                                                    ).format(
-                                                                        "YYYY-MM-DD"
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {moment(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .Departure
-                                                                    ).format(
-                                                                        "YYYY-MM-DD"
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .SourceName
+                                                                            .CountryName
                                                                     }
                                                                 </TableCell>
                                                                 <TableCell
@@ -400,10 +392,10 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                 >
                                                                     {
-                                                                        reportData[
+                                                                        mandatoryData[
                                                                             key
                                                                         ][key2]
-                                                                            .FolioNo
+                                                                            .RoomNo
                                                                     }
                                                                 </TableCell>
                                                                 <TableCell
@@ -411,10 +403,17 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                 >
                                                                     {
-                                                                        reportData[
+                                                                        mandatoryData[
                                                                             key
                                                                         ][key2]
-                                                                            .RateTypeName
+                                                                            .Adult
+                                                                    }
+                                                                    /
+                                                                    {
+                                                                        mandatoryData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .Child
                                                                     }
                                                                 </TableCell>
                                                             </TableRow>
@@ -434,23 +433,21 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                         }}
                                                         align="right"
-                                                        colSpan={11}
+                                                        colSpan={4}
+                                                    ></TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontWeight: "bold",
+                                                        }}
+                                                        align="right"
+                                                        colSpan={2}
                                                     >
-                                                        {reportData &&
-                                                            reportData[key] &&
-                                                            formatPrice(
-                                                                reportData[
-                                                                    key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        obj.Balance,
-                                                                    0
-                                                                )
-                                                            )}
+                                                        Өрөө:{" "}
+                                                        {mandatoryData &&
+                                                            mandatoryData[key]
+                                                                .length}
                                                     </TableCell>
                                                 </TableRow>
                                             </>
@@ -468,6 +465,16 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         },
                                     }}
                                 >
+                                    {/* <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            fontWeight: "bold",
+                                        }}
+                                        align="right"
+                                        colSpan={}
+                                    ></TableCell> */}
+
                                     <TableCell
                                         component="th"
                                         scope="row"
@@ -475,9 +482,27 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             fontWeight: "bold",
                                         }}
                                         align="right"
-                                        colSpan={11}
+                                        colSpan={4}
                                     >
-                                        {formatPrice(totalBalance)}
+                                        Нийт зочдын өглөөний цайны тоо:{" "}
+                                        {totalMandatory &&
+                                            totalMandatory.Total &&
+                                            totalMandatory.Total}
+                                    </TableCell>
+
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            fontWeight: "bold",
+                                        }}
+                                        align="right"
+                                        colSpan={4}
+                                    >
+                                        Өрөө:{" "}
+                                        {totalMandatory &&
+                                            totalMandatory.RoomCount &&
+                                            totalMandatory.RoomCount}
                                     </TableCell>
                                 </TableRow>
 
