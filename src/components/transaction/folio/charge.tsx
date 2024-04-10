@@ -15,7 +15,13 @@ import moment from "moment";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import Box from "@mui/material/Box";
 
+import Iconify from "components/iconify/iconify";
 import { useGetPaymentMethodGroupAPI } from "lib/api/payment-method-group";
 import { useGetChargeTypeGroupAPI } from "lib/api/charge-type-group";
 import { useGetChargeTypeAPI, ChargeTypeAPI } from "lib/api/charge-type";
@@ -45,6 +51,7 @@ export default function FolioCharge({
         resetField(`charge.${id}.Groupid`, {
             defaultValue: event.target.value as string,
         });
+        setChekedTrue(false)
     };
 
     const fetchTest = async () => {
@@ -56,7 +63,7 @@ export default function FolioCharge({
         setTypePick("");
     };
 
-    const [chekedTrue, setChekedTrue] = useState(false);
+    const [chekedTrue, setChekedTrue] = useState(true);
 
     const handleTypeChange = (event: SelectChangeEvent) => {
         setTypePick(event.target.value as string);
@@ -100,11 +107,17 @@ export default function FolioCharge({
                 dateAdapter={AdapterDateFns}
                 adapterLocale={mn}
             >
-                <Stack direction="column" spacing={1} mb={1}>
-                    <Stack direction="row" spacing={2} alignItems="center">
-                        <Typography>Type</Typography>
+                
 
-                        <Select
+                {/* Turul */}
+                <Stack direction='row' spacing={3} mb='24px'>
+
+                    <Stack direction='column' spacing={1} width='100%'>
+                    <Typography fontSize={16} fontWeight={400}> 
+                        Төрөл
+                    </Typography>
+
+                    <Select
                             value={groupPick}
                             {...register(`charge.${id}.GroupID`)}
                             onChange={handleChange}
@@ -121,12 +134,18 @@ export default function FolioCharge({
                                 );
                             })}
                         </Select>
-                        {groupPick ? (
-                            <Select
+                        
+                    </Stack>
+
+                    <Stack direction='column' spacing={1} justifyContent='flex-end' width='100%'>
+
+                    <Select
+                                disabled={chekedTrue}
                                 value={typePick}
                                 {...register(`charge.${id}.ItemID`)}
-                                onChange={handleTypeChange}
+                                onChange={handleTypeChange} 
                                 fullWidth
+                                
                             >
                                 {newchargeType?.map((element: any) => {
                                     return (
@@ -139,22 +158,14 @@ export default function FolioCharge({
                                     );
                                 })}
                             </Select>
-                        ) : (
-                            <div></div>
-                        )}
+
+
                     </Stack>
+                    <Stack  direction='column' spacing={1}>
 
-                    {typePick ? (
-                        <div>
-                            <Stack direction="column" spacing={1}>
-                                <Stack
-                                    direction="row"
-                                    spacing={2}
-                                    alignItems="center"
-                                >
-                                    <Typography>Price</Typography>
+                    <Typography>Үнэ</Typography>
 
-                                    <TextField  type="number" min={0}
+                    <TextField  type="number" min={0}
                                         disabled={
                                             filteredData &&
                                             filteredData[0] &&
@@ -162,47 +173,60 @@ export default function FolioCharge({
                                         }
                                         {...register(`charge.${id}.Amount`)}
                                         name={`charge.${id}.Amount`}
-                                        fullWidth
+                                        
                                         onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                                    />
-                                </Stack>
-                                <Stack
-                                    direction="row"
-                                    spacing={2}
-                                    alignItems="center"
-                                >
-                                    <Typography>Quantity</Typography>
 
-                                    <TextField  type="number" min={0}
-                                        fullWidth
-                                        {...register(`charge.${id}.Quantity`)}
-                                        name={`charge.${id}.Quantity`}
-                                        onChange={(newvalue: any) =>
-                                            setQuantity(newvalue)
-                                        }
-                                        onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                                        sx={{
+                                            width: '146px'
+                                        }}
                                     />
-                                </Stack>
-                                <Stack
-                                    direction="column"
-                                    spacing={2}
-                                    alignItems="center"
-                                >
-                                    <Typography>Description</Typography>
 
-                                    <TextField 
-                                        fullWidth
-                                        {...register(`charge.${id}.Description`)}
-                                        name={`charge.${id}.Description`}
-                                        multiline
-                                        rows={3}
-                                    />
-                                </Stack>
-                            </Stack>
-                        </div>
-                    ) : (
-                        <div></div>
-                    )}
+                    </Stack>
+                    <Stack  direction='column' spacing={1}>
+                    <Typography>Ширхэг</Typography>
+
+<TextField  type="number" min={0}
+
+    {...register(`charge.${id}.Quantity`)}
+    name={`charge.${id}.Quantity`}
+    onChange={(newvalue: any) =>
+        setQuantity(newvalue)
+    }
+    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+
+    sx={{
+        width: '112px'
+    }}
+/>
+
+                    </Stack>
+                    <Stack direction='column' spacing={1} width='100%'>
+                    <Typography>Тайлбар</Typography>
+
+<TextField 
+    {...register(`charge.${id}.Description`)}
+    name={`charge.${id}.Description`}
+    fullWidth={true}
+    sx={{borderRadius: '8px'}}
+/>
+                    </Stack>
+
+                    <Stack direction='column' spacing={1} justifyContent='flex-end'>
+                        <Stack borderRadius='4px' border={1.5} width='50px' height='50px' borderColor='#e0e0e0' justifyContent='center' alignItems='center' onClick={()=>remove(id)}
+                        sx={{
+                            "&:hover":{
+                                borderColor:'#616161'
+                            }
+                        }}
+                        
+                        >
+                    
+                    <Iconify icon='bi:trash3' height='24px'/>
+                    
+                    </Stack>
+                    </Stack>
+                    
+
                 </Stack>
             </LocalizationProvider>
         </div>

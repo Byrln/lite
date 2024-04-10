@@ -15,6 +15,7 @@ import moment from "moment";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Divider from "@mui/material/Divider";
 
 import { useGetPaymentMethodGroupAPI } from "lib/api/payment-method-group";
 import { useGetChargeTypeGroupAPI } from "lib/api/charge-type-group";
@@ -22,6 +23,8 @@ import { useGetChargeTypeAPI, ChargeTypeAPI } from "lib/api/charge-type";
 import { PaymentMethodAPI } from "lib/api/payment-method";
 import { AnyMxRecord } from "dns";
 import { CurrencySWR, CurrenctAPI } from "lib/api/currency";
+
+import Iconify from "components/iconify/iconify";
 
 export default function FolioPayment({
     FolioID,
@@ -48,13 +51,15 @@ export default function FolioPayment({
 
 
     const [newchargeType, setNewChargeType] = useState<any>(null);
-    const [newechargeType, setNeweChargeType] = useState<any>(null);
+
+    const [chekedTrue, setChekedTrue] = useState(true);
 
     const handleChange = (event: SelectChangeEvent) => {
         setGroupPick(event.target.value as string);
         resetField(`payment.${id}.Groupid`, {
             defaultValue: event.target.value as string,
         });
+        setChekedTrue(false)
     };
 
     const handleExchangePick = (event: SelectChangeEvent) => {
@@ -104,9 +109,14 @@ export default function FolioPayment({
                 dateAdapter={AdapterDateFns}
                 adapterLocale={mn}
             >
-                <Stack direction="column" spacing={1} mb={1}>
-                    <Stack direction="row" spacing={2} alignItems="center">
-                        <Typography>Type</Typography>
+
+                <Stack direction={{xs:'row', md:"column", lg:"column"}} spacing={{xs: '20px', md: '8px', lg: '8px'}} pb={1}>
+
+                <Stack direction='row' spacing='20px'>
+                    <Stack direction='column' spacing={1} width='100%'>
+                        <Typography fontSize={16} fontWeight={400}>
+                            Төрөл
+                        </Typography>
 
                         <Select
                             value={groupPick}
@@ -125,12 +135,16 @@ export default function FolioPayment({
                                 );
                             })}
                         </Select>
-                        {groupPick ? (
-                            <Select
+
+                    </Stack>
+                    <Stack direction='column' spacing={1} justifyContent='flex-end' width='100%'>
+
+                    <Select
                                 value={typePick}
                                 {...register(`payment.${id}.ItemID`)}
                                 onChange={handleTypeChange}
                                 fullWidth
+                                disabled={chekedTrue}
                             >
                                 {newchargeType?.map((element: any) => {
                                     return (
@@ -143,20 +157,17 @@ export default function FolioPayment({
                                     );
                                 })}
                             </Select>
-                        ) : (
-                            <div></div>
-                        )}
-                    </Stack>
+                            </Stack>
+                </Stack>
 
-                    {typePick ? (
-                        <div>
-                            <Stack direction="column" spacing={1}>
-                                <Stack
-                                    direction="row"
-                                    spacing={2}
-                                    alignItems="center"
-                                >
-                                    <Select value={exchangeRatePick} 
+                <Stack direction='row' spacing='20px'>
+
+                    <Stack direction='column' spacing={1} width='100%'>
+                    <Typography fontSize={16} fontWeight={400}>
+                            Валют
+                        </Typography>
+
+                        <Select value={exchangeRatePick} 
                                     {...register(`payment.${id}.PayCurrencyID`)}
                                     onChange={handleExchangePick} 
                                 fullWidth>
@@ -173,37 +184,56 @@ export default function FolioPayment({
                                     }
 
                                     </Select>
+                    </Stack>
+                    <Stack direction='column' spacing={1} width='100%'>
+                    <Typography fontSize={16} fontWeight={400}>
+                            Төлөх дүн
+                        </Typography>
 
-                                    <Typography>Amount</Typography>
-
-                                    <TextField  type="number" min={0}
+                        <TextField  type="number" min={0}
                                         {...register(`payment.${id}.Amount`)}
                                         name={`payment.${id}.Amount`}
                                         fullWidth
                                         onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                     />
-                                </Stack>
 
-                                <Stack
-                                    direction="column"
-                                    spacing={2}
-                                    alignItems="center"
-                                >
-                                    <Typography>Description</Typography>
+                    </Stack>
+                </Stack>
+
+                <Stack direction='row' spacing='20px' pb={2}>
+                <Stack direction='column' spacing={1} width='100%'>
+
+
+                    <Typography>Тайлбар</Typography>
 
                                     <TextField 
                                         fullWidth
                                         {...register(`payment.${id}.Description`)}
                                         name={`payment.${id}.Description`}
                                         multiline
-                                        rows={3}
                                     />
-                                </Stack>
-                            </Stack>
-                        </div>
-                    ) : (
-                        <div></div>
-                    )}
+
+                </Stack>
+
+                <Stack direction='column' spacing={1} justifyContent='flex-end' >
+                        <Stack borderRadius='4px' border={1.5} width='50px' height='50px' borderColor='#e0e0e0' justifyContent='center' alignItems='center' onClick={()=>remove(id)}
+                        sx={{
+                            "&:hover":{
+                                borderColor:'#616161'
+                            }
+                        }}
+                        
+                        >
+                    
+                    <Iconify icon='bi:trash3' height='24px'/>
+                    
+                    </Stack>
+                    </Stack>
+
+                    
+
+                </Stack>
+                <Divider />
                 </Stack>
             </LocalizationProvider>
         </div>

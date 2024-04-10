@@ -40,6 +40,8 @@ const RoomCharge = ({ TransactionID }: any) => {
 
     const { data, error } = FolioItemSWR(FolioID);
 
+    console.log(data)
+
     useEffect(() => {
         if (data) {
             setEntity(data);
