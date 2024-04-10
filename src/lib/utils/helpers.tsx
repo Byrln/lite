@@ -171,3 +171,7 @@ export function formatNumber(value: any) {
 
     return formattedValue;
 }
+
+export function daysInMonth(month: any, year: any) {
+    return new Date(year, month, 0).getDate();
+}

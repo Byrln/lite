@@ -2,11 +2,14 @@ import useSWR from "swr";
 import axios from "lib/utils/axios";
 import { date } from "yup/lib/locale";
 import moment from "moment";
+import { daysInMonth } from "lib/utils/helpers";
 
 const urlPrefix = "/api/Report";
 export const balanceUrl = `${urlPrefix}/Balance`;
 export const checkedOutDetailedUrl = `${urlPrefix}/CheckedOut/Detailed`;
 export const breakfastUrl = `${urlPrefix}/Breakfast`;
+export const monthlyUrl = `${urlPrefix}/Monthly`;
+export const stayViewUrl = `${urlPrefix}/StayView`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -69,6 +72,47 @@ export const BreakfastSWR = (search: any, workingDate: any) => {
         });
 
     return useSWR(breakfastUrl, fetcher);
+};
+
+export const MonthlySWR = (search: any) => {
+    let tempSearch = {
+        Year: moment(search.CurrDate, "YYYY-MM-DD").year(),
+        Month: 11,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(monthlyUrl, fetcher);
+};
+
+export const StayViewSWR = (search: any) => {
+    console.log("search.CurrDate", search.CurrDate);
+    console.log(
+        "search.CurrDate",
+        moment(search.CurrDate, "YYYY-MM-DD").month()
+    );
+
+    let tempSearch = {
+        CurrDate: `${moment(search.CurrDate, "YYYY-MM-DD").year()}-${
+            moment(search.CurrDate, "YYYY-MM-DD").month() + 1
+        }-01`,
+        NumberOfDays: daysInMonth(
+            moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+            moment(search.CurrDate, "YYYY-MM-DD").year()
+        ),
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(stayViewUrl, fetcher);
 };
 
 export const ReportAPI = {
