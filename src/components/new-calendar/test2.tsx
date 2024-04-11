@@ -290,7 +290,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         textColor: "black",
                         border: "none",
                         entities: level2.events,
-                        statusColor: "white",
+                        statusColor: "#EFF0F6",
                     };
                 });
             });
@@ -361,7 +361,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 color: "white",
                                 textColor: "black",
                                 border: "none",
-                                statusColor: "white",
+                                statusColor: "#EFF0F6",
                             });
                         }
                     });
@@ -390,7 +390,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
             setItemData(itemDataConcated ? itemDataConcated : newItemDta);
         }
-    }, [items]);
+    }, [items, dayCount]);
 
     useEffect(() => {
         if (rooms && roomTypes) {
@@ -420,7 +420,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     }, [roomTypes, rooms]);
 
     useEffect(() => {
-        setHeight(window.innerHeight - 225);
+        setHeight(window.innerHeight - 200);
     }, [window.innerHeight]);
 
     const fetchTest = async () => {
@@ -629,17 +629,16 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const eventContent = (arg: any) => {
         // Customize the content and styles of each event
-        console.log("arg", arg);
         return (
             <div
                 style={{
                     background: "none",
                     padding: 0,
                     overflow: "hidden",
-                    margin: "-2px -1px",
+                    margin: "-2px -3px -2px -1px",
                     height: "100%",
                     textAlign:
-                        arg.event._def.extendedProps.statusColor != "white" ||
+                        arg.event._def.extendedProps.statusColor != "#EFF0F6" ||
                         arg.event.title == "Blocked"
                             ? "left"
                             : "center",
@@ -648,18 +647,41 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             ? "black"
                             : arg.event._def.extendedProps.statusColor,
                     color: arg.event._def.extendedProps.statusColor
-                        ? arg.event._def.extendedProps.statusColor == "white"
+                        ? arg.event._def.extendedProps.statusColor == "#EFF0F6"
                             ? "black"
                             : "white"
                         : arg.event.title == "Blocked"
                         ? "white"
                         : "black",
+                    border:
+                        arg.event._def.extendedProps.statusColor == "#EFF0F6"
+                            ? `1px solid #EFF0F6`
+                            : "null",
                 }}
             >
                 {/* Render event content */}
                 {arg.event.title}
             </div>
         );
+    };
+
+    const handleDayRender = (arg: any) => {
+        console.log("argarg", arg);
+        // Check if the current day is a weekend (Saturday or Sunday)
+        if (arg.date.getDay() === 0 || arg.date.getDay() === 6) {
+            arg.el.style.backgroundColor = "lightgray"; // Change background color for weekends
+        }
+    };
+
+    const resourceLabelClassNames = (resource: any) => {
+        console.log("resource", resource);
+        // Example: Assign 'parent-resource' class to parent resources, 'child-resource' class to child resources
+        return {
+            resourceLabel:
+                resource.resource._resource.parentId != ""
+                    ? "child-resource"
+                    : "parent-resource",
+        };
     };
 
     return (
@@ -764,6 +786,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         eventResize={handleEventResize}
                         eventClick={handleEventClick}
                         now={new Date(workingDate)}
+                        dayCellContent={handleDayRender}
                         nowIndicator={true}
                         height={height}
                         // slotLaneContent={slotLaneContent}
@@ -776,6 +799,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         }}
                         slotDuration="12:00:00"
                         slotLabelInterval={{ hours: 24 }}
+                        resourceAreaWidth={150}
+                        slotMinWidth={15}
+                        // Pass the custom class names
                         eventAllow={function (
                             dropInfo: any,
                             draggedEvent: any
@@ -812,7 +838,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                             style={{
                                                 textAlign: "center",
                                                 fontWeight: "normal",
-                                                margin: "12px 0px",
                                                 fontSize: "12px",
                                             }}
                                         >
@@ -821,12 +846,15 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                 availableRooms[0][
                                                     `D` +
                                                         (Difference_In_Days + 1)
-                                                ]}
+                                                ] &&
+                                                availableRooms[0][
+                                                    `D` +
+                                                        (Difference_In_Days + 1)
+                                                ].split("/")[0]}
                                         </div>
                                     ) : (
                                         <div
                                             style={{
-                                                padding: "12px",
                                                 fontSize: "12px",
                                             }}
                                         >

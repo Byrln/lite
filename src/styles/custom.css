@@ -168,7 +168,7 @@ td.color-FF66FF {
 }
 
 .fc-timeline-lane {
-    height: -webkit-fill-available;
+    height: 25px !important;
 }
 
 .fc-h-event {
@@ -180,5 +180,64 @@ td.color-FF66FF {
 }
 
 a.fc-event {
-    height: 100%;
+    height: 29px;
+}
+
+.fc-datagrid-cell-frame {
+    height: 25px !important;
+}
+
+.fc .fc-timeline-lane-frame {
+    height: 25px !important;
+    overflow: hidden;
+}
+
+.css-ojnl9a-MuiToolbar-root {
+    height: 50px !important;
+    min-height: 50px !important;
+}
+
+.css-1byr0tz {
+    padding-top: 70px;
+}
+.custom-parent-resource {
+    background-color: lightblue;
+}
+
+.css-1kgdhtw-MuiAvatar-root {
+    width: 30px;
+    height: 30px;
+}
+.fc-event-selected::after,
+.fc-event:focus::after {
+    height: 25px;
+    margin: 1px;
+}
+
+.fc-event-selected::before,
+.fc-event:focus::before {
+    height: 25px;
+}
+
+.fc-event-selected,
+.fc-event:focus {
+    box-shadow: 0px;
+    height: 25px;
+}
+
+.fc-datagrid-cell-cushion {
+    padding: 0px 8px !important;
+}
+
+.fc-resource-custom[id]:not([id^="\\d"]) {
+    /* Your custom styles here */
+    /* For example: */
+    background-color: lightblue;
+    color: white;
+}
+[class^="fc-resource-custom"][id*="[A-Za-z]"]:not([id^="\\d"]) {
+    /* Your custom styles here */
+    /* For example: */
+    background-color: lightblue;
+    color: white;
 }
