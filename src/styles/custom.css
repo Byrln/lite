@@ -163,8 +163,22 @@ td.color-FF66FF {
 
 .fc-event {
     height: 100%;
+    border: none;
+    margin: 0px;
 }
 
 .fc-timeline-lane {
     height: -webkit-fill-available;
+}
+
+.fc-h-event {
+    background-color: unset !important;
+}
+
+.fc-timeline-event .fc-event-main {
+    height: 100% !important;
+}
+
+a.fc-event {
+    height: 100%;
 }

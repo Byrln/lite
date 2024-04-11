@@ -181,27 +181,195 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         })();
     };
 
+    const groupEventsByDate = (events: any) => {
+        const groupedEvents: any = {};
+
+        events.forEach((event: any) => {
+            const startDate = new Date(event.start);
+            const endDate = new Date(event.end);
+            const resourceId = event.resourceId;
+
+            let currentDate = new Date(startDate); // Create a copy of startDate
+
+            while (currentDate <= endDate) {
+                const dateKey = currentDate.toISOString().split("T")[0];
+
+                if (!groupedEvents[dateKey]) {
+                    groupedEvents[dateKey] = {};
+                }
+
+                if (!groupedEvents[dateKey][resourceId]) {
+                    groupedEvents[dateKey][resourceId] = {
+                        date: dateKey,
+                        resourceId,
+                        count: 0,
+                        events: [],
+                    };
+                }
+
+                groupedEvents[dateKey][resourceId].count++;
+                groupedEvents[dateKey][resourceId].events.push(event);
+
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+        });
+
+        return Object.values(groupedEvents).map((dateGroup: any) =>
+            Object.values(dateGroup)
+        );
+    };
+
     useEffect(() => {
         if (items) {
             let itemDataConcated = null;
-            const newItemDta = items.map((obj: any) => {
-                return {
-                    id: obj.TransactionID,
-                    title: obj.GuestName,
-                    start: obj.StartDate,
-                    end: obj.EndDate,
-                    resourceId: obj.RoomID
-                        ? obj.RoomID
-                        : `${obj.RoomTypeName}-${obj.RoomTypeID}`,
-                    roomTypeID: obj.RoomTypeID,
-                    transactionID: obj.TransactionID,
-                    startDate: obj.StartDate,
-                    endDate: obj.EndDate,
-
-                    editable: true,
-                    color: `#${obj.StatusColor}`,
-                };
+            let newItemDta = items.map((obj: any) => {
+                return obj.RoomID
+                    ? {
+                          id: obj.TransactionID,
+                          title: obj.GuestName,
+                          start: obj.StartDate,
+                          end: obj.EndDate,
+                          resourceId: obj.RoomID
+                              ? obj.RoomID
+                              : `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                          roomTypeID: obj.RoomTypeID,
+                          transactionID: obj.TransactionID,
+                          startDate: obj.StartDate,
+                          endDate: obj.EndDate,
+                          statusColor: `#${obj.StatusColor}`,
+                          editable: true,
+                          color: `unset`,
+                          textColor: "black",
+                          border: "none",
+                      }
+                    : {};
             });
+            newItemDta = newItemDta.filter(
+                (event: any) => Object.keys(event).length > 0
+            );
+
+            let noRooms = items.map((obj: any) => {
+                return !obj.RoomID
+                    ? {
+                          id: obj.TransactionID,
+                          title: obj.GuestName,
+                          start: obj.StartDate,
+                          end: obj.EndDate,
+                          resourceId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                          roomTypeID: obj.RoomTypeID,
+                          transactionID: obj.TransactionID,
+                          startDate: obj.StartDate,
+                          endDate: obj.EndDate,
+                          statusColor: `#${obj.StatusColor}`,
+                          editable: true,
+                          color: `unset`,
+                          textColor: "black",
+                          border: "none",
+                      }
+                    : {};
+            });
+
+            noRooms = noRooms.filter(
+                (event: any) => Object.keys(event).length > 0
+            );
+
+            const groupedEvents = groupEventsByDate(noRooms);
+
+            let letNewEvents = groupedEvents.flatMap((dateGroup: any) => {
+                return dateGroup.map((level2: any, index: any) => {
+                    return {
+                        id: `${level2.resourceId}-${index}`,
+                        title: level2.count,
+                        start: `${level2.date} 00:00:00`,
+                        end: `${level2.date} 23:59:59`,
+                        resourceId: level2.resourceId,
+                        startDate: `${level2.date} 00:00:00`,
+                        endDate: `${level2.date} 23:59:59`,
+                        editable: true,
+                        color: "white",
+                        textColor: "black",
+                        border: "none",
+                        entities: level2.events,
+                        statusColor: "white",
+                    };
+                });
+            });
+
+            let doesCombinationExist = function (
+                eventsArray: any,
+                startDateToCheck: any,
+                resourceIdToCheck: any
+            ) {
+                for (const event of eventsArray) {
+                    if (
+                        event.startDate === startDateToCheck &&
+                        event.resourceId === resourceIdToCheck
+                    ) {
+                        return event;
+                    }
+                }
+                return false;
+            };
+
+            let roomTypesObj: any = [];
+            for (let i = 0; i < dayCount; i++) {
+                const currentDate = new Date(
+                    new Date(searchCurrDate).getTime()
+                ); // Create a new Date object to avoid modifying the original date
+                currentDate.setDate(currentDate.getDate() + i); // Increment the date by i days
+
+                let cols: any = [];
+
+                roomTypes &&
+                    roomTypes.map((obj: any) => {
+                        if (
+                            doesCombinationExist(
+                                letNewEvents,
+                                `${moment(currentDate).format(
+                                    "YYYY-MM-DD"
+                                )} 00:00:00`,
+                                `${obj.RoomTypeName}-${obj.RoomTypeID}`
+                            )
+                        ) {
+                            roomTypesObj.push(
+                                doesCombinationExist(
+                                    letNewEvents,
+                                    `${moment(currentDate).format(
+                                        "YYYY-MM-DD"
+                                    )} 00:00:00`,
+                                    `${obj.RoomTypeName}-${obj.RoomTypeID}`
+                                )
+                            );
+                        } else {
+                            roomTypesObj.push({
+                                id: `${obj.RoomTypeName}-${obj.RoomTypeID}-${obj.SortOrder}`,
+                                title: 0,
+                                start: `${moment(currentDate).format(
+                                    "YYYY-MM-DD"
+                                )} 00:00:00`,
+                                end: `${moment(currentDate).format(
+                                    "YYYY-MM-DD"
+                                )} 23:59:59`,
+                                resourceId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                                startDate: `${moment(currentDate).format(
+                                    "YYYY-MM-DD"
+                                )} 00:00:00`,
+                                endDate: `${moment(currentDate).format(
+                                    "YYYY-MM-DD"
+                                )} 23:59:59`,
+                                editable: true,
+                                color: "white",
+                                textColor: "black",
+                                border: "none",
+                                statusColor: "white",
+                            });
+                        }
+                    });
+                roomTypes;
+            }
+
+            itemDataConcated = newItemDta.concat(roomTypesObj);
+
             if (roomBlocks) {
                 const newRoomBlockDta = roomBlocks.map((obj: any) => {
                     return {
@@ -217,7 +385,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     };
                 });
 
-                itemDataConcated = newItemDta.concat(newRoomBlockDta);
+                itemDataConcated = itemDataConcated.concat(newRoomBlockDta);
             }
 
             setItemData(itemDataConcated ? itemDataConcated : newItemDta);
@@ -228,17 +396,17 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         if (rooms && roomTypes) {
             const newRoomTypeData = roomTypes.map((obj: any) => {
                 return {
-                    id: `${obj.RoomTypeID}-${obj.RoomTypeID}`,
+                    id: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
                     title: obj.RoomTypeName,
                     SortOrder: obj.SortOrder,
                 };
             });
             const newData = rooms.map((obj: any) => {
                 return {
-                    parentId: `${obj.RoomTypeID}-${obj.RoomTypeID}`,
+                    parentId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
                     roomTypeId: obj.RoomTypeID,
                     id: obj.RoomID,
-                    title: obj.RoomNo,
+                    resourceLaneContent: obj.RoomNo,
                     MaxAdult: obj.MaxAdult,
                     MaxChild: obj.MaxChild,
                     BaseAdult: obj.BaseAdult,
@@ -448,7 +616,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     const [cashierOpen, setCashierOpen] = useState(false);
-    console.log("cashierActive", cashierActive);
 
     const handleCashierOpen = () => {
         setCashierOpen(true);
@@ -458,6 +625,41 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         handleModal();
         setCashierOpen(false);
         router.replace("/payment/cashier");
+    };
+
+    const eventContent = (arg: any) => {
+        // Customize the content and styles of each event
+        console.log("arg", arg);
+        return (
+            <div
+                style={{
+                    background: "none",
+                    padding: 0,
+                    overflow: "hidden",
+                    margin: "-2px -1px",
+                    height: "100%",
+                    textAlign:
+                        arg.event._def.extendedProps.statusColor != "white" ||
+                        arg.event.title == "Blocked"
+                            ? "left"
+                            : "center",
+                    backgroundColor:
+                        arg.event.title == "Blocked"
+                            ? "black"
+                            : arg.event._def.extendedProps.statusColor,
+                    color: arg.event._def.extendedProps.statusColor
+                        ? arg.event._def.extendedProps.statusColor == "white"
+                            ? "black"
+                            : "white"
+                        : arg.event.title == "Blocked"
+                        ? "white"
+                        : "black",
+                }}
+            >
+                {/* Render event content */}
+                {arg.event.title}
+            </div>
+        );
     };
 
     return (
@@ -564,6 +766,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         now={new Date(workingDate)}
                         nowIndicator={true}
                         height={height}
+                        // slotLaneContent={slotLaneContent}
+                        eventContent={eventContent}
                         visibleRange={{
                             start: timeStart,
                             end: moment(timeStart)
@@ -593,6 +797,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 type: "resourceTimeline",
                                 duration: { days: dayCount },
                                 dayHeaderContent: customHeader,
+
                                 slotLabelContent: (arg: any) => {
                                     arg.date.setHours(8);
                                     var Difference_In_Time =

@@ -9,7 +9,7 @@ export const balanceUrl = `${urlPrefix}/Balance`;
 export const checkedOutDetailedUrl = `${urlPrefix}/CheckedOut/Detailed`;
 export const breakfastUrl = `${urlPrefix}/Breakfast`;
 export const monthlyUrl = `${urlPrefix}/Monthly`;
-export const stayViewUrl = `${urlPrefix}/StayView`;
+export const stayViewUrl = `${urlPrefix}/StayView1`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -100,10 +100,11 @@ export const StayViewSWR = (search: any) => {
         CurrDate: `${moment(search.CurrDate, "YYYY-MM-DD").year()}-${
             moment(search.CurrDate, "YYYY-MM-DD").month() + 1
         }-01`,
-        NumberOfDays: daysInMonth(
-            moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
-            moment(search.CurrDate, "YYYY-MM-DD").year()
-        ),
+        NumberOfDays:
+            daysInMonth(
+                moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+                moment(search.CurrDate, "YYYY-MM-DD").year()
+            ) - 1,
     };
 
     const fetcher = async (url: any) =>

@@ -76,48 +76,66 @@ const ReportingList = ({ title, workingDate }: any) => {
             {}
         );
 
+    const generateColumns = (data: any) => {
+        const datesSet: any = new Set();
+
+        data.forEach((room: any) => {
+            const currDate = new Date(room.CurrDate);
+            const dateKey = room.CurrDate;
+
+            datesSet.add(dateKey);
+        });
+
+        // Convert the Set back to an array and sort it by date
+        const columns = [...datesSet].sort();
+
+        return columns;
+    };
+
     useEffect(() => {
         if (data) {
-            let tempValue = groupBy(data, "CustomerName");
+            console.log("data", generateColumns(data));
+            // let tempValue = groupBy(data, "CustomerName");
 
-            setReportData(tempValue);
+            // setReportData(tempValue);
 
-            let tempTotal = 0;
-            {
-                tempValue &&
-                    Object.keys(tempValue).forEach(
-                        (key) =>
-                            (tempTotal =
-                                tempTotal +
-                                tempValue[key].reduce(
-                                    (acc: any, obj: any) => acc + obj.Balance,
-                                    0
-                                ))
-                    );
-            }
-            setTotalBalance(tempTotal);
-            setRerenderKey((prevKey) => prevKey + 1);
-            // if (
-            //     search &&
-            //     search.CustomerID &&
-            //     search.CustomerID != "" &&
-            //     search.CustomerID != "0"
-            // ) {
-            //     let customerTempData = customerData.filter(
-            //         (element: any) => element.CustomerID == search.CustomerID
-            //     );
-            //     if (customerTempData.length > 0) {
-            //         setCustomerName(customerTempData[0].CustomerName);
-            //     } else {
-            //         setCustomerName("Бүгд");
-            //     }
-            // } else {
-            //     if (search.CustomerID == "0") {
-            //         setCustomerName("N/A");
-            //     } else {
-            //         setCustomerName("Бүгд");
-            //     }
+            // let tempTotal = 0;
+            // {
+            //     tempValue &&
+            //         Object.keys(tempValue).forEach(
+            //             (key) =>
+            //                 (tempTotal =
+            //                     tempTotal +
+            //                     tempValue[key].reduce(
+            //                         (acc: any, obj: any) => acc + obj.Balance,
+            //                         0
+            //                     ))
+            //         );
             // }
+
+            // setTotalBalance(tempTotal);
+            // setRerenderKey((prevKey) => prevKey + 1);
+            // // if (
+            // //     search &&
+            // //     search.CustomerID &&
+            // //     search.CustomerID != "" &&
+            // //     search.CustomerID != "0"
+            // // ) {
+            // //     let customerTempData = customerData.filter(
+            // //         (element: any) => element.CustomerID == search.CustomerID
+            // //     );
+            // //     if (customerTempData.length > 0) {
+            // //         setCustomerName(customerTempData[0].CustomerName);
+            // //     } else {
+            // //         setCustomerName("Бүгд");
+            // //     }
+            // // } else {
+            // //     if (search.CustomerID == "0") {
+            // //         setCustomerName("N/A");
+            // //     } else {
+            // //         setCustomerName("Бүгд");
+            // //     }
+            // // }
         }
     }, [data]);
 
