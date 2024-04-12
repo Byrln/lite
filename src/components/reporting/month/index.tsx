@@ -104,7 +104,9 @@ const ReportingList = ({ title, workingDate }: any) => {
             console.log("data", generateColumns(data));
             console.log("data2", data);
             setColumns(generateColumns(data));
-            let tempData = data.filter((room: any) => room.Sort2 != -1);
+            let tempData = data.filter(
+                (room: any) => room.Sort2 != -1 && room.RoomID != -1
+            );
 
             let groupedRooms: { [key: number]: typeof tempData } =
                 tempData.reduce((groups: any, room: any) => {
