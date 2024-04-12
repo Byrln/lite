@@ -34,6 +34,8 @@ const ReportingList = ({ title, workingDate }: any) => {
     const [rerenderKey, setRerenderKey] = useState(0);
     const { data: customerData, error: customerError } = CustomerSWR(0);
     const [customerName, setCustomerName]: any = useState("Бүгд");
+    const [columns, setColumns]: any = useState();
+    const [groupminus1, setGroupminus1]: any = useState();
 
     const [search, setSearch] = useState({
         CurrDate: moment(dateStringToObj(workingDate)),
@@ -46,6 +48,11 @@ const ReportingList = ({ title, workingDate }: any) => {
         pageStyle: `@media print {
             @page {
               padding: 20px;
+            }
+            .css-ztacej-MuiTableCell-root{
+                padding:6px !important
+                font-size: 9px !important;
+    line-height: 14px;
             }
             .MuiTableCell-root{
                 border:1px solid !important;
@@ -95,6 +102,62 @@ const ReportingList = ({ title, workingDate }: any) => {
     useEffect(() => {
         if (data) {
             console.log("data", generateColumns(data));
+            console.log("data2", data);
+            setColumns(generateColumns(data));
+            let tempData = data.filter((room: any) => room.Sort2 != -1);
+
+            let groupedRooms: { [key: number]: typeof tempData } =
+                tempData.reduce((groups: any, room: any) => {
+                    const key = room.RoomID;
+                    if (!groups[key]) {
+                        groups[key] = [];
+                    }
+                    groups[key].push(room);
+                    return groups;
+                }, {});
+
+            let sortedGroups = Object.values(groupedRooms).sort(
+                (a, b) => a[0].Sort1 - b[0].Sort1
+            );
+
+            sortedGroups.forEach((group: typeof tempData) => {
+                group.sort((a: any, b: any) => {
+                    if (a.Sort2 === -1 && b.Sort2 !== -1) {
+                        return 1; // Put Sort2 = -1 at the end
+                    } else if (a.Sort2 !== -1 && b.Sort2 === -1) {
+                        return -1; // Put Sort2 = -1 at the end
+                    } else if (a.Sort2 === b.Sort2) {
+                        return (
+                            new Date(a.CurrDate).getTime() -
+                            new Date(b.CurrDate).getTime()
+                        );
+                    } else {
+                        return a.Sort2 - b.Sort2;
+                    }
+                });
+            });
+
+            // Sort rooms within each group by CurrDate
+            sortedGroups.forEach((group: typeof tempData) => {
+                group.sort(
+                    (a: any, b: any) =>
+                        new Date(a.CurrDate).getTime() -
+                        new Date(b.CurrDate).getTime()
+                );
+            });
+            console.log("data3", sortedGroups);
+            setReportData(sortedGroups);
+
+            let groupminus1 = data.filter((room: any) => room.Sort2 == -1);
+
+            groupminus1.sort(
+                (a: any, b: any) =>
+                    new Date(a.CurrDate).getTime() -
+                    new Date(b.CurrDate).getTime()
+            );
+            setGroupminus1(groupminus1);
+            console.log("groupminus1", groupminus1);
+
             // let tempValue = groupBy(data, "CustomerName");
 
             // setReportData(tempValue);
@@ -162,7 +225,7 @@ const ReportingList = ({ title, workingDate }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
-    console.log("reportData", reportData && Object.keys(reportData).length);
+
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -201,61 +264,9 @@ const ReportingList = ({ title, workingDate }: any) => {
                     style={{ textAlign: "center" }}
                     className="mb-3"
                 >
-                    Өдрийн тайлан
+                    Сарын тайлан
                 </Typography>
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
-                        {" "}
-                        {/* <Typography
-                            variant="body1"
-                            gutterBottom
-                            className="mr-1"
-                        >
-                            <span style={{ fontWeight: "bold" }}>
-                                {" "}
-                                Эх.Хугацаа :{" "}
-                            </span>{" "}
-                            {moment(search.StartDate, "YYYY-MM-DD").format(
-                                "YYYY-MM-DD"
-                            ) +
-                                " " +
-                                (search.StartTime
-                                    ? search.StartTime.toString() + ":00"
-                                    : "00:00:00")}
-                        </Typography> */}
-                    </Grid>
-                    {/* <Grid item xs={4}>
-                        <Typography
-                            variant="body1"
-                            gutterBottom
-                            className="mr-1"
-                        >
-                            <span style={{ fontWeight: "bold" }}>
-                                {" "}
-                                Дуус.Хугацаа :{" "}
-                            </span>{" "}
-                            {moment(search.EndDate, "YYYY-MM-DD").format(
-                                "YYYY-MM-DD"
-                            ) +
-                                " " +
-                                (search.EndTime
-                                    ? search.EndTime.toString() + ":59"
-                                    : "23:59:59")}
-                        </Typography>
-                    </Grid> */}
-                    <Grid item xs={4}>
-                        <Typography
-                            variant="body1"
-                            gutterBottom
-                            className="mr-1"
-                        >
-                            <span style={{ fontWeight: "bold" }}>
-                                {" "}
-                                Харилцагч :{" "}
-                            </span>{" "}
-                            {customerName}
-                        </Typography>
-                    </Grid>
                     <Grid item xs={12}>
                         <Table
                             sx={{ minWidth: 650 }}
@@ -265,73 +276,176 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <TableHead>
                                 <TableRow>
-                                    <TableCell style={{ fontWeight: "bold" }}>
-                                        Өр.Төрөл
+                                    <TableCell
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "6px",
+                                            fontSize: "9px",
+                                            lineHeight: "14px",
+                                        }}
+                                        key={"№"}
+                                    >
+                                        №
                                     </TableCell>
                                     <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "6px",
+                                            fontSize: "9px",
+                                            lineHeight: "14px",
+                                        }}
+                                        key={"roomType"}
                                     >
-                                        Зочны нэр
+                                        Өрөөний төрөл
                                     </TableCell>
                                     <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "6px",
+                                            fontSize: "9px",
+                                            lineHeight: "14px",
+                                        }}
+                                        key={"room"}
                                     >
-                                        Төлөв
+                                        Өрөө
                                     </TableCell>
-                                    <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Ирэх
-                                    </TableCell>
-                                    <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Гарах
-                                    </TableCell>
-                                    <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Эх.сур
-                                    </TableCell>
-                                    <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Тооц.№
-                                    </TableCell>
-                                    <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Тариф.төр
-                                    </TableCell>
-                                    <TableCell
-                                        align="right"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Нийт төлбөр
-                                    </TableCell>
-                                    <TableCell
-                                        align="right"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Төлсөн
-                                    </TableCell>
-                                    <TableCell
-                                        align="right"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Үлдэгдэл
-                                    </TableCell>
+                                    {columns &&
+                                        Object.keys(columns).map((key) => (
+                                            <TableCell
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    padding: "6px",
+                                                    fontSize: "9px",
+                                                    lineHeight: "14px",
+                                                }}
+                                                key={key}
+                                            >
+                                                {moment(columns[key]).format(
+                                                    "MM.DD"
+                                                )}
+                                            </TableCell>
+                                        ))}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {reportData &&
+                                    reportData.map(
+                                        (roomType: any, index: any) => (
+                                            <TableRow
+                                                key={index}
+                                                sx={{
+                                                    "&:last-child td, &:last-child th":
+                                                        { border: 0 },
+                                                }}
+                                            >
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        padding: "6px",
+                                                        fontSize: "9px",
+                                                        lineHeight: "14px",
+                                                    }}
+                                                    colSpan={1}
+                                                >
+                                                    {index + 1}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        padding: "6px",
+                                                        fontSize: "9px",
+                                                        lineHeight: "14px",
+                                                    }}
+                                                    colSpan={1}
+                                                >
+                                                    {roomType[0].RoomTypeName}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        padding: "6px",
+                                                        fontSize: "9px",
+                                                        lineHeight: "14px",
+                                                    }}
+                                                    colSpan={1}
+                                                >
+                                                    {roomType[0].RoomNo}
+                                                </TableCell>
+                                                {roomType &&
+                                                    roomType.map(
+                                                        (
+                                                            roomType2: any,
+                                                            index: any
+                                                        ) => (
+                                                            <TableCell
+                                                                key={`${roomType2.RoomTypeID}-${roomType2.RoomID}-${roomType2.CurrDate}`}
+                                                                component="th"
+                                                                scope="row"
+                                                                style={{
+                                                                    padding:
+                                                                        "6px",
+                                                                    fontSize:
+                                                                        "9px",
+                                                                    lineHeight:
+                                                                        "14px",
+                                                                }}
+                                                                colSpan={1}
+                                                            >
+                                                                {
+                                                                    roomType2.CurrName
+                                                                }
+                                                            </TableCell>
+                                                        )
+                                                    )}
+                                            </TableRow>
+                                        )
+                                    )}
+                                <TableRow
+                                    key={"total"}
+                                    sx={{
+                                        "&:last-child td, &:last-child th": {
+                                            border: 0,
+                                        },
+                                    }}
+                                >
+                                    <TableCell
+                                        key={"1"}
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            padding: "6px",
+                                            fontSize: "9px",
+                                            lineHeight: "14px",
+                                        }}
+                                        colSpan={3}
+                                    ></TableCell>
+                                    {groupminus1 &&
+                                        groupminus1.map(
+                                            (groupminus: any, index: any) => (
+                                                <TableCell
+                                                    key={index}
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        padding: "6px",
+                                                        fontSize: "9px",
+                                                        lineHeight: "14px",
+                                                    }}
+                                                    colSpan={1}
+                                                >
+                                                    {
+                                                        groupminus.CurrAll.split(
+                                                            "/"
+                                                        )[0]
+                                                    }
+                                                </TableCell>
+                                            )
+                                        )}
+                                </TableRow>
+                                {/* {reportData &&
                                     Object.keys(reportData).map(
                                         (key) => (
                                             <>
@@ -558,7 +672,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                                     >
                                         {formatPrice(totalBalance)}
                                     </TableCell>
-                                </TableRow>
+                                </TableRow> */}
 
                                 {/* {reportData &&
                                     reportData.map((row: any) => (
