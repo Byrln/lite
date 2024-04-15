@@ -406,6 +406,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     parentId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
                     roomTypeId: obj.RoomTypeID,
                     id: obj.RoomID,
+                    title: obj.RoomNo,
                     resourceLaneContent: obj.RoomNo,
                     MaxAdult: obj.MaxAdult,
                     MaxChild: obj.MaxChild,
@@ -671,17 +672,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         if (arg.date.getDay() === 0 || arg.date.getDay() === 6) {
             arg.el.style.backgroundColor = "lightgray"; // Change background color for weekends
         }
-    };
-
-    const resourceLabelClassNames = (resource: any) => {
-        console.log("resource", resource);
-        // Example: Assign 'parent-resource' class to parent resources, 'child-resource' class to child resources
-        return {
-            resourceLabel:
-                resource.resource._resource.parentId != ""
-                    ? "child-resource"
-                    : "parent-resource",
-        };
     };
 
     return (
