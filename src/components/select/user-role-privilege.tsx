@@ -13,6 +13,8 @@ import {
 import { mutate } from "swr";
 
 import { UserRolePrivilegeSWR } from "lib/api/user-role";
+import { GetPrivilegesByUserSWR } from "lib/api/user";
+
 import { useEffect, useState } from "react";
 
 const UserRolePrivilegeSelect = ({
@@ -21,8 +23,11 @@ const UserRolePrivilegeSelect = ({
     type,
     title,
     UserRoleID,
+    UserID,
 }: any) => {
-    const { data, error } = UserRolePrivilegeSWR(UserRoleID);
+    const { data, error } = UserID
+        ? GetPrivilegesByUserSWR({ UserID: UserID })
+        : UserRolePrivilegeSWR(UserRoleID);
     const [permissions, setPermissions] = useState(data ? data : []);
     if (error) return <Alert severity="error">{error.message}</Alert>;
 

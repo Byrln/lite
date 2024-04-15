@@ -29,6 +29,15 @@ export const GetPrivilegesSWR = () => {
     return useSWR(`${urlPrefix}/GetPrivileges`, fetcher);
 };
 
+export const GetPrivilegesByUserSWR = (value: any) => {
+    const fetcher = async (url: any) =>
+        await axios
+            .post(`${urlPrefix}/GetPrivileges`, value)
+            .then((res: any) => res.data.JsonData);
+
+    return useSWR(`${urlPrefix}/GetPrivileges`, fetcher);
+};
+
 export const UserByRoleSWR = (search: any) => {
     if (!search.UserID) {
         search.UserID = null;
@@ -94,6 +103,18 @@ export const UserAPI = {
 
         const { data, status } = await axios.post(
             `${urlPrefix}/${apiUrl}`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    savePrivileges: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/SavePrivileges`,
             values
         );
 

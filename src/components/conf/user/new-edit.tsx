@@ -2,12 +2,14 @@ import { Controller, useForm } from "react-hook-form";
 import { FormControlLabel, TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState, useEffect } from "react";
 
 import NewEditForm from "components/common/new-edit-form";
 import { UserAPI, listUrl } from "lib/api/user";
 import { useAppState } from "lib/context/app";
 import LanguageSelect from "components/select/language";
 import UserRoleSelect from "components/select/user-role";
+import UserRolePrivilegeSelect from "components/select/user-role-privilege";
 
 const validationSchema = yup.object().shape({
     UserName: yup.string().required("Бөглөнө үү"),
@@ -26,6 +28,63 @@ const NewEdit = () => {
         handleSubmit,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
+    const [entity, setEntity]: any = useState(null);
+    const [editValue, setEditValue]: any = useState(null);
+
+    const [userID, setUserID]: any = useState(
+        state.editId ? state.editId : null
+    );
+
+    useEffect(() => {
+        console.log("editValue", editValue);
+        if (editValue && editValue.UserRoleID) {
+            setEntity({
+                ...entity,
+                ["UserRoleID"]: Number(editValue.UserRoleID),
+            });
+        }
+    }, [editValue]);
+
+    useEffect(() => {
+        console.log("editValue", editValue);
+        if (editValue) {
+            if (entity.UserRoleID != editValue.UserRoleID) setUserID(null);
+        }
+    }, [entity]);
+
+    const customSubmit = async (values: any) => {
+        try {
+            let privileges: any = [];
+
+            if (values.ActionID) {
+                values.ActionID.forEach((detail: any, index: any) => {
+                    privileges.push({ ActionID: detail, Status: true });
+                });
+            }
+            delete values.ActionID;
+
+            let response: any;
+            if (state.editId) {
+                response = await UserAPI.update(values);
+            } else {
+                response = await UserAPI.new(values);
+            }
+
+            if (
+                response &&
+                response.data &&
+                response.data.JsonData &&
+                response.data.JsonData[0] &&
+                response.data.JsonData[0].UserID
+            ) {
+                await UserAPI.savePrivileges({
+                    UserID: response.data.JsonData[0].UserID,
+                    Privileges: privileges,
+                });
+            }
+        } finally {
+        }
+    };
 
     return (
         <NewEditForm
@@ -36,6 +95,8 @@ const NewEdit = () => {
             }}
             reset={reset}
             handleSubmit={handleSubmit}
+            customSubmit={customSubmit}
+            setEntity={setEditValue}
         >
             <Grid container spacing={1}>
                 <Grid item xs={6}>
@@ -62,13 +123,7 @@ const NewEdit = () => {
                         helperText={errors.LoginName?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
-                    <UserRoleSelect
-                        register={register}
-                        errors={errors}
-                        field="UserRoleID"
-                    />
-                </Grid>
+
                 <Grid item xs={6}>
                     <LanguageSelect register={register} errors={errors} />
                 </Grid>
@@ -82,6 +137,15 @@ const NewEdit = () => {
                         margin="dense"
                         error={errors.Email?.message}
                         helperText={errors.Email?.message}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <UserRoleSelect
+                        register={register}
+                        errors={errors}
+                        field="UserRoleID"
+                        entity={entity}
+                        setEntity={setEntity}
                     />
                 </Grid>
                 {/* <Grid item xs={6}>
@@ -98,6 +162,48 @@ const NewEdit = () => {
                     />
                 </Grid> */}
             </Grid>
+
+            {entity && (
+                <>
+                    <UserRolePrivilegeSelect
+                        register={register}
+                        errors={errors}
+                        type={1}
+                        title="Front Office"
+                        UserRoleID={
+                            entity && entity.UserRoleID && entity.UserRoleID > 0
+                                ? entity.UserRoleID
+                                : state.editId
+                        }
+                        UserID={userID}
+                    />
+
+                    <UserRolePrivilegeSelect
+                        register={register}
+                        errors={errors}
+                        type={2}
+                        title="Configuration"
+                        UserRoleID={
+                            entity && entity.UserRoleID && entity.UserRoleID > 0
+                                ? entity.UserRoleID
+                                : state.editId
+                        }
+                        UserID={userID}
+                    />
+                    <UserRolePrivilegeSelect
+                        register={register}
+                        errors={errors}
+                        type={3}
+                        title="Reports"
+                        UserRoleID={
+                            entity && entity.UserRoleID && entity.UserRoleID > 0
+                                ? entity.UserRoleID
+                                : state.editId
+                        }
+                        UserID={userID}
+                    />
+                </>
+            )}
         </NewEditForm>
     );
 };
