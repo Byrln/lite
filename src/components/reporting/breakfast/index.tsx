@@ -12,7 +12,6 @@ import {
     TableRow,
     Box,
 } from "@mui/material";
-import ScrollContainer from "react-indiana-drag-scroll";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
 import { useForm } from "react-hook-form";
@@ -24,17 +23,11 @@ import { dateStringToObj } from "lib/utils/helpers";
 import { formatPrice } from "lib/utils/helpers";
 import CustomSearch from "components/common/custom-search";
 import { CustomerSWR } from "lib/api/customer";
-// import Search from "./search";
+import Search from "./search";
 
 const Breakfast = ({ title, workingDate }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
-    const [reportData, setReportData] = useState<any>(null);
-    const [totalBalance, setTotalBalance] = useState<any>(null);
-    const [ArrivalTime, setArrivalTime]: any = useState("00:00");
-    const [DepartureTime, setDepartureTime]: any = useState("23:59");
     const [rerenderKey, setRerenderKey] = useState(0);
-    const { data: customerData, error: customerError } = CustomerSWR(0);
-    const [customerName, setCustomerName]: any = useState("Бүгд");
     const [mandatoryData, setMandatoryData]: any = useState(null);
     const [totalMandatory, setTotalMandatory]: any = useState(null);
     const [totalNonMandatory, setTotalNonMandatory]: any = useState(null);
@@ -56,7 +49,7 @@ const Breakfast = ({ title, workingDate }: any) => {
     const fetchDatas = async () => {
         try {
             const mand: any = await ReportAPI.breakfast({
-                CurrDate: search.CurrDate,
+                CurrDate: search.CurrDate.format("YYYY-MM-DD"),
                 Mandatory: true,
             });
             if (mand) {
@@ -64,32 +57,43 @@ const Breakfast = ({ title, workingDate }: any) => {
                 let tempValueRoom = groupBy(mand, "RoomNo");
                 let tempValueGuest = groupBy(mand, "GuestName");
 
+                let tempGuestValue = 0;
+
                 Object.keys(tempValue).forEach((roomType) => {
                     const tempRoom = groupBy(tempValue[roomType], "RoomNo");
                     const tempGuest = groupBy(tempValue[roomType], "GuestName");
 
+                    tempValue[roomType][0].GuestCount = 0;
+                    tempValue[roomType].map((entity: any) => {
+                        tempValue[roomType][0].GuestCount =
+                            Number(tempValue[roomType][0].GuestCount) +
+                            Number(entity.Adult) +
+                            Number(entity.Child);
+                    });
+                    tempGuestValue =
+                        tempGuestValue + tempValue[roomType][0].GuestCount;
                     tempValue[roomType][0].RoomCount =
                         Object.keys(tempRoom).length;
-                    tempValue[roomType][0].GuestCount =
-                        Object.keys(tempGuest).length;
                 });
 
                 setTotalMandatory({
                     Total: mand.length,
                     RoomCount: Object.keys(tempValueRoom).length,
-                    GuestCount: Object.keys(tempValueGuest).length,
+                    GuestCount: tempGuestValue,
                 });
 
                 setMandatoryData(tempValue);
             }
             const nonmand: any = await ReportAPI.breakfast({
-                CurrDate: search.CurrDate,
+                CurrDate: search.CurrDate.format("YYYY-MM-DD"),
                 Mandatory: false,
             });
             if (nonmand) {
                 let tempNonValue = groupBy(nonmand, "RoomTypeName");
                 let tempNonValueRoom = groupBy(nonmand, "RoomNo");
                 let tempNonValueGuest = groupBy(nonmand, "GuestName");
+
+                let tempGuestValue = 0;
 
                 Object.keys(tempNonValue).forEach((roomType) => {
                     const tempRoom = groupBy(tempNonValue[roomType], "RoomNo");
@@ -98,16 +102,26 @@ const Breakfast = ({ title, workingDate }: any) => {
                         "GuestName"
                     );
 
+                    tempNonValue[roomType][0].GuestCount = 0;
+                    tempNonValue[roomType].map((entity: any) => {
+                        tempNonValue[roomType][0].GuestCount =
+                            Number(tempNonValue[roomType][0].GuestCount) +
+                            Number(entity.Adult) +
+                            Number(entity.Child);
+                    });
+                    tempGuestValue =
+                        tempGuestValue + tempNonValue[roomType][0].GuestCount;
                     tempNonValue[roomType][0].RoomCount =
                         Object.keys(tempRoom).length;
-                    tempNonValue[roomType][0].GuestCount =
-                        Object.keys(tempGuest).length;
+
+                    tempNonValue[roomType][0].RoomCount =
+                        Object.keys(tempRoom).length;
                 });
 
                 setTotalNonMandatory({
                     Total: nonmand.length,
                     RoomCount: Object.keys(tempNonValueRoom).length,
-                    GuestCount: Object.keys(tempNonValueGuest).length,
+                    GuestCount: tempGuestValue,
                 });
 
                 setNonMandatoryData(tempNonValue);
@@ -146,52 +160,6 @@ const Breakfast = ({ title, workingDate }: any) => {
           }`,
         content: () => componentRef.current,
     });
-
-    // useEffect(() => {
-    //     if (data) {
-    //         let tempValue = groupBy(data, "CustomerName");
-
-    //         setReportData(tempValue);
-
-    //         let tempTotal = 0;
-    //         {
-    //             tempValue &&
-    //                 Object.keys(tempValue).forEach(
-    //                     (key) =>
-    //                         (tempTotal =
-    //                             tempTotal +
-    //                             tempValue[key].reduce(
-    //                                 (acc: any, obj: any) => acc + obj.Balance,
-    //                                 0
-    //                             ))
-    //                 );
-    //         }
-    //         setTotalBalance(tempTotal);
-    //         setRerenderKey((prevKey) => prevKey + 1);
-    //         if (
-    //             search &&
-    //             search.CustomerID &&
-    //             search.CustomerID != "" &&
-    //             search.CustomerID != "0"
-    //         ) {
-    //             let customerTempData = customerData.filter(
-    //                 (element: any) => element.CustomerID == search.CustomerID
-    //             );
-    //             if (customerTempData.length > 0) {
-    //                 setCustomerName(customerTempData[0].CustomerName);
-    //             } else {
-    //                 setCustomerName("Бүгд");
-    //             }
-    //         } else {
-    //             if (search.CustomerID == "0") {
-    //                 setCustomerName("N/A");
-    //             } else {
-    //                 setCustomerName("Бүгд");
-    //             }
-    //         }
-    //     }
-    // }, [data]);
-    // console.log("mandatoryData", Object.keys(mandatoryData).length);
     const validationSchema = yup.object().shape({
         StartDate: yup.date().nullable(),
         EndDate: yup.date().nullable(),
@@ -235,15 +203,11 @@ const Breakfast = ({ title, workingDate }: any) => {
                     handleSubmit={handleSubmit}
                     reset={reset}
                 >
-                    {/* <Search
+                    <Search
                         register={register}
                         errors={errors}
                         control={control}
-                        setArrivalTime={setArrivalTime}
-                        ArrivalTime={ArrivalTime}
-                        setDepartureTime={setDepartureTime}
-                        DepartureTime={DepartureTime}
-                    /> */}
+                    />
                 </CustomSearch>
             </div>
 
@@ -300,12 +264,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                     <TableCell style={{ fontWeight: "bold" }}>
                                         №
                                     </TableCell>
-                                    {/* <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Төрөл
-                                    </TableCell> */}
+
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
@@ -341,185 +300,168 @@ const Breakfast = ({ title, workingDate }: any) => {
                             </TableHead>
                             <TableBody>
                                 {mandatoryData &&
-                                    Object.keys(mandatoryData).map(
-                                        (key) => (
-                                            <>
-                                                <TableRow
-                                                    key={key}
-                                                    sx={{
-                                                        "&:last-child td, &:last-child th":
-                                                            { border: 0 },
+                                    Object.keys(mandatoryData).map((key) => (
+                                        <>
+                                            <TableRow
+                                                key={key}
+                                                sx={{
+                                                    "&:last-child td, &:last-child th":
+                                                        { border: 0 },
+                                                }}
+                                            >
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        paddingLeft: "30px",
                                                     }}
+                                                    colSpan={11}
                                                 >
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                            paddingLeft: "30px",
-                                                        }}
-                                                        colSpan={11}
-                                                    >
-                                                        {key}
-                                                    </TableCell>
-                                                </TableRow>
-                                                {mandatoryData[key] &&
-                                                    Object.keys(
-                                                        mandatoryData[key]
-                                                    ).map((key2, index) => (
-                                                        <>
-                                                            <TableRow
-                                                                key={key}
-                                                                sx={{
-                                                                    "&:last-child td, &:last-child th":
-                                                                        {
-                                                                            border: 0,
-                                                                        },
-                                                                }}
+                                                    {key}
+                                                </TableCell>
+                                            </TableRow>
+                                            {mandatoryData[key] &&
+                                                Object.keys(
+                                                    mandatoryData[key]
+                                                ).map((key2, index) => (
+                                                    <>
+                                                        <TableRow
+                                                            key={key}
+                                                            sx={{
+                                                                "&:last-child td, &:last-child th":
+                                                                    {
+                                                                        border: 0,
+                                                                    },
+                                                            }}
+                                                        >
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
                                                             >
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {index + 1}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        mandatoryData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .CustomerName
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        mandatoryData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .GuestName
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        mandatoryData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .CountryName
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        mandatoryData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .RoomNo
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        mandatoryData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .Adult
-                                                                    }
-                                                                    /
-                                                                    {
-                                                                        mandatoryData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .Child
-                                                                    }
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        </>
-                                                    ))}
-                                                <TableRow
-                                                    key={key}
-                                                    sx={{
-                                                        "&:last-child td, &:last-child th":
-                                                            { border: 0 },
+                                                                {index + 1}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                            >
+                                                                {
+                                                                    mandatoryData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .CustomerName
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                            >
+                                                                {
+                                                                    mandatoryData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .GuestName
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                            >
+                                                                {
+                                                                    mandatoryData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .CountryName
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                            >
+                                                                {
+                                                                    mandatoryData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomNo
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                            >
+                                                                {
+                                                                    mandatoryData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .Adult
+                                                                }
+                                                                /
+                                                                {
+                                                                    mandatoryData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .Child
+                                                                }
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    </>
+                                                ))}
+                                            <TableRow
+                                                key={key}
+                                                sx={{
+                                                    "&:last-child td, &:last-child th":
+                                                        { border: 0 },
+                                                }}
+                                            >
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
                                                     }}
+                                                    align="right"
+                                                    colSpan={4}
+                                                ></TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    align="right"
+                                                    colSpan={1}
                                                 >
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        align="right"
-                                                        colSpan={4}
-                                                    ></TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        align="right"
-                                                        colSpan={1}
-                                                    >
-                                                        Өрөө:{" "}
-                                                        {mandatoryData &&
-                                                            mandatoryData[
-                                                                key
-                                                            ] &&
-                                                            mandatoryData[
-                                                                key
-                                                            ][0] &&
-                                                            mandatoryData[
-                                                                key
-                                                            ][0].RoomCount &&
-                                                            mandatoryData[
-                                                                key
-                                                            ][0].RoomCount}
-                                                    </TableCell>
+                                                    Өрөө:{" "}
+                                                    {mandatoryData &&
+                                                        mandatoryData[key] &&
+                                                        mandatoryData[key][0] &&
+                                                        mandatoryData[key][0]
+                                                            .RoomCount &&
+                                                        mandatoryData[key][0]
+                                                            .RoomCount}
+                                                </TableCell>
 
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        align="right"
-                                                        colSpan={1}
-                                                    >
-                                                        Зочин:{" "}
-                                                        {mandatoryData &&
-                                                            mandatoryData[
-                                                                key
-                                                            ] &&
-                                                            mandatoryData[
-                                                                key
-                                                            ][0] &&
-                                                            mandatoryData[
-                                                                key
-                                                            ][0].GuestCount &&
-                                                            mandatoryData[
-                                                                key
-                                                            ][0].GuestCount}
-                                                    </TableCell>
-                                                </TableRow>
-                                            </>
-                                        )
-                                        // console.log(
-                                        //     `${key}: ${reportData[key]}`
-                                        // );
-                                    )}
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    align="right"
+                                                    colSpan={1}
+                                                >
+                                                    Зочин:{" "}
+                                                    {mandatoryData &&
+                                                        mandatoryData[key] &&
+                                                        mandatoryData[key][0] &&
+                                                        mandatoryData[key][0]
+                                                            .GuestCount &&
+                                                        mandatoryData[key][0]
+                                                            .GuestCount}
+                                                </TableCell>
+                                            </TableRow>
+                                        </>
+                                    ))}
 
                                 <TableRow
                                     key={"total"}
@@ -597,7 +539,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            Өглөөний цайнд орох зочид
+                            Өглөөний цайнд орох магадлалтай зочид
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
@@ -634,12 +576,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                     <TableCell style={{ fontWeight: "bold" }}>
                                         №
                                     </TableCell>
-                                    {/* <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Төрөл
-                                    </TableCell> */}
+
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
