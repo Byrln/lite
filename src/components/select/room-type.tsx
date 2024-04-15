@@ -12,6 +12,8 @@ const RoomTypeSelect = ({
     baseStay,
     customRegisterName,
     RoomTypeID,
+    customError,
+    helperText,
 }: any) => {
     const [data, setData]: any = useState([]);
 
@@ -60,8 +62,8 @@ const RoomTypeSelect = ({
             )}
             select
             margin="dense"
-            error={errors.RoomTypeID?.message}
-            helperText={errors.RoomTypeID?.message}
+            error={customError ? customError : errors.RoomTypeID?.message}
+            helperText={helperText ? helperText : errors.RoomTypeID?.message}
             onChange={(evt: any) => {
                 eventRoomTypeChange(evt.target.value);
             }}

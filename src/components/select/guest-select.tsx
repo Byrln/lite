@@ -17,16 +17,15 @@ import { RoomTypeAPI } from "lib/api/room-type";
 
 const GuestSelect = ({
     register,
-    errors,
-    onRoomTypeChange,
-    baseStay,
+
     customRegisterName,
-    groupIndex,
-    RoomTypeID,
+
     resetField,
     selectedGuest,
     setSelectedGuest,
     id,
+    customError,
+    customHelperText,
 }: any) => {
     const [guests, setGuests] = useState([]);
     const [inputValue, setInputValue] = useState("");
@@ -93,10 +92,12 @@ const GuestSelect = ({
             setSelectedGuest(newValue);
             if (resetField) {
                 resetField(`TransactionDetail.${id}.GuestDetail.GuestName`, {
-                    defaultValue: newValue.label,
+                    defaultValue:
+                        newValue && newValue.label ? newValue.label : "",
                 });
                 resetField(`TransactionDetail.${id}.GuestID`, {
-                    defaultValue: newValue.value,
+                    defaultValue:
+                        newValue && newValue.value ? newValue.value : "",
                 });
             }
 
@@ -129,6 +130,8 @@ const GuestSelect = ({
                         {...params}
                         label="Зочин"
                         variant="outlined"
+                        error={customError}
+                        helperText={customHelperText}
                         {...register(
                             customRegisterName
                                 ? customRegisterName

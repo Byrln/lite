@@ -695,6 +695,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             activeSessionID &&
                                 activeSessionID == "-1" &&
                                 handleCashierOpen();
+                            dispatch({
+                                type: "editId",
+                                editId: null,
+                            });
                             handleModal(
                                 true,
                                 `Захиалга нэмэх`,

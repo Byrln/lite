@@ -323,6 +323,20 @@ const NewEdit = ({
                     customRegisterName={`TransactionDetail.${id}.RoomTypeID`}
                     baseStay={{ RoomTypeID: RoomTypeID }}
                     RoomTypeID={RoomTypeID}
+                    customError={
+                        errors &&
+                        errors?.TransactionDetail &&
+                        errors.TransactionDetail[id] &&
+                        errors.TransactionDetail[id].RoomTypeID &&
+                        errors.TransactionDetail[id].RoomTypeID.message
+                    }
+                    helperText={
+                        errors &&
+                        errors?.TransactionDetail &&
+                        errors.TransactionDetail[id] &&
+                        errors.TransactionDetail[id].RoomTypeID &&
+                        errors.TransactionDetail[id].RoomTypeID.message
+                    }
                 />
             </Grid>
             {RoomTypeID && (
@@ -350,6 +364,20 @@ const NewEdit = ({
                             nameKey={`TransactionDetail.${id}.Adult`}
                             register={register}
                             errors={errors}
+                            customError={
+                                errors &&
+                                errors?.TransactionDetail &&
+                                errors.TransactionDetail[id] &&
+                                errors.TransactionDetail[id].Adult &&
+                                errors.TransactionDetail[id].Adult.message
+                            }
+                            customHelperText={
+                                errors &&
+                                errors?.TransactionDetail &&
+                                errors.TransactionDetail[id] &&
+                                errors.TransactionDetail[id].Adult &&
+                                errors.TransactionDetail[id].Adult.message
+                            }
                             label={"Том хүн"}
                             onChange={onAdultChange}
                         />
@@ -425,6 +453,20 @@ const NewEdit = ({
                             selectedGuest={selectedGuest}
                             setSelectedGuest={setSelectedGuest}
                             id={id}
+                            customError={
+                                errors &&
+                                errors?.TransactionDetail &&
+                                errors.TransactionDetail[id] &&
+                                errors.TransactionDetail[id].GuestName &&
+                                errors.TransactionDetail[id].GuestName.message
+                            }
+                            customHelperText={
+                                errors &&
+                                errors?.TransactionDetail &&
+                                errors.TransactionDetail[id] &&
+                                errors.TransactionDetail[id].GuestName &&
+                                errors.TransactionDetail[id].GuestName.message
+                            }
                         />
                     </Grid>
 

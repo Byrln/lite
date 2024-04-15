@@ -14,6 +14,8 @@ const NumberSelect = ({
     numberMax,
     defaultValue,
     onChange,
+    customError,
+    customHelperText,
 }: any) => {
     const [data, setData]: any = useState([]);
     useEffect(() => {
@@ -33,8 +35,10 @@ const NumberSelect = ({
             {...register(nameKey)}
             select
             margin="dense"
-            error={errors[nameKey]?.message}
-            helperText={errors[nameKey]?.message}
+            error={customError ? customError : errors[nameKey]?.message}
+            helperText={
+                customHelperText ? customHelperText : errors[nameKey]?.message
+            }
             size="small"
             defaultValue={defaultValue ? defaultValue : 0}
             onChange={onChange}

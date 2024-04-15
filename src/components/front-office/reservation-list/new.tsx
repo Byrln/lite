@@ -45,7 +45,21 @@ import ColorPicker from "components/select/color";
 import { RateTypeSWR } from "lib/api/rate-type";
 
 const validationSchema = yup.object().shape({
-    DeparturedListName: yup.string().notRequired(),
+    ArrivalDate: yup.string().required("Ирэх огноо сонгоно уу!"),
+    ArrivalTime: yup.string().required("Ирэх цаг сонгоно уу!"),
+    DepartureDate: yup.string().required("Гарах огноо сонгоно уу!"),
+    DepartureTime: yup.string().required("Гарах цаг сонгоно уу!"),
+
+    TransactionDetail: yup
+        .array()
+        .nullable()
+        .of(
+            yup.object().shape({
+                RoomTypeID: yup.string().required("Өрөөний төрөл сонгоно уу!"),
+                Adult: yup.string().required("Том хүний тоо оруулна уу!"),
+                GuestName: yup.string().required("Зочин сонгоно уу!"),
+            })
+        ),
 });
 
 const NewEdit = ({
@@ -67,8 +81,6 @@ const NewEdit = ({
     const [ArrivalTime, setArrivalTime]: any = useState("14:00");
     const [DepartureTime, setDepartureTime]: any = useState("12:00");
     const { data: rateTypeData, error: rateTypeError } = RateTypeSWR({});
-
-    console.log("ArrivalTime", ArrivalTime);
 
     const [DepartureDate, setDepartureDate]: any = useState(
         dateEnd
@@ -211,7 +223,6 @@ const NewEdit = ({
     const customSubmit = async (values: any) => {
         try {
             let tempValues = { ...values };
-            console.log("values", values);
             tempValues.TransactionDetail[0].PayAmount = values.PayAmount;
             tempValues.TransactionDetail[0].PayCurrencyID =
                 values.PayCurrencyID;
