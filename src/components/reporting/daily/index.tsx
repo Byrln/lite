@@ -261,9 +261,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                                         "2px",
                                                                 }}
                                                             >
-                                                                {/* {
-                                                                    element.GuestName
-                                                                } */}
+                                                                {
+                                                                    element.CountryName
+                                                                }
                                                             </TableCell>
                                                             <TableCell
                                                                 component="th"
