@@ -18,6 +18,8 @@ import PrintIcon from "@mui/icons-material/Print";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
 
 import { CheckedOutDetailedSWR, checkedOutDetailedUrl } from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
@@ -40,8 +42,8 @@ const Folio = ({ title, workingDate }: any) => {
             }
             .MuiTableCell-root{
                 border:1px solid !important;
-                font-size:9px !important;
-                line-height:9px !important
+                font-size:8px !important;
+                line-height:8px !important
                 padding:4px !important
 
               }
@@ -49,8 +51,8 @@ const Folio = ({ title, workingDate }: any) => {
                 border:1px solid !important;
                 background-color: none !important;
                 color :inherit !important;
-                font-size:9px !important;
-                line-height:9px !important;
+                font-size:8px !important;
+                line-height:8px !important;
                 padding:4px !important
               ]
               }
@@ -93,7 +95,6 @@ const Folio = ({ title, workingDate }: any) => {
                 <Box
                     sx={{
                         display: "flex",
-                        p: 1,
                         bgcolor: "background.paper",
                         borderRadius: 1,
                     }}
@@ -119,460 +120,573 @@ const Folio = ({ title, workingDate }: any) => {
                             )}
                     </Typography>
                 </Box>
-
-                <Grid container spacing={2}>
+                <ImageList variant="masonry" cols={2} gap={8}>
                     {finalData &&
                         Object.keys(finalData).map((key) => (
-                            <Grid item key={key} xs={6}>
-                                <span style={{ fontWeight: "bold" }}>
-                                    {" "}
-                                    {key} давхар
-                                </span>
+                            <ImageListItem
+                                key={key}
+                                style={{
+                                    width: "100%",
+                                    height: "fit-content",
+                                }}
+                            >
+                                <div style={{ width: "100%" }}>
+                                    <div
+                                        style={{
+                                            fontWeight: "bold",
+                                            height: "20px",
+                                        }}
+                                    >
+                                        {" "}
+                                        {key} давхар
+                                    </div>
 
-                                <Table
-                                    // sx={{ minWidth: 650 }}
-                                    aria-label="simple table"
-                                    size="small"
-                                    key={rerenderKey}
-                                >
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell
-                                                style={{
-                                                    fontWeight: "bold",
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            >
-                                                Өрөө
-                                            </TableCell>
-                                            <TableCell
-                                                align="left"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            >
-                                                Байгууллага
-                                            </TableCell>
-                                            <TableCell
-                                                align="left"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            >
-                                                Улс
-                                            </TableCell>
-                                            <TableCell
-                                                align="left"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            >
-                                                Ирэх
-                                            </TableCell>
-                                            <TableCell
-                                                align="left"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            >
-                                                Гарах
-                                            </TableCell>
-                                            <TableCell
-                                                align="left"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            >
-                                                Тоо
-                                            </TableCell>
-                                            <TableCell
-                                                align="left"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            >
-                                                Төлөх
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {finalData[key] &&
-                                            finalData[key].map(
-                                                (
-                                                    element: any,
-                                                    index: number
-                                                ) => (
-                                                    <>
-                                                        <TableRow
-                                                            key={index}
-                                                            sx={{
-                                                                "&:last-child td, &:last-child th":
+                                    <Table
+                                        // sx={{ minWidth: 650 }}
+                                        aria-label="simple table"
+                                        size="small"
+                                        key={rerenderKey}
+                                    >
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    Өрөө
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    Байгууллага
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    Улс
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    Ирэх
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    Гарах
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    Тоо
+                                                </TableCell>
+                                                <TableCell
+                                                    align="left"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    Төлөх
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {finalData[key] &&
+                                                finalData[key].map(
+                                                    (
+                                                        element: any,
+                                                        index: number
+                                                    ) => (
+                                                        <>
+                                                            <TableRow
+                                                                key={index}
+                                                                sx={{
+                                                                    "&:last-child td, &:last-child th":
+                                                                        {
+                                                                            border: 0,
+                                                                        },
+                                                                }}
+                                                            >
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "8px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
+                                                                >
                                                                     {
-                                                                        border: 0,
-                                                                    },
-                                                            }}
-                                                        >
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "9px",
-                                                                    padding:
-                                                                        "2px",
-                                                                }}
-                                                            >
-                                                                {element.RoomNo}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "9px",
-                                                                    padding:
-                                                                        "2px",
-                                                                }}
-                                                            >
-                                                                {
-                                                                    element.CustomerName
-                                                                }
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "9px",
-                                                                    padding:
-                                                                        "2px",
-                                                                }}
-                                                            >
-                                                                {
-                                                                    element.CountryName
-                                                                }
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "9px",
-                                                                    padding:
-                                                                        "2px",
-                                                                }}
-                                                            >
-                                                                {element.ArrivalDate &&
-                                                                    moment(
-                                                                        element.ArrivalDate
-                                                                    ).format(
-                                                                        "YYYY-MM-DD"
+                                                                        element.RoomNo
+                                                                    }
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "8px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        element.CustomerName
+                                                                    }
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "8px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        element.CountryName
+                                                                    }
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "8px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
+                                                                >
+                                                                    {element.ArrivalDate &&
+                                                                        moment(
+                                                                            element.ArrivalDate
+                                                                        ).format(
+                                                                            "YYYY-MM-DD"
+                                                                        )}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "8px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
+                                                                >
+                                                                    {element.DepartureDate &&
+                                                                        moment(
+                                                                            element.DepartureDate
+                                                                        ).format(
+                                                                            "YYYY-MM-DD"
+                                                                        )}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "8px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        element.Adult
+                                                                    }
+                                                                    /
+                                                                    {
+                                                                        element.Child
+                                                                    }
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    align="right"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "8px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
+                                                                >
+                                                                    {formatPrice(
+                                                                        element.Balance
                                                                     )}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "9px",
-                                                                    padding:
-                                                                        "2px",
-                                                                }}
-                                                            >
-                                                                {element.DepartureDate &&
-                                                                    moment(
-                                                                        element.DepartureDate
-                                                                    ).format(
-                                                                        "YYYY-MM-DD"
-                                                                    )}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "9px",
-                                                                    padding:
-                                                                        "2px",
-                                                                }}
-                                                            >
-                                                                {element.Adult}/
-                                                                {element.Child}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                align="right"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "9px",
-                                                                    padding:
-                                                                        "2px",
-                                                                }}
-                                                            >
-                                                                {formatPrice(
-                                                                    element.Balance
-                                                                )}
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    </>
-                                                )
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        </>
+                                                    )
 
-                                                // console.log(
-                                                //     `${key}: ${reportData[key]}`
-                                                // );
-                                            )}
-                                        <TableRow
-                                            key={"total"}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    {
-                                                        border: 0,
-                                                    },
-                                            }}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
+                                                    // console.log(
+                                                    //     `${key}: ${reportData[key]}`
+                                                    // );
+                                                )}
+
+                                            <TableRow
+                                                key={"total"}
+                                                sx={{
+                                                    "&:last-child td, &:last-child th":
+                                                        {
+                                                            border: 0,
+                                                        },
                                                 }}
-                                                align="right"
-                                                colSpan={2}
                                             >
-                                                <div
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
                                                     style={{
-                                                        textAlign: "left",
-                                                        fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
                                                     }}
+                                                    align="right"
+                                                    colSpan={2}
                                                 >
-                                                    Ирэх:
-                                                </div>
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        textAlign: "left",
-                                                    }}
-                                                >
-                                                    <div className="mr-2">
-                                                        Өрөө:{" "}
-                                                        <span
-                                                            style={{
-                                                                fontWeight:
-                                                                    "bold",
-                                                            }}
-                                                        >
-                                                            {finalData[key] &&
-                                                                finalData[
+                                                    <div
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Ирэх:
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            textAlign: "left",
+                                                        }}
+                                                    >
+                                                        <div className="mr-2">
+                                                            Өрөө:{" "}
+                                                            <span
+                                                                style={{
+                                                                    fontWeight:
+                                                                        "bold",
+                                                                }}
+                                                            >
+                                                                {finalData[
                                                                     key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        (obj.ArrivalDate &&
-                                                                        moment(
-                                                                            obj.ArrivalDate
-                                                                        ).format(
-                                                                            "YYYY-MM-DD"
-                                                                        ) ==
+                                                                ] &&
+                                                                    finalData[
+                                                                        key
+                                                                    ].reduce(
+                                                                        (
+                                                                            acc: any,
+                                                                            obj: any
+                                                                        ) =>
+                                                                            acc +
+                                                                            (obj.ArrivalDate &&
                                                                             moment(
-                                                                                workingDate
+                                                                                obj.ArrivalDate
                                                                             ).format(
                                                                                 "YYYY-MM-DD"
-                                                                            )
-                                                                            ? 1
-                                                                            : 0),
-                                                                    0
-                                                                )}
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        Зочин :{" "}
-                                                        <span
-                                                            style={{
-                                                                fontWeight:
-                                                                    "bold",
-                                                            }}
-                                                        >
-                                                            {finalData[key] &&
-                                                                finalData[
+                                                                            ) ==
+                                                                                moment(
+                                                                                    workingDate
+                                                                                ).format(
+                                                                                    "YYYY-MM-DD"
+                                                                                )
+                                                                                ? 1
+                                                                                : 0),
+                                                                        0
+                                                                    )}
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            Зочин :{" "}
+                                                            <span
+                                                                style={{
+                                                                    fontWeight:
+                                                                        "bold",
+                                                                }}
+                                                            >
+                                                                {finalData[
                                                                     key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        (obj.ArrivalDate &&
-                                                                        moment(
-                                                                            obj.ArrivalDate
-                                                                        ).format(
-                                                                            "YYYY-MM-DD"
-                                                                        ) ==
+                                                                ] &&
+                                                                    finalData[
+                                                                        key
+                                                                    ].reduce(
+                                                                        (
+                                                                            acc: any,
+                                                                            obj: any
+                                                                        ) =>
+                                                                            acc +
+                                                                            (obj.ArrivalDate &&
                                                                             moment(
-                                                                                workingDate
+                                                                                obj.ArrivalDate
                                                                             ).format(
                                                                                 "YYYY-MM-DD"
-                                                                            )
-                                                                            ? obj.Adult +
-                                                                              obj.Child
-                                                                            : 0),
-                                                                    0
-                                                                )}
-                                                        </span>
+                                                                            ) ==
+                                                                                moment(
+                                                                                    workingDate
+                                                                                ).format(
+                                                                                    "YYYY-MM-DD"
+                                                                                )
+                                                                                ? obj.Adult +
+                                                                                  obj.Child
+                                                                                : 0),
+                                                                        0
+                                                                    )}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                                colSpan={2}
-                                            >
-                                                <div
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
                                                     style={{
-                                                        textAlign: "left",
-                                                        fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
                                                     }}
+                                                    align="right"
+                                                    colSpan={2}
                                                 >
-                                                    Байгаа:
-                                                </div>
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        textAlign: "left",
-                                                    }}
-                                                >
-                                                    <div className="mr-2">
-                                                        Байгаа:{" "}
-                                                        <span
-                                                            style={{
-                                                                fontWeight:
-                                                                    "bold",
-                                                            }}
-                                                        >
-                                                            {finalData[key] &&
-                                                                finalData[
+                                                    <div
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Байгаа:
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            textAlign: "left",
+                                                        }}
+                                                    >
+                                                        <div className="mr-2">
+                                                            Байгаа:{" "}
+                                                            <span
+                                                                style={{
+                                                                    fontWeight:
+                                                                        "bold",
+                                                                }}
+                                                            >
+                                                                {finalData[
                                                                     key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        (obj.ArrivalDate &&
-                                                                        obj.DepartureDate &&
-                                                                        new Date(
-                                                                            obj.ArrivalDate
-                                                                        ) <
+                                                                ] &&
+                                                                    finalData[
+                                                                        key
+                                                                    ].reduce(
+                                                                        (
+                                                                            acc: any,
+                                                                            obj: any
+                                                                        ) =>
+                                                                            acc +
+                                                                            (obj.ArrivalDate &&
+                                                                            obj.DepartureDate &&
+                                                                            new Date(
+                                                                                obj.ArrivalDate
+                                                                            ) <
+                                                                                new Date(
+                                                                                    workingDate
+                                                                                ) &&
                                                                             new Date(
                                                                                 workingDate
-                                                                            ) &&
-                                                                        new Date(
-                                                                            workingDate
-                                                                        ) <
+                                                                            ) <
+                                                                                new Date(
+                                                                                    obj.DepartureDate
+                                                                                )
+                                                                                ? 1
+                                                                                : 0),
+                                                                        0
+                                                                    )}
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            Зочин :{" "}
+                                                            <span
+                                                                style={{
+                                                                    fontWeight:
+                                                                        "bold",
+                                                                }}
+                                                            >
+                                                                {finalData[
+                                                                    key
+                                                                ] &&
+                                                                    finalData[
+                                                                        key
+                                                                    ].reduce(
+                                                                        (
+                                                                            acc: any,
+                                                                            obj: any
+                                                                        ) =>
+                                                                            acc +
+                                                                            (obj.ArrivalDate &&
+                                                                            obj.DepartureDate &&
                                                                             new Date(
+                                                                                obj.ArrivalDate
+                                                                            ) <
+                                                                                new Date(
+                                                                                    workingDate
+                                                                                ) &&
+                                                                            new Date(
+                                                                                workingDate
+                                                                            ) <
+                                                                                new Date(
+                                                                                    obj.DepartureDate
+                                                                                )
+                                                                                ? obj.Adult +
+                                                                                  obj.Child
+                                                                                : 0),
+                                                                        0
+                                                                    )}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontSize: "8px",
+                                                        padding: "2px",
+                                                    }}
+                                                    align="right"
+                                                    colSpan={2}
+                                                >
+                                                    <div
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Гарах:
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            textAlign: "left",
+                                                        }}
+                                                    >
+                                                        <div className="mr-2">
+                                                            Өрөө:{" "}
+                                                            <span
+                                                                style={{
+                                                                    fontWeight:
+                                                                        "bold",
+                                                                }}
+                                                            >
+                                                                {finalData[
+                                                                    key
+                                                                ] &&
+                                                                    finalData[
+                                                                        key
+                                                                    ].reduce(
+                                                                        (
+                                                                            acc: any,
+                                                                            obj: any
+                                                                        ) =>
+                                                                            acc +
+                                                                            (obj.DepartureDate &&
+                                                                            moment(
                                                                                 obj.DepartureDate
-                                                                            )
-                                                                            ? 1
-                                                                            : 0),
-                                                                    0
-                                                                )}
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        Зочин :{" "}
-                                                        <span
-                                                            style={{
-                                                                fontWeight:
-                                                                    "bold",
-                                                            }}
-                                                        >
-                                                            {finalData[key] &&
-                                                                finalData[
+                                                                            ).format(
+                                                                                "YYYY-MM-DD"
+                                                                            ) ==
+                                                                                moment(
+                                                                                    workingDate
+                                                                                ).format(
+                                                                                    "YYYY-MM-DD"
+                                                                                )
+                                                                                ? 1
+                                                                                : 0),
+                                                                        0
+                                                                    )}
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            Зочин :{" "}
+                                                            <span
+                                                                style={{
+                                                                    fontWeight:
+                                                                        "bold",
+                                                                }}
+                                                            >
+                                                                {finalData[
                                                                     key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        (obj.ArrivalDate &&
-                                                                        obj.DepartureDate &&
-                                                                        new Date(
-                                                                            obj.ArrivalDate
-                                                                        ) <
-                                                                            new Date(
-                                                                                workingDate
-                                                                            ) &&
-                                                                        new Date(
-                                                                            workingDate
-                                                                        ) <
-                                                                            new Date(
+                                                                ] &&
+                                                                    finalData[
+                                                                        key
+                                                                    ].reduce(
+                                                                        (
+                                                                            acc: any,
+                                                                            obj: any
+                                                                        ) =>
+                                                                            acc +
+                                                                            (obj.DepartureDate &&
+                                                                            moment(
                                                                                 obj.DepartureDate
-                                                                            )
-                                                                            ? obj.Adult +
-                                                                              obj.Child
-                                                                            : 0),
-                                                                    0
-                                                                )}
-                                                        </span>
+                                                                            ).format(
+                                                                                "YYYY-MM-DD"
+                                                                            ) ==
+                                                                                moment(
+                                                                                    workingDate
+                                                                                ).format(
+                                                                                    "YYYY-MM-DD"
+                                                                                )
+                                                                                ? obj.Adult +
+                                                                                  obj.Child
+                                                                                : 0),
+                                                                        0
+                                                                    )}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                                colSpan={2}
-                                            >
-                                                <div
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
                                                     style={{
-                                                        textAlign: "left",
                                                         fontWeight: "bold",
+                                                        fontSize: "8px",
+                                                        padding: "2px",
                                                     }}
+                                                    align="right"
+                                                    colSpan={1}
                                                 >
-                                                    Гарах:
-                                                </div>
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        textAlign: "left",
-                                                    }}
-                                                >
-                                                    <div className="mr-2">
-                                                        Өрөө:{" "}
-                                                        <span
-                                                            style={{
-                                                                fontWeight:
-                                                                    "bold",
-                                                            }}
-                                                        >
-                                                            {finalData[key] &&
+                                                    <div
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Орлого :{" "}
+                                                        {finalData[key] &&
+                                                            formatPrice(
                                                                 finalData[
                                                                     key
                                                                 ].reduce(
@@ -581,101 +695,36 @@ const Folio = ({ title, workingDate }: any) => {
                                                                         obj: any
                                                                     ) =>
                                                                         acc +
-                                                                        (obj.DepartureDate &&
-                                                                        moment(
-                                                                            obj.DepartureDate
-                                                                        ).format(
-                                                                            "YYYY-MM-DD"
-                                                                        ) ==
-                                                                            moment(
-                                                                                workingDate
-                                                                            ).format(
-                                                                                "YYYY-MM-DD"
-                                                                            )
-                                                                            ? 1
-                                                                            : 0),
+                                                                        obj.Balance,
                                                                     0
-                                                                )}
-                                                        </span>
+                                                                )
+                                                            )}
                                                     </div>
-                                                    <div>
-                                                        Зочин :{" "}
-                                                        <span
-                                                            style={{
-                                                                fontWeight:
-                                                                    "bold",
-                                                            }}
-                                                        >
-                                                            {finalData[key] &&
-                                                                finalData[
-                                                                    key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        (obj.DepartureDate &&
-                                                                        moment(
-                                                                            obj.DepartureDate
-                                                                        ).format(
-                                                                            "YYYY-MM-DD"
-                                                                        ) ==
-                                                                            moment(
-                                                                                workingDate
-                                                                            ).format(
-                                                                                "YYYY-MM-DD"
-                                                                            )
-                                                                            ? obj.Adult +
-                                                                              obj.Child
-                                                                            : 0),
-                                                                    0
-                                                                )}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                                colSpan={1}
-                                            >
-                                                <div
-                                                    style={{
-                                                        textAlign: "left",
-                                                        fontWeight: "bold",
-                                                    }}
-                                                >
-                                                    Орлого :{" "}
-                                                    {finalData[key] &&
-                                                        formatPrice(
-                                                            finalData[
-                                                                key
-                                                            ].reduce(
-                                                                (
-                                                                    acc: any,
-                                                                    obj: any
-                                                                ) =>
-                                                                    acc +
-                                                                    obj.Balance,
-                                                                0
-                                                            )
-                                                        )}
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </Grid>
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                            </ImageListItem>
                         ))}
-                    <Grid item xs={6}>
-                        <span style={{ fontWeight: "bold" }}> Нийт:</span>
+                    <ImageListItem
+                        key={"total"}
+                        style={{
+                            width: "100%",
+                            height: "fit-content",
+                        }}
+                    >
+                        {" "}
+                        <div
+                            style={{
+                                fontWeight: "bold",
+                                height: "20px",
+                                marginTop: "20px",
+                            }}
+                        >
+                            {" "}
+                            Нийт:
+                        </div>
                         <Table
                             // sx={{ minWidth: 650 }}
                             aria-label="simple table"
@@ -695,7 +744,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         component="th"
                                         scope="row"
                                         style={{
-                                            fontSize: "9px",
+                                            fontSize: "8px",
                                             padding: "2px",
                                         }}
                                         align="right"
@@ -784,7 +833,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         component="th"
                                         scope="row"
                                         style={{
-                                            fontSize: "9px",
+                                            fontSize: "8px",
                                             padding: "2px",
                                         }}
                                         align="right"
@@ -879,7 +928,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         component="th"
                                         scope="row"
                                         style={{
-                                            fontSize: "9px",
+                                            fontSize: "8px",
                                             padding: "2px",
                                         }}
                                         align="right"
@@ -969,7 +1018,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         scope="row"
                                         style={{
                                             fontWeight: "bold",
-                                            fontSize: "9px",
+                                            fontSize: "8px",
                                             padding: "2px",
                                         }}
                                         align="right"
@@ -995,39 +1044,34 @@ const Folio = ({ title, workingDate }: any) => {
                                 </TableRow>
                             </TableBody>
                         </Table>
-                    </Grid>
-
-                    <Grid item xs={12}></Grid>
-
-                    <Grid item xs={6}>
-                        <Typography
-                            variant="body1"
-                            gutterBottom
-                            className="mr-1"
-                        >
-                            <span style={{ fontWeight: "bold" }}>
-                                {" "}
-                                Хэвлэсэн :{" "}
-                            </span>{" "}
-                            {localStorage.getItem("username")}
-                        </Typography>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        {" "}
-                        <Typography
-                            variant="body1"
-                            gutterBottom
-                            className="mr-1"
-                        >
-                            <span style={{ fontWeight: "bold" }}>
-                                {" "}
-                                Хэвлэсэн огноо :{" "}
-                            </span>{" "}
-                            {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
-                        </Typography>
-                    </Grid>
-                </Grid>
+                        <div className="mt-3">
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                className="mr-3"
+                            >
+                                <span style={{ fontWeight: "bold" }}>
+                                    {" "}
+                                    Хэвлэсэн :{" "}
+                                </span>{" "}
+                                {localStorage.getItem("username")}
+                            </Typography>
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                className="mr-1"
+                            >
+                                <span style={{ fontWeight: "bold" }}>
+                                    {" "}
+                                    Хэвлэсэн огноо :{" "}
+                                </span>{" "}
+                                {moment(new Date()).format(
+                                    "YYYY-MM-DD HH:mm:ss"
+                                )}
+                            </Typography>
+                        </div>
+                    </ImageListItem>
+                </ImageList>
             </div>
         </>
     );

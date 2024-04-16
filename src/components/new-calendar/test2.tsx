@@ -652,10 +652,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         // Customize the content and styles of each event
         return (
             <div
+                className="event-custom"
                 style={{
                     background: "none",
-                    padding: 0,
-                    overflow: "hidden",
+                    padding: "0px 12px",
+                    overflow: "",
                     margin: "-2px -3px -2px -1px",
                     height: "100%",
                     textAlign:
