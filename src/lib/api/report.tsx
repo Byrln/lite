@@ -10,6 +10,7 @@ export const checkedOutDetailedUrl = `${urlPrefix}/CheckedOut/Detailed`;
 export const breakfastUrl = `${urlPrefix}/Breakfast`;
 export const monthlyUrl = `${urlPrefix}/Monthly`;
 export const stayViewUrl = `${urlPrefix}/StayView1`;
+export const dailyInfoUrl = `${urlPrefix}/DailyInfo`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -87,6 +88,16 @@ export const MonthlySWR = (search: any) => {
         });
 
     return useSWR(monthlyUrl, fetcher);
+};
+
+export const DailyInfoSWR = () => {
+    const fetcher = async (url: any) =>
+        await axios.post(url).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(dailyInfoUrl, fetcher);
 };
 
 export const StayViewSWR = (search: any) => {
