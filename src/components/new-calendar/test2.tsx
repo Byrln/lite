@@ -46,6 +46,7 @@ import {
     CashierSessionActiveSWR,
     CashierSessionListSWR,
 } from "lib/api/cashier-session";
+import RoomAssignGroup from "components/reservation/room-assign-group";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const router = useRouter();
@@ -444,15 +445,34 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const handleEventClick = (info: any) => {
         if (info.event._instance.range.end > new Date(workingDate)) {
             activeSessionID && activeSessionID == "-1" && handleCashierOpen();
-            handleModal(
-                true,
-                `Захиалга`,
-                <ReservationEdit
-                    transactionID={info.event._def.extendedProps.transactionID}
-                />,
-                null,
-                "large"
-            );
+
+            if (info.event._def.extendedProps.entities) {
+                handleModal(
+                    true,
+                    `Захиалга`,
+                    <RoomAssignGroup
+                        entities={info.event._def.extendedProps.entities}
+                        additionalMutateUrl="/api/Reservation/List"
+                        customRerender={setRerenderKey(
+                            (prevKey) => prevKey + 1
+                        )}
+                    />,
+                    null,
+                    "large"
+                );
+            } else {
+                handleModal(
+                    true,
+                    `Захиалга`,
+                    <ReservationEdit
+                        transactionID={
+                            info.event._def.extendedProps.transactionID
+                        }
+                    />,
+                    null,
+                    "large"
+                );
+            }
         }
     };
 

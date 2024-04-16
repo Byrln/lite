@@ -15,6 +15,7 @@ const VoidTransactionForm = ({
     transactionInfo,
     reservation,
     customMutateUrl,
+    customRerender,
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
@@ -61,6 +62,9 @@ const VoidTransactionForm = ({
 
             await mutate(customMutateUrl ? customMutateUrl : listUrl);
 
+            if (customRerender) {
+                customRerender();
+            }
             // toast("Амжилттай.");
 
             setLoading(false);

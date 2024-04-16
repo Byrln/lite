@@ -36,7 +36,7 @@ const GroupReservationList = ({ title, workingDate }: any) => {
         setAnchorEl(event.currentTarget);
         setSelectedRow(row.row);
     };
-    console.log("selectedrow", selectedRow);
+
     const handleClose = () => {
         setAnchorEl(null);
         setSelectedRow(null);

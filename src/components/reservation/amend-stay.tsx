@@ -22,6 +22,7 @@ const AmendStayForm = ({
     transactionInfo,
     reservation,
     additionalMutateUrl = null,
+    customRerender,
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
@@ -212,6 +213,9 @@ const AmendStayForm = ({
 
             if (additionalMutateUrl) {
                 await mutate(additionalMutateUrl);
+            }
+            if (customRerender) {
+                customRerender();
             }
             // toast("Амжилттай.");
 

@@ -87,6 +87,7 @@ const RoomSelect = ({
             // @ts-ignore
             onRoomChange(data[0]);
         }
+        console.log("Data", data[0]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomAutoAssign]);
 

@@ -175,10 +175,7 @@ export const ReservationAPI = {
         const res = await axios.post(`${urlPrefix}/Void`, values);
         return res;
     },
-    roomAssign: async (TransactionID: any) => {
-        const values = {
-            TransactionID: TransactionID,
-        };
+    roomAssign: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/RoomAssign`, values);
     },
     roomUnassign: async (TransactionID: any) => {

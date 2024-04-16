@@ -15,6 +15,7 @@ const CancelReservationForm = ({
     transactionInfo,
     reservation,
     customMutateUrl,
+    customRerender,
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
@@ -63,6 +64,9 @@ const CancelReservationForm = ({
 
             await mutate(customMutateUrl ? customMutateUrl : listUrl);
 
+            if (customRerender) {
+                customRerender();
+            }
             // toast("Амжилттай.", {
             //     position: "top-right",
             //     autoClose: 5000,
