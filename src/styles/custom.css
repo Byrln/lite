@@ -165,6 +165,11 @@ td.color-FF66FF {
     height: 100%;
     border: none;
     margin: 0px;
+    z-index: 2;
+}
+
+.fc-event:hover {
+    z-index: 9;
 }
 
 .fc-timeline-lane {
@@ -250,4 +255,12 @@ a.fc-event {
 .css-1hy9t21 {
     width: 30px !important;
     height: 30px !important;
+}
+
+.event-custom {
+}
+
+.event-custom:hover {
+    width: auto;
+    min-width: fit-content;
 }

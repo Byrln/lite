@@ -46,8 +46,8 @@ const Receipt = ({ TransactionID }: any) => {
             }
             .MuiTableCell-root{
                 border:1px solid !important;
-                font-size:9px !important;
-                line-height:9px !important
+                font-size:11px !important;
+                line-height:11px !important
                 padding:4px !important
 
               }
@@ -55,8 +55,8 @@ const Receipt = ({ TransactionID }: any) => {
                 border:1px solid !important;
                 background-color: none !important;
                 color :inherit !important;
-                font-size:9px !important;
-                line-height:9px !important;
+                font-size:11px !important;
+                line-height:11px !important;
                 padding:4px !important
               ]
               }
@@ -122,7 +122,7 @@ const Receipt = ({ TransactionID }: any) => {
             // }
         }
     }, [data]);
-
+    console.log("data", data);
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -136,113 +136,466 @@ const Receipt = ({ TransactionID }: any) => {
                 </Button>
             </div>
             {data && data[0] && (
-                <div ref={componentRef} style={{ fontSize: "12px" }}>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            width: "100%",
-                            flexWrap: "wrap",
-                        }}
-                        className="mb-1"
-                    >
-                        <div
-                            style={{
-                                width: "200px",
-                                textAlign: "right",
-                                marginRight: "10px",
-                            }}
-                        >
-                            ORG/COMP :{" "}
-                        </div>
-                        <div style={{ fontWeight: "600" }}>
-                            {data[0].CustomerName}
-                        </div>
-                    </Box>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            width: "100%",
-                            flexWrap: "wrap",
-                        }}
-                        className="mb-1"
-                    >
-                        <div
-                            style={{
-                                width: "200px",
-                                textAlign: "right",
-                                marginRight: "10px",
-                            }}
-                        >
-                            ROOM TYPE :{" "}
-                        </div>
-                        <div style={{ fontWeight: "600" }}>
-                            {data[0].RoomTypeName}
-                        </div>
-                    </Box>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            width: "100%",
-                            flexWrap: "wrap",
-                        }}
-                        className="mb-1"
-                    >
-                        <div
-                            style={{
-                                width: "200px",
-                                textAlign: "right",
-                                marginRight: "10px",
-                            }}
-                        >
-                            ROOM NO :{" "}
-                        </div>
-                        <div style={{ fontWeight: "600" }}>
-                            {data[0].RoomNo}
-                        </div>
-                    </Box>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            width: "100%",
-                            flexWrap: "wrap",
-                        }}
-                        className="mb-1"
-                    >
-                        <div
-                            style={{
-                                width: "200px",
-                                textAlign: "right",
-                                marginRight: "10px",
-                            }}
-                        >
-                            FULL NAME :{" "}
-                        </div>
-                        <div style={{ fontWeight: "600" }}>
-                            {data[0].GuestName}
-                        </div>
-                    </Box>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            width: "100%",
-                            flexWrap: "wrap",
-                        }}
-                        className="mb-1"
-                    >
-                        <div
-                            style={{
-                                width: "200px",
-                                textAlign: "right",
-                                marginRight: "10px",
-                            }}
-                        >
-                            DATE :{" "}
-                        </div>
-                        <div style={{ fontWeight: "600" }}>
-                            {moment(data[0].ArrivalDate).format("YYYY.MM.DD")}-
-                            {moment(data[0].DepartureDate).format("YYYY.MM.DD")}
-                        </div>
-                    </Box>
+                <div ref={componentRef} style={{ fontSize: "11px" }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <div
+                                    style={{
+                                        width: "70px",
+                                        textAlign: "right",
+                                        marginRight: "11px",
+                                    }}
+                                >
+                                    ROOM TYPE :{" "}
+                                </div>
+                                <div style={{ fontWeight: "600" }}>
+                                    {data[0].RoomTypeName}
+                                </div>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <div
+                                    style={{
+                                        width: "70px",
+                                        textAlign: "right",
+                                        marginRight: "11px",
+                                    }}
+                                >
+                                    ROOM NUM :{" "}
+                                </div>
+                                <div style={{ fontWeight: "600" }}>
+                                    {data[0].RoomNo}
+                                </div>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <br />
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <div
+                                    style={{
+                                        width: "70px",
+                                        textAlign: "right",
+                                        marginRight: "11px",
+                                    }}
+                                >
+                                    ORG/COMP :{" "}
+                                </div>
+                                <div style={{ fontWeight: "600" }}>
+                                    {data[0].CustomerName}
+                                </div>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <div
+                                    style={{
+                                        width: "70px",
+                                        textAlign: "right",
+                                        marginRight: "11px",
+                                    }}
+                                >
+                                    FULL NAME :{" "}
+                                </div>
+                                <div style={{ fontWeight: "600" }}>
+                                    {data[0].GuestName}
+                                </div>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <div
+                                    style={{
+                                        width: "70px",
+                                        textAlign: "right",
+                                        marginRight: "11px",
+                                    }}
+                                >
+                                    CHECK IN :{" "}
+                                </div>
+                                <div style={{ fontWeight: "600" }}>
+                                    {moment(data[0].ArrivalDate).format(
+                                        "YYYY/MM/DD"
+                                    )}
+                                </div>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <div
+                                    style={{
+                                        width: "70px",
+                                        textAlign: "right",
+                                        marginRight: "11px",
+                                    }}
+                                >
+                                    NIGHTS :{" "}
+                                </div>
+                                <div style={{ fontWeight: "600" }}>
+                                    {data[0].Nights}
+                                </div>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <div
+                                    style={{
+                                        width: "70px",
+                                        textAlign: "right",
+                                        marginRight: "11px",
+                                    }}
+                                >
+                                    CHECK OUT :{" "}
+                                </div>
+                                <div style={{ fontWeight: "600" }}>
+                                    {moment(data[0].DepartureDate).format(
+                                        "YYYY/MM/DD"
+                                    )}
+                                </div>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={6} style={{ marginBottom: "0px" }}>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <div
+                                    style={{
+                                        width: "70px",
+                                        textAlign: "right",
+                                        marginRight: "11px",
+                                    }}
+                                >
+                                    USD RATE :{" "}
+                                </div>
+                                <div style={{ fontWeight: "600" }}>
+                                    {formatPrice(1450)}
+                                </div>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={6} style={{ marginBottom: "0px" }}>
+                            <div style={{ fontWeight: "600" }}>
+                                ROOM RATE : {formatPrice(90)}$ [-40%]=
+                                {formatPrice(54)}$
+                            </div>
+                        </Grid>
+                        <Grid item xs={12} style={{ paddingTop: "0px" }}>
+                            <Table
+                                sx={{ minWidth: 650 }}
+                                aria-label="simple table"
+                                size="small"
+                                key={rerenderKey}
+                            >
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                        >
+                                            SERVICE
+                                        </TableCell>
+                                        <TableCell
+                                            align="left"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                        >
+                                            AMOUNT (₮)
+                                        </TableCell>
+                                        <TableCell
+                                            align="left"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                        >
+                                            Amount ($)
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {data &&
+                                        data.map(
+                                            (element: any, index: number) => (
+                                                <>
+                                                    <TableRow
+                                                        key={index}
+                                                        sx={{
+                                                            "&:last-child td, &:last-child th":
+                                                                {
+                                                                    border: 0,
+                                                                },
+                                                        }}
+                                                    >
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                fontSize:
+                                                                    "11px",
+                                                            }}
+                                                        >
+                                                            {element.RoomFullNo}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                fontSize:
+                                                                    "11px",
+                                                            }}
+                                                        >
+                                                            {
+                                                                element.CustomerName
+                                                            }
+                                                        </TableCell>
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                fontSize:
+                                                                    "11px",
+                                                            }}
+                                                        >
+                                                            {element.GuestName}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                </>
+                                            )
+                                        )}
+
+                                    <TableRow
+                                        key={"subTotal"}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            SUB TOTAL
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(78300)}
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(54)}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow
+                                        key={"tax"}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            TAX (10%)
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(78300)}
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(54)}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow
+                                        key={"deposit"}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            DEPOSIT
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(78300)}
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(54)}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow
+                                        key={"payment"}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            PAYMENT
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(78300)}
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(54)}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </Grid>
+                    </Grid>
                 </div>
             )}
         </>

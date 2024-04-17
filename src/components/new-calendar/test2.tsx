@@ -47,6 +47,7 @@ import {
     CashierSessionListSWR,
 } from "lib/api/cashier-session";
 import RoomAssignGroup from "components/reservation/room-assign-group";
+import Iconify from "components/iconify/iconify";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const router = useRouter();
@@ -233,6 +234,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           roomTypeID: obj.RoomTypeID,
                           transactionID: obj.TransactionID,
                           startDate: obj.StartDate,
+                          GroupID: obj.GroupID,
                           endDate: obj.EndDate,
                           statusColor: `#${obj.StatusColor}`,
                           editable: true,
@@ -653,8 +655,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             <div
                 className="event-custom"
                 style={{
+                    display: "flex",
                     background: "none",
-                    padding: "0px 12px",
+                    padding: "4px 4px 0px 4px",
                     overflow: "",
                     margin: "-2px -3px -2px -1px",
                     height: "100%",
@@ -680,7 +683,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             : "null",
                 }}
             >
-                {/* Render event content */}
+                {console.log("evtevt", arg.event._def)}
+                {arg.event._def.extendedProps.GroupID &&
+                    arg.event._def.extendedProps.GroupID != "" && (
+                        <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                            {" "}
+                            <Iconify icon="clarity:group-line" width="12px" />
+                        </span>
+                    )}
                 {arg.event.title}
             </div>
         );
