@@ -63,7 +63,9 @@ export default function DashboardLayout({ children }: any) {
         if (data) {
             // Extracting MenuLink values
             let menuLinks = data
-                .map((action: any) => action.MenuLink2)
+                .map((action: any) =>
+                    action.Status == true ? action.MenuLink2 : null
+                )
                 .filter((link: any) => link); // Filter out null or undefined values
 
             // Removing duplicates
