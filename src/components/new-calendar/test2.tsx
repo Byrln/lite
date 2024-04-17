@@ -684,12 +684,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             >
                 {console.log("evtevt", arg.event._def)}
                 {arg.event._def.extendedProps.GroupID &&
-                    arg.event._def.extendedProps.GroupID != "" && (
-                        <span style={{ marginRight: "5px", marginTop: "2px" }}>
-                            {" "}
-                            <Iconify icon="clarity:group-line" width="12px" />
-                        </span>
-                    )}
+                arg.event._def.extendedProps.GroupID != "" ? (
+                    <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                        {" "}
+                        <Iconify icon="clarity:group-line" width="12px" />
+                    </span>
+                ) : (
+                    <></>
+                )}
                 {arg.event.title}
             </div>
         );
