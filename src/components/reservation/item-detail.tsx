@@ -1,5 +1,5 @@
 import { ReservationAPI } from "lib/api/reservation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Grid, Box, Paper, Typography, Divider, Button } from "@mui/material";
 import { fToCustom, countNights } from "lib/utils/format-time";
 import ReservationNav from "./_reservation-nav";
@@ -12,6 +12,8 @@ import TableRow from "@mui/material/TableRow";
 import { FrontOfficeAPI } from "lib/api/front-office";
 import RemarkList from "./remark/list";
 import CircularProgress from "@mui/material/CircularProgress";
+import { ModalContext } from "lib/context/modal";
+import Receipt from "components/reporting/receipt";
 
 const styleTime = {
     backgroundColor: "#00008B",
@@ -43,6 +45,8 @@ const ItemDetail = ({
     additionalMutateUrl,
     summary,
 }: any) => {
+    const { handleModal }: any = useContext(ModalContext);
+
     return (
         <>
             {reservation ? (
@@ -263,6 +267,26 @@ const ItemDetail = ({
                                     </TableRow>
                                 </TableBody>
                             </Table>
+                            <Button
+                                variant={"text"}
+                                size="small"
+                                className="mr-3"
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        "Receipt",
+                                        <Receipt
+                                            TransactionID={
+                                                reservation.TransactionID
+                                            }
+                                        />,
+                                        null,
+                                        "large"
+                                    );
+                                }}
+                            >
+                                Receipt
+                            </Button>
                             <Button
                                 variant={"text"}
                                 size="small"

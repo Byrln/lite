@@ -69,13 +69,9 @@ export default function DashboardLayout({ children }: any) {
             // Removing duplicates
             //@ts-ignore
             let uniqueMenuLinks = [...new Set(menuLinks)];
-            console.log("data", data);
 
-            console.log("uniqueMenuLinks", uniqueMenuLinks);
             const filteredMenu = filterMenu(sidebarConfig, uniqueMenuLinks);
             setSideBarData(filteredMenu);
-
-            console.log("filteredMenu", filteredMenu);
         }
     }, [data]);
 

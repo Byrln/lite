@@ -787,7 +787,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         border: "1px solid #EFF0F6",
                     }}
                 >
-                    {resources && dayCount && timeStart && (
+                    {resources && dayCount && timeStart && itemData && (
                         <FullCalendar
                             key={rerenderKey}
                             plugins={[
