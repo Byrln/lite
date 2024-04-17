@@ -170,16 +170,13 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             await mutate("/api/FrontOffice/StayView2");
             await mutate("/api/FrontOffice/ReservationDetailsByDate");
         })();
-    }, [searchCurrDate, searchRoomTypeID, dayCount]);
+    }, [searchCurrDate, searchRoomTypeID]);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        (async () => {
-            setDayCount(Number((event.target as HTMLInputElement).value));
-
-            await mutate("/api/RoomType/List");
-            await mutate("/api/FrontOffice/StayView2");
-            await mutate("/api/FrontOffice/ReservationDetailsByDate");
-        })();
+    const handleChange = async (event: any) => {
+        setDayCount(Number(event.target.value));
+        await mutate("/api/RoomType/List");
+        await mutate("/api/FrontOffice/StayView2");
+        await mutate("/api/FrontOffice/ReservationDetailsByDate");
     };
 
     const groupEventsByDate = (events: any) => {
@@ -313,6 +310,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             };
 
             let roomTypesObj: any = [];
+
             for (let i = 0; i < dayCount; i++) {
                 const currentDate = new Date(
                     new Date(searchCurrDate).getTime()
@@ -389,7 +387,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 itemDataConcated = itemDataConcated.concat(newRoomBlockDta);
             }
 
-            setItemData(itemDataConcated ? itemDataConcated : newItemDta);
+            setItemData(itemDataConcated);
+            setRerenderKey((prevKey) => prevKey + 1);
         }
     }, [items, dayCount]);
 
@@ -688,7 +687,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     const handleDayRender = (arg: any) => {
-        console.log("argarg", arg);
         // Check if the current day is a weekend (Saturday or Sunday)
         if (arg.date.getDay() === 0 || arg.date.getDay() === 6) {
             arg.el.style.backgroundColor = "lightgray"; // Change background color for weekends
@@ -787,136 +785,141 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         border: "1px solid #EFF0F6",
                     }}
                 >
-                    {resources && dayCount && timeStart && itemData && (
-                        <FullCalendar
-                            key={rerenderKey}
-                            plugins={[
-                                resourceTimelinePlugin,
-                                interactionPlugin,
-                            ]}
-                            initialView="resourceTimeline"
-                            resourceOrder="SortOrder"
-                            headerToolbar={{
-                                left: "",
-                                center: "",
-                                right: "",
-                            }}
-                            resources={resources}
-                            initialDate={timeStart}
-                            events={itemData}
-                            selectable={true}
-                            select={handleSelect}
-                            editable={true}
-                            eventDrop={handleEventDrop}
-                            eventResize={handleEventResize}
-                            eventClick={handleEventClick}
-                            now={new Date(workingDate)}
-                            dayCellContent={handleDayRender}
-                            nowIndicator={true}
-                            height={height}
-                            // slotLaneContent={slotLaneContent}
-                            eventContent={eventContent}
-                            visibleRange={{
-                                start: timeStart,
-                                end: moment(timeStart)
-                                    .add(dayCount, "days")
-                                    .format("YYYY-MM-DD"),
-                            }}
-                            slotDuration="12:00:00"
-                            slotLabelInterval={{ hours: 24 }}
-                            resourceAreaWidth={150}
-                            slotMinWidth={15}
-                            // Pass the custom class names
-                            eventAllow={function (
-                                dropInfo: any,
-                                draggedEvent: any
-                            ) {
-                                if (
-                                    areDatesOnSameDay(
-                                        dropInfo.start,
-                                        draggedEvent._instance.range.start
-                                    ) == false ||
-                                    new Date(workingDate) >
-                                        draggedEvent._instance.range.start
+                    {resources &&
+                        dayCount &&
+                        timeStart &&
+                        itemData &&
+                        rerenderKey && (
+                            <FullCalendar
+                                key={rerenderKey}
+                                plugins={[
+                                    resourceTimelinePlugin,
+                                    interactionPlugin,
+                                ]}
+                                initialView="resourceTimeline"
+                                resourceOrder="SortOrder"
+                                headerToolbar={{
+                                    left: "",
+                                    center: "",
+                                    right: "",
+                                }}
+                                resources={resources}
+                                initialDate={timeStart}
+                                events={itemData}
+                                selectable={true}
+                                select={handleSelect}
+                                editable={true}
+                                eventDrop={handleEventDrop}
+                                eventResize={handleEventResize}
+                                eventClick={handleEventClick}
+                                now={new Date(workingDate)}
+                                dayCellContent={handleDayRender}
+                                nowIndicator={true}
+                                height={height}
+                                // slotLaneContent={slotLaneContent}
+                                eventContent={eventContent}
+                                visibleRange={{
+                                    start: timeStart,
+                                    end: moment(timeStart)
+                                        .add(dayCount, "days")
+                                        .format("YYYY-MM-DD"),
+                                }}
+                                slotDuration="12:00:00"
+                                slotLabelInterval={{ hours: 24 }}
+                                resourceAreaWidth={150}
+                                slotMinWidth={15}
+                                // Pass the custom class names
+                                eventAllow={function (
+                                    dropInfo: any,
+                                    draggedEvent: any
                                 ) {
-                                    return false;
-                                }
-                                return true;
-                            }}
-                            views={{
-                                timeline: {
-                                    type: "resourceTimeline",
-                                    duration: { days: dayCount },
-                                    dayHeaderContent: customHeader,
+                                    if (
+                                        areDatesOnSameDay(
+                                            dropInfo.start,
+                                            draggedEvent._instance.range.start
+                                        ) == false ||
+                                        new Date(workingDate) >
+                                            draggedEvent._instance.range.start
+                                    ) {
+                                        return false;
+                                    }
+                                    return true;
+                                }}
+                                views={{
+                                    timeline: {
+                                        type: "resourceTimeline",
+                                        duration: { days: dayCount },
+                                        dayHeaderContent: customHeader,
 
-                                    slotLabelContent: (arg: any) => {
-                                        arg.date.setHours(8);
-                                        var Difference_In_Time =
-                                            arg.date.getTime() -
-                                            timeStart.getTime();
-                                        var Difference_In_Days = Math.floor(
-                                            Difference_In_Time /
-                                                (1000 * 3600 * 24)
-                                        );
+                                        slotLabelContent: (arg: any) => {
+                                            arg.date.setHours(8);
+                                            var Difference_In_Time =
+                                                arg.date.getTime() -
+                                                timeStart.getTime();
+                                            var Difference_In_Days = Math.floor(
+                                                Difference_In_Time /
+                                                    (1000 * 3600 * 24)
+                                            );
 
-                                        return arg.level == 1 ? (
-                                            <div
-                                                style={{
-                                                    textAlign: "center",
-                                                    fontWeight: "normal",
-                                                    fontSize: "12px",
-                                                }}
-                                            >
-                                                {availableRooms &&
-                                                    availableRooms[0] &&
-                                                    availableRooms[0][
-                                                        `D` +
-                                                            (Difference_In_Days +
-                                                                1)
-                                                    ] &&
-                                                    availableRooms[0][
-                                                        `D` +
-                                                            (Difference_In_Days +
-                                                                1)
-                                                    ].split("/")[0]}
-                                            </div>
-                                        ) : (
-                                            <div
-                                                style={{
-                                                    fontSize: "12px",
-                                                }}
-                                            >
+                                            return arg.level == 1 ? (
                                                 <div
                                                     style={{
+                                                        textAlign: "center",
                                                         fontWeight: "normal",
-                                                        textAlign: "left",
-                                                        marginBottom: "5px",
+                                                        fontSize: "12px",
                                                     }}
                                                 >
-                                                    {
-                                                        arg.date
-                                                            .toString()
-                                                            .split(" ")[0]
-                                                    }
+                                                    {availableRooms &&
+                                                        availableRooms[0] &&
+                                                        availableRooms[0][
+                                                            `D` +
+                                                                (Difference_In_Days +
+                                                                    1)
+                                                        ] &&
+                                                        availableRooms[0][
+                                                            `D` +
+                                                                (Difference_In_Days +
+                                                                    1)
+                                                        ].split("/")[0]}
                                                 </div>
+                                            ) : (
                                                 <div
                                                     style={{
-                                                        fontWeight: "bold",
-                                                        textAlign: "left",
+                                                        fontSize: "12px",
                                                     }}
                                                 >
-                                                    {arg.date.getDate()}
+                                                    <div
+                                                        style={{
+                                                            fontWeight:
+                                                                "normal",
+                                                            textAlign: "left",
+                                                            marginBottom: "5px",
+                                                        }}
+                                                    >
+                                                        {
+                                                            arg.date
+                                                                .toString()
+                                                                .split(" ")[0]
+                                                        }
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            fontWeight: "bold",
+                                                            textAlign: "left",
+                                                        }}
+                                                    >
+                                                        {arg.date.getDate()}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        );
+                                            );
+                                        },
                                     },
-                                },
-                                resourceTimeline: {
-                                    dayHeaderContent: customHeader,
-                                },
-                            }}
-                        />
-                    )}
+                                    resourceTimeline: {
+                                        dayHeaderContent: customHeader,
+                                    },
+                                }}
+                            />
+                        )}
                 </div>
                 <Dialog
                     open={cashierOpen}
