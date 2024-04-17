@@ -219,9 +219,29 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     useEffect(() => {
+        let itemDataConcated: any = [];
+        let letNewEvents: any = null;
+        let roomTypesObj: any = [];
+        let newItemDta: any = [];
+
+        let doesCombinationExist = function (
+            eventsArray: any,
+            startDateToCheck: any,
+            resourceIdToCheck: any
+        ) {
+            for (const event of eventsArray) {
+                if (
+                    event.startDate === startDateToCheck &&
+                    event.resourceId === resourceIdToCheck
+                ) {
+                    return event;
+                }
+            }
+            return false;
+        };
+
         if (items) {
-            let itemDataConcated = null;
-            let newItemDta = items.map((obj: any) => {
+            newItemDta = items.map((obj: any) => {
                 return obj.RoomID
                     ? {
                           id: obj.TransactionID,
@@ -275,7 +295,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
             const groupedEvents = groupEventsByDate(noRooms);
 
-            let letNewEvents = groupedEvents.flatMap((dateGroup: any) => {
+            letNewEvents = groupedEvents.flatMap((dateGroup: any) => {
                 return dateGroup.map((level2: any, index: any) => {
                     return {
                         id: `${level2.resourceId}-${index}`,
@@ -295,82 +315,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 });
             });
 
-            let doesCombinationExist = function (
-                eventsArray: any,
-                startDateToCheck: any,
-                resourceIdToCheck: any
-            ) {
-                for (const event of eventsArray) {
-                    if (
-                        event.startDate === startDateToCheck &&
-                        event.resourceId === resourceIdToCheck
-                    ) {
-                        return event;
-                    }
-                }
-                return false;
-            };
-
-            let roomTypesObj: any = [];
-
-            for (let i = 0; i < dayCount; i++) {
-                const currentDate = new Date(
-                    new Date(searchCurrDate).getTime()
-                ); // Create a new Date object to avoid modifying the original date
-                currentDate.setDate(currentDate.getDate() + i); // Increment the date by i days
-
-                let cols: any = [];
-
-                roomTypes &&
-                    roomTypes.map((obj: any) => {
-                        if (
-                            doesCombinationExist(
-                                letNewEvents,
-                                `${moment(currentDate).format(
-                                    "YYYY-MM-DD"
-                                )} 00:00:00`,
-                                `${obj.RoomTypeName}-${obj.RoomTypeID}`
-                            )
-                        ) {
-                            roomTypesObj.push(
-                                doesCombinationExist(
-                                    letNewEvents,
-                                    `${moment(currentDate).format(
-                                        "YYYY-MM-DD"
-                                    )} 00:00:00`,
-                                    `${obj.RoomTypeName}-${obj.RoomTypeID}`
-                                )
-                            );
-                        } else {
-                            roomTypesObj.push({
-                                id: `${obj.RoomTypeName}-${obj.RoomTypeID}-${obj.SortOrder}`,
-                                title: 0,
-                                start: `${moment(currentDate).format(
-                                    "YYYY-MM-DD"
-                                )} 00:00:00`,
-                                end: `${moment(currentDate).format(
-                                    "YYYY-MM-DD"
-                                )} 23:59:59`,
-                                resourceId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
-                                startDate: `${moment(currentDate).format(
-                                    "YYYY-MM-DD"
-                                )} 00:00:00`,
-                                endDate: `${moment(currentDate).format(
-                                    "YYYY-MM-DD"
-                                )} 23:59:59`,
-                                editable: true,
-                                color: "white",
-                                textColor: "black",
-                                border: "none",
-                                statusColor: "#EFF0F6",
-                            });
-                        }
-                    });
-                roomTypes;
-            }
-
-            itemDataConcated = newItemDta.concat(roomTypesObj);
-
             if (roomBlocks) {
                 const newRoomBlockDta = roomBlocks.map((obj: any) => {
                     return {
@@ -388,10 +332,65 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
                 itemDataConcated = itemDataConcated.concat(newRoomBlockDta);
             }
-
-            setItemData(itemDataConcated);
-            setRerenderKey((prevKey) => prevKey + 1);
         }
+
+        for (let i = 0; i < dayCount; i++) {
+            const currentDate = new Date(new Date(searchCurrDate).getTime()); // Create a new Date object to avoid modifying the original date
+            currentDate.setDate(currentDate.getDate() + i); // Increment the date by i days
+
+            let cols: any = [];
+
+            roomTypes &&
+                roomTypes.map((obj: any) => {
+                    if (
+                        doesCombinationExist(
+                            letNewEvents,
+                            `${moment(currentDate).format(
+                                "YYYY-MM-DD"
+                            )} 00:00:00`,
+                            `${obj.RoomTypeName}-${obj.RoomTypeID}`
+                        )
+                    ) {
+                        roomTypesObj.push(
+                            doesCombinationExist(
+                                letNewEvents,
+                                `${moment(currentDate).format(
+                                    "YYYY-MM-DD"
+                                )} 00:00:00`,
+                                `${obj.RoomTypeName}-${obj.RoomTypeID}`
+                            )
+                        );
+                    } else {
+                        roomTypesObj.push({
+                            id: `${obj.RoomTypeName}-${obj.RoomTypeID}-${obj.SortOrder}`,
+                            title: 0,
+                            start: `${moment(currentDate).format(
+                                "YYYY-MM-DD"
+                            )} 00:00:00`,
+                            end: `${moment(currentDate).format(
+                                "YYYY-MM-DD"
+                            )} 23:59:59`,
+                            resourceId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                            startDate: `${moment(currentDate).format(
+                                "YYYY-MM-DD"
+                            )} 00:00:00`,
+                            endDate: `${moment(currentDate).format(
+                                "YYYY-MM-DD"
+                            )} 23:59:59`,
+                            editable: true,
+                            color: "white",
+                            textColor: "black",
+                            border: "none",
+                            statusColor: "#EFF0F6",
+                        });
+                    }
+                });
+            roomTypes;
+        }
+
+        itemDataConcated = newItemDta.concat(roomTypesObj);
+        setItemData(itemDataConcated);
+        setRerenderKey((prevKey) => prevKey + 1);
     }, [items, dayCount]);
 
     useEffect(() => {
