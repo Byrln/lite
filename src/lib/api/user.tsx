@@ -25,7 +25,6 @@ export const GetPrivilegesSWR = () => {
         await axios
             .get(`${urlPrefix}/GetPrivileges`)
             .then((res: any) => res.data.JsonData);
-
     return useSWR(`${urlPrefix}/GetPrivileges`, fetcher);
 };
 

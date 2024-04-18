@@ -382,7 +382,6 @@ const TransactionEdit = () => {
                                 </Button>
                             </DialogActions>
                         </Dialog>
-                        aa
                     </>
                 ) : (
                     ""

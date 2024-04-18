@@ -402,20 +402,22 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     SortOrder: obj.SortOrder,
                 };
             });
-            const newData = rooms.map((obj: any) => {
-                return {
-                    parentId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
-                    roomTypeId: obj.RoomTypeID,
-                    id: obj.RoomID,
-                    title: obj.RoomNo,
-                    resourceLaneContent: obj.RoomNo,
-                    MaxAdult: obj.MaxAdult,
-                    MaxChild: obj.MaxChild,
-                    BaseAdult: obj.BaseAdult,
-                    BaseChild: obj.BaseChild,
-                    SortOrder: Number(obj.RoomNo),
-                };
-            });
+            const newData = rooms
+                .filter((event: any) => event.Status === true)
+                .map((obj: any) => {
+                    return {
+                        parentId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                        roomTypeId: obj.RoomTypeID,
+                        id: obj.RoomID,
+                        title: obj.RoomNo,
+                        resourceLaneContent: obj.RoomNo,
+                        MaxAdult: obj.MaxAdult,
+                        MaxChild: obj.MaxChild,
+                        BaseAdult: obj.BaseAdult,
+                        BaseChild: obj.BaseChild,
+                        SortOrder: Number(obj.RoomNo),
+                    };
+                });
 
             setResources(newRoomTypeData.concat(newData));
         }
@@ -654,7 +656,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             <div
                 className="event-custom"
                 style={{
-                    display: "flex",
+                    display:
+                        arg.event._def.extendedProps.statusColor != "#EFF0F6" ||
+                        arg.event.title == "Blocked"
+                            ? "flex"
+                            : "",
                     background: "none",
                     padding: "4px 4px 0px 4px",
                     overflow: "",
@@ -682,7 +688,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             : "null",
                 }}
             >
-                {console.log("evtevt", arg.event._def)}
                 {arg.event._def.extendedProps.GroupID &&
                 arg.event._def.extendedProps.GroupID != "" ? (
                     <span style={{ marginRight: "5px", marginTop: "2px" }}>
@@ -703,6 +708,30 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             arg.el.style.backgroundColor = "lightgray"; // Change background color for weekends
         }
     };
+
+    useEffect(() => {
+        const currentDate = new Date();
+        const dateString = currentDate.toISOString().split("T")[0];
+
+        const slots = document.querySelectorAll(".fc-timeline-slot");
+        console.log("nabiktest", dateString);
+        slots.forEach((slot: Element) => {
+            console.log(
+                "testesttest",
+                moment((slot as HTMLElement).dataset.date).format("YYYY-MM-DD")
+            );
+
+            if (
+                moment((slot as HTMLElement).dataset.date).format(
+                    "YYYY-MM-DD"
+                ) == dateString
+            ) {
+                // Cast slot to HTMLElement to access dataset
+                (slot as HTMLElement).style.backgroundColor = "lightblue"; // Cast slot to HTMLElement to access style
+                // Add any other custom styles here
+            }
+        });
+    }, [itemData, rerenderKey]);
 
     return (
         timeStart && (
