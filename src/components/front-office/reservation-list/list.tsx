@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
+import { format } from "date-fns";
 
 import CustomTable from "components/common/custom-table";
 import CustomSearch from "components/common/custom-search";
@@ -27,11 +28,23 @@ const DeparturedListList = ({ title }: any) => {
             title: "Ирэх",
             key: "ArrivalDate",
             dataIndex: "ArrivalDate",
+            renderCell: (element: any) => {
+                return format(
+                    new Date(element.row.ArrivalDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                );
+            },
         },
         {
             title: "Гарах",
             key: "DepartureDate",
             dataIndex: "DepartureDate",
+            renderCell: (element: any) => {
+                return format(
+                    new Date(element.row.DepartureDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                );
+            },
         },
         {
             title: "Зочин",
