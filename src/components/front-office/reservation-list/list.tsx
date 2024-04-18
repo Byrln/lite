@@ -19,8 +19,8 @@ const DeparturedListList = ({ title }: any) => {
     const columns = [
         {
             title: "Зах.Дугаар",
-            key: "ReservationID",
-            dataIndex: "ReservationID",
+            key: "ReservationNo",
+            dataIndex: "ReservationNo",
         },
 
         {
