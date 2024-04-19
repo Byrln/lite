@@ -155,28 +155,26 @@ const ReservationNav = ({
                     Edit Transaction
                 </Button>
             </a>
-            {reservation.GroupOperation && (
-                <Button
-                    variant={"text"}
-                    size="small"
-                    sx={buttonStyle}
-                    onClick={() => {
-                        handleModal(
-                            true,
-                            "Extra Charge",
-                            <ExtraCharge
-                                transactionInfo={reservation}
-                                reservation={reservation}
-                                additionalMutateUrl={additionalMutateUrl}
-                            />,
-                            null,
-                            "large"
-                        );
-                    }}
-                >
-                    Extra Charge
-                </Button>
-            )}
+            <Button
+                variant={"text"}
+                size="small"
+                sx={buttonStyle}
+                onClick={() => {
+                    handleModal(
+                        true,
+                        "Extra Charge",
+                        <ExtraCharge
+                            transactionInfo={reservation}
+                            reservation={reservation}
+                            additionalMutateUrl={additionalMutateUrl}
+                        />,
+                        null,
+                        "large"
+                    );
+                }}
+            >
+                Extra Charge
+            </Button>
             {reservation.GroupOperation && (
                 <a href={`transaction/group-edit/${reservation.GroupID}`}>
                     <Button variant={"text"} size="small" sx={buttonStyle}>
