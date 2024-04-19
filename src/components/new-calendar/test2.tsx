@@ -709,29 +709,29 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         }
     };
 
-    useEffect(() => {
-        const currentDate = new Date();
-        const dateString = currentDate.toISOString().split("T")[0];
+    // useEffect(() => {
+    //     const currentDate = new Date();
+    //     const dateString = currentDate.toISOString().split("T")[0];
 
-        const slots = document.querySelectorAll(".fc-timeline-slot");
-        console.log("nabiktest", dateString);
-        slots.forEach((slot: Element) => {
-            console.log(
-                "testesttest",
-                moment((slot as HTMLElement).dataset.date).format("YYYY-MM-DD")
-            );
+    //     const slots = document.querySelectorAll(".fc-timeline-slot");
+    //     console.log("nabiktest", dateString);
+    //     slots.forEach((slot: Element) => {
+    //         console.log(
+    //             "testesttest",
+    //             moment((slot as HTMLElement).dataset.date).format("YYYY-MM-DD")
+    //         );
 
-            if (
-                moment((slot as HTMLElement).dataset.date).format(
-                    "YYYY-MM-DD"
-                ) == dateString
-            ) {
-                // Cast slot to HTMLElement to access dataset
-                (slot as HTMLElement).style.backgroundColor = "lightblue"; // Cast slot to HTMLElement to access style
-                // Add any other custom styles here
-            }
-        });
-    }, [itemData, rerenderKey]);
+    //         if (
+    //             moment((slot as HTMLElement).dataset.date).format(
+    //                 "YYYY-MM-DD"
+    //             ) == dateString
+    //         ) {
+    //             // Cast slot to HTMLElement to access dataset
+    //             (slot as HTMLElement).style.backgroundColor = "lightblue"; // Cast slot to HTMLElement to access style
+    //             // Add any other custom styles here
+    //         }
+    //     });
+    // }, [itemData, rerenderKey]);
 
     return (
         timeStart && (
