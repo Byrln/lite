@@ -48,6 +48,7 @@ import {
 } from "lib/api/cashier-session";
 import RoomAssignGroup from "components/reservation/room-assign-group";
 import Iconify from "components/iconify/iconify";
+import AvailableRoomTypes from "components/front-office/reservation-list/available-room-types";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const router = useRouter();
@@ -758,8 +759,20 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         }}
                         startIcon={<Icon icon={plusFill} />}
                     >
-                        Нэмэх
+                        Шинэ захиалга
                     </Button>
+
+                    {timeStart && dayCount && (
+                        <AvailableRoomTypes
+                            ArrivalDate={format(timeStart, "yyyy/MM/dd ")}
+                            DepartureDate={format(
+                                moment(timeStart)
+                                    .add(dayCount, "days")
+                                    .toDate(),
+                                "yyyy/MM/dd "
+                            )}
+                        />
+                    )}
 
                     <FormControl>
                         <RadioGroup

@@ -258,6 +258,8 @@ a.fc-event {
 }
 
 .event-custom {
+    overflow: hidden;
+    border: 1px #b8b8b8 solid;
 }
 
 .event-custom:hover {

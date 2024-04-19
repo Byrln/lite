@@ -912,7 +912,7 @@ const NewEdit = ({
                         </div>
                         <br />
                         <Grid key="Payment" container spacing={1}>
-                            <Grid item xs={6}>
+                            <Grid item xs={12} sm={6}>
                                 <div
                                     style={{
                                         padding: "30px",
@@ -1069,7 +1069,7 @@ const NewEdit = ({
                                     </Grid>
                                 </div>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={12} sm={6}>
                                 <div
                                     style={{
                                         padding: "30px",

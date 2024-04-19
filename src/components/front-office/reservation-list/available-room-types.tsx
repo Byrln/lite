@@ -54,7 +54,7 @@ const NewEdit = ({ ArrivalDate, DepartureDate }: any) => {
     }, [ArrivalDate, DepartureDate]);
 
     return (
-        <div>
+        <div className="mr-3">
             <CustomWidthTooltip
                 title={
                     <React.Fragment>
