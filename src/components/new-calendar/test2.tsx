@@ -762,7 +762,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         Шинэ захиалга
                     </Button>
 
-                    {timeStart && dayCount && (
+                    {/* {timeStart && dayCount && (
                         <AvailableRoomTypes
                             ArrivalDate={format(timeStart, "yyyy/MM/dd ")}
                             DepartureDate={format(
@@ -772,7 +772,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 "yyyy/MM/dd "
                             )}
                         />
-                    )}
+                    )} */}
 
                     <FormControl>
                         <RadioGroup
