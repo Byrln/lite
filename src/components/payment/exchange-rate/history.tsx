@@ -5,6 +5,8 @@ import {
 } from "lib/api/currency";
 import { format } from "date-fns";
 
+import { formatPrice } from "lib/utils/helpers";
+
 const columns = [
     { title: "Улс", key: "CountryName", dataIndex: "CountryName" },
     { title: "Ханш", key: "CurrencyName", dataIndex: "CurrencyName" },
@@ -42,8 +44,25 @@ const columns = [
             );
         },
     },
-    { title: "Худ.авах", key: "CurrencyRate1", dataIndex: "CurrencyRate1" },
-    { title: "Зарах", key: "SellRate", dataIndex: "SellRate" },
+    {
+        title: "Худ.авах",
+        key: "CurrencyRate1",
+        dataIndex: "CurrencyRate1",
+        renderCell: (element: any) => {
+            return (
+                element.row.CurrencyRate1 &&
+                formatPrice(element.row.CurrencyRate1)
+            );
+        },
+    },
+    {
+        title: "Зарах",
+        key: "SellRate",
+        dataIndex: "SellRate",
+        renderCell: (element: any) => {
+            return element.row.SellRate && formatPrice(element.row.SellRate);
+        },
+    },
     { title: "Хэрэглэгч", key: "UserName", dataIndex: "UserName" },
 ];
 
@@ -58,7 +77,7 @@ const History = ({ CurrencyID }: any) => {
                 columns={columns}
                 data={data}
                 error={error}
-                id="CurrencyID"
+                id="BeginDate"
                 listUrl={exchangeHistoryUrl}
                 excelName="Түүх"
                 hasNew={false}
