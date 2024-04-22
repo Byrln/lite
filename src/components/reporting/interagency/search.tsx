@@ -1,21 +1,11 @@
-import { TextField, Grid, MenuItem } from "@mui/material";
-
+import { TextField, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 
 import CustomerSelect from "components/select/customer";
 
-const Search = ({
-    register,
-    errors,
-    control,
-    reset,
-    setArrivalTime,
-    setDepartureTime,
-    ArrivalTime,
-    DepartureTime,
-}: any) => {
+const Search = ({ register, errors, control }: any) => {
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
@@ -48,23 +38,6 @@ const Search = ({
             </Grid>
 
             <Grid item xs={3}>
-                <TextField
-                    id="StartTime"
-                    label="Эхлэх цаг"
-                    type="time"
-                    margin="dense"
-                    {...register("StartTime")}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    sx={{ width: "100%" }}
-                    size="small"
-                    value={ArrivalTime}
-                    onChange={(value) => setArrivalTime(value.target.value)}
-                />
-            </Grid>
-
-            <Grid item xs={3}>
                 <Controller
                     name="EndDate"
                     control={control}
@@ -93,22 +66,6 @@ const Search = ({
                 />
             </Grid>
 
-            <Grid item xs={3}>
-                <TextField
-                    id="EndTime"
-                    label="Дуусах цаг"
-                    type="time"
-                    margin="dense"
-                    {...register("EndTime")}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    sx={{ width: "100%" }}
-                    size="small"
-                    value={DepartureTime}
-                    onChange={(value) => setDepartureTime(value.target.value)}
-                />
-            </Grid>
             <Grid item xs={3}>
                 <CustomerSelect
                     register={register}
