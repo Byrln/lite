@@ -83,6 +83,18 @@ export const UserAPI = {
         };
     },
 
+    setPassword: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/SetPassword`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
     delete: async (id: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
             UserID: id,

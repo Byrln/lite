@@ -2,11 +2,11 @@ import CustomSelect from "components/common/custom-select";
 
 const languageOptions = [
     {
-        value: "mn",
+        value: "MN",
         label: "Монгол",
     },
     {
-        value: "en",
+        value: "EN",
         label: "English",
     },
 ];
