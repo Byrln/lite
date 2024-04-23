@@ -92,6 +92,7 @@ const NewEdit = () => {
             listUrl={listUrl}
             additionalValues={{
                 UserID: state.editId,
+                UsersType: 1,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
