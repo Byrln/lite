@@ -118,7 +118,7 @@ const NewEdit = ({ timelineCoord, defaultEntity }: any) => {
 
             if (defaultEntity) {
                 vals.RoomBlockID = defaultEntity.RoomBlockID;
-                await RoomBlockAPI?.update(defaultEntity.RoomBlockID, vals);
+                await RoomBlockAPI?.update(vals);
             } else {
                 await RoomBlockAPI?.new(vals);
             }
