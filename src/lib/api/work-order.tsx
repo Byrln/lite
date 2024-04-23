@@ -55,8 +55,8 @@ export const WorkOrderAPI = {
     },
 
     delete: async (id: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
-            WorkOrderID: id,
+        const { data, status } = await axios.post(`${urlPrefix}/Cancel`, {
+            WorkOrderRegisterID: id,
         });
 
         return {

@@ -102,7 +102,7 @@ const NewEditForm = ({
             }
 
             if (customSubmit) {
-                customSubmit(values);
+                await customSubmit(values);
             }
 
             if (!handleModalNotAffected) {

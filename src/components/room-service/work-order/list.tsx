@@ -86,7 +86,8 @@ const WorkOrderList = ({ title }: any) => {
                 api={WorkOrderAPI}
                 hasNew={true}
                 hasUpdate={true}
-                hasDelete={false}
+                hasDelete={true}
+                hasShow={false}
                 id="WorkOrderRegisterID"
                 listUrl={listUrl}
                 modalTitle={title}
