@@ -1,4 +1,4 @@
-import { TextField, Grid, Checkbox, FormControlLabel } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -10,6 +10,7 @@ import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
 import ReasonSelect from "../select/reason";
+import SubmitButton from "components/common/submit-button";
 
 const VoidTransactionForm = ({
     transactionInfo,
@@ -91,15 +92,18 @@ const VoidTransactionForm = ({
                     </Grid>
                 </Grid>
 
-                <LoadingButton
-                    size="small"
-                    type="submit"
-                    variant="contained"
-                    loading={loading}
-                    className="mt-3"
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "100%",
+                        flexWrap: "wrap",
+                        flexDirection: "row-reverse",
+                    }}
+                    className="mb-1"
                 >
-                    Void Transaction
-                </LoadingButton>
+                    <SubmitButton fullWidth={false}>Хадгалах</SubmitButton>
+                </Box>
             </form>
         </>
     );

@@ -22,7 +22,7 @@ const StatusChange = ({ RoomID, listUrl, RoomTypeName, RoomNo }: any) => {
                             RoomNo={RoomNo}
                         />,
                         null,
-                        "large"
+                        "small"
                     );
                 }}
             >

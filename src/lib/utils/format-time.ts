@@ -38,18 +38,18 @@ export function countNights(d1: any, d2: any) {
     var date1 = new Date(d1);
     var date2 = new Date(d2);
 
-    var timeDiff = date2.getTime() - date1.getTime();
-    const endAtMidnight =
-        date2.getHours() === 0 &&
-        date2.getMinutes() === 0 &&
-        date2.getSeconds() === 0 &&
-        date2.getMilliseconds() === 0;
+    // Convert both dates to UTC to account for daylight saving time changes
+    var utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    var utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
 
-    var numberOfNights = Math.floor(timeDiff / (1000 * 3600 * 24));
+    // Calculate the difference in milliseconds
+    var differenceMs = Math.abs(utc2 - utc1);
 
-    // if (!endAtMidnight) {
-    //     numberOfNights--;
-    // }
+    // Convert milliseconds to days (1 day = 24 * 60 * 60 * 1000 milliseconds)
+    var differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
+
+    // Do not subtract 1 to include both start and end dates in the count of nights
+    var numberOfNights = differenceDays;
 
     return numberOfNights;
 }

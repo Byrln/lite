@@ -68,6 +68,7 @@ const VoidTransactionForm = ({
                         justifyContent: "space-between",
                         width: "100%",
                         flexWrap: "wrap",
+                        fontSize: "12px",
                     }}
                     className="mb-1"
                 >
@@ -81,6 +82,7 @@ const VoidTransactionForm = ({
                         justifyContent: "space-between",
                         width: "100%",
                         flexWrap: "wrap",
+                        fontSize: "12px",
                     }}
                     className="mb-1"
                 >
@@ -89,7 +91,7 @@ const VoidTransactionForm = ({
                 </Box>
 
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <UserSelect
                             register={register}
                             errors={errors}
@@ -102,7 +104,7 @@ const VoidTransactionForm = ({
                 <Box
                     sx={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        flexDirection: "row-reverse",
                         width: "100%",
                         flexWrap: "wrap",
                     }}

@@ -1,5 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
-import { Typography, Grid, TextField, FormControlLabel } from "@mui/material";
+import {
+    Typography,
+    Grid,
+    TextField,
+    FormControlLabel,
+    Box,
+} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -284,7 +290,18 @@ const NewEdit = ({ handleModal, entity, listUrl, workingDate }: any) => {
                         name={`NewNights`}
                     />
 
-                    <SubmitButton loading={loading} />
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            width: "100%",
+                            flexWrap: "wrap",
+                            flexDirection: "row-reverse",
+                        }}
+                        className="mb-1"
+                    >
+                        <SubmitButton fullWidth={false}>Хадгалах</SubmitButton>
+                    </Box>
                 </Grid>
             </Grid>
         </form>

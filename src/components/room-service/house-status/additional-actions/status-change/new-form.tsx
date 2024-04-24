@@ -60,41 +60,20 @@ const VoidTransactionForm = ({
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input type="hidden" {...register("RoomID")} />
-
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        width: "100%",
-                        flexWrap: "wrap",
-                    }}
-                    className="mb-1"
-                >
-                    <div>Өрөөний төрөл : </div>
-                    <div style={{ fontWeight: "600" }}>{RoomTypeName}</div>
-                </Box>
-
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        width: "100%",
-                        flexWrap: "wrap",
-                    }}
-                    className="mb-1"
-                >
-                    <div>Өрөөний дугаар : </div>
-                    <div style={{ fontWeight: "600" }}>{RoomNo}</div>
-                </Box>
-
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        {/* <UserSelect
-                            register={register}
-                            errors={errors}
-                            IsHouseKeeper={true}
-                            nameKey={"HouseKeeperUserID"}
-                        /> */}
+                <Grid container spacing={1}>
+                    <Grid item xs={12} style={{ fontSize: "12px" }}>
+                        <Box className="mb-1">
+                            <span>Өрөөний төрөл : </span>
+                            <span style={{ fontWeight: "600" }}>
+                                {RoomTypeName}
+                            </span>
+                        </Box>
+                        <Box>
+                            <span>Өрөөний дугаар : </span>
+                            <span style={{ fontWeight: "600" }}>{RoomNo}</span>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
                         <ReferenceSelect
                             register={register}
                             errors={errors}
@@ -112,6 +91,7 @@ const VoidTransactionForm = ({
                         justifyContent: "space-between",
                         width: "100%",
                         flexWrap: "wrap",
+                        flexDirection: "row-reverse",
                     }}
                     className="mb-1"
                 >

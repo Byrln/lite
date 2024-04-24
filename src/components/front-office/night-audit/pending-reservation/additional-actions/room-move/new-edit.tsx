@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { Card, CardContent, Typography, Grid, Box } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
@@ -140,10 +140,22 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
                                     RoomID={RoomID}
                                 />
                             )}
-                            <SubmitButton loading={loading} />
                         </CardContent>
                     </Card>
                 </Grid>
+
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "100%",
+                        flexWrap: "wrap",
+                        flexDirection: "row-reverse",
+                    }}
+                    className="mb-1"
+                >
+                    <SubmitButton fullWidth={false}>Хадгалах</SubmitButton>
+                </Box>
             </Grid>
         </form>
     );

@@ -66,7 +66,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     function extractNumberFromString(str: any) {
         const parts = str.split("-");
-        const firstNumber = parseInt(parts[0], 10);
+        const firstNumber = parseInt(parts[1], 10);
 
         return firstNumber;
     }
@@ -481,6 +481,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleEventDrop = (info: any) => {
         if (info.event._instance.range.end > new Date(workingDate)) {
+            console.log("info", info);
             const newEventObject = {
                 title: "New Event",
                 ArrivalDate: info.event._instance.range.start,

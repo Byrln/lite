@@ -18,84 +18,6 @@ import Asign from "components/room-service/house-status/additional-actions/asign
 import StatusChange from "components/room-service/house-status/additional-actions/status-change";
 import StatusRemove from "components/room-service/house-status/additional-actions/status-remove";
 
-const columns = [
-    {
-        title: "№",
-        key: "№",
-        dataIndex: "№",
-    },
-    {
-        title: "Өрөө",
-        key: "RoomNo",
-        dataIndex: "RoomNo",
-    },
-    {
-        title: "Өр.төрөл",
-        key: "RoomTypeName",
-        dataIndex: "RoomTypeName",
-    },
-    {
-        title: "Цэвэрлэгээ/төлөв",
-        key: "HKSDescription",
-        dataIndex: "HKSDescription",
-    },
-    {
-        title: "Үйлдэл",
-        key: "Action",
-        dataIndex: "Action",
-        excelRenderPass: true,
-        render: function render(id: any, record: any, entity: any) {
-            return (
-                <>
-                    <StatusChange
-                        RoomID={entity.RoomID}
-                        listUrl={listRoomUrl}
-                        RoomTypeName={entity.RoomTypeName}
-                        RoomNo={entity.RoomNo}
-                    />
-                    {entity.HouseKeepingStatusID != 0 && (
-                        <StatusRemove
-                            RoomID={entity.RoomID}
-                            listUrl={listRoomUrl}
-                        />
-                    )}
-                </>
-            );
-        },
-    },
-    {
-        title: "Зочны төлөв",
-        key: "RSDescription",
-        dataIndex: "RSDescription",
-    },
-    {
-        title: "Өрөө үйлчлэгч",
-        key: "HKUserName",
-        dataIndex: "HKUserName",
-    },
-    {
-        title: "Үйлдэл",
-        key: "Action",
-        dataIndex: "Action",
-        excelRenderPass: true,
-        render: function render(id: any, record: any, entity: any) {
-            return (
-                <>
-                    <Asign
-                        RoomID={entity.RoomID}
-                        listUrl={listRoomUrl}
-                        RoomTypeName={entity.RoomTypeName}
-                        RoomNo={entity.RoomNo}
-                    />
-                    {entity.HKUserName.length > 0 && (
-                        <Unasign RoomID={entity.RoomID} listUrl={listRoomUrl} />
-                    )}
-                </>
-            );
-        },
-    },
-];
-
 const HouseStatusList = ({ title }: any) => {
     const validationSchema = yup.object().shape({
         RoomTypeID: yup.string().nullable(),
@@ -112,6 +34,87 @@ const HouseStatusList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = HouseKeepingRoomSWR(search);
+
+    const columns = [
+        {
+            title: "№",
+            key: "№",
+            dataIndex: "№",
+        },
+        {
+            title: "Өрөө",
+            key: "RoomNo",
+            dataIndex: "RoomNo",
+        },
+        {
+            title: "Өр.төрөл",
+            key: "RoomTypeName",
+            dataIndex: "RoomTypeName",
+        },
+        {
+            title: "Цэвэрлэгээ/төлөв",
+            key: "HKSDescription",
+            dataIndex: "HKSDescription",
+        },
+        {
+            title: "Үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            excelRenderPass: true,
+            render: function render(id: any, record: any, entity: any) {
+                return (
+                    <>
+                        <StatusChange
+                            RoomID={entity.RoomID}
+                            listUrl={listRoomUrl}
+                            RoomTypeName={entity.RoomTypeName}
+                            RoomNo={entity.RoomNo}
+                        />
+                        {entity.HouseKeepingStatusID != 0 && (
+                            <StatusRemove
+                                RoomID={entity.RoomID}
+                                listUrl={listRoomUrl}
+                            />
+                        )}
+                    </>
+                );
+            },
+        },
+        {
+            title: "Зочны төлөв",
+            key: "RSDescription",
+            dataIndex: "RSDescription",
+        },
+        {
+            title: "Өрөө үйлчлэгч",
+            key: "HKUserName",
+            dataIndex: "HKUserName",
+        },
+        {
+            title: "Үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            excelRenderPass: true,
+            render: function render(id: any, record: any, entity: any) {
+                return (
+                    <>
+                        <Asign
+                            RoomID={entity.RoomID}
+                            listUrl={listRoomUrl}
+                            RoomTypeName={entity.RoomTypeName}
+                            RoomNo={entity.RoomNo}
+                        />
+                        {entity.HKUserName.length > 0 && (
+                            <Unasign
+                                RoomID={entity.RoomID}
+                                listUrl={listRoomUrl}
+                            />
+                        )}
+                    </>
+                );
+            },
+        },
+    ];
 
     return (
         <>

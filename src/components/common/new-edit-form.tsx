@@ -132,12 +132,16 @@ const NewEditForm = ({
 
             {state.isShow && !isShowNotAffected ? null : (
                 // <Box sx={{ width: "15%" }}>
-                <div
-                    style={{
-                        width: "100%",
+
+                <Box
+                    sx={{
                         display: "flex",
-                        justifyContent: "flex-end",
+                        justifyContent: "space-between",
+                        width: "100%",
+                        flexWrap: "wrap",
+                        flexDirection: "row-reverse",
                     }}
+                    className="mb-1"
                 >
                     <SubmitButton
                         loading={loading}
@@ -145,7 +149,8 @@ const NewEditForm = ({
                         fullWidth={false}
                     />
                     {additionalButtons}
-                </div>
+                </Box>
+
                 // </Box>
             )}
         </form>

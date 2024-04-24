@@ -14,7 +14,7 @@ const Asign = ({ RoomID, listUrl, RoomTypeName, RoomNo }: any) => {
                 onClick={(evt: any) => {
                     handleModal(
                         true,
-                        "Өрөөний үйлчлэгч оноох",
+                        "Ө.үйлч оноох",
                         <NewForm
                             RoomID={RoomID}
                             customMutateUrl={listUrl}
@@ -22,7 +22,7 @@ const Asign = ({ RoomID, listUrl, RoomTypeName, RoomNo }: any) => {
                             RoomNo={RoomNo}
                         />,
                         null,
-                        "large"
+                        "small"
                     );
                 }}
             >

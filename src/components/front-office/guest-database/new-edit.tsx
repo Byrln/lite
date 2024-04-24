@@ -74,7 +74,10 @@ const NewEdit = () => {
                         {state.isShow && <Tab label="Бичиг баримт" value="4" />}
                     </TabList>
                 </Box>
-                <TabPanel value="1">
+                <TabPanel
+                    value="1"
+                    style={{ padding: "24px 0 0 0", margin: "0px" }}
+                >
                     <img //@ts-ignore
                         src={`https://pmsapi.horecasoft.mn/images/guestpictures/hotel_${localStorage.getItem(
                             "hotelId"

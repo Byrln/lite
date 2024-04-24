@@ -5,6 +5,7 @@ import {
     FormControlLabel,
     Box,
 } from "@mui/material";
+
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -30,11 +31,18 @@ const RoomMoveForm = ({
     additionalMutateUrl,
     customRerender,
 }: any) => {
+    console.log("transactioninfo", transactionInfo);
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [baseStay, setBaseStay]: any = useState({
-        roomType: null,
-        room: null,
+        roomType: {
+            RoomTypeID: transactionInfo.RoomTypeID
+                ? transactionInfo.RoomTypeID
+                : null,
+        },
+        room: {
+            RoomID: transactionInfo.RoomID ? transactionInfo.RoomID : null,
+        },
         rate: null,
         dateStart: new Date(transactionInfo.ArrivalDate),
         dateEnd: new Date(transactionInfo.DepartureDate),
@@ -135,7 +143,7 @@ const RoomMoveForm = ({
             ContractRate: false,
             EmptyRow: false,
         };
-        console.log("values", values);
+
         try {
             var rates = await RateAPI.listByDate(values);
 
@@ -169,6 +177,12 @@ const RoomMoveForm = ({
             calculateAmount(rt);
         }
     };
+
+    useEffect(() => {
+        if (transactionInfo && transactionInfo.RoomTypeID) {
+            setRoomType({ RoomTypeID: transactionInfo.RoomTypeID });
+        }
+    }, [transactionInfo]);
 
     return (
         <>

@@ -69,6 +69,7 @@ const CustomModal = () => {
         emptyModal,
         handleModal,
         modalType,
+        isWithSubmit,
     }: any = useContext(ModalContext);
 
     const getStyle = () => {
@@ -123,28 +124,58 @@ const CustomModal = () => {
 
                     {!emptyModal && (
                         <>
-                            <Divider className="mt-3 mb-3" />
-                            <Box
-                                sx={{
-                                    mx: "auto",
-                                    textAlign: "right",
-                                }}
-                            >
-                                <Button
-                                    size="small"
-                                    variant="outlined"
-                                    key="back"
-                                    onClick={() => (
-                                        handleModal(),
-                                        dispatch({
-                                            type: "editId",
-                                            editId: "",
-                                        })
-                                    )}
+                            {isWithSubmit ? (
+                                <Box
+                                    sx={{
+                                        mx: "auto",
+                                        textAlign: "right",
+                                        display: "flex",
+                                        flexDirection: "row-reverse",
+                                        paddingRight: "110px",
+                                        marginTop: "-32px",
+                                    }}
                                 >
-                                    Хаах
-                                </Button>
-                            </Box>
+                                    <Button
+                                        size="small"
+                                        variant="outlined"
+                                        key="back"
+                                        onClick={() => (
+                                            handleModal(),
+                                            dispatch({
+                                                type: "editId",
+                                                editId: "",
+                                            })
+                                        )}
+                                    >
+                                        Хаах
+                                    </Button>
+                                </Box>
+                            ) : (
+                                <>
+                                    <Divider className="mt-3 mb-3" />
+                                    <Box
+                                        sx={{
+                                            mx: "auto",
+                                            textAlign: "right",
+                                        }}
+                                    >
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            key="back"
+                                            onClick={() => (
+                                                handleModal(),
+                                                dispatch({
+                                                    type: "editId",
+                                                    editId: "",
+                                                })
+                                            )}
+                                        >
+                                            Хаах
+                                        </Button>
+                                    </Box>
+                                </>
+                            )}
                         </>
                     )}
                 </Typography>
