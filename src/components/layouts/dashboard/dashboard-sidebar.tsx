@@ -44,7 +44,7 @@ export default function DashboardSidebar({
 }: any) {
     const router = useRouter();
     const { data: session } = useSession();
-    console.log("session", session);
+    // console.log("session", session);
     useEffect(() => {
         if (isOpenSidebar) {
             onCloseSidebar();

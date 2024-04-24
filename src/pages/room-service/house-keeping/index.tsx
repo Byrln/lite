@@ -3,28 +3,49 @@ import Head from "next/head";
 
 import Page from "components/page";
 import HouseKeeping from "components/room-service/house-keeping/list";
+import WorkOrder from "components/room-service/work-order-user/list";
+import CustomTab from "components/common/custom-tab";
 
 const title = "House Keeping";
 
-const Index = () => (
-    <>
-        <Head>
-            <title>{title}</title>
-        </Head>
+const Index = () => {
+    const tabs = [
+        {
+            label: "Өрөөний жагсаалт",
+            component: (
+                <>
+                    <HouseKeeping title={title} />
+                </>
+            ),
+        },
+        {
+            label: "Ажлын даалгавар",
+            component: (
+                <>
+                    <WorkOrder title={title} />
+                </>
+            ),
+        },
+    ];
 
-        <Page>
-            <Container maxWidth="xl">
-                <Box sx={{ pb: 1 }}>
-                    <Typography variant="h6">{title}</Typography>
-                </Box>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <HouseKeeping title={title} />
-                    </Grid>
-                </Grid>
-            </Container>
-        </Page>
-    </>
-);
+    return (
+        <>
+            <Head>
+                <title>{title}</title>
+            </Head>
+
+            <Page>
+                <Container maxWidth="xl">
+                    <Box sx={{ pb: 1 }}>
+                        <Typography variant="h6">{title}</Typography>
+                    </Box>
+                    <Box sx={{ width: "100%" }}>
+                        <CustomTab tabs={tabs} />
+                    </Box>
+                </Container>
+            </Page>
+        </>
+    );
+};
 
 export default Index;

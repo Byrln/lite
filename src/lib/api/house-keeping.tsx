@@ -90,4 +90,27 @@ export const HouseKeepingAPI = {
             status,
         };
     },
+
+    roomCleaning: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Room/Cleaning`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+    roomCleaned: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Room/Cleaned`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
 };

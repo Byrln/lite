@@ -25,17 +25,29 @@ import { formatPrice } from "lib/utils/helpers";
 import CustomSearch from "components/common/custom-search";
 import { CustomerSWR } from "lib/api/customer";
 import { TransactionInfoSWR } from "lib/api/front-office";
+import { ChargeAPI } from "lib/api/charge";
 
 const Receipt = ({ TransactionID }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [reportData, setReportData] = useState<any>(null);
     const [totalBalance, setTotalBalance] = useState<any>(null);
+    const [summary, setSummary]: any = useState(null);
 
     const [rerenderKey, setRerenderKey] = useState(0);
 
     const [search, setSearch] = useState({
         TransactionID: TransactionID,
     });
+
+    const reloadReservationData = async () => {
+        var res = await ChargeAPI.summary(TransactionID);
+
+        setSummary(res.data.JsonData[0]);
+    };
+
+    useEffect(() => {
+        reloadReservationData();
+    }, [TransactionID]);
 
     const { data, error } = TransactionInfoSWR(search);
 
@@ -123,6 +135,8 @@ const Receipt = ({ TransactionID }: any) => {
         }
     }, [data]);
     console.log("data", data);
+    console.log("summary", summary);
+
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -370,55 +384,93 @@ const Receipt = ({ TransactionID }: any) => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {data &&
-                                        data.map(
-                                            (element: any, index: number) => (
-                                                <>
-                                                    <TableRow
-                                                        key={index}
-                                                        sx={{
-                                                            "&:last-child td, &:last-child th":
-                                                                {
-                                                                    border: 0,
-                                                                },
-                                                        }}
-                                                    >
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "11px",
-                                                            }}
-                                                        >
-                                                            {element.RoomFullNo}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "11px",
-                                                            }}
-                                                        >
-                                                            {
-                                                                element.CustomerName
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "11px",
-                                                            }}
-                                                        >
-                                                            {element.GuestName}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                </>
-                                            )
-                                        )}
+                                    <TableRow
+                                        key={"RoomCharge"}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "11px",
+                                            }}
+                                        >
+                                            Room Charge
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "11px",
+                                            }}
+                                        >
+                                            {summary &&
+                                                formatPrice(
+                                                    summary.RoomCharges
+                                                )}
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "11px",
+                                            }}
+                                        >
+                                            {summary &&
+                                                formatPrice(
+                                                    summary.RoomCharges
+                                                )}
+                                        </TableCell>
+                                    </TableRow>
+
+                                    <TableRow
+                                        key={"RoomCharge"}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "11px",
+                                            }}
+                                        >
+                                            Extra Charge
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "11px",
+                                            }}
+                                        >
+                                            {summary &&
+                                                formatPrice(
+                                                    summary.ExtraCharges
+                                                )}
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "11px",
+                                            }}
+                                        >
+                                            {summary &&
+                                                formatPrice(
+                                                    summary.ExtraCharges
+                                                )}
+                                        </TableCell>
+                                    </TableRow>
 
                                     <TableRow
                                         key={"subTotal"}
@@ -578,7 +630,9 @@ const Receipt = ({ TransactionID }: any) => {
                                             }}
                                             align="right"
                                         >
-                                            {formatPrice(78300)}
+                                            {formatPrice(
+                                                summary && summary.TotalPayments
+                                            )}
                                         </TableCell>
                                         <TableCell
                                             component="th"
@@ -589,7 +643,57 @@ const Receipt = ({ TransactionID }: any) => {
                                             }}
                                             align="right"
                                         >
-                                            {formatPrice(54)}
+                                            {formatPrice(
+                                                summary && summary.TotalPayments
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+
+                                    <TableRow
+                                        key={"payment"}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            Balance
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(
+                                                summary && summary.Balance
+                                            )}
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "11px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(
+                                                summary && summary.Balance
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>

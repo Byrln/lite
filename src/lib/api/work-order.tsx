@@ -4,6 +4,7 @@ import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/WorkOrder";
 export const listUrl = `${urlPrefix}/list`;
+export const currentUrl = `${urlPrefix}/Current`;
 
 export const WorkOrderSWR = (search: any) => {
     if (!search.WorkOrderRegisterID) {
@@ -20,6 +21,13 @@ export const WorkOrderSWR = (search: any) => {
         await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
+};
+
+export const WorkOrderCurrentSWR = (search: any) => {
+    const fetcher = async (url: any) =>
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
+
+    return useSWR(currentUrl, fetcher);
 };
 
 export const WorkOrderAPI = {
@@ -58,6 +66,27 @@ export const WorkOrderAPI = {
         const { data, status } = await axios.post(`${urlPrefix}/Cancel`, {
             WorkOrderRegisterID: id,
         });
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    end: async (values: any) => {
+        const { data, status } = await axios.post(`${urlPrefix}/End`, values);
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    updateStatus: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/UpdateStatus`,
+            values
+        );
 
         return {
             data,
