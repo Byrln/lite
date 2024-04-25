@@ -1,8 +1,10 @@
 import { TextField, Grid } from "@mui/material";
-
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
+
+import CustomerSelect from "components/select/customer";
+import RoomTypeSelect from "components/select/room-type";
 
 const Search = ({ register, errors, control }: any) => {
     return (
@@ -65,7 +67,6 @@ const Search = ({ register, errors, control }: any) => {
                 />
             </Grid>
 
-            {/*
             <Grid item xs={3}>
                 <CustomerSelect
                     register={register}
@@ -73,7 +74,10 @@ const Search = ({ register, errors, control }: any) => {
                     isCustomSelect={true}
                     isNA={true}
                 />
-            </Grid> */}
+            </Grid>
+            <Grid item xs={3}>
+                <RoomTypeSelect register={register} errors={errors} />
+            </Grid>
         </Grid>
     );
 };

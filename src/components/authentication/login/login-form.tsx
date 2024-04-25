@@ -69,16 +69,15 @@ export default function LoginForm() {
             password: values.password,
             redirect: false,
         });
-
         if (!result.error) {
             getSession().then((session) => {
                 if (session) {
                     axios.defaults.headers.common[
                         "Authorization"
                     ] = `Bearer ${session.token}`;
+                    localStorage.setItem("expires", session.expires);
                     localStorage.setItem("hotelId", values.hotel);
                     localStorage.setItem("username", values.username);
-
                     router.replace("/");
                 } else {
                     window.location.href = "/auth/signin";
