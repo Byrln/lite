@@ -266,3 +266,7 @@ a.fc-event {
     width: auto;
     min-width: fit-content;
 }
+
+.fc .fc-timeline-slot-minor {
+    border-style: none;
+}

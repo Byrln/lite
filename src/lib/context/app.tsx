@@ -10,6 +10,7 @@ const saveToLocal = (state: any) => {
 const initialState = {
     themeColor: "#ffffff",
     editId: null,
+    userRole: null,
     isShow: null,
 };
 
@@ -44,6 +45,12 @@ const reducer = (state: any, action: any) => {
             localStorage.removeItem("settings");
 
             return { ...state, ...initialState };
+        }
+        case "userRole": {
+            const newState = { ...state, userRole: action.userRole };
+            saveToLocal(newState);
+
+            return newState;
         }
         default:
             return state;

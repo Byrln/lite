@@ -5,6 +5,7 @@ import sidebarConfig from "components/layouts/dashboard/sidebar-config";
 
 import DashboardNavbar from "./dashboard-navbar";
 import DashboardSidebar from "./dashboard-sidebar";
+import { useAppState } from "lib/context/app";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
@@ -32,6 +33,7 @@ export default function DashboardLayout({ children }: any) {
     const [open, setOpen] = useState(false);
     const { data, error } = GetPrivilegesSWR();
     const [sideBarData, setSideBarData] = useState(null);
+    const [state, dispatch]: any = useAppState();
 
     function filterMenu(menu: any, uniqueMenuLinks: any) {
         return menu.reduce((filteredMenu: any, item: any) => {
@@ -62,6 +64,11 @@ export default function DashboardLayout({ children }: any) {
     useEffect(() => {
         if (data) {
             // Extracting MenuLink values
+            // console.log("data", data);
+            dispatch({
+                type: "userRole",
+                userRole: data,
+            });
             let menuLinks = data
                 .map((action: any) =>
                     action.Status == true ? action.MenuLink2 : null
