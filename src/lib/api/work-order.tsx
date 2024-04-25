@@ -23,7 +23,11 @@ export const WorkOrderSWR = (search: any) => {
     return useSWR(listUrl, fetcher);
 };
 
-export const WorkOrderCurrentSWR = (search: any) => {
+export const WorkOrderCurrentSWR = (
+    search: any,
+    ShowCompleted: any = false
+) => {
+    search.ShowCompleted = ShowCompleted;
     const fetcher = async (url: any) =>
         await axios.post(url, search).then((res: any) => res.data.JsonData);
 

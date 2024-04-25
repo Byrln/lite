@@ -11,8 +11,13 @@ import {
 import { mutate } from "swr";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { ModalContext } from "lib/context/modal";
+import CustomSearch from "components/common/custom-search";
+import Search from "./search";
 
 import {
     WorkOrderCurrentSWR,
@@ -69,7 +74,22 @@ const columns = [
 const HouseKeepingList = ({ title }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
-    const { data, error } = WorkOrderCurrentSWR({ ShowCompleted: false });
+
+    const validationSchema = yup.object().shape({
+        WorkOrderStatusID: yup.string().nullable(),
+        RoomTypeID: yup.string().nullable(),
+    });
+    const formOptions = { resolver: yupResolver(validationSchema) };
+    const {
+        reset,
+        register,
+        handleSubmit,
+        formState: { errors },
+        control,
+    } = useForm(formOptions);
+
+    const [search, setSearch] = useState({});
+    const { data, error } = WorkOrderCurrentSWR(search);
 
     const handleDone = async (WorkOrderRegisterID: any) => {
         setLoading(true);
@@ -85,12 +105,28 @@ const HouseKeepingList = ({ title }: any) => {
         }
     };
 
-    const handleDoing = async (WorkOrderRegisterID: any) => {
+    const handleDoing = async (
+        WorkOrderRegisterID: any,
+        WorkOrderNo: any,
+        RoomID: any,
+        WorkOrderPriorityID: any,
+        RoomBlockID: any,
+        Description: any,
+        Deadline: any,
+        AssignedUserID: any
+    ) => {
         setLoading(true);
         try {
-            await WorkOrderAPI.updateStatus({
+            await WorkOrderAPI.update({
                 WorkOrderRegisterID: WorkOrderRegisterID,
-                Status: 5,
+                WorkOrderStatusID: 3,
+                WorkOrderNo: WorkOrderNo,
+                RoomID: RoomID,
+                WorkOrderPriorityID: WorkOrderPriorityID,
+                RoomBlockID: RoomBlockID,
+                Description: Description,
+                Deadline: Deadline,
+                AssignedUserID: AssignedUserID,
             });
             await mutate(currentUrl);
             setLoading(false);
@@ -102,6 +138,25 @@ const HouseKeepingList = ({ title }: any) => {
 
     return (
         <Grid container spacing={2}>
+            <Grid
+                xs={12}
+                style={{ display: "flex", flexDirection: "row-reverse" }}
+            >
+                <CustomSearch
+                    listUrl={currentUrl}
+                    search={search}
+                    setSearch={setSearch}
+                    handleSubmit={handleSubmit}
+                    reset={reset}
+                >
+                    <Search
+                        register={register}
+                        errors={errors}
+                        control={control}
+                        reset={reset}
+                    />
+                </CustomSearch>
+            </Grid>
             {data &&
                 data.map((field: any, index: any) => (
                     <Grid item xs={6} sm={4} md={3} key={index}>
@@ -130,13 +185,20 @@ const HouseKeepingList = ({ title }: any) => {
                                                 key={field.RoomFullName}
                                                 onClick={() => {
                                                     handleDoing(
-                                                        field.WorkOrderRegisterID
+                                                        field.WorkOrderRegisterID,
+                                                        field.WorkOrderNo,
+                                                        field.RoomID,
+                                                        field.WorkOrderPriorityID,
+                                                        field.RoomBlockID,
+                                                        field.WODescription,
+                                                        field.Deadline,
+                                                        field.AssignedUserID
                                                     );
                                                 }}
                                                 variant="outlined"
                                                 className="mr-3"
                                             >
-                                                Хүлээгдэж байгаа
+                                                Хийгдэж байгаа
                                             </Button>
                                         </div>
                                     );

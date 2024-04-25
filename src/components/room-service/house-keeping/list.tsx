@@ -10,6 +10,9 @@ import {
 } from "@mui/material";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { ModalContext } from "lib/context/modal";
 import {
@@ -18,54 +21,27 @@ import {
     listCurrentUrl,
 } from "lib/api/house-keeping";
 import Iconify from "components/iconify/iconify";
-
-const columns = [
-    {
-        title: "Reservation No",
-        key: "ReservationNo",
-        dataIndex: "ReservationNo",
-    },
-    {
-        title: "Guest",
-        key: "Guest",
-        dataIndex: "Guest",
-    },
-    {
-        title: "Room",
-        key: "Room",
-        dataIndex: "Room",
-    },
-    {
-        title: "Rate Type",
-        key: "RateType",
-        dataIndex: "RateType",
-    },
-    {
-        title: "Revervation Type",
-        key: "RevervationType",
-        dataIndex: "RevervationType",
-    },
-    {
-        title: "Departure",
-        key: "Departure",
-        dataIndex: "Departure",
-    },
-    {
-        title: "Total",
-        key: "Total",
-        dataIndex: "Total",
-    },
-    {
-        title: "Deposit",
-        key: "Deposit",
-        dataIndex: "Deposit",
-    },
-];
+import CustomSearch from "components/common/custom-search";
+import Search from "./search";
 
 const HouseKeepingList = ({ title }: any) => {
     const { handleModal }: any = useContext(ModalContext);
-    const { data, error } = HouseKeepingCurrentSWR();
     const [loading, setLoading] = useState(false);
+    const validationSchema = yup.object().shape({
+        Floor: yup.string().nullable(),
+        RoomTypeID: yup.string().nullable(),
+    });
+    const formOptions = { resolver: yupResolver(validationSchema) };
+    const {
+        reset,
+        register,
+        handleSubmit,
+        formState: { errors },
+        control,
+    } = useForm(formOptions);
+
+    const [search, setSearch] = useState({});
+    const { data, error } = HouseKeepingCurrentSWR(search);
 
     function sortData(rooms: any) {
         return rooms.sort((a: any, b: any) => {
@@ -139,6 +115,26 @@ const HouseKeepingList = ({ title }: any) => {
 
     return (
         <Grid container spacing={2}>
+            <Grid
+                xs={12}
+                style={{ display: "flex", flexDirection: "row-reverse" }}
+            >
+                <CustomSearch
+                    listUrl={listCurrentUrl}
+                    search={search}
+                    setSearch={setSearch}
+                    handleSubmit={handleSubmit}
+                    reset={reset}
+                >
+                    <Search
+                        register={register}
+                        errors={errors}
+                        control={control}
+                        reset={reset}
+                    />
+                </CustomSearch>
+            </Grid>
+
             {data &&
                 sortData(data).map((field: any, index: any) => (
                     <Grid item xs={6} sm={3} md={2} key={index}>

@@ -6,12 +6,7 @@ const urlPrefix = "/api/HouseKeeping";
 export const listCurrentUrl = `${urlPrefix}/Current`;
 export const listRoomUrl = `${urlPrefix}/Rooms`;
 
-export const HouseKeepingCurrentSWR = () => {
-    const values = {
-        RoomTypeID: null,
-        RoomID: null,
-    };
-
+export const HouseKeepingCurrentSWR = (values: any) => {
     const fetcher = async (url: any) =>
         await axios.post(url, values).then((res: any) => res.data.JsonData);
 

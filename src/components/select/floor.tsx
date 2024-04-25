@@ -5,7 +5,12 @@ import Skeleton from "@mui/material/Skeleton";
 import CustomSelect from "components/common/custom-select";
 import { FloorSWR } from "lib/api/floor";
 
-const FloorSelect = ({ register, errors }: any) => {
+const FloorSelect = ({
+    register,
+    errors,
+    customField,
+    isFloorIdIsValue = true,
+}: any) => {
     const { data, error } = FloorSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -22,10 +27,10 @@ const FloorSelect = ({ register, errors }: any) => {
         <CustomSelect
             register={register}
             errors={errors}
-            field="FloorID"
+            field={customField ? customField : "FloorID"}
             label="Давхар"
             options={data}
-            optionValue="FloorID"
+            optionValue={isFloorIdIsValue ? "FloorID" : "FloorNo"}
             optionLabel="FloorNo"
         />
     );

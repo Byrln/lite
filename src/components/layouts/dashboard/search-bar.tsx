@@ -54,11 +54,9 @@ export default function Searchbar({ children }: any) {
             onClickAway={handleClose}
         >
             <div>
-                {!isOpen && (
-                    <IconButton onClick={handleOpen}>
-                        <Icon icon={searchFill} width={20} height={20} />
-                    </IconButton>
-                )}
+                <IconButton onClick={handleOpen}>
+                    <Icon icon={searchFill} width={20} height={20} />
+                </IconButton>
 
                 <Slide direction="down" in={isOpen} mountOnEnter unmountOnExit>
                     <SearchbarStyle>{children}</SearchbarStyle>
