@@ -56,9 +56,14 @@ const CustomSelect = ({
                         options[entity[field]][optionLabel]}
                 </option>
                 {isNA && (
-                    <option key={0} value={0}>
-                        N/A
-                    </option>
+                    <>
+                        <option key={-1} value={-1}>
+                            Бүгд
+                        </option>
+                        <option key={0} value={0}>
+                            N/A
+                        </option>
+                    </>
                 )}
                 {options.map((element: any) => (
                     <option

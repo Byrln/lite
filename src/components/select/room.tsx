@@ -16,6 +16,7 @@ const RoomSelect = ({
     customRegisterName,
     groupIndex,
     roomType,
+    isSearch,
 }: any) => {
     // const { data, error } = RoomSWR();
     const [data, setData]: any = useState([]);
@@ -121,6 +122,11 @@ const RoomSelect = ({
             shrink
             size="small"
         >
+            {isSearch && (
+                <MenuItem key={"all"} value={0}>
+                    {"Бүгд"}
+                </MenuItem>
+            )}
             {data.map((room: any) => {
                 return baseStay.roomType != "all" ? (
                     roomType && roomType?.RoomTypeID === room.RoomTypeID ? (

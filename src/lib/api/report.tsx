@@ -47,8 +47,9 @@ export const CheckedOutDetailedSWR = (search: any, workingDate: any) => {
         EndDate: moment(search.EndDate, "YYYY-MM-DD")
             .format("YYYY-MM-DD")
             .toString(),
-        CustomerID: Number(search.CustomerID),
-        RoomTypeID: Number(search.RoomTypeID),
+        CustomerID: search.CustomerID ? Number(search.CustomerID) : null,
+        RoomTypeID: search.RoomTypeID ? Number(search.RoomTypeID) : null,
+        RoomID: search.RoomID ? Number(search.RoomID) : null,
     };
 
     const fetcher = async (url: any) =>

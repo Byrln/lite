@@ -55,9 +55,14 @@ const CustomerSelect = ({
             size="small"
         >
             {isNA == true ? (
-                <MenuItem key="0" value="0">
-                    N/A
-                </MenuItem>
+                <>
+                    <MenuItem key="-1" value="-1">
+                        Бүгд
+                    </MenuItem>
+                    <MenuItem key="0" value="0">
+                        N/A
+                    </MenuItem>
+                </>
             ) : (
                 <></>
             )}

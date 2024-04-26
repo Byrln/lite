@@ -5,6 +5,7 @@ import moment from "moment";
 
 import CustomerSelect from "components/select/customer";
 import RoomTypeSelect from "components/select/room-type";
+import RoomSelect from "components/select/room";
 
 const Search = ({ register, errors, control }: any) => {
     return (
@@ -76,7 +77,25 @@ const Search = ({ register, errors, control }: any) => {
                 />
             </Grid>
             <Grid item xs={3}>
-                <RoomTypeSelect register={register} errors={errors} />
+                <RoomTypeSelect
+                    register={register}
+                    errors={errors}
+                    isSearch={true}
+                />
+            </Grid>
+            <Grid item xs={3}>
+                <RoomSelect
+                    register={register}
+                    errors={errors}
+                    baseStay={{
+                        TransactionID: 0,
+                        roomType: "all",
+                        dateStart: new Date(),
+                        dateEnd: new Date(),
+                        nights: 1,
+                    }}
+                    isSearch={true}
+                />
             </Grid>
         </Grid>
     );

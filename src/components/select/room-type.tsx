@@ -14,6 +14,7 @@ const RoomTypeSelect = ({
     RoomTypeID,
     customError,
     helperText,
+    isSearch,
 }: any) => {
     const [data, setData]: any = useState([]);
 
@@ -74,6 +75,11 @@ const RoomTypeSelect = ({
                     : baseStay?.RoomTypeID)
             }
         >
+            {isSearch && (
+                <MenuItem key={"all"} value={0}>
+                    {"Бүгд"}
+                </MenuItem>
+            )}
             {data.map((element: any) => (
                 <MenuItem key={element.RoomTypeID} value={element.RoomTypeID}>
                     {element.RoomTypeName}
