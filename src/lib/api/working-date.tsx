@@ -32,6 +32,27 @@ export const WorkingDateAPI = {
         };
     },
 
+    newBulk: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/NewBulk`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
+
+    reverse: async () => {
+        const { data, status } = await axios.post(`${urlPrefix}/Reverse`);
+
+        return {
+            data,
+            status,
+        };
+    },
+
     update: async (values: any) => {
         const { data, status } = await axios.post(
             `${urlPrefix}/Update`,

@@ -34,7 +34,16 @@ const NightAuditList = ({ workingDate }: any) => {
         setLoading(true);
 
         try {
-            await WorkingDateAPI.new(values);
+            if (isEditable) {
+                let tempValues = {
+                    NewWorkingDate: moment(values.WorkingDate).format(
+                        "YYYY-MM-DD"
+                    ),
+                };
+                await WorkingDateAPI.newBulk(tempValues);
+            } else {
+                await WorkingDateAPI.new(values);
+            }
             toast("Амжилттай.");
             setLoading(false);
             router.replace("/");
@@ -98,7 +107,7 @@ const NightAuditList = ({ workingDate }: any) => {
                     }}
                 />{" "}
                 Өдрийн өндөрлөгөө (Олон хоногоор)
-                <SubmitButton loading={loading} />
+                <SubmitButton loading={loading} disabled={loading} />
             </form>
         </>
     );

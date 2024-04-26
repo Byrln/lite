@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Stepper, Step, StepLabel, Button, Box } from "@mui/material";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 import CustomTable from "components/common/custom-table";
 import { NightAuditSWR, NightAuditAPI, listUrl } from "lib/api/night-audit";
@@ -8,6 +9,7 @@ import PendingReservation from "./pending-reservation";
 import PendingDueOut from "./PendingDueOut";
 import PendingRoomCharge from "./pending-room-charge";
 import NewWorkingDate from "./new-working-date";
+import { WorkingDateAPI } from "lib/api/working-date";
 
 const steps = [
     "Хүлээгдэж буй захиалга",
@@ -17,6 +19,8 @@ const steps = [
 ];
 
 const NightAuditList = ({ title, workingDate }: any) => {
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
     const [activeStep, setActiveStep] = useState(0);
     const [pendingReservationCompleted, setPendingReservationCompleted] =
         useState(false);
@@ -49,9 +53,24 @@ const NightAuditList = ({ title, workingDate }: any) => {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
     };
-    console.log("activeStep", activeStep);
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
+    const handleBack = async () => {
+        setLoading(true);
+
+        try {
+            if (activeStep === 0) {
+                await WorkingDateAPI.reverse();
+
+                toast("Амжилттай.");
+                router.replace("/");
+            } else {
+                setActiveStep((prevActiveStep) => prevActiveStep - 1);
+                setLoading(false);
+            }
+        } catch (error) {
+            setLoading(false);
+        } finally {
+        }
     };
 
     return (
@@ -95,13 +114,8 @@ const NightAuditList = ({ title, workingDate }: any) => {
                 <></>
             )}
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Button
-                    color="inherit"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    sx={{ mr: 1 }}
-                >
-                    Буцах
+                <Button onClick={handleBack} sx={{ mr: 1 }} disabled={loading}>
+                    {activeStep === 0 ? "Өдрийн өндөрлөгөө буцаах" : "Буцах"}
                 </Button>
                 <Box sx={{ flex: "1 1 auto" }} />
 
