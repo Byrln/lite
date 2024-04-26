@@ -1,11 +1,8 @@
 import { TextField, Grid } from "@mui/material";
+
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
-
-import CustomerSelect from "components/select/customer";
-import RoomTypeSelect from "components/select/room-type";
-import RoomSelect from "components/select/room";
 
 const Search = ({ register, errors, control }: any) => {
     return (
@@ -68,7 +65,8 @@ const Search = ({ register, errors, control }: any) => {
                 />
             </Grid>
 
-            {/* <Grid item xs={3}>
+            {/*
+            <Grid item xs={3}>
                 <CustomerSelect
                     register={register}
                     errors={errors}
@@ -76,27 +74,6 @@ const Search = ({ register, errors, control }: any) => {
                     isNA={true}
                 />
             </Grid> */}
-            <Grid item xs={3}>
-                <RoomTypeSelect
-                    register={register}
-                    errors={errors}
-                    isSearch={true}
-                />
-            </Grid>
-            <Grid item xs={3}>
-                <RoomSelect
-                    register={register}
-                    errors={errors}
-                    baseStay={{
-                        TransactionID: 0,
-                        roomType: "all",
-                        dateStart: new Date(),
-                        dateEnd: new Date(),
-                        nights: 1,
-                    }}
-                    isSearch={true}
-                />
-            </Grid>
         </Grid>
     );
 };

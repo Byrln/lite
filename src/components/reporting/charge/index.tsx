@@ -19,7 +19,10 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { CheckedOutDetailedSWR, checkedOutDetailedUrl } from "lib/api/report";
+import {
+    DailyChargesPaymentSummarySWR,
+    dailyChargesPaymentSummaryUrl,
+} from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
 import { formatPrice } from "lib/utils/helpers";
 import CustomSearch from "components/common/custom-search";
@@ -43,7 +46,7 @@ const Folio = ({ title, workingDate }: any) => {
         // CustomerID: null,
     });
 
-    const { data, error } = CheckedOutDetailedSWR(search, workingDate);
+    const { data, error } = DailyChargesPaymentSummarySWR(search, workingDate);
 
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
@@ -81,7 +84,7 @@ const Folio = ({ title, workingDate }: any) => {
 
     useEffect(() => {
         if (data) {
-            let tempValue = groupBy(data, "CustomerName");
+            let tempValue = groupBy(data, "RoomTypeName");
 
             setReportData(tempValue);
 
@@ -162,7 +165,7 @@ const Folio = ({ title, workingDate }: any) => {
                 </Button>
 
                 <CustomSearch
-                    listUrl={checkedOutDetailedUrl}
+                    listUrl={dailyChargesPaymentSummaryUrl}
                     search={search}
                     setSearch={setSearch}
                     handleSubmit={handleSubmit}
@@ -233,22 +236,9 @@ const Folio = ({ title, workingDate }: any) => {
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        №
+                                        Өр.Төрөл
                                     </TableCell>
-                                    <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                        rowSpan={2}
-                                    >
-                                        Байгууллага
-                                    </TableCell>
-                                    <TableCell
-                                        align="left"
-                                        style={{ fontWeight: "bold" }}
-                                        rowSpan={2}
-                                    >
-                                        Зочин
-                                    </TableCell>
+
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
@@ -283,7 +273,15 @@ const Folio = ({ title, workingDate }: any) => {
                                             fontWeight: "bold",
                                             textAlign: "center",
                                         }}
-                                        colSpan={2}
+                                        colSpan={
+                                            data &&
+                                            data[0] &&
+                                            data[0].ChargeDescription
+                                                ? JSON.parse(
+                                                      data[0].ChargeDescription
+                                                  ).length
+                                                : 1
+                                        }
                                     >
                                         Үйлчилгээ
                                     </TableCell>
@@ -296,117 +294,225 @@ const Folio = ({ title, workingDate }: any) => {
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell
-                                        align="right"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Мини бар
-                                    </TableCell>
-                                    <TableCell
-                                        align="right"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Ресторан
-                                    </TableCell>
+                                    {data &&
+                                        data[0] &&
+                                        data[0].ChargeDescription &&
+                                        JSON.parse(
+                                            data[0].ChargeDescription
+                                        ).map((entity: any, index: any) => (
+                                            <TableCell
+                                                key={index}
+                                                align="right"
+                                                style={{
+                                                    fontWeight: "bold",
+                                                }}
+                                            >
+                                                {entity.Name}
+                                            </TableCell>
+                                        ))}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {data &&
-                                    data.map(
-                                        (element: any, index: number) => (
+                                {reportData &&
+                                    Object.keys(reportData).map(
+                                        (key) => (
                                             <>
                                                 <TableRow
-                                                    key={index}
+                                                    key={key}
                                                     sx={{
                                                         "&:last-child td, &:last-child th":
-                                                            {
-                                                                border: 0,
-                                                            },
+                                                            { border: 0 },
                                                     }}
                                                 >
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
+                                                        style={{
+                                                            fontWeight: "bold",
+                                                            paddingLeft: "30px",
+                                                        }}
+                                                        colSpan={
+                                                            data &&
+                                                            data[0] &&
+                                                            data[0]
+                                                                .ChargeDescription
+                                                                ? Number(
+                                                                      JSON.parse(
+                                                                          data[0]
+                                                                              .ChargeDescription
+                                                                      ).length
+                                                                  ) + 6
+                                                                : 7
+                                                        }
                                                     >
-                                                        {index + 1}
+                                                        {key}
                                                     </TableCell>
+                                                </TableRow>
+                                                {reportData[key] &&
+                                                    Object.keys(
+                                                        reportData[key]
+                                                    ).map((key2) => (
+                                                        <>
+                                                            <TableRow
+                                                                key={key}
+                                                                sx={{
+                                                                    "&:last-child td, &:last-child th":
+                                                                        {
+                                                                            border: 0,
+                                                                        },
+                                                                }}
+                                                            >
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                >
+                                                                    {
+                                                                        reportData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomFullNo
+                                                                    }
+                                                                </TableCell>
+
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                >
+                                                                    {moment(
+                                                                        reportData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .Arrival
+                                                                    ).format(
+                                                                        "YYYY-MM-DD"
+                                                                    )}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                >
+                                                                    {moment(
+                                                                        reportData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .Departure
+                                                                    ).format(
+                                                                        "YYYY-MM-DD"
+                                                                    )}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    align="right"
+                                                                >
+                                                                    {formatPrice(
+                                                                        reportData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .Discount
+                                                                    )}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    align="right"
+                                                                >
+                                                                    {formatPrice(
+                                                                        reportData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomCharge
+                                                                    )}
+                                                                </TableCell>
+
+                                                                {data &&
+                                                                    data[0] &&
+                                                                    data[0]
+                                                                        .ChargeDescription &&
+                                                                    JSON.parse(
+                                                                        data[0]
+                                                                            .ChargeDescription
+                                                                    ).map(
+                                                                        (
+                                                                            entity: any,
+                                                                            index: any
+                                                                        ) => (
+                                                                            <TableCell
+                                                                                key={
+                                                                                    index
+                                                                                }
+                                                                                component="th"
+                                                                                scope="row"
+                                                                                align="right"
+                                                                            >
+                                                                                {formatPrice(
+                                                                                    entity.Value
+                                                                                )}
+                                                                            </TableCell>
+                                                                        )
+                                                                    )}
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    align="right"
+                                                                >
+                                                                    {formatPrice(
+                                                                        reportData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .TotalCharge
+                                                                    )}
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        </>
+                                                    ))}
+                                                <TableRow
+                                                    key={key}
+                                                    sx={{
+                                                        "&:last-child td, &:last-child th":
+                                                            { border: 0 },
+                                                    }}
+                                                >
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
-                                                    >
-                                                        {element.CustomerName}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                    >
-                                                        {element.GuestName}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                    >
-                                                        {moment(
-                                                            element.ArrivalDate
-                                                        ).format("YYYY-MM-DD")}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                    >
-                                                        {moment(
-                                                            element.DepartureDate
-                                                        ).format("YYYY-MM-DD")}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
+                                                        style={{
+                                                            fontWeight: "bold",
+                                                        }}
                                                         align="right"
+                                                        colSpan={
+                                                            data &&
+                                                            data[0] &&
+                                                            data[0]
+                                                                .ChargeDescription
+                                                                ? Number(
+                                                                      JSON.parse(
+                                                                          data[0]
+                                                                              .ChargeDescription
+                                                                      ).length
+                                                                  ) + 6
+                                                                : 7
+                                                        }
                                                     >
-                                                        {formatPrice(
-                                                            element.Discount
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        align="right"
-                                                    >
-                                                        {formatPrice(
-                                                            element.RoomCharge
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        align="right"
-                                                    >
-                                                        {formatPrice(
-                                                            element.MiniBar
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        align="right"
-                                                    >
-                                                        {formatPrice(
-                                                            element.Restaurant
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        align="right"
-                                                    >
-                                                        {formatPrice(
-                                                            element.TotalCharge
-                                                        )}
+                                                        {reportData &&
+                                                            reportData[key] &&
+                                                            formatPrice(
+                                                                reportData[
+                                                                    key
+                                                                ].reduce(
+                                                                    (
+                                                                        acc: any,
+                                                                        obj: any
+                                                                    ) =>
+                                                                        acc +
+                                                                        obj.TotalCharge,
+                                                                    0
+                                                                )
+                                                            )}
                                                     </TableCell>
                                                 </TableRow>
                                             </>
                                         )
-
                                         // console.log(
                                         //     `${key}: ${reportData[key]}`
                                         // );
@@ -427,7 +533,18 @@ const Folio = ({ title, workingDate }: any) => {
                                             fontWeight: "bold",
                                         }}
                                         align="right"
-                                        colSpan={15}
+                                        colSpan={
+                                            data &&
+                                            data[0] &&
+                                            data[0].ChargeDescription
+                                                ? Number(
+                                                      JSON.parse(
+                                                          data[0]
+                                                              .ChargeDescription
+                                                      ).length
+                                                  ) + 6
+                                                : 7
+                                        }
                                     >
                                         {formatPrice(totalBalance)}
                                     </TableCell>
