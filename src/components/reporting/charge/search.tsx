@@ -17,7 +17,7 @@ const Search = ({ register, errors, control }: any) => {
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-                            label="Эхлэх огноо"
+                            label="Огноо"
                             value={value}
                             onChange={(value) =>
                                 onChange(moment(value, "YYYY-MM-DD"))
@@ -39,7 +39,7 @@ const Search = ({ register, errors, control }: any) => {
                 />
             </Grid>
 
-            <Grid item xs={3}>
+            {/* <Grid item xs={3}>
                 <Controller
                     name="EndDate"
                     control={control}
@@ -66,7 +66,7 @@ const Search = ({ register, errors, control }: any) => {
                         />
                     )}
                 />
-            </Grid>
+            </Grid> */}
 
             {/* <Grid item xs={3}>
                 <CustomerSelect

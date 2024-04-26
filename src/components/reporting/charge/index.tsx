@@ -20,8 +20,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
-    DailyChargesPaymentSummarySWR,
-    dailyChargesPaymentSummaryUrl,
+    ReservationDailyDetailSWR,
+    reservationDailyDetailUrl,
 } from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
 import { formatPrice } from "lib/utils/helpers";
@@ -46,7 +46,7 @@ const Folio = ({ title, workingDate }: any) => {
         // CustomerID: null,
     });
 
-    const { data, error } = DailyChargesPaymentSummarySWR(search, workingDate);
+    const { data, error } = ReservationDailyDetailSWR(search, workingDate);
 
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
@@ -165,7 +165,7 @@ const Folio = ({ title, workingDate }: any) => {
                 </Button>
 
                 <CustomSearch
-                    listUrl={dailyChargesPaymentSummaryUrl}
+                    listUrl={reservationDailyDetailUrl}
                     search={search}
                     setSearch={setSearch}
                     handleSubmit={handleSubmit}
@@ -207,18 +207,11 @@ const Folio = ({ title, workingDate }: any) => {
                             {" "}
                             Тайлант үе :{" "}
                         </span>{" "}
-                        (
                         {search.StartDate &&
                             moment(search.StartDate, "YYYY.MM.DD").format(
                                 "YYYY.MM.DD"
                             )}
-                        {" - "}
-                        {search.EndDate
-                            ? moment(search.EndDate, "YYYY.MM.DD").format(
-                                  "YYYY.MM.DD"
-                              )
-                            : " "}
-                        )
+                         
                     </Typography>
                 </Box>
 
@@ -237,6 +230,20 @@ const Folio = ({ title, workingDate }: any) => {
                                         rowSpan={2}
                                     >
                                         Өр.Төрөл
+                                    </TableCell>
+
+                                    <TableCell
+                                        style={{ fontWeight: "bold" }}
+                                        rowSpan={2}
+                                    >
+                                        Байгууллага
+                                    </TableCell>
+
+                                    <TableCell
+                                        style={{ fontWeight: "bold" }}
+                                        rowSpan={2}
+                                    >
+                                        Зочин
                                     </TableCell>
 
                                     <TableCell
@@ -341,8 +348,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                           data[0]
                                                                               .ChargeDescription
                                                                       ).length
-                                                                  ) + 6
-                                                                : 7
+                                                                  ) + 8
+                                                                : 9
                                                         }
                                                     >
                                                         {key}
@@ -370,7 +377,31 @@ const Folio = ({ title, workingDate }: any) => {
                                                                         reportData[
                                                                             key
                                                                         ][key2]
-                                                                            .RoomFullNo
+                                                                            .RoomFullName
+                                                                    }
+                                                                </TableCell>
+
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                >
+                                                                    {
+                                                                        reportData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .CompanyName
+                                                                    }
+                                                                </TableCell>
+
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                >
+                                                                    {
+                                                                        reportData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .GuestName
                                                                     }
                                                                 </TableCell>
 
@@ -382,7 +413,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                         reportData[
                                                                             key
                                                                         ][key2]
-                                                                            .Arrival
+                                                                            .ArrivalDate
                                                                     ).format(
                                                                         "YYYY-MM-DD"
                                                                     )}
@@ -395,7 +426,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                         reportData[
                                                                             key
                                                                         ][key2]
-                                                                            .Departure
+                                                                            .DepartureDate
                                                                     ).format(
                                                                         "YYYY-MM-DD"
                                                                     )}
@@ -490,8 +521,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                           data[0]
                                                                               .ChargeDescription
                                                                       ).length
-                                                                  ) + 6
-                                                                : 7
+                                                                  ) + 8
+                                                                : 9
                                                         }
                                                     >
                                                         {reportData &&
@@ -505,7 +536,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                         obj: any
                                                                     ) =>
                                                                         acc +
-                                                                        obj.TotalCharge,
+                                                                        obj.DailyPostedCharge,
                                                                     0
                                                                 )
                                                             )}
@@ -542,8 +573,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                           data[0]
                                                               .ChargeDescription
                                                       ).length
-                                                  ) + 6
-                                                : 7
+                                                  ) + 8
+                                                : 9
                                         }
                                     >
                                         {formatPrice(totalBalance)}

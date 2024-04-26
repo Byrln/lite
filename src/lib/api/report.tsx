@@ -13,6 +13,7 @@ export const stayViewUrl = `${urlPrefix}/StayView1`;
 export const dailyInfoUrl = `${urlPrefix}/DailyInfo`;
 export const interAgencyUrl = `${urlPrefix}/InterAgency`;
 export const dailyChargesPaymentSummaryUrl = `${urlPrefix}/DailyChargesPayment/Summary`;
+export const reservationDailyDetailUrl = `${urlPrefix}/Reservation/DailyDetail`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -85,6 +86,31 @@ export const DailyChargesPaymentSummarySWR = (
         });
 
     return useSWR(dailyChargesPaymentSummaryUrl, fetcher);
+};
+
+export const ReservationDailyDetailSWR = (search: any, workingDate: any) => {
+    let tempSearch = {
+        StartDate:
+            moment(search.StartDate, "YYYY-MM-DD")
+                .format("YYYY-MM-DD")
+                .toString() + " 00:00:00",
+        EndDate:
+            moment(search.StartDate, "YYYY-MM-DD")
+                .add(1, "days")
+                .format("YYYY-MM-DD")
+                .toString() + " 00:00:00",
+        CustomerID: search.CustomerID ? Number(search.CustomerID) : null,
+        RoomTypeID: search.RoomTypeID ? Number(search.RoomTypeID) : null,
+        RoomID: search.RoomID ? Number(search.RoomID) : null,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(reservationDailyDetailUrl, fetcher);
 };
 
 export const InterAgencyUrl = (search: any) => {
