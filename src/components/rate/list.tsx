@@ -91,6 +91,8 @@ const RateList = ({ title, taxData }: any) => {
             title: "Тариф",
             key: "BaseRate",
             dataIndex: "BaseRate",
+            excelRenderPass: true,
+
             render: function render(
                 id: any,
                 value: any,
@@ -125,6 +127,8 @@ const RateList = ({ title, taxData }: any) => {
             title: "Нэмэлт Т/хүний тариф",
             key: "ExtraAdult",
             dataIndex: "ExtraAdult",
+            excelRenderPass: true,
+
             render: function render(
                 id: any,
                 value: any,
@@ -160,6 +164,8 @@ const RateList = ({ title, taxData }: any) => {
             title: "Нэмэлт хүүхдийн тариф",
             key: "ExtraChild",
             dataIndex: "ExtraChild",
+            excelRenderPass: true,
+
             render: function render(
                 id: any,
                 value: any,

@@ -36,6 +36,9 @@ const Folio = ({ title, workingDate }: any) => {
     const [ArrivalTime, setArrivalTime]: any = useState("00:00");
     const [DepartureTime, setDepartureTime]: any = useState("23:59");
     const [rerenderKey, setRerenderKey] = useState(0);
+    const [chargeColumns, setChargeColumns]: any = useState();
+    const [newData, setNewData]: any = useState();
+
     const { data: customerData, error: customerError } = CustomerSWR(0);
     const [customerName, setCustomerName]: any = useState("Бүгд");
 
@@ -84,8 +87,33 @@ const Folio = ({ title, workingDate }: any) => {
 
     useEffect(() => {
         if (data) {
-            let tempValue = groupBy(data, "RoomTypeName");
+            let chargeColumnsTemp: any = {};
 
+            if (data && data[0] && data[0].ChargeDescription) {
+                chargeColumnsTemp = parseJsonString(data[0].ChargeDescription);
+            }
+            setChargeColumns(chargeColumnsTemp);
+            data.forEach((entity: any) => {
+                if (chargeColumnsTemp) {
+                    chargeColumnsTemp.forEach((chargeColumnsEntity: any) => {
+                        entity[chargeColumnsEntity.Name] = parseJsonString(
+                            entity.ChargeDescription
+                        ).filter(
+                            (item: any) => item.Name == chargeColumnsEntity.Name
+                        )[0].Value;
+                    });
+                }
+            });
+
+            const filteredData = data.filter(
+                (item: any) =>
+                    moment(item.StayDate, "YYYY.MM.DD").format("YYYY.MM.DD") ==
+                    moment(search.StartDate, "YYYY.MM.DD").format("YYYY.MM.DD")
+            );
+
+            setNewData(filteredData);
+
+            let tempValue = groupBy(filteredData, "RoomTypeName");
             setReportData(tempValue);
 
             let tempTotal = 0;
@@ -97,34 +125,14 @@ const Folio = ({ title, workingDate }: any) => {
                                 tempTotal +
                                 tempValue[key].reduce(
                                     (acc: any, obj: any) =>
-                                        acc + obj.TotalCharge,
+                                        acc + obj.DailyPostedCharge,
                                     0
                                 ))
                     );
             }
+
             setTotalBalance(tempTotal);
             setRerenderKey((prevKey) => prevKey + 1);
-            // if (
-            //     search &&
-            //     search.CustomerID &&
-            //     search.CustomerID != "" &&
-            //     search.CustomerID != "0"
-            // ) {
-            //     let customerTempData = customerData.filter(
-            //         (element: any) => element.CustomerID == search.CustomerID
-            //     );
-            //     if (customerTempData.length > 0) {
-            //         setCustomerName(customerTempData[0].CustomerName);
-            //     } else {
-            //         setCustomerName("Бүгд");
-            //     }
-            // } else {
-            //     if (search.CustomerID == "0") {
-            //         setCustomerName("N/A");
-            //     } else {
-            //         setCustomerName("Бүгд");
-            //     }
-            // }
         }
     }, [data]);
 
@@ -151,6 +159,15 @@ const Folio = ({ title, workingDate }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
+
+    function parseJsonString(jsonString: any) {
+        return jsonString.split("},").map((item: any) => {
+            if (!item.endsWith("}")) {
+                item += "}";
+            }
+            return JSON.parse(item);
+        });
+    }
 
     return (
         <>
@@ -226,21 +243,33 @@ const Folio = ({ title, workingDate }: any) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            fontSize: "9px",
+                                            padding: "2px",
+                                        }}
                                         rowSpan={2}
                                     >
                                         Өр.Төрөл
                                     </TableCell>
 
                                     <TableCell
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            fontSize: "9px",
+                                            padding: "2px",
+                                        }}
                                         rowSpan={2}
                                     >
                                         Байгууллага
                                     </TableCell>
 
                                     <TableCell
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            fontSize: "9px",
+                                            padding: "2px",
+                                        }}
                                         rowSpan={2}
                                     >
                                         Зочин
@@ -248,28 +277,44 @@ const Folio = ({ title, workingDate }: any) => {
 
                                     <TableCell
                                         align="left"
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            fontSize: "9px",
+                                            padding: "2px",
+                                        }}
                                         rowSpan={2}
                                     >
                                         Ирсэн
                                     </TableCell>
                                     <TableCell
                                         align="left"
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            fontSize: "9px",
+                                            padding: "2px",
+                                        }}
                                         rowSpan={2}
                                     >
                                         Гарсан
                                     </TableCell>
                                     <TableCell
                                         align="right"
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            fontSize: "9px",
+                                            padding: "2px",
+                                        }}
                                         rowSpan={2}
                                     >
                                         Хөнгөлөлт
                                     </TableCell>
                                     <TableCell
                                         align="right"
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            fontSize: "9px",
+                                            padding: "2px",
+                                        }}
                                         rowSpan={2}
                                     >
                                         Буудлын орлого
@@ -279,14 +324,12 @@ const Folio = ({ title, workingDate }: any) => {
                                         style={{
                                             fontWeight: "bold",
                                             textAlign: "center",
+                                            fontSize: "9px",
+                                            padding: "2px",
                                         }}
                                         colSpan={
-                                            data &&
-                                            data[0] &&
-                                            data[0].ChargeDescription
-                                                ? JSON.parse(
-                                                      data[0].ChargeDescription
-                                                  ).length
+                                            chargeColumns
+                                                ? chargeColumns.length
                                                 : 1
                                         }
                                     >
@@ -294,29 +337,33 @@ const Folio = ({ title, workingDate }: any) => {
                                     </TableCell>
                                     <TableCell
                                         align="right"
-                                        style={{ fontWeight: "bold" }}
+                                        style={{
+                                            fontWeight: "bold",
+                                            fontSize: "9px",
+                                            padding: "2px",
+                                        }}
                                         rowSpan={2}
                                     >
                                         Нийт
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    {data &&
-                                        data[0] &&
-                                        data[0].ChargeDescription &&
-                                        JSON.parse(
-                                            data[0].ChargeDescription
-                                        ).map((entity: any, index: any) => (
-                                            <TableCell
-                                                key={index}
-                                                align="right"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                }}
-                                            >
-                                                {entity.Name}
-                                            </TableCell>
-                                        ))}
+                                    {chargeColumns &&
+                                        chargeColumns.map(
+                                            (entity: any, index: any) => (
+                                                <TableCell
+                                                    key={index}
+                                                    align="right"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        fontSize: "9px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    {entity.Name}
+                                                </TableCell>
+                                            )
+                                        )}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -337,17 +384,13 @@ const Folio = ({ title, workingDate }: any) => {
                                                         style={{
                                                             fontWeight: "bold",
                                                             paddingLeft: "30px",
+                                                            fontSize: "9px",
+                                                            padding: "2px",
                                                         }}
                                                         colSpan={
-                                                            data &&
-                                                            data[0] &&
-                                                            data[0]
-                                                                .ChargeDescription
+                                                            chargeColumns
                                                                 ? Number(
-                                                                      JSON.parse(
-                                                                          data[0]
-                                                                              .ChargeDescription
-                                                                      ).length
+                                                                      chargeColumns.length
                                                                   ) + 8
                                                                 : 9
                                                         }
@@ -372,6 +415,12 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 <TableCell
                                                                     component="th"
                                                                     scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "9px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
                                                                 >
                                                                     {
                                                                         reportData[
@@ -384,6 +433,12 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 <TableCell
                                                                     component="th"
                                                                     scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "9px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
                                                                 >
                                                                     {
                                                                         reportData[
@@ -396,6 +451,12 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 <TableCell
                                                                     component="th"
                                                                     scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "9px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
                                                                 >
                                                                     {
                                                                         reportData[
@@ -408,6 +469,12 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 <TableCell
                                                                     component="th"
                                                                     scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "9px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
                                                                 >
                                                                     {moment(
                                                                         reportData[
@@ -421,6 +488,12 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 <TableCell
                                                                     component="th"
                                                                     scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "9px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
                                                                 >
                                                                     {moment(
                                                                         reportData[
@@ -435,35 +508,55 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     component="th"
                                                                     scope="row"
                                                                     align="right"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "9px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
                                                                 >
-                                                                    {formatPrice(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .Discount
-                                                                    )}
+                                                                    {reportData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .Discount
+                                                                        ? formatPrice(
+                                                                              reportData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .Discount
+                                                                          )
+                                                                        : 0}
                                                                 </TableCell>
                                                                 <TableCell
                                                                     component="th"
                                                                     scope="row"
                                                                     align="right"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "9px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
                                                                 >
-                                                                    {formatPrice(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .RoomCharge
-                                                                    )}
+                                                                    {reportData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomCharge
+                                                                        ? formatPrice(
+                                                                              reportData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomCharge
+                                                                          )
+                                                                        : 0}
                                                                 </TableCell>
 
-                                                                {data &&
-                                                                    data[0] &&
-                                                                    data[0]
-                                                                        .ChargeDescription &&
-                                                                    JSON.parse(
-                                                                        data[0]
-                                                                            .ChargeDescription
-                                                                    ).map(
+                                                                {chargeColumns ? (
+                                                                    chargeColumns.map(
                                                                         (
                                                                             entity: any,
                                                                             index: any
@@ -475,24 +568,75 @@ const Folio = ({ title, workingDate }: any) => {
                                                                                 component="th"
                                                                                 scope="row"
                                                                                 align="right"
+                                                                                style={{
+                                                                                    fontSize:
+                                                                                        "9px",
+                                                                                    padding:
+                                                                                        "2px",
+                                                                                }}
                                                                             >
-                                                                                {formatPrice(
-                                                                                    entity.Value
-                                                                                )}
+                                                                                {reportData[
+                                                                                    key
+                                                                                ][
+                                                                                    key2
+                                                                                ][
+                                                                                    entity
+                                                                                        .Name
+                                                                                ]
+                                                                                    ? formatPrice(
+                                                                                          reportData[
+                                                                                              key
+                                                                                          ][
+                                                                                              key2
+                                                                                          ][
+                                                                                              entity
+                                                                                                  .Name
+                                                                                          ]
+                                                                                      )
+                                                                                    : 0}
                                                                             </TableCell>
                                                                         )
-                                                                    )}
+                                                                    )
+                                                                ) : (
+                                                                    <TableCell
+                                                                        key={0}
+                                                                        component="th"
+                                                                        scope="row"
+                                                                        align="right"
+                                                                        style={{
+                                                                            fontSize:
+                                                                                "9px",
+                                                                            padding:
+                                                                                "2px",
+                                                                        }}
+                                                                    >
+                                                                        0
+                                                                    </TableCell>
+                                                                )}
                                                                 <TableCell
                                                                     component="th"
                                                                     scope="row"
                                                                     align="right"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "9px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
                                                                 >
-                                                                    {formatPrice(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .TotalCharge
-                                                                    )}
+                                                                    {reportData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .DailyPostedCharge
+                                                                        ? formatPrice(
+                                                                              reportData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .DailyPostedCharge
+                                                                          )
+                                                                        : 0}
                                                                 </TableCell>
                                                             </TableRow>
                                                         </>
@@ -509,37 +653,171 @@ const Folio = ({ title, workingDate }: any) => {
                                                         scope="row"
                                                         style={{
                                                             fontWeight: "bold",
+
+                                                            fontSize: "9px",
+                                                            padding: "2px",
                                                         }}
                                                         align="right"
-                                                        colSpan={
-                                                            data &&
-                                                            data[0] &&
-                                                            data[0]
-                                                                .ChargeDescription
-                                                                ? Number(
-                                                                      JSON.parse(
-                                                                          data[0]
-                                                                              .ChargeDescription
-                                                                      ).length
-                                                                  ) + 8
-                                                                : 9
-                                                        }
+                                                        colSpan={5}
+                                                    >
+                                                        Нийт :
+                                                    </TableCell>
+
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontWeight: "bold",
+
+                                                            fontSize: "9px",
+                                                            padding: "2px",
+                                                        }}
+                                                        align="right"
+                                                        colSpan={1}
                                                     >
                                                         {reportData &&
-                                                            reportData[key] &&
-                                                            formatPrice(
-                                                                reportData[
-                                                                    key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        obj.DailyPostedCharge,
-                                                                    0
-                                                                )
-                                                            )}
+                                                        reportData[key]
+                                                            ? formatPrice(
+                                                                  reportData[
+                                                                      key
+                                                                  ].reduce(
+                                                                      (
+                                                                          acc: any,
+                                                                          obj: any
+                                                                      ) =>
+                                                                          acc +
+                                                                          obj.Discount
+                                                                              ? obj.Discount
+                                                                              : 0,
+                                                                      0
+                                                                  )
+                                                              )
+                                                            : 0}
+                                                    </TableCell>
+
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontWeight: "bold",
+
+                                                            fontSize: "9px",
+                                                            padding: "2px",
+                                                        }}
+                                                        align="right"
+                                                        colSpan={1}
+                                                    >
+                                                        {reportData &&
+                                                        reportData[key]
+                                                            ? formatPrice(
+                                                                  reportData[
+                                                                      key
+                                                                  ].reduce(
+                                                                      (
+                                                                          acc: any,
+                                                                          obj: any
+                                                                      ) =>
+                                                                          acc +
+                                                                          obj.RoomCharge
+                                                                              ? obj.RoomCharge
+                                                                              : 0,
+                                                                      0
+                                                                  )
+                                                              )
+                                                            : 0}
+                                                    </TableCell>
+
+                                                    {chargeColumns ? (
+                                                        chargeColumns.map(
+                                                            (
+                                                                entity: any,
+                                                                index: any
+                                                            ) => (
+                                                                <TableCell
+                                                                    key={index}
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    align="right"
+                                                                    style={{
+                                                                        fontWeight:
+                                                                            "bold",
+
+                                                                        fontSize:
+                                                                            "9px",
+                                                                        padding:
+                                                                            "2px",
+                                                                    }}
+                                                                >
+                                                                    {reportData &&
+                                                                    reportData[
+                                                                        key
+                                                                    ]
+                                                                        ? formatPrice(
+                                                                              reportData[
+                                                                                  key
+                                                                              ].reduce(
+                                                                                  (
+                                                                                      acc: any,
+                                                                                      obj: any
+                                                                                  ) =>
+                                                                                      acc +
+                                                                                      obj[
+                                                                                          entity
+                                                                                              .Name
+                                                                                      ],
+                                                                                  0
+                                                                              )
+                                                                          )
+                                                                        : 0}
+                                                                </TableCell>
+                                                            )
+                                                        )
+                                                    ) : (
+                                                        <TableCell
+                                                            key={0}
+                                                            component="th"
+                                                            scope="row"
+                                                            align="right"
+                                                            style={{
+                                                                fontWeight:
+                                                                    "bold",
+
+                                                                fontSize: "9px",
+                                                                padding: "2px",
+                                                            }}
+                                                        >
+                                                            0
+                                                        </TableCell>
+                                                    )}
+
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontWeight: "bold",
+
+                                                            fontSize: "9px",
+                                                            padding: "2px",
+                                                        }}
+                                                        align="right"
+                                                        colSpan={1}
+                                                    >
+                                                        {reportData &&
+                                                        reportData[key]
+                                                            ? formatPrice(
+                                                                  reportData[
+                                                                      key
+                                                                  ].reduce(
+                                                                      (
+                                                                          acc: any,
+                                                                          obj: any
+                                                                      ) =>
+                                                                          acc +
+                                                                          obj.DailyPostedCharge,
+                                                                      0
+                                                                  )
+                                                              )
+                                                            : 0}
                                                     </TableCell>
                                                 </TableRow>
                                             </>
@@ -562,22 +840,20 @@ const Folio = ({ title, workingDate }: any) => {
                                         scope="row"
                                         style={{
                                             fontWeight: "bold",
+                                            fontSize: "9px",
+                                            padding: "2px",
                                         }}
                                         align="right"
                                         colSpan={
-                                            data &&
-                                            data[0] &&
-                                            data[0].ChargeDescription
-                                                ? Number(
-                                                      JSON.parse(
-                                                          data[0]
-                                                              .ChargeDescription
-                                                      ).length
-                                                  ) + 8
+                                            chargeColumns
+                                                ? Number(chargeColumns.length) +
+                                                  8
                                                 : 9
                                         }
                                     >
-                                        {formatPrice(totalBalance)}
+                                        {totalBalance
+                                            ? formatPrice(totalBalance)
+                                            : 0}
                                     </TableCell>
                                 </TableRow>
 
