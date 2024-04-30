@@ -22,6 +22,7 @@ import { Icon } from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataGrid } from "@mui/x-data-grid";
+import { useIntl } from "react-intl";
 
 import { getCurrentDate } from "lib/utils/helpers";
 import EmptyAlert from "./empty-alert";
@@ -55,6 +56,7 @@ const CustomTable = ({
     functionAfterSubmit,
     customHeight,
 }: any) => {
+    const intl = useIntl();
     const [state, dispatch]: any = useAppState();
     const [height, setHeight] = useState<any>(null);
     // const [excelColumns, setExcelColumns]: any = useState(null);
@@ -79,91 +81,11 @@ const CustomTable = ({
             return column;
         });
 
-    // const customizedColumns: any = [].concat(columns);
-
-    // const customizedColumns: any = [columns];
-
-    // customizedColumns.push({
-    //     headerName: "Үйлдэл",
-    //     field: "actionButtons",
-    //     dataIndex: "actionButtons",
-    //     width: 300,
-    //     __ignore__: true,
-    //     className: "hide-print",
-    //     renderCell: (index: any) => {
-    //         return (
-    //             <Stack direction="row" spacing={1}>
-    //                 {hasUpdate && (
-    //                     <Button
-    //                         size="small"
-    //                         variant="outlined"
-    //                         color="primary"
-    //                         startIcon={<EditIcon />}
-    //                         onClick={() => {
-    //                             handleModal(
-    //                                 true,
-    //                                 `${modalTitle} засах`,
-    //                                 modalContent,
-    //                                 null,
-    //                                 "large"
-    //                             );
-    //                             dispatch({
-    //                                 type: "isShow",
-    //                                 isShow: null,
-    //                             });
-    //                             dispatch({
-    //                                 type: "editId",
-    //                                 editId: index.id,
-    //                             });
-    //                         }}
-    //                     >
-    //                         Засах
-    //                     </Button>
-    //                 )}
-
-    //                 {hasShow && (
-    //                     <Button
-    //                         size="small"
-    //                         variant="outlined"
-    //                         color="primary"
-    //                         startIcon={<VisibilityIcon />}
-    //                         onClick={() => {
-    //                             handleModal(
-    //                                 true,
-    //                                 `${modalTitle} харах`,
-    //                                 modalContent,
-    //                                 null,
-    //                                 "large"
-    //                             );
-    //                             dispatch({
-    //                                 type: "isShow",
-    //                                 isShow: true,
-    //                             });
-    //                             dispatch({
-    //                                 type: "editId",
-    //                                 editId: index.id,
-    //                             });
-    //                         }}
-    //                     >
-    //                         Харах
-    //                     </Button>
-    //                 )}
-
-    //                 {hasDelete && (
-    //                     <DeleteButton
-    //                         api={api}
-    //                         id={index.id}
-    //                         listUrl={listUrl}
-    //                     />
-    //                 )}
-    //             </Stack>
-    //         );
-    //     },
-    // });
-
     (hasUpdate || hasShow || hasDelete) &&
         tempcolumns.push({
-            headerName: "Үйлдэл",
+            headerName: intl.formatMessage({
+                id: "RowHeaderAction",
+            }),
             field: "actionButtons",
             dataIndex: "actionButtons",
             width: hasUpdate && hasShow && hasDelete ? 270 : 200,
@@ -181,7 +103,9 @@ const CustomTable = ({
                                 onClick={() => {
                                     handleModal(
                                         true,
-                                        `${modalTitle} засах`,
+                                        `${modalTitle} ${intl.formatMessage({
+                                            id: "ButtonEdit",
+                                        })}`,
                                         modalContent,
                                         null,
                                         "large"
@@ -196,7 +120,9 @@ const CustomTable = ({
                                     });
                                 }}
                             >
-                                Засах
+                                {intl.formatMessage({
+                                    id: "ButtonEdit",
+                                })}
                             </Button>
                         )}
 
@@ -209,7 +135,9 @@ const CustomTable = ({
                                 onClick={() => {
                                     handleModal(
                                         true,
-                                        `${modalTitle} харах`,
+                                        `${modalTitle} ${intl.formatMessage({
+                                            id: "ButtonView",
+                                        })}`,
                                         modalContent,
                                         null,
                                         "large"
@@ -224,7 +152,9 @@ const CustomTable = ({
                                     });
                                 }}
                             >
-                                Харах
+                                {intl.formatMessage({
+                                    id: "ButtonView",
+                                })}
                             </Button>
                         )}
 
@@ -297,7 +227,9 @@ const CustomTable = ({
                                 onClick={() => {
                                     handleModal(
                                         true,
-                                        `${modalTitle} нэмэх`,
+                                        `${modalTitle} ${intl.formatMessage({
+                                            id: "ButtonAddNew",
+                                        })}`,
                                         modalContent,
                                         null,
                                         "large"
@@ -313,7 +245,9 @@ const CustomTable = ({
                                 }}
                                 startIcon={<Icon icon={plusFill} />}
                             >
-                                Нэмэх
+                                {intl.formatMessage({
+                                    id: "ButtonAddNew",
+                                })}
                             </Button>
                         )}
                         {hasPrint && (
@@ -323,7 +257,9 @@ const CustomTable = ({
                                 className="mr-3"
                                 startIcon={<PrintIcon />}
                             >
-                                Хэвлэх
+                                {intl.formatMessage({
+                                    id: "ButtonPrint",
+                                })}
                             </Button>
                         )}
                         {hasExcel && (
@@ -333,7 +269,9 @@ const CustomTable = ({
                                 startIcon={<CloudDownloadIcon />}
                                 className="mr-3"
                             >
-                                Excel татах
+                                {intl.formatMessage({
+                                    id: "ButtonExcel",
+                                })}
                             </Button>
                         )}
                          {additionalButtons && additionalButtons}

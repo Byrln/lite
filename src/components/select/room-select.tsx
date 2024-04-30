@@ -1,11 +1,9 @@
 import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import { useEffect, useState } from "react";
+import { useIntl } from "react-intl";
+
 import { RoomSWR, RoomAPI } from "lib/api/room";
-import { dateToSimpleFormat } from "lib/utils/format-time";
 
 const RoomSelect = ({
     register,
@@ -21,6 +19,8 @@ const RoomSelect = ({
     groupIndex,
     RoomID,
 }: any) => {
+    const intl = useIntl();
+
     const [data, setData]: any = useState([]);
 
     const eventRoomChange = (val: any) => {
@@ -64,7 +64,9 @@ const RoomSelect = ({
         <TextField
             fullWidth
             id="RoomTypeID"
-            label="Өрөө"
+            label={intl.formatMessage({
+                id: "RowHeaderRoom",
+            })}
             {...register(customRegisterName ? customRegisterName : "RoomID")}
             select
             margin="dense"

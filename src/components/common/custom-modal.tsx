@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import { useAppState } from "lib/context/app";
+import { useIntl } from "react-intl";
 
 import { ModalContext } from "lib/context/modal";
 
@@ -60,6 +61,7 @@ const styles = {
 };
 
 const CustomModal = () => {
+    const intl = useIntl();
     const [state, dispatch]: any = useAppState();
 
     const {
@@ -147,7 +149,9 @@ const CustomModal = () => {
                                             })
                                         )}
                                     >
-                                        Хаах
+                                        {intl.formatMessage({
+                                            id: "ButtonClose",
+                                        })}
                                     </Button>
                                 </Box>
                             ) : (
@@ -171,7 +175,9 @@ const CustomModal = () => {
                                                 })
                                             )}
                                         >
-                                            Хаах
+                                            {intl.formatMessage({
+                                                id: "ButtonClose",
+                                            })}
                                         </Button>
                                     </Box>
                                 </>

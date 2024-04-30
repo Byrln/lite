@@ -9,10 +9,12 @@ import {
 import { useState } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
 
 import { ReservationAPI } from "lib/api/reservation";
 
 const NoShow = ({ id, TransactionID, listUrl }: any) => {
+    const intl = useIntl();
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -30,7 +32,11 @@ const NoShow = ({ id, TransactionID, listUrl }: any) => {
             await ReservationAPI.noShow(TransactionID);
             await mutate(listUrl);
             setLoading(false);
-            toast("Амжилттай.");
+            toast(
+                intl.formatMessage({
+                    id: "TextSuccess",
+                })
+            );
             handleClose();
         } catch (error) {
             setLoading(false);
@@ -40,7 +46,9 @@ const NoShow = ({ id, TransactionID, listUrl }: any) => {
     return (
         <>
             <Button key={id} onClick={handleClickOpen}>
-                Ирээгүй
+                {intl.formatMessage({
+                    id: "ButtonMarkNoShow",
+                })}
             </Button>
             <Dialog
                 open={open}
@@ -48,16 +56,24 @@ const NoShow = ({ id, TransactionID, listUrl }: any) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Ирээгүй</DialogTitle>
+                <DialogTitle id="alert-dialog-title">
+                    {intl.formatMessage({
+                        id: "ButtonMarkNoShow",
+                    })}
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Та итгэлтэй байна уу
+                        {intl.formatMessage({ id: "MsgConfirmation" })}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Үгүй</Button>
+                    <Button onClick={handleClose}>
+                        {intl.formatMessage({ id: "ButtonCancel" })}
+                    </Button>
                     <Button onClick={handleOnClick} autoFocus>
-                        Тийм
+                        {intl.formatMessage({
+                            id: "ButtonOk",
+                        })}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -21,7 +21,7 @@ import { dateStringToObj } from "lib/utils/helpers";
 import { ReservationAPI } from "lib/api/reservation";
 import SubmitButton from "components/common/submit-button";
 import { countNights } from "lib/utils/format-time";
-import ReasonSelect from "components/select/reason";
+import { useIntl } from "react-intl";
 
 const validationSchema = yup.object().shape({
     ArrivalDate: yup.date().required("Бөглөнө үү"),
@@ -32,6 +32,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = ({ handleModal, entity, listUrl, workingDate }: any) => {
+    const intl = useIntl();
     const [loading, setLoading] = useState(false);
     const [Nights, setNights]: any = useState("");
     const [ArrivalDate, setArrivalDate]: any = useState("");
@@ -75,7 +76,11 @@ const NewEdit = ({ handleModal, entity, listUrl, workingDate }: any) => {
             values.TransactionID = entity.TransactionID;
             await ReservationAPI.amendStay(values);
             await mutate(listUrl);
-            toast("Амжилттай.");
+            toast(
+                intl.formatMessage({
+                    id: "TextSuccess",
+                })
+            );
             setLoading(false);
             handleModal();
         } catch (error) {
@@ -107,25 +112,41 @@ const NewEdit = ({ handleModal, entity, listUrl, workingDate }: any) => {
                     <Typography variant="subtitle2" component="div">
                         <Grid container spacing={1} className="mt-2">
                             <Grid item xs={6}>
-                                <b> Өрөө.дугаар/Төрөл:</b>
+                                <b>
+                                    {intl.formatMessage({
+                                        id: "TextRoomNoRoomType",
+                                    })}
+                                </b>
                             </Grid>
                             <Grid item xs={6}>
                                 {entity.RoomFullName}
                             </Grid>
                             <Grid item xs={6}>
-                                <b>Одоогийн тариф:</b>
+                                <b>
+                                    {intl.formatMessage({
+                                        id: "TextCurrentRate",
+                                    })}
+                                </b>
                             </Grid>
                             <Grid item xs={6}>
                                 {entity.CurrentBalance}
                             </Grid>
                             <Grid item xs={6}>
-                                <b>Нийт / Төлсөн:</b>
+                                <b>
+                                    {intl.formatMessage({
+                                        id: "TextTotalandPaid",
+                                    })}
+                                </b>
                             </Grid>
                             <Grid item xs={6}>
                                 {entity.TotalAmount}/{entity.Deposit}
                             </Grid>
                             <Grid item xs={6}>
-                                <b> Том хүн/Хүүхэд:</b>
+                                <b>
+                                    {intl.formatMessage({
+                                        id: "TextGuestandPax",
+                                    })}
+                                </b>
                             </Grid>
                             <Grid item xs={6}>
                                 {entity.GuestName}
@@ -147,7 +168,9 @@ const NewEdit = ({ handleModal, entity, listUrl, workingDate }: any) => {
                                         field: { onChange, value },
                                     }) => (
                                         <DatePicker
-                                            label="Эхлэх огноо"
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderArrival",
+                                            })}
                                             value={value}
                                             minDate={new Date(workingDate)}
                                             onChange={(value) => (
@@ -208,7 +231,9 @@ const NewEdit = ({ handleModal, entity, listUrl, workingDate }: any) => {
                                         field: { onChange, value },
                                     }) => (
                                         <DatePicker
-                                            label="Гарах огноо"
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderDeparture",
+                                            })}
                                             value={value}
                                             minDate={new Date(workingDate)}
                                             onChange={(value) => (
@@ -280,7 +305,9 @@ const NewEdit = ({ handleModal, entity, listUrl, workingDate }: any) => {
                                     )}
                                 />
                             }
-                            label="Өрөөний үнийг өөрчлөх"
+                            label={intl.formatMessage({
+                                id: "TextOverrideRoomRate",
+                            })}
                         />
                     </LocalizationProvider>
 

@@ -10,6 +10,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { useIntl } from "react-intl";
 
 import { Controller, useForm } from "react-hook-form";
 import { FormControlLabel, TextField } from "@mui/material";
@@ -48,6 +49,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
     const [state]: any = useAppState();
     const {
@@ -68,10 +70,36 @@ const NewEdit = () => {
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                     <TabList onChange={handleChange}>
-                        <Tab label="Зочны мэдээлэл" value="1" />
-                        {state.isShow && <Tab label="Түүх" value="2" />}
-                        {state.isShow && <Tab label="Тэмдэглэгээ" value="3" />}
-                        {state.isShow && <Tab label="Бичиг баримт" value="4" />}
+                        <Tab
+                            label={intl.formatMessage({
+                                id: "TextGuestDetail",
+                            })}
+                            value="1"
+                        />
+                        {state.isShow && (
+                            <Tab
+                                label={intl.formatMessage({
+                                    id: "TextHistory",
+                                })}
+                                value="2"
+                            />
+                        )}
+                        {state.isShow && (
+                            <Tab
+                                label={intl.formatMessage({
+                                    id: "TextHeaderRemarks",
+                                })}
+                                value="3"
+                            />
+                        )}
+                        {state.isShow && (
+                            <Tab
+                                label={intl.formatMessage({
+                                    id: "TextDocuments",
+                                })}
+                                value="4"
+                            />
+                        )}
                     </TabList>
                 </Box>
                 <TabPanel
@@ -116,7 +144,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Name"
-                                    label="Нэр"
+                                    label={intl.formatMessage({
+                                        id: "RowHeaderFirstName",
+                                    })}
                                     {...register("Name")}
                                     margin="dense"
                                     error={errors.Name?.message}
@@ -128,7 +158,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Surname"
-                                    label="Овог"
+                                    label={intl.formatMessage({
+                                        id: "RowHeaderLastName",
+                                    })}
                                     {...register("Surname")}
                                     margin="dense"
                                     error={errors.Surname?.message}
@@ -136,20 +168,6 @@ const NewEdit = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
-                                {/* <TextField
-                                    size="small"
-                                    type="date"
-                                    fullWidth
-                                    id="DateOfBirth"
-                                    label="Төрсөн өдөр"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    {...register("DateOfBirth")}
-                                    margin="dense"
-                                    error={errors.DateOfBirth?.message}
-                                    helperText={errors.DateOfBirth?.message}
-                                /> */}
                                 <LocalizationProvider
                                     //@ts-ignore
                                     dateAdapter={AdapterDateFns}
@@ -162,13 +180,12 @@ const NewEdit = () => {
                                             field: { onChange, value },
                                         }) => (
                                             <DatePicker
-                                                label="Төрсөн өдөр"
+                                                label={intl.formatMessage({
+                                                    id: "TextDateOfBirth",
+                                                })}
                                                 value={value}
                                                 onChange={(value) =>
                                                     onChange(
-                                                        // moment(value)
-                                                        //     .utcOffset("+0400", true)
-                                                        //     .format("YYYY-MM-DD")
                                                         moment(
                                                             dateStringToObj(
                                                                 moment(
@@ -212,7 +229,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Mobile"
-                                    label="Гар утас"
+                                    label={intl.formatMessage({
+                                        id: "TextMobile",
+                                    })}
                                     {...register("Mobile")}
                                     margin="dense"
                                     error={errors.Mobile?.message}
@@ -224,7 +243,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Email"
-                                    label="Цахим шуудан"
+                                    label={intl.formatMessage({
+                                        id: "TextEmail",
+                                    })}
                                     {...register("Email")}
                                     margin="dense"
                                     error={errors.Email?.message}
@@ -244,7 +265,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Company"
-                                    label="Компани"
+                                    label={intl.formatMessage({
+                                        id: "RowHeaderCompany",
+                                    })}
                                     {...register("Company")}
                                     margin="dense"
                                     error={errors.Company?.message}
@@ -256,7 +279,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Phone"
-                                    label="Утас"
+                                    label={intl.formatMessage({
+                                        id: "TextPhone",
+                                    })}
                                     {...register("Phone")}
                                     margin="dense"
                                     error={errors.Phone?.message}
@@ -268,7 +293,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="RegistryNo"
-                                    label="Регистрийн дугаар"
+                                    label={intl.formatMessage({
+                                        id: "RowHeaderRegistryNo",
+                                    })}
                                     {...register("RegistryNo")}
                                     margin="dense"
                                     error={errors.RegistryNo?.message}
@@ -280,7 +307,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="DriverLicenseNo"
-                                    label="Жол.үнэм.дугаар"
+                                    label={intl.formatMessage({
+                                        id: "TextDriverLicenseNo",
+                                    })}
                                     {...register("DriverLicenseNo")}
                                     margin="dense"
                                     error={errors.DriverLicenseNo?.message}
@@ -311,7 +340,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Zip"
-                                    label="Зип код"
+                                    label={intl.formatMessage({
+                                        id: "TextZip",
+                                    })}
                                     {...register("Zip")}
                                     margin="dense"
                                     error={errors.Zip?.message}
@@ -324,7 +355,9 @@ const NewEdit = () => {
                                     size="small"
                                     fullWidth
                                     id="Address"
-                                    label="Хаяг"
+                                    label={intl.formatMessage({
+                                        id: "TextAddress",
+                                    })}
                                     {...register("Address")}
                                     margin="dense"
                                     error={errors.Address?.message}

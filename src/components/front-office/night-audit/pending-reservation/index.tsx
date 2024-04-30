@@ -1,5 +1,6 @@
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useEffect } from "react";
+import { useIntl } from "react-intl";
 
 import CustomTable from "components/common/custom-table";
 import { PendingReservationSWR, urlPrefix } from "lib/api/reservation";
@@ -16,6 +17,8 @@ const PendingReservation = ({
     setPendingReservationCompleted,
     workingDate,
 }: any) => {
+    const intl = useIntl();
+
     const { data, error } = PendingReservationSWR();
 
     useEffect(() => {
@@ -26,47 +29,65 @@ const PendingReservation = ({
 
     const columns = [
         {
-            title: "Захиалгын дугаар",
+            title: intl.formatMessage({
+                id: "Reservation_ReservationNo",
+            }),
             key: "ReservationNo",
             dataIndex: "ReservationNo",
         },
         {
-            title: "Зочин",
+            title: intl.formatMessage({
+                id: "RowHeaderGuest",
+            }),
             key: "GuestName",
             dataIndex: "GuestName",
         },
         {
-            title: "Өрөө",
+            title: intl.formatMessage({
+                id: "RowHeaderRoom",
+            }),
             key: "RoomFullName",
             dataIndex: "RoomFullName",
         },
         {
-            title: "Тарифын төрөл",
+            title: intl.formatMessage({
+                id: "RowHeaderRateType",
+            }),
             key: "RateTypeName",
             dataIndex: "RateTypeName",
         },
         {
-            title: "Захиалгын төрөл",
+            title: intl.formatMessage({
+                id: "RowHeaderReservationType",
+            }),
             key: "ReservationTypeName",
             dataIndex: "ReservationTypeName",
         },
         {
-            title: "Гарах",
+            title: intl.formatMessage({
+                id: "RowHeaderDeparture",
+            }),
             key: "DepartureDate",
             dataIndex: "DepartureDate",
         },
         {
-            title: "Нийлбэр",
+            title: intl.formatMessage({
+                id: "RowHeaderTotalAmount",
+            }),
             key: "TotalAmount",
             dataIndex: "TotalAmount",
         },
         {
-            title: "Урьдчилгаа",
+            title: intl.formatMessage({
+                id: "RowHeaderDeposit",
+            }),
             key: "Deposit",
             dataIndex: "Deposit",
         },
         {
-            title: "Нэмэлт үйлдэл",
+            title: intl.formatMessage({
+                id: "RowHeaderAdditionalAction",
+            }),
             key: "Action",
             dataIndex: "Action",
             render: function render(id: any, record: any, entity: any) {

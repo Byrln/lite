@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "@mui/material/Button";
+import { useIntl } from "react-intl";
 
 import CustomTable from "components/common/custom-table";
 import CustomSearch from "components/common/custom-search";
@@ -17,42 +18,57 @@ import CustomUpload from "components/common/custom-upload";
 import { ModalContext } from "lib/context/modal";
 
 const GuestdatabaseList = ({ title }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
 
     const columns = [
         {
-            title: "Зочны нэр",
+            title: intl.formatMessage({
+                id: "RowHeaderGuestName",
+            }),
             key: "GuestFullName",
             dataIndex: "GuestFullName",
         },
         {
-            title: "Улс",
+            title: intl.formatMessage({
+                id: "RowHeaderCountry",
+            }),
             key: "CountryName",
             dataIndex: "CountryName",
         },
         {
-            title: "Утас",
+            title: intl.formatMessage({
+                id: "RowHeaderPhone",
+            }),
             key: "Phone",
             dataIndex: "Phone",
         },
         {
-            title: "Гар утас",
+            title: intl.formatMessage({
+                id: "RowHeaderMobile",
+            }),
             key: "Mobile",
             dataIndex: "Mobile",
         },
         {
-            title: "Цах.шуудан",
+            title: intl.formatMessage({
+                id: "RowHeaderEmail",
+            }),
             key: "Email",
             dataIndex: "Email",
         },
 
         {
-            title: "ВИП төрөл",
+            title: intl.formatMessage({
+                id: "MenuVipStatus",
+            }),
             key: "VipStatusName",
             dataIndex: "VipStatusName",
         },
         {
-            title: "Нэмэлт үйлдэл",
+            title: intl.formatMessage({
+                id: "RowHeaderAdditionalAction",
+            }),
             key: "Action",
             dataIndex: "Action",
             width: 250,
@@ -65,20 +81,26 @@ const GuestdatabaseList = ({ title }: any) => {
                             onClick={() => {
                                 handleModal(
                                     true,
-                                    `Upload Picture`,
+                                    intl.formatMessage({
+                                        id: "ButtonUploadPicture",
+                                    }),
                                     <CustomUpload GuestID={element.id} />,
                                     null,
                                     "large"
                                 );
                             }}
                         >
-                            Upload Picture
+                            {intl.formatMessage({
+                                id: "ButtonUploadPicture",
+                            })}
                         </Button>
                         <Button
                             onClick={() => {
                                 handleModal(
                                     true,
-                                    `Upload Document`,
+                                    intl.formatMessage({
+                                        id: "ButtonUploadDocument",
+                                    }),
                                     <CustomUpload
                                         GuestID={element.id}
                                         IsDocument={true}
@@ -88,7 +110,9 @@ const GuestdatabaseList = ({ title }: any) => {
                                 );
                             }}
                         >
-                            Upload Document
+                            {intl.formatMessage({
+                                id: "ButtonUploadDocument",
+                            })}
                         </Button>
                     </>
                 );

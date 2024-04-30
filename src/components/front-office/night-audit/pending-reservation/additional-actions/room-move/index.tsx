@@ -1,9 +1,12 @@
 import { useContext } from "react";
 import { Button } from "@mui/material";
+import { useIntl } from "react-intl";
 
 import { ModalContext } from "lib/context/modal";
 import NewEdit from "./new-edit";
 const RoomMove = ({ id, entity, listUrl }: any) => {
+    const intl = useIntl();
+
     const { handleModal }: any = useContext(ModalContext);
 
     return (
@@ -12,7 +15,9 @@ const RoomMove = ({ id, entity, listUrl }: any) => {
             onClick={() => {
                 handleModal(
                     true,
-                    `Өрөө шилжүүлэх`,
+                    intl.formatMessage({
+                        id: "ButtonRoomMove",
+                    }),
                     <NewEdit
                         handleModal={handleModal}
                         entity={entity}
@@ -23,7 +28,9 @@ const RoomMove = ({ id, entity, listUrl }: any) => {
                 );
             }}
         >
-            Өрөө шилжих
+            {intl.formatMessage({
+                id: "ButtonRoomMove",
+            })}
         </Button>
     );
 };

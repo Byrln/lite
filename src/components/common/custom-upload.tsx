@@ -2,8 +2,9 @@ import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Stack, Input, Grid } from "@mui/material";
+import { Input, Grid } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { useIntl } from "react-intl";
 
 import SubmitButton from "components/common/submit-button";
 import { toast } from "react-toastify";
@@ -25,6 +26,7 @@ const GuestSelect = ({
     mutateBody,
     functionAfterSubmit,
 }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [imageUrl, setImageUrl] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -121,7 +123,9 @@ const GuestSelect = ({
                                 style={{ fontSize: "0.8125rem" }}
                                 className="mr-1"
                             />
-                            Файл сонгох
+                            {intl.formatMessage({
+                                id: "ChooseFile",
+                            })}
                         </label>
                     </label>
                     {/* </Grid> */}

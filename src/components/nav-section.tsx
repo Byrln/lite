@@ -47,9 +47,10 @@ const ListItemIconStyle = styled(ListItemIcon)({
 });
 
 function NavItem({ item, active }: any) {
+    const { locale }: any = useRouter();
     const theme = useTheme();
     const isActiveRoot = active(item.path);
-    const { title, path, icon, info, children } = item;
+    const { title, titleEn, path, icon, info, children } = item;
     const [open, setOpen] = useState(isActiveRoot);
 
     const handleOpen = () => {
@@ -82,7 +83,7 @@ function NavItem({ item, active }: any) {
                     <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
                     <ListItemText
                         disableTypography
-                        primary={title}
+                        primary={locale == "en" ? titleEn : title}
                         onClick={handleOpen}
                     />
                     {info && info}
@@ -96,7 +97,7 @@ function NavItem({ item, active }: any) {
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                         {children.map((item: any) => {
-                            const { title, path } = item;
+                            const { title, titleEn, path } = item;
                             const isActiveSub = active(path);
 
                             return item.path == "/conf/hotel-setting" ? (
@@ -136,7 +137,11 @@ function NavItem({ item, active }: any) {
                                             </ListItemIconStyle>
                                             <ListItemText
                                                 disableTypography
-                                                primary={title}
+                                                primary={
+                                                    locale == "en"
+                                                        ? titleEn
+                                                        : title
+                                                }
                                             />
                                         </ListItemStyle>
                                     </Link>
@@ -172,7 +177,9 @@ function NavItem({ item, active }: any) {
                                         </ListItemIconStyle>
                                         <ListItemText
                                             disableTypography
-                                            primary={title}
+                                            primary={
+                                                locale == "en" ? titleEn : title
+                                            }
                                         />
                                     </ListItemStyle>
                                 </Link>
@@ -202,12 +209,17 @@ function NavItem({ item, active }: any) {
 export default function NavSection({ navConfig, ...other }: any) {
     const router = useRouter();
     const match = (path: any) => (path ? path === router.pathname : false);
-
+    const { locale }: any = useRouter();
+    console.log("locale", locale);
     return (
         <Box {...other}>
             <List disablePadding>
                 {navConfig.map((item: any) => (
-                    <NavItem key={item.title} item={item} active={match} />
+                    <NavItem
+                        key={locale == "mon" ? item.title : item.titleEn}
+                        item={item}
+                        active={match}
+                    />
                 ))}
             </List>
         </Box>

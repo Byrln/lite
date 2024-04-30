@@ -1,10 +1,12 @@
 import { useContext } from "react";
 import { Button } from "@mui/material";
+import { useIntl } from "react-intl";
 
 import { ModalContext } from "lib/context/modal";
 import NewEdit from "./new-edit";
 
 const AmendStay = ({ id, entity, listUrl, workingDate }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
 
     return (
@@ -13,7 +15,9 @@ const AmendStay = ({ id, entity, listUrl, workingDate }: any) => {
             onClick={() => {
                 handleModal(
                     true,
-                    `Хугацаа өөрчлөх`,
+                    intl.formatMessage({
+                        id: "ButtonAmendStay",
+                    }),
                     <NewEdit
                         handleModal={handleModal}
                         entity={entity}
@@ -24,7 +28,9 @@ const AmendStay = ({ id, entity, listUrl, workingDate }: any) => {
                 );
             }}
         >
-            Хугацаа өөрчлөх
+            {intl.formatMessage({
+                id: "ButtonAmendStay",
+            })}
         </Button>
     );
 };

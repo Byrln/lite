@@ -3,6 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
+import { useIntl } from "react-intl";
 
 import { VipStatusSWR } from "lib/api/vip-status";
 
@@ -13,6 +14,7 @@ const VipStatusSelect = ({
     setEntity,
     customRegisterName,
 }: any) => {
+    const intl = useIntl();
     const { data, error } = VipStatusSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -29,7 +31,9 @@ const VipStatusSelect = ({
         <TextField
             fullWidth
             id="VipStatusID"
-            label="ВИП төрөл"
+            label={intl.formatMessage({
+                id: "TextVipStatus",
+            })}
             {...register(
                 customRegisterName ? customRegisterName : "VipStatusID"
             )}

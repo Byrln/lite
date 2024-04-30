@@ -12,8 +12,11 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
 
 const DeleteButton = ({ api, id, listUrl, functionAfterSubmit }: any) => {
+    const intl = useIntl();
+
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -56,7 +59,9 @@ const DeleteButton = ({ api, id, listUrl, functionAfterSubmit }: any) => {
                 color="error"
                 startIcon={<DeleteForeverIcon />}
             >
-                Устгах
+                {intl.formatMessage({
+                    id: "TextVoid",
+                })}
             </LoadingButton>
             <Dialog
                 open={open}
@@ -70,19 +75,28 @@ const DeleteButton = ({ api, id, listUrl, functionAfterSubmit }: any) => {
                         <Stack direction="row" alignItems="center" gap={1}>
                             <HelpOutlineIcon />
                             <Typography>
-                                Та устгахдаа итгэлтэй байна уу?
+                                {intl.formatMessage({
+                                    id: "MsgConfirmation",
+                                })}
                             </Typography>
                         </Stack>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Үгүй</Button>
+                    <Button onClick={handleClose}>
+                        {" "}
+                        {intl.formatMessage({
+                            id: "ButtonReturn",
+                        })}
+                    </Button>
                     <LoadingButton
                         loading={loading}
                         onClick={handleDelete}
                         autoFocus
                     >
-                        Тийм
+                        {intl.formatMessage({
+                            id: "ButtonOk",
+                        })}
                     </LoadingButton>
                 </DialogActions>
             </Dialog>

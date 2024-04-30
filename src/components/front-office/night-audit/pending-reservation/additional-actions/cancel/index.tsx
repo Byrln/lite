@@ -1,11 +1,13 @@
 import { useContext } from "react";
 import { Button } from "@mui/material";
+import { useIntl } from "react-intl";
 
 import { ModalContext } from "lib/context/modal";
-import NewEdit from "./new-edit";
 import CancelReservationForm from "components/reservation/cancel-reservation";
 
 const Cancel = ({ id, entity, listUrl }: any) => {
+    const intl = useIntl();
+
     const { handleModal }: any = useContext(ModalContext);
 
     return (
@@ -14,7 +16,9 @@ const Cancel = ({ id, entity, listUrl }: any) => {
             onClick={() => {
                 handleModal(
                     true,
-                    `Захиалга цуцлах`,
+                    intl.formatMessage({
+                        id: "ButtonCancelReservation",
+                    }),
                     <CancelReservationForm
                         transactionInfo={entity}
                         reservation={entity}
@@ -25,7 +29,9 @@ const Cancel = ({ id, entity, listUrl }: any) => {
                 );
             }}
         >
-            Захиалга цуцлах
+            {intl.formatMessage({
+                id: "ButtonCancelReservation",
+            })}
         </Button>
     );
 };

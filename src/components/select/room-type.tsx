@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
+import { useIntl } from "react-intl";
 
 import { RoomTypeAPI } from "lib/api/room-type";
 
@@ -16,6 +17,7 @@ const RoomTypeSelect = ({
     helperText,
     isSearch,
 }: any) => {
+    const intl = useIntl();
     const [data, setData]: any = useState([]);
 
     const fetchRoomTypes = async () => {
@@ -57,7 +59,9 @@ const RoomTypeSelect = ({
             size="small"
             fullWidth
             id="RoomTypeID"
-            label="Өрөөний төрөл"
+            label={intl.formatMessage({
+                id: "ConfigRoomType",
+            })}
             {...register(
                 customRegisterName ? customRegisterName : "RoomTypeID"
             )}
@@ -77,7 +81,9 @@ const RoomTypeSelect = ({
         >
             {isSearch && (
                 <MenuItem key={"all"} value={0}>
-                    {"Бүгд"}
+                    {intl.formatMessage({
+                        id: "ReportGrandTotal",
+                    })}
                 </MenuItem>
             )}
             {data.map((element: any) => (

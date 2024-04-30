@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
 import { format } from "date-fns";
+import { useIntl } from "react-intl";
 
 import CustomTable from "components/common/custom-table";
 import CustomSearch from "components/common/custom-search";
@@ -15,17 +16,23 @@ import ReservationEdit from "components/front-office/reservation-list/edit";
 import { ModalContext } from "lib/context/modal";
 
 const DeparturedListList = ({ title }: any) => {
+    const intl = useIntl();
+
     const { handleModal }: any = useContext(ModalContext);
 
     const columns = [
         {
-            title: "Зах.Дугаар",
+            title: intl.formatMessage({
+                id: "RowHeaderReservationNo",
+            }),
             key: "ReservationNo",
             dataIndex: "ReservationNo",
         },
 
         {
-            title: "Ирэх",
+            title: intl.formatMessage({
+                id: "RowHeaderArrival",
+            }),
             key: "ArrivalDate",
             dataIndex: "ArrivalDate",
             renderCell: (element: any) => {
@@ -36,7 +43,9 @@ const DeparturedListList = ({ title }: any) => {
             },
         },
         {
-            title: "Гарах",
+            title: intl.formatMessage({
+                id: "RowHeaderDeparture",
+            }),
             key: "DepartureDate",
             dataIndex: "DepartureDate",
             renderCell: (element: any) => {
@@ -47,43 +56,59 @@ const DeparturedListList = ({ title }: any) => {
             },
         },
         {
-            title: "Зочин",
+            title: intl.formatMessage({
+                id: "RowHeaderGuest",
+            }),
             key: "GuestName",
             dataIndex: "GuestName",
         },
         {
-            title: "Өрөө",
+            title: intl.formatMessage({
+                id: "RowHeaderRoom",
+            }),
             key: "RoomFullName",
             dataIndex: "RoomFullName",
         },
         {
-            title: "Компани",
+            title: intl.formatMessage({
+                id: "RowHeaderCompany",
+            }),
             key: "CustomerName",
             dataIndex: "CustomerName",
         },
         {
-            title: "Нийлбэр",
+            title: intl.formatMessage({
+                id: "RowHeaderTotalAmount",
+            }),
             key: "TotalAmount",
             dataIndex: "TotalAmount",
         },
         {
-            title: "Төлсөн",
+            title: intl.formatMessage({
+                id: "RowHeaderBalance",
+            }),
             key: "CurrentBalance",
             dataIndex: "CurrentBalance",
         },
 
         {
-            title: "Зах.төрөл",
+            title: intl.formatMessage({
+                id: "RowHeaderReservationType",
+            }),
             key: "ReservationTypeName",
             dataIndex: "ReservationTypeName",
         },
         {
-            title: "Хэрэглэгч",
+            title: intl.formatMessage({
+                id: "RowHeaderUserName",
+            }),
             key: "UserName",
             dataIndex: "UserName",
         },
         {
-            title: "Нэмэлт үйлдэл",
+            title: intl.formatMessage({
+                id: "RowHeaderAction",
+            }),
             key: "Action",
             dataIndex: "Action",
             renderCell: (element: any) => {
@@ -93,14 +118,18 @@ const DeparturedListList = ({ title }: any) => {
                         onClick={() =>
                             handleModal(
                                 true,
-                                `Захиалга`,
+                                `${intl.formatMessage({
+                                    id: "ButtonEdit",
+                                })}`,
                                 <ReservationEdit transactionID={element.id} />,
                                 null,
                                 "large"
                             )
                         }
                     >
-                        Засах
+                        {intl.formatMessage({
+                            id: "ButtonEdit",
+                        })}
                     </Button>
                 );
             },

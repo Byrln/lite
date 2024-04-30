@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
 
 import { ReservationAPI } from "lib/api/reservation";
 import RoomTypeSelect from "components/select/room-type";
@@ -19,6 +20,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = ({ handleModal, entity, listUrl }: any) => {
+    const intl = useIntl();
     const [loading, setLoading] = useState(false);
     const [RoomTypeID, setRoomTypeID]: any = useState(
         entity && entity.RoomTypeID ? entity.RoomTypeID : ""
@@ -42,7 +44,11 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
 
             await ReservationAPI.roomMove(values);
             await mutate(listUrl);
-            toast("Амжилттай.");
+            toast(
+                intl.formatMessage({
+                    id: "TextSuccess",
+                })
+            );
             setLoading(false);
             handleModal();
         } catch (error) {
@@ -65,7 +71,9 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
                 <Grid item xs={6}>
                     <Card>
                         <CardContent>
-                            Одоогийн өрөөний мэдээлэл
+                            {intl.formatMessage({
+                                id: "TextCurrentRoomInformation",
+                            })}
                             <Typography
                                 variant="subtitle2"
                                 component="div"
@@ -73,38 +81,62 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
                             >
                                 <Grid container spacing={1} className="mt-2">
                                     <Grid item xs={6}>
-                                        <b> Өрөө.дугаар/Төрөл:</b>
+                                        <b>
+                                            {intl.formatMessage({
+                                                id: "TextRoomNoRoomType",
+                                            })}
+                                        </b>
                                     </Grid>
                                     <Grid item xs={6}>
                                         {entity.RoomFullName}
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <b>Одоогийн тариф:</b>
+                                        <b>
+                                            {intl.formatMessage({
+                                                id: "TextCurrentRate",
+                                            })}
+                                        </b>
                                     </Grid>
                                     <Grid item xs={6}>
                                         {entity.CurrentBalance}
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <b>Нийт / Төлсөн:</b>
+                                        <b>
+                                            {intl.formatMessage({
+                                                id: "TextTotalandPaid",
+                                            })}
+                                        </b>
                                     </Grid>
                                     <Grid item xs={6}>
                                         {entity.TotalAmount}/{entity.Deposit}
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <b> Том хүн/Хүүхэд:</b>
+                                        <b>
+                                            {intl.formatMessage({
+                                                id: "TextGuest",
+                                            })}
+                                        </b>
                                     </Grid>
                                     <Grid item xs={6}>
                                         {entity.GuestName}
-                                        {/* ({entity.adult}/{entity.child}) */}
+                                        {/* {entity.adult}/{entity.child}) */}
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <b>Ирэх хугацаа:</b>
+                                        <b>
+                                            {intl.formatMessage({
+                                                id: "TextArrival",
+                                            })}
+                                        </b>
                                     </Grid>
                                     <Grid item xs={6}>
                                         {entity.ArrivalDate}
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <b>Гарах хугацаа:</b>
+                                        <b>
+                                            {intl.formatMessage({
+                                                id: "TextDeparture",
+                                            })}
+                                        </b>
                                     </Grid>
                                     <Grid item xs={6}>
                                         {entity.DepartureDate}
@@ -117,7 +149,12 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
                 <Grid item xs={6}>
                     <Card>
                         <CardContent>
-                            <div className="mb-2">Шинэ өрөө</div>
+                            <div className="mb-2">
+                                {" "}
+                                {intl.formatMessage({
+                                    id: "TextNewRoom",
+                                })}
+                            </div>
                             <RoomTypeSelect
                                 register={register}
                                 errors={errors}
@@ -154,7 +191,16 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
                     }}
                     className="mb-1"
                 >
-                    <SubmitButton fullWidth={false}>Хадгалах</SubmitButton>
+                    <SubmitButton
+                        fullWidth={false}
+                        title={intl.formatMessage({
+                            id: "ButtonSave",
+                        })}
+                    >
+                        {intl.formatMessage({
+                            id: "ButtonSave",
+                        })}
+                    </SubmitButton>
                 </Box>
             </Grid>
         </form>

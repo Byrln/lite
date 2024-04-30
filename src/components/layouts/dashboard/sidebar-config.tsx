@@ -11,326 +11,63 @@ import settings2Fill from "@iconify/icons-eva/settings-2-fill";
 import awardFill from "@iconify/icons-eva/award-fill";
 import options2Fill from "@iconify/icons-eva/options-2-fill";
 import shoppingCartFill from "@iconify/icons-eva/shopping-cart-fill";
+import { useIntl } from "react-intl";
 
 const getIcon = (name: any) => <Icon icon={name} width={22} height={22} />;
-
-// const sidebarConfig = [
-//     {
-//         title: "dashboard",
-//         path: "/",
-//         icon: getIcon(pieChart2Fill),
-//     },
-//     {
-//         title: "calendar",
-//         path: "/handsontable",
-//         icon: getIcon(pieChart2Fill),
-//     },
-//     {
-//         title: "front office",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "stay view",
-//                 path: "/front-office/stay-view",
-//             },
-//             // {
-//             //     title: "new reservation",
-//             //     path: "/front-office/new-reservation",
-//             // },
-//             {
-//                 title: "reservation list",
-//                 path: "/front-office/reservation-list",
-//             },
-//             {
-//                 title: "night audit",
-//                 path: "/front-office/night-audit",
-//             },
-//             {
-//                 title: "guest database",
-//                 path: "/front-office/guest-database",
-//             },
-
-//             {
-//                 title: "depature list",
-//                 path: "/front-office/depature-list",
-//             },
-//             {
-//                 title: "departured list",
-//                 path: "/front-office/departured-list",
-//             },
-//         ],
-//     },
-//     {
-//         title: "group operation",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "group reservations list",
-//                 path: "/group-operation/group-reservations-list",
-//             },
-//             {
-//                 title: "in house groups",
-//                 path: "/group-operation/in-house-group",
-//             },
-//             {
-//                 title: "departed groups",
-//                 path: "/group-operation/departed-group",
-//             },
-//         ],
-//     },
-//     {
-//         title: "payment",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "company database",
-//                 path: "/payment/company-database",
-//             },
-//             {
-//                 title: "cashier",
-//                 path: "/payment/cashier",
-//             },
-//             {
-//                 title: "exchange rate",
-//                 path: "/payment/exchange-rate",
-//             },
-//         ],
-//     },
-//     {
-//         title: "room service",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "house keeping",
-//                 path: "/room-service/house-keeping",
-//             },
-//             {
-//                 title: "house status",
-//                 path: "/room-service/house-status",
-//             },
-//             {
-//                 title: "work order",
-//                 path: "/room-service/work-order",
-//             },
-//             {
-//                 title: "room block",
-//                 path: "/room-service/room-block",
-//             },
-//         ],
-//     },
-
-//     {
-//         title: "reports",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "accounting",
-//                 path: "/integration/accounting",
-//             },
-//         ],
-//     },
-//     {
-//         title: "integration",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "accounting",
-//                 path: "/integration/accounting",
-//             },
-//         ],
-//     },
-//     {
-//         title: "configuration",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "hotel information",
-//                 path: "/conf/hotel-information",
-//             },
-//             {
-//                 title: "e-mail configuration",
-//                 path: "/conf/email",
-//             },
-//             {
-//                 title: "user role",
-//                 path: "/conf/user-role",
-//             },
-//             {
-//                 title: "user",
-//                 path: "/conf/user",
-//             },
-//             {
-//                 title: "reasons",
-//                 path: "/conf/reason",
-//             },
-//             {
-//                 title: "reservation source",
-//                 path: "/conf/reservation-source",
-//             },
-//             {
-//                 title: "pos api config",
-//                 path: "/conf/pos-api",
-//             },
-//             {
-//                 title: "vip status",
-//                 path: "/conf/vip-status",
-//             },
-//             {
-//                 title: "customer group",
-//                 path: "/conf/customer-group",
-//             },
-//             {
-//                 title: "hotel setting",
-//                 path: "/conf/hotel-setting",
-//             },
-//             {
-//                 title: "notification",
-//                 path: "/conf/notification",
-//             },
-
-//             {
-//                 title: "Promotion",
-//                 path: "/conf/promotion",
-//             },
-//             {
-//                 title: "package",
-//                 path: "/conf/package",
-//             },
-//         ],
-//     },
-//     {
-//         title: "rooms",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "room type",
-//                 path: "/room/type",
-//             },
-//             {
-//                 title: "room amenities",
-//                 path: "/room/amenities",
-//             },
-//             {
-//                 title: "room status",
-//                 path: "/room/status",
-//             },
-//             {
-//                 title: "rooms",
-//                 path: "/room",
-//             },
-//             {
-//                 title: "door lock",
-//                 path: "/room/door-lock",
-//             },
-//         ],
-//     },
-//     {
-//         title: "rates",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "rate type",
-//                 path: "/rate/type",
-//             },
-//             {
-//                 title: "season",
-//                 path: "/rate/season",
-//             },
-//             {
-//                 title: "rates",
-//                 path: "/rate",
-//             },
-//             {
-//                 title: "extra charge group",
-//                 path: "/rate/extra-charge-group",
-//             },
-//             {
-//                 title: "extra charges",
-//                 path: "/rate/extra-charge",
-//             },
-//             {
-//                 title: "tax",
-//                 path: "/rate/tax",
-//             },
-//             {
-//                 title: "payment method",
-//                 path: "/rate/payment-method",
-//             },
-//             {
-//                 title: "inclusion",
-//                 path: "/rate/inclusion",
-//             },
-//         ],
-//     },
-//     {
-//         title: "mini bar",
-//         icon: getIcon(peopleFill),
-//         children: [
-//             {
-//                 title: "groups",
-//                 path: "/mini-bar/group",
-//             },
-//             {
-//                 title: "items",
-//                 path: "/mini-bar/item",
-//             },
-//         ],
-//     },
-// ];
 
 const sidebarConfig = [
     {
         title: "дашбоард",
+        titleEn: "dashboard",
         path: "/",
         icon: getIcon(pieChart2Fill),
         oldPath: "FrontOffice/StayView.aspx",
     },
     {
         title: "захиалга",
+        titleEn: "reservation",
         icon: getIcon(shoppingCartFill),
         children: [
             {
                 title: "захиалгын жагсаалт",
+                titleEn: "Reservation List",
                 path: "/front-office/reservation-list",
                 oldPath: "FrontOffice/ReservationList.aspx",
             },
             {
                 title: "өдрийн өндөрлөгөө",
+                titleEn: "Night Audit",
                 path: "/front-office/night-audit",
                 oldPath: "FrontOffice/NightAudit.aspx",
             },
             {
-                title: "зочин",
+                title: "Зочдын бааз",
+                titleEn: "Guest Database",
                 path: "/front-office/guest-database",
                 oldPath: "FrontOffice/Guests.aspx",
             },
-
-            // {
-            //     title: "depature list",
-            //     path: "/front-office/depature-list",
-            // },
-            // {
-            //     title: "departured list",
-            //     path: "/front-office/departured-list",
-            // },
         ],
     },
     {
-        title: "бүлэг",
+        title: "Бүлэг",
+        titleEn: "Groups",
         icon: getIcon(peopleFill),
         children: [
             {
-                title: "групп захиалгын жагсаалт",
+                title: "Групп захиалгын жагсаалт",
+                titleEn: "Group Reservations List",
                 path: "/group-operation/group-reservations-list",
                 oldPath: "FrontOffice/GroupReservations.aspx",
             },
             {
                 title: "байрлаж буй групп",
+                titleEn: "In House Groups",
                 path: "/group-operation/in-house-group",
                 oldPath: "FrontOffice/GroupInHouse.aspx",
             },
             {
                 title: "гарсан групп",
+                titleEn: "Departed Groups",
                 path: "/group-operation/departed-group",
                 oldPath: "FrontOffice/GroupDeparted.aspx",
             },
@@ -338,36 +75,43 @@ const sidebarConfig = [
     },
     {
         title: "календар",
+        titleEn: "calendar",
         path: "/handsontable",
         icon: getIcon(calendarFill),
         oldPath: "FrontOffice/StayView.aspx",
     },
     {
         title: "тариф",
+        titleEn: "Rate",
         icon: getIcon(pricetagsFill),
         children: [
             {
                 title: "улирал",
+                titleEn: "Season",
                 path: "/rate/season",
                 oldPath: "Configuration/Seasons.aspx",
             },
             {
                 title: "тарифын төрөл",
+                titleEn: "Rate Type",
                 path: "/rate/type",
                 oldPath: "Configuration/RateType.aspx",
             },
             {
                 title: "тариф",
+                titleEn: "rate",
                 path: "/rate",
                 oldPath: "Configuration/Rates.aspx",
             },
             {
-                title: "нэмэлт үйлчилгээ грүпп",
+                title: "Нэм.Үйлчилгээ бүлэг",
+                titleEn: "Extra Charge Group",
                 path: "/rate/extra-charge-group",
                 oldPath: "Configuration/ExtraChargeGroup.aspx",
             },
             {
                 title: "нэмэлт үйлчилгээ",
+                titleEn: "Extra Charges",
                 path: "/rate/extra-charge",
                 oldPath: "Configuration/ExtraCharges.aspx",
             },
@@ -379,60 +123,68 @@ const sidebarConfig = [
     },
     {
         title: "өрөө",
+        titleEn: "Rooms",
         icon: getIcon(homeFill),
         children: [
             {
                 title: "өрөөний онцлог",
+                titleEn: "Room Amenities",
                 path: "/room/amenities",
                 oldPath: "Configuration/Amenities.aspx",
             },
             {
                 title: "өрөөний төлөв",
+                titleEn: "Room Status",
                 path: "/room/status",
                 oldPath: "Configuration/RoomStatus.aspx",
             },
-            // {
-            //     title: "хаалганы цоож",
-            //     path: "/room/door-lock",
-            // },
+
             {
                 title: "өрөөний төрөл",
+                titleEn: "Room Type",
                 path: "/room/type",
                 oldPath: "Configuration/RoomType.aspx",
             },
             {
                 title: "өрөө",
+                titleEn: "room",
                 path: "/room",
                 oldPath: "Configuration/Rooms.aspx",
             },
         ],
     },
     {
-        title: "төлбөр тооцоо",
+        title: "Төлбөр, тооцоо",
+        titleEn: "Payment",
         icon: getIcon(creditCardFill),
         children: [
             {
-                title: "байгууллага",
+                title: "Байгууллага",
+                titleEn: "Company Database",
                 path: "/payment/company-database",
                 oldPath: "FrontOffice/Customer.aspx",
             },
             {
-                title: "касс (бэлэн мөнгө)",
+                title: "Касс (Бэлэн мөнгө)",
+                titleEn: "Cashier",
                 path: "/payment/cashier",
                 oldPath: "FrontOffice/Cashier.aspx",
             },
             {
                 title: "валютын ханш",
+                titleEn: "Exchange Rate",
                 path: "/payment/exchange-rate",
                 oldPath: "FrontOffice/CurrencyRate.aspx",
             },
             {
                 title: "татвар",
+                titleEn: "tax",
                 path: "/rate/tax",
                 oldPath: "Configuration/Taxes.aspx",
             },
             {
                 title: "төлбөрийн хэлбэр",
+                titleEn: "Payment Method",
                 path: "/rate/payment-method",
                 oldPath: "Configuration/PaymentMethod.aspx",
             },
@@ -440,183 +192,239 @@ const sidebarConfig = [
     },
     {
         title: "тайлан",
+        titleEn: "report",
         icon: getIcon(bookOpenFill),
         children: [
             {
                 title: "өглөөний цай",
+                titleEn: "өглөөний цай",
                 path: "/report/breakfast",
                 oldPath: "~/Report/ReportBreakfast.aspx",
             },
             {
                 title: "төлбөр",
+                titleEn: "төлбөр",
                 path: "/report/folio",
                 oldPath: "",
             },
             {
                 title: "өдрийн мэдээ",
+                titleEn: "өдрийн мэдээ",
                 path: "/report/daily",
                 oldPath: "",
             },
             {
                 title: "буудлын борлуулалт",
+                titleEn: "буудлын борлуулалт",
                 path: "/report/charge",
                 oldPath: "",
             },
             {
                 title: "сарын мэдээ",
+                titleEn: "сарын мэдээ",
                 path: "/report/month",
                 oldPath: "",
             },
-            {
-                title: "бүртгэлийн хуудас",
-                path: "/report/transaction",
-                oldPath: "",
-            },
-            {
-                title: "боломжит өрөө",
-                path: "/report/available-room",
-                oldPath: "~/Report/ReportAvailableRooms.aspx",
-            },
+            // {
+            //     title: "бүртгэлийн хуудас",
+            //     titleEn: "бүртгэлийн хуудас",
+
+            //     path: "/report/transaction",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "боломжит өрөө",
+            //     titleEn: "боломжит өрөө",
+            //     path: "/report/available-room",
+            //     oldPath: "~/Report/ReportAvailableRooms.aspx",
+            // },
             {
                 title: "баланс",
+                titleEn: "баланс",
                 path: "/report/balance",
                 oldPath: "~/Report/ReportBalance.aspx",
             },
+            // {
+            //     title: "гарах зочид (өдөр тутам)",
+            //     titleEn: "гарах зочид (өдөр тутам)",
 
-            {
-                title: "гарах зочид (өдөр тутам)",
-                path: "/report/daily/checked-out",
-                oldPath: "~/Report/ReportCheckedOutDetailed.aspx",
-            },
-            {
-                title: "устгалын тайлбар (өдөр тутам)",
-                path: "/report/daily/deleted-reservations",
-                oldPath: "~/Report/ReportVoidReservation.aspx",
-            },
-            {
-                title: "нэмэлт төлбөр (өдөр тутам)",
-                path: "/report/daily/extra-charge",
-                oldPath: "~/Report/ReportExtraChargeDetail.aspx",
-            },
-            {
-                title: "Төлбөрийн тайлан (өдөр тутам)",
-                path: "/report/daily/payment",
-                oldPath: "",
-            },
-            {
-                title: "өрөөний төлбөр (өдөр тутам)",
-                path: "/report/daily/room-charge",
-                oldPath: "",
-            },
-            {
-                title: "устгалын тайлан",
-                path: "/report/deleted-reservations",
-                oldPath: "",
-            },
-            {
-                title: "нэмэлт төлбөрийн (дэлгэрэнгүй)",
-                path: "/report/extra-charge/detailed",
-                oldPath: "",
-            },
-            {
-                title: "нэмэлт төлбөр (хураангуй)",
-                path: "/report/extra-charge/summary",
-                oldPath: "",
-            },
-            {
-                title: "байгууллага хоорондын тооцоо",
-                path: "/report/interagency",
-                oldPath: "",
-            },
-            {
-                title: "сарын тайлан",
-                path: "/report/monthly",
-                oldPath: "",
-            },
-            {
-                title: "сарын тайлан (орлогоор)",
-                path: "/report/monthly-revenue",
-                oldPath: "",
-            },
-            {
-                title: "ресепшний буух зочдын тайлан",
-                path: "/report/reception/checked-in",
-                oldPath: "",
-            },
-            {
-                title: "ресепшний гарах зочдын тайлан",
-                path: "/report/reception/checked-out",
-                oldPath: "",
-            },
-            {
-                title: "ресепшний устгалын тайлан",
-                path: "/report/reception/deleted-reservations",
-                oldPath: "",
-            },
-            {
-                title: "ресепшний хугацаа дуусах, үлдэх тайлан",
-                path: "/report/reception/dueout-stayover",
-                oldPath: "",
-            },
-            {
-                title: "ресепшний нэмэлт төлбөрийн тайлан",
-                path: "/report/reception/extra-charge",
-                oldPath: "",
-            },
-            {
-                title: "ресепшний төлбөрийн тайлан",
-                path: "/report/reception/payment",
-                oldPath: "",
-            },
-            {
-                title: "ресепшний өрөөний төлбөр",
-                path: "/report/reception/room-charge",
-                oldPath: "",
-            },
-            {
-                title: "захиалгын тайлан",
-                path: "/report/reservations",
-                oldPath: "",
-            },
+            //     path: "/report/daily/checked-out",
+            //     oldPath: "~/Report/ReportCheckedOutDetailed.aspx",
+            // },
+            // {
+            //     title: "устгалын тайлбар (өдөр тутам)",
+            //     titleEn: "устгалын тайлбар (өдөр тутам)",
 
-            {
-                title: "stayview",
-                path: "/report/stayview",
-                oldPath: "",
-            },
+            //     path: "/report/daily/deleted-reservations",
+            //     oldPath: "~/Report/ReportVoidReservation.aspx",
+            // },
+            // {
+            //     title: "нэмэлт төлбөр (өдөр тутам)",
+            //     titleEn: "нэмэлт төлбөр (өдөр тутам)",
+
+            //     path: "/report/daily/extra-charge",
+            //     oldPath: "~/Report/ReportExtraChargeDetail.aspx",
+            // },
+            // {
+            //     title: "Төлбөрийн тайлан (өдөр тутам)",
+            //     titleEn: "Төлбөрийн тайлан (өдөр тутам)",
+
+            //     path: "/report/daily/payment",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "өрөөний төлбөр (өдөр тутам)",
+            //     titleEn: "өрөөний төлбөр (өдөр тутам)",
+
+            //     path: "/report/daily/room-charge",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "устгалын тайлан",
+            //     titleEn: "устгалын тайлан",
+
+            //     path: "/report/deleted-reservations",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "нэмэлт төлбөрийн (дэлгэрэнгүй)",
+            //     titleEn: "нэмэлт төлбөрийн (дэлгэрэнгүй)",
+
+            //     path: "/report/extra-charge/detailed",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "нэмэлт төлбөр (хураангуй)",
+            //     titleEn: "нэмэлт төлбөр (хураангуй)",
+
+            //     path: "/report/extra-charge/summary",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "байгууллага хоорондын тооцоо",
+            //     titleEn: "байгууллага хоорондын тооцоо",
+
+            //     path: "/report/interagency",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "сарын тайлан",
+            //     titleEn: "сарын тайлан",
+
+            //     path: "/report/monthly",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "сарын тайлан (орлогоор)",
+            //     titleEn: "сарын тайлан (орлогоор)",
+
+            //     path: "/report/monthly-revenue",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "ресепшний буух зочдын тайлан",
+            //     titleEn: "ресепшний буух зочдын тайлан",
+
+            //     path: "/report/reception/checked-in",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "ресепшний гарах зочдын тайлан",
+            //     titleEn: "ресепшний гарах зочдын тайлан",
+
+            //     path: "/report/reception/checked-out",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "ресепшний устгалын тайлан",
+            //     titleEn: "ресепшний устгалын тайлан",
+
+            //     path: "/report/reception/deleted-reservations",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "ресепшний хугацаа дуусах, үлдэх тайлан",
+            //     titleEn: "ресепшний хугацаа дуусах, үлдэх тайлан",
+
+            //     path: "/report/reception/dueout-stayover",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "ресепшний нэмэлт төлбөрийн тайлан",
+            //     titleEn: "ресепшний нэмэлт төлбөрийн тайлан",
+
+            //     path: "/report/reception/extra-charge",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "ресепшний төлбөрийн тайлан",
+            //     titleEn: "ресепшний төлбөрийн тайлан",
+
+            //     path: "/report/reception/payment",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "ресепшний өрөөний төлбөр",
+            //     titleEn: "ресепшний өрөөний төлбөр",
+
+            //     path: "/report/reception/room-charge",
+            //     oldPath: "",
+            // },
+            // {
+            //     title: "захиалгын тайлан",
+            //     titleEn: "захиалгын тайлан",
+
+            //     path: "/report/reservations",
+            //     oldPath: "",
+            // },
+
+            // {
+            //     title: "stayview",
+            //     titleEn: "stayview",
+
+            //     path: "/report/stayview",
+            //     oldPath: "",
+            // },
         ],
     },
     {
         title: "тохиргоо",
+        titleEn: "Configuration",
         icon: getIcon(settings2Fill),
         children: [
             {
                 title: "зочид буудлын мэдээлэл",
+                titleEn: "Hotel Information",
                 path: "/conf/hotel-information",
                 oldPath: "",
             },
             {
                 title: "э-шуудан тохиргоо",
+                titleEn: "Email Configuration",
                 path: "/conf/email",
                 oldPath: "",
             },
             {
                 title: "хэрэглэгчийн төрөл",
+                titleEn: "User Role",
                 path: "/conf/user-role",
                 oldPath: "",
             },
             {
                 title: "хэрэглэгч",
+                titleEn: "User",
                 path: "/conf/user",
                 oldPath: "",
             },
             {
                 title: "шалтгаан",
+                titleEn: "Reason",
                 path: "/conf/reason",
                 oldPath: "",
             },
             {
                 title: "захиалгын эх сурвалж",
+                titleEn: "Reservation Source",
                 path: "/conf/reservation-source",
                 oldPath: "",
             },
@@ -626,42 +434,50 @@ const sidebarConfig = [
             // },
             {
                 title: "вип төлөв",
+                titleEn: "Vip Status",
                 path: "/conf/vip-status",
                 oldPath: "",
             },
             {
                 title: "харилцагчийн бүлэг",
+                titleEn: "Customer Group",
                 path: "/conf/customer-group",
                 oldPath: "",
             },
             {
                 title: "зочид буудлын тохиргоо",
+                titleEn: "Hotel Settings",
                 path: "/conf/hotel-setting",
                 oldPath: "",
             },
             {
-                title: "notification",
+                title: "notifications",
+                titleEn: "Notifications",
                 path: "/conf/notification",
                 oldPath: "",
             },
 
             {
                 title: "урамшуулал",
+                titleEn: "Promotions",
                 path: "/conf/promotion",
                 oldPath: "",
             },
             {
                 title: "багц",
+                titleEn: "Packages",
                 path: "/conf/package",
                 oldPath: "",
             },
             {
                 title: "мини бар бүлэг",
+                titleEn: "Mini Bar Groups",
                 path: "/mini-bar/group",
                 oldPath: "",
             },
             {
                 title: "мини бар бараа",
+                titleEn: "Mini Bar Items",
                 path: "/mini-bar/item",
                 oldPath: "",
             },
@@ -669,25 +485,30 @@ const sidebarConfig = [
     },
     {
         title: "өрөө үйлчилгээ",
+        titleEn: "House Keeping",
         icon: getIcon(awardFill),
         children: [
             {
                 title: "house keeping",
+                titleEn: "House Keeping",
                 path: "/room-service/house-keeping",
                 oldPath: "",
             },
             {
                 title: "өрөөний төлөв",
+                titleEn: "House Status",
                 path: "/room-service/house-status",
                 oldPath: "",
             },
             {
                 title: "ажлын даалгавар",
+                titleEn: "Work Order",
                 path: "/room-service/work-order",
                 oldPath: "",
             },
             {
                 title: "өрөө блоклох",
+                titleEn: "Room Block",
                 path: "/room-service/room-block",
                 oldPath: "",
             },

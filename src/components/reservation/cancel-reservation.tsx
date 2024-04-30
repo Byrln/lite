@@ -11,6 +11,7 @@ import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
 import ReasonSelect from "../select/reason";
 import SubmitButton from "components/common/submit-button";
+import { useIntl } from "react-intl";
 
 const CancelReservationForm = ({
     transactionInfo,
@@ -18,6 +19,7 @@ const CancelReservationForm = ({
     customMutateUrl,
     customRerender,
 }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
 
@@ -68,15 +70,6 @@ const CancelReservationForm = ({
             if (customRerender) {
                 customRerender();
             }
-            // toast("Амжилттай.", {
-            //     position: "top-right",
-            //     autoClose: 5000,
-            //     hideProgressBar: false,
-            //     closeOnClick: true,
-            //     pauseOnHover: true,
-            //     draggable: true,
-            //     progress: undefined,
-            // });
 
             setLoading(false);
             handleModal();
@@ -103,7 +96,9 @@ const CancelReservationForm = ({
                         <TextField
                             fullWidth
                             id="Fee"
-                            label="Fee"
+                            label={intl.formatMessage({
+                                id: "TextCancellationFee",
+                            })}
                             {...register("Fee")}
                             margin="dense"
                             error={errors.Fee?.message}
@@ -122,7 +117,12 @@ const CancelReservationForm = ({
                     }}
                     className="mb-1"
                 >
-                    <SubmitButton fullWidth={false}>Цуцлах</SubmitButton>
+                    <SubmitButton
+                        fullWidth={false}
+                        title={intl.formatMessage({
+                            id: "ButtonCancel",
+                        })}
+                    ></SubmitButton>
                 </Box>
             </form>
         </>

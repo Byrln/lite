@@ -2,23 +2,32 @@ import { useState } from "react";
 import { Stepper, Step, StepLabel, Button, Box } from "@mui/material";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { useIntl } from "react-intl";
 
-import CustomTable from "components/common/custom-table";
-import { NightAuditSWR, NightAuditAPI, listUrl } from "lib/api/night-audit";
 import PendingReservation from "./pending-reservation";
 import PendingDueOut from "./PendingDueOut";
 import PendingRoomCharge from "./pending-room-charge";
 import NewWorkingDate from "./new-working-date";
 import { WorkingDateAPI } from "lib/api/working-date";
 
-const steps = [
-    "Хүлээгдэж буй захиалга",
-    "Өрөөний төлөв",
-    "Хоногийн төлбөр",
-    "Шинэ өдөр эхлүүлэх",
-];
-
 const NightAuditList = ({ title, workingDate }: any) => {
+    const intl = useIntl();
+
+    const steps = [
+        intl.formatMessage({
+            id: "NAudit_PendingReservations",
+        }),
+        intl.formatMessage({
+            id: "NAudit_RoomStatus",
+        }),
+        intl.formatMessage({
+            id: "NAudit_NightlyCharges",
+        }),
+        intl.formatMessage({
+            id: "NAudit_CreateNewDay",
+        }),
+    ];
+
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const [activeStep, setActiveStep] = useState(0);
@@ -35,19 +44,31 @@ const NightAuditList = ({ title, workingDate }: any) => {
             if (pendingReservationCompleted) {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             } else {
-                toast("Хүлээгдэж буй захиалга.");
+                toast(
+                    intl.formatMessage({
+                        id: "MsgPendingReservations",
+                    })
+                );
             }
         } else if (activeStep == 1) {
             if (pendingDueOutCompleted) {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             } else {
-                toast("Хүлээгдэж буй гарах зочид.");
+                toast(
+                    intl.formatMessage({
+                        id: "MsgPendingCheckOuts",
+                    })
+                );
             }
         } else if (activeStep == 2) {
             if (pendingPendingRoomChargeCompleted) {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             } else {
-                toast("Хоногийн төлбөр.");
+                toast(
+                    intl.formatMessage({
+                        id: "NAudit_NightlyCharges",
+                    })
+                );
             }
         } else {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -115,15 +136,25 @@ const NightAuditList = ({ title, workingDate }: any) => {
             )}
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                 <Button onClick={handleBack} sx={{ mr: 1 }} disabled={loading}>
-                    {activeStep === 0 ? "Өдрийн өндөрлөгөө буцаах" : "Буцах"}
+                    {activeStep === 0
+                        ? intl.formatMessage({
+                              id: "ButtonUndoNightAudit",
+                          })
+                        : intl.formatMessage({
+                              id: "ButtonReturn",
+                          })}
                 </Button>
                 <Box sx={{ flex: "1 1 auto" }} />
 
                 {activeStep < 3 && (
                     <Button onClick={handleNext}>
                         {activeStep === steps.length - 1
-                            ? "Дуусгах"
-                            : "Дараагийнх"}
+                            ? intl.formatMessage({
+                                  id: "ButtonFinish",
+                              })
+                            : intl.formatMessage({
+                                  id: "ButtonNext",
+                              })}
                     </Button>
                 )}
             </Box>

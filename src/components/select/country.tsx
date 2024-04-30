@@ -3,6 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
+import { useIntl } from "react-intl";
 
 import { CountrySWR } from "lib/api/country";
 
@@ -13,6 +14,7 @@ const CountrySelect = ({
     setEntity,
     customRegisterName,
 }: any) => {
+    const intl = useIntl();
     const { data, error } = CountrySWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -30,7 +32,7 @@ const CountrySelect = ({
             size="small"
             fullWidth
             id="CountryID"
-            label="Улс сонгох"
+            label={intl.formatMessage({ id: "TextCountry" })}
             {...register(customRegisterName ? customRegisterName : "CountryID")}
             select
             margin="dense"

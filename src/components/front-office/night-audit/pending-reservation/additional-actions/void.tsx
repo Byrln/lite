@@ -1,20 +1,15 @@
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import { useState, useContext } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
 import { ModalContext } from "lib/context/modal";
+import { useIntl } from "react-intl";
 
 import { ReservationAPI } from "lib/api/reservation";
 import VoidTransactionForm from "components/reservation/void-transaction";
 
 const Void = ({ id, TransactionID, listUrl }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
 
     const [loading, setLoading] = useState(false);
@@ -34,7 +29,11 @@ const Void = ({ id, TransactionID, listUrl }: any) => {
             await ReservationAPI.void({ TransactionID: TransactionID });
             await mutate(listUrl);
             setLoading(false);
-            toast("Амжилттай.");
+            toast(
+                intl.formatMessage({
+                    id: "TextSuccess",
+                })
+            );
             handleClose();
         } catch (error) {
             setLoading(false);
@@ -48,7 +47,9 @@ const Void = ({ id, TransactionID, listUrl }: any) => {
                 onClick={(evt: any) => {
                     handleModal(
                         true,
-                        "Void Transaction",
+                        intl.formatMessage({
+                            id: "ButtonVoidTransaction",
+                        }),
                         <VoidTransactionForm
                             transactionInfo={{ TransactionID: TransactionID }}
                             reservation={{ TransactionID: TransactionID }}
@@ -57,30 +58,10 @@ const Void = ({ id, TransactionID, listUrl }: any) => {
                     );
                 }}
             >
-                Устгах
+                {intl.formatMessage({
+                    id: "ButtonVoid",
+                })}
             </Button>
-            {/* <Button key={id} onClick={handleClickOpen}>
-                Устгах
-            </Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Устгах</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Та итгэлтэй байна уу
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Үгүй</Button>
-                    <Button onClick={handleOnClick} autoFocus>
-                        Тийм
-                    </Button>
-                </DialogActions>
-            </Dialog> */}
         </>
     );
 };

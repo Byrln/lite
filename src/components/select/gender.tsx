@@ -1,14 +1,10 @@
-import { TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import { Controller } from "react-hook-form";
-
-import FormLabel from "@mui/material/FormLabel";
-import { AnyObject } from "yup/lib/types";
+import { useIntl } from "react-intl";
 
 const GenderSelect = ({
     register,
@@ -18,9 +14,21 @@ const GenderSelect = ({
     reset = null,
     control = null,
 }: any) => {
+    const intl = useIntl();
+
     const data = [
-        { GenderID: 1, name: "Эрэгтэй" },
-        { GenderID: 2, name: "Эмэгтэй" },
+        {
+            GenderID: 1,
+            name: intl.formatMessage({
+                id: "TextGenderMale",
+            }),
+        },
+        {
+            GenderID: 2,
+            name: intl.formatMessage({
+                id: "TextGenderFemale",
+            }),
+        },
     ];
 
     const onChange = (event: any) => {

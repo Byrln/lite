@@ -1,5 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import Router, { useRouter } from "next/router";
+import Link from "next/link";
+
 import { alpha } from "@mui/material/styles";
 import {
     Box,
@@ -18,20 +21,17 @@ const LANGS = [
         icon: "/static/icons/ic_flag_en.svg",
     },
     {
-        value: "de",
-        label: "German",
-        icon: "/static/icons/ic_flag_de.svg",
-    },
-    {
-        value: "fr",
-        label: "French",
-        icon: "/static/icons/ic_flag_fr.svg",
+        value: "mon",
+        label: "Монгол",
+        icon: "/static/icons/ic_flag_mgl.svg",
     },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
+    const { locale, asPath }: any = useRouter();
+
     const anchorRef = useRef(null);
     const [open, setOpen] = useState(false);
 
@@ -45,7 +45,7 @@ export default function LanguagePopover() {
 
     return (
         <>
-            {/* <IconButton
+            <IconButton
                 ref={anchorRef}
                 onClick={handleOpen}
                 sx={{
@@ -61,8 +61,23 @@ export default function LanguagePopover() {
                     }),
                 }}
             >
-                <img src={LANGS[0].icon} alt={LANGS[0].label} />
-            </IconButton> */}
+                <img
+                    src={
+                        LANGS.filter((item: any) => item.value == locale)[0]
+                            ? LANGS.filter(
+                                  (item: any) => item.value == locale
+                              )[0].icon
+                            : LANGS[0].icon
+                    }
+                    alt={
+                        LANGS.filter((item: any) => item.value == locale)[0]
+                            ? LANGS.filter(
+                                  (item: any) => item.value == locale
+                              )[0].label
+                            : LANGS[0].label
+                    }
+                />
+            </IconButton>
 
             <MenuPopover
                 open={open}
@@ -71,25 +86,33 @@ export default function LanguagePopover() {
             >
                 <Box sx={{ py: 1 }}>
                     {LANGS.map((option) => (
-                        <MenuItem
+                        <Link
                             key={option.value}
-                            selected={option.value === LANGS[0].value}
-                            onClick={handleClose}
-                            sx={{ py: 1, px: 2.5 }}
+                            href={asPath}
+                            locale={option.value}
                         >
-                            <ListItemIcon>
-                                <Box
-                                    component="img"
-                                    alt={option.label}
-                                    src={option.icon}
-                                />
-                            </ListItemIcon>
-                            <ListItemText
-                                primaryTypographyProps={{ variant: "body2" }}
+                            <MenuItem
+                                key={option.value}
+                                selected={option.value === locale}
+                                onClick={() => handleClose()}
+                                sx={{ py: 1, px: 2.5 }}
                             >
-                                {option.label}
-                            </ListItemText>
-                        </MenuItem>
+                                <ListItemIcon>
+                                    <Box
+                                        component="img"
+                                        alt={option.label}
+                                        src={option.icon}
+                                    />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primaryTypographyProps={{
+                                        variant: "body2",
+                                    }}
+                                >
+                                    {option.label}
+                                </ListItemText>
+                            </MenuItem>
+                        </Link>
                     ))}
                 </Box>
             </MenuPopover>

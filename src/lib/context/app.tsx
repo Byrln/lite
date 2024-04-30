@@ -9,6 +9,7 @@ const saveToLocal = (state: any) => {
 
 const initialState = {
     themeColor: "#ffffff",
+    locale: "en",
     editId: null,
     userRole: null,
     isShow: null,
@@ -18,6 +19,12 @@ const reducer = (state: any, action: any) => {
     switch (action.type) {
         case "themeColor": {
             const newState = { ...state, themeColor: action.brandColor };
+            saveToLocal(newState);
+
+            return newState;
+        }
+        case "locale": {
+            const newState = { ...state, locale: action.locale };
             saveToLocal(newState);
 
             return newState;
