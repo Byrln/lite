@@ -349,10 +349,10 @@ const Folio = ({ title, workingDate }: any) => {
                                 </TableRow>
                                 <TableRow>
                                     {chargeColumns &&
-                                        chargeColumns.map(
-                                            (entity: any, index: any) => (
+                                        Object.keys(chargeColumns).map(
+                                            (key) => (
                                                 <TableCell
-                                                    key={index}
+                                                    key={key}
                                                     align="right"
                                                     style={{
                                                         fontWeight: "bold",
@@ -360,7 +360,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    {entity.Name}
+                                                    {chargeColumns[key].Name}
                                                 </TableCell>
                                             )
                                         )}
