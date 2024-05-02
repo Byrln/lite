@@ -246,6 +246,15 @@ const Folio = ({ title, workingDate }: any) => {
                     <TableHead>
                         <TableRow>
                             <TableCell
+                                style={{
+                                    fontWeight: "bold",
+                                    fontSize: "10px",
+                                    padding: "10px 2px",
+                                }}
+                            >
+                                Бэлэн байгаа
+                            </TableCell>
+                            <TableCell
                                 align="left"
                                 style={{
                                     fontWeight: "bold",
@@ -255,15 +264,7 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 Rooms
                             </TableCell>
-                            <TableCell
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "10px 2px",
-                                }}
-                            >
-                                Бэлэн байгаа
-                            </TableCell>
+
                             <TableCell
                                 align="left"
                                 style={{
@@ -351,7 +352,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     fontSize: "10px",
                                     padding: "10px 2px",
                                 }}
-                                width={150}
+                                width={200}
                             >
                                 Тайлбар
                             </TableCell>
@@ -377,6 +378,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                 fontWeight: "bold",
                                                 paddingLeft: "30px !important",
                                                 fontSize: "10px",
+                                                textAlign: "center",
                                             }}
                                             colSpan={11}
                                         >
@@ -406,22 +408,6 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     "10px 2px",
                                                             }}
                                                         >
-                                                            {
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "10px 2px",
-                                                            }}
-                                                        >
                                                             {roomStatusData[
                                                                 roomsData[key][
                                                                     key2
@@ -439,6 +425,23 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     : ""
                                                                 : ""}
                                                         </TableCell>
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                fontSize:
+                                                                    "10px",
+                                                                padding:
+                                                                    "10px 2px",
+                                                            }}
+                                                        >
+                                                            {
+                                                                roomsData[key][
+                                                                    key2
+                                                                ].RoomNo
+                                                            }
+                                                        </TableCell>
+
                                                         <TableCell
                                                             component="th"
                                                             scope="row"
@@ -770,7 +773,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             component="th"
                                                             scope="row"
                                                             align="left"
-                                                            width={150}
+                                                            width={200}
                                                             style={{
                                                                 fontSize:
                                                                     "10px",
@@ -798,6 +801,14 @@ const Folio = ({ title, workingDate }: any) => {
                             Хэвлэсэн огноо :{" "}
                         </span>{" "}
                         {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
+                    </Typography>
+
+                    <Typography variant="body1" gutterBottom className="mr-3">
+                        <span style={{ fontWeight: "bold" }}>
+                            {" "}
+                            Supervisor signature :{" "}
+                        </span>{" "}
+                        ..................................
                     </Typography>
                 </div>
             </div>
