@@ -5,14 +5,12 @@ import Head from "next/head";
 import Page from "components/page";
 import Daily2 from "components/reporting/daily2";
 import { FrontOfficeAPI } from "lib/api/front-office";
-import { HotelSettingAPI } from "lib/api/hotel-setting";
 
 const title = "Өдрийн тайлан";
 
 // @ts-ignore
 const Index = () => {
     const [workingDate, setWorkingDate]: any = useState(null);
-    const [hotelSettings, setHotelSettings]: any = useState(null);
 
     useEffect(() => {
         fetchDatas();
@@ -23,15 +21,7 @@ const Index = () => {
         if (response.status == 200) {
             setWorkingDate(response.workingDate[0].WorkingDate);
         }
-
-        let settingsResponse = await HotelSettingAPI.get(
-            localStorage.getItem("hotelId")
-        );
-        if (settingsResponse && settingsResponse[0]) {
-            setHotelSettings(settingsResponse[0]);
-        }
     };
-    console.log("settingsResponse", hotelSettings);
 
     return (
         <>
@@ -46,11 +36,10 @@ const Index = () => {
                     </Box>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            {workingDate && hotelSettings && (
+                            {workingDate && (
                                 <Daily2
                                     title={title}
                                     workingDate={workingDate}
-                                    hotelSettings={hotelSettings}
                                 />
                             )}
                         </Grid>

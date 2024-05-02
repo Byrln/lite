@@ -23,7 +23,7 @@ import { HouseKeepingCurrentSWR, listCurrentUrl } from "lib/api/house-keeping";
 import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
-const Folio = ({ title, workingDate, hotelSettings }: any) => {
+const Folio = ({ title, workingDate }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [reportData, setReportData] = useState<any>(null);
@@ -110,6 +110,10 @@ const Folio = ({ title, workingDate, hotelSettings }: any) => {
                         transaction.StatusCode1;
                     mergedTransactions[roomNo].TransactionID =
                         transaction.TransactionID;
+                    mergedTransactions[roomNo].TransactionID =
+                        transaction.DefaultCheckIn;
+                    mergedTransactions[roomNo].TransactionID =
+                        transaction.DefaultCheckOut;
                 }
             }
         });
@@ -670,7 +674,13 @@ const Folio = ({ title, workingDate, hotelSettings }: any) => {
                                                                     key2
                                                                 ].RoomNo
                                                             ]
-                                                                ? hotelSettings.DefaultCheckOut &&
+                                                                ? reportData[
+                                                                      roomsData[
+                                                                          key
+                                                                      ][key2]
+                                                                          .RoomNo
+                                                                  ][0]
+                                                                      .DefaultCheckOut &&
                                                                   reportData[
                                                                       roomsData[
                                                                           key
@@ -678,7 +688,13 @@ const Folio = ({ title, workingDate, hotelSettings }: any) => {
                                                                           .RoomNo
                                                                   ][0]
                                                                       .CheckedOutDate &&
-                                                                  hotelSettings.DefaultCheckOut <
+                                                                  reportData[
+                                                                      roomsData[
+                                                                          key
+                                                                      ][key2]
+                                                                          .RoomNo
+                                                                  ][0]
+                                                                      .DefaultCheckOut <
                                                                       moment(
                                                                           reportData[
                                                                               roomsData[
