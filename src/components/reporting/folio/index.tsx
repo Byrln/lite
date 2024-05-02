@@ -23,7 +23,6 @@ import { CheckedOutDetailedSWR, checkedOutDetailedUrl } from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
 import { formatPrice } from "lib/utils/helpers";
 import CustomSearch from "components/common/custom-search";
-import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
 
 const Folio = ({ title, workingDate }: any) => {

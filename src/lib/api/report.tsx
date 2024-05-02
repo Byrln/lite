@@ -11,6 +11,7 @@ export const breakfastUrl = `${urlPrefix}/Breakfast`;
 export const monthlyUrl = `${urlPrefix}/Monthly`;
 export const stayViewUrl = `${urlPrefix}/StayView1`;
 export const dailyInfoUrl = `${urlPrefix}/DailyInfo`;
+export const dailyInfo2Url = `${urlPrefix}/DailyInfo2`;
 export const interAgencyUrl = `${urlPrefix}/InterAgency`;
 export const dailyChargesPaymentSummaryUrl = `${urlPrefix}/DailyChargesPayment/Summary`;
 export const reservationDailyDetailUrl = `${urlPrefix}/Reservation/DailyDetail`;
@@ -174,31 +175,18 @@ export const DailyInfoSWR = () => {
     return useSWR(dailyInfoUrl, fetcher);
 };
 
-export const StayViewSWR = (search: any) => {
-    console.log("search.CurrDate", search.CurrDate);
-    console.log(
-        "search.CurrDate",
-        moment(search.CurrDate, "YYYY-MM-DD").month()
-    );
-
-    let tempSearch = {
-        CurrDate: `${moment(search.CurrDate, "YYYY-MM-DD").year()}-${
-            moment(search.CurrDate, "YYYY-MM-DD").month() + 1
-        }-01`,
-        NumberOfDays:
-            daysInMonth(
-                moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
-                moment(search.CurrDate, "YYYY-MM-DD").year()
-            ) - 1,
-    };
-
+export const DailyInfo2SWR = (search: any, workingDate: any) => {
+    console.log("search", search);
+    if (!search.CurrDate) {
+        search.CurrDate = workingDate;
+    }
     const fetcher = async (url: any) =>
-        await axios.post(url, tempSearch).then((res: any) => {
+        await axios.post(url, search).then((res: any) => {
             let list = res.data.JsonData;
             return list;
         });
 
-    return useSWR(stayViewUrl, fetcher);
+    return useSWR(dailyInfo2Url, fetcher);
 };
 
 export const ReportAPI = {
