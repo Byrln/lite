@@ -176,7 +176,6 @@ export const DailyInfoSWR = () => {
 };
 
 export const DailyInfo2SWR = (search: any, workingDate: any) => {
-    console.log("search", search);
     if (!search.CurrDate) {
         search.CurrDate = workingDate;
     }
@@ -187,6 +186,33 @@ export const DailyInfo2SWR = (search: any, workingDate: any) => {
         });
 
     return useSWR(dailyInfo2Url, fetcher);
+};
+
+export const StayViewSWR = (search: any) => {
+    console.log("search.CurrDate", search.CurrDate);
+    console.log(
+        "search.CurrDate",
+        moment(search.CurrDate, "YYYY-MM-DD").month()
+    );
+
+    let tempSearch = {
+        CurrDate: `${moment(search.CurrDate, "YYYY-MM-DD").year()}-${
+            moment(search.CurrDate, "YYYY-MM-DD").month() + 1
+        }-01`,
+        NumberOfDays:
+            daysInMonth(
+                moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+                moment(search.CurrDate, "YYYY-MM-DD").year()
+            ) - 1,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(stayViewUrl, fetcher);
 };
 
 export const ReportAPI = {
