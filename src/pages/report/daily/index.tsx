@@ -14,7 +14,6 @@ const title = "Өдрийн тайлан";
 const Index = () => {
     const [workingDate, setWorkingDate]: any = useState(null);
     const [value, setValue] = useState(0);
-    const [hotelSettings, setHotelSettings]: any = useState(null);
 
     useEffect(() => {
         fetchDatas();
@@ -24,13 +23,6 @@ const Index = () => {
         let response = await FrontOfficeAPI.workingDate();
         if (response.status == 200) {
             setWorkingDate(response.workingDate[0].WorkingDate);
-        }
-
-        let settingsResponse = await HotelSettingAPI.get(
-            localStorage.getItem("hotelId")
-        );
-        if (settingsResponse && settingsResponse[0]) {
-            setHotelSettings(settingsResponse[0]);
         }
     };
 
@@ -113,11 +105,10 @@ const Index = () => {
                             </TabPanel>
 
                             <TabPanel value={value} index={1}>
-                                {workingDate && hotelSettings && (
+                                {workingDate && (
                                     <Daily2
                                         title={title}
                                         workingDate={workingDate}
-                                        hotelSettings={hotelSettings}
                                     />
                                 )}
                             </TabPanel>
