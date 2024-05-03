@@ -220,7 +220,7 @@ const Receipt = ({ FolioID }: any) => {
                                         marginRight: "11px",
                                     }}
                                 >
-                                    Нэхэмж.№ :{" "}
+                                    Фолио.№ :{" "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] && summary[0].FolioNo}
@@ -470,7 +470,9 @@ const Receipt = ({ FolioID }: any) => {
                                     {summary &&
                                         summary.map(
                                             (entity: any, index: any) => {
-                                                return (
+                                                return entity.PayAmount ? (
+                                                    <></>
+                                                ) : (
                                                     <TableRow
                                                         key={index}
                                                         sx={{
@@ -559,93 +561,238 @@ const Receipt = ({ FolioID }: any) => {
                                             scope="row"
                                             style={{
                                                 fontSize: "11px",
-                                                fontWeight: "bold",
                                             }}
-                                            colSpan={3}
+                                            colSpan={5}
                                             align="right"
                                         >
-                                            Нийт :{" "}
-                                            {formatPrice(
-                                                summary.reduce(
-                                                    (acc: any, obj: any) =>
-                                                        acc + obj.ChargeAmount,
-                                                    0
-                                                )
-                                            )}
+                                            <span
+                                                style={{
+                                                    width: "90px",
+                                                    textAlign: "left",
+                                                    marginRight: "11px",
+                                                }}
+                                            >
+                                                {summary[0] &&
+                                                    summary[0].TaxName1}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    fontWeight: "600",
+                                                }}
+                                            >
+                                                {summary[0] &&
+                                                    formatPrice(
+                                                        summary[0].Tax1
+                                                    )}
+                                            </span>
+
+                                            {summary[0] &&
+                                                summary[0].TaxName2 &&
+                                                summary[0].TaxName2 && <br />}
+                                            <span
+                                                style={{
+                                                    width: "90px",
+                                                    textAlign: "left",
+                                                }}
+                                            >
+                                                {summary[0] &&
+                                                    summary[0].TaxName2 &&
+                                                    summary[0].TaxName2}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    fontWeight: "600",
+                                                }}
+                                            >
+                                                {summary[0] &&
+                                                summary[0].Tax2 &&
+                                                summary[0].Tax2 > 0
+                                                    ? formatPrice(
+                                                          summary[0].Tax2
+                                                      )
+                                                    : ""}
+                                            </span>
+                                            <br />
+                                            <span
+                                                style={{
+                                                    width: "90px",
+                                                    textAlign: "left",
+                                                    marginRight: "11px",
+                                                }}
+                                            >
+                                                Нийт :{" "}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    fontWeight: "600",
+                                                }}
+                                            >
+                                                {formatPrice(
+                                                    summary.reduce(
+                                                        (acc: any, obj: any) =>
+                                                            acc +
+                                                            obj.ChargeAmount,
+                                                        0
+                                                    )
+                                                )}
+                                            </span>
+                                            {/* <br />
+                                            {summary &&
+                                                summary.map(
+                                                    (
+                                                        entity: any,
+                                                        index: any
+                                                    ) => {
+                                                        return entity.PayAmount ? (
+                                                            <>
+                                                                <span
+                                                                    style={{
+                                                                        width: "90px",
+                                                                        textAlign:
+                                                                            "left",
+                                                                        marginRight:
+                                                                            "11px",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        entity.ItemName
+                                                                    }{" "}
+                                                                    :{" "}
+                                                                </span>
+                                                                <span
+                                                                    style={{
+                                                                        fontWeight:
+                                                                            "600",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        entity.PayAmount
+                                                                    }{" "}
+                                                                </span>
+                                                            </>
+                                                        ) : (
+                                                            <></>
+                                                        );
+                                                    }
+                                                )} */}
+                                            <br />
+                                            <span
+                                                style={{
+                                                    width: "90px",
+                                                    textAlign: "left",
+                                                    marginRight: "11px",
+                                                }}
+                                            >
+                                                Төлбөр :{" "}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    fontWeight: "600",
+                                                }}
+                                            >
+                                                {formatPrice(
+                                                    summary.reduce(
+                                                        (acc: any, obj: any) =>
+                                                            acc + obj.PayAmount,
+                                                        0
+                                                    )
+                                                )}
+                                            </span>
+                                            <br />
+                                            <span
+                                                style={{
+                                                    width: "90px",
+                                                    textAlign: "left",
+                                                    marginRight: "11px",
+                                                }}
+                                            >
+                                                Үлдэгдэл :{" "}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    fontWeight: "600",
+                                                }}
+                                            >
+                                                {summary &&
+                                                    summary.length > 0 &&
+                                                    summary[summary.length - 1]
+                                                        .RunningTotalAmount}
+                                            </span>
                                         </TableCell>
 
-                                        <TableCell
+                                        {/* <TableCell
                                             component="th"
                                             scope="row"
                                             style={{
                                                 fontSize: "11px",
-                                                fontWeight: "bold",
                                             }}
                                             colSpan={2}
                                             align="right"
                                         >
-                                            Үлдэгдэл :{" "}
                                             {summary &&
-                                                summary.length > 0 &&
-                                                summary[summary.length - 1]
-                                                    .RunningTotalAmount}
-                                        </TableCell>
+                                                summary.map(
+                                                    (
+                                                        entity: any,
+                                                        index: any
+                                                    ) => {
+                                                        return entity.PayAmount ? (
+                                                            <>
+                                                                <span
+                                                                    style={{
+                                                                        width: "90px",
+                                                                        textAlign:
+                                                                            "left",
+                                                                        marginRight:
+                                                                            "11px",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        entity.ItemName
+                                                                    }{" "}
+                                                                    :{" "}
+                                                                </span>
+                                                                <span
+                                                                    style={{
+                                                                        fontWeight:
+                                                                            "600",
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        entity.PayAmount
+                                                                    }{" "}
+                                                                </span>
+                                                            </>
+                                                        ) : (
+                                                            <></>
+                                                        );
+                                                    }
+                                                )}
+                                            <br />
+                                            <span
+                                                style={{
+                                                    width: "90px",
+                                                    textAlign: "left",
+                                                    marginRight: "11px",
+                                                }}
+                                            >
+                                                Үлдэгдэл :{" "}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    fontWeight: "600",
+                                                }}
+                                            >
+                                                {summary &&
+                                                    summary.length > 0 &&
+                                                    summary[summary.length - 1]
+                                                        .RunningTotalAmount}
+                                            </span>
+                                        </TableCell> */}
                                     </TableRow>
                                 </TableBody>
                             </Table>
                         </Grid>
-                        <Grid item xs={2}></Grid>
-                        <Grid item xs={8}>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                    flexWrap: "wrap",
-                                }}
-                                className="mb-1"
-                            >
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "left",
-                                        marginRight: "11px",
-                                    }}
-                                >
-                                    {summary[0] && summary[0].TaxName1}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && formatPrice(summary[0].Tax1)}
-                                </div>
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                    flexWrap: "wrap",
-                                }}
-                                className="mb-1"
-                            >
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "left",
-                                        marginRight: "11px",
-                                    }}
-                                >
-                                    {summary[0] &&
-                                        summary[0].TaxName2 &&
-                                        summary[0].TaxName2}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] &&
-                                    summary[0].Tax2 &&
-                                    summary[0].Tax2 > 0
-                                        ? formatPrice(summary[0].Tax2)
-                                        : ""}
-                                </div>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={2}></Grid>
+
                         <Grid item xs={6}>
                             Зочны гарын үсэг : ......................
                         </Grid>
