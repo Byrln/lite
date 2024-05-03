@@ -539,25 +539,34 @@ const Folio = ({ title, workingDate }: any) => {
                                                                       ][key2]
                                                                           .RoomNo
                                                                   ][0].Adult +
-                                                                  reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0].Child -
-                                                                  reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .BaseAdult -
-                                                                  reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0].BaseChild
+                                                                      reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .Child -
+                                                                      reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .BaseAdult -
+                                                                      reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .BaseChild >
+                                                                  0
                                                                     ? reportData[
                                                                           roomsData[
                                                                               key

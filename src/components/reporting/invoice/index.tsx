@@ -91,7 +91,15 @@ const Receipt = ({ FolioID }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                    Хураангуй хэвлэх
+                </Button>
+                <Button
+                    variant="outlined"
+                    onClick={handlePrint}
+                    className="mr-3"
+                    startIcon={<PrintIcon />}
+                >
+                    Дэлгэрэнгүй хэвлэх
                 </Button>
             </div>
             {summary && (
@@ -515,7 +523,7 @@ const Receipt = ({ FolioID }: any) => {
                                                             }}
                                                         >
                                                             {formatPrice(
-                                                                entity.ChargeAmount
+                                                                entity.ChargeAmountNoTax
                                                             )}
                                                         </TableCell>
                                                         {/* <TableCell
@@ -580,6 +588,27 @@ const Receipt = ({ FolioID }: any) => {
                                                 )}
                                             </span>
                                             <br /> */}
+                                            <span
+                                                style={{
+                                                    width: "90px",
+                                                    textAlign: "left",
+                                                    marginRight: "11px",
+                                                }}
+                                            >
+                                                Үйлчилгээ :{" "}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    fontWeight: "600",
+                                                }}
+                                            >
+                                                {formatPrice(
+                                                    summary[0]
+                                                        .ServiceChargeNoTax
+                                                )}
+                                            </span>
+                                            <br />
+
                                             <span
                                                 style={{
                                                     width: "90px",

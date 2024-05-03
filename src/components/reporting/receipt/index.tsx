@@ -146,7 +146,15 @@ const Receipt = ({ TransactionID }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                    Хураангуй хэвлэх
+                </Button>
+                <Button
+                    variant="outlined"
+                    onClick={handlePrint}
+                    className="mr-3"
+                    startIcon={<PrintIcon />}
+                >
+                    Дэлгэрэнгүй хэвлэх
                 </Button>
             </div>
             {data && data[0] && (
