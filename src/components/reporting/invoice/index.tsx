@@ -730,8 +730,11 @@ const Receipt = ({ FolioID }: any) => {
                                             >
                                                 {summary &&
                                                     summary.length > 0 &&
-                                                    summary[summary.length - 1]
-                                                        .RunningTotalAmount}
+                                                    formatPrice(
+                                                        summary[
+                                                            summary.length - 1
+                                                        ].RunningTotalAmount
+                                                    )}
                                             </span>
                                         </TableCell>
 
