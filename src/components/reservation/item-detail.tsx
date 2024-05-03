@@ -313,7 +313,7 @@ const ItemDetail = ({
                                 onClick={() => {
                                     handleModal(
                                         true,
-                                        "Receipt",
+                                        "Нэхэмжлэл",
                                         <Invoice
                                             FolioID={reservation.FolioID}
                                         />,
