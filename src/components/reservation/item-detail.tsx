@@ -9,11 +9,14 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { FrontOfficeAPI } from "lib/api/front-office";
+import { toast } from "react-toastify";
+
+import { ReportAPI } from "lib/api/report";
 import RemarkList from "./remark/list";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ModalContext } from "lib/context/modal";
 import Receipt from "components/reporting/receipt";
+import Invoice from "components/reporting/invoice";
 
 const styleTime = {
     backgroundColor: "#00008B",
@@ -46,6 +49,21 @@ const ItemDetail = ({
     summary,
 }: any) => {
     const { handleModal }: any = useContext(ModalContext);
+    const [loading, setLoading] = useState(false);
+
+    const handleInvoice = async () => {
+        setLoading(true);
+        console.log("true", true);
+        try {
+            await ReportAPI.invoice(reservation.FolioID);
+
+            toast("Амжилттай.");
+
+            setLoading(false);
+        } catch {
+            setLoading(false);
+        }
+    };
 
     return (
         <>
@@ -291,6 +309,18 @@ const ItemDetail = ({
                                 variant={"text"}
                                 size="small"
                                 className="mr-3"
+                                // onClick={() => handleInvoice()}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        "Receipt",
+                                        <Invoice
+                                            FolioID={reservation.FolioID}
+                                        />,
+                                        null,
+                                        "large"
+                                    );
+                                }}
                             >
                                 Нэх.хэвлэх
                             </Button>
