@@ -444,9 +444,9 @@ const Receipt = ({ FolioID }: any) => {
                                                 fontSize: "11px",
                                             }}
                                         >
-                                            Төлөлт
+                                            Дүн
                                         </TableCell>
-                                        <TableCell
+                                        {/* <TableCell
                                             align="left"
                                             style={{
                                                 fontWeight: "bold",
@@ -463,7 +463,7 @@ const Receipt = ({ FolioID }: any) => {
                                             }}
                                         >
                                             Үлдэгдэл
-                                        </TableCell>
+                                        </TableCell> */}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -518,7 +518,7 @@ const Receipt = ({ FolioID }: any) => {
                                                                 entity.ChargeAmount
                                                             )}
                                                         </TableCell>
-                                                        <TableCell
+                                                        {/* <TableCell
                                                             component="th"
                                                             scope="row"
                                                             style={{
@@ -541,7 +541,7 @@ const Receipt = ({ FolioID }: any) => {
                                                             {formatPrice(
                                                                 entity.RunningTotalAmount
                                                             )}
-                                                        </TableCell>
+                                                        </TableCell> */}
                                                     </TableRow>
                                                 );
                                             }
@@ -565,6 +565,21 @@ const Receipt = ({ FolioID }: any) => {
                                             colSpan={5}
                                             align="right"
                                         >
+                                            {/* <span
+                                                style={{
+                                                    fontWeight: "600",
+                                                }}
+                                            >
+                                                {formatPrice(
+                                                    summary.reduce(
+                                                        (acc: any, obj: any) =>
+                                                            acc +
+                                                            obj.ChargeAmount,
+                                                        0
+                                                    )
+                                                )}
+                                            </span>
+                                            <br /> */}
                                             <span
                                                 style={{
                                                     width: "90px",
