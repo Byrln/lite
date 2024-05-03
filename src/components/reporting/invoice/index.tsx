@@ -559,16 +559,9 @@ const Receipt = ({ FolioID }: any) => {
                                             scope="row"
                                             style={{
                                                 fontSize: "11px",
-                                            }}
-                                        ></TableCell>
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontSize: "11px",
                                                 fontWeight: "bold",
                                             }}
-                                            colSpan={2}
+                                            colSpan={3}
                                             align="right"
                                         >
                                             Нийт :{" "}
