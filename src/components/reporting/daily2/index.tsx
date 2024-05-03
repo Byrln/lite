@@ -19,7 +19,7 @@ import { mutate } from "swr";
 
 import { RoomSWR, listUrl } from "lib/api/room";
 import { DailyInfo2SWR, dailyInfo2Url } from "lib/api/report";
-import { HouseKeepingCurrentSWR, listCurrentUrl } from "lib/api/house-keeping";
+import { HouseKeepingRoomSWR, listCurrentUrl } from "lib/api/house-keeping";
 import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
@@ -33,7 +33,7 @@ const Folio = ({ title, workingDate }: any) => {
 
     const { data: rooms, error: roomSwrError } = RoomSWR(search);
     const { data: roomStatus, error: roomStatusError } =
-        HouseKeepingCurrentSWR(search);
+        HouseKeepingRoomSWR(search);
     const { data, error } = DailyInfo2SWR(search, workingDate);
 
     const handlePrint = useReactToPrint({
@@ -42,14 +42,14 @@ const Folio = ({ title, workingDate }: any) => {
               padding: 20px;
             }
             .MuiTableCell-root{
-                border:1px solid !important;
+                border:1px  #DFDFDF solid !important;
                 font-size:8px !important;
                 line-height:8px !important
                 padding:4px !important
 
               }
               .MuiTableCell-head, .MuiDataGrid-columnHeaders, .MuiDataGrid-footerContainer{
-                border:1px solid !important;
+                border:1px #DFDFDF solid !important;
                 background-color: none !important;
                 color :inherit !important;
                 font-size:8px !important;
@@ -382,7 +382,7 @@ const Folio = ({ title, workingDate }: any) => {
                                             }}
                                             colSpan={11}
                                         >
-                                            {key} давхар
+                                            Давхар {key}
                                         </TableCell>
                                     </TableRow>
                                     {roomsData[key] &&
@@ -464,6 +464,34 @@ const Folio = ({ title, workingDate }: any) => {
                                                                           .RoomNo
                                                                   ][0]
                                                                       .DepartureName
+                                                                    ? reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .DepartureName
+                                                                    : reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .ArrivalName
+                                                                    ? ""
+                                                                    : reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .FullName
                                                                 : ""}
                                                         </TableCell>
                                                         <TableCell
@@ -808,7 +836,7 @@ const Folio = ({ title, workingDate }: any) => {
                             {" "}
                             Supervisor signature :{" "}
                         </span>{" "}
-                        ..................................
+                        .....................
                     </Typography>
                 </div>
             </div>
