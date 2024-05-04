@@ -36,7 +36,7 @@ const Breakfast = ({ title, workingDate }: any) => {
 
     const fetchDatas = async () => {
         try {
-            const response: any = await ReportAPI.breakfastSummary({
+            const response: any = await ReportAPI.breakfast2({
                 StartDate: search.StartDate.format("YYYY-MM-DD"),
                 EndDate: search.EndDate.format("YYYY-MM-DD"),
             });
