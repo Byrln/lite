@@ -18,7 +18,7 @@ export const FloorSWR = () => {
 
 export const FloorAPI = {
     new: async (values: any) => {
-        const { data, status } = await axios.post(urlPrefix, values);
+        const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 
         return {
             data,
