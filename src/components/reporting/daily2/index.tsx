@@ -231,10 +231,13 @@ const Folio = ({ title, workingDate }: any) => {
                             {" "}
                             Тайлант үе :{" "}
                         </span>{" "}
-                        {workingDate &&
-                            moment(workingDate, "YYYY.MM.DD").format(
-                                "YYYY.MM.DD"
-                            )}
+                        {search.CurrDate
+                            ? moment(search.CurrDate, "YYYY.MM.DD").format(
+                                  "YYYY.MM.DD"
+                              )
+                            : moment(workingDate, "YYYY.MM.DD").format(
+                                  "YYYY.MM.DD"
+                              )}
                     </Typography>
                 </Box>
                 <Table

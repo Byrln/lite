@@ -632,30 +632,42 @@ const Receipt = ({ FolioID }: any) => {
 
                                             {summary[0] &&
                                                 summary[0].TaxName2 &&
-                                                summary[0].TaxName2 && <br />}
-                                            <span
-                                                style={{
-                                                    width: "90px",
-                                                    textAlign: "left",
-                                                }}
-                                            >
-                                                {summary[0] &&
-                                                    summary[0].TaxName2 &&
-                                                    summary[0].TaxName2}
-                                            </span>
-                                            <span
-                                                style={{
-                                                    fontWeight: "600",
-                                                }}
-                                            >
-                                                {summary[0] &&
-                                                summary[0].Tax2 &&
-                                                summary[0].Tax2 > 0
-                                                    ? formatPrice(
-                                                          summary[0].Tax2
-                                                      )
-                                                    : ""}
-                                            </span>
+                                                summary[0].TaxName2 && (
+                                                    <>
+                                                        <br />{" "}
+                                                        <span
+                                                            style={{
+                                                                width: "90px",
+                                                                textAlign:
+                                                                    "left",
+                                                                marginRight:
+                                                                    "11px",
+                                                            }}
+                                                        >
+                                                            {summary[0] &&
+                                                                summary[0]
+                                                                    .TaxName2 &&
+                                                                summary[0]
+                                                                    .TaxName2}
+                                                        </span>
+                                                        <span
+                                                            style={{
+                                                                fontWeight:
+                                                                    "600",
+                                                            }}
+                                                        >
+                                                            {summary[0] &&
+                                                            summary[0].Tax2 &&
+                                                            summary[0].Tax2 > 0
+                                                                ? formatPrice(
+                                                                      summary[0]
+                                                                          .Tax2
+                                                                  )
+                                                                : ""}
+                                                        </span>
+                                                    </>
+                                                )}
+
                                             <br />
                                             <span
                                                 style={{
