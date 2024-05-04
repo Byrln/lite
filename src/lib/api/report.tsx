@@ -16,6 +16,7 @@ export const interAgencyUrl = `${urlPrefix}/InterAgency`;
 export const dailyChargesPaymentSummaryUrl = `${urlPrefix}/DailyChargesPayment/Summary`;
 export const reservationDailyDetailUrl = `${urlPrefix}/Reservation/DailyDetail`;
 export const printInvoiceUrl = `${urlPrefix}/PrintInvoice`;
+export const breakfastSummaryUrl = `${urlPrefix}/Breakfast/Summary`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -219,6 +220,12 @@ export const StayViewSWR = (search: any) => {
 export const ReportAPI = {
     breakfast: async (search: any) => {
         const res = await axios.post(`${breakfastUrl}`, search);
+
+        return res.data.JsonData;
+    },
+
+    breakfastSummary: async (search: any) => {
+        const res = await axios.post(`${breakfastSummaryUrl}`, search);
 
         return res.data.JsonData;
     },
