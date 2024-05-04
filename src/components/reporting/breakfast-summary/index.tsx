@@ -195,13 +195,6 @@ const Breakfast = ({ title, workingDate }: any) => {
                                     >
                                         Нийт зочин
                                     </TableCell>
-
-                                    <TableCell
-                                        align="right"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        Өглөөний цайтай
-                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -227,7 +220,9 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                         scope="row"
                                                         align="right"
                                                     >
-                                                        {entity.TotalRoom}
+                                                        {moment(
+                                                            entity.TotalRoom
+                                                        ).format("YYYY-MM-DD")}
                                                     </TableCell>
                                                     <TableCell
                                                         component="th"
