@@ -81,7 +81,7 @@ const Index = () => {
                                 aria-label="Өглөөний цай"
                             >
                                 <Tab label="Өглөөний цай" {...a11yProps(0)} />
-                                <Tab label="Summary" {...a11yProps(1)} />
+                                <Tab label="Хувилбар 2" {...a11yProps(1)} />
                             </Tabs>
 
                             <TabPanel value={value} index={0}>
