@@ -813,7 +813,15 @@ const Folio = ({ title, workingDate }: any) => {
                                                                       ][key2]
                                                                           .RoomNo
                                                                   ][0]
-                                                                      .CheckedOutDate
+                                                                      .DepartureStatusCode1 &&
+                                                                  reportData[
+                                                                      roomsData[
+                                                                          key
+                                                                      ][key2]
+                                                                          .RoomNo
+                                                                  ][0]
+                                                                      .DepartureStatusCode1 ==
+                                                                      "StatusCheckedOut"
                                                                     ? "dep"
                                                                     : ""
                                                                 : ""}
