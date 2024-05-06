@@ -252,7 +252,7 @@ const Folio = ({ title, workingDate }: any) => {
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
                                 }}
                             >
                                 Бэлэн байгаа
@@ -262,7 +262,7 @@ const Folio = ({ title, workingDate }: any) => {
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
                                 }}
                             >
                                 Rooms
@@ -273,7 +273,7 @@ const Folio = ({ title, workingDate }: any) => {
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
                                 }}
                             >
                                 OCC/Guest name
@@ -283,7 +283,7 @@ const Folio = ({ title, workingDate }: any) => {
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
                                 }}
                             >
                                 ARR/Guest name
@@ -293,27 +293,28 @@ const Folio = ({ title, workingDate }: any) => {
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
                                 }}
                             >
                                 Нэмэлт ор
                             </TableCell>
-                            <TableCell
+                            {/* <TableCell
                                 align="left"
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
                                 }}
                             >
                                 Check in Time
-                            </TableCell>
+                            </TableCell> */}
                             <TableCell
                                 align="left"
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
+                                    width: "30px",
                                 }}
                             >
                                 So
@@ -323,7 +324,8 @@ const Folio = ({ title, workingDate }: any) => {
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
+                                    width: "30px",
                                 }}
                             >
                                 LCO
@@ -333,7 +335,8 @@ const Folio = ({ title, workingDate }: any) => {
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
+                                    width: "30px",
                                 }}
                             >
                                 do
@@ -343,7 +346,8 @@ const Folio = ({ title, workingDate }: any) => {
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
+                                    width: "30px",
                                 }}
                             >
                                 dep
@@ -353,7 +357,7 @@ const Folio = ({ title, workingDate }: any) => {
                                 style={{
                                     fontWeight: "bold",
                                     fontSize: "10px",
-                                    padding: "10px 2px",
+                                    padding: "2px 2px",
                                 }}
                                 width={200}
                             >
@@ -382,6 +386,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                 paddingLeft: "30px !important",
                                                 fontSize: "10px",
                                                 textAlign: "center",
+                                                padding: "2px",
                                             }}
                                             colSpan={11}
                                         >
@@ -408,10 +413,10 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
                                                             }}
                                                         >
-                                                            {roomStatusData[
+                                                            {/* {roomStatusData[
                                                                 roomsData[key][
                                                                     key2
                                                                 ].RoomNo
@@ -426,7 +431,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                   "StatusRoomClean"
                                                                     ? "Тийм"
                                                                     : ""
-                                                                : ""}
+                                                                : ""} */}
                                                         </TableCell>
                                                         <TableCell
                                                             component="th"
@@ -435,7 +440,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
                                                             }}
                                                         >
                                                             {
@@ -452,7 +457,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
                                                             }}
                                                         >
                                                             {reportData[
@@ -504,7 +509,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
                                                             }}
                                                         >
                                                             {reportData[
@@ -528,7 +533,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
                                                             }}
                                                         >
                                                             {reportData[
@@ -609,14 +614,14 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     : "0"
                                                                 : ""}
                                                         </TableCell>
-                                                        <TableCell
+                                                        {/* <TableCell
                                                             component="th"
                                                             scope="row"
                                                             style={{
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
                                                             }}
                                                         >
                                                             {reportData[
@@ -658,7 +663,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                           "HH:mm:ss"
                                                                       )
                                                                 : ""}
-                                                        </TableCell>
+                                                        </TableCell> */}
                                                         <TableCell
                                                             component="th"
                                                             scope="row"
@@ -666,7 +671,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
+                                                                width: "30px",
                                                             }}
                                                         >
                                                             {reportData[
@@ -682,7 +688,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                   ][0]
                                                                       .StatusCode1 ==
                                                                   "StatusStayOver"
-                                                                    ? "Тийм"
+                                                                    ? "So"
                                                                     : ""
                                                                 : ""}
                                                         </TableCell>
@@ -693,7 +699,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
+                                                                width: "30px",
                                                             }}
                                                         >
                                                             {reportData[
@@ -709,7 +716,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                   ][0]
                                                                       .StatusCode1 ==
                                                                   "StatusStayOver"
-                                                                    ? "Тийм"
+                                                                    ? "LCO"
                                                                     : ""
                                                                 : ""}
                                                             {reportData[
@@ -751,7 +758,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                       ).format(
                                                                           "HH:mm:ss"
                                                                       )
-                                                                    ? "Тийм"
+                                                                    ? "LCO"
                                                                     : ""
                                                                 : ""}
                                                         </TableCell>
@@ -762,7 +769,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
+                                                                width: "30px",
                                                             }}
                                                         >
                                                             {reportData[
@@ -778,7 +786,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                   ][0]
                                                                       .StatusCode1 ==
                                                                   "StatusDueOut"
-                                                                    ? "Тийм"
+                                                                    ? "do"
                                                                     : ""
                                                                 : ""}
                                                         </TableCell>
@@ -790,7 +798,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
+                                                                width: "30px",
                                                             }}
                                                         >
                                                             {reportData[
@@ -805,7 +814,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                           .RoomNo
                                                                   ][0]
                                                                       .CheckedOutDate
-                                                                    ? "Тийм"
+                                                                    ? "dep"
                                                                     : ""
                                                                 : ""}
                                                         </TableCell>
@@ -818,7 +827,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding:
-                                                                    "10px 2px",
+                                                                    "2px 2px",
                                                             }}
                                                         ></TableCell>
                                                     </TableRow>

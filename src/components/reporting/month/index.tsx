@@ -101,8 +101,6 @@ const ReportingList = ({ title, workingDate }: any) => {
 
     useEffect(() => {
         if (data) {
-            console.log("data", generateColumns(data));
-            console.log("data2", data);
             setColumns(generateColumns(data));
             let tempData = data.filter(
                 (room: any) => room.Sort2 != -1 && room.RoomID != -1

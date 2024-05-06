@@ -4,6 +4,7 @@ import Head from "next/head";
 
 import Page from "components/page";
 import Breakfast from "components/reporting/breakfast";
+import BreakfastDaily from "components/reporting/breakfast-daily";
 import BreakfastSummary from "components/reporting/breakfast-summary";
 import { FrontOfficeAPI } from "lib/api/front-office";
 
@@ -80,8 +81,9 @@ const Index = () => {
                                 onChange={handleChange}
                                 aria-label="Өглөөний цай"
                             >
-                                <Tab label="Өглөөний цай" {...a11yProps(0)} />
+                                <Tab label="Хувилбар 1" {...a11yProps(0)} />
                                 <Tab label="Хувилбар 2" {...a11yProps(1)} />
+                                <Tab label="Сарын тайлан" {...a11yProps(1)} />
                             </Tabs>
 
                             <TabPanel value={value} index={0}>
@@ -94,6 +96,15 @@ const Index = () => {
                             </TabPanel>
 
                             <TabPanel value={value} index={1}>
+                                {workingDate && (
+                                    <BreakfastDaily
+                                        title={title}
+                                        workingDate={workingDate}
+                                    />
+                                )}
+                            </TabPanel>
+
+                            <TabPanel value={value} index={2}>
                                 {workingDate && (
                                     <BreakfastSummary
                                         title={title}
