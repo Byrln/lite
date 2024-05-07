@@ -461,6 +461,7 @@ const TimelineTable = ({ props, workingDate }: any) => {
                 temp_rec[l * 2] = availableRooms[0]["D" + (l + 1).toString()];
             }
         }
+        // @ts-ignore
         records.push(temp_rec);
         // @ts-ignore
         setRecords(records);

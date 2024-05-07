@@ -9,6 +9,7 @@ import {
     TableHead,
     TableRow,
     Box,
+    Grid,
 } from "@mui/material";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
@@ -39,7 +40,7 @@ const Folio = ({ title, workingDate }: any) => {
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
             @page {
-              padding: 20px;
+              margin: 20px;
             }
             .MuiTableCell-root{
                 border:1px  #DFDFDF solid !important;
@@ -72,11 +73,18 @@ const Folio = ({ title, workingDate }: any) => {
 
     function mergeTransactions(transactions: any) {
         const mergedTransactions: any = {};
-
         transactions.forEach((transaction: any) => {
             const roomNo = transaction.RoomNo;
             if (!mergedTransactions[roomNo]) {
                 mergedTransactions[roomNo] = { ...transaction };
+                if (transaction.DepartureName) {
+                    mergedTransactions[roomNo].DepartureName =
+                        transaction.DepartureName;
+                    mergedTransactions[roomNo].DepartureStatusCode1 =
+                        transaction.StatusCode1;
+                    mergedTransactions[roomNo].CheckedOutDate =
+                        transaction.CheckedOutDate;
+                }
             } else {
                 // Merge the current transaction with existing transaction
                 if (transaction.DepartureName) {
@@ -123,14 +131,14 @@ const Folio = ({ title, workingDate }: any) => {
     useEffect(() => {
         if (data) {
             let tempValue = groupBy(data, "RoomNo");
-            let letTempValue2 = { ...tempValue };
 
             Object.keys(tempValue).map(
                 (key: any) =>
                     (tempValue[key] =
-                        tempValue[key].length > 1
-                            ? mergeTransactions(tempValue[key])
-                            : tempValue[key])
+                        // tempValue[key].length > 1
+                        //     ?
+                        mergeTransactions(tempValue[key]))
+                // : tempValue[key])
             );
 
             setReportData(tempValue);
@@ -209,96 +217,102 @@ const Folio = ({ title, workingDate }: any) => {
             </div>
 
             <div ref={componentRef}>
-                <Box
-                    sx={{
-                        display: "flex",
-                        bgcolor: "background.paper",
-                        borderRadius: 1,
-                    }}
-                >
-                    <div style={{ flexGrow: 1, textAlign: "center" }}>
+                <div className="print-content">
+                    <Box
+                        sx={{
+                            display: "flex",
+                            bgcolor: "background.paper",
+                            borderRadius: 1,
+                        }}
+                    >
+                        <div style={{ flexGrow: 1, textAlign: "center" }}>
+                            <Typography
+                                variant="h6"
+                                gutterBottom
+                                style={{ textAlign: "center" }}
+                                className="mb-3"
+                            >
+                                {title}
+                            </Typography>
+                        </div>
                         <Typography
-                            variant="h6"
+                            variant="body1"
                             gutterBottom
-                            style={{ textAlign: "center" }}
-                            className="mb-3"
+                            className="mr-1"
                         >
-                            {title}
+                            <span style={{ fontWeight: "bold" }}>
+                                {" "}
+                                Тайлант үе :{" "}
+                            </span>{" "}
+                            {search.CurrDate
+                                ? moment(search.CurrDate, "YYYY.MM.DD").format(
+                                      "YYYY.MM.DD"
+                                  )
+                                : moment(workingDate, "YYYY.MM.DD").format(
+                                      "YYYY.MM.DD"
+                                  )}
                         </Typography>
-                    </div>
-                    <Typography variant="body1" gutterBottom className="mr-1">
-                        <span style={{ fontWeight: "bold" }}>
-                            {" "}
-                            Тайлант үе :{" "}
-                        </span>{" "}
-                        {search.CurrDate
-                            ? moment(search.CurrDate, "YYYY.MM.DD").format(
-                                  "YYYY.MM.DD"
-                              )
-                            : moment(workingDate, "YYYY.MM.DD").format(
-                                  "YYYY.MM.DD"
-                              )}
-                    </Typography>
-                </Box>
-                <Table
-                    sx={{ minWidth: 650 }}
-                    aria-label="simple table"
-                    size="small"
-                    key={rerenderKey}
-                >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                }}
-                            >
-                                Бэлэн байгаа
-                            </TableCell>
-                            <TableCell
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                }}
-                            >
-                                Rooms
-                            </TableCell>
+                    </Box>
+                    <Table
+                        sx={{ minWidth: 650 }}
+                        aria-label="simple table"
+                        size="small"
+                        key={rerenderKey}
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                        width: "40px",
+                                    }}
+                                >
+                                    Бэлэн байгаа
+                                </TableCell>
+                                <TableCell
+                                    align="left"
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                    }}
+                                >
+                                    Rooms
+                                </TableCell>
 
-                            <TableCell
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                }}
-                            >
-                                OCC/Guest name
-                            </TableCell>
-                            <TableCell
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                }}
-                            >
-                                ARR/Guest name
-                            </TableCell>
-                            <TableCell
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                }}
-                            >
-                                Нэмэлт ор
-                            </TableCell>
-                            {/* <TableCell
+                                <TableCell
+                                    align="left"
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                    }}
+                                >
+                                    OCC/Guest name
+                                </TableCell>
+                                <TableCell
+                                    align="left"
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                    }}
+                                >
+                                    ARR/Guest name
+                                </TableCell>
+                                <TableCell
+                                    align="left"
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                    }}
+                                >
+                                    Нэмэлт ор
+                                </TableCell>
+                                {/* <TableCell
                                 align="left"
                                 style={{
                                     fontWeight: "bold",
@@ -308,115 +322,117 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 Check in Time
                             </TableCell> */}
-                            <TableCell
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                    width: "30px",
-                                }}
-                            >
-                                So
-                            </TableCell>
-                            <TableCell
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                    width: "30px",
-                                }}
-                            >
-                                LCO
-                            </TableCell>
-                            <TableCell
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                    width: "30px",
-                                }}
-                            >
-                                do
-                            </TableCell>
-                            <TableCell
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                    width: "30px",
-                                }}
-                            >
-                                dep
-                            </TableCell>
-                            <TableCell
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "10px",
-                                    padding: "2px 2px",
-                                }}
-                                width={200}
-                            >
-                                Тайлбар
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {roomsData &&
-                            reportData &&
-                            roomStatusData &&
-                            Object.keys(roomsData).map((key) => (
-                                <>
-                                    <TableRow
-                                        key={key}
-                                        sx={{
-                                            "&:last-child td, &:last-child th":
-                                                { border: 0 },
-                                        }}
-                                    >
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontWeight: "bold",
-                                                paddingLeft: "30px !important",
-                                                fontSize: "10px",
-                                                textAlign: "center",
-                                                padding: "2px",
+                                <TableCell
+                                    align="left"
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                        width: "30px",
+                                    }}
+                                >
+                                    So
+                                </TableCell>
+                                <TableCell
+                                    align="left"
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                        width: "30px",
+                                    }}
+                                >
+                                    LCO
+                                </TableCell>
+                                <TableCell
+                                    align="left"
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                        width: "30px",
+                                    }}
+                                >
+                                    do
+                                </TableCell>
+                                <TableCell
+                                    align="left"
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                        width: "30px",
+                                    }}
+                                >
+                                    dep
+                                </TableCell>
+                                <TableCell
+                                    align="left"
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "10px",
+                                        padding: "2px 2px",
+                                    }}
+                                    width={300}
+                                >
+                                    Тайлбар
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {roomsData &&
+                                reportData &&
+                                roomStatusData &&
+                                Object.keys(roomsData).map((key) => (
+                                    <>
+                                        <TableRow
+                                            key={key}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    { border: 0 },
                                             }}
-                                            colSpan={11}
                                         >
-                                            Давхар {key}
-                                        </TableCell>
-                                    </TableRow>
-                                    {roomsData[key] &&
-                                        Object.keys(roomsData[key]).map(
-                                            (key2) => (
-                                                <>
-                                                    <TableRow
-                                                        key={key}
-                                                        sx={{
-                                                            "&:last-child td, &:last-child th":
-                                                                {
-                                                                    border: 0,
-                                                                },
-                                                        }}
-                                                    >
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    paddingLeft:
+                                                        "30px !important",
+                                                    fontSize: "10px",
+                                                    textAlign: "center",
+                                                    padding: "2px",
+                                                }}
+                                                colSpan={11}
+                                            >
+                                                Давхар {key}
+                                            </TableCell>
+                                        </TableRow>
+                                        {roomsData[key] &&
+                                            Object.keys(roomsData[key]).map(
+                                                (key2) => (
+                                                    <>
+                                                        <TableRow
+                                                            key={key}
+                                                            sx={{
+                                                                "&:last-child td, &:last-child th":
+                                                                    {
+                                                                        border: 0,
+                                                                    },
                                                             }}
                                                         >
-                                                            {/* {roomStatusData[
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                    width: "40px",
+                                                                }}
+                                                            >
+                                                                {/* {roomStatusData[
                                                                 roomsData[key][
                                                                     key2
                                                                 ].RoomNo
@@ -432,46 +448,41 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     ? "Тийм"
                                                                     : ""
                                                                 : ""} */}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
-                                                            }}
-                                                        >
-                                                            {
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            }
-                                                        </TableCell>
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                }}
+                                                            >
+                                                                {
+                                                                    roomsData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomNo
+                                                                }
+                                                            </TableCell>
 
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
-                                                            }}
-                                                        >
-                                                            {reportData[
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            ]
-                                                                ? reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .DepartureName
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                }}
+                                                            >
+                                                                {reportData[
+                                                                    roomsData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomNo
+                                                                ]
                                                                     ? reportData[
                                                                           roomsData[
                                                                               key
@@ -481,7 +492,53 @@ const Folio = ({ title, workingDate }: any) => {
                                                                               .RoomNo
                                                                       ][0]
                                                                           .DepartureName
-                                                                    : reportData[
+                                                                        ? reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .DepartureName
+                                                                        : reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .ArrivalName
+                                                                        ? ""
+                                                                        : reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .FullName
+                                                                    : ""}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                }}
+                                                            >
+                                                                {reportData[
+                                                                    roomsData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomNo
+                                                                ]
+                                                                    ? reportData[
                                                                           roomsData[
                                                                               key
                                                                           ][
@@ -490,91 +547,25 @@ const Folio = ({ title, workingDate }: any) => {
                                                                               .RoomNo
                                                                       ][0]
                                                                           .ArrivalName
-                                                                    ? ""
-                                                                    : reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .FullName
-                                                                : ""}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
-                                                            }}
-                                                        >
-                                                            {reportData[
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            ]
-                                                                ? reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .ArrivalName
-                                                                : ""}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
-                                                            }}
-                                                        >
-                                                            {reportData[
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            ]
-                                                                ? reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0].Adult +
-                                                                      reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .Child -
-                                                                      reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .BaseAdult -
-                                                                      reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .BaseChild >
-                                                                  0
+                                                                    : ""}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                align="center"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                }}
+                                                            >
+                                                                {reportData[
+                                                                    roomsData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomNo
+                                                                ]
                                                                     ? reportData[
                                                                           roomsData[
                                                                               key
@@ -584,37 +575,74 @@ const Folio = ({ title, workingDate }: any) => {
                                                                               .RoomNo
                                                                       ][0]
                                                                           .Adult +
-                                                                      reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .Child -
-                                                                      reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .BaseAdult -
-                                                                      reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .BaseChild
-                                                                    : "0"
-                                                                : ""}
-                                                        </TableCell>
-                                                        {/* <TableCell
+                                                                          reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .Child -
+                                                                          reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .BaseAdult -
+                                                                          reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .BaseChild >
+                                                                      0
+                                                                        ? reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .Adult +
+                                                                          reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .Child -
+                                                                          reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .BaseAdult -
+                                                                          reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .BaseChild
+                                                                        : ""
+                                                                    : ""}
+                                                            </TableCell>
+                                                            {/* <TableCell
                                                             component="th"
                                                             scope="row"
                                                             style={{
@@ -664,209 +692,238 @@ const Folio = ({ title, workingDate }: any) => {
                                                                       )
                                                                 : ""}
                                                         </TableCell> */}
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
-                                                                width: "30px",
-                                                            }}
-                                                        >
-                                                            {reportData[
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            ]
-                                                                ? reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .StatusCode1 ==
-                                                                  "StatusStayOver"
-                                                                    ? "So"
-                                                                    : ""
-                                                                : ""}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
-                                                                width: "30px",
-                                                            }}
-                                                        >
-                                                            {reportData[
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            ]
-                                                                ? reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .StatusCode1 ==
-                                                                  "StatusStayOver"
-                                                                    ? "LCO"
-                                                                    : ""
-                                                                : ""}
-                                                            {reportData[
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            ]
-                                                                ? reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .DefaultCheckOut &&
-                                                                  reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .CheckedOutDate &&
-                                                                  reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .DefaultCheckOut <
-                                                                      moment(
-                                                                          reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .CheckedOutDate
-                                                                      ).format(
-                                                                          "HH:mm:ss"
-                                                                      )
-                                                                    ? "LCO"
-                                                                    : ""
-                                                                : ""}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
-                                                                width: "30px",
-                                                            }}
-                                                        >
-                                                            {reportData[
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            ]
-                                                                ? reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .StatusCode1 ==
-                                                                  "StatusDueOut"
-                                                                    ? "do"
-                                                                    : ""
-                                                                : ""}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            align="left"
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
-                                                                width: "30px",
-                                                            }}
-                                                        >
-                                                            {reportData[
-                                                                roomsData[key][
-                                                                    key2
-                                                                ].RoomNo
-                                                            ]
-                                                                ? reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .DepartureStatusCode1 &&
-                                                                  reportData[
-                                                                      roomsData[
-                                                                          key
-                                                                      ][key2]
-                                                                          .RoomNo
-                                                                  ][0]
-                                                                      .DepartureStatusCode1 ==
-                                                                      "StatusCheckedOut"
-                                                                    ? "dep"
-                                                                    : ""
-                                                                : ""}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            align="left"
-                                                            width={200}
-                                                            style={{
-                                                                fontSize:
-                                                                    "10px",
-                                                                padding:
-                                                                    "2px 2px",
-                                                            }}
-                                                        ></TableCell>
-                                                    </TableRow>
-                                                </>
-                                            )
-                                        )}
-                                </>
-                            ))}
-                    </TableBody>
-                </Table>
-
-                <div className="mt-3">
-                    <Typography variant="body1" gutterBottom className="mr-3">
-                        <span style={{ fontWeight: "bold" }}> Хэвлэсэн : </span>{" "}
-                        {localStorage.getItem("username")}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom className="mr-1">
-                        <span style={{ fontWeight: "bold" }}>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                    width: "30px",
+                                                                }}
+                                                            >
+                                                                {reportData[
+                                                                    roomsData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomNo
+                                                                ]
+                                                                    ? reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .StatusCode1 ==
+                                                                      "StatusStayOver"
+                                                                        ? "So"
+                                                                        : ""
+                                                                    : ""}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                    width: "30px",
+                                                                }}
+                                                            >
+                                                                {reportData[
+                                                                    roomsData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomNo
+                                                                ]
+                                                                    ? reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .DefaultCheckOut &&
+                                                                      reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .CheckedOutDate &&
+                                                                      reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .DefaultCheckOut <
+                                                                          moment(
+                                                                              reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .CheckedOutDate
+                                                                          ).format(
+                                                                              "HH:mm:ss"
+                                                                          )
+                                                                        ? "LCO"
+                                                                        : ""
+                                                                    : ""}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                    width: "30px",
+                                                                }}
+                                                            >
+                                                                {reportData[
+                                                                    roomsData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomNo
+                                                                ]
+                                                                    ? reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .StatusCode1 ==
+                                                                      "StatusDueOut"
+                                                                        ? "do"
+                                                                        : ""
+                                                                    : ""}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                align="left"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                    width: "30px",
+                                                                }}
+                                                            >
+                                                                {reportData[
+                                                                    roomsData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .RoomNo
+                                                                ]
+                                                                    ? reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .DepartureStatusCode1 &&
+                                                                      reportData[
+                                                                          roomsData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .RoomNo
+                                                                      ][0]
+                                                                          .DepartureStatusCode1 ==
+                                                                          "StatusCheckedOut"
+                                                                        ? "dep"
+                                                                        : ""
+                                                                    : ""}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                align="left"
+                                                                width={300}
+                                                                style={{
+                                                                    fontSize:
+                                                                        "10px",
+                                                                    padding:
+                                                                        "2px 2px",
+                                                                }}
+                                                            ></TableCell>
+                                                        </TableRow>
+                                                    </>
+                                                )
+                                            )}
+                                    </>
+                                ))}
+                        </TableBody>
+                    </Table>
+                </div>
+                <div className="mt-3 ">
+                    <Grid container spacing={2}>
+                        <Grid item xs={4}>
                             {" "}
-                            Хэвлэсэн огноо :{" "}
-                        </span>{" "}
-                        {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
-                    </Typography>
-
-                    <Typography variant="body1" gutterBottom className="mr-3">
-                        <span style={{ fontWeight: "bold" }}>
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                className="mr-3"
+                            >
+                                <span style={{ fontWeight: "bold" }}>
+                                    {" "}
+                                    Хэвлэсэн :{" "}
+                                </span>{" "}
+                                {localStorage.getItem("username")}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={4}>
                             {" "}
-                            Supervisor signature :{" "}
-                        </span>{" "}
-                        .....................
-                    </Typography>
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                className="mr-1"
+                            >
+                                <span style={{ fontWeight: "bold" }}>
+                                    {" "}
+                                    Хэвлэсэн огноо :{" "}
+                                </span>{" "}
+                                {moment(new Date()).format(
+                                    "YYYY-MM-DD HH:mm:ss"
+                                )}
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs={4}>
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                className="mr-3"
+                            >
+                                <span style={{ fontWeight: "bold" }}>
+                                    {" "}
+                                    Supervisor signature :{" "}
+                                </span>{" "}
+                                .....................
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 </div>
             </div>
         </>

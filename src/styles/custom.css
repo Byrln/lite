@@ -270,3 +270,14 @@ a.fc-event {
 .fc .fc-timeline-slot-minor {
     border-style: none;
 }
+
+@media print {
+    .print-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 0px; /* Adjust this value to ensure the content doesn't get covered by the footer */
+    }
+}

@@ -1,6 +1,14 @@
 import { ReservationAPI } from "lib/api/reservation";
 import { useState, useEffect, useContext } from "react";
-import { Grid, Box, Paper, Typography, Divider, Button } from "@mui/material";
+import {
+    Grid,
+    Box,
+    Paper,
+    Typography,
+    Divider,
+    Button,
+    MenuItem,
+} from "@mui/material";
 import { fToCustom, countNights } from "lib/utils/format-time";
 import ReservationNav from "./_reservation-nav";
 import Table from "@mui/material/Table";
@@ -17,6 +25,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { ModalContext } from "lib/context/modal";
 import Receipt from "components/reporting/receipt";
 import Invoice from "components/reporting/invoice";
+import InvoiceSelect from "components/reporting/invoice/select";
+import ReceiptSelect from "components/reporting/receipt/select";
 
 const styleTime = {
     backgroundColor: "#00008B",
@@ -293,11 +303,11 @@ const ItemDetail = ({
                                     handleModal(
                                         true,
                                         "Receipt",
-                                        <Receipt
+                                        <ReceiptSelect
                                             TransactionID={
                                                 reservation.TransactionID
                                             }
-                                        />,
+                                        ></ReceiptSelect>,
                                         null,
                                         "large"
                                     );
@@ -314,9 +324,9 @@ const ItemDetail = ({
                                     handleModal(
                                         true,
                                         "Нэхэмжлэл",
-                                        <Invoice
+                                        <InvoiceSelect
                                             FolioID={reservation.FolioID}
-                                        />,
+                                        ></InvoiceSelect>,
                                         null,
                                         "large"
                                     );

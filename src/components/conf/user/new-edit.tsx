@@ -10,6 +10,7 @@ import { useAppState } from "lib/context/app";
 import LanguageSelect from "components/select/language";
 import UserRoleSelect from "components/select/user-role";
 import UserRolePrivilegeSelect from "components/select/user-role-privilege";
+import { GetPrivilegesByUserSWR } from "lib/api/user";
 
 const validationSchema = yup.object().shape({
     UserName: yup.string().required("Бөглөнө үү"),
@@ -34,9 +35,10 @@ const NewEdit = () => {
     const [userID, setUserID]: any = useState(
         state.editId ? state.editId : null
     );
+    const { data: privilegeData, error: privilegeerror } =
+        GetPrivilegesByUserSWR({ UserID: state.editId });
 
     useEffect(() => {
-        console.log("editValue", editValue);
         if (editValue && editValue.UserRoleID) {
             setEntity({
                 ...entity,
@@ -46,7 +48,6 @@ const NewEdit = () => {
     }, [editValue]);
 
     useEffect(() => {
-        console.log("editValue", editValue);
         if (editValue) {
             if (entity.UserRoleID != editValue.UserRoleID) setUserID(null);
         }
@@ -56,13 +57,31 @@ const NewEdit = () => {
         try {
             let privileges: any = [];
 
-            if (values.ActionID) {
-                values.ActionID.forEach((detail: any, index: any) => {
-                    privileges.push({ ActionID: detail, Status: true });
-                });
-            }
-            delete values.ActionID;
+            if (privilegeData) {
+                privilegeData.forEach((privilege: any, indexprivilege: any) => {
+                    privileges.push({
+                        ActionID: privilege.ActionID,
+                        Status:
+                            values.ActionID.filter(
+                                (word: any) => word == privilege.ActionID
+                            ).length == 0
+                                ? false
+                                : true,
+                    });
 
+                    // if(values.ActionID.filter((word: any) => word == privilege.ActionID).length == 0){
+
+                    // }
+                });
+
+                // if (values.ActionID) {
+                //     values.ActionID.forEach((detail: any, index: any) => {
+                //         privileges.push({ ActionID: detail, Status: true });
+                //     });
+                // }
+            }
+
+            delete values.ActionID;
             let response: any;
             if (state.editId) {
                 response = await UserAPI.update(values);
@@ -79,6 +98,11 @@ const NewEdit = () => {
             ) {
                 await UserAPI.savePrivileges({
                     UserID: response.data.JsonData[0].UserID,
+                    Privileges: privileges,
+                });
+            } else if (state.editId) {
+                await UserAPI.savePrivileges({
+                    UserID: state.editId,
                     Privileges: privileges,
                 });
             }
