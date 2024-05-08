@@ -15,7 +15,9 @@ export const dailyInfo2Url = `${urlPrefix}/DailyInfo2`;
 export const interAgencyUrl = `${urlPrefix}/InterAgency`;
 export const dailyChargesPaymentSummaryUrl = `${urlPrefix}/DailyChargesPayment/Summary`;
 export const reservationDailyDetailUrl = `${urlPrefix}/Reservation/DailyDetail`;
-export const printInvoiceUrl = `${urlPrefix}/PrintInvoice`;
+export const printInvoiceDetailedUrl = `${urlPrefix}/PrintInvoice/Detailed`;
+export const printInvoiceSummaryUrl = `${urlPrefix}/PrintInvoice/Summary`;
+
 export const breakfast2Url = `${urlPrefix}/Breakfast2`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
@@ -230,8 +232,14 @@ export const ReportAPI = {
         return res.data.JsonData;
     },
 
-    invoice: async (id: any) => {
-        const res = await axios.post(`${printInvoiceUrl}`, { FolioID: id });
+    invoiceDetailed: async (search: any) => {
+        const res = await axios.post(`${printInvoiceDetailedUrl}`, search);
+
+        return res.data.JsonData;
+    },
+
+    invoiceSummary: async (search: any) => {
+        const res = await axios.post(`${printInvoiceSummaryUrl}`, search);
 
         return res.data.JsonData;
     },

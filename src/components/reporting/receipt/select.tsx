@@ -4,15 +4,17 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { ModalContext } from "lib/context/modal";
 import Receipt from "./index";
+import ReceiptSummary from "./summary";
 
-const ReceiptSelect = ({ TransactionID }: any) => {
+const InvoiceSelect = ({ FolioID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
 
-    const [language, setLanguage] = useState<any>("mon");
+    const [Lang, setLang] = useState<any>("MN");
     const [invoiceType, setInvoiceType] = useState<any>("detail");
+    console.log("invoiceType", invoiceType);
 
     const handleLanguagePick = (event: SelectChangeEvent) => {
-        setLanguage(event.target.value as string);
+        setLang(event.target.value as string);
     };
     const handleInvoiceTypePick = (event: SelectChangeEvent) => {
         setInvoiceType(event.target.value as string);
@@ -21,16 +23,16 @@ const ReceiptSelect = ({ TransactionID }: any) => {
     return (
         <>
             <Select
-                value={language}
+                value={Lang}
                 onChange={handleLanguagePick}
                 size="small"
                 className="mr-3"
             >
-                <MenuItem key={"mon"} value={"mon"}>
+                <MenuItem key={"MN"} value={"MN"}>
                     Монгол
                 </MenuItem>
 
-                <MenuItem key={"eng"} value={"eng"}>
+                <MenuItem key={"EN"} value={"EN"}>
                     Англи
                 </MenuItem>
             </Select>
@@ -59,11 +61,11 @@ const ReceiptSelect = ({ TransactionID }: any) => {
                     handleModal(
                         true,
                         "Receipt",
-                        <Receipt
-                            TransactionID={TransactionID}
-                            language={language}
-                        />,
-
+                        invoiceType == "detail" ? (
+                            <Receipt FolioID={FolioID} Lang={Lang} />
+                        ) : (
+                            <ReceiptSummary FolioID={FolioID} Lang={Lang} />
+                        ),
                         null,
                         "large"
                     );
@@ -75,4 +77,4 @@ const ReceiptSelect = ({ TransactionID }: any) => {
     );
 };
 
-export default ReceiptSelect;
+export default InvoiceSelect;

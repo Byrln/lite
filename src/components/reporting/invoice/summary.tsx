@@ -12,25 +12,13 @@ import {
     TableRow,
     Box,
 } from "@mui/material";
-import ScrollContainer from "react-indiana-drag-scroll";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-
-import { CheckedOutDetailedSWR, checkedOutDetailedUrl } from "lib/api/report";
-import { dateStringToObj } from "lib/utils/helpers";
 import { formatPrice } from "lib/utils/helpers";
-import CustomSearch from "components/common/custom-search";
-import { CustomerSWR } from "lib/api/customer";
-import { TransactionInfoSWR } from "lib/api/front-office";
 import { ReportAPI } from "lib/api/report";
 
-const Receipt = ({ FolioID, language }: any) => {
+const Invoice = ({ FolioID, Lang }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
-    const [reportData, setReportData] = useState<any>(null);
-    const [totalBalance, setTotalBalance] = useState<any>(null);
     const [summary, setSummary]: any = useState(null);
 
     const [rerenderKey, setRerenderKey] = useState(0);
@@ -40,7 +28,11 @@ const Receipt = ({ FolioID, language }: any) => {
     });
 
     const reloadReservationData = async () => {
-        var res = await ReportAPI.invoice(FolioID);
+        var res = await ReportAPI.invoiceSummary({
+            FolioID: FolioID,
+            Lang: Lang,
+            IsInvoice: true,
+        });
         setSummary(res);
     };
 
@@ -52,11 +44,12 @@ const Receipt = ({ FolioID, language }: any) => {
         pageStyle: `@media print {
             @page {
               padding: 20px;
+              font-size:10px;
             }
             .MuiTableCell-root{
                 border:1px solid !important;
-                font-size:11px !important;
-                line-height:11px !important
+                font-size:9px !important;
+                line-height:9px !important
                 padding:4px !important
 
               }
@@ -64,8 +57,8 @@ const Receipt = ({ FolioID, language }: any) => {
                 border:1px solid !important;
                 background-color: none !important;
                 color :inherit !important;
-                font-size:11px !important;
-                line-height:11px !important;
+                font-size:9px !important;
+                line-height:9px !important;
                 padding:4px !important
               ]
               }
@@ -91,90 +84,112 @@ const Receipt = ({ FolioID, language }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хураангуй хэвлэх
-                </Button>
-                <Button
-                    variant="outlined"
-                    onClick={handlePrint}
-                    className="mr-3"
-                    startIcon={<PrintIcon />}
-                >
-                    Дэлгэрэнгүй хэвлэх
+                    Хэвлэх
                 </Button>
             </div>
             {summary && (
-                <div ref={componentRef} style={{ fontSize: "11px" }}>
+                <div ref={componentRef} style={{ fontSize: "9px" }}>
                     <Grid container spacing={1}>
-                        <Grid item xs={6}></Grid>
-                        <Grid item xs={6}>
-                            <Typography
-                                variant="h6"
-                                style={{ fontWeight: "bold" }}
-                            >
-                                {summary[0] && summary[0].HotelName}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}></Grid>
-                        <Grid item xs={11}>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                    flexWrap: "wrap",
-                                }}
-                                className="mb-1"
-                            >
-                                <div
+                        {summary[0] &&
+                        summary[0].FormHeaderUse &&
+                        summary[0].FormHeaderUse == true ? (
+                            <>
+                                {" "}
+                                <img
+                                    src={
+                                        summary[0].FormHeaderPictureFile &&
+                                        summary[0].FormHeaderPictureFile
+                                    }
+                                    alt="login"
                                     style={{
-                                        width: "90px",
-                                        textAlign: "right",
-                                        marginRight: "11px",
+                                        width: "100%",
+                                        objectFit: "cover",
                                     }}
-                                >
-                                    Хаяг :{" "}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].Address1}
-                                </div>
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                    flexWrap: "wrap",
-                                }}
-                                className="mb-1"
-                            >
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "right",
-                                        marginRight: "11px",
-                                    }}
-                                >
-                                    Утас :{" "}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].ReservePhone}
-                                </div>
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <Grid item xs={6}></Grid>
+                                <Grid item xs={6}>
+                                    <Typography
+                                        variant="h6"
+                                        style={{ fontWeight: "bold" }}
+                                    >
+                                        {summary[0] && summary[0].HotelName}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={1}></Grid>
+                                <Grid item xs={11}>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            width: "100%",
+                                            flexWrap: "wrap",
+                                        }}
+                                        className="mb-1"
+                                    >
+                                        <div
+                                            style={{
+                                                width: "90px",
+                                                textAlign: "right",
+                                                marginRight: "9px",
+                                            }}
+                                        >
+                                            {Lang == "MN"
+                                                ? "Хаяг : "
+                                                : "Address : "}
+                                        </div>
+                                        <div style={{ fontWeight: "600" }}>
+                                            {summary[0] && summary[0].Address1}
+                                        </div>
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            width: "100%",
+                                            flexWrap: "wrap",
+                                        }}
+                                        className="mb-1"
+                                    >
+                                        <div
+                                            style={{
+                                                width: "90px",
+                                                textAlign: "right",
+                                                marginRight: "9px",
+                                            }}
+                                        >
+                                            {Lang == "MN"
+                                                ? "Утас : "
+                                                : "Phone : "}
+                                        </div>
+                                        <div style={{ fontWeight: "600" }}>
+                                            {summary[0] &&
+                                                summary[0].ReservePhone}
+                                        </div>
 
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "right",
-                                        marginRight: "11px",
-                                    }}
-                                >
-                                    И-Мэйл :{" "}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].ReserveEmail}
-                                </div>
-                            </Box>
-                        </Grid>
+                                        <div
+                                            style={{
+                                                width: "90px",
+                                                textAlign: "right",
+                                                marginRight: "9px",
+                                            }}
+                                        >
+                                            {Lang == "MN"
+                                                ? "И-Мэйл : "
+                                                : "E-mail : "}
+                                        </div>
+                                        <div style={{ fontWeight: "600" }}>
+                                            {summary[0] &&
+                                                summary[0].ReserveEmail}
+                                        </div>
+                                    </Box>
+                                </Grid>
+                            </>
+                        )}
+
                         <Grid item xs={12}>
                             <Typography variant="h6" align="center">
-                                Нэхэмжлэх
+                                {Lang == "MN" ? "Нэхэмжлэх : " : "Invoice : "}
                             </Typography>
                         </Grid>
                         <Grid item xs={6}>
@@ -202,10 +217,10 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    Зах.№ :{" "}
+                                    {Lang == "MN" ? "Зах.№ : " : "Res.No : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] && summary[0].ReservationNo}
@@ -225,10 +240,12 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    Фолио.№ :{" "}
+                                    {Lang == "MN"
+                                        ? "Фолио.№ : "
+                                        : "Folio.No : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] && summary[0].FolioNo}
@@ -246,10 +263,12 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    Нэхэмж.Огноо :{" "}
+                                    {Lang == "MN"
+                                        ? "Нэхэмж.Огноо : "
+                                        : "Res.Date : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {moment().format("YYYY-MM-DD HH:mm:SS")}
@@ -267,10 +286,10 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    И-мэйл :{" "}
+                                    {Lang == "MN" ? "И-мэйл : " : "E-Mail : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] && summary[0].Email}
@@ -289,10 +308,10 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    Утас :{" "}
+                                    {Lang == "MN" ? "Утас : " : "Phone : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] && summary[0].Phone}
@@ -312,16 +331,17 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    Хаяг :{" "}
+                                    {Lang == "MN" ? "Хаяг : " : "Address : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] && summary[0].Address}
                                 </div>
                             </Box>
                         </Grid>
+
                         <Grid item xs={6}>
                             <Box
                                 sx={{
@@ -335,10 +355,12 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    Ирэх өдөр :{" "}
+                                    {Lang == "MN"
+                                        ? "Ирэх өдөр : "
+                                        : "Arrival Date : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] &&
@@ -360,10 +382,12 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    Гарах өдөр :{" "}
+                                    {Lang == "MN"
+                                        ? "Гарах өдөр : "
+                                        : "Departure Date : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] &&
@@ -386,13 +410,15 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    Өр.төрөл :{" "}
+                                    {Lang == "MN"
+                                        ? "Өр.төрөл : "
+                                        : "Room.No : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].RoomFullName}
+                                    {summary[0] && summary[0].RoomFullNo}
                                 </div>
                             </Box>
 
@@ -408,10 +434,12 @@ const Receipt = ({ FolioID, language }: any) => {
                                     style={{
                                         width: "90px",
                                         textAlign: "left",
-                                        marginRight: "11px",
+                                        marginRight: "9px",
                                     }}
                                 >
-                                    Өд.тариф :{" "}
+                                    {Lang == "MN"
+                                        ? "Өд.тариф : "
+                                        : "Daily Rate : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] &&
@@ -429,134 +457,439 @@ const Receipt = ({ FolioID, language }: any) => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell
+                                            align="left"
                                             style={{
                                                 fontWeight: "bold",
-                                                fontSize: "11px",
+                                                fontSize: "9px",
+                                                padding: "2px",
                                             }}
                                         >
-                                            Огноо
+                                            {Lang == "MN"
+                                                ? "Нэр : "
+                                                : "Name : "}
                                         </TableCell>
                                         <TableCell
                                             align="left"
                                             style={{
                                                 fontWeight: "bold",
-                                                fontSize: "11px",
+                                                fontSize: "9px",
+                                                padding: "2px",
                                             }}
                                         >
-                                            Барааны нэр
+                                            {Lang == "MN"
+                                                ? "Дүн : "
+                                                : "Amount : "}
                                         </TableCell>
                                         <TableCell
                                             align="left"
                                             style={{
                                                 fontWeight: "bold",
-                                                fontSize: "11px",
+                                                fontSize: "9px",
+                                                padding: "2px",
                                             }}
                                         >
-                                            Дүн
+                                            {Lang == "MN"
+                                                ? "Төлбөр : "
+                                                : "Payment : "}
                                         </TableCell>
-                                        {/* <TableCell
-                                            align="left"
-                                            style={{
-                                                fontWeight: "bold",
-                                                fontSize: "11px",
-                                            }}
-                                        >
-                                            Төлбөр
-                                        </TableCell>
-                                        <TableCell
-                                            align="left"
-                                            style={{
-                                                fontWeight: "bold",
-                                                fontSize: "11px",
-                                            }}
-                                        >
-                                            Үлдэгдэл
-                                        </TableCell> */}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {summary &&
-                                        summary.map(
-                                            (entity: any, index: any) => {
-                                                return entity.PayAmount ? (
-                                                    <></>
-                                                ) : (
-                                                    <TableRow
-                                                        key={index}
-                                                        sx={{
-                                                            "&:last-child td, &:last-child th":
-                                                                {
-                                                                    border: 0,
-                                                                },
-                                                        }}
-                                                    >
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "11px",
-                                                            }}
-                                                        >
-                                                            {moment(
-                                                                entity.CurrDate
-                                                            ).format(
-                                                                "YYYY-MM-DD "
-                                                            )}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "11px",
-                                                            }}
-                                                        >
-                                                            {entity.ItemName}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "11px",
-                                                            }}
-                                                        >
-                                                            {formatPrice(
-                                                                entity.ChargeAmountNoTax
-                                                            )}
-                                                        </TableCell>
-                                                        {/* <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "11px",
-                                                            }}
-                                                        >
-                                                            {formatPrice(
-                                                                entity.PayAmount
-                                                            )}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize:
-                                                                    "11px",
-                                                            }}
-                                                        >
-                                                            {formatPrice(
-                                                                entity.RunningTotalAmount
-                                                            )}
-                                                        </TableCell> */}
-                                                    </TableRow>
-                                                );
-                                            }
-                                        )}
+                                    {summary[0].ServiceChargeNoTax ? (
+                                        <TableRow
+                                            key={"Service"}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    {
+                                                        border: 0,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {Lang == "MN"
+                                                    ? "Үйлчилгээ : "
+                                                    : "Service Charge : "}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {formatPrice(
+                                                    summary[0]
+                                                        .ServiceChargeNoTax
+                                                )}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                            ></TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        <></>
+                                    )}
+
+                                    {summary[0].ShowRestaurant ? (
+                                        <TableRow
+                                            key={"Service"}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    {
+                                                        border: 0,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {Lang == "MN"
+                                                    ? "Ресторан : "
+                                                    : "Restaurant : "}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {formatPrice(
+                                                    summary[0].RestaurantNoTax
+                                                )}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                            ></TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        <></>
+                                    )}
+
+                                    {summary[0].TotalAmountNoTax ? (
+                                        <TableRow
+                                            key={"Service"}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    {
+                                                        border: 0,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {Lang == "MN"
+                                                    ? "Нийт (Таксгүй) : "
+                                                    : "Total (No Tax) : "}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {formatPrice(
+                                                    summary[0].TotalAmountNoTax
+                                                )}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                            ></TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        <></>
+                                    )}
+
+                                    {summary[0].Tax1Amount ? (
+                                        <TableRow
+                                            key={"Service"}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    {
+                                                        border: 0,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                VAT :
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {formatPrice(
+                                                    summary[0].Tax1Amount
+                                                )}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                            ></TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        <></>
+                                    )}
+
+                                    {summary[0].Tax2Amount ? (
+                                        <TableRow
+                                            key={"Service"}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    {
+                                                        border: 0,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                City Tax :
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {formatPrice(
+                                                    summary[0].Tax2Amount
+                                                )}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                            ></TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        <></>
+                                    )}
+
+                                    {summary[0].TotalAmount ? (
+                                        <TableRow
+                                            key={"Service"}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    {
+                                                        border: 0,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    fontWeight: "bold",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {Lang == "MN"
+                                                    ? "Нийт : "
+                                                    : "Total : "}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    fontWeight: "bold",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {formatPrice(
+                                                    summary[0].TotalAmount
+                                                )}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                            ></TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        <></>
+                                    )}
+
+                                    {summary[0].CashAmount ? (
+                                        <TableRow
+                                            key={"Service"}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    {
+                                                        border: 0,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {Lang == "MN"
+                                                    ? "Бэлнээр : "
+                                                    : "Cash : "}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            ></TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {formatPrice(
+                                                    summary[0].CashAmount
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        <></>
+                                    )}
+
+                                    {summary[0].BankAmount ? (
+                                        <TableRow
+                                            key={"Service"}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    {
+                                                        border: 0,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {Lang == "MN"
+                                                    ? "Банкаар : "
+                                                    : "Bank : "}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            ></TableCell>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    fontSize: "9px",
+                                                    padding: "2px",
+                                                }}
+                                                align="right"
+                                            >
+                                                {formatPrice(
+                                                    summary[0].BankAmount
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        <></>
+                                    )}
 
                                     <TableRow
-                                        key={"total"}
+                                        key={"Service"}
                                         sx={{
                                             "&:last-child td, &:last-child th":
                                                 {
@@ -568,296 +901,124 @@ const Receipt = ({ FolioID, language }: any) => {
                                             component="th"
                                             scope="row"
                                             style={{
-                                                fontSize: "11px",
+                                                fontSize: "9px",
+                                                fontWeight: "bold",
+                                                padding: "2px",
                                             }}
-                                            colSpan={5}
                                             align="right"
                                         >
-                                            {/* <span
-                                                style={{
-                                                    fontWeight: "600",
-                                                }}
-                                            >
-                                                {formatPrice(
-                                                    summary.reduce(
-                                                        (acc: any, obj: any) =>
-                                                            acc +
-                                                            obj.ChargeAmount,
-                                                        0
-                                                    )
-                                                )}
-                                            </span>
-                                            <br /> */}
-                                            <span
-                                                style={{
-                                                    width: "90px",
-                                                    textAlign: "left",
-                                                    marginRight: "11px",
-                                                }}
-                                            >
-                                                Үйлчилгээ :{" "}
-                                            </span>
-                                            <span
-                                                style={{
-                                                    fontWeight: "600",
-                                                }}
-                                            >
-                                                {formatPrice(
-                                                    summary[0]
-                                                        .ServiceChargeNoTax
-                                                )}
-                                            </span>
-                                            <br />
-
-                                            <span
-                                                style={{
-                                                    width: "90px",
-                                                    textAlign: "left",
-                                                    marginRight: "11px",
-                                                }}
-                                            >
-                                                {summary[0] &&
-                                                    summary[0].TaxName1}
-                                            </span>
-                                            <span
-                                                style={{
-                                                    fontWeight: "600",
-                                                }}
-                                            >
-                                                {summary[0] &&
-                                                    formatPrice(
-                                                        summary[0].Tax1
-                                                    )}
-                                            </span>
-
-                                            {summary[0] &&
-                                                summary[0].TaxName2 &&
-                                                summary[0].TaxName2 && (
-                                                    <>
-                                                        <br />{" "}
-                                                        <span
-                                                            style={{
-                                                                width: "90px",
-                                                                textAlign:
-                                                                    "left",
-                                                                marginRight:
-                                                                    "11px",
-                                                            }}
-                                                        >
-                                                            {summary[0] &&
-                                                                summary[0]
-                                                                    .TaxName2 &&
-                                                                summary[0]
-                                                                    .TaxName2}
-                                                        </span>
-                                                        <span
-                                                            style={{
-                                                                fontWeight:
-                                                                    "600",
-                                                            }}
-                                                        >
-                                                            {summary[0] &&
-                                                            summary[0].Tax2 &&
-                                                            summary[0].Tax2 > 0
-                                                                ? formatPrice(
-                                                                      summary[0]
-                                                                          .Tax2
-                                                                  )
-                                                                : ""}
-                                                        </span>
-                                                    </>
-                                                )}
-
-                                            <br />
-                                            <span
-                                                style={{
-                                                    width: "90px",
-                                                    textAlign: "left",
-                                                    marginRight: "11px",
-                                                }}
-                                            >
-                                                Нийт :{" "}
-                                            </span>
-                                            <span
-                                                style={{
-                                                    fontWeight: "600",
-                                                }}
-                                            >
-                                                {formatPrice(
-                                                    summary.reduce(
-                                                        (acc: any, obj: any) =>
-                                                            acc +
-                                                            obj.ChargeAmount,
-                                                        0
-                                                    )
-                                                )}
-                                            </span>
-                                            {/* <br />
-                                            {summary &&
-                                                summary.map(
-                                                    (
-                                                        entity: any,
-                                                        index: any
-                                                    ) => {
-                                                        return entity.PayAmount ? (
-                                                            <>
-                                                                <span
-                                                                    style={{
-                                                                        width: "90px",
-                                                                        textAlign:
-                                                                            "left",
-                                                                        marginRight:
-                                                                            "11px",
-                                                                    }}
-                                                                >
-                                                                    {
-                                                                        entity.ItemName
-                                                                    }{" "}
-                                                                    :{" "}
-                                                                </span>
-                                                                <span
-                                                                    style={{
-                                                                        fontWeight:
-                                                                            "600",
-                                                                    }}
-                                                                >
-                                                                    {
-                                                                        entity.PayAmount
-                                                                    }{" "}
-                                                                </span>
-                                                            </>
-                                                        ) : (
-                                                            <></>
-                                                        );
-                                                    }
-                                                )} */}
-                                            <br />
-                                            <span
-                                                style={{
-                                                    width: "90px",
-                                                    textAlign: "left",
-                                                    marginRight: "11px",
-                                                }}
-                                            >
-                                                Төлбөр :{" "}
-                                            </span>
-                                            <span
-                                                style={{
-                                                    fontWeight: "600",
-                                                }}
-                                            >
-                                                {formatPrice(
-                                                    summary.reduce(
-                                                        (acc: any, obj: any) =>
-                                                            acc + obj.PayAmount,
-                                                        0
-                                                    )
-                                                )}
-                                            </span>
-                                            <br />
-                                            <span
-                                                style={{
-                                                    width: "90px",
-                                                    textAlign: "left",
-                                                    marginRight: "11px",
-                                                }}
-                                            >
-                                                Үлдэгдэл :{" "}
-                                            </span>
-                                            <span
-                                                style={{
-                                                    fontWeight: "600",
-                                                }}
-                                            >
-                                                {summary &&
-                                                    summary.length > 0 &&
-                                                    formatPrice(
-                                                        summary[
-                                                            summary.length - 1
-                                                        ].RunningTotalAmount
-                                                    )}
-                                            </span>
+                                            {Lang == "MN"
+                                                ? "Нийт төлбөр : "
+                                                : "Total Payment : "}
                                         </TableCell>
-
-                                        {/* <TableCell
+                                        <TableCell
                                             component="th"
                                             scope="row"
                                             style={{
-                                                fontSize: "11px",
+                                                fontSize: "9px",
+                                                padding: "2px",
                                             }}
-                                            colSpan={2}
+                                            align="right"
+                                        ></TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "9px",
+                                                fontWeight: "bold",
+                                                padding: "2px",
+                                            }}
                                             align="right"
                                         >
-                                            {summary &&
-                                                summary.map(
-                                                    (
-                                                        entity: any,
-                                                        index: any
-                                                    ) => {
-                                                        return entity.PayAmount ? (
-                                                            <>
-                                                                <span
-                                                                    style={{
-                                                                        width: "90px",
-                                                                        textAlign:
-                                                                            "left",
-                                                                        marginRight:
-                                                                            "11px",
-                                                                    }}
-                                                                >
-                                                                    {
-                                                                        entity.ItemName
-                                                                    }{" "}
-                                                                    :{" "}
-                                                                </span>
-                                                                <span
-                                                                    style={{
-                                                                        fontWeight:
-                                                                            "600",
-                                                                    }}
-                                                                >
-                                                                    {
-                                                                        entity.PayAmount
-                                                                    }{" "}
-                                                                </span>
-                                                            </>
-                                                        ) : (
-                                                            <></>
-                                                        );
-                                                    }
-                                                )}
-                                            <br />
-                                            <span
-                                                style={{
-                                                    width: "90px",
-                                                    textAlign: "left",
-                                                    marginRight: "11px",
-                                                }}
-                                            >
-                                                Үлдэгдэл :{" "}
-                                            </span>
-                                            <span
-                                                style={{
-                                                    fontWeight: "600",
-                                                }}
-                                            >
-                                                {summary &&
-                                                    summary.length > 0 &&
-                                                    summary[summary.length - 1]
-                                                        .RunningTotalAmount}
-                                            </span>
-                                        </TableCell> */}
+                                            {formatPrice(
+                                                summary[0].TotalPayAmount
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+
+                                    <TableRow
+                                        key={"Service"}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "9px",
+                                                fontWeight: "bold",
+                                                padding: "2px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {Lang == "MN"
+                                                ? "Invoice : "
+                                                : "Invoice : "}
+                                        </TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "9px",
+                                                padding: "2px",
+                                            }}
+                                            align="right"
+                                        ></TableCell>
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "9px",
+                                                fontWeight: "bold",
+                                                padding: "2px",
+                                            }}
+                                            align="right"
+                                        >
+                                            {formatPrice(
+                                                summary[0].TotalAmount -
+                                                    summary[0].TotalPayAmount
+                                            )}
+                                        </TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
                         </Grid>
 
                         <Grid item xs={6}>
-                            Зочны гарын үсэг : ......................
+                            {Lang == "MN"
+                                ? "Зочны гарын үсэг : "
+                                : "Guest Signature : "}
+                            ......................
                         </Grid>
                         <Grid item xs={6}>
-                            Гарын үсэг : ......................
+                            {Lang == "MN" ? "Гарын үсэг : " : "Signature : "} :
+                            ......................
                         </Grid>
+
+                        {summary[0] &&
+                        summary[0].FormFooterUse &&
+                        summary[0].FormFooterUse == true ? (
+                            <>
+                                {" "}
+                                <img
+                                    src={
+                                        summary[0].FormFooterPictureFile &&
+                                        summary[0].FormFooterPictureFile
+                                    }
+                                    alt="login"
+                                    style={{
+                                        width: "100%",
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            </>
+                        ) : (
+                            <></>
+                        )}
                     </Grid>
                 </div>
             )}
@@ -865,4 +1026,4 @@ const Receipt = ({ FolioID, language }: any) => {
     );
 };
 
-export default Receipt;
+export default Invoice;

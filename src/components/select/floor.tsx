@@ -10,6 +10,7 @@ const FloorSelect = ({
     errors,
     customField,
     isFloorIdIsValue = true,
+    multiple = false,
 }: any) => {
     const { data, error } = FloorSWR();
 
@@ -32,6 +33,7 @@ const FloorSelect = ({
             options={data}
             optionValue={isFloorIdIsValue ? "FloorID" : "FloorNo"}
             optionLabel="FloorNo"
+            multiple={multiple}
         />
     );
 };

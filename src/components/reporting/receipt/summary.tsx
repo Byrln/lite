@@ -17,7 +17,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import { formatPrice } from "lib/utils/helpers";
 import { ReportAPI } from "lib/api/report";
 
-const Receipt = ({ FolioID, Lang }: any) => {
+const ReceiptSummary = ({ FolioID, Lang }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [summary, setSummary]: any = useState(null);
 
@@ -28,7 +28,7 @@ const Receipt = ({ FolioID, Lang }: any) => {
     });
 
     const reloadReservationData = async () => {
-        var res = await ReportAPI.invoiceDetailed({
+        var res = await ReportAPI.invoiceSummary({
             FolioID: FolioID,
             Lang: Lang,
             IsInvoice: false,
@@ -457,17 +457,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell
-                                            style={{
-                                                fontWeight: "bold",
-                                                fontSize: "9px",
-                                                padding: "2px",
-                                            }}
-                                        >
-                                            {Lang == "MN"
-                                                ? "Огноо : "
-                                                : "Date : "}
-                                        </TableCell>
-                                        <TableCell
                                             align="left"
                                             style={{
                                                 fontWeight: "bold",
@@ -476,8 +465,8 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                             }}
                                         >
                                             {Lang == "MN"
-                                                ? "Барааны нэр : "
-                                                : "Item Name : "}
+                                                ? "Нэр : "
+                                                : "Name : "}
                                         </TableCell>
                                         <TableCell
                                             align="left"
@@ -506,74 +495,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {summary &&
-                                        summary.map(
-                                            (entity: any, index: any) => {
-                                                return entity.PayAmount ? (
-                                                    <></>
-                                                ) : (
-                                                    <TableRow
-                                                        key={index}
-                                                        sx={{
-                                                            "&:last-child td, &:last-child th":
-                                                                {
-                                                                    border: 0,
-                                                                },
-                                                        }}
-                                                    >
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize: "9px",
-                                                                padding: "2px",
-                                                            }}
-                                                        >
-                                                            {moment(
-                                                                entity.CurrDate
-                                                            ).format(
-                                                                "YYYY-MM-DD "
-                                                            )}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize: "9px",
-                                                                padding: "2px",
-                                                            }}
-                                                        >
-                                                            {entity.ItemName}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize: "9px",
-                                                                padding: "2px",
-                                                            }}
-                                                        >
-                                                            {formatPrice(
-                                                                entity.ChargeNoTaxAmount
-                                                            )}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            style={{
-                                                                fontSize: "9px",
-                                                                padding: "2px",
-                                                            }}
-                                                        >
-                                                            {formatPrice(
-                                                                entity.PayAmount
-                                                            )}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
-                                            }
-                                        )}
-
                                     {summary[0].ServiceChargeNoTax ? (
                                         <TableRow
                                             key={"Service"}
@@ -584,14 +505,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                                     },
                                             }}
                                         >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            ></TableCell>
                                             <TableCell
                                                 component="th"
                                                 scope="row"
@@ -649,14 +562,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                                     fontSize: "9px",
                                                     padding: "2px",
                                                 }}
-                                            ></TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
                                                 align="right"
                                             >
                                                 {Lang == "MN"
@@ -699,14 +604,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                                     },
                                             }}
                                         >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            ></TableCell>
                                             <TableCell
                                                 component="th"
                                                 scope="row"
@@ -763,14 +660,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                                     fontSize: "9px",
                                                     padding: "2px",
                                                 }}
-                                            ></TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
                                                 align="right"
                                             >
                                                 VAT :
@@ -818,14 +707,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                                     fontSize: "9px",
                                                     padding: "2px",
                                                 }}
-                                            ></TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
                                                 align="right"
                                             >
                                                 City Tax :
@@ -866,14 +747,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                                     },
                                             }}
                                         >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            ></TableCell>
                                             <TableCell
                                                 component="th"
                                                 scope="row"
@@ -932,14 +805,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                                     fontSize: "9px",
                                                     padding: "2px",
                                                 }}
-                                            ></TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
                                                 align="right"
                                             >
                                                 {Lang == "MN"
@@ -983,14 +848,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                                     },
                                             }}
                                         >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            ></TableCell>
                                             <TableCell
                                                 component="th"
                                                 scope="row"
@@ -1045,14 +902,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                             scope="row"
                                             style={{
                                                 fontSize: "9px",
-                                                padding: "2px",
-                                            }}
-                                        ></TableCell>
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontSize: "9px",
                                                 fontWeight: "bold",
                                                 padding: "2px",
                                             }}
@@ -1096,14 +945,6 @@ const Receipt = ({ FolioID, Lang }: any) => {
                                                 },
                                         }}
                                     >
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontSize: "9px",
-                                                padding: "2px",
-                                            }}
-                                        ></TableCell>
                                         <TableCell
                                             component="th"
                                             scope="row"
@@ -1185,4 +1026,4 @@ const Receipt = ({ FolioID, Lang }: any) => {
     );
 };
 
-export default Receipt;
+export default ReceiptSummary;

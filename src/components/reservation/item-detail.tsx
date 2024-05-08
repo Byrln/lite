@@ -61,20 +61,6 @@ const ItemDetail = ({
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
 
-    const handleInvoice = async () => {
-        setLoading(true);
-        console.log("true", true);
-        try {
-            await ReportAPI.invoice(reservation.FolioID);
-
-            toast("Амжилттай.");
-
-            setLoading(false);
-        } catch {
-            setLoading(false);
-        }
-    };
-
     return (
         <>
             {reservation ? (
@@ -304,9 +290,7 @@ const ItemDetail = ({
                                         true,
                                         "Receipt",
                                         <ReceiptSelect
-                                            TransactionID={
-                                                reservation.TransactionID
-                                            }
+                                            FolioID={reservation.FolioID}
                                         ></ReceiptSelect>,
                                         null,
                                         "large"

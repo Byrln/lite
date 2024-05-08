@@ -219,6 +219,7 @@ const Folio = ({ title, workingDate }: any) => {
                         register={register}
                         errors={errors}
                         control={control}
+                        search={search}
                     />
                 </CustomSearch>
             </div>
@@ -397,54 +398,67 @@ const Folio = ({ title, workingDate }: any) => {
                                 roomStatusData &&
                                 Object.keys(roomsData).map((key, index) => (
                                     <>
-                                        <TableRow
-                                            key={key}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    { border: 0 },
-                                            }}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                    paddingLeft:
-                                                        "30px !important",
-                                                    fontSize: "10px",
-                                                    textAlign: "center",
-                                                    padding: "2px",
-                                                }}
-                                                colSpan={11}
-                                            >
-                                                Давхар {key}
-                                            </TableCell>
-                                        </TableRow>
-                                        {roomsData[key] &&
-                                            Object.keys(roomsData[key]).map(
-                                                (key2) => (
-                                                    <>
-                                                        <TableRow
-                                                            key={key}
-                                                            sx={{
-                                                                "&:last-child td, &:last-child th":
-                                                                    {
-                                                                        border: 0,
-                                                                    },
-                                                            }}
-                                                        >
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                    width: "40px",
+                                        {!search.Floors ||
+                                        (search.Floors &&
+                                            !search.Floors.includes(
+                                                String(
+                                                    roomsData[key][0].FloorID
+                                                )
+                                            )) ? (
+                                            <>{roomsData[key].FloorID}</>
+                                        ) : (
+                                            <>
+                                                <TableRow
+                                                    key={key}
+                                                    sx={{
+                                                        "&:last-child td, &:last-child th":
+                                                            {
+                                                                border: 0,
+                                                            },
+                                                    }}
+                                                >
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontWeight: "bold",
+                                                            paddingLeft:
+                                                                "30px !important",
+                                                            fontSize: "10px",
+                                                            textAlign: "center",
+                                                            padding: "2px",
+                                                        }}
+                                                        colSpan={11}
+                                                    >
+                                                        Давхар {key}
+                                                    </TableCell>
+                                                </TableRow>
+                                                {roomsData[key] &&
+                                                    Object.keys(
+                                                        roomsData[key]
+                                                    ).map((key2) => (
+                                                        <>
+                                                            <TableRow
+                                                                key={key}
+                                                                sx={{
+                                                                    "&:last-child td, &:last-child th":
+                                                                        {
+                                                                            border: 0,
+                                                                        },
                                                                 }}
                                                             >
-                                                                {/* {roomStatusData[
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
+                                                                        width: "40px",
+                                                                    }}
+                                                                >
+                                                                    {/* {roomStatusData[
                                                                 roomsData[key][
                                                                     key2
                                                                 ].RoomNo
@@ -460,63 +474,56 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     ? "Тийм"
                                                                     : ""
                                                                 : ""} */}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                }}
-                                                            >
-                                                                {
-                                                                    roomsData[
-                                                                        key
-                                                                    ][key2]
-                                                                        .RoomNo
-                                                                }
-                                                            </TableCell>
-
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                    textOverflow:
-                                                                        "ellipsis",
-                                                                    width: "130px",
-                                                                }}
-                                                            >
-                                                                <div
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
                                                                     style={{
-                                                                        width: "130px",
-                                                                        overflow:
-                                                                            "hidden",
-
-                                                                        textOverflow:
-                                                                            "ellipsis",
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
                                                                     }}
                                                                 >
-                                                                    {reportData[
+                                                                    {
                                                                         roomsData[
                                                                             key
                                                                         ][key2]
                                                                             .RoomNo
-                                                                    ]
-                                                                        ? reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .DepartureName
+                                                                    }
+                                                                </TableCell>
+
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
+                                                                        textOverflow:
+                                                                            "ellipsis",
+                                                                        width: "130px",
+                                                                    }}
+                                                                >
+                                                                    <div
+                                                                        style={{
+                                                                            width: "130px",
+                                                                            overflow:
+                                                                                "hidden",
+
+                                                                            textOverflow:
+                                                                                "ellipsis",
+                                                                        }}
+                                                                    >
+                                                                        {reportData[
+                                                                            roomsData[
+                                                                                key
+                                                                            ][
+                                                                                key2
+                                                                            ]
+                                                                                .RoomNo
+                                                                        ]
                                                                             ? reportData[
                                                                                   roomsData[
                                                                                       key
@@ -525,17 +532,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                                   ]
                                                                                       .RoomNo
                                                                               ][0]
-                                                                                  .DepartureCustomerName &&
-                                                                              reportData[
-                                                                                  roomsData[
-                                                                                      key
-                                                                                  ][
-                                                                                      key2
-                                                                                  ]
-                                                                                      .RoomNo
-                                                                              ][0]
-                                                                                  .DepartureCustomerName !=
-                                                                                  ""
+                                                                                  .DepartureName
                                                                                 ? reportData[
                                                                                       roomsData[
                                                                                           key
@@ -544,8 +541,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                                       ]
                                                                                           .RoomNo
                                                                                   ][0]
-                                                                                      .DepartureCustomerName
-                                                                                : reportData[
+                                                                                      .DepartureCustomerName &&
+                                                                                  reportData[
                                                                                       roomsData[
                                                                                           key
                                                                                       ][
@@ -553,95 +550,26 @@ const Folio = ({ title, workingDate }: any) => {
                                                                                       ]
                                                                                           .RoomNo
                                                                                   ][0]
-                                                                                      .DepartureName
-                                                                            : reportData[
-                                                                                  roomsData[
-                                                                                      key
-                                                                                  ][
-                                                                                      key2
-                                                                                  ]
-                                                                                      .RoomNo
-                                                                              ][0]
-                                                                                  .ArrivalName
-                                                                            ? ""
-                                                                            : reportData[
-                                                                                  roomsData[
-                                                                                      key
-                                                                                  ][
-                                                                                      key2
-                                                                                  ]
-                                                                                      .RoomNo
-                                                                              ][0]
-                                                                                  .FullName
-                                                                        : ""}
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                    textOverflow:
-                                                                        "ellipsis",
-                                                                    width: "130px",
-                                                                }}
-                                                            >
-                                                                <div
-                                                                    style={{
-                                                                        width: "130px",
-                                                                        overflow:
-                                                                            "hidden",
-
-                                                                        textOverflow:
-                                                                            "ellipsis",
-                                                                    }}
-                                                                >
-                                                                    {reportData[
-                                                                        roomsData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .RoomNo
-                                                                    ]
-                                                                        ? reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .ArrivalName
-                                                                            ? reportData[
-                                                                                  roomsData[
-                                                                                      key
-                                                                                  ][
-                                                                                      key2
-                                                                                  ]
-                                                                                      .RoomNo
-                                                                              ][0]
-                                                                                  .ArrivalCustomerName &&
-                                                                              reportData[
-                                                                                  roomsData[
-                                                                                      key
-                                                                                  ][
-                                                                                      key2
-                                                                                  ]
-                                                                                      .RoomNo
-                                                                              ][0]
-                                                                                  .ArrivalCustomerName !=
-                                                                                  ""
-                                                                                ? reportData[
-                                                                                      roomsData[
-                                                                                          key
-                                                                                      ][
-                                                                                          key2
-                                                                                      ]
-                                                                                          .RoomNo
-                                                                                  ][0]
-                                                                                      .ArrivalCustomerName
+                                                                                      .DepartureCustomerName !=
+                                                                                      ""
+                                                                                    ? reportData[
+                                                                                          roomsData[
+                                                                                              key
+                                                                                          ][
+                                                                                              key2
+                                                                                          ]
+                                                                                              .RoomNo
+                                                                                      ][0]
+                                                                                          .DepartureCustomerName
+                                                                                    : reportData[
+                                                                                          roomsData[
+                                                                                              key
+                                                                                          ][
+                                                                                              key2
+                                                                                          ]
+                                                                                              .RoomNo
+                                                                                      ][0]
+                                                                                          .DepartureName
                                                                                 : reportData[
                                                                                       roomsData[
                                                                                           key
@@ -651,64 +579,117 @@ const Folio = ({ title, workingDate }: any) => {
                                                                                           .RoomNo
                                                                                   ][0]
                                                                                       .ArrivalName
-                                                                            : ""
-                                                                        : ""}
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                align="center"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                }}
-                                                            >
-                                                                {reportData[
-                                                                    roomsData[
-                                                                        key
-                                                                    ][key2]
-                                                                        .RoomNo
-                                                                ]
-                                                                    ? reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .Adult +
-                                                                          reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .Child -
-                                                                          reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .BaseAdult -
-                                                                          reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .BaseChild >
-                                                                      0
+                                                                                ? ""
+                                                                                : reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .FullName
+                                                                            : ""}
+                                                                    </div>
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
+                                                                        textOverflow:
+                                                                            "ellipsis",
+                                                                        width: "130px",
+                                                                    }}
+                                                                >
+                                                                    <div
+                                                                        style={{
+                                                                            width: "130px",
+                                                                            overflow:
+                                                                                "hidden",
+
+                                                                            textOverflow:
+                                                                                "ellipsis",
+                                                                        }}
+                                                                    >
+                                                                        {reportData[
+                                                                            roomsData[
+                                                                                key
+                                                                            ][
+                                                                                key2
+                                                                            ]
+                                                                                .RoomNo
+                                                                        ]
+                                                                            ? reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .ArrivalName
+                                                                                ? reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .ArrivalCustomerName &&
+                                                                                  reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .ArrivalCustomerName !=
+                                                                                      ""
+                                                                                    ? reportData[
+                                                                                          roomsData[
+                                                                                              key
+                                                                                          ][
+                                                                                              key2
+                                                                                          ]
+                                                                                              .RoomNo
+                                                                                      ][0]
+                                                                                          .ArrivalCustomerName
+                                                                                    : reportData[
+                                                                                          roomsData[
+                                                                                              key
+                                                                                          ][
+                                                                                              key2
+                                                                                          ]
+                                                                                              .RoomNo
+                                                                                      ][0]
+                                                                                          .ArrivalName
+                                                                                : ""
+                                                                            : ""}
+                                                                    </div>
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    align="center"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
+                                                                    }}
+                                                                >
+                                                                    {reportData[
+                                                                        roomsData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomNo
+                                                                    ]
                                                                         ? reportData[
                                                                               roomsData[
                                                                                   key
@@ -718,37 +699,74 @@ const Folio = ({ title, workingDate }: any) => {
                                                                                   .RoomNo
                                                                           ][0]
                                                                               .Adult +
-                                                                          reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .Child -
-                                                                          reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .BaseAdult -
-                                                                          reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .BaseChild
-                                                                        : ""
-                                                                    : ""}
-                                                            </TableCell>
-                                                            {/* <TableCell
+                                                                              reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .Child -
+                                                                              reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .BaseAdult -
+                                                                              reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .BaseChild >
+                                                                          0
+                                                                            ? reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .Adult +
+                                                                              reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .Child -
+                                                                              reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .BaseAdult -
+                                                                              reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .BaseChild
+                                                                            : ""
+                                                                        : ""}
+                                                                </TableCell>
+                                                                {/* <TableCell
                                                             component="th"
                                                             scope="row"
                                                             style={{
@@ -798,189 +816,188 @@ const Folio = ({ title, workingDate }: any) => {
                                                                       )
                                                                 : ""}
                                                         </TableCell> */}
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                    width: "30px",
-                                                                }}
-                                                            >
-                                                                {reportData[
-                                                                    roomsData[
-                                                                        key
-                                                                    ][key2]
-                                                                        .RoomNo
-                                                                ]
-                                                                    ? reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .StatusCode1 ==
-                                                                      "StatusStayOver"
-                                                                        ? "So"
-                                                                        : ""
-                                                                    : ""}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                    width: "30px",
-                                                                }}
-                                                            >
-                                                                {reportData[
-                                                                    roomsData[
-                                                                        key
-                                                                    ][key2]
-                                                                        .RoomNo
-                                                                ]
-                                                                    ? reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .DefaultCheckOut &&
-                                                                      reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .CheckedOutDate &&
-                                                                      reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .DefaultCheckOut <
-                                                                          moment(
-                                                                              reportData[
-                                                                                  roomsData[
-                                                                                      key
-                                                                                  ][
-                                                                                      key2
-                                                                                  ]
-                                                                                      .RoomNo
-                                                                              ][0]
-                                                                                  .CheckedOutDate
-                                                                          ).format(
-                                                                              "HH:mm:ss"
-                                                                          )
-                                                                        ? "LCO"
-                                                                        : ""
-                                                                    : ""}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                    width: "30px",
-                                                                }}
-                                                            >
-                                                                {reportData[
-                                                                    roomsData[
-                                                                        key
-                                                                    ][key2]
-                                                                        .RoomNo
-                                                                ]
-                                                                    ? reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .StatusCode1 ==
-                                                                      "StatusDueOut"
-                                                                        ? "do"
-                                                                        : ""
-                                                                    : ""}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                align="left"
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                    width: "30px",
-                                                                }}
-                                                            >
-                                                                {reportData[
-                                                                    roomsData[
-                                                                        key
-                                                                    ][key2]
-                                                                        .RoomNo
-                                                                ]
-                                                                    ? reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .DepartureStatusCode1 &&
-                                                                      reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .DepartureStatusCode1 ==
-                                                                          "StatusCheckedOut"
-                                                                        ? "dep"
-                                                                        : ""
-                                                                    : ""}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                component="th"
-                                                                scope="row"
-                                                                align="left"
-                                                                width={250}
-                                                                style={{
-                                                                    fontSize:
-                                                                        "10px",
-                                                                    padding:
-                                                                        "2px 2px",
-                                                                }}
-                                                            ></TableCell>
-                                                        </TableRow>
-                                                    </>
-                                                )
-                                            )}
-                                        {(index + 1) % 2 === 0 && (
-                                            <div className="page-break" />
-                                        )}{" "}
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
+                                                                        width: "30px",
+                                                                    }}
+                                                                >
+                                                                    {reportData[
+                                                                        roomsData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomNo
+                                                                    ]
+                                                                        ? reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .StatusCode1 ==
+                                                                          "StatusStayOver"
+                                                                            ? "So"
+                                                                            : ""
+                                                                        : ""}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
+                                                                        width: "30px",
+                                                                    }}
+                                                                >
+                                                                    {reportData[
+                                                                        roomsData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomNo
+                                                                    ]
+                                                                        ? reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .DefaultCheckOut &&
+                                                                          reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .CheckedOutDate &&
+                                                                          reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .DefaultCheckOut <
+                                                                              moment(
+                                                                                  reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .CheckedOutDate
+                                                                              ).format(
+                                                                                  "HH:mm:ss"
+                                                                              )
+                                                                            ? "LCO"
+                                                                            : ""
+                                                                        : ""}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
+                                                                        width: "30px",
+                                                                    }}
+                                                                >
+                                                                    {reportData[
+                                                                        roomsData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomNo
+                                                                    ]
+                                                                        ? reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .StatusCode1 ==
+                                                                          "StatusDueOut"
+                                                                            ? "do"
+                                                                            : ""
+                                                                        : ""}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    align="left"
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
+                                                                        width: "30px",
+                                                                    }}
+                                                                >
+                                                                    {reportData[
+                                                                        roomsData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomNo
+                                                                    ]
+                                                                        ? reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .DepartureStatusCode1 &&
+                                                                          reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .DepartureStatusCode1 ==
+                                                                              "StatusCheckedOut"
+                                                                            ? "dep"
+                                                                            : ""
+                                                                        : ""}
+                                                                </TableCell>
+                                                                <TableCell
+                                                                    component="th"
+                                                                    scope="row"
+                                                                    align="left"
+                                                                    width={250}
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "10px",
+                                                                        padding:
+                                                                            "2px 2px",
+                                                                    }}
+                                                                ></TableCell>
+                                                            </TableRow>
+                                                        </>
+                                                    ))}
+                                            </>
+                                        )}
+
                                         {/* Add <hr> tag after every two iterations */}
                                     </>
                                 ))}

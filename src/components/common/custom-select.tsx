@@ -18,6 +18,7 @@ const CustomSelect = ({
     entity,
     onChange,
     isNA,
+    multiple = false,
 }: any) => {
     return (
         <FormControl

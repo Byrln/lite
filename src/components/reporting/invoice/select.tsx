@@ -9,13 +9,12 @@ import InvoiceSummary from "./summary";
 const InvoiceSelect = ({ FolioID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
 
-    const [language, setLanguage] = useState<any>("mon");
+    const [Lang, setLang] = useState<any>("MN");
     const [invoiceType, setInvoiceType] = useState<any>("detail");
-    console.log("language", language);
     console.log("invoiceType", invoiceType);
 
     const handleLanguagePick = (event: SelectChangeEvent) => {
-        setLanguage(event.target.value as string);
+        setLang(event.target.value as string);
     };
     const handleInvoiceTypePick = (event: SelectChangeEvent) => {
         setInvoiceType(event.target.value as string);
@@ -24,16 +23,16 @@ const InvoiceSelect = ({ FolioID }: any) => {
     return (
         <>
             <Select
-                value={language}
+                value={Lang}
                 onChange={handleLanguagePick}
                 size="small"
                 className="mr-3"
             >
-                <MenuItem key={"mon"} value={"mon"}>
+                <MenuItem key={"MN"} value={"MN"}>
                     Монгол
                 </MenuItem>
 
-                <MenuItem key={"eng"} value={"eng"}>
+                <MenuItem key={"EN"} value={"EN"}>
                     Англи
                 </MenuItem>
             </Select>
@@ -63,12 +62,9 @@ const InvoiceSelect = ({ FolioID }: any) => {
                         true,
                         "Нэхэмжлэл",
                         invoiceType == "detail" ? (
-                            <Invoice FolioID={FolioID} language={language} />
+                            <Invoice FolioID={FolioID} Lang={Lang} />
                         ) : (
-                            <InvoiceSummary
-                                FolioID={FolioID}
-                                language={language}
-                            />
+                            <InvoiceSummary FolioID={FolioID} Lang={Lang} />
                         ),
                         null,
                         "large"
