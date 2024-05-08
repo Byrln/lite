@@ -40,8 +40,9 @@ const Folio = ({ title, workingDate }: any) => {
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
             @page {
-              margin: 20px;
+              margin:  20px;
             }
+
             .MuiTableCell-root{
                 border:1px  #DFDFDF solid !important;
                 font-size:8px !important;
@@ -84,6 +85,8 @@ const Folio = ({ title, workingDate }: any) => {
                         transaction.StatusCode1;
                     mergedTransactions[roomNo].CheckedOutDate =
                         transaction.CheckedOutDate;
+                    mergedTransactions[roomNo].DepartureCustomerName =
+                        transaction.CustomerName;
                 }
             } else {
                 // Merge the current transaction with existing transaction
@@ -94,6 +97,8 @@ const Folio = ({ title, workingDate }: any) => {
                         transaction.StatusCode1;
                     mergedTransactions[roomNo].CheckedOutDate =
                         transaction.CheckedOutDate;
+                    mergedTransactions[roomNo].DepartureCustomerName =
+                        transaction.CustomerName;
                 } else {
                     mergedTransactions[roomNo].Adult = transaction.Adult;
                     mergedTransactions[roomNo].ArrivalDate =
@@ -122,6 +127,8 @@ const Folio = ({ title, workingDate }: any) => {
                         transaction.DefaultCheckIn;
                     mergedTransactions[roomNo].TransactionID =
                         transaction.DefaultCheckOut;
+                    mergedTransactions[roomNo].ArrivalCustomerName =
+                        transaction.CustomerName;
                 }
             }
         });
@@ -221,9 +228,10 @@ const Folio = ({ title, workingDate }: any) => {
                     <Box
                         sx={{
                             display: "flex",
-                            bgcolor: "background.paper",
                             borderRadius: 1,
                         }}
+                        className="print-header"
+                        id="header"
                     >
                         <div style={{ flexGrow: 1, textAlign: "center" }}>
                             <Typography
@@ -288,6 +296,8 @@ const Folio = ({ title, workingDate }: any) => {
                                         fontWeight: "bold",
                                         fontSize: "10px",
                                         padding: "2px 2px",
+                                        textOverflow: "ellipsis",
+                                        width: "130px",
                                     }}
                                 >
                                     OCC/Guest name
@@ -298,6 +308,8 @@ const Folio = ({ title, workingDate }: any) => {
                                         fontWeight: "bold",
                                         fontSize: "10px",
                                         padding: "2px 2px",
+                                        textOverflow: "ellipsis",
+                                        width: "130px",
                                     }}
                                 >
                                     ARR/Guest name
@@ -373,7 +385,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         fontSize: "10px",
                                         padding: "2px 2px",
                                     }}
-                                    width={300}
+                                    width={250}
                                 >
                                     Тайлбар
                                 </TableCell>
@@ -383,7 +395,7 @@ const Folio = ({ title, workingDate }: any) => {
                             {roomsData &&
                                 reportData &&
                                 roomStatusData &&
-                                Object.keys(roomsData).map((key) => (
+                                Object.keys(roomsData).map((key, index) => (
                                     <>
                                         <TableRow
                                             key={key}
@@ -475,23 +487,27 @@ const Folio = ({ title, workingDate }: any) => {
                                                                         "10px",
                                                                     padding:
                                                                         "2px 2px",
+                                                                    textOverflow:
+                                                                        "ellipsis",
+                                                                    width: "130px",
                                                                 }}
                                                             >
-                                                                {reportData[
-                                                                    roomsData[
-                                                                        key
-                                                                    ][key2]
-                                                                        .RoomNo
-                                                                ]
-                                                                    ? reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .DepartureName
+                                                                <div
+                                                                    style={{
+                                                                        width: "130px",
+                                                                        overflow:
+                                                                            "hidden",
+
+                                                                        textOverflow:
+                                                                            "ellipsis",
+                                                                    }}
+                                                                >
+                                                                    {reportData[
+                                                                        roomsData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomNo
+                                                                    ]
                                                                         ? reportData[
                                                                               roomsData[
                                                                                   key
@@ -501,26 +517,64 @@ const Folio = ({ title, workingDate }: any) => {
                                                                                   .RoomNo
                                                                           ][0]
                                                                               .DepartureName
-                                                                        : reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .ArrivalName
-                                                                        ? ""
-                                                                        : reportData[
-                                                                              roomsData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .RoomNo
-                                                                          ][0]
-                                                                              .FullName
-                                                                    : ""}
+                                                                            ? reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .DepartureCustomerName &&
+                                                                              reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .DepartureCustomerName !=
+                                                                                  ""
+                                                                                ? reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .DepartureCustomerName
+                                                                                : reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .DepartureName
+                                                                            : reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .ArrivalName
+                                                                            ? ""
+                                                                            : reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .FullName
+                                                                        : ""}
+                                                                </div>
                                                             </TableCell>
                                                             <TableCell
                                                                 component="th"
@@ -530,24 +584,76 @@ const Folio = ({ title, workingDate }: any) => {
                                                                         "10px",
                                                                     padding:
                                                                         "2px 2px",
+                                                                    textOverflow:
+                                                                        "ellipsis",
+                                                                    width: "130px",
                                                                 }}
                                                             >
-                                                                {reportData[
-                                                                    roomsData[
-                                                                        key
-                                                                    ][key2]
-                                                                        .RoomNo
-                                                                ]
-                                                                    ? reportData[
-                                                                          roomsData[
-                                                                              key
-                                                                          ][
-                                                                              key2
-                                                                          ]
-                                                                              .RoomNo
-                                                                      ][0]
-                                                                          .ArrivalName
-                                                                    : ""}
+                                                                <div
+                                                                    style={{
+                                                                        width: "130px",
+                                                                        overflow:
+                                                                            "hidden",
+
+                                                                        textOverflow:
+                                                                            "ellipsis",
+                                                                    }}
+                                                                >
+                                                                    {reportData[
+                                                                        roomsData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomNo
+                                                                    ]
+                                                                        ? reportData[
+                                                                              roomsData[
+                                                                                  key
+                                                                              ][
+                                                                                  key2
+                                                                              ]
+                                                                                  .RoomNo
+                                                                          ][0]
+                                                                              .ArrivalName
+                                                                            ? reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .ArrivalCustomerName &&
+                                                                              reportData[
+                                                                                  roomsData[
+                                                                                      key
+                                                                                  ][
+                                                                                      key2
+                                                                                  ]
+                                                                                      .RoomNo
+                                                                              ][0]
+                                                                                  .ArrivalCustomerName !=
+                                                                                  ""
+                                                                                ? reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .ArrivalCustomerName
+                                                                                : reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .ArrivalName
+                                                                            : ""
+                                                                        : ""}
+                                                                </div>
                                                             </TableCell>
                                                             <TableCell
                                                                 component="th"
@@ -860,7 +966,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                 component="th"
                                                                 scope="row"
                                                                 align="left"
-                                                                width={300}
+                                                                width={250}
                                                                 style={{
                                                                     fontSize:
                                                                         "10px",
@@ -872,12 +978,16 @@ const Folio = ({ title, workingDate }: any) => {
                                                     </>
                                                 )
                                             )}
+                                        {(index + 1) % 2 === 0 && (
+                                            <div className="page-break" />
+                                        )}{" "}
+                                        {/* Add <hr> tag after every two iterations */}
                                     </>
                                 ))}
                         </TableBody>
                     </Table>
                 </div>
-                <div className="mt-3 ">
+                <div className="mt-3 print-footer" id="footer">
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
                             {" "}

@@ -83,7 +83,10 @@ const Index = () => {
                             >
                                 <Tab label="Хувилбар 1" {...a11yProps(0)} />
                                 <Tab label="Хувилбар 2" {...a11yProps(1)} />
-                                <Tab label="Сарын тайлан" {...a11yProps(1)} />
+                                <Tab
+                                    label="Хувилбар 3 (Сарын)"
+                                    {...a11yProps(1)}
+                                />
                             </Tabs>
 
                             <TabPanel value={value} index={0}>

@@ -27,7 +27,7 @@ import { CustomerSWR } from "lib/api/customer";
 import { TransactionInfoSWR } from "lib/api/front-office";
 import { ReportAPI } from "lib/api/report";
 
-const Receipt = ({ FolioID }: any) => {
+const Receipt = ({ FolioID, language }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [reportData, setReportData] = useState<any>(null);
     const [totalBalance, setTotalBalance] = useState<any>(null);

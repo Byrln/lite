@@ -4,6 +4,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { ModalContext } from "lib/context/modal";
 import Invoice from "./index";
+import InvoiceSummary from "./summary";
 
 const InvoiceSelect = ({ FolioID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
@@ -61,7 +62,14 @@ const InvoiceSelect = ({ FolioID }: any) => {
                     handleModal(
                         true,
                         "Нэхэмжлэл",
-                        <Invoice FolioID={FolioID} language={language} />,
+                        invoiceType == "detail" ? (
+                            <Invoice FolioID={FolioID} language={language} />
+                        ) : (
+                            <InvoiceSummary
+                                FolioID={FolioID}
+                                language={language}
+                            />
+                        ),
                         null,
                         "large"
                     );
