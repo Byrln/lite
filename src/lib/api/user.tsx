@@ -52,6 +52,12 @@ export const UserByRoleSWR = (search: any) => {
 };
 
 export const UserAPI = {
+    getPrivileges: async () => {
+        const res = await axios.get(`${urlPrefix}/GetPrivileges`);
+
+        return res.data.JsonData;
+    },
+
     get: async (id: any) => {
         const values = {
             UserID: id,

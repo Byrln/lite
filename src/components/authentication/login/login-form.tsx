@@ -18,6 +18,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { useRouter } from "next/router";
 import { getSession, signIn } from "next-auth/react";
+import { UserAPI } from "lib/api/user";
 
 import axios from "lib/utils/axios";
 
@@ -70,7 +71,7 @@ export default function LoginForm() {
             redirect: false,
         });
         if (!result.error) {
-            getSession().then((session) => {
+            getSession().then(async (session) => {
                 if (session) {
                     axios.defaults.headers.common[
                         "Authorization"
@@ -78,7 +79,17 @@ export default function LoginForm() {
                     localStorage.setItem("expires", session.expires);
                     localStorage.setItem("hotelId", values.hotel);
                     localStorage.setItem("username", values.username);
-                    router.replace("/");
+
+                    let privileges = await UserAPI.getPrivileges();
+                    let isHaveDashBoard = false;
+                    await privileges.map((action: any) =>
+                        action.ActionName == "DashBoard" &&
+                        action.Status == true
+                            ? (isHaveDashBoard = true)
+                            : null
+                    );
+
+                    router.replace(isHaveDashBoard ? "/" : "/handsontable");
                 } else {
                     window.location.href = "/auth/signin";
                 }
