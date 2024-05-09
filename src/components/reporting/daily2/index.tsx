@@ -78,6 +78,10 @@ const Folio = ({ title, workingDate }: any) => {
             const roomNo = transaction.RoomNo;
             if (!mergedTransactions[roomNo]) {
                 mergedTransactions[roomNo] = { ...transaction };
+                if (transaction.ArrivalName) {
+                    mergedTransactions[roomNo].ArrivalCustomerName =
+                        transaction.CustomerName;
+                }
                 if (transaction.DepartureName) {
                     mergedTransactions[roomNo].DepartureName =
                         transaction.DepartureName;
@@ -147,7 +151,7 @@ const Folio = ({ title, workingDate }: any) => {
                         mergeTransactions(tempValue[key]))
                 // : tempValue[key])
             );
-
+            console.log("tempValue", tempValue);
             setReportData(tempValue);
             mutate(listUrl);
         }
