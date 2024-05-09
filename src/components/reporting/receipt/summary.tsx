@@ -414,11 +414,33 @@ const ReceiptSummary = ({ FolioID, Lang }: any) => {
                                     }}
                                 >
                                     {Lang == "MN"
-                                        ? "Өр.төрөл : "
-                                        : "Room.No : "}
+                                        ? "Өрөөний төрөл : "
+                                        : "Room Type : "}
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].RoomFullNo}
+                                    {summary[0] && summary[0].RoomTypeName}
+                                </div>
+                            </Box>
+
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    width: "100%",
+                                    flexWrap: "wrap",
+                                }}
+                                className="mb-1"
+                            >
+                                <div
+                                    style={{
+                                        width: "90px",
+                                        textAlign: "left",
+                                        marginRight: "9px",
+                                    }}
+                                >
+                                    {Lang == "MN" ? "Өрөө : " : "Room.No : "}
+                                </div>
+                                <div style={{ fontWeight: "600" }}>
+                                    {summary[0] && summary[0].RoomNo}
                                 </div>
                             </Box>
 
@@ -443,7 +465,16 @@ const ReceiptSummary = ({ FolioID, Lang }: any) => {
                                 </div>
                                 <div style={{ fontWeight: "600" }}>
                                     {summary[0] &&
-                                        formatPrice(summary[0].DailyRate)}
+                                        `${formatPrice(summary[0].DailyRate)}`}
+                                    {summary[0].Discount &&
+                                        `[-${
+                                            (summary[0].DailyRate *
+                                                summary[0].Discount) /
+                                            100
+                                        }%]=${formatPrice(
+                                            summary[0].DailyRate -
+                                                summary[0].Discount
+                                        )}`}
                                 </div>
                             </Box>
                         </Grid>

@@ -10,8 +10,7 @@ const InvoiceSelect = ({ FolioID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
 
     const [Lang, setLang] = useState<any>("MN");
-    const [invoiceType, setInvoiceType] = useState<any>("detail");
-    console.log("invoiceType", invoiceType);
+    const [invoiceType, setInvoiceType] = useState<any>("summary");
 
     const handleLanguagePick = (event: SelectChangeEvent) => {
         setLang(event.target.value as string);

@@ -27,21 +27,21 @@ const catchAxiosError = (error: any) => {
             response.config &&
             !response.__isRetryRequest
         ) {
-            if (localStorage.getItem("expires")) {
-                if (
-                    dateStringToObj(
-                        moment(localStorage.getItem("expires")).format(
-                            "YYYY-MM-DD HH:MM:SS"
-                        )
-                    ) < new Date()
-                ) {
-                    signOut({ callbackUrl: "/auth/login" });
-                } else {
-                    // toast("Хандах эрх байхгүй байна");
-                }
-            } else {
-                signOut({ callbackUrl: "/auth/login" });
-            }
+            // if (localStorage.getItem("expires")) {
+            // if (
+            // dateStringToObj(
+            // moment(localStorage.getItem("expires")).format(
+            // "YYYY-MM-DD HH:MM:SS"
+            // )
+            // ) < new Date()
+            // ) {
+            signOut({ callbackUrl: "/auth/login" });
+            // } else {
+            // toast("Хандах эрх байхгүй байна");
+            // }
+            // } else {
+            // signOut({ callbackUrl: "/auth/login" });
+            // }
         }
     } else if (error.request) {
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

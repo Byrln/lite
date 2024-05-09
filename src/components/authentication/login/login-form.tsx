@@ -76,6 +76,9 @@ export default function LoginForm() {
                     axios.defaults.headers.common[
                         "Authorization"
                     ] = `Bearer ${session.token}`;
+                    // console.log("session.expires", session);
+                    // console.log("session.expires", new Date());
+
                     localStorage.setItem("expires", session.expires);
                     localStorage.setItem("hotelId", values.hotel);
                     localStorage.setItem("username", values.username);
@@ -91,6 +94,7 @@ export default function LoginForm() {
 
                     router.replace(isHaveDashBoard ? "/" : "/handsontable");
                 } else {
+                    axios.defaults.headers.common["Authorization"] = "";
                     window.location.href = "/auth/signin";
                 }
             });
