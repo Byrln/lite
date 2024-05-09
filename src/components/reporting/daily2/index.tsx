@@ -933,7 +933,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                               ]
                                                                                   .RoomNo
                                                                           ][0]
-                                                                              .StatusCode1 ==
+                                                                              .DepartureStatusCode1 ==
                                                                           "StatusDueOut"
                                                                             ? "do"
                                                                             : ""
