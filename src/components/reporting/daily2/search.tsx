@@ -58,40 +58,42 @@ const Search = ({ register, errors, control, search }: any) => {
                     )}
                 />
             </Grid>
-            <FormGroup>
-                <Grid container spacing={2}>
-                    {data &&
-                        data.map((element: any) => (
-                            <Grid key={element.FloorID} item xs={3}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={
-                                                floors &&
-                                                floors.includes(
-                                                    String(element.FloorID)
-                                                )
-                                                    ? true
-                                                    : false
-                                            }
-                                            {...register("Floors")}
-                                            value={element.FloorID}
-                                            onChange={handleToggle(element)}
-                                        />
-                                    }
-                                    label={`${element.FloorNo} давхар`}
-                                />
-                            </Grid>
-                        ))}
-                </Grid>
-            </FormGroup>
-            {/* <Grid item xs={3}>
-                <FloorSelect
-                    register={register}
-                    errors={errors}
-                    multiple={true}
-                />
-            </Grid> */}
+            <Grid item xs={9}></Grid>
+            <Grid item xs={12}>
+                <FormGroup>
+                    <Grid container spacing={2}>
+                        {data &&
+                            data.map((element: any) => (
+                                <Grid
+                                    key={element.FloorID}
+                                    item
+                                    xs={4}
+                                    sm={2}
+                                    md={1}
+                                >
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={
+                                                    floors &&
+                                                    floors.includes(
+                                                        String(element.FloorID)
+                                                    )
+                                                        ? true
+                                                        : false
+                                                }
+                                                {...register("Floors")}
+                                                value={element.FloorID}
+                                                onChange={handleToggle(element)}
+                                            />
+                                        }
+                                        label={`${element.FloorNo} давхар`}
+                                    />
+                                </Grid>
+                            ))}
+                    </Grid>
+                </FormGroup>
+            </Grid>
         </Grid>
     );
 };

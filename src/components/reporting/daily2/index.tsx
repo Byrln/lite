@@ -200,7 +200,7 @@ const Folio = ({ title, workingDate }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
-
+    console.log("search.Floors", search.Floors);
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -277,7 +277,7 @@ const Folio = ({ title, workingDate }: any) => {
                                 <TableCell
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                         width: "40px",
                                     }}
@@ -288,7 +288,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     align="left"
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                     }}
                                 >
@@ -299,7 +299,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     align="left"
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                         textOverflow: "ellipsis",
                                         width: "130px",
@@ -311,7 +311,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     align="left"
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                         textOverflow: "ellipsis",
                                         width: "130px",
@@ -323,7 +323,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     align="left"
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                     }}
                                 >
@@ -333,7 +333,7 @@ const Folio = ({ title, workingDate }: any) => {
                                 align="left"
                                 style={{
                                     fontWeight: "bold",
-                                    fontSize: "10px",
+                                    fontSize: "11px",
                                     padding: "2px 2px",
                                 }}
                             >
@@ -343,7 +343,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     align="left"
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                         width: "30px",
                                     }}
@@ -354,7 +354,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     align="left"
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                         width: "30px",
                                     }}
@@ -365,7 +365,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     align="left"
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                         width: "30px",
                                     }}
@@ -376,7 +376,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     align="left"
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                         width: "30px",
                                     }}
@@ -387,7 +387,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     align="left"
                                     style={{
                                         fontWeight: "bold",
-                                        fontSize: "10px",
+                                        fontSize: "11px",
                                         padding: "2px 2px",
                                     }}
                                     width={250}
@@ -402,13 +402,10 @@ const Folio = ({ title, workingDate }: any) => {
                                 roomStatusData &&
                                 Object.keys(roomsData).map((key, index) => (
                                     <>
-                                        {!search.Floors ||
-                                        (search.Floors &&
-                                            !search.Floors.includes(
-                                                String(
-                                                    roomsData[key][0].FloorID
-                                                )
-                                            )) ? (
+                                        {search.Floors &&
+                                        !search.Floors.includes(
+                                            String(roomsData[key][0].FloorID)
+                                        ) ? (
                                             <>{roomsData[key].FloorID}</>
                                         ) : (
                                             <>
@@ -428,7 +425,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                             paddingLeft:
                                                                 "30px !important",
-                                                            fontSize: "10px",
+                                                            fontSize: "11px",
                                                             textAlign: "center",
                                                             padding: "2px",
                                                         }}
@@ -456,7 +453,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                         width: "40px",
@@ -484,7 +481,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                     }}
@@ -502,7 +499,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                         textOverflow:
@@ -601,7 +598,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                         textOverflow:
@@ -683,7 +680,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     align="center"
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                     }}
@@ -775,7 +772,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             scope="row"
                                                             style={{
                                                                 fontSize:
-                                                                    "10px",
+                                                                    "11px",
                                                                 padding:
                                                                     "2px 2px",
                                                             }}
@@ -825,7 +822,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                         width: "30px",
@@ -856,7 +853,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                         width: "30px",
@@ -917,7 +914,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     scope="row"
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                         width: "30px",
@@ -949,7 +946,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     align="left"
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                         width: "30px",
@@ -991,7 +988,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     width={250}
                                                                     style={{
                                                                         fontSize:
-                                                                            "10px",
+                                                                            "11px",
                                                                         padding:
                                                                             "2px 2px",
                                                                     }}
