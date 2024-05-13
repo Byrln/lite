@@ -18,6 +18,8 @@ export const dailyChargesPaymentSummaryUrl = `${urlPrefix}/DailyChargesPayment/S
 export const reservationDailyDetailUrl = `${urlPrefix}/Reservation/DailyDetail`;
 export const printInvoiceDetailedUrl = `${urlPrefix}/PrintInvoice/Detailed`;
 export const printInvoiceSummaryUrl = `${urlPrefix}/PrintInvoice/Summary`;
+export const dailyArrivalUrl = `${urlPrefix}/Daily/Arrival`;
+export const dailyDepartureUrl = `${urlPrefix}/Daily/Departure`;
 
 export const breakfast2Url = `${urlPrefix}/Breakfast2`;
 
@@ -224,6 +226,16 @@ export const StayViewSWR = (search: any) => {
 export const ReportAPI = {
     breakfast: async (search: any) => {
         const res = await axios.post(`${breakfastUrl}`, search);
+
+        return res.data.JsonData;
+    },
+    dailyArrival: async (search: any) => {
+        const res = await axios.post(`${dailyArrivalUrl}`, search);
+
+        return res.data.JsonData;
+    },
+    dailyDeparture: async (search: any) => {
+        const res = await axios.post(`${dailyDepartureUrl}`, search);
 
         return res.data.JsonData;
     },

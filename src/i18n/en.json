@@ -733,5 +733,6 @@
     "TextReservationSource": "Reservation Source",
     "TextCustomer": "Customer",
     "TextAll": "All",
-    "ButtonSearchClear": "Clear Search"
+    "ButtonSearchClear": "Clear Search",
+    "MenuDailyArrivalOrDeparture": "Arrival or Departure (Daily)"
 }

@@ -1236,5 +1236,6 @@
     "WorkOrder_SelectPriority": "Чухлын зэрэглэлээ сонгоно уу.",
     "WorkOrder_SelectStatus": "Төлөвөө сонгоно уу.",
     "Calendar": "Календар",
-    "ChooseFile": "Файл сонгох"
+    "ChooseFile": "Файл сонгох",
+    "MenuDailyArrivalOrDeparture": "Ирэх болон гарах зочдын мэдээ"
 }

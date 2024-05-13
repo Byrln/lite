@@ -5,16 +5,25 @@ import Head from "next/head";
 import { FrontOfficeAPI } from "lib/api/front-office";
 import Page from "components/page";
 import Dashboard from "components/dashboard/list";
+import { UserAPI } from "lib/api/user";
+
 const title = "Дашбоард | Horeca";
 
 const DashboardApp = () => {
     const [workingDate, setWorkingDate]: any = useState(null);
+    const [haveDashboard, setHaveDashboard]: any = useState(false);
 
     useEffect(() => {
         fetchDatas();
     }, []);
 
     const fetchDatas = async () => {
+        let privileges = await UserAPI.getPrivileges();
+        await privileges.map((action: any) =>
+            action.ActionName == "DashBoard" && action.Status == true
+                ? setHaveDashboard(true)
+                : null
+        );
         let response = await FrontOfficeAPI.workingDate();
         if (response.status == 200) {
             setWorkingDate(response.workingDate[0].WorkingDate);
@@ -32,7 +41,11 @@ const DashboardApp = () => {
                     <Box sx={{ pb: 1 }}>
                         <Typography variant="h6">Тавтай морил</Typography>
                     </Box>
-                    {workingDate && <Dashboard workingDate={workingDate} />}
+                    {workingDate && haveDashboard ? (
+                        <Dashboard workingDate={workingDate} />
+                    ) : (
+                        "Хандах эрх байхгүй байна"
+                    )}
                 </Container>
             </Page>
         </>
