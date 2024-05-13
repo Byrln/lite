@@ -5,6 +5,8 @@ import { Card, CardContent } from "@mui/material";
 import { Icon } from "@iconify/react";
 import searchFill from "@iconify/icons-eva/search-fill";
 import trash2Fill from "@iconify/icons-eva/trash-2-fill";
+import { useIntl } from "react-intl";
+
 import Searchbar from "components/layouts/dashboard/search-bar";
 
 const CustomSelect = ({
@@ -17,6 +19,7 @@ const CustomSelect = ({
     searchInitialState = {},
     hideButtons = false,
 }: any) => {
+    const intl = useIntl();
     const [loading, setLoading] = useState(false);
 
     const onSubmit = async (values: any) => {
@@ -58,7 +61,9 @@ const CustomSelect = ({
                                 )}
                                 startIcon={<Icon icon={trash2Fill} />}
                             >
-                                Хайлт цэвэрлэх
+                                {intl.formatMessage({
+                                    id: "ButtonSearchClear",
+                                })}
                             </LoadingButton>
 
                             <LoadingButton
@@ -70,7 +75,9 @@ const CustomSelect = ({
                                 // onClick={onSubmit}
                                 startIcon={<Icon icon={searchFill} />}
                             >
-                                Хайх
+                                {intl.formatMessage({
+                                    id: "ButtonSearch",
+                                })}
                             </LoadingButton>
                         </div>
                     )}

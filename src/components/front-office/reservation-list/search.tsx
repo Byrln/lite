@@ -1,8 +1,8 @@
 import { TextField, Grid, MenuItem } from "@mui/material";
-
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
+import { useIntl } from "react-intl";
 
 import ReservationTypeSelect from "components/select/reservation-type";
 import ReservationSourceSelect from "components/select/reservation-source";
@@ -10,6 +10,8 @@ import { dateStringToObj } from "lib/utils/helpers";
 import CustomerSelect from "components/select/customer";
 
 const Search = ({ register, errors, control, reset }: any) => {
+    const intl = useIntl();
+
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
@@ -19,7 +21,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-                            label="Эхлэх огноо"
+                            label={intl.formatMessage({
+                                id: "TextBeginDate",
+                            })}
                             value={value}
                             onChange={(value) =>
                                 onChange(
@@ -55,7 +59,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-                            label="Дуусах огноо"
+                            label={intl.formatMessage({
+                                id: "RowHeaderEndDate",
+                            })}
                             value={value}
                             onChange={(value) =>
                                 onChange(
@@ -93,7 +99,13 @@ const Search = ({ register, errors, control, reset }: any) => {
             </Grid>
 
             <Grid item xs={3}>
-                <ReservationSourceSelect register={register} errors={errors} />
+                <ReservationSourceSelect
+                    register={register}
+                    errors={errors}
+                    label={intl.formatMessage({
+                        id: "TextReservationSource",
+                    })}
+                />
             </Grid>
 
             <Grid item xs={3}>
@@ -101,7 +113,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="GuestName"
-                    label="Нэр"
+                    label={intl.formatMessage({
+                        id: "RowHeaderGuestName",
+                    })}
                     {...register("GuestName")}
                     margin="dense"
                     error={errors.GuestName?.message}
@@ -114,7 +128,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="GuestPhone"
-                    label="Утас"
+                    label={intl.formatMessage({
+                        id: "RowHeaderPhone",
+                    })}
                     {...register("GuestPhone")}
                     margin="dense"
                     error={errors.GuestPhone?.message}
@@ -127,7 +143,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="GuestEmail"
-                    label="Цахим шуудан"
+                    label={intl.formatMessage({
+                        id: "TextEmail",
+                    })}
                     {...register("GuestEmail")}
                     margin="dense"
                     error={errors.GuestEmail?.message}
@@ -139,7 +157,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <TextField
                     fullWidth
                     id="StatusGroup"
-                    label="Төлөв"
+                    label={intl.formatMessage({
+                        id: "ReportStatus",
+                    })}
                     {...register("StatusGroup")}
                     select
                     margin="dense"

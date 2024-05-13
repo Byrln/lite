@@ -3,6 +3,7 @@ import axios from "lib/utils/axios";
 import { date } from "yup/lib/locale";
 import moment from "moment";
 import { daysInMonth } from "lib/utils/helpers";
+import { dateStringToObj } from "lib/utils/helpers";
 
 const urlPrefix = "/api/Report";
 export const balanceUrl = `${urlPrefix}/Balance`;
@@ -183,8 +184,15 @@ export const DailyInfo2SWR = (search: any, workingDate: any) => {
     if (!search.CurrDate) {
         search.CurrDate = workingDate;
     }
+    search.CurrDate = moment(
+        dateStringToObj(moment(search.CurrDate).format("YYYY-MM-DD")),
+        "YYYY-MM-DD"
+    );
+
+    let tempValue = { CurrDate: search.CurrDate };
+
     const fetcher = async (url: any) =>
-        await axios.post(url, search).then((res: any) => {
+        await axios.post(url, tempValue).then((res: any) => {
             let list = res.data.JsonData;
             return list;
         });
@@ -193,12 +201,6 @@ export const DailyInfo2SWR = (search: any, workingDate: any) => {
 };
 
 export const StayViewSWR = (search: any) => {
-    console.log("search.CurrDate", search.CurrDate);
-    console.log(
-        "search.CurrDate",
-        moment(search.CurrDate, "YYYY-MM-DD").month()
-    );
-
     let tempSearch = {
         CurrDate: `${moment(search.CurrDate, "YYYY-MM-DD").year()}-${
             moment(search.CurrDate, "YYYY-MM-DD").month() + 1

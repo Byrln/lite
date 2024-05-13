@@ -4,6 +4,7 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { useEffect } from "react";
+import { useIntl } from "react-intl";
 
 import { CustomerSWR } from "lib/api/customer";
 import { elementAcceptingRef } from "@mui/utils";
@@ -18,6 +19,7 @@ const CustomerSelect = ({
     CustomerGroupID,
     isNA,
 }: any) => {
+    const intl = useIntl();
     const { data, error } = CustomerSWR(CustomerGroupID);
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -35,7 +37,9 @@ const CustomerSelect = ({
             register={register}
             errors={errors}
             field="CustomerID"
-            label="Customer"
+            label={intl.formatMessage({
+                id: "TextCustomer",
+            })}
             options={data}
             optionValue="CustomerID"
             optionLabel="CustomerName"
@@ -46,7 +50,9 @@ const CustomerSelect = ({
         <TextField
             fullWidth
             id="CustomerID"
-            label="Customer"
+            label={intl.formatMessage({
+                id: "TextCustomer",
+            })}
             {...register("CustomerID")}
             select
             margin="dense"
@@ -57,7 +63,9 @@ const CustomerSelect = ({
             {isNA == true ? (
                 <>
                     <MenuItem key="-1" value="-1">
-                        Бүгд
+                        {intl.formatMessage({
+                            id: "TextAll",
+                        })}
                     </MenuItem>
                     <MenuItem key="0" value="0">
                         N/A

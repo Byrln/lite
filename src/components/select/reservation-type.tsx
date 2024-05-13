@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { ReservationTypeSWR } from "lib/api/reservation-type";
 import { useEffect } from "react";
+import { useIntl } from "react-intl";
 
 const ReservationTypeSelect = ({
     register,
@@ -14,6 +15,7 @@ const ReservationTypeSelect = ({
     ReservationTypeID,
     setReservationTypeID,
 }: any) => {
+    const intl = useIntl();
     const { data, error } = ReservationTypeSWR();
 
     // useEffect(() => {
@@ -40,7 +42,9 @@ const ReservationTypeSelect = ({
         <TextField
             fullWidth
             id={customRegisterName ? customRegisterName : "ReservationTypeID"}
-            label="Захиалгын төрөл"
+            label={intl.formatMessage({
+                id: "TextReservationType",
+            })}
             {...register(
                 customRegisterName ? customRegisterName : "ReservationTypeID"
             )}

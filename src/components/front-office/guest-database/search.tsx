@@ -1,8 +1,11 @@
 import { TextField, Grid } from "@mui/material";
+import { useIntl } from "react-intl";
 
 import CountrySelect from "components/select/country";
 
 const Search = ({ register, errors, control, reset }: any) => {
+    const intl = useIntl();
+
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
@@ -10,7 +13,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="GuestName"
-                    label="Зочны нэр"
+                    label={intl.formatMessage({
+                        id: "RowHeaderGuestName",
+                    })}
                     {...register("GuestName")}
                     margin="dense"
                     error={errors.GuestName?.message}
@@ -27,7 +32,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="Phone"
-                    label="Phone"
+                    label={intl.formatMessage({
+                        id: "RowHeaderPhone",
+                    })}
                     {...register("Phone")}
                     margin="dense"
                     error={errors.Phone?.message}
@@ -40,7 +47,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="Email"
-                    label="Цахим шуудан"
+                    label={intl.formatMessage({
+                        id: "TextEmail",
+                    })}
                     {...register("Email")}
                     margin="dense"
                     error={errors.Email?.message}

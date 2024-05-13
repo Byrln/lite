@@ -1,14 +1,18 @@
 import { Box, Grid, Container, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Head from "next/head";
+import { useIntl } from "react-intl";
 
 import Page from "components/page";
 import GroupReservations from "components/group-opretion/group-reservations-list/list";
 import { FrontOfficeAPI } from "lib/api/front-office";
 
-const title = "Групп захиалга";
-
 const Index = () => {
+    const intl = useIntl();
+    const title = intl.formatMessage({
+        id: "MenuGroupReservationList",
+    });
+
     const [workingDate, setWorkingDate]: any = useState(null);
 
     useEffect(() => {

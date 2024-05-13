@@ -17,6 +17,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Iconify from "components/iconify/iconify";
 
 import { ReportAPI, breakfastUrl } from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
@@ -51,6 +52,11 @@ const Breakfast = ({ title, workingDate }: any) => {
                 Mandatory: null,
             });
             if (response) {
+                response.sort((a: any, b: any) => {
+                    if (Number(a.RoomNo) < Number(b.RoomNo)) return -1;
+                    if (Number(a.RoomNo) > Number(b.RoomNo)) return 1;
+                    return 0;
+                });
                 setReportData(response);
                 let tempValue = groupBy(response, "CountryName");
                 setGroupedData(tempValue);
@@ -101,6 +107,16 @@ const Breakfast = ({ title, workingDate }: any) => {
                 .startOf("day"),
         },
         resolver: yupResolver(validationSchema),
+    };
+
+    const renderIcons = (guestCnt: any) => {
+        const stars: any[] = [];
+
+        for (let i = 0; i < guestCnt; i++) {
+            stars.push(<Iconify icon="mingcute:round-line" width="12px" />);
+        }
+
+        return stars;
     };
 
     const {
@@ -189,7 +205,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         №
                                     </TableCell>
 
-                                    <TableCell
+                                    {/* <TableCell
                                         align="left"
                                         style={{
                                             fontWeight: "bold",
@@ -198,7 +214,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         }}
                                     >
                                         Захиалгын дугаар
-                                    </TableCell>
+                                    </TableCell> */}
                                     <TableCell
                                         align="left"
                                         style={{
@@ -208,7 +224,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Өрөөний №
+                                        Өрөө №
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -236,9 +252,9 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="left"
                                         style={{
                                             fontWeight: "bold",
-                                            width: "150px",
                                             fontSize: "10px",
                                             padding: "2px",
+                                            width: "50px",
                                         }}
                                     >
                                         Ирсэн
@@ -278,7 +294,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="left"
                                         style={{
                                             fontWeight: "bold",
-                                            width: "150px",
+                                            width: "350px",
                                             fontSize: "10px",
                                             padding: "2px",
                                         }}
@@ -309,7 +325,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                     >
                                                         {index + 1}
                                                     </TableCell>
-                                                    <TableCell
+                                                    {/* <TableCell
                                                         component="th"
                                                         scope="row"
                                                         style={{
@@ -318,7 +334,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                         }}
                                                     >
                                                         {entity.ReservationNo}
-                                                    </TableCell>
+                                                    </TableCell> */}
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
@@ -328,7 +344,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                             padding: "2px",
                                                         }}
                                                     >
-                                                        {entity.RoomFullNo}
+                                                        {entity.RoomNo}
                                                     </TableCell>
                                                     <TableCell
                                                         component="th"
@@ -362,9 +378,13 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                         style={{
                                                             fontSize: "10px",
                                                             padding: "2px",
-                                                            width: "150px",
+                                                            width: "50px",
                                                         }}
-                                                    ></TableCell>
+                                                    >
+                                                        {renderIcons(
+                                                            entity.GuestCnt
+                                                        )}
+                                                    </TableCell>
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
@@ -402,7 +422,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                         style={{
                                                             fontSize: "10px",
                                                             padding: "2px",
-                                                            width: "150px",
+                                                            width: "350px",
                                                         }}
                                                     ></TableCell>
                                                 </TableRow>

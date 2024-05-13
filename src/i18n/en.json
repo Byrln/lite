@@ -727,5 +727,11 @@
     "TextGenderMale": "Male",
     "TextCountry": "Country",
     "TextZip": "Zip Code",
-    "TextAddress": "Address"
+    "TextAddress": "Address",
+    "TextBeginDate": "Begin Date",
+    "TextReservationType": "Reservation Type",
+    "TextReservationSource": "Reservation Source",
+    "TextCustomer": "Customer",
+    "TextAll": "All",
+    "ButtonSearchClear": "Clear Search"
 }
