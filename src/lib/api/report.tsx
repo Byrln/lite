@@ -11,6 +11,7 @@ export const checkedOutDetailedUrl = `${urlPrefix}/CheckedOut/Detailed`;
 export const breakfastUrl = `${urlPrefix}/Breakfast`;
 export const monthlyUrl = `${urlPrefix}/Monthly`;
 export const stayViewUrl = `${urlPrefix}/StayView1`;
+export const availableRoomsUrl = `${urlPrefix}/AvailableRooms`;
 export const dailyInfoUrl = `${urlPrefix}/DailyInfo`;
 export const dailyInfo2Url = `${urlPrefix}/DailyInfo2`;
 export const interAgencyUrl = `${urlPrefix}/InterAgency`;
@@ -221,6 +222,25 @@ export const StayViewSWR = (search: any) => {
         });
 
     return useSWR(stayViewUrl, fetcher);
+};
+
+export const AvailableRoomsSWR = (search: any) => {
+    let tempSearch = {
+        CurrDate: moment(search.CurrDate).format("YYYY-MM-DD"),
+        NumberOfDays:
+            daysInMonth(
+                moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+                moment(search.CurrDate, "YYYY-MM-DD").year()
+            ) - 1,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(availableRoomsUrl, fetcher);
 };
 
 export const ReportAPI = {
