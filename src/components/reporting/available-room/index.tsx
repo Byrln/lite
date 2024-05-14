@@ -68,14 +68,14 @@ const AvailableRoom = ({ title, workingDate }: any) => {
         let d: any = [];
 
         for (let i = 0; i < 30; i++) {
-            let tempDate = new Date(workingDate);
-            tempDate.setDate(moment(workingDate).date() + i);
+            let tempDate = new Date(search.CurrDate);
+            tempDate.setDate(moment(search.CurrDate).date() + i);
             dateArray.push(moment(tempDate).format("YYYY-MM-DD"));
             d.push(`D${i + 1}`);
         }
         setDDays(d);
         setDates(dateArray);
-    }, []);
+    }, [search]);
 
     const validationSchema = yup.object().shape({
         StartDate: yup.date().nullable(),
@@ -182,7 +182,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                     <TableCell
                                         style={{
                                             fontWeight: "bold",
-                                            padding: "2px 10px",
+                                            padding: "2px",
                                             fontSize: "10px",
                                         }}
                                     ></TableCell>
@@ -190,9 +190,10 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                         dates.map((item: any) => (
                                             <TableCell
                                                 key={item}
+                                                align="center"
                                                 style={{
                                                     fontWeight: "bold",
-                                                    padding: "2px 10px",
+                                                    padding: "2px",
                                                     fontSize: "10px",
                                                 }}
                                             >
@@ -219,7 +220,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                 scope="row"
                                                 style={{
                                                     fontSize: "10px",
-                                                    padding: "2px 10px",
+                                                    padding: "2px",
 
                                                     fontWeight:
                                                         item.RoomTypeName ==
@@ -242,9 +243,10 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                         key={`${item.RoomTypeName}-${dday}`}
                                                         component="th"
                                                         scope="row"
+                                                        align="center"
                                                         style={{
                                                             fontSize: "10px",
-                                                            padding: "2px 10px",
+                                                            padding: "2px",
                                                             fontWeight:
                                                                 item.RoomTypeName ==
                                                                 "Available Rooms"
