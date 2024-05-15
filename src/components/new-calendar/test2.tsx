@@ -256,6 +256,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           transactionID: obj.TransactionID,
                           startDate: obj.StartDate,
                           GroupID: obj.GroupID,
+                          Balance: obj.Balance,
+                          Breakfast: obj.Breakfast,
                           endDate: obj.EndDate,
                           statusColor: `#${obj.StatusColor}`,
                           editable: true,
@@ -695,6 +697,26 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     <span style={{ marginRight: "5px", marginTop: "2px" }}>
                         {" "}
                         <Iconify icon="clarity:group-line" width="12px" />
+                    </span>
+                ) : (
+                    <></>
+                )}
+
+                {arg.event._def.extendedProps.Balance &&
+                Number(arg.event._def.extendedProps.Balance) > 0 ? (
+                    <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                        {" "}
+                        <Iconify icon="vaadin:cash" width="12px" />
+                    </span>
+                ) : (
+                    <></>
+                )}
+
+                {arg.event._def.extendedProps.Breakfast &&
+                arg.event._def.extendedProps.Breakfast == true ? (
+                    <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                        {" "}
+                        <Iconify icon="fluent:food-16-regular" width="12px" />
                     </span>
                 ) : (
                     <></>
