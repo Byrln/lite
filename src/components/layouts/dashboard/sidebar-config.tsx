@@ -225,6 +225,12 @@ const sidebarConfig = [
                 path: "/report/month",
                 oldPath: "",
             },
+            {
+                title: "Ирэх болон гарах зочдын мэдээ",
+                titleEn: "Arrival or Departure (Daily)",
+                path: "/report/arrival-departure",
+                oldPath: "",
+            },
             // {
             //     title: "бүртгэлийн хуудас",
             //     titleEn: "бүртгэлийн хуудас",
@@ -232,12 +238,12 @@ const sidebarConfig = [
             //     path: "/report/transaction",
             //     oldPath: "",
             // },
-            // {
-            //     title: "боломжит өрөө",
-            //     titleEn: "боломжит өрөө",
-            //     path: "/report/available-room",
-            //     oldPath: "~/Report/ReportAvailableRooms.aspx",
-            // },
+            {
+                title: "боломжит өрөө",
+                titleEn: "available rooms",
+                path: "/report/available-room",
+                oldPath: "~/Report/ReportAvailableRooms.aspx",
+            },
             {
                 title: "баланс",
                 titleEn: "баланс",
