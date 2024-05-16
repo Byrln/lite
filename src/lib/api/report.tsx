@@ -21,8 +21,12 @@ export const printInvoiceDetailedUrl = `${urlPrefix}/PrintInvoice/Detailed`;
 export const printInvoiceSummaryUrl = `${urlPrefix}/PrintInvoice/Summary`;
 export const dailyArrivalUrl = `${urlPrefix}/Daily/Arrival`;
 export const dailyDepartureUrl = `${urlPrefix}/Daily/Departure`;
-
 export const breakfast2Url = `${urlPrefix}/Breakfast2`;
+export const nightAuditSummaryUrl = `${urlPrefix}/NightAudit/Summary`;
+export const nightAuditRoomChargeUrl = `${urlPrefix}/NightAudit/RoomCharge`;
+export const nightAuditCheckedOutUrl = `${urlPrefix}/NightAudit/CheckedOut`;
+export const nightAuditPaymentSummaryUrl = `${urlPrefix}/NightAudit/Payment/Summary`;
+export const nightAuditPaymentDetailUrl = `${urlPrefix}/NightAudit/Payment/Detail`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -243,6 +247,22 @@ export const AvailableRoomsSWR = (search: any) => {
     return useSWR(availableRoomsUrl, fetcher);
 };
 
+export const NightAuditSummarySWR = (search: any) => {
+    let tempSearch = {
+        CurrDate: moment(search.CurrDate, "YYYY-MM-DD")
+            .format("YYYY-MM-DD")
+            .toString(),
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(nightAuditSummaryUrl, fetcher);
+};
+
 export const ReportAPI = {
     breakfast: async (search: any) => {
         const res = await axios.post(`${breakfastUrl}`, search);
@@ -274,6 +294,72 @@ export const ReportAPI = {
 
     invoiceSummary: async (search: any) => {
         const res = await axios.post(`${printInvoiceSummaryUrl}`, search);
+
+        return res.data.JsonData;
+    },
+
+    nightAuditSummary: async (search: any) => {
+        let tempSearch = {
+            CurrDate: moment(search.CurrDate, "YYYY-MM-DD")
+                .format("YYYY-MM-DD")
+                .toString(),
+        };
+
+        const res = await axios.post(`${nightAuditSummaryUrl}`, tempSearch);
+
+        return res.data.JsonData;
+    },
+
+    nightAuditRoomCharge: async (search: any) => {
+        let tempSearch = {
+            CurrDate: moment(search.CurrDate, "YYYY-MM-DD")
+                .format("YYYY-MM-DD")
+                .toString(),
+        };
+
+        const res = await axios.post(`${nightAuditRoomChargeUrl}`, tempSearch);
+
+        return res.data.JsonData;
+    },
+
+    nightAuditCheckedOut: async (search: any) => {
+        let tempSearch = {
+            CurrDate: moment(search.CurrDate, "YYYY-MM-DD")
+                .format("YYYY-MM-DD")
+                .toString(),
+        };
+
+        const res = await axios.post(`${nightAuditCheckedOutUrl}`, tempSearch);
+
+        return res.data.JsonData;
+    },
+
+    nightAuditPaymentSummary: async (search: any) => {
+        let tempSearch = {
+            CurrDate: moment(search.CurrDate, "YYYY-MM-DD")
+                .format("YYYY-MM-DD")
+                .toString(),
+        };
+
+        const res = await axios.post(
+            `${nightAuditPaymentSummaryUrl}`,
+            tempSearch
+        );
+
+        return res.data.JsonData;
+    },
+
+    nightAuditPaymentDetail: async (search: any) => {
+        let tempSearch = {
+            CurrDate: moment(search.CurrDate, "YYYY-MM-DD")
+                .format("YYYY-MM-DD")
+                .toString(),
+        };
+
+        const res = await axios.post(
+            `${nightAuditPaymentDetailUrl}`,
+            tempSearch
+        );
 
         return res.data.JsonData;
     },

@@ -518,14 +518,14 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     {reportData[
                                                                         key
                                                                     ][key2]
-                                                                        .Discount
+                                                                        .DailyDiscount
                                                                         ? formatPrice(
                                                                               reportData[
                                                                                   key
                                                                               ][
                                                                                   key2
                                                                               ]
-                                                                                  .Discount
+                                                                                  .DailyDiscount
                                                                           )
                                                                         : 0}
                                                                 </TableCell>
@@ -543,14 +543,14 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     {reportData[
                                                                         key
                                                                     ][key2]
-                                                                        .RoomCharge
+                                                                        .DailyRoomCharge
                                                                         ? formatPrice(
                                                                               reportData[
                                                                                   key
                                                                               ][
                                                                                   key2
                                                                               ]
-                                                                                  .RoomCharge
+                                                                                  .DailyRoomCharge
                                                                           )
                                                                         : 0}
                                                                 </TableCell>
@@ -627,14 +627,14 @@ const Folio = ({ title, workingDate }: any) => {
                                                                     {reportData[
                                                                         key
                                                                     ][key2]
-                                                                        .DailyPostedCharge
+                                                                        .DailyCharge
                                                                         ? formatPrice(
                                                                               reportData[
                                                                                   key
                                                                               ][
                                                                                   key2
                                                                               ]
-                                                                                  .DailyPostedCharge
+                                                                                  .DailyCharge
                                                                           )
                                                                         : 0}
                                                                 </TableCell>
@@ -686,8 +686,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                           obj: any
                                                                       ) =>
                                                                           acc +
-                                                                          obj.Discount
-                                                                              ? obj.Discount
+                                                                          obj.DailyDiscount
+                                                                              ? obj.DailyDiscount
                                                                               : 0,
                                                                       0
                                                                   )
@@ -718,8 +718,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                           obj: any
                                                                       ) =>
                                                                           acc +
-                                                                          obj.RoomCharge
-                                                                              ? obj.RoomCharge
+                                                                          obj.DailyRoomCharge
+                                                                              ? obj.DailyRoomCharge
                                                                               : 0,
                                                                       0
                                                                   )
@@ -813,7 +813,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                           obj: any
                                                                       ) =>
                                                                           acc +
-                                                                          obj.DailyPostedCharge,
+                                                                          obj.DailyCharge,
                                                                       0
                                                                   )
                                                               )

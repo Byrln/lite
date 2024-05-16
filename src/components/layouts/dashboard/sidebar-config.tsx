@@ -250,6 +250,12 @@ const sidebarConfig = [
                 path: "/report/balance",
                 oldPath: "~/Report/ReportBalance.aspx",
             },
+            {
+                title: "өдрийн өндөрлөгөө",
+                titleEn: "night audit",
+                path: "/report/night-audit",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",
