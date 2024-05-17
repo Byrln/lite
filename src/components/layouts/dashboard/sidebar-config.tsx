@@ -256,6 +256,24 @@ const sidebarConfig = [
                 path: "/report/night-audit",
                 oldPath: "",
             },
+            {
+                title: "Захиалга цуцлалтын тайлан",
+                titleEn: "cancel reservation",
+                path: "/report/cancel-reservation",
+                oldPath: "",
+            },
+            {
+                title: "Ирээгүй зочдын тайлан",
+                titleEn: "no show report",
+                path: "/report/no-show-reservation",
+                oldPath: "",
+            },
+            {
+                title: "MenuReportVoid",
+                titleEn: "void report",
+                path: "/report/void-reservation",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",

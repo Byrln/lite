@@ -27,6 +27,7 @@ export const nightAuditRoomChargeUrl = `${urlPrefix}/NightAudit/RoomCharge`;
 export const nightAuditCheckedOutUrl = `${urlPrefix}/NightAudit/CheckedOut`;
 export const nightAuditPaymentSummaryUrl = `${urlPrefix}/NightAudit/Payment/Summary`;
 export const nightAuditPaymentDetailUrl = `${urlPrefix}/NightAudit/Payment/Detail`;
+export const cancelUrl = `${urlPrefix}/CancelReport`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -52,6 +53,22 @@ export const ReportBalanceSWR = (search: any, workingDate: any) => {
         });
 
     return useSWR(balanceUrl, fetcher);
+};
+
+export const ReportCancelSWR = (search: any, TransactionStatusID: any) => {
+    let tempSearch = {
+        StartDate: moment(search.StartDate, "YYYY-MM-DD"),
+        EndDate: moment(search.EndDate, "YYYY-MM-DD"),
+        TransactionStatusID: TransactionStatusID,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(cancelUrl, fetcher);
 };
 
 export const CheckedOutDetailedSWR = (search: any, workingDate: any) => {
