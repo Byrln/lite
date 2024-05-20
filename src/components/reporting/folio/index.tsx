@@ -474,27 +474,6 @@ const Folio = ({ title, workingDate }: any) => {
                                         // );
                                     )}
 
-                                <TableRow
-                                    key={"total"}
-                                    sx={{
-                                        "&:last-child td, &:last-child th": {
-                                            border: 0,
-                                        },
-                                    }}
-                                >
-                                    <TableCell
-                                        component="th"
-                                        scope="row"
-                                        style={{
-                                            fontWeight: "bold",
-                                        }}
-                                        align="right"
-                                        colSpan={15}
-                                    >
-                                        НХАТ: {formatPrice(totalBalance)}
-                                    </TableCell>
-                                </TableRow>
-
                                 {/* {reportData &&
                                     reportData.map((row: any) => (
                                         <TableRow
@@ -526,6 +505,315 @@ const Folio = ({ title, workingDate }: any) => {
                                     ))} */}
                             </TableBody>
                         </Table>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                fontSize: "12px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontWeight: "600",
+                                    width: "100px",
+                                    textAlign: "right",
+                                }}
+                            >
+                                {data && data
+                                    ? formatPrice(
+                                          (data.reduce(
+                                              (acc: any, obj: any) =>
+                                                  acc + obj.TotalCharge,
+                                              0
+                                          ) *
+                                              100) /
+                                              112
+                                      )
+                                    : 0}
+                            </div>
+                            <div
+                                style={{
+                                    width: "90px",
+                                    textAlign: "right",
+                                    marginRight: "11px",
+                                }}
+                            >
+                                Дүн :{" "}
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                fontSize: "12px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontWeight: "600",
+                                    width: "100px",
+                                    textAlign: "right",
+                                }}
+                            >
+                                {data && data
+                                    ? formatPrice(
+                                          ((data.reduce(
+                                              (acc: any, obj: any) =>
+                                                  acc + obj.TotalCharge,
+                                              0
+                                          ) *
+                                              100) /
+                                              112 /
+                                              100) *
+                                              10
+                                      )
+                                    : 0}
+                            </div>
+                            <div
+                                style={{
+                                    width: "90px",
+                                    textAlign: "right",
+                                    marginRight: "11px",
+                                }}
+                            >
+                                НӨАТ :{" "}
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                fontSize: "12px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontWeight: "600",
+                                    width: "100px",
+                                    textAlign: "right",
+                                }}
+                            >
+                                {data && data
+                                    ? formatPrice(
+                                          ((data.reduce(
+                                              (acc: any, obj: any) =>
+                                                  acc + obj.TotalCharge,
+                                              0
+                                          ) *
+                                              100) /
+                                              112 /
+                                              100) *
+                                              2
+                                      )
+                                    : 0}
+                            </div>
+                            <div
+                                style={{
+                                    width: "90px",
+                                    textAlign: "right",
+                                    marginRight: "11px",
+                                }}
+                            >
+                                НХАТ :{" "}
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                fontSize: "12px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontWeight: "600",
+                                    width: "100px",
+                                    textAlign: "right",
+                                }}
+                            >
+                                {data && data
+                                    ? formatPrice(
+                                          data.reduce(
+                                              (acc: any, obj: any) =>
+                                                  acc + obj.TotalCharge,
+                                              0
+                                          )
+                                      )
+                                    : 0}
+                            </div>
+                            <div
+                                style={{
+                                    width: "90px",
+                                    textAlign: "right",
+                                    marginRight: "11px",
+                                }}
+                            >
+                                Нийт дүн :{" "}
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                fontSize: "12px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontWeight: "600",
+                                    width: "100px",
+                                    textAlign: "right",
+                                }}
+                            >
+                                {data && data
+                                    ? formatPrice(
+                                          data.reduce(
+                                              (acc: any, obj: any) =>
+                                                  acc + obj.Discount,
+                                              0
+                                          )
+                                      )
+                                    : 0}
+                            </div>
+                            <div
+                                style={{
+                                    width: "90px",
+                                    textAlign: "right",
+                                    marginRight: "11px",
+                                }}
+                            >
+                                Хөнгөлөлт :{" "}
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                fontSize: "12px",
+                            }}
+                        >
+                            {" "}
+                            <div
+                                style={{
+                                    fontWeight: "600",
+                                    width: "100px",
+                                    textAlign: "right",
+                                }}
+                            >
+                                {data && data
+                                    ? formatPrice(
+                                          data.reduce(
+                                              (acc: any, obj: any) =>
+                                                  acc + obj.PayCash,
+                                              0
+                                          )
+                                      )
+                                    : 0}
+                            </div>
+                            <div
+                                style={{
+                                    width: "90px",
+                                    textAlign: "right",
+                                    marginRight: "11px",
+                                }}
+                            >
+                                Бэлэн мөнгө :{" "}
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                fontSize: "12px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontWeight: "600",
+                                    width: "100px",
+                                    textAlign: "right",
+                                }}
+                            >
+                                {data && data
+                                    ? formatPrice(
+                                          data.reduce(
+                                              (acc: any, obj: any) =>
+                                                  acc + obj.PayInvoice,
+                                              0
+                                          )
+                                      )
+                                    : 0}
+                            </div>
+                            <div
+                                style={{
+                                    width: "90px",
+                                    textAlign: "right",
+                                    marginRight: "11px",
+                                }}
+                            >
+                                Нэхэмжлэх :{" "}
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                fontSize: "12px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontWeight: "600",
+                                    width: "100px",
+                                    textAlign: "right",
+                                }}
+                            >
+                                {data && data
+                                    ? formatPrice(
+                                          data.reduce(
+                                              (acc: any, obj: any) =>
+                                                  acc + obj.PayBank,
+                                              0
+                                          )
+                                      )
+                                    : 0}
+                            </div>
+                            <div
+                                style={{
+                                    width: "90px",
+                                    textAlign: "right",
+                                    marginRight: "11px",
+                                }}
+                            >
+                                Картаар :
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                fontSize: "12px",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontWeight: "600",
+                                    width: "100px",
+                                    textAlign: "right",
+                                }}
+                            >
+                                {formatPrice(totalBalance)}
+                            </div>
+                            <span
+                                style={{
+                                    width: "90px",
+                                    textAlign: "right",
+                                    marginRight: "11px",
+                                }}
+                            >
+                                Төлсөн :
+                            </span>
+                        </div>
                     </Grid>
                     <Grid item xs={4}>
                         <Typography
