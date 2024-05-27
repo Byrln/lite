@@ -407,21 +407,39 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
-                                                        align="left"
+                                                        align="center"
                                                         style={{
                                                             fontSize: "10px",
                                                             padding: "2px",
                                                         }}
-                                                    ></TableCell>
+                                                    >
+                                                        {entity.Pickup > 0
+                                                            ? Number(
+                                                                  entity.Adult
+                                                              ) +
+                                                              Number(
+                                                                  entity.Child
+                                                              )
+                                                            : ""}
+                                                    </TableCell>
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
-                                                        align="left"
+                                                        align="center"
                                                         style={{
                                                             fontSize: "10px",
                                                             padding: "2px",
                                                         }}
-                                                    ></TableCell>
+                                                    >
+                                                        {entity.DropOff > 0
+                                                            ? Number(
+                                                                  entity.Adult
+                                                              ) +
+                                                              Number(
+                                                                  entity.Child
+                                                              )
+                                                            : ""}
+                                                    </TableCell>
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
