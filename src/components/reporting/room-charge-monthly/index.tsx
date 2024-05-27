@@ -31,6 +31,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
     const [rerenderKey, setRerenderKey] = useState(0);
     const [roomsData, setRoomData] = useState<any>(null);
     const [reportData, setReportData] = useState<any>(null);
+    const [dataGroupedByDate, setDataGroupedByDate] = useState<any>(null);
 
     const [search, setSearch] = useState({
         CurrDate: moment(workingDate).format("YYYY-MM-DD"),
@@ -100,7 +101,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
     useEffect(() => {
         if (data) {
             let tempValue = groupBy(data, "RoomTypeName");
-
+            setDataGroupedByDate(groupBy(data, "StayDate"));
             Object.keys(tempValue).map(
                 (key: any) => {
                     tempValue[key] =
@@ -152,7 +153,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
-
+    console.log("data", dataGroupedByDate);
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -668,6 +669,92 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                             </>
                                         )
                                     )}
+
+                                <TableRow
+                                    key={"summary"}
+                                    sx={{
+                                        "&:last-child td, &:last-child th": {
+                                            border: 0,
+                                        },
+                                    }}
+                                >
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                        }}
+                                        colSpan={2}
+                                    ></TableCell>
+                                    {dates &&
+                                        dates.map((item: any) => (
+                                            <>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontSize: "10px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    {}
+                                                    {dataGroupedByDate &&
+                                                        dataGroupedByDate[
+                                                            `${item}T00:00:00`
+                                                        ] &&
+                                                        formatPrice(
+                                                            dataGroupedByDate[
+                                                                `${item}T00:00:00`
+                                                            ].reduce(
+                                                                (
+                                                                    acc: any,
+                                                                    obj: any
+                                                                ) =>
+                                                                    acc +
+                                                                    obj.NormalRate,
+                                                                0
+                                                            )
+                                                        )}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontSize: "10px",
+                                                        padding: "2px",
+                                                    }}
+                                                ></TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontSize: "10px",
+                                                        padding: "2px",
+                                                    }}
+                                                >
+                                                    {}
+                                                    {dataGroupedByDate &&
+                                                        dataGroupedByDate[
+                                                            `${item}T00:00:00`
+                                                        ] &&
+                                                        formatPrice(
+                                                            dataGroupedByDate[
+                                                                `${item}T00:00:00`
+                                                            ].reduce(
+                                                                (
+                                                                    acc: any,
+                                                                    obj: any
+                                                                ) =>
+                                                                    acc +
+                                                                    obj.RCAmount,
+                                                                0
+                                                            )
+                                                        )}
+                                                </TableCell>
+                                            </>
+                                        ))}
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </Grid>
