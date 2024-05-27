@@ -1237,5 +1237,6 @@
     "WorkOrder_SelectStatus": "Төлөвөө сонгоно уу.",
     "Calendar": "Календар",
     "ChooseFile": "Файл сонгох",
-    "MenuDailyArrivalOrDeparture": "Ирэх болон гарах зочдын мэдээ"
+    "MenuDailyArrivalOrDeparture": "Ирэх болон гарах зочдын мэдээ",
+    "ReportRoomChargeMonthly": "Ор хоногийн тооцоо(Сараар)"
 }

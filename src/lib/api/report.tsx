@@ -28,6 +28,7 @@ export const nightAuditCheckedOutUrl = `${urlPrefix}/NightAudit/CheckedOut`;
 export const nightAuditPaymentSummaryUrl = `${urlPrefix}/NightAudit/Payment/Summary`;
 export const nightAuditPaymentDetailUrl = `${urlPrefix}/NightAudit/Payment/Detail`;
 export const cancelUrl = `${urlPrefix}/CancelReport`;
+export const monthlyRoomChargeUrl = `${urlPrefix}/Monthly/RoomCharge`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -244,6 +245,23 @@ export const StayViewSWR = (search: any) => {
         });
 
     return useSWR(stayViewUrl, fetcher);
+};
+
+export const MonthlyRoomChargeSWR = (search: any) => {
+    let tempSearch = {
+        StartDate: moment(search.CurrDate)
+            .startOf("month")
+            .format("YYYY-MM-DD"),
+        EndDate: moment(search.CurrDate).endOf("month").format("YYYY-MM-DD"),
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(monthlyRoomChargeUrl, fetcher);
 };
 
 export const AvailableRoomsSWR = (search: any) => {

@@ -274,6 +274,12 @@ const sidebarConfig = [
                 path: "/report/void-reservation",
                 oldPath: "",
             },
+            {
+                title: "Ор хоногийн тооцоо(Сараар)",
+                titleEn: "Nights report (Monthly)",
+                path: "/report/room-charge-monthly",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",
