@@ -223,6 +223,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                             fontSize: "10px",
                                         }}
+                                        rowSpan={2}
                                     >
                                         Өрөөний төрөл
                                     </TableCell>
@@ -232,6 +233,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                             fontSize: "10px",
                                         }}
+                                        rowSpan={2}
                                     >
                                         Өрөө
                                     </TableCell>
@@ -249,6 +251,46 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                             >
                                                 {moment(item).date()}
                                             </TableCell>
+                                        ))}
+                                </TableRow>
+                                <TableRow>
+                                    {dates &&
+                                        dates.map((item: any) => (
+                                            <>
+                                                <TableCell
+                                                    key={item}
+                                                    align="center"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        padding: "2px",
+                                                        fontSize: "10px",
+                                                    }}
+                                                >
+                                                    Үндсэн үнэ
+                                                </TableCell>
+                                                <TableCell
+                                                    key={item}
+                                                    align="center"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        padding: "2px",
+                                                        fontSize: "10px",
+                                                    }}
+                                                >
+                                                    Хямдрал
+                                                </TableCell>
+                                                <TableCell
+                                                    key={item}
+                                                    align="center"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        padding: "2px",
+                                                        fontSize: "10px",
+                                                    }}
+                                                >
+                                                    Орлого
+                                                </TableCell>
+                                            </>
                                         ))}
                                 </TableRow>
                             </TableHead>
