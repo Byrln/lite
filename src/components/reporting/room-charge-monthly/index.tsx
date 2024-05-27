@@ -153,7 +153,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
-    console.log("data", dataGroupedByDate);
+
     return (
         <>
             <div style={{ display: "flex" }}>
