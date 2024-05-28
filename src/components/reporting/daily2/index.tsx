@@ -290,6 +290,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         fontWeight: "bold",
                                         fontSize: "11px",
                                         padding: "2px 2px",
+                                        width: "50px",
                                     }}
                                 >
                                     Rooms
@@ -325,6 +326,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         fontWeight: "bold",
                                         fontSize: "11px",
                                         padding: "2px 2px",
+                                        width: "50px",
                                     }}
                                 >
                                     Нэмэлт ор
@@ -484,6 +486,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                             "11px",
                                                                         padding:
                                                                             "2px 2px",
+                                                                        width: "50px",
                                                                     }}
                                                                 >
                                                                     {
@@ -683,6 +686,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                                             "11px",
                                                                         padding:
                                                                             "2px 2px",
+                                                                        width: "50px",
                                                                     }}
                                                                 >
                                                                     {reportData[
@@ -690,7 +694,21 @@ const Folio = ({ title, workingDate }: any) => {
                                                                             key
                                                                         ][key2]
                                                                             .RoomNo
-                                                                    ]
+                                                                    ] &&
+                                                                    reportData[
+                                                                        roomsData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomNo
+                                                                    ][0] &&
+                                                                    reportData[
+                                                                        roomsData[
+                                                                            key
+                                                                        ][key2]
+                                                                            .RoomNo
+                                                                    ][0]
+                                                                        .ExtraBed >
+                                                                        0
                                                                         ? reportData[
                                                                               roomsData[
                                                                                   key
