@@ -385,9 +385,12 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                             width: "50px",
                                                         }}
                                                     >
-                                                        {renderIcons(
-                                                            entity.GuestCnt
-                                                        )}
+                                                        {entity.Breakfast ==
+                                                        true
+                                                            ? renderIcons(
+                                                                  entity.GuestCnt
+                                                              )
+                                                            : renderIcons(0)}
                                                     </TableCell>
                                                     <TableCell
                                                         component="th"
