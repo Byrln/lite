@@ -112,8 +112,12 @@ const Breakfast = ({ title, workingDate }: any) => {
     const renderIcons = (guestCnt: any) => {
         const stars: any[] = [];
 
-        for (let i = 0; i < guestCnt; i++) {
-            stars.push(<Iconify icon="mingcute:round-line" width="12px" />);
+        for (let i = 0; i < 3; i++) {
+            if (i < guestCnt) {
+                stars.push(<Iconify icon="mingcute:round-line" width="12px" />);
+            } else {
+                stars.push(<Iconify icon="ic:round-lens" width="12px" />);
+            }
         }
 
         return stars;

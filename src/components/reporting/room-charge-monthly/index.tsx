@@ -684,9 +684,12 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                         style={{
                                             fontSize: "10px",
                                             padding: "2px",
+                                            fontWeight: "bold",
                                         }}
                                         colSpan={2}
-                                    ></TableCell>
+                                    >
+                                        Нийт
+                                    </TableCell>
                                     {dates &&
                                         dates.map((item: any) => (
                                             <>
@@ -696,6 +699,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                     style={{
                                                         fontSize: "10px",
                                                         padding: "2px",
+                                                        fontWeight: "bold",
                                                     }}
                                                 >
                                                     {}
@@ -723,6 +727,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                     style={{
                                                         fontSize: "10px",
                                                         padding: "2px",
+                                                        fontWeight: "bold",
                                                     }}
                                                 ></TableCell>
                                                 <TableCell
@@ -731,6 +736,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                     style={{
                                                         fontSize: "10px",
                                                         padding: "2px",
+                                                        fontWeight: "bold",
                                                     }}
                                                 >
                                                     {}
@@ -751,6 +757,53 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                                 0
                                                             )
                                                         )}
+                                                </TableCell>
+                                            </>
+                                        ))}
+                                </TableRow>
+                                <TableRow
+                                    key={"summary"}
+                                    sx={{
+                                        "&:last-child td, &:last-child th": {
+                                            border: 0,
+                                        },
+                                    }}
+                                >
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                        colSpan={2}
+                                    >
+                                        Нийт тоо
+                                    </TableCell>
+                                    {dates &&
+                                        dates.map((item: any) => (
+                                            <>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontSize: "10px",
+                                                        padding: "2px",
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    colSpan={3}
+                                                    align="center"
+                                                >
+                                                    {}
+                                                    {dataGroupedByDate &&
+                                                        dataGroupedByDate[
+                                                            `${item}T00:00:00`
+                                                        ] &&
+                                                        dataGroupedByDate &&
+                                                        dataGroupedByDate[
+                                                            `${item}T00:00:00`
+                                                        ].length}
                                                 </TableCell>
                                             </>
                                         ))}
