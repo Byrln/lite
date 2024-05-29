@@ -7,7 +7,6 @@ import {
     Table,
     TableBody,
     TableCell,
-    TableContainer,
     TableHead,
     TableRow,
     Box,
@@ -21,9 +20,7 @@ import Iconify from "components/iconify/iconify";
 
 import { ReportAPI, breakfastUrl } from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
-import { formatPrice } from "lib/utils/helpers";
 import CustomSearch from "components/common/custom-search";
-import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
 
 const ArrivalDeparture = ({ title, workingDate }: any) => {
@@ -61,11 +58,6 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
             }
 
             if (response) {
-                // response.sort((a: any, b: any) => {
-                //     if (Number(a.RoomNo) < Number(b.RoomNo)) return -1;
-                //     if (Number(a.RoomNo) > Number(b.RoomNo)) return 1;
-                //     return 0;
-                // });
                 const groupedData = response.reduce((acc: any, item: any) => {
                     const existingItem = acc.find(
                         (i: any) =>
@@ -95,8 +87,6 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
     useEffect(() => {
         fetchDatas();
     }, [search, ReportType]);
-
-    // const { data, error } = BreakfastSWR(search, workingDate);
 
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
