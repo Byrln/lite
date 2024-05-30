@@ -286,6 +286,12 @@ const sidebarConfig = [
                 path: "/report/extra-charge/detailed",
                 oldPath: "",
             },
+            {
+                title: "Нэмэлт үйлчилгээ (Хураангуй)",
+                titleEn: "Extra Charges (Summary)",
+                path: "/report/extra-charge/summary",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",

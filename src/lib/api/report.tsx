@@ -30,6 +30,7 @@ export const nightAuditPaymentDetailUrl = `${urlPrefix}/NightAudit/Payment/Detai
 export const cancelUrl = `${urlPrefix}/CancelReport`;
 export const monthlyRoomChargeUrl = `${urlPrefix}/Monthly/RoomCharge`;
 export const extraChargeDetailedUrl = `${urlPrefix}/ExtraCharge/Detail`;
+export const extraChargeSummaryUrl = `${urlPrefix}/ExtraCharge/Summary`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -418,6 +419,27 @@ export const ReportAPI = {
         };
 
         const res = await axios.post(`${extraChargeDetailedUrl}`, tempSearch);
+
+        return res.data.JsonData;
+    },
+
+    extraChargeSummary: async (search: any) => {
+        console.log("search", search);
+        let tempSearch = {
+            StartDate: `${search.StartDate} 00:00:00`,
+            EndDate: `${search.EndDate} 23:59:59`,
+            RoomChargeTypeGroupID: search.RoomChargeTypeGroupID
+                ? search.RoomChargeTypeGroupID
+                : null,
+            RoomChargeTypeID: search.RoomChargeTypeID
+                ? search.RoomChargeTypeID
+                : null,
+            RoomTypeID: search.RoomTypeID ? search.RoomTypeID : null,
+            RoomID: search.RoomID ? search.RoomID : null,
+            UserID: search.UserID ? search.UserID : null,
+        };
+
+        const res = await axios.post(`${extraChargeSummaryUrl}`, tempSearch);
 
         return res.data.JsonData;
     },

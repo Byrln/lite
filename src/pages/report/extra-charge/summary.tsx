@@ -1,39 +1,62 @@
+import { useEffect, useState } from "react";
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
 
 import Page from "components/page";
-
-const title = "Extra Charge Summary";
+import ExtraChargeSummary from "components/reporting/extra-charge/summary";
+import { FrontOfficeAPI } from "lib/api/front-office";
+import { useIntl } from "react-intl";
 
 // @ts-ignore
-const Index = () => (
-    <>
-        <Head>
-            <title>{title}</title>
-        </Head>
+const Index = () => {
+    const intl = useIntl();
 
-        <Page>
-            <Container maxWidth="xl">
-                <Box sx={{ pb: 1 }}>
-                    <Typography variant="h6">{title}</Typography>
-                </Box>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <iframe
-                            width={"100%"}
-                            height={600}
-                            // @ts-ignore
-                            onLoad="this.width=screen.width;this.height=screen.height;" // @ts-ignore
-                            src={`https://reporting.horecasoft.mn/ReportServer/Pages/ReportViewer.aspx?%2fExtra+Charge+Summary&rs:Command=Render&rs:Embed=True&DatabaseName=HotelDB_${localStorage.getItem(
-                                "hotelId"
-                            )}`}
-                            type="application/html"
-                        />
+    const title = intl.formatMessage({
+        id: "MenuReportExtraChargeSummary",
+    });
+
+    const [workingDate, setWorkingDate]: any = useState(null);
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
+
+    useEffect(() => {
+        fetchDatas();
+    }, []);
+
+    const fetchDatas = async () => {
+        let response = await FrontOfficeAPI.workingDate();
+        if (response.status == 200) {
+            setWorkingDate(response.workingDate[0].WorkingDate);
+        }
+    };
+    return (
+        <>
+            <Head>
+                <title>{title}</title>
+            </Head>
+
+            <Page>
+                <Container maxWidth="xl">
+                    <Box sx={{ pb: 1 }}>
+                        <Typography variant="h6">{title}</Typography>
+                    </Box>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            {workingDate && (
+                                <ExtraChargeSummary
+                                    title={title}
+                                    workingDate={workingDate}
+                                />
+                            )}
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Container>
-        </Page>
-    </>
-);
+                </Container>
+            </Page>
+        </>
+    );
+};
 
 export default Index;
