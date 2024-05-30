@@ -32,8 +32,10 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
     const [ReportType, setReportType] = useState<any>("arrival");
 
     const [search, setSearch] = useState<any>({
-        CurrDate: moment(dateStringToObj(workingDate)),
-        ReportType: "arrival",
+        StartDate: moment(dateStringToObj(workingDate)).format("YYYY-MM-DD"),
+        EndDate: moment(dateStringToObj(workingDate))
+            .add(1, "months")
+            .format("YYYY-MM-DD"),
     });
 
     const groupBy = (items: any, key: any) =>
@@ -48,12 +50,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
     const fetchDatas = async () => {
         try {
             let response: any;
-            response = await ReportAPI.extraChargeDetailed({
-                StartDate: moment(search.CurrDate).format("YYYY-MM-DD"),
-                EndDate: moment(search.CurrDate)
-                    .add(1, "months")
-                    .format("YYYY-MM-DD"),
-            });
+            response = await ReportAPI.extraChargeDetailed(search);
 
             let tempValue = groupBy(response, "RoomChargeGroupName");
             setGroupedData(tempValue);
@@ -100,25 +97,24 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
         content: () => componentRef.current,
     });
     const validationSchema = yup.object().shape({
-        CurrDate: yup.string().nullable(),
-        Reportype: yup.string().nullable(),
+        StartDate: yup.string().nullable(),
+        EndDate: yup.string().nullable(),
+        RoomChargeTypeGroupID: yup.string().nullable(),
+        RoomChargeTypeID: yup.string().nullable(),
+        RoomTypeID: yup.string().nullable(),
+        RoomID: yup.string().nullable(),
+        UserID: yup.string().nullable(),
     });
     const formOptions = {
         defaultValues: {
-            CurrDate: moment(dateStringToObj(workingDate)).startOf("day"),
-            Reportype: "arrival",
+            StartDate: moment(dateStringToObj(workingDate)).format(
+                "YYYY-MM-DD"
+            ),
+            EndDate: moment(dateStringToObj(workingDate))
+                .add(1, "months")
+                .format("YYYY-MM-DD"),
         },
         resolver: yupResolver(validationSchema),
-    };
-
-    const renderIcons = (guestCnt: any) => {
-        const stars: any[] = [];
-
-        for (let i = 0; i < guestCnt; i++) {
-            stars.push(<Iconify icon="mingcute:round-line" width="12px" />);
-        }
-
-        return stars;
     };
 
     const {
@@ -182,8 +178,12 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                             {" "}
                             Тайлант үе :{" "}
                         </span>{" "}
-                        {search.CurrDate &&
-                            `${moment(search.CurrDate).format("YYYY.MM.DD")}`}
+                        {search.StartDate &&
+                            `(${moment(search.StartDate).format(
+                                "YYYY.MM.DD"
+                            )}  -  ${moment(search.EndDate).format(
+                                "YYYY.MM.DD"
+                            )})`}
                     </Typography>
                 </Box>
 

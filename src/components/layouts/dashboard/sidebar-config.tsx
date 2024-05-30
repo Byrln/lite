@@ -280,6 +280,12 @@ const sidebarConfig = [
                 path: "/report/room-charge-monthly",
                 oldPath: "",
             },
+            {
+                title: "Нэмэлт үйлчилгээ (Дэлгэрэнгүй)",
+                titleEn: "Extra Charges (Detailed)",
+                path: "/report/extra-charge/detailed",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",

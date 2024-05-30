@@ -402,13 +402,10 @@ export const ReportAPI = {
     },
 
     extraChargeDetailed: async (search: any) => {
+        console.log("search", search);
         let tempSearch = {
-            StartDate: moment(search.StartDate, "YYYY-MM-DD")
-                .format("YYYY-MM-DD")
-                .toString(),
-            EndDate: moment(search.EndDate, "YYYY-MM-DD")
-                .format("YYYY-MM-DD")
-                .toString(),
+            StartDate: `${search.StartDate} 00:00:00`,
+            EndDate: `${search.EndDate} 23:59:59`,
             RoomChargeTypeGroupID: search.RoomChargeTypeGroupID
                 ? search.RoomChargeTypeGroupID
                 : null,
