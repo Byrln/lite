@@ -298,6 +298,12 @@ const sidebarConfig = [
                 path: "/report/reception",
                 oldPath: "",
             },
+            {
+                title: "Нэмэлт үйлчилгээ ба Мини бар",
+                titleEn: "Extra Charges and Mini Bar",
+                path: "/report/extra-charge/reception",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",

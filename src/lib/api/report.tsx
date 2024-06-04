@@ -40,6 +40,7 @@ export const receptionRoomChargeUrl = `${urlPrefix}/Reception/RoomCharge`;
 export const receptionExtraChargeUrl = `${urlPrefix}/Reception/ExtraCharge`;
 export const receptionDueOutUrl = `${urlPrefix}/Reception/DueOut`;
 export const receptionCancelVoidNoShowUrl = `${urlPrefix}/Reception/CancelVoidNoShow`;
+export const extraChargeSessionUrl = `${urlPrefix}/ExtraCharge/Session`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -521,6 +522,13 @@ export const ReportAPI = {
 
     receptionCancelVoidNoShow: async (SessionID: any) => {
         const res = await axios.post(`${receptionCancelVoidNoShowUrl}`, {
+            SessionID: SessionID,
+        });
+
+        return res.data.JsonData;
+    },
+    extraChargeSession: async (SessionID: any) => {
+        const res = await axios.post(`${extraChargeSessionUrl}`, {
             SessionID: SessionID,
         });
 
