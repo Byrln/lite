@@ -149,7 +149,7 @@ const CashierList = ({ title }: any) => {
     const [summary, setSummary] = useState(null);
     const { handleModal }: any = useContext(ModalContext);
 
-    const { data: listData, error: listError } = CashierSessionListSWR();
+    const { data: listData, error: listError } = CashierSessionListSWR({});
     const { data, error } = CashierSessionSummarySWR(244);
 
     // const { data: detailData, error: detailError } =

@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
-import { useIntl } from "react-intl";
 
-import MonthlyRevenue from "components/reporting/monthly-revenue";
-import { FrontOfficeAPI } from "lib/api/front-office";
 import Page from "components/page";
+import Reception from "components/reporting/reception";
+import { FrontOfficeAPI } from "lib/api/front-office";
+import { useIntl } from "react-intl";
 
 // @ts-ignore
 const Index = () => {
     const intl = useIntl();
 
     const title = intl.formatMessage({
-        id: "MenuReportMonthlyRevenue",
+        id: "MenuReportReception",
     });
 
     const [workingDate, setWorkingDate]: any = useState(null);
@@ -42,7 +42,7 @@ const Index = () => {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             {workingDate && (
-                                <MonthlyRevenue
+                                <Reception
                                     title={title}
                                     workingDate={workingDate}
                                 />

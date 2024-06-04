@@ -91,7 +91,7 @@ const TransactionEdit = () => {
     const [customerAnchorEl, setCustomerAnchorEl] = useState(null);
     const [activeSessionID, setActiveSessionID] = useState<any>(null);
 
-    const { data: listData, error: listError } = CashierSessionListSWR();
+    const { data: listData, error: listError } = CashierSessionListSWR({});
 
     const handleGuestClick = (event: any) => {
         setGuestAnchorEl(event.currentTarget);

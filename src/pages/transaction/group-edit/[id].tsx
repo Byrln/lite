@@ -76,7 +76,7 @@ const TransactionEdit = () => {
         CashierSessionActiveSWR();
     const [activeSessionID, setActiveSessionID] = useState<any>(null);
 
-    const { data: listData, error: listError } = CashierSessionListSWR();
+    const { data: listData, error: listError } = CashierSessionListSWR({});
 
     function a11yProps(index: number) {
         return {

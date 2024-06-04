@@ -109,7 +109,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         RoomTypeID: searchRoomTypeID,
     });
     const { data: rooms, error: roomSwrError } = RoomSWR({});
-    const { data: listData, error: listError } = CashierSessionListSWR();
+    const { data: listData, error: listError } = CashierSessionListSWR({});
 
     const { data: cashierActive, error: cashierActiveError } =
         CashierSessionActiveSWR();

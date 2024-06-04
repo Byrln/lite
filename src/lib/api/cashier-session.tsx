@@ -8,9 +8,9 @@ export const detailUrl = `${urlPrefix}/Detail`;
 export const summaryUrl = `${urlPrefix}/Summary`;
 export const activeUrl = `${urlPrefix}/Active`;
 
-export const CashierSessionListSWR = () => {
+export const CashierSessionListSWR = (search: any) => {
     const fetcher = async (url: any) =>
-        await axios.post(url).then((res: any) => res.data.JsonData);
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
 };
@@ -41,6 +41,12 @@ export const CashierSessionDetailSWR = (id: any) => {
 };
 
 export const CashierSessionAPI = {
+    list: async (search: any) => {
+        const res = await axios.post(listUrl, search);
+
+        return res.data.JsonData;
+    },
+
     get: async (id: any) => {
         const values = {
             SessionID: id,

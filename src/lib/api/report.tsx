@@ -31,6 +31,15 @@ export const cancelUrl = `${urlPrefix}/CancelReport`;
 export const monthlyRoomChargeUrl = `${urlPrefix}/Monthly/RoomCharge`;
 export const extraChargeDetailedUrl = `${urlPrefix}/ExtraCharge/Detail`;
 export const extraChargeSummaryUrl = `${urlPrefix}/ExtraCharge/Summary`;
+export const monthlyRevenueUrl = `${urlPrefix}/Monthly/Revenue`;
+export const receptionCheckedInUrl = `${urlPrefix}/Reception/CheckedIn`;
+export const receptionCheckedOutUrl = `${urlPrefix}/Reception/CheckedOut`;
+export const receptionPaymentSummaryUrl = `${urlPrefix}/Reception/Payment/Summary`;
+export const receptionPaymentDetailUrl = `${urlPrefix}/Reception/Payment/Detail`;
+export const receptionRoomChargeUrl = `${urlPrefix}/Reception/RoomCharge`;
+export const receptionExtraChargeUrl = `${urlPrefix}/Reception/ExtraCharge`;
+export const receptionDueOutUrl = `${urlPrefix}/Reception/DueOut`;
+export const receptionCancelVoidNoShowUrl = `${urlPrefix}/Reception/CancelVoidNoShow`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -403,7 +412,6 @@ export const ReportAPI = {
     },
 
     extraChargeDetailed: async (search: any) => {
-        console.log("search", search);
         let tempSearch = {
             StartDate: `${search.StartDate} 00:00:00`,
             EndDate: `${search.EndDate} 23:59:59`,
@@ -424,7 +432,6 @@ export const ReportAPI = {
     },
 
     extraChargeSummary: async (search: any) => {
-        console.log("search", search);
         let tempSearch = {
             StartDate: `${search.StartDate} 00:00:00`,
             EndDate: `${search.EndDate} 23:59:59`,
@@ -440,6 +447,82 @@ export const ReportAPI = {
         };
 
         const res = await axios.post(`${extraChargeSummaryUrl}`, tempSearch);
+
+        return res.data.JsonData;
+    },
+
+    monthlyRevenue: async (search: any) => {
+        let tempSearch = {
+            Year: moment(search.CurrDate).year(),
+            Month: moment(search.CurrDate).month(),
+            Lang: "ENG",
+        };
+
+        const res = await axios.post(`${monthlyRevenueUrl}`, tempSearch);
+
+        return res.data.JsonData;
+    },
+
+    receptionPaymentSummary: async (SessionID: any) => {
+        const res = await axios.post(`${receptionPaymentSummaryUrl}`, {
+            SessionID: SessionID,
+        });
+
+        return res.data.JsonData;
+    },
+
+    receptionPaymentDetail: async (SessionID: any) => {
+        const res = await axios.post(`${receptionPaymentDetailUrl}`, {
+            SessionID: SessionID,
+        });
+
+        return res.data.JsonData;
+    },
+
+    receptionRoomCharge: async (SessionID: any) => {
+        const res = await axios.post(`${receptionRoomChargeUrl}`, {
+            SessionID: SessionID,
+        });
+
+        return res.data.JsonData;
+    },
+
+    receptionCheckedIn: async (SessionID: any) => {
+        const res = await axios.post(`${receptionCheckedInUrl}`, {
+            SessionID: SessionID,
+        });
+
+        return res.data.JsonData;
+    },
+
+    receptionCheckedOut: async (SessionID: any) => {
+        const res = await axios.post(`${receptionCheckedOutUrl}`, {
+            SessionID: SessionID,
+        });
+
+        return res.data.JsonData;
+    },
+
+    receptionExtraCharge: async (SessionID: any) => {
+        const res = await axios.post(`${receptionExtraChargeUrl}`, {
+            SessionID: SessionID,
+        });
+
+        return res.data.JsonData;
+    },
+
+    receptionDueOut: async (SessionID: any) => {
+        const res = await axios.post(`${receptionDueOutUrl}`, {
+            SessionID: SessionID,
+        });
+
+        return res.data.JsonData;
+    },
+
+    receptionCancelVoidNoShow: async (SessionID: any) => {
+        const res = await axios.post(`${receptionCancelVoidNoShowUrl}`, {
+            SessionID: SessionID,
+        });
 
         return res.data.JsonData;
     },

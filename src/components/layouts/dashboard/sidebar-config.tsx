@@ -292,6 +292,12 @@ const sidebarConfig = [
                 path: "/report/extra-charge/summary",
                 oldPath: "",
             },
+            {
+                title: "Ресепшний гарааны тайлан",
+                titleEn: "Day End Report (Reception)",
+                path: "/report/reception",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",
