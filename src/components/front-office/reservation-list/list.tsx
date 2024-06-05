@@ -1,11 +1,12 @@
 // import { format } from "date-fns";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
 import { format } from "date-fns";
 import { useIntl } from "react-intl";
+import { useRouter } from "next/router";
 
 import CustomTable from "components/common/custom-table";
 import CustomSearch from "components/common/custom-search";
@@ -16,6 +17,17 @@ import ReservationEdit from "components/front-office/reservation-list/edit";
 import { ModalContext } from "lib/context/modal";
 
 const DeparturedListList = ({ title }: any) => {
+    const router = useRouter();
+    const { StatusGroup, StartDate, EndDate } = router.query;
+    const [rerenderKey, setRerenderKey] = useState(0);
+    console.log("StatusGroup", StatusGroup);
+    console.log("StartDate", StartDate);
+    console.log("EndDate", EndDate);
+
+    useEffect(() => {
+        setRerenderKey((prevKey) => prevKey + 1);
+    }, [StatusGroup, StartDate, EndDate]);
+
     const intl = useIntl();
 
     const { handleModal }: any = useContext(ModalContext);
@@ -149,7 +161,9 @@ const DeparturedListList = ({ title }: any) => {
     });
     const formOptions = {
         defaultValues: {
-            StatusGroup: 1,
+            StatusGroup: StatusGroup ? StatusGroup : 1,
+            StartDate: StartDate ? StartDate : null,
+            EndDate: EndDate ? EndDate : null,
         },
         resolver: yupResolver(validationSchema),
     };
@@ -161,43 +175,49 @@ const DeparturedListList = ({ title }: any) => {
         control,
     } = useForm(formOptions);
 
-    const [search, setSearch] = useState({ StatusGroup: 1 });
+    const [search, setSearch] = useState({
+        StatusGroup: StatusGroup ? StatusGroup : 1,
+        StartDate: StartDate ? StartDate : null,
+        EndDate: EndDate ? EndDate : null,
+    });
 
     const { data, error } = ReservationSWR(search);
 
     return (
         <>
-            <CustomTable
-                columns={columns}
-                data={data}
-                error={error}
-                api={ReservationAPI}
-                hasNew={true}
-                hasUpdate={false}
-                hasDelete={false}
-                hasShow={false}
-                id="TransactionID"
-                listUrl={listUrl}
-                modalTitle={title}
-                modalContent={<NewEdit />}
-                excelName={title}
-                search={
-                    <CustomSearch
-                        listUrl={listUrl}
-                        search={search}
-                        setSearch={setSearch}
-                        handleSubmit={handleSubmit}
-                        reset={reset}
-                    >
-                        <Search
-                            register={register}
-                            errors={errors}
-                            control={control}
+            {rerenderKey && (
+                <CustomTable
+                    columns={columns}
+                    data={data}
+                    error={error}
+                    api={ReservationAPI}
+                    hasNew={true}
+                    hasUpdate={false}
+                    hasDelete={false}
+                    hasShow={false}
+                    id="TransactionID"
+                    listUrl={listUrl}
+                    modalTitle={title}
+                    modalContent={<NewEdit />}
+                    excelName={title}
+                    search={
+                        <CustomSearch
+                            listUrl={listUrl}
+                            search={search}
+                            setSearch={setSearch}
+                            handleSubmit={handleSubmit}
                             reset={reset}
-                        />
-                    </CustomSearch>
-                }
-            />
+                        >
+                            <Search
+                                register={register}
+                                errors={errors}
+                                control={control}
+                                reset={reset}
+                            />
+                        </CustomSearch>
+                    }
+                />
+            )}
         </>
     );
 };

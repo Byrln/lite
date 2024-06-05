@@ -26,6 +26,8 @@ import {
 } from "@mui/icons-material";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import Link from "next/link";
+import moment from "moment";
 
 import { DashboardSWR } from "lib/api/dashboard";
 
@@ -383,6 +385,9 @@ const Dashboard = ({ workingDate }: any) => {
                                                         isSmall={index === 0}
                                                         isCharges={index === 2}
                                                         list={element}
+                                                        workingDate={
+                                                            workingDate
+                                                        }
                                                     />
                                                 </Grid>
                                             )
@@ -399,7 +404,7 @@ const Dashboard = ({ workingDate }: any) => {
 
 export default Dashboard;
 
-function DashboardCard({ item, isSmall, isCharges, list }: any) {
+function DashboardCard({ item, isSmall, isCharges, list, workingDate }: any) {
     const iconStyle = {
         color: "#FFFFFF",
         fontSize: "16px",
@@ -411,76 +416,95 @@ function DashboardCard({ item, isSmall, isCharges, list }: any) {
                 return {
                     icon: <Sell sx={iconStyle} />,
                     color: "#EE5C78",
+                    link: "/front-office/reservation-list",
                 };
             case "Sold Rooms":
                 return {
                     icon: <Check sx={iconStyle} />,
                     color: "#7856DE",
+                    link: "/front-office/reservation-list",
                 };
             case "Available Rooms":
                 return {
                     icon: <Lock sx={iconStyle} />,
                     color: "#55C7EB",
+                    link: "/front-office/reservation-list",
                 };
             case "Checked Out":
                 return {
                     icon: <Logout sx={iconStyle} />,
                     color: "#000000",
+                    link: `/front-office/reservation-list?StatusGroup=3&StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(1, "day")
+                        .format("YYYY-MM-DD")}`,
                 };
             case "Pending Reservations":
                 return {
                     icon: <HourglassEmpty sx={iconStyle} />,
                     color: "#FF9F43",
+                    link: "/front-office/reservation-list",
                 };
             case "Unconfirmed Reservations":
                 return {
                     icon: <Pending sx={iconStyle} />,
                     color: "#EE5C78",
+                    link: "/front-office/reservation-list",
                 };
             case "Due Out":
                 return {
                     icon: <Logout sx={iconStyle} />,
                     color: "#00CFE8",
+                    link: "/front-office/reservation-list",
                 };
             case "Deleted Bookings":
                 return {
                     icon: <Delete sx={iconStyle} />,
                     color: "#EE5C78",
+                    link: "/front-office/reservation-list",
                 };
             case "Void Bookings":
                 return {
                     icon: <Sell sx={iconStyle} />,
                     color: "#7856DE",
+                    link: "/front-office/reservation-list",
                 };
             case "Cancelled Bookings":
                 return {
                     icon: <Close sx={iconStyle} />,
                     color: "#EE5C78",
+                    link: "/front-office/reservation-list",
                 };
             case "No Show":
                 return {
                     icon: <PersonOff sx={iconStyle} />,
                     color: "#000000",
+                    link: "/front-office/reservation-list",
                 };
             case "Blocked":
                 return {
                     icon: <DoNotDisturb sx={iconStyle} />,
                     color: "#EE5C78",
+                    link: "/front-office/reservation-list",
                 };
             case "Room Charges":
                 return {
                     icon: <Key sx={iconStyle} />,
                     color: "#7856DE",
+                    link: "/front-office/reservation-list",
                 };
             case "Extra Charges":
                 return {
                     icon: <CreditCard sx={iconStyle} />,
                     color: "#00CFE8",
+                    link: "/front-office/reservation-list",
                 };
             case "Discount":
                 return {
                     icon: <Discount sx={iconStyle} />,
                     color: "#28C76F",
+                    link: "/front-office/reservation-list",
                 };
         }
     }
@@ -551,86 +575,40 @@ function DashboardCard({ item, isSmall, isCharges, list }: any) {
 
     return (
         <Card sx={{ padding: "1rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                <div
-                    style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "100%",
-                        backgroundColor: currentItem?.color,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                    }}
-                >
-                    {currentItem?.icon}
-                </div>
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "1rem",
-                        flex: 1,
-                    }}
-                >
-                    <Typography
-                        sx={{
-                            fontSize: "16px",
-                            fontWeight: 600,
-                            width: "172px",
+            <Link //@ts-ignore
+                href={currentItem?.link}
+                passHref
+            >
+                <a style={{ textDecoration: "unset", color: "black" }}>
+                    {" "}
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "16px",
                         }}
                     >
-                        {item.ParameterName}
-                    </Typography>
-                    <Typography
-                        sx={{
-                            fontSize: "20px",
-                            fontWeight: 600,
-                        }}
-                    >
-                        {isCharges
-                            ? fNumber(item.ParameterValue) + "₮"
-                            : item.ParameterValue}
-                    </Typography>
-                </div>
-                <div
-                    style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "100%",
-                        backgroundColor: "#F8F9FA",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                    }}
-                >
-                    <ChevronRight sx={{ fontSize: "16px" }} />
-                </div>
-            </div>
-            {isCharges && item.ParameterName === "Extra Charges" && (
-                <div
-                    style={{
-                        marginTop: "16px",
-                        borderTop: "1px solid #E6E8EE",
-                        paddingTop: "16px",
-                        paddingLeft: "56px",
-                        flexDirection: "column",
-                        display: "flex",
-                        gap: "16px",
-                    }}
-                >
-                    {extraCharges.map((item: any) => (
+                        <div
+                            style={{
+                                width: "40px",
+                                height: "40px",
+                                borderRadius: "100%",
+                                backgroundColor: currentItem?.color,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexShrink: 0,
+                            }}
+                        >
+                            {currentItem?.icon}
+                        </div>
                         <div
                             style={{
                                 display: "flex",
                                 alignItems: "center",
                                 gap: "1rem",
                                 flex: 1,
-                                color: "#888A99",
                             }}
-                            key={item.ParameterID}
                         >
                             <Typography
                                 sx={{
@@ -652,9 +630,69 @@ function DashboardCard({ item, isSmall, isCharges, list }: any) {
                                     : item.ParameterValue}
                             </Typography>
                         </div>
-                    ))}
-                </div>
-            )}
+                        <div
+                            style={{
+                                width: "40px",
+                                height: "40px",
+                                borderRadius: "100%",
+                                backgroundColor: "#F8F9FA",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexShrink: 0,
+                            }}
+                        >
+                            <ChevronRight sx={{ fontSize: "16px" }} />
+                        </div>
+                    </div>
+                    {isCharges && item.ParameterName === "Extra Charges" && (
+                        <div
+                            style={{
+                                marginTop: "16px",
+                                borderTop: "1px solid #E6E8EE",
+                                paddingTop: "16px",
+                                paddingLeft: "56px",
+                                flexDirection: "column",
+                                display: "flex",
+                                gap: "16px",
+                            }}
+                        >
+                            {extraCharges.map((item: any) => (
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "1rem",
+                                        flex: 1,
+                                        color: "#888A99",
+                                    }}
+                                    key={item.ParameterID}
+                                >
+                                    <Typography
+                                        sx={{
+                                            fontSize: "16px",
+                                            fontWeight: 600,
+                                            width: "172px",
+                                        }}
+                                    >
+                                        {item.ParameterName}
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            fontSize: "20px",
+                                            fontWeight: 600,
+                                        }}
+                                    >
+                                        {isCharges
+                                            ? fNumber(item.ParameterValue) + "₮"
+                                            : item.ParameterValue}
+                                    </Typography>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </a>
+            </Link>
         </Card>
     );
 }

@@ -1,11 +1,15 @@
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
 import { useIntl } from "react-intl";
+import { useRouter } from "next/router";
 
 import Page from "components/page";
 import RevervationList from "components/front-office/reservation-list/list";
 
 const Index = () => {
+    const router = useRouter();
+    const { StatusGroup, StartDate, EndDate } = router.query;
+
     const intl = useIntl();
 
     const title = intl.formatMessage({
