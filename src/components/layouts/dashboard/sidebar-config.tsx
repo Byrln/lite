@@ -304,6 +304,12 @@ const sidebarConfig = [
                 path: "/report/extra-charge/reception",
                 oldPath: "",
             },
+            {
+                title: "Гарсан",
+                titleEn: "Checked Out",
+                path: "/report/checked-out",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",

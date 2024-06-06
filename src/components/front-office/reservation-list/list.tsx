@@ -161,7 +161,7 @@ const DeparturedListList = ({ title }: any) => {
     });
     const formOptions = {
         defaultValues: {
-            StatusGroup: StatusGroup ? StatusGroup : 1,
+            StatusGroup: StatusGroup ? StatusGroup : "1",
             StartDate: StartDate ? StartDate : null,
             EndDate: EndDate ? EndDate : null,
         },
@@ -176,7 +176,7 @@ const DeparturedListList = ({ title }: any) => {
     } = useForm(formOptions);
 
     const [search, setSearch] = useState({
-        StatusGroup: StatusGroup ? StatusGroup : 1,
+        StatusGroup: StatusGroup ? StatusGroup : "1",
         StartDate: StartDate ? StartDate : null,
         EndDate: EndDate ? EndDate : null,
     });
