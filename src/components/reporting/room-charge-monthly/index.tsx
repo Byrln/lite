@@ -670,97 +670,103 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                         )
                                     )}
 
-                                <TableRow
-                                    key={"summary"}
-                                    sx={{
-                                        "&:last-child td, &:last-child th": {
-                                            border: 0,
-                                        },
-                                    }}
-                                >
-                                    <TableCell
-                                        component="th"
-                                        scope="row"
-                                        style={{
-                                            fontSize: "10px",
-                                            padding: "2px",
-                                            fontWeight: "bold",
+                                {roomTypes && roomsData && reportData ? (
+                                    <TableRow
+                                        key={"summary"}
+                                        sx={{
+                                            "&:last-child td, &:last-child th":
+                                                {
+                                                    border: 0,
+                                                },
                                         }}
-                                        colSpan={2}
                                     >
-                                        Нийт
-                                    </TableCell>
-                                    {dates &&
-                                        dates.map((item: any) => (
-                                            <>
-                                                <TableCell
-                                                    component="th"
-                                                    scope="row"
-                                                    style={{
-                                                        fontSize: "10px",
-                                                        padding: "2px",
-                                                        fontWeight: "bold",
-                                                    }}
-                                                >
-                                                    {}
-                                                    {dataGroupedByDate &&
-                                                        dataGroupedByDate[
-                                                            `${item}T00:00:00`
-                                                        ] &&
-                                                        formatPrice(
+                                        <TableCell
+                                            component="th"
+                                            scope="row"
+                                            style={{
+                                                fontSize: "10px",
+                                                padding: "2px",
+                                                fontWeight: "bold",
+                                            }}
+                                            colSpan={2}
+                                        >
+                                            Нийт
+                                        </TableCell>
+                                        {dates &&
+                                            dates.map((item: any) => (
+                                                <>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        {}
+                                                        {dataGroupedByDate &&
                                                             dataGroupedByDate[
                                                                 `${item}T00:00:00`
-                                                            ].reduce(
-                                                                (
-                                                                    acc: any,
-                                                                    obj: any
-                                                                ) =>
-                                                                    acc +
-                                                                    obj.NormalRate,
-                                                                0
-                                                            )
-                                                        )}
-                                                </TableCell>
-                                                <TableCell
-                                                    component="th"
-                                                    scope="row"
-                                                    style={{
-                                                        fontSize: "10px",
-                                                        padding: "2px",
-                                                        fontWeight: "bold",
-                                                    }}
-                                                ></TableCell>
-                                                <TableCell
-                                                    component="th"
-                                                    scope="row"
-                                                    style={{
-                                                        fontSize: "10px",
-                                                        padding: "2px",
-                                                        fontWeight: "bold",
-                                                    }}
-                                                >
-                                                    {}
-                                                    {dataGroupedByDate &&
-                                                        dataGroupedByDate[
-                                                            `${item}T00:00:00`
-                                                        ] &&
-                                                        formatPrice(
+                                                            ] &&
+                                                            formatPrice(
+                                                                dataGroupedByDate[
+                                                                    `${item}T00:00:00`
+                                                                ].reduce(
+                                                                    (
+                                                                        acc: any,
+                                                                        obj: any
+                                                                    ) =>
+                                                                        acc +
+                                                                        obj.NormalRate,
+                                                                    0
+                                                                )
+                                                            )}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    ></TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        {}
+                                                        {dataGroupedByDate &&
                                                             dataGroupedByDate[
                                                                 `${item}T00:00:00`
-                                                            ].reduce(
-                                                                (
-                                                                    acc: any,
-                                                                    obj: any
-                                                                ) =>
-                                                                    acc +
-                                                                    obj.RCAmount,
-                                                                0
-                                                            )
-                                                        )}
-                                                </TableCell>
-                                            </>
-                                        ))}
-                                </TableRow>
+                                                            ] &&
+                                                            formatPrice(
+                                                                dataGroupedByDate[
+                                                                    `${item}T00:00:00`
+                                                                ].reduce(
+                                                                    (
+                                                                        acc: any,
+                                                                        obj: any
+                                                                    ) =>
+                                                                        acc +
+                                                                        obj.RCAmount,
+                                                                    0
+                                                                )
+                                                            )}
+                                                    </TableCell>
+                                                </>
+                                            ))}
+                                    </TableRow>
+                                ) : (
+                                    <></>
+                                )}
+
                                 <TableRow
                                     key={"summary"}
                                     sx={{
