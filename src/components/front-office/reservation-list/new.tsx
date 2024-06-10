@@ -1,9 +1,8 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-
 import { mutate } from "swr";
+import { useIntl } from "react-intl";
 
 import ReservationSourceSelect from "components/select/reservation-source";
 import {
@@ -38,10 +37,8 @@ import { formatPrice } from "lib/utils/helpers";
 import { countNights } from "lib/utils/format-time";
 import ReferenceSelect from "components/select/reference";
 import NewForm from "./new-form";
-import CustomerGroupSelect from "components/select/customer-group";
 import CustomerSelect from "components/select/customer";
 import AvailableRoomTypes from "./available-room-types";
-import ColorPicker from "components/select/color";
 import { RateTypeSWR } from "lib/api/rate-type";
 
 const validationSchema = yup.object().shape({
@@ -74,6 +71,7 @@ const NewEdit = ({
     workingDate,
     groupID,
 }: any) => {
+    const intl = useIntl();
     const [CustomerID, setCustomerID]: any = useState(0);
     const [ArrivalDate, setArrivalDate]: any = useState(
         dateStart ? dateStart : workingDate
@@ -317,7 +315,9 @@ const NewEdit = ({
             reset={reset}
             handleSubmit={handleSubmit}
             customResetEvent={customResetEvent}
-            customSubmitTitle="Захиалах"
+            customSubmitTitle={intl.formatMessage({
+                id: "TextReservation",
+            })}
             customSubmit={customSubmit}
         >
             {ArrivalDate && DepartureDate && (
@@ -341,7 +341,9 @@ const NewEdit = ({
                                         field: { onChange, value },
                                     }) => (
                                         <DatePicker
-                                            label="Эхлэх огноо"
+                                            label={intl.formatMessage({
+                                                id: "TextArrivalDate",
+                                            })}
                                             value={value}
                                             minDate={new Date(workingDate)}
                                             onChange={(value) => (
@@ -405,7 +407,9 @@ const NewEdit = ({
                             <Grid item sm={2} xs={4}>
                                 <TextField
                                     id="ArrivalTime"
-                                    label="Ирэх цаг"
+                                    label={intl.formatMessage({
+                                        id: "TextArrivalTime",
+                                    })}
                                     type="time"
                                     margin="dense"
                                     {...register("ArrivalTime")}
@@ -427,7 +431,9 @@ const NewEdit = ({
                                         field: { onChange, value },
                                     }) => (
                                         <DatePicker
-                                            label="Гарах огноо"
+                                            label={intl.formatMessage({
+                                                id: "TextDepartureDate",
+                                            })}
                                             value={value}
                                             minDate={new Date(ArrivalDate)}
                                             onChange={(value) => (
@@ -491,7 +497,9 @@ const NewEdit = ({
                             <Grid item sm={2} xs={4}>
                                 <TextField
                                     id="DepartureTime"
-                                    label="Гарах цаг"
+                                    label={intl.formatMessage({
+                                        id: "TextDepartureTime",
+                                    })}
                                     type="time"
                                     margin="dense"
                                     {...register("DepartureTime")}
@@ -536,7 +544,9 @@ const NewEdit = ({
                                             )}
                                         />
                                     }
-                                    label="Захиалагчийн мэдээлэл"
+                                    label={intl.formatMessage({
+                                        id: "TextBookerInformation",
+                                    })}
                                 />
                             </Grid>
 
@@ -547,7 +557,9 @@ const NewEdit = ({
                                             size="small"
                                             fullWidth
                                             id="BookerName"
-                                            label="Нэр"
+                                            label={intl.formatMessage({
+                                                id: "TextName",
+                                            })}
                                             {...register(`BookerName`)}
                                             margin="dense"
                                         />
@@ -557,7 +569,9 @@ const NewEdit = ({
                                             size="small"
                                             fullWidth
                                             id="BookerPhone"
-                                            label="Гар утас"
+                                            label={intl.formatMessage({
+                                                id: "TextPhone",
+                                            })}
                                             {...register(`BookerPhone`)}
                                             margin="dense"
                                         />
@@ -587,7 +601,9 @@ const NewEdit = ({
                                             )}
                                         />
                                     }
-                                    label="Хөтөчийн мэдээлэл"
+                                    label={intl.formatMessage({
+                                        id: "TextGuideInformation",
+                                    })}
                                 />
                             </Grid>
 
@@ -598,7 +614,9 @@ const NewEdit = ({
                                             size="small"
                                             fullWidth
                                             id="GuideName"
-                                            label="Нэр"
+                                            label={intl.formatMessage({
+                                                id: "TextName",
+                                            })}
                                             {...register(`GuideName`)}
                                             margin="dense"
                                         />
@@ -608,81 +626,15 @@ const NewEdit = ({
                                             size="small"
                                             fullWidth
                                             id="GuidePhone"
-                                            label="Гар утас"
+                                            label={intl.formatMessage({
+                                                id: "TextPhone",
+                                            })}
                                             {...register(`GuidePhone`)}
                                             margin="dense"
                                         />
                                     </Grid>
                                 </>
                             ) : null}
-
-                            {/* <Grid item sm={4} xs={6}>
-                                <RateTypeSelect
-                                    register={register}
-                                    errors={errors}
-                                    onChange={setRateType}
-                                />
-                            </Grid>
-                            <Grid item sm={4} xs={6}>
-                                <GuestSelect
-                                    register={register}
-                                    errors={errors}
-                                    customRegisterName={`GuestName`}
-                                    resetField={resetField}
-                                    control={control}
-                                    selectedGuest={selectedGuest}
-                                    setSelectedGuest={setSelectedGuest}
-                                    id={0}
-                                />
-                            </Grid> */}
-                            {selectedGuest &&
-                            (selectedGuest.value == null ||
-                                selectedGuest.value == "" ||
-                                selectedGuest.value == "createNew") ? (
-                                <>
-                                    <Grid item sm={4} xs={6}>
-                                        <TextField
-                                            size="small"
-                                            fullWidth
-                                            id="Name"
-                                            label="Нэр"
-                                            {...register(
-                                                `TransactionDetail.${0}.GuestDetail.Name`
-                                            )}
-                                            margin="dense"
-                                        />
-                                    </Grid>
-
-                                    <Grid item sm={4} xs={6}>
-                                        <TextField
-                                            size="small"
-                                            fullWidth
-                                            id="Email"
-                                            label="Имэйл"
-                                            type="email"
-                                            {...register(
-                                                `TransactionDetail.${0}.GuestDetail.Email`
-                                            )}
-                                            margin="dense"
-                                        />
-                                    </Grid>
-
-                                    <Grid item sm={4} xs={6}>
-                                        <TextField
-                                            size="small"
-                                            fullWidth
-                                            id="Mobile"
-                                            label="Гар утас"
-                                            {...register(
-                                                `TransactionDetail.${0}.GuestDetail.Mobile`
-                                            )}
-                                            margin="dense"
-                                        />
-                                    </Grid>
-                                </>
-                            ) : (
-                                ""
-                            )}
                         </Grid>
                     </CardContent>
                 </Card>
@@ -723,7 +675,9 @@ const NewEdit = ({
                                     variant="subtitle1"
                                     style={{ marginLeft: "16px" }}
                                 >
-                                    Өрөөний мэдээлэл
+                                    {intl.formatMessage({
+                                        id: "TextRoomInformation",
+                                    })}
                                 </Typography>
                             </div>
 
@@ -753,7 +707,9 @@ const NewEdit = ({
                                     />
                                 </div>
                                 <TextField
-                                    label="Нэмэх тоо"
+                                    label={intl.formatMessage({
+                                        id: "TextQuantity",
+                                    })}
                                     type="number"
                                     margin="dense"
                                     size="small"
@@ -803,7 +759,10 @@ const NewEdit = ({
                                         marginBottom: "4px",
                                     }}
                                 >
-                                    + Өрөө нэмэх
+                                    +{" "}
+                                    {intl.formatMessage({
+                                        id: "ButtonAddRoom",
+                                    })}
                                 </Button>
                             </div>
                         </div>
@@ -838,33 +797,6 @@ const NewEdit = ({
                                     CustomerID={CustomerID}
                                     rateTypeData={rateTypeData}
                                 />
-
-                                {/* <Tooltip title="Remove">
-                                                <IconButton
-                                                    aria-label="close"
-                                                    onClick={() =>
-                                                        remove(index)
-                                                    }
-                                                    disabled={index == 0}
-                                                >
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title="Duplicate">
-                                                <IconButton
-                                                    aria-label="close"
-                                                    onClick={() =>
-                                                        append(
-                                                            getValues(
-                                                                //@ts-ignore
-                                                                `TransactionDetail[${index}]`
-                                                            )
-                                                        )
-                                                    }
-                                                >
-                                                    <ContentCopyIcon />
-                                                </IconButton>
-                                            </Tooltip> */}
                             </>
                         ))}
                     </CardContent>
@@ -906,7 +838,9 @@ const NewEdit = ({
                                     variant="subtitle1"
                                     style={{ marginLeft: "16px" }}
                                 >
-                                    Төлбөр
+                                    {intl.formatMessage({
+                                        id: "TextPayment",
+                                    })}
                                 </Typography>
                             </div>
                         </div>
@@ -965,7 +899,9 @@ const NewEdit = ({
                                                         )}
                                                     />
                                                 }
-                                                label="Өглөөний цай"
+                                                label={intl.formatMessage({
+                                                    id: "RowHeaderBreakfastIncluded",
+                                                })}
                                             />
                                             <FormControlLabel
                                                 control={
@@ -995,7 +931,9 @@ const NewEdit = ({
                                                         )}
                                                     />
                                                 }
-                                                label="Татвар"
+                                                label={intl.formatMessage({
+                                                    id: "TextTaxIncluded",
+                                                })}
                                             />
                                         </Grid>
 
@@ -1025,7 +963,9 @@ const NewEdit = ({
                                                         )}
                                                     />
                                                 }
-                                                label="Захиалгын эх сурвалж"
+                                                label={intl.formatMessage({
+                                                    id: "TextReservationSource",
+                                                })}
                                             />
                                         </Grid>
 
@@ -1046,7 +986,10 @@ const NewEdit = ({
                                                 variant="caption"
                                                 gutterBottom
                                             >
-                                                Өдөр: {nights}
+                                                {intl.formatMessage({
+                                                    id: "TextNights",
+                                                })}
+                                                : {nights}
                                             </Typography>
                                         </Grid>
                                         <Grid item sm={12} md={4}>
@@ -1054,7 +997,10 @@ const NewEdit = ({
                                                 variant="caption"
                                                 gutterBottom
                                             >
-                                                Нийт өрөө: {fields.length}
+                                                {intl.formatMessage({
+                                                    id: "ReportTotalRooms",
+                                                })}
+                                                : {fields.length}
                                             </Typography>
                                         </Grid>
                                         <Grid item sm={12} md={4}>
@@ -1062,8 +1008,10 @@ const NewEdit = ({
                                                 variant="caption"
                                                 gutterBottom
                                             >
-                                                Нийт тооцоо:{" "}
-                                                {formatPrice(totalAmount)}
+                                                {intl.formatMessage({
+                                                    id: "ReportTotalCharge",
+                                                })}
+                                                : {formatPrice(totalAmount)}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -1104,7 +1052,9 @@ const NewEdit = ({
                                         <Grid item xs={12} sm={6}>
                                             <TextField
                                                 id={`PayAmount`}
-                                                label="PayAmount"
+                                                label={intl.formatMessage({
+                                                    id: "TextAmount",
+                                                })}
                                                 type="number"
                                                 {...register(`PayAmount`)}
                                                 margin="dense"
@@ -1119,7 +1069,9 @@ const NewEdit = ({
                                                 register={register}
                                                 errors={errors}
                                                 type="BillingInfo"
-                                                label="Тооцоо төрөл"
+                                                label={intl.formatMessage({
+                                                    id: "TextBillingInformation",
+                                                })}
                                                 optionValue="BillingID"
                                                 optionLabel="BillingName"
                                                 customField="GroupBillTo"
@@ -1132,7 +1084,9 @@ const NewEdit = ({
                                                 size="small"
                                                 fullWidth
                                                 id="Remarks"
-                                                label="Мессеж үлдээх"
+                                                label={intl.formatMessage({
+                                                    id: "TextSetMessage",
+                                                })}
                                                 {...register(`Remarks`)}
                                                 margin="dense"
                                                 multiline

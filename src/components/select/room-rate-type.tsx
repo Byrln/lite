@@ -1,12 +1,8 @@
 import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
-import { useEffect, useState } from "react";
+import { useIntl } from "react-intl";
+
 import { RateTypeSWR } from "lib/api/rate-type";
-import { RateAPI } from "lib/api/rate";
-import { elementAcceptingRef } from "@mui/utils";
 
 const RoomRateTypeSelect = ({
     register,
@@ -20,26 +16,8 @@ const RoomRateTypeSelect = ({
     setBreakfastIncluded,
     setTaxIncluded,
 }: any) => {
-    // const [data, setData]: any = useState([]);
+    const intl = useIntl();
     const { data, error } = RateTypeSWR({});
-
-    // const fetchRoomTypeRates = async () => {
-    //     let d = await RateAPI.list({
-    //         RoomTypeID: RoomTypeID,
-    //         RateTypeID: 0,
-    //         ChannelID: 0,
-    //         SourceID: 0,
-    //         CustomerID: 0,
-    //         TaxIncluded: true,
-    //         RoomChargeDurationID: 0,
-    //     });
-    //     setData(d);
-    // };
-
-    // useEffect(() => {
-    //     fetchRoomTypeRates();
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [RoomTypeID]);
 
     const onChange = (evt: any) => {
         var rate = null;
@@ -65,7 +43,9 @@ const RoomRateTypeSelect = ({
         <TextField
             fullWidth
             id="RateTypeID"
-            label="Rate Type"
+            label={intl.formatMessage({
+                id: "TextRateType",
+            })}
             {...register(
                 customRegisterName ? customRegisterName : "RateTypeID"
             )}

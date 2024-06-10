@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { GuestAPI } from "lib/api/guest";
 import InfoIcon from "@mui/icons-material/Info";
-import { RoomTypeAPI } from "lib/api/room-type";
+import { useIntl } from "react-intl";
 
 const GuestSelect = ({
     register,
@@ -31,6 +31,7 @@ const GuestSelect = ({
     const [inputValue, setInputValue] = useState("");
     const [open, setOpen] = useState(false);
     const [vipName, setVipName] = useState(null);
+    const intl = useIntl();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -70,7 +71,12 @@ const GuestSelect = ({
         }
     }, [inputValue]);
 
-    const createNewOption = { label: "Create New", value: "createNew" };
+    const createNewOption = {
+        label: intl.formatMessage({
+            id: "TextCreateNew",
+        }),
+        value: "createNew",
+    };
 
     // Filter options manually based on the input value
     const filteredOptions = [createNewOption, ...guests].filter((option) =>
@@ -128,7 +134,9 @@ const GuestSelect = ({
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Зочин"
+                        label={intl.formatMessage({
+                            id: "TextGuest",
+                        })}
                         variant="outlined"
                         error={customError}
                         helperText={customHelperText}

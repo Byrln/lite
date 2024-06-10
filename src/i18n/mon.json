@@ -785,6 +785,7 @@
     "TextAreaCode": "Бүсийн код",
     "TextArrival": "Ирэх хугацаа",
     "TextArrivalDate": "Ирэх хугацаа",
+    "TextArrivalTime": "Ирэх цаг",
     "TextAssignedTo": "Оноогдсон",
     "TextAssignHousekeeper": "Оноосон Ө.Үйлч",
     "TextAutoAssignRoom": "Өрөөг автоматаар оноох",
@@ -870,6 +871,7 @@
     "TextDepartedList": "Гарсан зочдын жагсаалт",
     "TextDeparture": "Гарах хугацаа",
     "TextDepartureDate": "Буух өдөр",
+    "TextDepartureTime": "Буух цаг",
     "TextDeposit": "Урьдчилгаа",
     "TextDescription": "Тайлбар",
     "TextDistinct": "Distinct",
@@ -1239,5 +1241,6 @@
     "ChooseFile": "Файл сонгох",
     "MenuDailyArrivalOrDeparture": "Ирэх болон гарах зочдын мэдээ",
     "ReportRoomChargeMonthly": "Ор хоногийн тооцоо(Сараар)",
-    "ReportDailyChargesReception": "Төлбөр тооцооны тайлан Ресепшнээр"
+    "ReportDailyChargesReception": "Төлбөр тооцооны тайлан Ресепшнээр",
+    "TextCreateNew": "Шинээр нэмэх"
 }

@@ -2,28 +2,12 @@ import { useState, useEffect } from "react";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { Button, Typography } from "@mui/material";
 import * as React from "react";
+import { useIntl } from "react-intl";
 
 import CustomTable from "components/common/custom-table";
 import { RoomTypeAPI } from "lib/api/room-type";
 import { styled } from "@mui/material/styles";
 
-const columns = [
-    {
-        title: "№",
-        key: "test",
-        dataIndex: "test",
-    },
-    {
-        title: "Өрөөний нэр",
-        key: "RoomTypeFullName",
-        dataIndex: "RoomTypeFullName",
-    },
-    {
-        title: "Боломжит өрөө",
-        key: "AvailableRooms",
-        dataIndex: "AvailableRooms",
-    },
-];
 const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
 ))({
@@ -36,7 +20,30 @@ const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
 });
 
 const NewEdit = ({ ArrivalDate, DepartureDate }: any) => {
+    const intl = useIntl();
     const [data, setData] = useState(null);
+
+    const columns = [
+        {
+            title: "№",
+            key: "test",
+            dataIndex: "test",
+        },
+        {
+            title: intl.formatMessage({
+                id: "RowHeaderRoomType",
+            }),
+            key: "RoomTypeFullName",
+            dataIndex: "RoomTypeFullName",
+        },
+        {
+            title: intl.formatMessage({
+                id: "MenuReportAvailableRooms",
+            }),
+            key: "AvailableRooms",
+            dataIndex: "AvailableRooms",
+        },
+    ];
 
     useEffect(() => {
         const fetchDatas = async () => {
@@ -67,7 +74,9 @@ const NewEdit = ({ ArrivalDate, DepartureDate }: any) => {
                                 hasDelete={false}
                                 hasShow={false}
                                 id="RoomTypeID"
-                                excelName={"Боломжит өрөө"}
+                                excelName={intl.formatMessage({
+                                    id: "MenuReportAvailableRooms",
+                                })}
                                 datagrid={false}
                                 hasPrint={false}
                                 hasExcel={false}
@@ -76,7 +85,11 @@ const NewEdit = ({ ArrivalDate, DepartureDate }: any) => {
                     </React.Fragment>
                 }
             >
-                <Button>Боломжит өрөөнүүд</Button>
+                <Button>
+                    {intl.formatMessage({
+                        id: "MenuReportAvailableRooms",
+                    })}
+                </Button>
             </CustomWidthTooltip>
         </div>
     );

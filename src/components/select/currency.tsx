@@ -3,10 +3,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { useEffect } from "react";
+import { useIntl } from "react-intl";
 
 import { CurrencySWR } from "lib/api/currency";
-import { elementAcceptingRef } from "@mui/utils";
 
 const CurrencySelect = ({
     register,
@@ -18,6 +17,7 @@ const CurrencySelect = ({
     value,
     onChange,
 }: any) => {
+    const intl = useIntl();
     const { data, error } = CurrencySWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -34,7 +34,9 @@ const CurrencySelect = ({
         <TextField
             fullWidth
             id="CurrencyID"
-            label="Валют"
+            label={intl.formatMessage({
+                id: "TextCurrencyName",
+            })}
             {...register(nameKey)}
             select
             disabled={disabled}

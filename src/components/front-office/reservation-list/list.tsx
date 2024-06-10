@@ -16,13 +16,10 @@ import Search from "./search";
 import ReservationEdit from "components/front-office/reservation-list/edit";
 import { ModalContext } from "lib/context/modal";
 
-const DeparturedListList = ({ title }: any) => {
+const DeparturedListList = ({ title, workingDate }: any) => {
     const router = useRouter();
     const { StatusGroup, StartDate, EndDate } = router.query;
     const [rerenderKey, setRerenderKey] = useState(0);
-    console.log("StatusGroup", StatusGroup);
-    console.log("StartDate", StartDate);
-    console.log("EndDate", EndDate);
 
     useEffect(() => {
         setRerenderKey((prevKey) => prevKey + 1);
@@ -198,7 +195,7 @@ const DeparturedListList = ({ title }: any) => {
                     id="TransactionID"
                     listUrl={listUrl}
                     modalTitle={title}
-                    modalContent={<NewEdit />}
+                    modalContent={<NewEdit workingDate={workingDate} />}
                     excelName={title}
                     search={
                         <CustomSearch

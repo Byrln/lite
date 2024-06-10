@@ -1,14 +1,28 @@
 import { Box, Grid, Container, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 
 import Page from "components/page";
 import RevervationList from "components/front-office/reservation-list/list";
+import { FrontOfficeAPI } from "lib/api/front-office";
 
 const Index = () => {
     const router = useRouter();
     const { StatusGroup, StartDate, EndDate } = router.query;
+    const [workingDate, setWorkingDate]: any = useState(null);
+
+    useEffect(() => {
+        fetchDatas();
+    }, []);
+
+    const fetchDatas = async () => {
+        let response = await FrontOfficeAPI.workingDate();
+        if (response.status == 200) {
+            setWorkingDate(response.workingDate[0].WorkingDate);
+        }
+    };
 
     const intl = useIntl();
 
@@ -29,7 +43,10 @@ const Index = () => {
                     </Box>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <RevervationList title={title} />
+                            <RevervationList
+                                title={title}
+                                workingDate={workingDate}
+                            />
                         </Grid>
                     </Grid>
                 </Container>

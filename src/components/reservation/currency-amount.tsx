@@ -6,6 +6,8 @@ import {
     Checkbox,
     InputAdornment,
 } from "@mui/material";
+import { useIntl } from "react-intl";
+
 import CurrencySelect from "../select/currency";
 import { RateAPI } from "../../lib/api/rate";
 import { CurrenctAPI } from "../../lib/api/currency";
@@ -36,6 +38,7 @@ const CurrencyAmount = ({
     CustomerID = 0,
     ContractRate,
 }: any) => {
+    const intl = useIntl();
     const [isCurrencyAmountEditable, setIsCurrencyAmountEditable]: any =
         useState(false);
 
@@ -157,7 +160,9 @@ const CurrencyAmount = ({
                         <Grid item xs={6} sm={2}>
                             <TextField
                                 id="TestCurrencyAmount"
-                                label="CurrencyAmount"
+                                label={intl.formatMessage({
+                                    id: "TextAmount",
+                                })}
                                 type="number"
                                 disabled={true}
                                 {...register(
@@ -196,7 +201,9 @@ const CurrencyAmount = ({
             <Grid item xs={isRoomList ? 12 : 6} sm={isRoomList ? 12 : 2}>
                 <TextField
                     id="CurrencyAmount"
-                    label="CurrencyAmount"
+                    label={intl.formatMessage({
+                        id: "TextAmount",
+                    })}
                     type="number"
                     disabled={isCurrencyAmountEditable ? false : true}
                     {...register(`TransactionDetail.${id}.CurrencyAmount`)}
@@ -241,7 +248,9 @@ const CurrencyAmount = ({
                             )}
                         />
                     }
-                    label="Гараар"
+                    label={intl.formatMessage({
+                        id: "TextManualRate",
+                    })}
                 />
             </Grid>
         </>

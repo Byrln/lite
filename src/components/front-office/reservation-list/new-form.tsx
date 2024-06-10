@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { useIntl } from "react-intl";
 
 import { useEffect, useState } from "react";
 import NumberSelect from "components/select/number-select";
@@ -61,6 +62,7 @@ const NewEdit = ({
     const [selectedChild, setSelectedChild]: any = useState(0);
     const [country, setCountry]: any = useState(null);
     const [vip, setVip]: any = useState(null);
+    const intl = useIntl();
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -312,7 +314,10 @@ const NewEdit = ({
             />
             <Grid item xs={12}>
                 <Typography variant="caption" gutterBottom>
-                    Өрөө {id + 1}
+                    {intl.formatMessage({
+                        id: "TextRoom",
+                    })}{" "}
+                    {id + 1}
                 </Typography>
             </Grid>
             <Grid item xs={6} sm={4} md={2}>
@@ -378,7 +383,9 @@ const NewEdit = ({
                                 errors.TransactionDetail[id].Adult &&
                                 errors.TransactionDetail[id].Adult.message
                             }
-                            label={"Том хүн"}
+                            label={intl.formatMessage({
+                                id: "TextAdult",
+                            })}
                             onChange={onAdultChange}
                         />
                     </Grid>
@@ -393,7 +400,9 @@ const NewEdit = ({
                             nameKey={`TransactionDetail.${id}.Child`}
                             register={register}
                             errors={errors}
-                            label={"Хүүхэд"}
+                            label={intl.formatMessage({
+                                id: "TextChild",
+                            })}
                             onChange={onChildChange}
                         />
                     </Grid>
@@ -531,7 +540,9 @@ const NewEdit = ({
                                     size="small"
                                     fullWidth
                                     id="Name"
-                                    label="Нэр"
+                                    label={intl.formatMessage({
+                                        id: "TextName",
+                                    })}
                                     {...register(
                                         `TransactionDetail.${id}.GuestDetail.Name`
                                     )}
@@ -544,7 +555,9 @@ const NewEdit = ({
                                     size="small"
                                     fullWidth
                                     id="Surname"
-                                    label="Овог"
+                                    label={intl.formatMessage({
+                                        id: "TextLastName",
+                                    })}
                                     {...register(
                                         `TransactionDetail.${id}.GuestDetail.Surname`
                                     )}
@@ -557,7 +570,9 @@ const NewEdit = ({
                                     size="small"
                                     fullWidth
                                     id="Email"
-                                    label="Имэйл"
+                                    label={intl.formatMessage({
+                                        id: "TextEmail",
+                                    })}
                                     type="email"
                                     {...register(
                                         `TransactionDetail.${id}.GuestDetail.Email`
@@ -571,7 +586,9 @@ const NewEdit = ({
                                     size="small"
                                     fullWidth
                                     id="Mobile"
-                                    label="Гар утас"
+                                    label={intl.formatMessage({
+                                        id: "TextMobile",
+                                    })}
                                     {...register(
                                         `TransactionDetail.${id}.GuestDetail.Mobile`
                                     )}
@@ -601,7 +618,9 @@ const NewEdit = ({
                                     size="small"
                                     fullWidth
                                     id="RegistryNo"
-                                    label="Регистрийн дугаар"
+                                    label={intl.formatMessage({
+                                        id: "TextRegistrationNo",
+                                    })}
                                     {...register(
                                         "TransactionDetail.${id}.GuestDetail.RegistryNo"
                                     )}

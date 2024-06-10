@@ -3,6 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
+import { useIntl } from "react-intl";
 
 import { PaymentMethodSWR } from "lib/api/payment-method";
 
@@ -14,6 +15,7 @@ const PaymentMethodSelect = ({
     setPaymentMethodID,
     PaymentMethodGroupID,
 }: any) => {
+    const intl = useIntl();
     const { data, error } = PaymentMethodSWR(PaymentMethodGroupID);
 
     const onchange = (val: any) => {
@@ -34,7 +36,9 @@ const PaymentMethodSelect = ({
         <TextField
             fullWidth
             id={customRegisterName ? customRegisterName : "PaymentMethodID"}
-            label="Төлбөрийн хэлбэр"
+            label={intl.formatMessage({
+                id: "TextPaymentMethod",
+            })}
             {...register(
                 customRegisterName ? customRegisterName : "PaymentMethodID"
             )}
