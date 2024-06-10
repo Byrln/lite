@@ -105,19 +105,25 @@ export const CheckedOutDetailedSWR = (search: any, workingDate: any) => {
 
 export const DailyChargesPaymentSummarySWR = (
     search: any,
-    workingDate: any
+    sessions: any,
+    IsSession: any
 ) => {
-    let tempSearch = {
-        StartDate: moment(search.StartDate, "YYYY-MM-DD")
-            .format("YYYY-MM-DD")
-            .toString(),
-        EndDate: moment(search.EndDate, "YYYY-MM-DD")
-            .format("YYYY-MM-DD")
-            .toString(),
-        CustomerID: search.CustomerID ? Number(search.CustomerID) : null,
-        RoomTypeID: search.RoomTypeID ? Number(search.RoomTypeID) : null,
-        RoomID: search.RoomID ? Number(search.RoomID) : null,
+    let tempSearch: any = {
+        SessionIDs: [],
+        StartDate: moment(search.CurrDate)
+            .startOf("month")
+            .format("YYYY-MM-DD"),
+        EndDate: moment(search.CurrDate).endOf("month").format("YYYY-MM-DD"),
+        IsSession: IsSession,
     };
+
+    sessions.forEach((session: any) => {
+        tempSearch.SessionIDs.push({
+            ID: session,
+        });
+    });
+
+    console.log("tempSearch", tempSearch);
 
     const fetcher = async (url: any) =>
         await axios.post(url, tempSearch).then((res: any) => {
@@ -451,8 +457,8 @@ export const ReportAPI = {
     monthlyRevenue: async (search: any) => {
         let tempSearch = {
             Year: moment(search.CurrDate).year(),
-            Month: moment(search.CurrDate).month(),
-            Lang: "ENG",
+            Month: moment(search.CurrDate).month() + 1,
+            Lang: "mn",
         };
 
         const res = await axios.post(`${monthlyRevenueUrl}`, tempSearch);

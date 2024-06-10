@@ -50,7 +50,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
 
             let tempValue = groupBy(response, "RoomChargeGroupName");
 
-            setReportData(tempValue);
+            setReportData(response);
         } finally {
         }
     };
@@ -154,12 +154,8 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                             {" "}
                             Тайлант үе :{" "}
                         </span>{" "}
-                        {search.StartDate &&
-                            `(${moment(search.StartDate).format(
-                                "YYYY.MM.DD"
-                            )}  -  ${moment(search.EndDate).format(
-                                "YYYY.MM.DD"
-                            )})`}
+                        {search.CurrDate &&
+                            `(${moment(search.CurrDate).format("YYYY.MM")})`}
                     </Typography>
                 </Box>
 
@@ -180,7 +176,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Барааны нэр
+                                        Огноо
                                     </TableCell>
 
                                     <TableCell
@@ -191,7 +187,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Нэгж үнэ
+                                        Боломжтой өрөө
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -202,7 +198,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Тоо ш.
+                                        Зар.Өрөө
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -213,152 +209,506 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Нийт
+                                        Үнэгүй
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "2px",
+                                            fontSize: "10px",
+                                        }}
+                                    >
+                                        Ачаалал (%)
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "2px",
+                                            fontSize: "10px",
+                                        }}
+                                    >
+                                        ADR
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "2px",
+                                            fontSize: "10px",
+                                        }}
+                                    >
+                                        RevPar
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "2px",
+                                            fontSize: "10px",
+                                        }}
+                                    >
+                                        Хүний тоо
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "2px",
+                                            fontSize: "10px",
+                                        }}
+                                    >
+                                        Өрөөний тооцоо
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "2px",
+                                            fontSize: "10px",
+                                        }}
+                                    >
+                                        Нэмэлт тооцоо
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "2px",
+                                            fontSize: "10px",
+                                        }}
+                                    >
+                                        Татвар
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{
+                                            fontWeight: "bold",
+                                            padding: "2px",
+                                            fontSize: "10px",
+                                        }}
+                                    >
+                                        Төлбөр
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {reportData &&
-                                    Object.keys(reportData).map((key) => (
-                                        <>
-                                            <TableRow
-                                                key={key}
-                                                sx={{
-                                                    "&:last-child td, &:last-child th":
-                                                        {
-                                                            border: 0,
-                                                        },
-                                                }}
-                                            >
-                                                <TableCell
-                                                    component="th"
-                                                    scope="row"
-                                                    style={{
-                                                        fontSize: "10px",
-                                                        padding: "2px 10px",
-                                                        fontWeight: "bold",
+                                    reportData.map(
+                                        (entity: any, index: any) => (
+                                            <>
+                                                <TableRow
+                                                    key={index}
+                                                    sx={{
+                                                        "&:last-child td, &:last-child th":
+                                                            {
+                                                                border: 0,
+                                                            },
                                                     }}
-                                                    colSpan={4}
                                                 >
-                                                    {key}
-                                                </TableCell>
-                                            </TableRow>
-                                            {reportData[key] &&
-                                                reportData[key].map(
-                                                    (
-                                                        entity: any,
-                                                        index: any
-                                                    ) => (
-                                                        <>
-                                                            <TableRow
-                                                                key={index}
-                                                                sx={{
-                                                                    "&:last-child td, &:last-child th":
-                                                                        {
-                                                                            border: 0,
-                                                                        },
-                                                                }}
-                                                            >
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                    style={{
-                                                                        fontSize:
-                                                                            "10px",
-                                                                        padding:
-                                                                            "2px",
-                                                                    }}
-                                                                >
-                                                                    {
-                                                                        entity.RoomChargeTypeName
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                    style={{
-                                                                        fontSize:
-                                                                            "10px",
-                                                                        padding:
-                                                                            "2px",
-                                                                    }}
-                                                                    align="right"
-                                                                >
-                                                                    {formatPrice(
-                                                                        entity.AVGUnitPrice
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                    align="right"
-                                                                    style={{
-                                                                        fontSize:
-                                                                            "10px",
-                                                                        padding:
-                                                                            "2px",
-                                                                    }}
-                                                                >
-                                                                    {
-                                                                        entity.TotalQuantity
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                    align="right"
-                                                                    style={{
-                                                                        fontSize:
-                                                                            "10px",
-                                                                        padding:
-                                                                            "2px",
-                                                                    }}
-                                                                >
-                                                                    {formatPrice(
-                                                                        entity.TotalAmount
-                                                                    )}
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        </>
-                                                    )
-                                                )}
-                                            <TableRow
-                                                key={key}
-                                                sx={{
-                                                    "&:last-child td, &:last-child th":
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {entity.DtPart}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                        align="right"
+                                                    >
+                                                        {entity.RoomsAvailable}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {entity.RoomsSold}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
                                                         {
-                                                            border: 0,
-                                                        },
-                                                }}
-                                            >
-                                                <TableCell
-                                                    component="th"
-                                                    scope="row"
-                                                    style={{
-                                                        fontSize: "10px",
-                                                        padding: "2px ",
-                                                        fontWeight: "bold",
-                                                    }}
-                                                    colSpan={4}
-                                                    align="right"
-                                                >
-                                                    {formatPrice(
-                                                        reportData[key].reduce(
-                                                            (
-                                                                acc: any,
-                                                                obj: any
-                                                            ) =>
-                                                                acc +
-                                                                (obj.TotalAmount
-                                                                    ? obj.TotalAmount
-                                                                    : 0),
-                                                            0
-                                                        )
-                                                    )}
-                                                </TableCell>
-                                            </TableRow>
-                                        </>
-                                    ))}
+                                                            entity.RoomsComplimentary
+                                                        }
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {entity.Occupancy}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {entity.ADR}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {entity.RevPar}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {entity.Pax}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {formatPrice(
+                                                            entity.RoomCharges
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {formatPrice(
+                                                            entity.ExtraCharges
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {formatPrice(
+                                                            entity.TotalTax
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        align="right"
+                                                        style={{
+                                                            fontSize: "10px",
+                                                            padding: "2px",
+                                                        }}
+                                                    >
+                                                        {formatPrice(
+                                                            entity.Payments
+                                                        )}
+                                                    </TableCell>
+                                                </TableRow>
+                                            </>
+                                        )
+                                    )}
+                                <TableRow
+                                    sx={{
+                                        "&:last-child td, &:last-child th": {
+                                            border: 0,
+                                        },
+                                    }}
+                                >
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Нийт
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                        align="right"
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.RoomsAvailable
+                                                            ? obj.RoomsAvailable
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.RoomsSold
+                                                            ? obj.RoomsSold
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.RoomsComplimentary
+                                                            ? obj.RoomsComplimentary
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.Occupancy
+                                                            ? obj.Occupancy
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.ADR ? obj.ADR : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.RevPar
+                                                            ? obj.RevPar
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.Pax ? obj.Pax : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.RoomCharges
+                                                            ? obj.RoomCharges
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.ExtraCharges
+                                                            ? obj.ExtraCharges
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.TotalTax
+                                                            ? obj.TotalTax
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="right"
+                                        style={{
+                                            fontSize: "10px",
+                                            padding: "2px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            reportData &&
+                                                reportData.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.Payments
+                                                            ? obj.Payments
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </Grid>

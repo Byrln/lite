@@ -1238,5 +1238,6 @@
     "Calendar": "Календар",
     "ChooseFile": "Файл сонгох",
     "MenuDailyArrivalOrDeparture": "Ирэх болон гарах зочдын мэдээ",
-    "ReportRoomChargeMonthly": "Ор хоногийн тооцоо(Сараар)"
+    "ReportRoomChargeMonthly": "Ор хоногийн тооцоо(Сараар)",
+    "ReportDailyChargesReception": "Төлбөр тооцооны тайлан Ресепшнээр"
 }

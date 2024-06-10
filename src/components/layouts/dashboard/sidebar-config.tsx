@@ -310,6 +310,12 @@ const sidebarConfig = [
                 path: "/report/checked-out",
                 oldPath: "",
             },
+            {
+                title: "Сарын тайлан (Орлогоор)",
+                titleEn: "Monthly Report (Revenue)",
+                path: "/report/monthly-revenue",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",
@@ -380,13 +386,7 @@ const sidebarConfig = [
             //     path: "/report/monthly",
             //     oldPath: "",
             // },
-            // {
-            //     title: "сарын тайлан (орлогоор)",
-            //     titleEn: "сарын тайлан (орлогоор)",
 
-            //     path: "/report/monthly-revenue",
-            //     oldPath: "",
-            // },
             // {
             //     title: "ресепшний буух зочдын тайлан",
             //     titleEn: "ресепшний буух зочдын тайлан",

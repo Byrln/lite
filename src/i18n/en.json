@@ -735,5 +735,6 @@
     "TextAll": "All",
     "ButtonSearchClear": "Clear Search",
     "MenuDailyArrivalOrDeparture": "Arrival or Departure (Daily)",
-    "ReportRoomChargeMonthly": "Nights report (Monthly)"
+    "ReportRoomChargeMonthly": "Nights report (Monthly)",
+    "ReportDailyChargesReception": "Daily Charges and Payments by Reception"
 }
