@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { formatPrice } from "lib/utils/helpers";
+import { useRouter } from "next/router";
 
 import { MonthlyRoomChargeSWR, monthlyRoomChargeUrl } from "lib/api/report";
 import { RoomTypeSWR } from "lib/api/room-type";
@@ -25,6 +26,8 @@ import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
 const AvailableRoom = ({ title, workingDate }: any) => {
+    const router = useRouter();
+    const { CurrDate } = router.query;
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [dates, setDates] = useState<any>([]);
     const [dDays, setDDays] = useState<any>([]);
@@ -34,7 +37,9 @@ const AvailableRoom = ({ title, workingDate }: any) => {
     const [dataGroupedByDate, setDataGroupedByDate] = useState<any>(null);
 
     const [search, setSearch] = useState({
-        CurrDate: moment(workingDate).format("YYYY-MM-DD"),
+        CurrDate: CurrDate
+            ? CurrDate
+            : moment(workingDate).format("YYYY-MM-DD"),
     });
 
     const { data, error } = MonthlyRoomChargeSWR(search);
@@ -141,7 +146,9 @@ const AvailableRoom = ({ title, workingDate }: any) => {
 
     const formOptions = {
         defaultValues: {
-            CurrDate: moment(workingDate).format("YYYY-MM-DD"),
+            CurrDate: CurrDate
+                ? CurrDate
+                : moment(workingDate).format("YYYY-MM-DD"),
         },
         resolver: yupResolver(validationSchema),
     };

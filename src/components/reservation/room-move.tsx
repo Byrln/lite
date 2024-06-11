@@ -1,28 +1,22 @@
-import {
-    TextField,
-    Grid,
-    Checkbox,
-    FormControlLabel,
-    Box,
-} from "@mui/material";
-
+import { TextField, Grid, Checkbox, FormControlLabel } from "@mui/material";
+import { useIntl } from "react-intl";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useState, useContext, useEffect } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
-import { ReservationAPI } from "lib/api/reservation";
-import { ModalContext } from "lib/context/modal";
-import { listUrl } from "lib/api/front-office";
 import { LoadingButton } from "@mui/lab";
-import ReasonSelect from "../select/reason";
-import RoomTypeSelect from "../select/room-type";
-import RoomSelect from "../select/room";
-import { dateToCustomFormat, fToCustom } from "lib/utils/format-time";
 import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
+
+import { ReservationAPI } from "lib/api/reservation";
+import { ModalContext } from "lib/context/modal";
+import { listUrl } from "lib/api/front-office";
+import RoomTypeSelect from "../select/room-type";
+import RoomSelect from "../select/room";
+import { dateToCustomFormat } from "lib/utils/format-time";
 import { RateAPI } from "../../lib/api/rate";
 
 const RoomMoveForm = ({
@@ -31,7 +25,7 @@ const RoomMoveForm = ({
     additionalMutateUrl,
     customRerender,
 }: any) => {
-    console.log("transactioninfo", transactionInfo);
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [baseStay, setBaseStay]: any = useState({
@@ -101,7 +95,11 @@ const RoomMoveForm = ({
             if (additionalMutateUrl) {
                 await mutate(additionalMutateUrl);
             }
-            toast("Амжилттай.");
+            toast(
+                intl.formatMessage({
+                    id: "TextSuccess",
+                })
+            );
 
             if (customRerender) {
                 customRerender();
@@ -129,7 +127,6 @@ const RoomMoveForm = ({
     };
 
     const calculateAmount = async (rt: any) => {
-        console.log("baseStay", baseStay);
         var values = {
             CurrDate: dateToCustomFormat(baseStay.dateStart, "yyyy-MM-dd"),
             RoomTypeID: rt.RoomTypeID,
@@ -166,7 +163,6 @@ const RoomMoveForm = ({
     };
 
     const onRoomTypeChange = (rt: any) => {
-        console.log("rt", rt);
         setBaseStay({
             ...baseStay,
             roomType: rt,
@@ -228,7 +224,9 @@ const RoomMoveForm = ({
                                         checked={rateCondition.overrideRate}
                                     />
                                 }
-                                label="OverrideRate"
+                                label={intl.formatMessage({
+                                    id: "TextOverrideRoomRate",
+                                })}
                             />
                         </div>
 
@@ -242,7 +240,9 @@ const RoomMoveForm = ({
                                     <FormControlLabel
                                         value={"normal"}
                                         control={<Radio />}
-                                        label={"Normal"}
+                                        label={intl.formatMessage({
+                                            id: "ReportNormalRate",
+                                        })}
                                         checked={
                                             rateCondition.newRateMode ===
                                             "normal"
@@ -252,7 +252,9 @@ const RoomMoveForm = ({
                                     <FormControlLabel
                                         value={"manual"}
                                         control={<Radio />}
-                                        label={"manual"}
+                                        label={intl.formatMessage({
+                                            id: "TextManualRate",
+                                        })}
                                         checked={
                                             rateCondition.newRateMode ===
                                             "manual"
@@ -265,7 +267,9 @@ const RoomMoveForm = ({
                         <TextField
                             fullWidth
                             id="NewRate"
-                            label="NewRate"
+                            label={intl.formatMessage({
+                                id: "TextAmount",
+                            })}
                             {...register("NewRate")}
                             margin="dense"
                             error={errors.NewRate?.message}
@@ -285,7 +289,9 @@ const RoomMoveForm = ({
                     loading={loading}
                     className="mt-3"
                 >
-                    Room move
+                    {intl.formatMessage({
+                        id: "ButtonRoomMove",
+                    })}
                 </LoadingButton>
             </form>
         </>

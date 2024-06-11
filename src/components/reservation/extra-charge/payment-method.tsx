@@ -1,19 +1,15 @@
 import { Checkbox, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 import { listUrl } from "lib/api/front-office";
+import { useIntl } from "react-intl";
 
 import { formatNumber } from "lib/utils/helpers";
 import { PaymentMethodAPI } from "lib/api/payment-method";
 import CustomTable from "components/common/custom-table";
 import CurrencySelect from "components/select/currency";
 
-const PaymentMethod = ({
-    additionalMutateUrl,
-    entity,
-    setEntity,
-    register,
-    errors,
-}: any) => {
+const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
+    const intl = useIntl();
     const [rerenderKey, setRerenderKey] = useState(0);
 
     const fetchDatas = async () => {
@@ -82,17 +78,23 @@ const PaymentMethod = ({
             },
         },
         {
-            title: "Бүлгийн нэр",
+            title: intl.formatMessage({
+                id: "RowHeaderGroupName",
+            }),
             key: "PaymentMethodGroupName",
             dataIndex: "PaymentMethodGroupName",
         },
         {
-            title: "Төлбөрийн хэлбэр",
+            title: intl.formatMessage({
+                id: "RowHeaderPaymentMethod",
+            }),
             key: "PaymentMethodName",
             dataIndex: "PaymentMethodName",
         },
         {
-            title: "Ханш",
+            title: intl.formatMessage({
+                id: "RowHeaderCurrencyName",
+            }),
             key: "Currency",
             dataIndex: "Currency",
             render: function render(
@@ -123,7 +125,9 @@ const PaymentMethod = ({
             },
         },
         {
-            title: "Дүн",
+            title: intl.formatMessage({
+                id: "RowHeaderAmount",
+            }),
             key: "Amount",
             dataIndex: "Amount",
             render: function render(

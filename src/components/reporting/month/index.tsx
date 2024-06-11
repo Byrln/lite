@@ -24,6 +24,8 @@ import { formatPrice } from "lib/utils/helpers";
 import CustomSearch from "components/common/custom-search";
 import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
+import { FrontOfficeSWR, listUrl } from "lib/api/front-office";
+import { daysInMonth } from "lib/utils/helpers";
 
 const ReportingList = ({ title, workingDate }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
@@ -41,8 +43,16 @@ const ReportingList = ({ title, workingDate }: any) => {
         CurrDate: moment(dateStringToObj(workingDate)),
     });
 
-    const { data, error } = StayViewSWR(search);
-    console.log("data", data);
+    // const { data, error } = StayVaaiewSWR(search);
+    const { data, error } = FrontOfficeSWR({
+        CurrDate: moment(dateStringToObj(workingDate)),
+        NumberOfDays:
+            daysInMonth(
+                moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+                moment(search.CurrDate, "YYYY-MM-DD").year()
+            ) - 1,
+        RoomTypeID: null,
+    });
 
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
@@ -83,125 +93,49 @@ const ReportingList = ({ title, workingDate }: any) => {
             {}
         );
 
-    const generateColumns = (data: any) => {
-        const datesSet: any = new Set();
+    const generateColumns = () => {
+        const datesSet: any = [];
+        daysInMonth(
+            moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+            moment(search.CurrDate, "YYYY-MM-DD").year()
+        ) - 1,
+            search.CurrDate;
 
-        data.forEach((room: any) => {
-            const currDate = new Date(room.CurrDate);
-            const dateKey = room.CurrDate;
+        var i;
 
-            datesSet.add(dateKey);
-        });
+        for (
+            i = 1;
+            i <=
+            daysInMonth(
+                moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+                moment(search.CurrDate, "YYYY-MM-DD").year()
+            );
+            i++
+        ) {
+            const currDate = new Date(
+                `${moment(search.CurrDate).format("YYYY")}-${moment(
+                    search.CurrDate
+                ).format("MM")}-${i}`
+            );
+
+            datesSet.push(currDate);
+        }
 
         // Convert the Set back to an array and sort it by date
-        const columns = [...datesSet].sort();
 
-        return columns;
+        return datesSet;
     };
-
     useEffect(() => {
         if (data) {
-            setColumns(generateColumns(data));
-            let tempData = data.filter(
-                (room: any) => room.Sort2 != -1 && room.RoomID != -1
-            );
+            setColumns(generateColumns());
+            console.log("data", data);
 
-            let groupedRooms: { [key: number]: typeof tempData } =
-                tempData.reduce((groups: any, room: any) => {
-                    const key = room.RoomID;
-                    if (!groups[key]) {
-                        groups[key] = [];
-                    }
-                    groups[key].push(room);
-                    return groups;
-                }, {});
+            let tempValue = groupBy(data, "RoomTypeName");
 
-            let sortedGroups = Object.values(groupedRooms).sort(
-                (a, b) => a[0].Sort1 - b[0].Sort1
-            );
-
-            sortedGroups.forEach((group: typeof tempData) => {
-                group.sort((a: any, b: any) => {
-                    if (a.Sort2 === -1 && b.Sort2 !== -1) {
-                        return 1; // Put Sort2 = -1 at the end
-                    } else if (a.Sort2 !== -1 && b.Sort2 === -1) {
-                        return -1; // Put Sort2 = -1 at the end
-                    } else if (a.Sort2 === b.Sort2) {
-                        return (
-                            new Date(a.CurrDate).getTime() -
-                            new Date(b.CurrDate).getTime()
-                        );
-                    } else {
-                        return a.Sort2 - b.Sort2;
-                    }
-                });
-            });
-
-            // Sort rooms within each group by CurrDate
-            sortedGroups.forEach((group: typeof tempData) => {
-                group.sort(
-                    (a: any, b: any) =>
-                        new Date(a.CurrDate).getTime() -
-                        new Date(b.CurrDate).getTime()
-                );
-            });
-            console.log("data3", sortedGroups);
-            setReportData(sortedGroups);
-
-            let groupminus1 = data.filter((room: any) => room.Sort2 == -1);
-
-            groupminus1.sort(
-                (a: any, b: any) =>
-                    new Date(a.CurrDate).getTime() -
-                    new Date(b.CurrDate).getTime()
-            );
-            setGroupminus1(groupminus1);
-            console.log("groupminus1", groupminus1);
-
-            // let tempValue = groupBy(data, "CustomerName");
-
-            // setReportData(tempValue);
-
-            // let tempTotal = 0;
-            // {
-            //     tempValue &&
-            //         Object.keys(tempValue).forEach(
-            //             (key) =>
-            //                 (tempTotal =
-            //                     tempTotal +
-            //                     tempValue[key].reduce(
-            //                         (acc: any, obj: any) => acc + obj.Balance,
-            //                         0
-            //                     ))
-            //         );
-            // }
-
-            // setTotalBalance(tempTotal);
-            // setRerenderKey((prevKey) => prevKey + 1);
-            // // if (
-            // //     search &&
-            // //     search.CustomerID &&
-            // //     search.CustomerID != "" &&
-            // //     search.CustomerID != "0"
-            // // ) {
-            // //     let customerTempData = customerData.filter(
-            // //         (element: any) => element.CustomerID == search.CustomerID
-            // //     );
-            // //     if (customerTempData.length > 0) {
-            // //         setCustomerName(customerTempData[0].CustomerName);
-            // //     } else {
-            // //         setCustomerName("Бүгд");
-            // //     }
-            // // } else {
-            // //     if (search.CustomerID == "0") {
-            // //         setCustomerName("N/A");
-            // //     } else {
-            // //         setCustomerName("Бүгд");
-            // //     }
-            // // }
+            setReportData(tempValue);
         }
     }, [data]);
-
+    console.log("reportData", reportData);
     const validationSchema = yup.object().shape({
         StartDate: yup.date().nullable(),
         EndDate: yup.date().nullable(),
@@ -283,34 +217,12 @@ const ReportingList = ({ title, workingDate }: any) => {
                                             fontSize: "9px",
                                             lineHeight: "14px",
                                         }}
-                                        key={"№"}
-                                    >
-                                        №
-                                    </TableCell>
-                                    <TableCell
-                                        style={{
-                                            fontWeight: "bold",
-                                            padding: "6px",
-                                            fontSize: "9px",
-                                            lineHeight: "14px",
-                                        }}
-                                        key={"roomType"}
-                                    >
-                                        Өрөөний төрөл
-                                    </TableCell>
-                                    <TableCell
-                                        style={{
-                                            fontWeight: "bold",
-                                            padding: "6px",
-                                            fontSize: "9px",
-                                            lineHeight: "14px",
-                                        }}
                                         key={"room"}
                                     >
                                         Өрөө
                                     </TableCell>
                                     {columns &&
-                                        Object.keys(columns).map((key) => (
+                                        columns.map((entity: any) => (
                                             <TableCell
                                                 style={{
                                                     fontWeight: "bold",
@@ -318,21 +230,19 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                     fontSize: "9px",
                                                     lineHeight: "14px",
                                                 }}
-                                                key={key}
+                                                key={entity}
                                             >
-                                                {moment(columns[key]).format(
-                                                    "MM.DD"
-                                                )}
+                                                {moment(entity).format("MM.DD")}
                                             </TableCell>
                                         ))}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {reportData &&
-                                    reportData.map(
-                                        (roomType: any, index: any) => (
+                                    Object.keys(reportData).map((key) => (
+                                        <>
                                             <TableRow
-                                                key={index}
+                                                key={key}
                                                 sx={{
                                                     "&:last-child td, &:last-child th":
                                                         { border: 0 },
@@ -348,33 +258,9 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                     }}
                                                     colSpan={1}
                                                 >
-                                                    {index + 1}
+                                                    {reportData[key][0].RoomNo}
                                                 </TableCell>
-                                                <TableCell
-                                                    component="th"
-                                                    scope="row"
-                                                    style={{
-                                                        padding: "6px",
-                                                        fontSize: "9px",
-                                                        lineHeight: "14px",
-                                                    }}
-                                                    colSpan={1}
-                                                >
-                                                    {roomType[0].RoomTypeName}
-                                                </TableCell>
-                                                <TableCell
-                                                    component="th"
-                                                    scope="row"
-                                                    style={{
-                                                        padding: "6px",
-                                                        fontSize: "9px",
-                                                        lineHeight: "14px",
-                                                    }}
-                                                    colSpan={1}
-                                                >
-                                                    {roomType[0].RoomNo}
-                                                </TableCell>
-                                                {roomType &&
+                                                {/* {roomType &&
                                                     roomType.map(
                                                         (
                                                             roomType2: any,
@@ -399,10 +285,11 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                                 }
                                                             </TableCell>
                                                         )
-                                                    )}
+                                                    )} */}
                                             </TableRow>
-                                        )
-                                    )}
+                                        </>
+                                    ))}
+
                                 <TableRow
                                     key={"total"}
                                     sx={{

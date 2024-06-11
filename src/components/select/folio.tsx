@@ -1,7 +1,8 @@
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useIntl } from "react-intl";
 
 import CustomSelect from "components/common/custom-select";
 import { FolioSWR } from "lib/api/folio";
@@ -15,6 +16,7 @@ const FolioSelect = ({
     resetField,
     onChange,
 }: any) => {
+    const intl = useIntl();
     const { data, error } = FolioSWR(TransactionID, groupID);
 
     useEffect(() => {
@@ -46,7 +48,9 @@ const FolioSelect = ({
             register={register}
             errors={errors}
             field={customField ? customField : "FolioID"}
-            label="Тооцоо"
+            label={intl.formatMessage({
+                id: "TextFolio",
+            })}
             options={data}
             optionValue="FolioID"
             optionLabel="FolioFullName"

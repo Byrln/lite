@@ -763,5 +763,10 @@
     "TextNights": "Nights",
     "TextPaymentMethod": "Payment Method",
     "TextBillingInformation": "Billing Information",
-    "TextSetMessage": "Set Message"
+    "TextSetMessage": "Set Message",
+    "TextCheckInNo": "Check In No",
+    "TextFolioNo": "Folio No",
+    "TextVoucherNo": "Voucher No",
+    "TextSuccess": "Success",
+    "TextFolio": "Folio"
 }

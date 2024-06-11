@@ -371,27 +371,37 @@ const Dashboard = ({ workingDate }: any) => {
                                         )}
                                     </div>
                                     <Grid container spacing={2}>
-                                        {filterData(element, index).map(
-                                            (childElement: any) => (
-                                                <Grid
-                                                    item
-                                                    xs={index === 0 ? 6 : 12}
-                                                    key={
-                                                        childElement.ParameterID
-                                                    }
-                                                >
-                                                    <DashboardCard
-                                                        item={childElement}
-                                                        isSmall={index === 0}
-                                                        isCharges={index === 2}
-                                                        list={element}
-                                                        workingDate={
-                                                            workingDate
+                                        {data &&
+                                            filterData(element, index).map(
+                                                (childElement: any) => (
+                                                    <Grid
+                                                        item
+                                                        xs={
+                                                            index === 0 ? 6 : 12
                                                         }
-                                                    />
-                                                </Grid>
-                                            )
-                                        )}
+                                                        key={
+                                                            childElement.ParameterID
+                                                        }
+                                                    >
+                                                        <DashboardCard
+                                                            item={childElement}
+                                                            isSmall={
+                                                                index === 0
+                                                            }
+                                                            isCharges={
+                                                                index === 2
+                                                            }
+                                                            list={element}
+                                                            workingDate={
+                                                                workingDate
+                                                            }
+                                                            dashboardType={
+                                                                dashboardType
+                                                            }
+                                                        />
+                                                    </Grid>
+                                                )
+                                            )}
                                     </Grid>
                                 </CardContent>
                             </Card>
@@ -404,7 +414,14 @@ const Dashboard = ({ workingDate }: any) => {
 
 export default Dashboard;
 
-function DashboardCard({ item, isSmall, isCharges, list, workingDate }: any) {
+function DashboardCard({
+    item,
+    isSmall,
+    isCharges,
+    list,
+    workingDate,
+    dashboardType,
+}: any) {
     const iconStyle = {
         color: "#FFFFFF",
         fontSize: "16px",
@@ -437,74 +454,144 @@ function DashboardCard({ item, isSmall, isCharges, list, workingDate }: any) {
                     link: `/front-office/reservation-list?StatusGroup=3&StartDate=${moment(
                         workingDate
                     ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
-                        .add(1, "day")
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
                         .format("YYYY-MM-DD")}`,
                 };
             case "Pending Reservations":
                 return {
                     icon: <HourglassEmpty sx={iconStyle} />,
                     color: "#FF9F43",
-                    link: "/front-office/reservation-list",
+                    link: `/front-office/reservation-list?StatusGroup=1&ReservationTypeID=1&StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
+                        .format("YYYY-MM-DD")}`,
                 };
             case "Unconfirmed Reservations":
                 return {
                     icon: <Pending sx={iconStyle} />,
                     color: "#EE5C78",
-                    link: "/front-office/reservation-list",
+                    link: `/front-office/reservation-list?StatusGroup=1&ReservationTypeID=2&StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
+                        .format("YYYY-MM-DD")}`,
                 };
             case "Due Out":
                 return {
                     icon: <Logout sx={iconStyle} />,
                     color: "#00CFE8",
-                    link: "/front-office/reservation-list",
+                    link: `/front-office/reservation-list?StatusGroup=2&StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
+                        .format("YYYY-MM-DD")}`,
                 };
             case "Deleted Bookings":
                 return {
                     icon: <Delete sx={iconStyle} />,
                     color: "#EE5C78",
-                    link: "/front-office/reservation-list",
+                    link: `/front-office/reservation-list?StatusGroup=0&StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
+                        .format("YYYY-MM-DD")}`,
                 };
             case "Void Bookings":
                 return {
                     icon: <Sell sx={iconStyle} />,
                     color: "#7856DE",
-                    link: "/front-office/reservation-list",
+                    link: `/front-office/reservation-list?StatusGroup=0&StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
+                        .format("YYYY-MM-DD")}`,
                 };
             case "Cancelled Bookings":
                 return {
                     icon: <Close sx={iconStyle} />,
                     color: "#EE5C78",
-                    link: "/front-office/reservation-list",
+                    link: `/front-office/reservation-list?StatusGroup=0&StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
+                        .format("YYYY-MM-DD")}`,
                 };
             case "No Show":
                 return {
                     icon: <PersonOff sx={iconStyle} />,
                     color: "#000000",
-                    link: "/front-office/reservation-list",
+                    link: `/front-office/reservation-list?StatusGroup=0&StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
+                        .format("YYYY-MM-DD")}`,
                 };
             case "Blocked":
                 return {
                     icon: <DoNotDisturb sx={iconStyle} />,
                     color: "#EE5C78",
-                    link: "/front-office/reservation-list",
+                    link: `/front-office/reservation-list?StatusGroup=0&StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
+                        .format("YYYY-MM-DD")}`,
                 };
             case "Room Charges":
                 return {
                     icon: <Key sx={iconStyle} />,
                     color: "#7856DE",
-                    link: "/front-office/reservation-list",
+                    link: `/report/room-charge-monthly?CurrDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}`,
                 };
             case "Extra Charges":
                 return {
                     icon: <CreditCard sx={iconStyle} />,
                     color: "#00CFE8",
-                    link: "/front-office/reservation-list",
+                    link: `/report/extra-charge/summary?StartDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
+                        .add(
+                            dashboardType == "weekly" ? 7 : 1,
+                            dashboardType == "monthly" ? "month" : "day"
+                        )
+                        .format("YYYY-MM-DD")}`,
                 };
             case "Discount":
                 return {
                     icon: <Discount sx={iconStyle} />,
                     color: "#28C76F",
-                    link: "/front-office/reservation-list",
+                    link: `/report/room-charge-monthly?CurrDate=${moment(
+                        workingDate
+                    ).format("YYYY-MM-DD")}`,
                 };
         }
     }
@@ -576,7 +663,7 @@ function DashboardCard({ item, isSmall, isCharges, list, workingDate }: any) {
     return (
         <Card sx={{ padding: "1rem" }}>
             <Link //@ts-ignore
-                href={currentItem?.link}
+                href={currentItem && currentItem.link ? currentItem.link : "/"}
                 passHref
             >
                 <a style={{ textDecoration: "unset", color: "black" }}>

@@ -1,10 +1,7 @@
 import { ReservationAPI } from "lib/api/reservation";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import {
-    Grid,
     Box,
-    Paper,
-    Typography,
     Button,
     Dialog,
     DialogActions,
@@ -12,8 +9,8 @@ import {
     DialogContentText,
     DialogTitle,
 } from "@mui/material";
-import { fToCustom } from "lib/utils/format-time";
 import { listUrl as calendarItemsURL } from "lib/api/front-office";
+import { useIntl } from "react-intl";
 
 import { mutate } from "swr";
 import { ModalContext } from "lib/context/modal";
@@ -41,6 +38,7 @@ const ReservationNav = ({
     reloadDetailInfo,
     additionalMutateUrl,
 }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [openNoShow, setOpenNoShow] = useState(false);
     const handleClickOpenNoShow = () => {
@@ -57,7 +55,11 @@ const ReservationNav = ({
                 await mutate(additionalMutateUrl);
             }
             setLoading(false);
-            toast("Амжилттай.");
+            toast(
+                intl.formatMessage({
+                    id: "TextSuccess",
+                })
+            );
             handleCloseNoShow();
         } catch (error) {
             setLoading(false);
@@ -77,7 +79,13 @@ const ReservationNav = ({
     };
 
     const onCheckInClick = async (evt: any) => {
-        if (!confirm("Are you sure?")) {
+        if (
+            !confirm(
+                intl.formatMessage({
+                    id: "MsgConfirmation",
+                })
+            )
+        ) {
             return;
         }
         var res = await ReservationAPI.checkIn(reservation.TransactionID);
@@ -85,11 +93,21 @@ const ReservationNav = ({
         if (additionalMutateUrl) {
             await mutate(additionalMutateUrl);
         }
-        finishCall("Амжилттай");
+        finishCall(
+            intl.formatMessage({
+                id: "TextSuccess",
+            })
+        );
     };
 
     const unassignRoom = async (evt: any) => {
-        if (!confirm("Are you sure?")) {
+        if (
+            !confirm(
+                intl.formatMessage({
+                    id: "MsgConfirmation",
+                })
+            )
+        ) {
             return;
         }
         var res = await ReservationAPI.roomUnassign(reservation.TransactionID);
@@ -97,7 +115,11 @@ const ReservationNav = ({
         if (additionalMutateUrl) {
             await mutate(additionalMutateUrl);
         }
-        finishCall("Амжилттай");
+        finishCall(
+            intl.formatMessage({
+                id: "TextSuccess",
+            })
+        );
     };
 
     return (
@@ -109,7 +131,9 @@ const ReservationNav = ({
             }}
         >
             <Button variant={"text"} size="small" sx={buttonStyle}>
-                Card
+                {intl.formatMessage({
+                    id: "ButtonCard",
+                })}
             </Button>
             {reservation.CheckIn && (
                 <Button
@@ -118,7 +142,9 @@ const ReservationNav = ({
                     onClick={onCheckInClick}
                     sx={buttonStyle}
                 >
-                    Check In
+                    {intl.formatMessage({
+                        id: "ButtonCheckIn",
+                    })}
                 </Button>
             )}
             {reservation.NoShow && (
@@ -128,7 +154,9 @@ const ReservationNav = ({
                     sx={buttonStyle}
                     onClick={handleClickOpenNoShow}
                 >
-                    Mark No Show
+                    {intl.formatMessage({
+                        id: "ButtonMarkNoShow",
+                    })}
                 </Button>
             )}
             <Dialog
@@ -137,22 +165,37 @@ const ReservationNav = ({
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Ирээгүй</DialogTitle>
+                <DialogTitle id="alert-dialog-title">
+                    {" "}
+                    {intl.formatMessage({
+                        id: "ButtonMarkNoShow",
+                    })}
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Та итгэлтэй байна уу
+                        {intl.formatMessage({
+                            id: "MsgConfirmation",
+                        })}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseNoShow}>Үгүй</Button>
+                    <Button onClick={handleCloseNoShow}>
+                        {intl.formatMessage({
+                            id: "ButtonCancel",
+                        })}
+                    </Button>
                     <Button onClick={handleOnClickNoShow} autoFocus>
-                        Тийм
+                        {intl.formatMessage({
+                            id: "ButtonOk",
+                        })}
                     </Button>
                 </DialogActions>
             </Dialog>
             <a href={`/transaction/edit/${reservation.TransactionID}`}>
                 <Button variant={"text"} size="small" sx={buttonStyle}>
-                    Edit Transaction
+                    {intl.formatMessage({
+                        id: "ButtonEditTransaction",
+                    })}
                 </Button>
             </a>
             <Button
@@ -162,7 +205,9 @@ const ReservationNav = ({
                 onClick={() => {
                     handleModal(
                         true,
-                        "Extra Charge",
+                        intl.formatMessage({
+                            id: "ButtonExtraCharge",
+                        }),
                         <ExtraCharge
                             transactionInfo={reservation}
                             reservation={reservation}
@@ -173,12 +218,16 @@ const ReservationNav = ({
                     );
                 }}
             >
-                Extra Charge
+                {intl.formatMessage({
+                    id: "ButtonExtraCharge",
+                })}
             </Button>
             {reservation.GroupOperation && (
                 <a href={`transaction/group-edit/${reservation.GroupID}`}>
                     <Button variant={"text"} size="small" sx={buttonStyle}>
-                        Edit Group
+                        {intl.formatMessage({
+                            id: "ButtonEditGroup",
+                        })}
                     </Button>
                 </a>
             )}
@@ -190,7 +239,9 @@ const ReservationNav = ({
                     onClick={() => {
                         handleModal(
                             true,
-                            "Room Move",
+                            intl.formatMessage({
+                                id: "ButtonRoomMove",
+                            }),
                             <RoomMoveForm
                                 transactionInfo={reservation}
                                 reservation={reservation}
@@ -199,7 +250,9 @@ const ReservationNav = ({
                         );
                     }}
                 >
-                    Room Move
+                    {intl.formatMessage({
+                        id: "ButtonRoomMove",
+                    })}
                 </Button>
             )}
             {reservation.AmendStay && (
@@ -209,7 +262,9 @@ const ReservationNav = ({
                     onClick={() => {
                         handleModal(
                             true,
-                            "Amend Stay",
+                            intl.formatMessage({
+                                id: "ButtonAmendStay",
+                            }),
                             <AmendStayForm
                                 transactionInfo={reservation}
                                 reservation={reservation}
@@ -219,7 +274,9 @@ const ReservationNav = ({
                     }}
                     sx={buttonStyle}
                 >
-                    Amend Stay
+                    {intl.formatMessage({
+                        id: "ButtonAmendStay",
+                    })}
                 </Button>
             )}
             {/*{reservation.SetMessage && (*/}
@@ -236,7 +293,9 @@ const ReservationNav = ({
                     onClick={(evt: any) => {
                         handleModal(
                             true,
-                            "Void Transaction",
+                            intl.formatMessage({
+                                id: "ButtonVoidTransaction",
+                            }),
                             <VoidTransactionForm
                                 transactionInfo={reservation}
                                 reservation={reservation}
@@ -246,7 +305,9 @@ const ReservationNav = ({
                     }}
                     sx={buttonStyle}
                 >
-                    Void Transaction
+                    {intl.formatMessage({
+                        id: "ButtonVoidTransaction",
+                    })}
                 </Button>
             )}
 
@@ -266,7 +327,9 @@ const ReservationNav = ({
                     onClick={(evt: any) => {
                         handleModal(
                             true,
-                            "Cancel Reservation",
+                            intl.formatMessage({
+                                id: "ButtonCancelReservation",
+                            }),
                             <CancelReservationForm
                                 transactionInfo={reservation}
                                 reservation={reservation}
@@ -275,7 +338,9 @@ const ReservationNav = ({
                         );
                     }}
                 >
-                    Cancel Reservation
+                    {intl.formatMessage({
+                        id: "ButtonCancelReservation",
+                    })}
                 </Button>
             )}
             {reservation.Assign && (
@@ -295,7 +360,9 @@ const ReservationNav = ({
                         );
                     }}
                 >
-                    Assign Room
+                    {intl.formatMessage({
+                        id: "ButtonAssignRoom",
+                    })}
                 </Button>
             )}
             {reservation.Unassign && (

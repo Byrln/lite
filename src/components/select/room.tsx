@@ -1,10 +1,9 @@
 import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import { useEffect, useState } from "react";
-import { RoomSWR, RoomAPI } from "lib/api/room";
+import { useIntl } from "react-intl";
+
+import { RoomAPI } from "lib/api/room";
 import { dateToSimpleFormat } from "lib/utils/format-time";
 
 const RoomSelect = ({
@@ -18,7 +17,7 @@ const RoomSelect = ({
     roomType,
     isSearch,
 }: any) => {
-    // const { data, error } = RoomSWR();
+    const intl = useIntl();
     const [data, setData]: any = useState([]);
 
     const eventRoomChange = (val: any) => {
@@ -42,7 +41,7 @@ const RoomSelect = ({
             }
         }
     };
-    console.log("roomSelectBaseStay", baseStay);
+
     const fetchRooms = async () => {
         if (
             !(
@@ -65,7 +64,6 @@ const RoomSelect = ({
             EndDate: dateToSimpleFormat(baseStay.dateEnd),
         };
         var d = await RoomAPI.listAvailable(values);
-        console.log("values", values), console.log("d", d);
         setData(d);
     };
 
@@ -92,21 +90,13 @@ const RoomSelect = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomAutoAssign]);
 
-    // if (error) return <Alert severity="error">{error.message}</Alert>;
-
-    // if (!error && !data)
-    //     return (
-    //         <Box sx={{ width: "100%" }}>
-    //             <Skeleton />
-    //             <Skeleton animation="wave" />
-    //         </Box>
-    //     );
-
     return (
         <TextField
             fullWidth
             id="RoomTypeID"
-            label="Өрөө"
+            label={intl.formatMessage({
+                id: "TextRoom",
+            })}
             {...register(customRegisterName ? customRegisterName : "RoomID")}
             select
             margin="dense"
@@ -124,7 +114,9 @@ const RoomSelect = ({
         >
             {isSearch && (
                 <MenuItem key={"all"} value={0}>
-                    {"Бүгд"}
+                    {intl.formatMessage({
+                        id: "TextAll",
+                    })}
                 </MenuItem>
             )}
             {data.map((room: any) => {

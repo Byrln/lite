@@ -1,4 +1,3 @@
-import { TextField, Grid, Checkbox } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -6,6 +5,7 @@ import { useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ModalContext } from "lib/context/modal";
 import { LoadingButton } from "@mui/lab";
+import { useIntl } from "react-intl";
 
 import ChargeType from "./charge-type";
 import PaymentMethod from "./payment-method";
@@ -17,6 +17,7 @@ const ExtraCharge = ({
     reservation,
     additionalMutateUrl,
 }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [chargeTypes, setChargeTypes] = useState<any>(null);
@@ -24,8 +25,6 @@ const ExtraCharge = ({
 
     const validationSchema = yup.object().shape({});
     const formOptions = { resolver: yupResolver(validationSchema) };
-    console.log("chargeTypes", chargeTypes);
-    console.log("paymentMethods", paymentMethods);
 
     const {
         register,
@@ -101,7 +100,11 @@ const ExtraCharge = ({
                 }
             });
 
-            toast("Амжилттай.");
+            toast(
+                intl.formatMessage({
+                    id: "TextSuccess",
+                })
+            );
 
             setLoading(false);
             setChargeTypes({});
@@ -140,7 +143,9 @@ const ExtraCharge = ({
                 />
                 <br />
                 <br />
-                Төлбөр
+                {intl.formatMessage({
+                    id: "TextPayment",
+                })}
                 <br />
                 <br />
                 <PaymentMethod
@@ -157,7 +162,9 @@ const ExtraCharge = ({
                     loading={loading}
                     className="mt-3"
                 >
-                    Хадгалах
+                    {intl.formatMessage({
+                        id: "ButtonSave",
+                    })}
                 </LoadingButton>
             </form>
         </>

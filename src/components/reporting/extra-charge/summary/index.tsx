@@ -16,6 +16,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 
 import { ReportAPI, breakfastUrl } from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
@@ -24,6 +25,8 @@ import Search from "./search";
 import { formatPrice } from "lib/utils/helpers";
 
 const ExtraChargeSummary = ({ title, workingDate }: any) => {
+    const router = useRouter();
+    const { StartDate, EndDate } = router.query;
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [reportData, setReportData]: any = useState(null);
@@ -31,10 +34,14 @@ const ExtraChargeSummary = ({ title, workingDate }: any) => {
     const [ReportType, setReportType] = useState<any>("arrival");
 
     const [search, setSearch] = useState<any>({
-        StartDate: moment(dateStringToObj(workingDate)).format("YYYY-MM-DD"),
-        EndDate: moment(dateStringToObj(workingDate))
-            .add(1, "months")
-            .format("YYYY-MM-DD"),
+        StartDate: StartDate
+            ? StartDate
+            : moment(dateStringToObj(workingDate)).format("YYYY-MM-DD"),
+        EndDate: EndDate
+            ? EndDate
+            : moment(dateStringToObj(workingDate))
+                  .add(1, "months")
+                  .format("YYYY-MM-DD"),
     });
 
     const groupBy = (items: any, key: any) =>
@@ -97,12 +104,14 @@ const ExtraChargeSummary = ({ title, workingDate }: any) => {
     });
     const formOptions = {
         defaultValues: {
-            StartDate: moment(dateStringToObj(workingDate)).format(
-                "YYYY-MM-DD"
-            ),
-            EndDate: moment(dateStringToObj(workingDate))
-                .add(1, "months")
-                .format("YYYY-MM-DD"),
+            StartDate: StartDate
+                ? StartDate
+                : moment(dateStringToObj(workingDate)).format("YYYY-MM-DD"),
+            EndDate: EndDate
+                ? EndDate
+                : moment(dateStringToObj(workingDate))
+                      .add(1, "months")
+                      .format("YYYY-MM-DD"),
         },
         resolver: yupResolver(validationSchema),
     };

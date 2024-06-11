@@ -1,5 +1,4 @@
-import { ReservationAPI } from "lib/api/reservation";
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import {
     Grid,
     Box,
@@ -7,24 +6,18 @@ import {
     Typography,
     Divider,
     Button,
-    MenuItem,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
 } from "@mui/material";
 import { fToCustom, countNights } from "lib/utils/format-time";
 import ReservationNav from "./_reservation-nav";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
 
-import { ReportAPI } from "lib/api/report";
 import RemarkList from "./remark/list";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ModalContext } from "lib/context/modal";
-import Receipt from "components/reporting/receipt";
-import Invoice from "components/reporting/invoice";
 import InvoiceSelect from "components/reporting/invoice/select";
 import ReceiptSelect from "components/reporting/receipt/select";
 
@@ -58,8 +51,8 @@ const ItemDetail = ({
     additionalMutateUrl,
     summary,
 }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
-    const [loading, setLoading] = useState(false);
 
     return (
         <>
@@ -93,7 +86,9 @@ const ItemDetail = ({
                                         </Typography>
                                     </Paper>
                                     <p style={{ fontSize: "12px" }}>
-                                        Бүртгэлийн дугаар{" "}
+                                        {intl.formatMessage({
+                                            id: "TextCheckInNo",
+                                        })}{" "}
                                         {reservation.CheckinNo}
                                     </p>
                                 </div>
@@ -127,7 +122,11 @@ const ItemDetail = ({
                                         reservation.DepartureDate
                                     )}
                                 </p>
-                                <p>Хоног</p>
+                                <p>
+                                    {intl.formatMessage({
+                                        id: "TextNights",
+                                    })}
+                                </p>
                             </Box>
                             <Box sx={styleTime}>
                                 <p>
@@ -149,7 +148,11 @@ const ItemDetail = ({
                                 <TableBody>
                                     <TableRow>
                                         <TableCell>
-                                            <b>Тооцооны дугаар</b>
+                                            <b>
+                                                {intl.formatMessage({
+                                                    id: "TextFolioNo",
+                                                })}
+                                            </b>
                                         </TableCell>
                                         <TableCell>
                                             {reservation.ReservationNo}
@@ -158,7 +161,11 @@ const ItemDetail = ({
 
                                     <TableRow>
                                         <TableCell>
-                                            <b>GroupCode</b>
+                                            <b>
+                                                {intl.formatMessage({
+                                                    id: "RowHeaderGroupCode",
+                                                })}
+                                            </b>
                                         </TableCell>
                                         <TableCell>
                                             {reservation.GroupCode}
@@ -167,7 +174,11 @@ const ItemDetail = ({
 
                                     <TableRow>
                                         <TableCell>
-                                            <b>Folio No</b>
+                                            <b>
+                                                {intl.formatMessage({
+                                                    id: "TextFolioNo",
+                                                })}
+                                            </b>
                                         </TableCell>
                                         <TableCell>
                                             {reservation.FolioNo}
@@ -176,7 +187,11 @@ const ItemDetail = ({
 
                                     <TableRow>
                                         <TableCell>
-                                            <b>Ваучер №</b>
+                                            <b>
+                                                {intl.formatMessage({
+                                                    id: "TextVoucherNo",
+                                                })}
+                                            </b>
                                         </TableCell>
                                         <TableCell>
                                             {reservation.VoucherNo}
@@ -185,7 +200,11 @@ const ItemDetail = ({
 
                                     <TableRow>
                                         <TableCell>
-                                            <b>Өрөө.дугаар/Төрөл</b>
+                                            <b>
+                                                {intl.formatMessage({
+                                                    id: "TextRoomNoRoomType",
+                                                })}
+                                            </b>
                                         </TableCell>
                                         <TableCell>
                                             {reservation.RoomFullNo}
@@ -198,10 +217,14 @@ const ItemDetail = ({
                                 size="small"
                                 className="mr-3"
                             >
-                                Батал.мэйл явуулах
+                                {intl.formatMessage({
+                                    id: "ButtonSendConfirmation",
+                                })}
                             </Button>
                             <Button variant={"text"} size="small">
-                                Бүрт.хэвлэх
+                                {intl.formatMessage({
+                                    id: "ButtonPrintRegistrationForm",
+                                })}
                             </Button>
                         </Grid>
 

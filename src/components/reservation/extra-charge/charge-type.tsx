@@ -1,5 +1,6 @@
 import { Checkbox, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 
 import { listUrl } from "lib/api/front-office";
 import { formatNumber } from "lib/utils/helpers";
@@ -7,6 +8,7 @@ import { ChargeTypeAPI } from "lib/api/charge-type";
 import CustomTable from "components/common/custom-table";
 
 const ExtraCharge = ({ entity, setEntity }: any) => {
+    const intl = useIntl();
     const [rerenderKey, setRerenderKey] = useState(0);
 
     const fetchDatas = async () => {
@@ -78,17 +80,23 @@ const ExtraCharge = ({ entity, setEntity }: any) => {
             },
         },
         {
-            title: "Нэмэлт үйлчилгээний бүлэг",
+            title: intl.formatMessage({
+                id: "RowHeaderExtraChargeGroup",
+            }),
             key: "RoomChargeTypeGroupName",
             dataIndex: "RoomChargeTypeGroupName",
         },
         {
-            title: "Нэмэлт үйлчилгээ",
+            title: intl.formatMessage({
+                id: "RowHeaderExtraCharge",
+            }),
             key: "RoomChargeTypeName",
             dataIndex: "RoomChargeTypeName",
         },
         {
-            title: "Тариф",
+            title: intl.formatMessage({
+                id: "RowHeaderRate",
+            }),
             key: "RoomChargeTypeRate",
             dataIndex: "RoomChargeTypeRate",
             render: function render(
@@ -131,7 +139,9 @@ const ExtraCharge = ({ entity, setEntity }: any) => {
             },
         },
         {
-            title: "Тоо хэмжээ",
+            title: intl.formatMessage({
+                id: "TextQuantity",
+            }),
             key: "Quantity",
             dataIndex: "Quantity",
             render: function render(
@@ -173,7 +183,9 @@ const ExtraCharge = ({ entity, setEntity }: any) => {
             },
         },
         {
-            title: "Дүн",
+            title: intl.formatMessage({
+                id: "TextAmount",
+            }),
             key: "Total",
             dataIndex: "Total",
             render: function render(
@@ -202,7 +214,9 @@ const ExtraCharge = ({ entity, setEntity }: any) => {
             hasNew={false}
             id="RoomChargeTypeID"
             listUrl={listUrl}
-            excelName="Нэмэлт төлбөр"
+            excelName={intl.formatMessage({
+                id: "ButtonExtraCharge",
+            })}
             datagrid={false}
             hasPrint={false}
             hasExcel={false}

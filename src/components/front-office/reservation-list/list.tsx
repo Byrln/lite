@@ -18,12 +18,12 @@ import { ModalContext } from "lib/context/modal";
 
 const DeparturedListList = ({ title, workingDate }: any) => {
     const router = useRouter();
-    const { StatusGroup, StartDate, EndDate } = router.query;
+    const { StatusGroup, StartDate, EndDate, ReservationTypeID } = router.query;
     const [rerenderKey, setRerenderKey] = useState(0);
 
     useEffect(() => {
         setRerenderKey((prevKey) => prevKey + 1);
-    }, [StatusGroup, StartDate, EndDate]);
+    }, [StatusGroup, StartDate, EndDate, ReservationTypeID]);
 
     const intl = useIntl();
 
@@ -161,6 +161,7 @@ const DeparturedListList = ({ title, workingDate }: any) => {
             StatusGroup: StatusGroup ? StatusGroup : "1",
             StartDate: StartDate ? StartDate : null,
             EndDate: EndDate ? EndDate : null,
+            ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
         },
         resolver: yupResolver(validationSchema),
     };
@@ -176,6 +177,7 @@ const DeparturedListList = ({ title, workingDate }: any) => {
         StatusGroup: StatusGroup ? StatusGroup : "1",
         StartDate: StartDate ? StartDate : null,
         EndDate: EndDate ? EndDate : null,
+        ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
     });
 
     const { data, error } = ReservationSWR(search);
