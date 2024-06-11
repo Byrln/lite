@@ -45,16 +45,15 @@ const Folio = ({ title, workingDate }: any) => {
 
             .MuiTableCell-root{
                 border:1px  #DFDFDF solid !important;
-                font-size:8px !important;
+                font-size:10px !important;
                 line-height:8px !important
                 padding:4px !important
-
               }
               .MuiTableCell-head, .MuiDataGrid-columnHeaders, .MuiDataGrid-footerContainer{
                 border:1px #DFDFDF solid !important;
                 background-color: none !important;
                 color :inherit !important;
-                font-size:8px !important;
+                font-size:10px !important;
                 line-height:8px !important;
                 padding:4px !important
               ]
