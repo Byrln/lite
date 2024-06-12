@@ -17,6 +17,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { mutate } from "swr";
 
 import { StayViewSWR, stayViewUrl } from "lib/api/report";
 import { dateStringToObj } from "lib/utils/helpers";
@@ -26,6 +27,7 @@ import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
 import { FrontOfficeSWR, listUrl } from "lib/api/front-office";
 import { daysInMonth } from "lib/utils/helpers";
+import { StayView2SWR } from "lib/api/stay-view2";
 
 const ReportingList = ({ title, workingDate }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
@@ -45,20 +47,40 @@ const ReportingList = ({ title, workingDate }: any) => {
 
     // const { data, error } = StayVaaiewSWR(search);
     const { data, error } = FrontOfficeSWR({
-        CurrDate: moment(dateStringToObj(workingDate)),
-        NumberOfDays:
-            daysInMonth(
-                moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
-                moment(search.CurrDate, "YYYY-MM-DD").year()
-            ) - 1,
+        CurrDate: `${moment(search.CurrDate).format("YYYY")}-${moment(
+            search.CurrDate
+        ).format("MM")}-01`,
+        NumberOfDays: daysInMonth(
+            moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+            moment(search.CurrDate, "YYYY-MM-DD").year()
+        ),
         RoomTypeID: null,
     });
+
+    const { data: availableRooms, error: availableRoomsError } = StayView2SWR(
+        `${moment(search.CurrDate).format("YYYY")}-${moment(
+            search.CurrDate
+        ).format("MM")}-01`,
+
+        daysInMonth(
+            moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+            moment(search.CurrDate, "YYYY-MM-DD").year()
+        ) > 30
+            ? 30
+            : daysInMonth(
+                  moment(search.CurrDate, "YYYY-MM-DD").month() + 1,
+                  moment(search.CurrDate, "YYYY-MM-DD").year()
+              )
+    );
 
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
             @page {
               padding: 20px;
             }
+            body {
+                -webkit-print-color-adjust: exact;
+              }
             .css-ztacej-MuiTableCell-root{
                 padding:6px !important
                 font-size: 9px !important;
@@ -132,25 +154,33 @@ const ReportingList = ({ title, workingDate }: any) => {
 
             let tempValue = groupBy(data, "RoomTypeName");
 
+            Object.keys(tempValue).map((key: any) => {
+                tempValue[key] = groupBy(tempValue[key], "RoomNo");
+            });
+            mutate(`/api/FrontOffice/StayView2`);
             setReportData(tempValue);
+            setRerenderKey((prevKey) => prevKey + 1);
         }
     }, [data]);
-    console.log("reportData", reportData);
-    const validationSchema = yup.object().shape({
-        StartDate: yup.date().nullable(),
-        EndDate: yup.date().nullable(),
 
-        CustomerID: yup.string().nullable(),
+    const validationSchema = yup.object().shape({
+        CurrDate: yup.date().nullable(),
     });
+
     const formOptions = {
         defaultValues: {
-            StartDate: moment(dateStringToObj(workingDate)).startOf("day"),
-            EndDate: moment(dateStringToObj(workingDate))
-                .add(1, "months")
-                .startOf("day"),
+            CurrDate: moment(dateStringToObj(workingDate)).startOf("day"),
         },
         resolver: yupResolver(validationSchema),
     };
+
+    function getContrastYIQ(hexcolor: any) {
+        var r = parseInt(hexcolor.substring(1, 3), 16);
+        var g = parseInt(hexcolor.substring(3, 5), 16);
+        var b = parseInt(hexcolor.substring(5, 7), 16);
+        var yiq = (r * 299 + g * 587 + b * 114) / 1000;
+        return yiq >= 128 ? "black" : "white";
+    }
 
     const {
         reset,
@@ -173,7 +203,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                 </Button>
 
                 <CustomSearch
-                    listUrl={stayViewUrl}
+                    listUrl={listUrl}
                     search={search}
                     setSearch={setSearch}
                     handleSubmit={handleSubmit}
@@ -216,6 +246,8 @@ const ReportingList = ({ title, workingDate }: any) => {
                                             padding: "6px",
                                             fontSize: "9px",
                                             lineHeight: "14px",
+                                            backgroundColor: "white",
+                                            color: "black",
                                         }}
                                         key={"room"}
                                     >
@@ -229,6 +261,9 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                     padding: "6px",
                                                     fontSize: "9px",
                                                     lineHeight: "14px",
+                                                    backgroundColor: "white",
+                                                    color: "black",
+                                                    width: "100px",
                                                 }}
                                                 key={entity}
                                             >
@@ -241,6 +276,134 @@ const ReportingList = ({ title, workingDate }: any) => {
                                 {reportData &&
                                     Object.keys(reportData).map((key) => (
                                         <>
+                                            {reportData[key] &&
+                                                Object.keys(
+                                                    reportData[key]
+                                                ).map((key2) => (
+                                                    <TableRow
+                                                        key={key2}
+                                                        sx={{
+                                                            "&:last-child td, &:last-child th":
+                                                                {
+                                                                    border: 0,
+                                                                },
+                                                        }}
+                                                    >
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                padding: "6px",
+                                                                fontSize: "9px",
+                                                                lineHeight:
+                                                                    "14px",
+                                                            }}
+                                                            colSpan={1}
+                                                        >
+                                                            {key2}
+                                                        </TableCell>
+                                                        {columns &&
+                                                            columns.map(
+                                                                (
+                                                                    entity: any
+                                                                ) => (
+                                                                    <TableCell
+                                                                        style={{
+                                                                            padding:
+                                                                                "0px",
+                                                                            fontSize:
+                                                                                "9px",
+                                                                            lineHeight:
+                                                                                "14px",
+                                                                        }}
+                                                                        key={
+                                                                            entity
+                                                                        }
+                                                                    >
+                                                                        <div
+                                                                            style={{
+                                                                                width: "40px",
+                                                                                overflow:
+                                                                                    "hidden",
+                                                                            }}
+                                                                        >
+                                                                            {reportData[
+                                                                                key
+                                                                            ][
+                                                                                key2
+                                                                            ] &&
+                                                                                reportData[
+                                                                                    key
+                                                                                ][
+                                                                                    key2
+                                                                                ]
+                                                                                    .filter(
+                                                                                        (
+                                                                                            entityData: any
+                                                                                        ) => {
+                                                                                            return (
+                                                                                                new Date(
+                                                                                                    entity
+                                                                                                ) >=
+                                                                                                    new Date(
+                                                                                                        `${moment(
+                                                                                                            entityData.StartDate
+                                                                                                        ).format(
+                                                                                                            "YYYY-MM-DD"
+                                                                                                        )} 00:00`
+                                                                                                    ) &&
+                                                                                                new Date(
+                                                                                                    entity
+                                                                                                ) <
+                                                                                                    new Date(
+                                                                                                        `${moment(
+                                                                                                            entityData.EndDate
+                                                                                                        ).format(
+                                                                                                            "YYYY-MM-DD"
+                                                                                                        )} 00:00`
+                                                                                                    )
+                                                                                            );
+                                                                                        }
+                                                                                    )
+                                                                                    .map(
+                                                                                        (
+                                                                                            blog: any
+                                                                                        ) => {
+                                                                                            console.log(
+                                                                                                "blog",
+                                                                                                blog
+                                                                                            );
+                                                                                            return (
+                                                                                                <TableCell
+                                                                                                    style={{
+                                                                                                        padding:
+                                                                                                            "6px",
+                                                                                                        fontSize:
+                                                                                                            "9px",
+                                                                                                        lineHeight:
+                                                                                                            "14px",
+                                                                                                        width: "100px",
+
+                                                                                                        backgroundColor: `#${blog.StatusColor}`,
+                                                                                                        color: getContrastYIQ(
+                                                                                                            `#${blog.StatusColor}`
+                                                                                                        ),
+                                                                                                    }}
+                                                                                                    key={`${blog.GuestName}-${entity}`}
+                                                                                                >
+                                                                                                    {
+                                                                                                        blog.GuestName
+                                                                                                    }
+                                                                                                </TableCell>
+                                                                                            );
+                                                                                        }
+                                                                                    )}
+                                                                        </div>
+                                                                    </TableCell>
+                                                                )
+                                                            )}
+                                                    </TableRow>
+                                                ))}
                                             <TableRow
                                                 key={key}
                                                 sx={{
@@ -255,21 +418,24 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                         padding: "6px",
                                                         fontSize: "9px",
                                                         lineHeight: "14px",
+                                                        fontWeight: "bold",
                                                     }}
-                                                    colSpan={1}
+                                                    // colSpan={
+                                                    //     columns
+                                                    //         ? columns.length + 1
+                                                    //         : 1
+                                                    // }
                                                 >
-                                                    {reportData[key][0].RoomNo}
+                                                    {key}
                                                 </TableCell>
-                                                {/* {roomType &&
-                                                    roomType.map(
-                                                        (
-                                                            roomType2: any,
-                                                            index: any
-                                                        ) => (
+                                                {columns &&
+                                                    columns.map(
+                                                        (entity: any) => (
                                                             <TableCell
-                                                                key={`${roomType2.RoomTypeID}-${roomType2.RoomID}-${roomType2.CurrDate}`}
+                                                                key={`${key}-${entity}`}
                                                                 component="th"
                                                                 scope="row"
+                                                                align="center"
                                                                 style={{
                                                                     padding:
                                                                         "6px",
@@ -277,15 +443,72 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                                         "9px",
                                                                     lineHeight:
                                                                         "14px",
+                                                                    fontWeight:
+                                                                        "bold",
                                                                 }}
-                                                                colSpan={1}
                                                             >
+                                                                {Number(
+                                                                    Object.keys(
+                                                                        reportData[
+                                                                            key
+                                                                        ]
+                                                                    ).length
+                                                                ) -
+                                                                    Number(
+                                                                        Object.values(
+                                                                            reportData[
+                                                                                key
+                                                                            ]
+                                                                        ).filter(
+                                                                            (
+                                                                                entityData: any
+                                                                            ) => {
+                                                                                return entityData.filter(
+                                                                                    (
+                                                                                        entityData2: any
+                                                                                    ) => {
+                                                                                        return (
+                                                                                            new Date(
+                                                                                                entity
+                                                                                            ) >=
+                                                                                                new Date(
+                                                                                                    `${moment(
+                                                                                                        entityData2.StartDate
+                                                                                                    ).format(
+                                                                                                        "YYYY-MM-DD"
+                                                                                                    )} 00:00`
+                                                                                                ) &&
+                                                                                            new Date(
+                                                                                                entity
+                                                                                            ) <
+                                                                                                new Date(
+                                                                                                    `${moment(
+                                                                                                        entityData2.EndDate
+                                                                                                    ).format(
+                                                                                                        "YYYY-MM-DD"
+                                                                                                    )} 00:00`
+                                                                                                )
+                                                                                        );
+                                                                                    }
+                                                                                )
+                                                                                    .length >
+                                                                                    0
+                                                                                    ? true
+                                                                                    : false;
+                                                                            }
+                                                                        ).length
+                                                                    )}
+                                                                /
                                                                 {
-                                                                    roomType2.CurrName
+                                                                    Object.keys(
+                                                                        reportData[
+                                                                            key
+                                                                        ]
+                                                                    ).length
                                                                 }
                                                             </TableCell>
                                                         )
-                                                    )} */}
+                                                    )}
                                             </TableRow>
                                         </>
                                     ))}
@@ -306,10 +529,39 @@ const ReportingList = ({ title, workingDate }: any) => {
                                             padding: "6px",
                                             fontSize: "9px",
                                             lineHeight: "14px",
+                                            fontWeight: "bold",
                                         }}
-                                        colSpan={3}
-                                    ></TableCell>
-                                    {groupminus1 &&
+                                    >
+                                        Нийт
+                                    </TableCell>
+                                    {columns &&
+                                        columns.map((entity: any) => (
+                                            <TableCell
+                                                key={`${entity}-total`}
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    padding: "6px",
+                                                    fontSize: "9px",
+                                                    lineHeight: "14px",
+                                                    fontWeight: "bold",
+                                                }}
+                                            >
+                                                {availableRooms &&
+                                                    availableRooms[0] &&
+                                                    availableRooms[0][
+                                                        `D${moment(
+                                                            entity
+                                                        ).format("D")}`
+                                                    ] &&
+                                                    availableRooms[0][
+                                                        `D${moment(
+                                                            entity
+                                                        ).format("D")}`
+                                                    ]}
+                                            </TableCell>
+                                        ))}
+                                    {/* {groupminus1 &&
                                         groupminus1.map(
                                             (groupminus: any, index: any) => (
                                                 <TableCell
@@ -330,7 +582,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                     }
                                                 </TableCell>
                                             )
-                                        )}
+                                        )} */}
                                 </TableRow>
                                 {/* {reportData &&
                                     Object.keys(reportData).map(
