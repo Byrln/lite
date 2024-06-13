@@ -1,8 +1,12 @@
+import { Grid, Typography, Card, CardContent } from "@mui/material";
+import { useIntl } from "react-intl";
+
 import { GuestHistorySummarySWR } from "lib/api/guest-database";
 import { useAppState } from "lib/context/app";
-import { Grid, Typography, Card, CardContent } from "@mui/material";
+import { formatPrice } from "lib/utils/helpers";
 
 const GuestHistory = ({ title }: any) => {
+    const intl = useIntl();
     const [state]: any = useAppState();
 
     const { data, error } = GuestHistorySummarySWR(state.editId);
@@ -13,34 +17,64 @@ const GuestHistory = ({ title }: any) => {
                 <Card className="mb-3">
                     <CardContent>
                         <Grid container spacing={1}>
-                            <Grid item xs={4}>
+                            <Grid item xs={6} sm={3}>
                                 <Typography variant="subtitle2">
-                                    Total : {data[0].TotalTransactions}
+                                    {intl.formatMessage({
+                                        id: "TextTotal",
+                                    })}{" "}
+                                    : {data[0].TotalTransactions}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={6} sm={3}>
                                 <Typography variant="subtitle2">
-                                    Paid : {data[0].TotalPaid}
+                                    {intl.formatMessage({
+                                        id: "TextPaid",
+                                    })}{" "}
+                                    : {formatPrice(data[0].TotalPaid)}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={6}></Grid>
+                            <Grid item xs={12}>
                                 <Typography variant="subtitle2">
-                                    Status Reservation : {data[0].Reservations}
+                                    <span style={{ fontWeight: "bold" }}>
+                                        {intl.formatMessage({
+                                            id: "TextStatus",
+                                        })}
+                                    </span>
+                                    :{" "}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={4}>
+
+                            <Grid item xs={6} sm={3}>
                                 <Typography variant="subtitle2">
-                                    Staying : {data[0].StayTransactions}
+                                    {intl.formatMessage({
+                                        id: "TextReservation",
+                                    })}{" "}
+                                    : {data[0].Reservations}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={6} sm={3}>
                                 <Typography variant="subtitle2">
-                                    Checked Out : {data[0].StayTransactions}
+                                    {intl.formatMessage({
+                                        id: "TextStaying",
+                                    })}{" "}
+                                    : {data[0].StayTransactions}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xs={6} sm={3}>
                                 <Typography variant="subtitle2">
-                                    Cancel & No Show : {data[0].CancelNoShow}
+                                    {intl.formatMessage({
+                                        id: "TextCheckedOut",
+                                    })}{" "}
+                                    : {data[0].StayTransactions}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={6} sm={3}>
+                                <Typography variant="subtitle2">
+                                    {intl.formatMessage({
+                                        id: "TextCancelandNoShow",
+                                    })}{" "}
+                                    : {data[0].CancelNoShow}
                                 </Typography>
                             </Grid>
                         </Grid>

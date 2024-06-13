@@ -768,5 +768,14 @@
     "TextFolioNo": "Folio No",
     "TextVoucherNo": "Voucher No",
     "TextSuccess": "Success",
-    "TextFolio": "Folio"
+    "TextFolio": "Folio",
+    "TextTotal": "Total",
+    "TextPaid": "Paid",
+    "TextStatus": "Status",
+    "TextStaying": "Staying",
+    "TextCheckedOut": "Checked Out",
+    "TextCancelandNoShow": "Cancel & No Show",
+    "RowHeaderUser": "User",
+    "RowHeaderTotal": "Total",
+    "TextEditGroup": "Edit Group"
 }

@@ -197,7 +197,10 @@ const ReservationsList = ({ title, workingDate }: any) => {
                                     <TableCell style={{ fontWeight: "bold" }}>
                                         Төлөв
                                     </TableCell>
-                                    <TableCell style={{ fontWeight: "bold" }}>
+                                    <TableCell
+                                        style={{ fontWeight: "bold" }}
+                                        align="center"
+                                    >
                                         Хүний тоо
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
@@ -275,6 +278,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
                                                     <TableCell
                                                         component="th"
                                                         scope="row"
+                                                        align="center"
                                                     >
                                                         {entity.Pax}
                                                     </TableCell>
@@ -333,6 +337,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
                                         style={{
                                             fontWeight: "bold",
                                         }}
+                                        align="center"
                                     >
                                         {formatPrice(
                                             data &&

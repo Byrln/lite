@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
@@ -15,6 +15,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -42,7 +43,7 @@ const NewEdit = () => {
                     size="small"
                     fullWidth
                     id="Remarks"
-                    label="Remarks"
+                    label={intl.formatMessage({ id: "TextHeaderRemarks" })}
                     {...register("Remarks")}
                     margin="dense"
                     error={errors.Remarks?.message}

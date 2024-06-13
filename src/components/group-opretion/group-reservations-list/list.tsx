@@ -4,6 +4,7 @@ import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import moment from "moment";
 import * as yup from "yup";
+import { useIntl } from "react-intl";
 
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
@@ -19,6 +20,7 @@ import { dateStringToObj } from "lib/utils/helpers";
 import AuditTrail from "../audit-trail";
 
 const GroupReservationList = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const [search, setSearch] = useState({
         StartDate: workingDate,
         EndDate: moment(
@@ -73,12 +75,16 @@ const GroupReservationList = ({ title, workingDate }: any) => {
 
     const columns = [
         {
-            title: "Group Code",
+            title: intl.formatMessage({
+                id: "RowHeaderGroupCode",
+            }),
             key: "GroupCode",
             dataIndex: "GroupCode",
         },
         {
-            title: "Өнгө",
+            title: intl.formatMessage({
+                id: "RowHeaderColor",
+            }),
             key: "GroupColor",
             dataIndex: "GroupColor",
             excelRenderPass: true,
@@ -109,57 +115,73 @@ const GroupReservationList = ({ title, workingDate }: any) => {
             },
         },
         {
-            title: "Компани",
+            title: intl.formatMessage({
+                id: "RowHeaderCustomerName",
+            }),
             key: "CustomerName",
             dataIndex: "CustomerName",
         },
         {
-            title: "Өрөө",
+            title: intl.formatMessage({
+                id: "RowHeaderRoom",
+            }),
             key: "Rooms",
             dataIndex: "Rooms",
         },
         {
-            title: "Хүний тоо",
+            title: intl.formatMessage({
+                id: "RowHeaderPax",
+            }),
             key: "Pax",
             dataIndex: "Pax",
         },
         {
-            title: "Ирэх",
+            title: intl.formatMessage({
+                id: "RowHeaderArrival",
+            }),
             key: "ArrivalDate",
             dataIndex: "ArrivalDate",
         },
         {
-            title: "Гарах",
+            title: intl.formatMessage({
+                id: "RowHeaderDeparture",
+            }),
             key: "DepartureDate",
             dataIndex: "DepartureDate",
         },
+
         {
-            title: "Departure",
-            key: "Departure",
-            dataIndex: "Departure",
-        },
-        {
-            title: "Хөтөч",
+            title: intl.formatMessage({
+                id: "RowHeaderGuide",
+            }),
             key: "GuideName",
             dataIndex: "GuideName",
         },
         {
-            title: "Нийлбэр",
+            title: intl.formatMessage({
+                id: "RowHeaderTotal",
+            }),
             key: "TotalCharge",
             dataIndex: "TotalCharge",
         },
         {
-            title: "Төлсөн",
+            title: intl.formatMessage({
+                id: "RowHeaderPaid",
+            }),
             key: "TotalPayment",
             dataIndex: "TotalPayment",
         },
         {
-            title: "Хэрэглэгч",
+            title: intl.formatMessage({
+                id: "RowHeaderUserName",
+            }),
             key: "UserName",
             dataIndex: "UserName",
         },
         {
-            title: "Үйлдэл",
+            title: intl.formatMessage({
+                id: "RowHeaderAction",
+            }),
             key: "Action",
             dataIndex: "Action",
             renderCell: (element: any) => {
@@ -171,7 +193,9 @@ const GroupReservationList = ({ title, workingDate }: any) => {
                             size="small"
                             onClick={(e) => handleClick(e, element)}
                         >
-                            Үйлдэл
+                            {intl.formatMessage({
+                                id: "RowHeaderAction",
+                            })}
                         </Button>
                         <Menu
                             id={`menu${element.row.GroupID}`}
@@ -191,7 +215,9 @@ const GroupReservationList = ({ title, workingDate }: any) => {
                                         <MenuItem
                                             key={`groupEdit${selectedRow.GroupID}`}
                                         >
-                                            Групп засварлах
+                                            {intl.formatMessage({
+                                                id: "TextEditGroup",
+                                            })}
                                         </MenuItem>
                                     </a>
                                     <MenuItem
@@ -217,19 +243,25 @@ const GroupReservationList = ({ title, workingDate }: any) => {
                                             );
                                         }}
                                     >
-                                        Шинэ зочин нэмэх
+                                        {intl.formatMessage({
+                                            id: "ButtonAddNewGuest",
+                                        })}
                                     </MenuItem>
                                     <MenuItem
                                         key={`neh${selectedRow.GroupID}`}
                                         onClick={() => {}}
                                     >
-                                        Нэх.хэвлэх
+                                        {intl.formatMessage({
+                                            id: "ButtonPrintInvoice",
+                                        })}
                                     </MenuItem>
                                     <MenuItem
                                         key={`sendNex${selectedRow.GroupID}`}
                                         onClick={() => {}}
                                     >
-                                        Нэхэмжлэх илгээх
+                                        {intl.formatMessage({
+                                            id: "ButtonEmailInvoice",
+                                        })}
                                     </MenuItem>
                                     <MenuItem
                                         key={`check${selectedRow.GroupID}`}
@@ -247,7 +279,9 @@ const GroupReservationList = ({ title, workingDate }: any) => {
                                             );
                                         }}
                                     >
-                                        Хяналт
+                                        {intl.formatMessage({
+                                            id: "ButtonAuditTrail",
+                                        })}
                                     </MenuItem>
                                 </>
                             )}

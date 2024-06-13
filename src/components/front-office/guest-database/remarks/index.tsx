@@ -1,30 +1,40 @@
+import { useIntl } from "react-intl";
+
 import { GuestRemarkSWR, listUrl, RemarkAPI } from "lib/api/remarks";
 import { useAppState } from "lib/context/app";
 import CustomTable from "components/common/custom-table";
 import NewEdit from "./new-edit";
 
-const columns = [
-    {
-        title: "Remarks",
-        key: "Remarks",
-        dataIndex: "Remarks",
-    },
-    {
-        title: "UserName",
-        key: "UserName",
-        dataIndex: "UserName",
-    },
-    {
-        title: "Created Date",
-        key: "CreatedDate",
-        dataIndex: "CreatedDate",
-    },
-];
-
 const GuestHistory = ({ title }: any) => {
+    const intl = useIntl();
+
     const [state]: any = useAppState();
 
     const { data, error } = GuestRemarkSWR(state.editId);
+
+    const columns = [
+        {
+            title: intl.formatMessage({
+                id: "RowHeaderRemarks",
+            }),
+            key: "Remarks",
+            dataIndex: "Remarks",
+        },
+        {
+            title: intl.formatMessage({
+                id: "RowHeaderUserName",
+            }),
+            key: "UserName",
+            dataIndex: "UserName",
+        },
+        {
+            title: intl.formatMessage({
+                id: "ReportDate",
+            }),
+            key: "CreatedDate",
+            dataIndex: "CreatedDate",
+        },
+    ];
 
     return (
         <>
