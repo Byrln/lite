@@ -41,6 +41,7 @@ export const receptionExtraChargeUrl = `${urlPrefix}/Reception/ExtraCharge`;
 export const receptionDueOutUrl = `${urlPrefix}/Reception/DueOut`;
 export const receptionCancelVoidNoShowUrl = `${urlPrefix}/Reception/CancelVoidNoShow`;
 export const extraChargeSessionUrl = `${urlPrefix}/ExtraCharge/Session`;
+export const reservationListUrl = `${urlPrefix}/Reservation/List`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -295,6 +296,16 @@ export const AvailableRoomsSWR = (search: any) => {
         });
 
     return useSWR(availableRoomsUrl, fetcher);
+};
+
+export const ReservationListSWR = (search: any) => {
+    const fetcher = async (url: any) =>
+        await axios.post(url, search).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(reservationListUrl, fetcher);
 };
 
 export const NightAuditSummarySWR = (search: any) => {

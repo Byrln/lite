@@ -25,7 +25,7 @@ const ReservationTypeSelect = ({
     // }, [data]);
 
     const onChange = (evt: any) => {
-        setReservationTypeID(evt.target.value);
+        setReservationTypeID && setReservationTypeID(evt.target.value);
     };
 
     if (error) return <Alert severity="error">{error.message}</Alert>;

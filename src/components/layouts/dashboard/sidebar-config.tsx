@@ -316,6 +316,12 @@ const sidebarConfig = [
                 path: "/report/monthly-revenue",
                 oldPath: "",
             },
+            {
+                title: "Захиалгын тайлан",
+                titleEn: "Report Reservations",
+                path: "/report/reservations",
+                oldPath: "",
+            },
             // {
             //     title: "гарах зочид (өдөр тутам)",
             //     titleEn: "гарах зочид (өдөр тутам)",
