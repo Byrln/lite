@@ -175,3 +175,11 @@ export function formatNumber(value: any) {
 export function daysInMonth(month: any, year: any) {
     return new Date(year, month, 0).getDate();
 }
+
+export function getContrastYIQ(hexcolor: any) {
+    var r = parseInt(hexcolor.substring(1, 3), 16);
+    var g = parseInt(hexcolor.substring(3, 5), 16);
+    var b = parseInt(hexcolor.substring(5, 7), 16);
+    var yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    return yiq >= 128 ? "black" : "white";
+}

@@ -48,7 +48,7 @@ import {
 } from "lib/api/cashier-session";
 import RoomAssignGroup from "components/reservation/room-assign-group";
 import Iconify from "components/iconify/iconify";
-import AvailableRoomTypes from "components/front-office/reservation-list/available-room-types";
+import { getContrastYIQ } from "lib/utils/helpers";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const router = useRouter();
@@ -261,8 +261,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           endDate: obj.EndDate,
                           statusColor: `#${obj.StatusColor}`,
                           editable: true,
-                          color: `unset`,
-                          textColor: "black",
+                          color: getContrastYIQ(`#${obj.StatusColor}`),
+                          textColor: getContrastYIQ(`#${obj.StatusColor}`),
                           border: "none",
                       }
                     : {};
@@ -285,8 +285,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           endDate: obj.EndDate,
                           statusColor: `#${obj.StatusColor}`,
                           editable: true,
-                          color: `unset`,
-                          textColor: "black",
+                          color: getContrastYIQ(`#${obj.StatusColor}`),
+                          textColor: getContrastYIQ(`#${obj.StatusColor}`),
                           border: "none",
                       }
                     : {};
@@ -679,13 +679,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         arg.event.title == "Blocked"
                             ? "black"
                             : arg.event._def.extendedProps.statusColor,
-                    color: arg.event._def.extendedProps.statusColor
-                        ? arg.event._def.extendedProps.statusColor == "#EFF0F6"
-                            ? "black"
-                            : "white"
-                        : arg.event.title == "Blocked"
-                        ? "white"
-                        : "black",
+                    color: getContrastYIQ(
+                        arg.event._def.extendedProps.statusColor
+                    ),
+
                     border:
                         arg.event._def.extendedProps.statusColor == "#EFF0F6"
                             ? `1px solid #EFF0F6`
