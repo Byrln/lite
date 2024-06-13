@@ -325,7 +325,45 @@ const ReservationsList = ({ title, workingDate }: any) => {
                                             fontWeight: "bold",
                                         }}
                                         align="right"
-                                        colSpan={8}
+                                        colSpan={6}
+                                    ></TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {formatPrice(
+                                            data &&
+                                                data.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.Adult
+                                                            ? obj.Adult
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                        /{" "}
+                                        {formatPrice(
+                                            data &&
+                                                data.reduce(
+                                                    (acc: any, obj: any) =>
+                                                        acc +
+                                                        (obj.Child
+                                                            ? obj.Child
+                                                            : 0),
+                                                    0
+                                                )
+                                        )}
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
+                                        style={{
+                                            fontWeight: "bold",
+                                        }}
                                     ></TableCell>
                                     <TableCell
                                         component="th"
