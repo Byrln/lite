@@ -4,15 +4,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useState, useContext, useEffect } from "react";
 import { mutate } from "swr";
-import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
+
 import { ReservationAPI } from "lib/api/reservation";
 import SubmitButton from "components/common/submit-button";
 import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
-
 import {
     dateToSimpleFormat,
-    fToUniversal,
     fToCustom,
     dateToCustomFormat,
     countNights,
@@ -24,6 +23,7 @@ const AmendStayForm = ({
     additionalMutateUrl = null,
     customRerender,
 }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [baseStay, setBaseStay]: any = useState({
@@ -33,7 +33,7 @@ const AmendStayForm = ({
         dateEnd: null,
         nights: 0,
     });
-    console.log("additionalMutateUrl", additionalMutateUrl);
+
     const validationSchema = yup.object().shape({
         ArrivalDate: yup.date().required("Сонгоно уу"),
         ArrivalTime: yup.string().required("Сонгоно уу"),
@@ -126,30 +126,6 @@ const AmendStayForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            // var vals: any = {
-            //     TransactionID: values.TransactionID,
-            //     ArrivalDate: null,
-            //     DepartureDate: null,
-            //     OverrideRate: values.OverrideRate,
-            //     NewNights: values.NewNights,
-            // };
-
-            // vals.ArrivalDate =
-            //     fToCustom(values.ArrivalDate.getTime(), "yyyy MMM dd") +
-            //     " " +
-            //     values.ArrivalTime +
-            //     ":00";
-            // vals.DepartureDate =
-            //     fToCustom(values.DepartureDate.getTime(), "yyyy MMM dd") +
-            //     " " +
-            //     values.DepartureTime +
-            //     ":00";
-
-            // const res = await ReservationAPI.amendStay(vals);
-            console.log(
-                "transactionInfo.TrransactionID",
-                transactionInfo.TransactionID
-            );
             if (
                 transactionInfo.TransactionID.length != "undefined" &&
                 transactionInfo.TransactionID.length > 0
@@ -217,7 +193,6 @@ const AmendStayForm = ({
             if (customRerender) {
                 customRerender();
             }
-            // toast("Амжилттай.");
 
             setLoading(false);
             handleModal();
@@ -239,7 +214,9 @@ const AmendStayForm = ({
                             type="date"
                             fullWidth
                             id="ArrivalDate"
-                            label="Эхлэх огноо"
+                            label={intl.formatMessage({
+                                id: "TextArrivalDate",
+                            })}
                             {...register("ArrivalDate")}
                             margin="dense"
                             error={errors.ArrivalDate?.message}
@@ -254,7 +231,9 @@ const AmendStayForm = ({
                     <Grid item xs={3}>
                         <TextField
                             id="ArrivalTime"
-                            label="Ирэх цаг"
+                            label={intl.formatMessage({
+                                id: "TextArrivalTime",
+                            })}
                             type="time"
                             margin="dense"
                             {...register("ArrivalTime")}
@@ -276,7 +255,9 @@ const AmendStayForm = ({
                             type="date"
                             fullWidth
                             id="DepartureDate"
-                            label="Гарах огноо"
+                            label={intl.formatMessage({
+                                id: "TextDepartureDate",
+                            })}
                             {...register("DepartureDate")}
                             margin="dense"
                             error={errors.DepartureDate?.message}
@@ -291,7 +272,9 @@ const AmendStayForm = ({
                     <Grid item xs={3}>
                         <TextField
                             id="DepartureTime"
-                            label="Гарах цаг"
+                            label={intl.formatMessage({
+                                id: "TextDepartureTime",
+                            })}
                             type="time"
                             margin="dense"
                             {...register("DepartureTime")}
@@ -314,7 +297,9 @@ const AmendStayForm = ({
                             {...register("OverrideRate")}
                         />
                     }
-                    label="Override  Rate"
+                    label={intl.formatMessage({
+                        id: "TextOverrideRate",
+                    })}
                 />
 
                 <SubmitButton loading={loading} />

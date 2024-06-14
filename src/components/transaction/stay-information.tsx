@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { useIntl } from "react-intl";
 
 import Box from "@mui/material/Box";
 
@@ -9,7 +10,8 @@ const StayInformation = ({
     pax,
     rateType,
 }: any) => {
-    console.log("reservationDate", reservationDate);
+    const intl = useIntl();
+
     return (
         <Box>
             <Box
@@ -21,7 +23,12 @@ const StayInformation = ({
                 }}
                 className="mb-1"
             >
-                <div>Захиалгын огноо : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextReservationDate",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>
                     {" "}
                     {reservationDate &&
@@ -40,7 +47,12 @@ const StayInformation = ({
                 }}
                 className="mb-1"
             >
-                <div>Ирэх хугацаа : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextArrivalDate",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>
                     {format(
                         new Date(arrivalDate.replace(/ /g, "T")),
@@ -58,7 +70,12 @@ const StayInformation = ({
                 }}
                 className="mb-1"
             >
-                <div>Буух өдөр : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextDepartureDate",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>
                     {format(
                         new Date(departureDate.replace(/ /g, "T")),
@@ -76,7 +93,12 @@ const StayInformation = ({
                 }}
                 className="mb-1"
             >
-                <div>Хүний тоо : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextPax",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>{pax}</div>
             </Box>
             <Box
@@ -87,7 +109,13 @@ const StayInformation = ({
                     flexWrap: "wrap",
                 }}
             >
-                <div>Тарифийн төрөл : </div>
+                <div>
+                    {" "}
+                    {intl.formatMessage({
+                        id: "TextRateType",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>{rateType}</div>
             </Box>
         </Box>

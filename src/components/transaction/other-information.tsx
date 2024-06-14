@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import { useIntl } from "react-intl";
 
 const OtherInformation = ({
     reservationNo,
@@ -6,6 +7,8 @@ const OtherInformation = ({
     checkInNo,
     company,
 }: any) => {
+    const intl = useIntl();
+
     return (
         <Box>
             <Box
@@ -17,7 +20,12 @@ const OtherInformation = ({
                 }}
                 className="mb-1"
             >
-                <div>Захиалгын дугаар : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextReservationNo",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>{reservationNo}</div>
             </Box>
 
@@ -30,7 +38,12 @@ const OtherInformation = ({
                 }}
                 className="mb-1"
             >
-                <div>Тооцооны дугаар : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextFolioNo",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>{folioNo}</div>
             </Box>
 
@@ -43,7 +56,12 @@ const OtherInformation = ({
                 }}
                 className="mb-1"
             >
-                <div>Бүртгэлийн дугаар : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextCheckInNo",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>{checkInNo}</div>
             </Box>
 
@@ -55,7 +73,12 @@ const OtherInformation = ({
                     flexWrap: "wrap",
                 }}
             >
-                <div>Компани : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextCompany",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>{company}</div>
             </Box>
         </Box>

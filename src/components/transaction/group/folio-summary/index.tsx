@@ -2,6 +2,7 @@ import { Box, Button, Menu, MenuItem } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
 
 import { GroupSummarySWR, FolioAPI, listUrl } from "lib/api/folio";
 import CustomTable from "components/common/custom-table";
@@ -10,9 +11,9 @@ import NewEdit from "./new-edit";
 import { useAppState } from "lib/context/app";
 import { FrontOfficeAPI } from "lib/api/front-office";
 import { formatPrice } from "lib/utils/helpers";
-import PaymentFormArray from "components/transaction/folio/payment-from-array";
 
 const RoomCharge = ({ GroupID, TransactionID }: any) => {
+    const intl = useIntl();
     const [workingDate, setWorkingDate] = useState(null);
 
     useEffect(() => {
@@ -50,22 +51,30 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             dataIndex: "№",
         },
         {
-            title: "Тооцооны дугаар",
+            title: intl.formatMessage({
+                id: "RowHeaderFolioNo",
+            }),
             key: "FolioNO",
             dataIndex: "FolioNO",
         },
         {
-            title: "Өрөө",
+            title: intl.formatMessage({
+                id: "RowHeaderRoomNo",
+            }),
             key: "RoomFullNo",
             dataIndex: "RoomFullNo",
         },
         {
-            title: "Зочны нэр",
+            title: intl.formatMessage({
+                id: "RowHeaderGuestName",
+            }),
             key: "GuestName",
             dataIndex: "GuestName",
         },
         {
-            title: "Өрөөний тооцоо",
+            title: intl.formatMessage({
+                id: "RowHeaderRoomCharge",
+            }),
             key: "RoomCharge",
             dataIndex: "RoomCharge",
             render: function render(id: any, record: any, entity: any) {
@@ -73,7 +82,9 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             },
         },
         {
-            title: "Нэмэлт үйлчилгээ",
+            title: intl.formatMessage({
+                id: "RowHeaderExtraCharge",
+            }),
             key: "ExtraCharge",
             dataIndex: "ExtraCharge",
             render: function render(id: any, record: any, entity: any) {
@@ -81,7 +92,9 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             },
         },
         {
-            title: "Төлсөн",
+            title: intl.formatMessage({
+                id: "RowHeaderPaid",
+            }),
             key: "Paid",
             dataIndex: "Paid",
             render: function render(id: any, record: any, entity: any) {
@@ -89,7 +102,9 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             },
         },
         {
-            title: "Үлд.төлбөр",
+            title: intl.formatMessage({
+                id: "RowHeaderBalance",
+            }),
             key: "Balance",
             dataIndex: "Balance",
             render: function render(id: any, record: any, entity: any) {
@@ -97,7 +112,9 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
             },
         },
         {
-            title: "Үйлдэл",
+            title: intl.formatMessage({
+                id: "RowHeaderAction",
+            }),
             key: "Action",
             dataIndex: "Action",
             render: function render(id: any, record: any, entity: any) {
@@ -109,7 +126,9 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                             size="small"
                             onClick={(e) => handleClick(e, entity)}
                         >
-                            Үйлдэл
+                            {intl.formatMessage({
+                                id: "RowHeaderAction",
+                            })}
                         </Button>
 
                         <Menu
@@ -124,31 +143,20 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                                     handleClose();
                                 }}
                             >
-                                Нэх.хэвлэх
+                                {intl.formatMessage({
+                                    id: "ButtonPrintInvoice",
+                                })}
                             </MenuItem>
                             <MenuItem
                                 key={`payment${entity.FolioID}`}
                                 onClick={() => {
                                     handleModal(
                                         true,
-                                        "Төлбөр төлөх",
-                                        // <PaymentFormArray
-                                        //     FolioID={
-                                        //         selectedRow &&
-                                        //         selectedRow.FolioID
-                                        //     }
-                                        //     TransactionID={
-                                        //         selectedRow &&
-                                        //         selectedRow.TransactionID
-                                        //     }
-                                        //     Amount={
-                                        //         selectedRow &&
-                                        //         selectedRow.Balance
-                                        //     }
-                                        //     handleModal={handleModal}
-                                        // />,
-                                        // null,
-                                        // "large"
+
+                                        intl.formatMessage({
+                                            id: "ButtonAddPayment",
+                                        }),
+
                                         <NewEdit
                                             TransactionID={
                                                 selectedRow &&
@@ -170,7 +178,9 @@ const RoomCharge = ({ GroupID, TransactionID }: any) => {
                                     handleClose();
                                 }}
                             >
-                                Төлбөр төлөх
+                                {intl.formatMessage({
+                                    id: "ButtonAddPayment",
+                                })}
                             </MenuItem>
                         </Menu>
                     </>

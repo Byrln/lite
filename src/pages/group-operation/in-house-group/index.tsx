@@ -1,14 +1,19 @@
 import { Box, Grid, Container, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Head from "next/head";
+import { useIntl } from "react-intl";
 
 import Page from "components/page";
 import InHouseGroup from "components/group-opretion/in-house-group/list";
 import { FrontOfficeAPI } from "lib/api/front-office";
 
-const title = "Байрлаж буй групп";
-
 const Index = () => {
+    const intl = useIntl();
+
+    const title = intl.formatMessage({
+        id: "MenuGroupInHouse",
+    });
+
     const [workingDate, setWorkingDate]: any = useState(null);
 
     useEffect(() => {

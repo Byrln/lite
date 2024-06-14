@@ -3,19 +3,16 @@ import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState, useEffect } from "react";
-import Checkbox from "@mui/material/Checkbox";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import mn from "date-fns/locale/mn";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { mutate } from "swr";
+import { useIntl } from "react-intl";
 
-import CustomSelect from "components/common/custom-select";
 import NewEditForm from "components/common/new-edit-form";
-import { FolioAPI, listUrl } from "lib/api/folio";
-import RoomTypeSelect from "components/select/room-type";
-import FloorSelect from "components/select/floor";
+import { FolioAPI } from "lib/api/folio";
 import { useAppState } from "lib/context/app";
 import { dateStringToObj } from "lib/utils/helpers";
 import PaymentMethodGroupSelect from "components/select/payment-method-group";
@@ -40,10 +37,9 @@ const NewEdit = ({
     workingDate,
     Balance,
 }: any) => {
+    const intl = useIntl();
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
     const [entity, setEntity]: any = useState({});
-    console.log("workingDate", workingDate);
-    console.log("FolioID", FolioID);
     const [paymentMethodGroupID, setPaymentMethodGroupID]: any = useState(0);
     const [paymentMethodID, setPaymentMethodID]: any = useState(0);
 
@@ -110,7 +106,7 @@ const NewEdit = ({
         } finally {
         }
     };
-    console.log("baseStay", entity);
+
     return (
         <NewEditForm
             api={FolioAPI}
@@ -139,7 +135,9 @@ const NewEdit = ({
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Огноо"
+                                    label={intl.formatMessage({
+                                        id: "TextDate",
+                                    })}
                                     value={value}
                                     disabled={true}
                                     onChange={(value) =>

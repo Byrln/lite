@@ -21,6 +21,7 @@ import {
     Button,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+import { useIntl } from "react-intl";
 
 import { ApiResponseModel } from "models/response/ApiResponseModel";
 import { ReservationAPI } from "lib/api/reservation";
@@ -66,6 +67,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const TransactionEdit = () => {
+    const intl = useIntl();
     const [transaction, setTransaction]: any = useState(null);
     const [loading, setLoading] = useState(false);
     const [value, setValue] = useState(0);
@@ -160,37 +162,10 @@ const TransactionEdit = () => {
                                     width: "fit-content",
                                 }}
                             >
-                                Групп засварлах
+                                {intl.formatMessage({
+                                    id: "TextEditGroup",
+                                })}
                             </Typography>
-                            {/* <Box
-                                sx={{
-                                    width: "fit-content",
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        width: "fit-content",
-                                    }}
-                                >
-                                    {transaction.RoomTypeName} -{" "}
-                                    {transaction.RoomNo}
-                                </Box>
-                                <Paper
-                                    elevation={2}
-                                    sx={{
-                                        px: 1,
-                                        backgroundColor:
-                                            "#" + transaction.StatusColor,
-                                        color: "white",
-                                        mb: 3,
-                                        width: "fit-content",
-                                    }}
-                                >
-                                    <Typography>
-                                        {transaction.StatusCode}
-                                    </Typography>
-                                </Paper>
-                            </Box> */}
                         </Box>
                         <Divider className="mb-3" />
                         <Grid container spacing={2} className="mb-3">
@@ -203,7 +178,9 @@ const TransactionEdit = () => {
                                             }}
                                             className="mb-3"
                                         >
-                                            Групп ахлагчийн мэдээлэл
+                                            {intl.formatMessage({
+                                                id: "TextGroupOwnerInformation",
+                                            })}
                                         </Box>
                                         <GuestInformation
                                             name={transaction.GuestName}
@@ -223,7 +200,9 @@ const TransactionEdit = () => {
                                             }}
                                             className="mb-3"
                                         >
-                                            Хоногийн мэдээлэл
+                                            {intl.formatMessage({
+                                                id: "TextStayInformation",
+                                            })}
                                         </Box>
                                         <StayInformation
                                             reservationDate={
@@ -250,7 +229,9 @@ const TransactionEdit = () => {
                                             }}
                                             className="mb-3"
                                         >
-                                            Бусад мэдээлэл
+                                            {intl.formatMessage({
+                                                id: "TextOtherInformation",
+                                            })}
                                         </Box>
                                         <OtherInformation
                                             reservationNo={
@@ -275,19 +256,27 @@ const TransactionEdit = () => {
                                     aria-label="basic tabs example"
                                 >
                                     <Tab
-                                        label="Ерөнхий мэдээлэл"
+                                        label={intl.formatMessage({
+                                            id: "TextGeneralInformation",
+                                        })}
                                         {...a11yProps(0)}
                                     />
                                     <Tab
-                                        label="Өрөөний мэдээлэл"
+                                        label={intl.formatMessage({
+                                            id: "TextRoomInformation",
+                                        })}
                                         {...a11yProps(1)}
                                     />
                                     <Tab
-                                        label="Тооцоо, хураангуй"
+                                        label={intl.formatMessage({
+                                            id: "TextFolioSummary",
+                                        })}
                                         {...a11yProps(2)}
                                     />
                                     <Tab
-                                        label="Тооцоо, дэлгэрэнгүй"
+                                        label={intl.formatMessage({
+                                            id: "TextFolioDetails",
+                                        })}
                                         {...a11yProps(3)}
                                     />
                                 </Tabs>

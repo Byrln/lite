@@ -1,14 +1,20 @@
 import { Box } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
+
 import { ChargeSummarySWR } from "lib/api/charge";
 import { GroupSummarySWR } from "lib/api/folio";
 import { formatPrice } from "lib/utils/helpers";
 
 const Summary = ({ TransactionID, GroupID }: any) => {
+    const intl = useIntl();
+
     const { data, error } = GroupID
         ? GroupSummarySWR(GroupID)
         : ChargeSummarySWR(TransactionID);
+
     const [newData, setNewData] = useState<any>();
+
     useEffect(() => {
         if (data) {
             setNewData({
@@ -73,7 +79,9 @@ const Summary = ({ TransactionID, GroupID }: any) => {
     return data && newData && newData ? (
         <Box>
             <Box sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-                Хураангуй
+                {intl.formatMessage({
+                    id: "TextSummary",
+                })}
             </Box>
             <Box
                 sx={{
@@ -84,7 +92,12 @@ const Summary = ({ TransactionID, GroupID }: any) => {
                 }}
                 className="mb-1"
             >
-                <div>Өрөөний тооцоо : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextRoomCharge",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>
                     {newData && newData.RoomCharge
                         ? formatPrice(newData.RoomCharge)
@@ -100,7 +113,12 @@ const Summary = ({ TransactionID, GroupID }: any) => {
                 }}
                 className="mb-1"
             >
-                <div>Нэмэлт үйлчилгээ : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "ReportExtraChargesTitle",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>
                     {newData && newData.ExtraCharge
                         ? formatPrice(newData.ExtraCharge)
@@ -116,7 +134,12 @@ const Summary = ({ TransactionID, GroupID }: any) => {
                 }}
                 className="mb-1"
             >
-                <div>Мини бар : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextMiniBar",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>
                     {newData && newData.MiniBarCharge
                         ? formatPrice(newData.MiniBarCharge)
@@ -132,7 +155,12 @@ const Summary = ({ TransactionID, GroupID }: any) => {
                 }}
                 className="mb-1"
             >
-                <div>Нийт дүн : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextTotalAmount",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>
                     {newData && newData.TotalCharge
                         ? formatPrice(newData.TotalCharge)
@@ -148,7 +176,12 @@ const Summary = ({ TransactionID, GroupID }: any) => {
                 }}
                 className="mb-1"
             >
-                <div>Төлсөн : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextPaid",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>
                     {newData && newData.TotalPayment
                         ? formatPrice(newData.TotalPayment)
@@ -163,7 +196,12 @@ const Summary = ({ TransactionID, GroupID }: any) => {
                     flexWrap: "wrap",
                 }}
             >
-                <div>Үлдэгдэл : </div>
+                <div>
+                    {intl.formatMessage({
+                        id: "TextBalance",
+                    })}{" "}
+                    :{" "}
+                </div>
                 <div style={{ fontWeight: "600" }}>
                     {newData && newData.Balance
                         ? formatPrice(newData.Balance)
