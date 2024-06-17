@@ -1,7 +1,4 @@
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
-
+import { Alert, Box, Skeleton } from "@mui/material";
 import CustomSelect from "components/common/custom-select";
 import { PaymentMethodGroupSWR } from "lib/api/payment-method-group";
 

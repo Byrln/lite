@@ -4,11 +4,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useState, useContext, useEffect } from "react";
 import { mutate } from "swr";
-import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
+
 import { ReservationAPI } from "lib/api/reservation";
 import { ModalContext } from "lib/context/modal";
 import { listUrl } from "lib/api/front-office";
-import { LoadingButton } from "@mui/lab";
 import ReasonSelect from "../select/reason";
 import SubmitButton from "components/common/submit-button";
 
@@ -18,6 +18,7 @@ const VoidTransactionForm = ({
     customMutateUrl,
     customRerender,
 }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
 
@@ -102,7 +103,9 @@ const VoidTransactionForm = ({
                     }}
                     className="mb-1"
                 >
-                    <SubmitButton fullWidth={false}>Хадгалах</SubmitButton>
+                    <SubmitButton fullWidth={false}>
+                        {intl.formatMessage({ id: "ButtonSave" })}
+                    </SubmitButton>
                 </Box>
             </form>
         </>

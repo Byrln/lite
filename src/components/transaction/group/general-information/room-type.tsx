@@ -1,11 +1,11 @@
-import { useContext } from "react";
 import { Box } from "@mui/material";
-import Button from "@mui/material/Button";
+import { useIntl } from "react-intl";
 
 import CustomTable from "components/common/custom-table";
 import { ReservationGroupRoomTypeSWR } from "lib/api/reservation";
 
 const RoomCharge = ({ GroupID }: any) => {
+    const intl = useIntl();
     const { data, error } = ReservationGroupRoomTypeSWR(GroupID);
 
     const columns = [
@@ -15,22 +15,30 @@ const RoomCharge = ({ GroupID }: any) => {
             dataIndex: "№",
         },
         {
-            title: "Өр.төрөл",
+            title: intl.formatMessage({
+                id: "RowHeaderRoomType",
+            }),
             key: "RoomTypeName",
             dataIndex: "RoomTypeName",
         },
         {
-            title: "Өрөө",
+            title: intl.formatMessage({
+                id: "ReportTotalRooms",
+            }),
             key: "TotalRooms",
             dataIndex: "TotalRooms",
         },
         {
-            title: "Том хүн",
+            title: intl.formatMessage({
+                id: "RowHeaderAdult",
+            }),
             key: "Adults",
             dataIndex: "Adults",
         },
         {
-            title: "Хүүхэд",
+            title: intl.formatMessage({
+                id: "RowHeaderChild",
+            }),
             key: "Childs",
             dataIndex: "Childs",
         },
@@ -38,7 +46,11 @@ const RoomCharge = ({ GroupID }: any) => {
 
     return (
         <Box sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-            Өрөөний мэдээлэл
+            <div className="mb-3">
+                {intl.formatMessage({
+                    id: "TextRoomInformation",
+                })}
+            </div>
             <CustomTable
                 columns={columns}
                 data={data}

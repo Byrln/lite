@@ -15,9 +15,9 @@ import Button from "@mui/material/Button";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
+import { useIntl } from "react-intl";
 
 import CustomTable from "components/common/custom-table";
-import { FolioSWR } from "lib/api/folio";
 import { TransactionInfoSWR } from "lib/api/front-office";
 import NewReservation from "components/front-office/reservation-list/new";
 import { ModalContext } from "lib/context/modal";
@@ -28,13 +28,9 @@ import VoidTransactionForm from "components/reservation/void-transaction";
 import CancelReservationForm from "components/reservation/cancel-reservation";
 
 const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
-    console.log("ArrivalDate", arrivalDate);
-    console.log("departureDate", departureDate);
-
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
-    // const { data, error } = FolioSWR(null, GroupID);
     const { data, error } = TransactionInfoSWR({ GroupID: GroupID });
-
     const [newData, setNewData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [rerenderKey, setRerenderKey] = useState(0);
@@ -57,7 +53,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
     };
 
     const unassignRooms = async () => {
-        if (!confirm("Are you sure?")) {
+        if (!confirm(intl.formatMessage({ id: "MsgConfirmation" }))) {
             return;
         }
 
@@ -76,13 +72,13 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
     };
 
     const unassignRoom = async (TransactionID: any) => {
-        if (!confirm("Are you sure?")) {
+        if (!confirm(intl.formatMessage({ id: "MsgConfirmation" }))) {
             return;
         }
         var res = await ReservationAPI.roomUnassign(TransactionID);
         await mutate("/api/FrontOffice/TransactionInfo");
 
-        toast("Амжилттай");
+        toast(intl.formatMessage({ id: "TextSuccess" }));
     };
 
     const handleOnClickNoShow = async (TransactionID: any) => {
@@ -92,7 +88,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             await mutate("/api/FrontOffice/TransactionInfo");
 
             setLoading(false);
-            toast("Амжилттай.");
+            toast(intl.formatMessage({ id: "TextSuccess" }));
             handleCloseNoShow();
         } catch (error) {
             setLoading(false);
@@ -104,27 +100,13 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
     };
 
     const onCheckInClick = async (TransactionID: any) => {
-        if (!confirm("Are you sure?")) {
+        if (!confirm(intl.formatMessage({ id: "MsgConfirmation" }))) {
             return;
         }
         var res = await ReservationAPI.checkIn(TransactionID);
         await mutate("/api/FrontOffice/TransactionInfo");
-        toast("Амжилттай");
+        toast(intl.formatMessage({ id: "TextSuccess" }));
     };
-
-    function groupByRoom(data: any) {
-        return data.reduce((acc: any, current: any) => {
-            const roomKey = current.RoomFullNo;
-
-            if (!acc[roomKey]) {
-                acc[roomKey] = [];
-            }
-
-            acc[roomKey].push(current);
-
-            return acc;
-        }, {});
-    }
 
     useEffect(() => {
         if (data) {
@@ -178,22 +160,22 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             },
         },
         {
-            title: "Тооцооны дугаар",
+            title: intl.formatMessage({ id: "TextFolioNo" }),
             key: "FolioNo",
             dataIndex: "FolioNo",
         },
         {
-            title: "Өрөө",
+            title: intl.formatMessage({ id: "TextRoom" }),
             key: "RoomFullNo",
             dataIndex: "RoomFullNo",
         },
         {
-            title: "Зочны нэр",
+            title: intl.formatMessage({ id: "RowHeaderGuestName" }),
             key: "GuestName",
             dataIndex: "GuestName",
         },
         {
-            title: "Ирэх",
+            title: intl.formatMessage({ id: "RowHeaderArrival" }),
             key: "ArrivalDate",
             dataIndex: "ArrivalDate",
             render: function render(id: any, value: any) {
@@ -201,7 +183,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             },
         },
         {
-            title: "Гарах",
+            title: intl.formatMessage({ id: "RowHeaderDeparture" }),
             key: "DepartureDate",
             dataIndex: "DepartureDate",
             render: function render(id: any, value: any) {
@@ -209,7 +191,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             },
         },
         {
-            title: "Төлөв",
+            title: intl.formatMessage({ id: "RowHeaderStatus" }),
             key: "StatusCode",
             dataIndex: "StatusCode",
             render: function render(id: any, value: any) {
@@ -223,7 +205,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             },
         },
         {
-            title: "Үйлдэл",
+            title: intl.formatMessage({ id: "RowHeaderAction" }),
             key: "Action",
             dataIndex: "Action",
             render: function render(id: any, record: any, element: any) {
@@ -235,7 +217,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                             size="small"
                             onClick={(e) => handleClick(e, element)}
                         >
-                            Үйлдэл
+                            {intl.formatMessage({ id: "RowHeaderAction" })}
                         </Button>
                         {selectedRow && (
                             <Menu
@@ -254,7 +236,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             handleClose();
                                         }}
                                     >
-                                        Зочин буулгах
+                                        {intl.formatMessage({
+                                            id: "ButtonCheckIn",
+                                        })}
                                     </MenuItem>
                                 )}
 
@@ -264,7 +248,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                         onClick={() => {
                                             handleModal(
                                                 true,
-                                                "Хугацаа өөрчлөх",
+                                                intl.formatMessage({
+                                                    id: "ButtonAmendStay",
+                                                }),
                                                 <AmendStayForm
                                                     transactionInfo={{
                                                         TransactionID:
@@ -290,7 +276,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             handleClose();
                                         }}
                                     >
-                                        Хугацаа өөрчлөх
+                                        {intl.formatMessage({
+                                            id: "ButtonAmendStay",
+                                        })}
                                     </MenuItem>
                                 )}
                                 {selectedRow.Cancel && (
@@ -299,7 +287,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                         onClick={(evt: any) => {
                                             handleModal(
                                                 true,
-                                                "Cancel Reservation",
+                                                intl.formatMessage({
+                                                    id: "ButtonCancelReservation",
+                                                }),
                                                 <CancelReservationForm
                                                     transactionInfo={{
                                                         TransactionID:
@@ -317,7 +307,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             handleClose();
                                         }}
                                     >
-                                        Захиалга цуцлах
+                                        {intl.formatMessage({
+                                            id: "ButtonCancelReservation",
+                                        })}
                                     </MenuItem>
                                 )}
 
@@ -327,7 +319,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                         onClick={() => {
                                             handleModal(
                                                 true,
-                                                "Room Move",
+                                                intl.formatMessage({
+                                                    id: "ButtonRoomMove",
+                                                }),
                                                 <RoomMoveForm
                                                     transactionInfo={{
                                                         TransactionID:
@@ -357,7 +351,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             handleClose();
                                         }}
                                     >
-                                        Өрөө шилжих
+                                        {intl.formatMessage({
+                                            id: "ButtonRoomMove",
+                                        })}
                                     </MenuItem>
                                 )}
 
@@ -369,7 +365,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             handleClose();
                                         }}
                                     >
-                                        Ирээгүй
+                                        {intl.formatMessage({
+                                            id: "ButtonMarkNoShow",
+                                        })}
                                     </MenuItem>
                                 )}
 
@@ -383,7 +381,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             handleClose();
                                         }}
                                     >
-                                        Өрөөг болих
+                                        {intl.formatMessage({
+                                            id: "ButtonUnassignRoom",
+                                        })}
                                     </MenuItem>
                                 )}
 
@@ -393,7 +393,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                         onClick={(evt: any) => {
                                             handleModal(
                                                 true,
-                                                "Void Transaction",
+                                                intl.formatMessage({
+                                                    id: "ButtonVoidTransaction",
+                                                }),
                                                 <VoidTransactionForm
                                                     transactionInfo={{
                                                         TransactionID:
@@ -411,7 +413,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                             handleClose();
                                         }}
                                     >
-                                        Устгах
+                                        {intl.formatMessage({
+                                            id: "ButtonVoidTransaction",
+                                        })}
                                     </MenuItem>
                                 )}
                             </Menu>
@@ -425,16 +429,20 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                 aria-describedby="alert-dialog-description"
                             >
                                 <DialogTitle id="alert-dialog-title">
-                                    Ирээгүй
+                                    {intl.formatMessage({ id: "StatusNoShow" })}
                                 </DialogTitle>
                                 <DialogContent>
                                     <DialogContentText id="alert-dialog-description">
-                                        Та итгэлтэй байна уу
+                                        {intl.formatMessage({
+                                            id: "MsgConfirmation",
+                                        })}
                                     </DialogContentText>
                                 </DialogContent>
                                 <DialogActions>
                                     <Button onClick={handleCloseNoShow}>
-                                        Үгүй
+                                        {intl.formatMessage({
+                                            id: "ButtonCancel",
+                                        })}
                                     </Button>
                                     <Button
                                         onClick={() =>
@@ -444,7 +452,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                                         }
                                         autoFocus
                                     >
-                                        Тийм
+                                        {intl.formatMessage({
+                                            id: "ButtonOk",
+                                        })}
                                     </Button>
                                 </DialogActions>
                             </Dialog>
@@ -464,11 +474,10 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                     onClick={() =>
                         handleModal(
                             true,
-                            `New Reservation`,
+                            intl.formatMessage({ id: "ButtonAddNewGuest" }),
                             <NewReservation
                                 dateStart={arrivalDate}
                                 dateEnd={departureDate}
-                                // workingDate={workingDate}
                                 groupID={GroupID}
                             />,
                             null,
@@ -476,7 +485,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                         )
                     }
                 >
-                    Шинэ зочин нэмэх
+                    {intl.formatMessage({ id: "ButtonAddNewGuest" })}
                 </Button>
 
                 <Button
@@ -485,7 +494,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                     className="mr-2"
                     onClick={() => unassignRooms()}
                 >
-                    Өрөөг болих
+                    {intl.formatMessage({ id: "ButtonUnassignRoom" })}
                 </Button>
 
                 <Button
@@ -495,7 +504,9 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                     onClick={(evt: any) => {
                         handleModal(
                             true,
-                            "Cancel Reservation",
+                            intl.formatMessage({
+                                id: "ButtonCancelReservation",
+                            }),
                             <CancelReservationForm
                                 transactionInfo={newData}
                                 reservation={newData}
@@ -506,7 +517,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                         );
                     }}
                 >
-                    Захиалга цуцлах
+                    {intl.formatMessage({ id: "ButtonCancelReservation" })}
                 </Button>
 
                 <Button
@@ -516,7 +527,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                     onClick={(evt: any) => {
                         handleModal(
                             true,
-                            "Void Transaction",
+                            intl.formatMessage({ id: "ButtonVoidTransaction" }),
                             <VoidTransactionForm
                                 transactionInfo={newData}
                                 reservation={newData}
@@ -527,7 +538,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                         );
                     }}
                 >
-                    Устгах
+                    {intl.formatMessage({ id: "ButtonVoidTransaction" })}
                 </Button>
 
                 <Button
@@ -537,7 +548,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                     onClick={() => {
                         handleModal(
                             true,
-                            "Хугацаа өөрчлөх",
+                            intl.formatMessage({ id: "ButtonAmendStay" }),
                             <AmendStayForm
                                 transactionInfo={{
                                     TransactionID: newData,
@@ -556,7 +567,7 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                         );
                     }}
                 >
-                    Хугацаа өөрчлөх
+                    {intl.formatMessage({ id: "ButtonAmendStay" })}
                 </Button>
             </Box>
 
@@ -567,8 +578,12 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                     columns={columns}
                     data={newData}
                     error={error}
-                    modalTitle="Өрөөний тооцоо"
-                    excelName="Өрөөний тооцоо"
+                    modalTitle={intl.formatMessage({
+                        id: "RowHeaderRoomCharge",
+                    })}
+                    excelName={intl.formatMessage({
+                        id: "RowHeaderRoomCharge",
+                    })}
                     pagination={false}
                     datagrid={false}
                     hasPrint={false}

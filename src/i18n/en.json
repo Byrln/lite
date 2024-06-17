@@ -777,5 +777,21 @@
     "TextCancelandNoShow": "Cancel & No Show",
     "RowHeaderUser": "User",
     "RowHeaderTotal": "Total",
-    "TextEditGroup": "Edit Group"
+    "TextEditGroup": "Edit Group",
+    "TextGroupOwnerInformation": "Group Owner Information",
+    "TextStayInformation": "Stay Information",
+    "TextReservationDate": "Reservation Date",
+    "TextPax": "Pax",
+    "TextOtherInformation": "Other Information",
+    "TextReservationNo": "Reservation No",
+    "TextCompany": "Company",
+    "TextGeneralInformation": "General Information",
+    "TextFolioSummary": "Folio Summary",
+    "TextFolioDetails": "Folio Details",
+    "TextSummary": "Summary",
+    "TextRoomCharge": "Room Charge",
+    "TextMiniBar": "Mini Bar",
+    "TextTotalAmount": "Total Amount",
+    "TextBalance": "Balance",
+    "TextOverrideRate": "Override Rate"
 }

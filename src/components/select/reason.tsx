@@ -1,6 +1,7 @@
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
+import { useIntl } from "react-intl";
 
 import { ReasonSWR } from "lib/api/reason";
 import CustomSelect from "components/common/custom-select";
@@ -12,6 +13,8 @@ const ReasonTypeSelect = ({
     ReasonTypeID = 0,
     nameKey,
 }: any) => {
+    const intl = useIntl();
+
     const { data, error } = ReasonSWR({ ReasonTypeID: ReasonTypeID });
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -29,7 +32,13 @@ const ReasonTypeSelect = ({
             register={register}
             errors={errors}
             field={nameKey ? nameKey : "ReasonTypeID"}
-            label={label}
+            label={
+                label
+                    ? label
+                    : intl.formatMessage({
+                          id: "RowHeaderReason",
+                      })
+            }
             options={data}
             optionValue="ReasonTypeID"
             optionLabel="ReasonName"

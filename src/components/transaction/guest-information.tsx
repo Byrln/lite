@@ -1,6 +1,9 @@
 import Box from "@mui/material/Box";
+import { useIntl } from "react-intl";
 
 const GuestInformation = ({ name, phone, email, address }: any) => {
+    const intl = useIntl();
+
     return (
         <Box>
             <Box sx={{ fontWeight: "bold" }}>{name}</Box>
@@ -13,7 +16,7 @@ const GuestInformation = ({ name, phone, email, address }: any) => {
                 }}
                 className="mb-1"
             >
-                <div>Гар утас : </div>
+                <div>{intl.formatMessage({ id: "TextMobile" })} : </div>
                 <div style={{ fontWeight: "600" }}>{phone}</div>
             </Box>
             <Box
@@ -25,7 +28,7 @@ const GuestInformation = ({ name, phone, email, address }: any) => {
                 }}
                 className="mb-1"
             >
-                <div>Цахим шуудан : </div>
+                <div>{intl.formatMessage({ id: "TextEmail" })} : </div>
                 <div style={{ fontWeight: "600" }}>{email}</div>
             </Box>
             <Box
@@ -36,7 +39,7 @@ const GuestInformation = ({ name, phone, email, address }: any) => {
                     flexWrap: "wrap",
                 }}
             >
-                <div>Address : </div>
+                <div>{intl.formatMessage({ id: "TextAddress" })} : </div>
                 <div style={{ fontWeight: "600" }}>{address}</div>
             </Box>
         </Box>

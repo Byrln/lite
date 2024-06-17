@@ -1,8 +1,4 @@
-import { TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
+import { TextField, MenuItem, Alert, Box, Skeleton } from "@mui/material";
 import { useIntl } from "react-intl";
 
 import { PaymentMethodSWR } from "lib/api/payment-method";
@@ -44,8 +40,6 @@ const PaymentMethodSelect = ({
             )}
             select
             margin="dense"
-            // error={errors.PaymentMethodID?.message}
-            // helperText={errors.PaymentMethodID?.message}
             size="small"
             value={PaymentMethodID ? PaymentMethodID : ""}
             onChange={(evt: any) => {
