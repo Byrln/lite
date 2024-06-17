@@ -1,5 +1,38 @@
+import {
+    AccountListSWR,
+    AccountTypeAPI,
+    accountListUrl,
+} from "lib/api/accounting";
+import CustomTable from "components/common/custom-table";
+const columns = [
+    {
+        title: "Дансны нэр ",
+        key: "FinanceName",
+    },
+    {
+        title: "Дебит данс ",
+        key: "Debit account",
+    },
+    {
+        title: "Кредит данс",
+        key: "Credit account",
+    },
+];
 const AccountingList = ({ title }: any) => {
-    return <div>{title}</div>;
+    const { data, error } = AccountListSWR();
+    return (
+        <div>
+            {title}
+
+            <CustomTable
+                data={data}
+                columns={columns}
+                error={error}
+                api={AccountTypeAPI}
+                id="AccountID"
+            />
+        </div>
+    );
 };
 
 export default AccountingList;
