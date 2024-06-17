@@ -460,6 +460,20 @@ const sidebarConfig = [
         ],
     },
     {
+        title: "холболт",
+        titleEn: "Connect",
+        icon: "",
+        children: [
+            { title: "санхүү", titleEn: "Finance", path: "", oldPath: "" },
+            {
+                title: "төлбөр тооцоо өдрөөр",
+                titleEn: "",
+                path: "",
+                oldPath: "",
+            },
+        ],
+    },
+    {
         title: "тохиргоо",
         titleEn: "Configuration",
         icon: getIcon(settings2Fill),
