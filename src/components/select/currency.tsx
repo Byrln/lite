@@ -1,8 +1,4 @@
-import { TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
+import { TextField, MenuItem, Alert, Box, Skeleton } from "@mui/material";
 import { useIntl } from "react-intl";
 
 import { CurrencySWR } from "lib/api/currency";

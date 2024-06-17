@@ -62,7 +62,6 @@ const NewEdit = ({
     };
 
     const customResetEvent = (data: any) => {
-        console.log("formdata", data[0]);
         setEntity(data[0]);
 
         setBaseStay({

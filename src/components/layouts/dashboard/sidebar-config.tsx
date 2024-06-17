@@ -587,16 +587,18 @@ const sidebarConfig = [
         ],
     },
 
-    // {
-    //     title: "integration",
-    //     icon: getIcon(options2Fill),
-    //     children: [
-    //         {
-    //             title: "accounting",
-    //             path: "/integration/accounting",
-    //         },
-    //     ],
-    // },
+    {
+        title: "Холболт",
+        titleEn: "Integration",
+        icon: getIcon(options2Fill),
+        children: [
+            {
+                title: "Санхүү",
+                titleEn: "Accounting",
+                path: "/integration/accounting",
+            },
+        ],
+    },
 ];
 
 export default sidebarConfig;
