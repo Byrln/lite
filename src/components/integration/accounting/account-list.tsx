@@ -1,6 +1,6 @@
 import {
     AccountListSWR,
-    AccountTypeAPI,
+    AccountingAPI,
     accountListUrl,
 } from "lib/api/accounting";
 import CustomTable from "components/common/custom-table";
@@ -19,7 +19,7 @@ const columns = [
     },
 ];
 const AccountingList = ({ title }: any) => {
-    const { data, error } = AccountListSWR();
+    const { data, error } = AccountListSWR({});
     return (
         <div>
             {title}
@@ -28,7 +28,7 @@ const AccountingList = ({ title }: any) => {
                 data={data}
                 columns={columns}
                 error={error}
-                api={AccountTypeAPI}
+                api={AccountingAPI}
                 id="AccountID"
             />
         </div>
