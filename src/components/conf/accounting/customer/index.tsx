@@ -63,56 +63,6 @@ const CustomerList = ({ title }: any) => {
             key: "CustomerCode",
             dataIndex: "CustomerCode",
         },
-        {
-            title: "CustomerID",
-            key: "CustomerID",
-            dataIndex: "CustomerID",
-        },
-        {
-            title: "CustomerType",
-            key: "CustomerType",
-            dataIndex: "CustomerType",
-        },
-        // {
-        //     title: "Үйлдэл",
-        //     key: "Action",
-        //     dataIndex: "Action",
-        //     render: function render(id: any, value: any, element: any) {
-        //         console.log("element,", element);
-        //         return (
-        //             <>
-        //                 <Button
-        //                     variant={"outlined"}
-        //                     size="small"
-        //                     onClick={() => {
-        //                         handleModal(
-        //                             true,
-        //                             "Засах",
-        //                             <NewEdit
-        //                                 CustomerID={element.CustomerID}
-        //                                 CustomerType={element.CustomerType}
-        //                                 handleModal={handleModal}
-        //                             />
-        //                         );
-        //                         dispatch({
-        //                             type: "isShow",
-        //                             isShow: null,
-        //                         });
-        //                         dispatch({
-        //                             type: "editId",
-        //                             editId: [
-        //                                 element.CustomerID,
-        //                                 element.CustomerType,
-        //                             ],
-        //                         });
-        //                     }}
-        //                 >
-        //                     Засах
-        //                 </Button>
-        //             </>
-        //         );
-        //     },
-        // },
     ];
 
     return (
