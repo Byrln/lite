@@ -3,12 +3,13 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { useEffect } from "react";
+import { useIntl } from "react-intl";
 
 import { CustomerGroupSWR } from "lib/api/customer-group";
-import { elementAcceptingRef } from "@mui/utils";
 
 const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
+    const intl = useIntl();
+
     const { data, error } = CustomerGroupSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -25,7 +26,7 @@ const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
         <TextField
             fullWidth
             id="CustomerGroupID"
-            label="Бүлгийн нэр"
+            label={intl.formatMessage({ id: "TextGroupName" })}
             {...register("CustomerGroupID")}
             select
             margin="dense"

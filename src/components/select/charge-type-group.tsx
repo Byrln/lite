@@ -1,6 +1,7 @@
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
+import { useIntl } from "react-intl";
 
 import CustomSelect from "components/common/custom-select";
 import { ChargeTypeGroupSWR } from "lib/api/charge-type-group";
@@ -13,6 +14,7 @@ const ChargeTypeGroupSelect = ({
     IsMiniBar,
     IsDiscount,
 }: any) => {
+    const intl = useIntl();
     const { data, error } = ChargeTypeGroupSWR({
         IsRoomCharge: IsRoomCharge,
         IsExtraCharge: IsExtraCharge,
@@ -35,7 +37,7 @@ const ChargeTypeGroupSelect = ({
             register={register}
             errors={errors}
             field="RoomChargeTypeGroupID"
-            label="Нэмэлт үйлчилгээний бүлэг"
+            label={intl.formatMessage({ id: "RowHeaderExtraChargeGroup" })}
             options={data}
             optionValue="RoomChargeTypeGroupID"
             optionLabel="RoomChargeTypeGroupName"
