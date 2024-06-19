@@ -1,9 +1,5 @@
-import {
-    AccountListSWR,
-    AccountTypeAPI,
-    accountListUrl,
-} from "lib/api/accounting";
 import CustomTable from "components/common/custom-table";
+import { SalesListSWR, salestListUrl } from "lib/api/salesList";
 const columns = [
     {
         title: "Дансны нэр ",
@@ -25,21 +21,20 @@ const columns = [
             element.row.IsCredit === false ? element.row.IsCredit : "",
     },
 ];
-const AccountingList = ({ title }: any) => {
-    const { data, error } = AccountListSWR();
+const SalesList = ({ title }: any) => {
+    const { data, error } = SalesListSWR();
     return (
         <div>
             {title}
 
             <CustomTable
-                data={data}
-                columns={columns}
-                error={error}
-                api={AccountTypeAPI}
                 id="AccountID"
+                columns={columns}
+                data={data}
+                error={error}
             />
         </div>
     );
 };
 
-export default AccountingList;
+export default SalesList;

@@ -5,6 +5,7 @@ import { useIntl } from "react-intl";
 
 import Page from "components/page";
 import AccountList from "components/integration/accounting/account-list";
+import SalesList from "components/integration/sales/sales-list";
 import { FrontOfficeAPI } from "lib/api/front-office";
 
 // @ts-ignore
@@ -110,7 +111,7 @@ const Index = () => {
                                 {workingDate && <></>}
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                {workingDate && <></>}
+                                {workingDate && <SalesList title={title} />}
                             </TabPanel>
                             <TabPanel value={value} index={3}>
                                 {workingDate && <AccountList title={title} />}
