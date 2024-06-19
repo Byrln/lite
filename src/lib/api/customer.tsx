@@ -4,11 +4,11 @@ import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/Customer";
 export const listUrl = `${urlPrefix}/List`;
-export const CustomerSWR = (CustomerGroupID = 0) => {
+export const CustomerSWR = (search: any) => {
     const values = {
-        CustomerID: null,
+        CustomerID: search.CustomerID ? search.CustomerID : 0,
         CustomerTypeID: 0,
-        CustomerGroupID: CustomerGroupID,
+        CustomerGroupID: search.CustomerGroupID ? search.CustomerGroupID : 0,
         SearchStr: "",
         CountryID: 0,
         EmptyRow: null,
@@ -24,26 +24,25 @@ export const CustomerSWR = (CustomerGroupID = 0) => {
 };
 
 export const CustomerAPI = {
-    // get: (id: any) => axios.get(`${urlPrefix}/${id}`),
-
     get: async (id: any) => {
         const values = {
-            TransactionID: id,
+            CustomerID: id,
         };
+
         const res = await axios.post(listUrl, values);
 
-        console.log(res);
+        return res.data.JsonData;
+    },
 
-        var list = res.data.JsonData;
-        var item;
+    update: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            values
+        );
 
-        console.log(list);
-
-        if (list.length === 1) {
-            item = list[0];
-        } else {
-            item = null;
-        }
-        return item;
+        return {
+            data,
+            status,
+        };
     },
 };

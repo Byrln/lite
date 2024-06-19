@@ -39,7 +39,7 @@ const Folio = ({ title, workingDate }: any) => {
     const [chargeColumns, setChargeColumns]: any = useState();
     const [newData, setNewData]: any = useState();
 
-    const { data: customerData, error: customerError } = CustomerSWR(0);
+    const { data: customerData, error: customerError } = CustomerSWR({});
     const [customerName, setCustomerName]: any = useState("Бүгд");
 
     const [search, setSearch] = useState({
@@ -228,7 +228,6 @@ const Folio = ({ title, workingDate }: any) => {
                             moment(search.StartDate, "YYYY.MM.DD").format(
                                 "YYYY.MM.DD"
                             )}
-                         
                     </Typography>
                 </Box>
 

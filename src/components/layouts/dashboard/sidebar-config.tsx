@@ -567,6 +567,18 @@ const sidebarConfig = [
                 path: "/mini-bar/item",
                 oldPath: "",
             },
+            {
+                title: "өрөө блоклох",
+                titleEn: "Room Block",
+                path: "/room-service/room-block",
+                oldPath: "",
+            },
+            {
+                title: "Санхүү",
+                titleEn: "Accounting",
+                path: "/conf/accounting",
+                oldPath: "",
+            },
         ],
     },
     {
@@ -590,12 +602,6 @@ const sidebarConfig = [
                 title: "ажлын даалгавар",
                 titleEn: "Work Order",
                 path: "/room-service/work-order",
-                oldPath: "",
-            },
-            {
-                title: "өрөө блоклох",
-                titleEn: "Room Block",
-                path: "/room-service/room-block",
                 oldPath: "",
             },
         ],

@@ -32,7 +32,7 @@ const ReportingList = ({ title, workingDate }: any) => {
     const [ArrivalTime, setArrivalTime]: any = useState("00:00");
     const [DepartureTime, setDepartureTime]: any = useState("23:59");
     const [rerenderKey, setRerenderKey] = useState(0);
-    const { data: customerData, error: customerError } = CustomerSWR(0);
+    const { data: customerData, error: customerError } = CustomerSWR({});
     const [customerName, setCustomerName]: any = useState("Бүгд");
 
     const [search, setSearch] = useState({

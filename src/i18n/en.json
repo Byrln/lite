@@ -793,5 +793,15 @@
     "TextMiniBar": "Mini Bar",
     "TextTotalAmount": "Total Amount",
     "TextBalance": "Balance",
-    "TextOverrideRate": "Override Rate"
+    "TextOverrideRate": "Override Rate",
+    "TextCharge": "Charge",
+    "TextAccount": "Account",
+    "TextVoid": "Void",
+    "TextExpenseAccountNo": "Expense Account No",
+    "TextAccountType": "Account Type",
+    "TextDebit": "Debit",
+    "TextCredit": "Credit",
+    "TextGroupName": "Group Name",
+    "TextCustomerName": "Customer Name",
+    "TextCustomerCode": "Customer Code"
 }

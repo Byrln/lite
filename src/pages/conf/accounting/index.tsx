@@ -2,33 +2,15 @@ import { useEffect, useState } from "react";
 import { Box, Grid, Container, Typography, Tabs, Tab } from "@mui/material";
 import Head from "next/head";
 import { useIntl } from "react-intl";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 import Page from "components/page";
-import AccountList from "components/integration/accounting/account-list";
+import ChargeList from "components/conf/accounting/charge";
+import CustomerList from "components/conf/accounting/customer";
+import AccountList from "components/conf/accounting/account";
 import { FrontOfficeAPI } from "lib/api/front-office";
-import CustomSearch from "components/common/custom-search";
-import Search from "components/integration/search";
 
 // @ts-ignore
 const Index = () => {
-    const [search, setSearch] = useState();
-
-    const validationSchema = yup.object().shape({
-        StartDate: yup.string().nullable(),
-        EndDate: yup.string().nullable(),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
-    const {
-        reset,
-        register,
-        handleSubmit,
-        formState: { errors },
-        control,
-    } = useForm(formOptions);
-
     const intl = useIntl();
 
     const title = intl.formatMessage({
@@ -99,21 +81,6 @@ const Index = () => {
                     </Box>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <CustomSearch
-                                search={search}
-                                setSearch={setSearch}
-                                handleSubmit={handleSubmit}
-                                reset={reset}
-                            >
-                                <Search
-                                    register={register}
-                                    errors={errors}
-                                    control={control}
-                                    reset={reset}
-                                />
-                            </CustomSearch>
-                        </Grid>
-                        <Grid item xs={12}>
                             <Tabs
                                 value={value}
                                 onChange={handleChange}
@@ -123,25 +90,31 @@ const Index = () => {
                             >
                                 <Tab
                                     label={intl.formatMessage({
-                                        id: "ButtonExtraCharge",
+                                        id: "TextCharge",
                                     })}
                                     {...a11yProps(0)}
                                 />
-                                <Tab label="Орлого" {...a11yProps(1)} />
-                                <Tab label="Борлуулалт" {...a11yProps(2)} />
-                                <Tab label="Данснууд" {...a11yProps(3)} />
+                                <Tab
+                                    label={intl.formatMessage({
+                                        id: "TextCustomer",
+                                    })}
+                                    {...a11yProps(1)}
+                                />
+                                <Tab
+                                    label={intl.formatMessage({
+                                        id: "TextAccount",
+                                    })}
+                                    {...a11yProps(2)}
+                                />
                             </Tabs>
 
                             <TabPanel value={value} index={0}>
-                                {workingDate && <></>}
+                                {workingDate && <ChargeList title={title} />}
                             </TabPanel>
                             <TabPanel value={value} index={1}>
-                                {workingDate && <></>}
+                                {workingDate && <CustomerList title={title} />}
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                {workingDate && <></>}
-                            </TabPanel>
-                            <TabPanel value={value} index={3}>
                                 {workingDate && <AccountList title={title} />}
                             </TabPanel>
                         </Grid>
