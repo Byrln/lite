@@ -9,6 +9,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Page from "components/page";
 import AccountList from "components/integration/accounting/account-list";
 import SalesList from "components/integration/sales/sales-list";
+import ExtraCharge from "components/integration/extra/extra-charge-list";
+import IncomeList from "components/integration/income/income-list";
 import { FrontOfficeAPI } from "lib/api/front-office";
 import CustomSearch from "components/common/custom-search";
 import Search from "components/integration/search";
@@ -134,13 +136,22 @@ const Index = () => {
                             </Tabs>
 
                             <TabPanel value={value} index={0}>
-                                {workingDate && <></>}
+                                {workingDate && (
+                                    <ExtraCharge
+                                        title={title}
+                                        search={search}
+                                    />
+                                )}
                             </TabPanel>
                             <TabPanel value={value} index={1}>
-                                {workingDate && <></>}
+                                {workingDate && (
+                                    <IncomeList title={title} search={search} />
+                                )}
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                {workingDate && <SalesList title={title} />}
+                                {workingDate && (
+                                    <SalesList title={title} search={search} />
+                                )}
                             </TabPanel>
                             <TabPanel value={value} index={3}>
                                 {workingDate && <AccountList title={title} />}

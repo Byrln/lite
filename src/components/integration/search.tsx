@@ -25,14 +25,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                             })}
                             value={value}
                             onChange={(value) =>
-                                onChange(
-                                    moment(
-                                        dateStringToObj(
-                                            moment(value).format("YYYY-MM-DD")
-                                        ),
-                                        "YYYY-MM-DD"
-                                    )
-                                )
+                                onChange(moment(value).format("YYYY-MM-DD"))
                             }
                             renderInput={(params) => (
                                 <TextField
@@ -63,14 +56,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                             })}
                             value={value}
                             onChange={(value) =>
-                                onChange(
-                                    moment(
-                                        dateStringToObj(
-                                            moment(value).format("YYYY-MM-DD")
-                                        ),
-                                        "YYYY-MM-DD"
-                                    )
-                                )
+                                onChange(moment(value).format("YYYY-MM-DD"))
                             }
                             renderInput={(params) => (
                                 <TextField

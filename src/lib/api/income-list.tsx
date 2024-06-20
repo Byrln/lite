@@ -3,26 +3,26 @@ import useSWR from "swr";
 import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/Accounting";
-export const salestListUrl = `${urlPrefix}/Sales`;
+export const incomeListUrl = `${urlPrefix}/Income`;
 
-export const SalesListSWR = (search: any) => {
+export const IncomeListSWR = (search: any) => {
     const values = {
-        SalesTypeID: 0,
+        IncomeTypeID: 0,
     };
 
     const fetcher = async (url: any) =>
         await axios.post(url, search).then((res: any) => res.data.JsonData);
 
-    return useSWR(salestListUrl, fetcher);
+    return useSWR(incomeListUrl, fetcher);
 };
 
-export const SalesTypeAPI = {
+export const IncomeTypeAPI = {
     get: async (id: any) => {
         const values = {
-            SalesTypeID: id,
+            IncomeTypeID: id,
         };
 
-        const res = await axios.post(salestListUrl, values);
+        const res = await axios.post(incomeListUrl, values);
 
         return res.data.JsonData;
     },
