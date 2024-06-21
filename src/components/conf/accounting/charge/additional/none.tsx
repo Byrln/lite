@@ -47,7 +47,7 @@ const ChargeList = ({ entity, handleModal }: any) => {
                   ]
             : []
     );
-    console.log("tableData", tableData);
+
     const intl = useIntl();
     const columns = [
         {

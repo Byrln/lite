@@ -137,7 +137,7 @@ const ChargeList = ({ title }: any) => {
                 error={error}
                 api={AccountingExtraChargeAPI}
                 hasNew={false}
-                hasUpdate={true}
+                hasUpdate={false}
                 hasShow={false}
                 hasDelete={false}
                 id="Nn"
