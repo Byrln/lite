@@ -1,20 +1,27 @@
 import { useForm } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TextField, Tabs, Tab, Typography, Box } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Grid } from "@mui/material";
+import { useIntl } from "react-intl";
+import { useState, useEffect } from "react";
 
 import NewEditForm from "components/common/new-edit-form";
-import { ReasonAPI, listUrl } from "lib/api/reason";
+
 import { useAppState } from "lib/context/app";
-import ReasonTypeSelect from "components/select/reason-type";
+import None from "./additional/none";
+import {
+    AccountingExtraChargeSWR,
+    extraChargeUrl,
+    AccountingExtraChargeAPI,
+} from "lib/api/accounting-extra-charge";
 
 const validationSchema = yup.object().shape({
     ReasonTypeID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     Description: yup.string().required("Бөглөнө үү"),
 });
 
-const NewEdit = () => {
+const NewEdit = ({ RoomChargeTypeID, handleModal }: any) => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -22,40 +29,119 @@ const NewEdit = () => {
         handleSubmit,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
+    const [entity, setEntity] = useState({});
+    const [value, setValue] = useState(0);
+
+    const fetchDatas = async () => {
+        try {
+            let response: any;
+            response = await AccountingExtraChargeAPI.get(RoomChargeTypeID);
+
+            setEntity(response);
+        } finally {
+        }
+    };
+
+    useEffect(() => {
+        fetchDatas();
+    }, [RoomChargeTypeID]);
+
+    interface TabPanelProps {
+        children?: React.ReactNode;
+        index: number;
+        value: number;
+    }
+
+    function TabPanel(props: TabPanelProps) {
+        const { children, value, index, ...other } = props;
+
+        return (
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`simple-tabpanel-${index}`}
+                aria-labelledby={`simple-tab-${index}`}
+                {...other}
+            >
+                {value === index && (
+                    <Box className="mt-3">
+                        <Typography>{children}</Typography>
+                    </Box>
+                )}
+            </div>
+        );
+    }
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
+
+    function a11yProps(index: number) {
+        return {
+            id: `simple-tab-${index}`,
+            "aria-controls": `simple-tabpanel-${index}`,
+        };
+    }
+
+    console.log("entity", entity);
 
     return (
-        <NewEditForm
-            api={ReasonAPI}
-            listUrl={listUrl}
-            additionalValues={{
-                ReasonID: state.editId,
-            }}
-            reset={reset}
-            handleSubmit={handleSubmit}
-        >
-            <Grid container spacing={1}>
-                <Grid item xs={6}>
-                    <ReasonTypeSelect
-                        register={register}
-                        errors={errors}
-                        label="Төрөл"
-                        ReasonTypeID={1}
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        size="small"
-                        fullWidth
-                        id="Description"
-                        label="Шалтгаан"
-                        {...register("Description")}
-                        margin="dense"
-                        error={errors.Description?.message}
-                        helperText={errors.Description?.message}
-                    />
-                </Grid>
-            </Grid>
-        </NewEditForm>
+        <>
+            {/* <NewEditForm
+        //     api={AccountingExtraChargeAPI}
+        //     listUrl={extraChargeUrl}
+        //     additionalValues={{
+        //         ReasonID: state.editId,
+        //     }}
+        //     reset={reset}
+        //     handleSubmit={handleSubmit}
+        //     setEntity={setEntity}
+        // > */}
+            <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label={intl.formatMessage({
+                    id: "MenuAccounting",
+                })}
+            >
+                <Tab
+                    label={intl.formatMessage({ id: "TextNone" })}
+                    {...a11yProps(0)}
+                />
+                <Tab
+                    label={intl.formatMessage({ id: "TextRoomType" })}
+                    {...a11yProps(1)}
+                />
+                <Tab
+                    label={intl.formatMessage({ id: "TextRoom" })}
+                    {...a11yProps(2)}
+                />
+                <Tab
+                    label={intl.formatMessage({ id: "TextFloor" })}
+                    {...a11yProps(3)}
+                />
+            </Tabs>
+
+            <TabPanel value={value} index={0}>
+                {entity && <None entity={entity} handleModal={handleModal} />}
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+                {intl.formatMessage({
+                    id: "TextRoomType",
+                })}
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                {intl.formatMessage({
+                    id: "TextRoom",
+                })}
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                {intl.formatMessage({
+                    id: "TextFloor",
+                })}
+            </TabPanel>
+            {/* </NewEditForm> */}
+        </>
     );
 };
 export default NewEdit;

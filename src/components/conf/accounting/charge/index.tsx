@@ -1,20 +1,25 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
+import { Button } from "@mui/material";
 
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import {
-    ExtraChargeSWR,
+    AccountingExtraChargeSWR,
     extraChargeUrl,
-    AccountingAPI,
-} from "lib/api/accounting";
+    AccountingExtraChargeAPI,
+} from "lib/api/accounting-extra-charge";
 import NewEdit from "./new-edit";
 import Search from "./search";
+import { ModalContext } from "lib/context/modal";
+import { useAppState } from "lib/context/app";
 
 const ChargeList = ({ title }: any) => {
+    const [state, dispatch]: any = useAppState();
+    const { handleModal }: any = useContext(ModalContext);
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         ReasonTypeID: yup.string().nullable(),
@@ -30,7 +35,7 @@ const ChargeList = ({ title }: any) => {
 
     const [search, setSearch] = useState({});
 
-    const { data, error } = ExtraChargeSWR(search);
+    const { data, error } = AccountingExtraChargeSWR(search);
 
     const columns = [
         {
@@ -82,6 +87,46 @@ const ChargeList = ({ title }: any) => {
             key: "IsService",
             dataIndex: "IsService",
         },
+
+        {
+            title: "Үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            renderCell: (element: any) => {
+                return (
+                    <>
+                        <Button
+                            variant={"outlined"}
+                            size="small"
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    "Засах",
+                                    <NewEdit
+                                        RoomChargeTypeID={
+                                            element.row.RoomChargeTypeID
+                                        }
+                                        handleModal={handleModal}
+                                    />,
+                                    null,
+                                    "large"
+                                );
+                                dispatch({
+                                    type: "isShow",
+                                    isShow: null,
+                                });
+                                dispatch({
+                                    type: "editId",
+                                    editId: element.row.RoomChargeTypeID,
+                                });
+                            }}
+                        >
+                            Засах
+                        </Button>
+                    </>
+                );
+            },
+        },
     ];
 
     return (
@@ -90,9 +135,9 @@ const ChargeList = ({ title }: any) => {
                 columns={columns}
                 data={data}
                 error={error}
-                api={AccountingAPI}
+                api={AccountingExtraChargeAPI}
                 hasNew={false}
-                hasUpdate={false}
+                hasUpdate={true}
                 hasShow={false}
                 hasDelete={false}
                 id="Nn"

@@ -18,7 +18,6 @@ import Search from "components/integration/search";
 // @ts-ignore
 const Index = () => {
     const [search, setSearch] = useState();
-
     const validationSchema = yup.object().shape({
         StartDate: yup.string().nullable(),
         EndDate: yup.string().nullable(),

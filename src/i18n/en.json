@@ -803,5 +803,9 @@
     "TextCredit": "Credit",
     "TextGroupName": "Group Name",
     "TextCustomerName": "Customer Name",
-    "TextCustomerCode": "Customer Code"
+    "TextCustomerCode": "Customer Code",
+    "TextNone": "None",
+    "TextRoomType": "Room Type",
+    "TextFloor": "Floor",
+    "TextIsService": "Is Service"
 }

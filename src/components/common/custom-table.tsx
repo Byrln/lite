@@ -300,7 +300,7 @@ const CustomTable = ({
                                               pagination: {
                                                   paginationModel: {
                                                       page: 0,
-                                                      pageSize: 15,
+                                                      pageSize: 30,
                                                   },
                                               },
                                           }
@@ -314,7 +314,7 @@ const CustomTable = ({
                                           }
                                 }
                                 getRowId={(row) => (id ? row[id] : row["id"])}
-                                pageSizeOptions={[5, 10, 15, 30]}
+                                pageSizeOptions={[5, 10, 15, 30, 100]}
                                 sx={{ maxHeight: height }}
                                 getRowClassName={(params) => {
                                     return params.indexRelativeToCurrentPage %

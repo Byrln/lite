@@ -1,23 +1,16 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
-import { Button } from "@mui/material";
 
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
-import { AccountingCustomerAPI } from "lib/api/accounting-customer";
 import { CustomerSWR, CustomerAPI, listUrl } from "lib/api/customer";
-import { ModalContext } from "lib/context/modal";
-import { useAppState } from "lib/context/app";
-
 import NewEdit from "./new-edit";
 import Search from "./search";
 
 const CustomerList = ({ title }: any) => {
-    const [state, dispatch]: any = useAppState();
-    const { handleModal }: any = useContext(ModalContext);
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         CustomerGroupID: yup.string().nullable(),
@@ -37,11 +30,6 @@ const CustomerList = ({ title }: any) => {
     const { data, error } = CustomerSWR(search);
 
     const columns = [
-        {
-            title: "№",
-            key: "№",
-            dataIndex: "№",
-        },
         {
             title: intl.formatMessage({
                 id: "RowHeaderCustomerName",
