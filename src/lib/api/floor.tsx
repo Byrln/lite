@@ -17,6 +17,16 @@ export const FloorSWR = () => {
 };
 
 export const FloorAPI = {
+    get: async (id: any) => {
+        const values = {
+            FloorID: id,
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return res.data.JsonData;
+    },
+
     new: async (values: any) => {
         const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 

@@ -9,6 +9,10 @@ import NewEditForm from "components/common/new-edit-form";
 
 import { useAppState } from "lib/context/app";
 import None from "./additional/none";
+import RoomType from "./additional/room-type";
+import Room from "./additional/room";
+import Floor from "./additional/floor";
+
 import {
     AccountingExtraChargeSWR,
     extraChargeUrl,
@@ -83,20 +87,8 @@ const NewEdit = ({ RoomChargeTypeID, handleModal }: any) => {
         };
     }
 
-    console.log("entity", entity);
-
     return (
         <>
-            {/* <NewEditForm
-        //     api={AccountingExtraChargeAPI}
-        //     listUrl={extraChargeUrl}
-        //     additionalValues={{
-        //         ReasonID: state.editId,
-        //     }}
-        //     reset={reset}
-        //     handleSubmit={handleSubmit}
-        //     setEntity={setEntity}
-        // > */}
             <Tabs
                 value={value}
                 onChange={handleChange}
@@ -126,21 +118,16 @@ const NewEdit = ({ RoomChargeTypeID, handleModal }: any) => {
                 {entity && <None entity={entity} handleModal={handleModal} />}
             </TabPanel>
             <TabPanel value={value} index={1}>
-                {intl.formatMessage({
-                    id: "TextRoomType",
-                })}
+                {entity && (
+                    <RoomType entity={entity} handleModal={handleModal} />
+                )}
             </TabPanel>
             <TabPanel value={value} index={2}>
-                {intl.formatMessage({
-                    id: "TextRoom",
-                })}
+                {entity && <Room entity={entity} handleModal={handleModal} />}
             </TabPanel>
             <TabPanel value={value} index={3}>
-                {intl.formatMessage({
-                    id: "TextFloor",
-                })}
+                {entity && <Floor entity={entity} handleModal={handleModal} />}
             </TabPanel>
-            {/* </NewEditForm> */}
         </>
     );
 };
