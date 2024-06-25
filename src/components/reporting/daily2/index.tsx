@@ -514,7 +514,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                             width: "130px",
                                                                             overflow:
                                                                                 "hidden",
-
+                                                                            whiteSpace:
+                                                                                "nowrap",
                                                                             textOverflow:
                                                                                 "ellipsis",
                                                                         }}
@@ -613,7 +614,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                                             width: "130px",
                                                                             overflow:
                                                                                 "hidden",
-
+                                                                            whiteSpace:
+                                                                                "nowrap",
                                                                             textOverflow:
                                                                                 "ellipsis",
                                                                         }}
