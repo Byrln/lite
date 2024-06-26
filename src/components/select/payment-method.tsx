@@ -1,7 +1,9 @@
 import { TextField, MenuItem, Alert, Box, Skeleton } from "@mui/material";
 import { useIntl } from "react-intl";
+import { useState, useEffect, useContext } from "react";
 
-import { PaymentMethodSWR } from "lib/api/payment-method";
+import { PaymentMethodAPI } from "lib/api/payment-method";
+import { ApiResponseModel } from "models/response/ApiResponseModel";
 
 const PaymentMethodSelect = ({
     register,
@@ -12,21 +14,29 @@ const PaymentMethodSelect = ({
     PaymentMethodGroupID,
 }: any) => {
     const intl = useIntl();
-    const { data, error } = PaymentMethodSWR(PaymentMethodGroupID);
+    const [data, setData]: any = useState(null);
+
+    useEffect(() => {
+        const fetchDatas = async () => {
+            const response = await PaymentMethodAPI.list({
+                PaymentMethodGroupID: PaymentMethodGroupID,
+                SearchStr: "",
+                IsCustomerRelated: false,
+                Status: false,
+                EmptyRow: false,
+            });
+            if (response) {
+                setData(response);
+            } else {
+                setData(null);
+            }
+        };
+        fetchDatas();
+    }, [PaymentMethodGroupID]);
 
     const onchange = (val: any) => {
         setPaymentMethodID(val);
     };
-
-    if (error) return <Alert severity="error">{error.message}</Alert>;
-
-    if (!error && !data)
-        return (
-            <Box sx={{ width: "100%" }}>
-                <Skeleton />
-                <Skeleton animation="wave" />
-            </Box>
-        );
 
     return (
         <TextField
@@ -46,14 +56,15 @@ const PaymentMethodSelect = ({
                 onchange(evt.target.value);
             }}
         >
-            {data.map((element: any) => (
-                <MenuItem
-                    key={element.PaymentMethodID}
-                    value={element.PaymentMethodID}
-                >
-                    {element.PaymentMethodName}
-                </MenuItem>
-            ))}
+            {data &&
+                data.map((element: any) => (
+                    <MenuItem
+                        key={element.PaymentMethodID}
+                        value={element.PaymentMethodID}
+                    >
+                        {element.PaymentMethodName}
+                    </MenuItem>
+                ))}
         </TextField>
     );
 };

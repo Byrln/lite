@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
+import { Button } from "@mui/material";
 
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
@@ -14,9 +15,14 @@ import {
 import NewEdit from "./new-edit";
 import Search from "./search";
 import ToggleChecked from "components/common/custom-switch";
+import { ModalContext } from "lib/context/modal";
+import { useAppState } from "lib/context/app";
 
 const AccountList = ({ title }: any) => {
+    const [state, dispatch]: any = useAppState();
     const intl = useIntl();
+    const { handleModal }: any = useContext(ModalContext);
+
     const validationSchema = yup.object().shape({
         CustomerGroupID: yup.string().nullable(),
         CustomerID: yup.string().nullable(),
@@ -122,6 +128,45 @@ const AccountList = ({ title }: any) => {
                 );
             },
         },
+        // {
+        //     title: "Үйлдэл",
+        //     key: "Action",
+        //     dataIndex: "Action",
+        //     renderCell: (element: any) => {
+        //         return (
+        //             <>
+        //                 <Button
+        //                     variant={"outlined"}
+        //                     size="small"
+        //                     onClick={() => {
+        //                         handleModal(
+        //                             true,
+        //                             "Засах",
+        //                             <NewEdit
+        //                                 GroupID={element.row.GroupID}
+        //                                 CurrencyID={element.row.CurrencyID}
+        //                                 AccountID={element.row.AccountID}
+        //                                 handleModal={handleModal}
+        //                             />,
+        //                             null,
+        //                             "large"
+        //                         );
+        //                         dispatch({
+        //                             type: "isShow",
+        //                             isShow: null,
+        //                         });
+        //                         dispatch({
+        //                             type: "editId",
+        //                             editId: element.row.AccountID,
+        //                         });
+        //                     }}
+        //                 >
+        //                     Засах
+        //                 </Button>
+        //             </>
+        //         );
+        //     },
+        // },
     ];
 
     return (

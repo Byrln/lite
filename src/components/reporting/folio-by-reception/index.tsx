@@ -9,6 +9,7 @@ import {
     TableCell,
     TableHead,
     TableRow,
+    darkScrollbar,
 } from "@mui/material";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { useReactToPrint } from "react-to-print";
@@ -176,16 +177,10 @@ const ChargeByReception = ({ title, workingDate }: any) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Customer
-                                    </TableCell>
-                                    <TableCell style={{ fontWeight: "bold" }}>
-                                        Guest Name
+                                        Folio No
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
                                         Room/Type
-                                    </TableCell>
-                                    <TableCell style={{ fontWeight: "bold" }}>
-                                        Pax
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
                                         Arrival
@@ -193,14 +188,35 @@ const ChargeByReception = ({ title, workingDate }: any) => {
                                     <TableCell style={{ fontWeight: "bold" }}>
                                         Departure
                                     </TableCell>
-                                    <TableCell style={{ fontWeight: "bold" }}>
-                                        Folio No
+                                    <TableCell
+                                        align="right"
+                                        style={{ fontWeight: "bold" }}
+                                    >
+                                        Nights
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Charges
+                                        Room Charge
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{ fontWeight: "bold" }}
+                                    >
+                                        Extra Charge
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{ fontWeight: "bold" }}
+                                    >
+                                        Discount
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        style={{ fontWeight: "bold" }}
+                                    >
+                                        Total Charge
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -208,125 +224,112 @@ const ChargeByReception = ({ title, workingDate }: any) => {
                                     >
                                         Payments
                                     </TableCell>
+                                    <TableCell style={{ fontWeight: "bold" }}>
+                                        Status
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {groupedData &&
-                                    Object.keys(groupedData).map((key) => (
+                                {data &&
+                                    data.map((entity: any) => (
                                         <>
                                             <TableRow
-                                                key={key}
+                                                key={entity.TransactionID}
                                                 sx={{
                                                     "&:last-child td, &:last-child th":
-                                                        { border: 0 },
+                                                        {
+                                                            border: 0,
+                                                        },
                                                 }}
                                             >
                                                 <TableCell
                                                     component="th"
                                                     scope="row"
-                                                    colSpan={9}
-                                                    sx={{ fontWeight: "bold" }}
                                                 >
-                                                    {moment(key).format(
-                                                        "YYYY-MM-DD"
+                                                    {entity.FolioNo}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                >
+                                                    {entity.RoomFullNo}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                >
+                                                    {moment(
+                                                        entity.ArrrivalDate
+                                                    ).format("YYYY-MM-DD")}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                >
+                                                    {moment(
+                                                        entity.DepartureDate
+                                                    ).format("YYYY-MM-DD")}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    align="right"
+                                                >
+                                                    {entity.Nights}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    align="right"
+                                                >
+                                                    {formatPrice(
+                                                        entity.RoomCharge
                                                     )}
                                                 </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    align="right"
+                                                >
+                                                    {formatPrice(
+                                                        entity.ExtraCharge
+                                                    )}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="right"
+                                                    component="th"
+                                                    scope="row"
+                                                >
+                                                    {formatPrice(
+                                                        entity.Discount
+                                                    )}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="right"
+                                                    component="th"
+                                                    scope="row"
+                                                >
+                                                    {formatPrice(
+                                                        entity.TotalCharge
+                                                    )}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="right"
+                                                    component="th"
+                                                    scope="row"
+                                                >
+                                                    {formatPrice(
+                                                        entity.Payments
+                                                    )}
+                                                </TableCell>
+
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                >
+                                                    {entity.Status}
+                                                </TableCell>
                                             </TableRow>
-                                            {groupedData[key] &&
-                                                groupedData[key].map(
-                                                    (entity: any) => (
-                                                        <>
-                                                            <TableRow
-                                                                key={
-                                                                    entity.TransactionID
-                                                                }
-                                                                sx={{
-                                                                    "&:last-child td, &:last-child th":
-                                                                        {
-                                                                            border: 0,
-                                                                        },
-                                                                }}
-                                                            >
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        entity.CustomerName
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        entity.GuestName
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        entity.RoomFullNo
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {entity.Pax}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {moment(
-                                                                        entity.ArrrivalDate
-                                                                    ).format(
-                                                                        "YYYY-MM-DD"
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {moment(
-                                                                        entity.DepartureDate
-                                                                    ).format(
-                                                                        "YYYY-MM-DD"
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        entity.FolioNo
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    align="right"
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {formatPrice(
-                                                                        entity.TotalCharge
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    align="right"
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {formatPrice(
-                                                                        entity.Payments
-                                                                    )}
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        </>
-                                                    )
-                                                )}
                                         </>
                                     ))}
 

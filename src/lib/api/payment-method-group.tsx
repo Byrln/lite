@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { useMemo } from 'react'; 
+import { useMemo } from "react";
 
 import axios from "lib/utils/axios";
 
@@ -35,8 +35,7 @@ export const PaymentMethodGroupAPI = {
     },
 };
 
-export function useGetPaymentMethodGroupAPI(){
-
+export function useGetPaymentMethodGroupAPI() {
     const values = {
         PaymentMethodGroupID: 0,
         SearchStr: "",
@@ -51,18 +50,15 @@ export function useGetPaymentMethodGroupAPI(){
             return paymentMethodGroup;
         });
 
-    
-
-    
-    const {data, error, isValidating}=useSWR(`${listUrl}`, fetcher);
+    const { data, error, isValidating } = useSWR(`${listUrl}`, fetcher);
     const memoizedValue = useMemo(
         () => ({
-            paymentgroup: data ,
-            
+            paymentgroup: data,
+
             paymentgroupError: error,
             paymentgroupValidating: isValidating,
         }),
         [data, error, isValidating]
-        );
-        return memoizedValue;
-};
+    );
+    return memoizedValue;
+}

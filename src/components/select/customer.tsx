@@ -20,7 +20,7 @@ const CustomerSelect = ({
     isNA,
 }: any) => {
     const intl = useIntl();
-    const { data, error } = CustomerSWR(CustomerGroupID);
+    const { data, error } = CustomerSWR({ CustomerGroupID: CustomerGroupID });
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 

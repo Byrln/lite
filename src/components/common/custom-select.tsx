@@ -19,6 +19,7 @@ const CustomSelect = ({
     onChange,
     isNA,
     multiple = false,
+    disabled = false,
 }: any) => {
     return (
         <FormControl
@@ -39,6 +40,7 @@ const CustomSelect = ({
                     id: field,
                 }}
                 onChange={(value) => onChange && onChange(value.target.value)}
+                disabled={disabled}
             >
                 <option
                     key={

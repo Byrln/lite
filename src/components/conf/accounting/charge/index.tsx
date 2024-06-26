@@ -16,6 +16,7 @@ import NewEdit from "./new-edit";
 import Search from "./search";
 import { ModalContext } from "lib/context/modal";
 import { useAppState } from "lib/context/app";
+import CustomSelect from "components/common/custom-select";
 
 const ChargeList = ({ title }: any) => {
     const [state, dispatch]: any = useAppState();
@@ -86,6 +87,25 @@ const ChargeList = ({ title }: any) => {
             }),
             key: "IsService",
             dataIndex: "IsService",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <CustomSelect
+                        register={(value: any) => {}}
+                        errors={{}}
+                        field="IsService"
+                        options={[
+                            { key: 0, value: "" },
+                            { key: 1, value: "Үйлчилгээ" },
+                            { key: 2, value: "Материал" },
+                        ]}
+                        optionValue="key"
+                        optionLabel="value"
+                        entity={element.row}
+                        disabled={true}
+                    />
+                );
+            },
         },
 
         {

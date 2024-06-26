@@ -39,7 +39,13 @@ const CurrencySelect = ({
             margin="dense"
             error={errors[nameKey]?.message}
             helperText={errors[nameKey]?.message}
-            value={value ? value : entity && entity.CurrencyID}
+            value={
+                value
+                    ? value
+                    : entity && entity.CurrencyID
+                    ? entity.CurrencyID
+                    : null
+            }
             size="small"
             onChange={(evt: any) => {
                 onChange

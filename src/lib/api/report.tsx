@@ -42,6 +42,7 @@ export const receptionDueOutUrl = `${urlPrefix}/Reception/DueOut`;
 export const receptionCancelVoidNoShowUrl = `${urlPrefix}/Reception/CancelVoidNoShow`;
 export const extraChargeSessionUrl = `${urlPrefix}/ExtraCharge/Session`;
 export const reservationListUrl = `${urlPrefix}/Reservation/List`;
+export const reportFolioByReceptionUrl = `${urlPrefix}/ReportFolioByReception`;
 
 export const ReportBalanceSWR = (search: any, workingDate: any) => {
     let tempSearch = {
@@ -124,8 +125,6 @@ export const DailyChargesPaymentSummarySWR = (
         });
     });
 
-    console.log("tempSearch", tempSearch);
-
     const fetcher = async (url: any) =>
         await axios.post(url, tempSearch).then((res: any) => {
             let list = res.data.JsonData;
@@ -133,6 +132,30 @@ export const DailyChargesPaymentSummarySWR = (
         });
 
     return useSWR(dailyChargesPaymentSummaryUrl, fetcher);
+};
+
+export const ReportFolioByReceptionUrlSWR = (search: any, sessions: any) => {
+    let tempSearch: any = {
+        SessionIDs: [],
+        StartDate: moment(search.CurrDate)
+            .startOf("month")
+            .format("YYYY-MM-DD"),
+        EndDate: moment(search.CurrDate).endOf("month").format("YYYY-MM-DD"),
+    };
+
+    sessions.forEach((session: any) => {
+        tempSearch.SessionIDs.push({
+            ID: session,
+        });
+    });
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, tempSearch).then((res: any) => {
+            let list = res.data.JsonData;
+            return list;
+        });
+
+    return useSWR(reportFolioByReceptionUrl, fetcher);
 };
 
 export const ReservationDailyDetailSWR = (search: any, workingDate: any) => {
