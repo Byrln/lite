@@ -92,7 +92,7 @@ export default function LoginForm() {
                             : null
                     );
 
-                    router.replace(isHaveDashBoard ? "/" : "/handsontable");
+                    router.replace(isHaveDashBoard ? "/" : "/report/daily");
                 } else {
                     axios.defaults.headers.common["Authorization"] = "";
                     window.location.href = "/auth/signin";
