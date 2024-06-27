@@ -30,15 +30,17 @@ const Breakfast = ({ title, workingDate }: any) => {
     const [rerenderKey, setRerenderKey] = useState(0);
     const [reportData, setReportData]: any = useState(null);
     const [search, setSearch] = useState<any>({
-        StartDate: moment(dateStringToObj(workingDate)),
-        EndDate: moment(dateStringToObj(workingDate)).add("month", 1),
+        StartDate: moment(dateStringToObj(workingDate)).format("YYYY-MM-DD"),
+        EndDate: moment(dateStringToObj(workingDate))
+            .add("month", 1)
+            .format("YYYY-MM-DD"),
     });
 
     const fetchDatas = async () => {
         try {
             const response: any = await ReportAPI.breakfast2({
-                StartDate: search.StartDate.format("YYYY-MM-DD"),
-                EndDate: search.EndDate.format("YYYY-MM-DD"),
+                StartDate: search.StartDate,
+                EndDate: search.EndDate,
             });
             if (response) {
                 setReportData(response);

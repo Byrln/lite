@@ -17,7 +17,7 @@ const Search = ({ register, errors, control }: any) => {
                             label="Эхлэх огноо"
                             value={value}
                             onChange={(value) =>
-                                onChange(moment(value, "YYYY-MM-DD"))
+                                onChange(moment(value).format("YYYY-MM-DD"))
                             }
                             renderInput={(params) => (
                                 <TextField
@@ -45,7 +45,7 @@ const Search = ({ register, errors, control }: any) => {
                             label="Дуусах огноо"
                             value={value}
                             onChange={(value) =>
-                                onChange(moment(value, "YYYY-MM-DD"))
+                                onChange(moment(value).format("YYYY-MM-DD"))
                             }
                             renderInput={(params) => (
                                 <TextField
