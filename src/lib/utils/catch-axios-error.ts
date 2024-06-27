@@ -29,11 +29,8 @@ const catchAxiosError = (error: any) => {
         ) {
             if (localStorage.getItem("expires")) {
                 if (
-                    dateStringToObj(
-                        moment(localStorage.getItem("expires")).format(
-                            "YYYY-MM-DD HH:MM:SS"
-                        )
-                    ) < new Date()
+                    dateStringToObj(localStorage.getItem("expires")) <
+                    new Date()
                 ) {
                     signOut({ callbackUrl: "/auth/login" });
                 } else {

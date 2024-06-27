@@ -19,6 +19,7 @@ import { LoadingButton } from "@mui/lab";
 import { useRouter } from "next/router";
 import { getSession, signIn } from "next-auth/react";
 import { UserAPI } from "lib/api/user";
+import moment from "moment";
 
 import axios from "lib/utils/axios";
 
@@ -79,9 +80,12 @@ export default function LoginForm() {
                     // console.log("session.expires", session);
                     // console.log("session.expires", new Date());
 
-                    localStorage.setItem("expires", session.expires);
                     localStorage.setItem("hotelId", values.hotel);
                     localStorage.setItem("username", values.username);
+                    localStorage.setItem(
+                        "expires",
+                        moment().add(2, "hours").format("YYYY-MM-DD")
+                    );
 
                     let privileges = await UserAPI.getPrivileges();
                     let isHaveDashBoard = false;
@@ -91,8 +95,6 @@ export default function LoginForm() {
                             ? (isHaveDashBoard = true)
                             : null
                     );
-
-                    router.replace(isHaveDashBoard ? "/" : "/report/daily");
                 } else {
                     axios.defaults.headers.common["Authorization"] = "";
                     window.location.href = "/auth/signin";
