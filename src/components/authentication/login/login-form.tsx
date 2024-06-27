@@ -95,6 +95,7 @@ export default function LoginForm() {
                             ? (isHaveDashBoard = true)
                             : null
                     );
+                    router.replace(isHaveDashBoard ? "/" : "/report/daily");
                 } else {
                     axios.defaults.headers.common["Authorization"] = "";
                     window.location.href = "/auth/signin";
