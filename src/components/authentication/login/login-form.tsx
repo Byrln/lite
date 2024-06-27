@@ -84,7 +84,7 @@ export default function LoginForm() {
                     localStorage.setItem("username", values.username);
                     localStorage.setItem(
                         "expires",
-                        moment().add(2, "hours").format("YYYY-MM-DD hh:mm:ss")
+                        moment().add(2, "hours").format("YYYY-MM-DD HH:mm:ss")
                     );
 
                     let privileges = await UserAPI.getPrivileges();
