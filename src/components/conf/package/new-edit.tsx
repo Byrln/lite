@@ -11,7 +11,7 @@ import NewEditForm from "components/common/new-edit-form";
 import { PackageAPI, listUrl } from "lib/api/package";
 import { useAppState } from "lib/context/app";
 import { dateStringToObj } from "lib/utils/helpers";
-
+import { useIntl } from "react-intl";
 const validationSchema = yup.object().shape({
     PackageName: yup.string().required("Бөглөнө үү"),
     Description: yup.string().required("Бөглөнө үү"),
@@ -21,6 +21,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -43,9 +44,10 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="PackageName"
-                        label="Package Name"
-                        {...register("PackageName")}
+                        id="RowHeaderPackageName"
+                        label={intl.formatMessage({id:"RowHeaderPackageName"}) }
+                        {...register("RowHeaderPackageName")}
+
                         margin="dense"
                         error={errors.PackageName?.message}
                         helperText={errors.PackageName?.message}
@@ -56,9 +58,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="Description"
-                        label="Description"
-                        {...register("Description")}
+                        id="RowHeaderDescription"
+                        label={intl.formatMessage({id:"RowHeaderDescription"}) }
+                        {...register("RowHeaderDescription")}
                         margin="dense"
                         error={errors.Description?.message}
                         helperText={errors.Description?.message}
@@ -70,9 +72,9 @@ const NewEdit = () => {
                         size="small"
                         type="number"
                         fullWidth
-                        id="Nights"
-                        label="Nights"
-                        {...register("Nights")}
+                        id="ReportNights"
+                        label={intl.formatMessage({id:"ReportNights"}) }
+                        {...register("ReportNights")}
                         margin="dense"
                         error={errors.Nights?.message}
                         helperText={errors.Nights?.message}
@@ -127,7 +129,9 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Эхлэх огноо"
+                                label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
+                                {...register("RowHeaderBeginDate")}
+        
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -144,8 +148,9 @@ const NewEdit = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             size="small"
-                                            id="BeginDate"
-                                            {...register("BeginDate")}
+                                            id="RowHeaderBeginDate"
+                        label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
+                        {...register("RowHeaderBeginDate")}
                                             margin="dense"
                                             fullWidth
                                             {...params}
@@ -166,7 +171,8 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Дуусах огноо"
+                                label={intl.formatMessage({id:"RowHeaderEndDate"}) }
+                                {...register("RowHeaderEndDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(

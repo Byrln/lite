@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -11,41 +11,8 @@ import { BankAccountSWR, BankAccountAPI, listUrl } from "lib/api/bank-account";
 import BankAccountNewEdit from "./bank-account-new-edit";
 import Search from "./search";
 
-const columns = [
-    {
-        title: "Банк",
-        key: "Bank",
-        dataIndex: "Bank",
-    },
-    {
-        title: "Дансны дугаар",
-        key: "AccountNo",
-        dataIndex: "AccountNo",
-    },
-    {
-        title: "Дансны нэр",
-        key: "AccountName",
-        dataIndex: "AccountName",
-    },
-    {
-        title: "Status",
-        key: "Status",
-        dataIndex: "Status",
-        render: function render(id: any, value: any) {
-            return (
-                <ToggleChecked
-                    id={id}
-                    checked={value}
-                    api={BankAccountAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-];
-
 const BankAccountList = ({ title }: any) => {
+    const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
     });
@@ -62,6 +29,39 @@ const BankAccountList = ({ title }: any) => {
 
     const { data, error } = BankAccountSWR(search);
 
+    const columns = [
+        {
+            title: intl.formatMessage({id:"ReportBank"}), 
+            key: "ReportBank",
+            dataIndex: "ReportBank",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderAccountNo"}), 
+            key: "RowHeaderAccountNo",
+            dataIndex: "RowHeaderAccountNo",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderAccountName"}), 
+            key: "RowHeaderAccountName",
+            dataIndex: "RowHeaderAccountName",
+        },
+        {
+            title: "Status",
+            key: "Status",
+            dataIndex: "Status",
+            render: function render(id: any, value: any) {
+                return (
+                    <ToggleChecked
+                        id={id}
+                        checked={value}
+                        api={BankAccountAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+    ];
     return (
         <>
             <CustomTable

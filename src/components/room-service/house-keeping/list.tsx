@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import { ModalContext } from "lib/context/modal";
 import {
     HouseKeepingCurrentSWR,
@@ -25,6 +25,7 @@ import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
 const HouseKeepingList = ({ title }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const validationSchema = yup.object().shape({

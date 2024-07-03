@@ -1,12 +1,21 @@
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
+import { useIntl } from "react-intl";
 
 import Page from "components/page";
 import SeasonList from "components/rate/season/list";
 
-const title = "Улирал";
 
-const Index = () => (
+const Index = () => {
+    const intl = useIntl();
+
+    const title = intl.formatMessage({
+        id: "MenuSeason",
+    });
+
+
+    return (
+
     <>
         <Head>
             <title>{title}</title>
@@ -24,7 +33,7 @@ const Index = () => (
                 </Grid>
             </Container>
         </Page>
-    </>
-);
+    </>)
+};
 
 export default Index;

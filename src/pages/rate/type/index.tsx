@@ -1,6 +1,6 @@
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
-
+import { useIntl } from "react-intl";
 import Page from "components/page";
 import RateTypeList from "components/rate/type/list";
 

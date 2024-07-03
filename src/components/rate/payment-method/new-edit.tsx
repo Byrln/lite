@@ -3,7 +3,7 @@ import { TextField, Grid } from "@mui/material";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { PaymentMethodAPI, listUrl } from "lib/api/payment-method";
 import PaymentMethodGroupSelect from "components/select/payment-method-group";
@@ -19,6 +19,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = ({ entity }: any) => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -48,9 +49,9 @@ const NewEdit = ({ entity }: any) => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="PaymentMethodName"
-                        label="Нэр"
-                        {...register("PaymentMethodName")}
+                        id="RowHeaderFirstName"
+                        label={intl.formatMessage({id:"RowHeaderFirstName"}) }
+                        {...register("RowHeaderFirstName")}
                         margin="dense"
                         error={errors.PaymentMethodName?.message}
                         helperText={errors.PaymentMethodName?.message}
@@ -62,7 +63,7 @@ const NewEdit = ({ entity }: any) => {
                         type="number"
                         fullWidth
                         id="SortOrder"
-                        label="Дараалал"
+                        label={intl.formatMessage({id:"SortOrder"}) }
                         {...register("SortOrder")}
                         margin="dense"
                         error={errors.SortOrder?.message}

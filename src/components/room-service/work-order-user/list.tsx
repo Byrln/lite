@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -28,53 +29,54 @@ import Iconify from "components/iconify/iconify";
 
 import NewEdit from "./new-edit";
 
-const columns = [
-    {
-        title: "Reservation No",
-        key: "ReservationNo",
-        dataIndex: "ReservationNo",
-    },
-    {
-        title: "Guest",
-        key: "Guest",
-        dataIndex: "Guest",
-    },
-    {
-        title: "Room",
-        key: "Room",
-        dataIndex: "Room",
-    },
-    {
-        title: "Rate Type",
-        key: "RateType",
-        dataIndex: "RateType",
-    },
-    {
-        title: "Revervation Type",
-        key: "RevervationType",
-        dataIndex: "RevervationType",
-    },
-    {
-        title: "Departure",
-        key: "Departure",
-        dataIndex: "Departure",
-    },
-    {
-        title: "Total",
-        key: "Total",
-        dataIndex: "Total",
-    },
-    {
-        title: "Deposit",
-        key: "Deposit",
-        dataIndex: "Deposit",
-    },
-];
+
 
 const HouseKeepingList = ({ title }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
-
+    const columns = [
+        {
+            title: intl.formatMessage({id:"ReportReservationNo"}), 
+            key: "ReportReservationNo",
+            dataIndex: "ReportReservationNo",
+        },
+        {
+            title: "Guest",
+            key: "Guest",
+            dataIndex: "Guest",
+        },
+        {
+            title: "Room",
+            key: "Room",
+            dataIndex: "Room",
+        },
+        {
+            title: "Rate Type",
+            key: "RateType",
+            dataIndex: "RateType",
+        },
+        {
+            title: "Revervation Type",
+            key: "RevervationType",
+            dataIndex: "RevervationType",
+        },
+        {
+            title: "Departure",
+            key: "Departure",
+            dataIndex: "Departure",
+        },
+        {
+            title: "Total",
+            key: "Total",
+            dataIndex: "Total",
+        },
+        {
+            title: "Deposit",
+            key: "Deposit",
+            dataIndex: "Deposit",
+        },
+    ];
     const validationSchema = yup.object().shape({
         WorkOrderStatusID: yup.string().nullable(),
         RoomTypeID: yup.string().nullable(),

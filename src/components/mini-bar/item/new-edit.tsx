@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { ChargeTypeAPI, listUrl } from "lib/api/charge-type";
 import ChargeTypeGroupSelect from "components/select/charge-type-group";
@@ -23,6 +23,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -61,9 +62,9 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="RoomChargeTypeName"
-                label="Нэр"
-                {...register("RoomChargeTypeName")}
+                id="RowHeaderFirstName"
+                        label={intl.formatMessage({id:"RowHeaderFirstName"}) }
+                        {...register("RowHeaderFirstName")}
                 margin="dense"
                 error={errors.RoomChargeTypeName?.message}
                 helperText={errors.RoomChargeTypeName?.message}
@@ -73,8 +74,8 @@ const NewEdit = () => {
                 size="small"
                 fullWidth
                 id="RoomChargeTypeNameCustom"
-                label="Кустом нэр"
-                {...register("RoomChargeTypeNameCustom")}
+                        label={intl.formatMessage({id:"RoomChargeTypeNameCustom"}) }
+                        {...register("RoomChargeTypeNameCustom")}
                 margin="dense"
                 error={errors.RoomChargeTypeNameCustom?.message}
                 helperText={errors.RoomChargeTypeNameCustom?.message}
@@ -85,7 +86,7 @@ const NewEdit = () => {
                 type="number"
                 fullWidth
                 id="RoomChargeTypeRate"
-                label="Үнийн дүн"
+                label={intl.formatMessage({id:"RoomChargeTypeRate"}) }
                 {...register("RoomChargeTypeRate")}
                 margin="dense"
                 error={errors.RoomChargeTypeRate?.message}
@@ -97,7 +98,7 @@ const NewEdit = () => {
                 type="number"
                 fullWidth
                 id="SortOrder"
-                label="Дараалал"
+                label={intl.formatMessage({id:"SortOrder"}) }
                 {...register("SortOrder")}
                 margin="dense"
                 error={errors.SortOrder?.message}

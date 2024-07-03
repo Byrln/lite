@@ -2,7 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import { FormControlLabel, TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { BankAccountAPI, listUrl } from "lib/api/bank-account";
 import { useAppState } from "lib/context/app";
@@ -16,6 +16,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -40,9 +41,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="Bank"
-                        label="Банк"
-                        {...register("Bank")}
+                        id="ReportBank"                     
+                         label={intl.formatMessage({id:"ReportBank"}) }
+                        {...register("ReportBank")}
                         margin="dense"
                         error={errors.Bank?.message}
                         helperText={errors.Bank?.message}
@@ -52,9 +53,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="AccountNo"
-                        label="Дансны дугаар"
-                        {...register("AccountNo")}
+                        id="TextAccountNo"                     
+                        label={intl.formatMessage({id:"TextAccountNo"}) }
+                       {...register("TextAccountNo")}
                         margin="dense"
                         error={errors.AccountNo?.message}
                         helperText={errors.AccountNo?.message}
@@ -64,9 +65,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="AccountName"
-                        label="Дансны нэр"
-                        {...register("AccountName")}
+                        id="TextAccountName"                     
+                        label={intl.formatMessage({id:"TextAccountName"}) }
+                       {...register("TextAccountName")}
                         margin="dense"
                         error={errors.AccountName?.message}
                         helperText={errors.AccountName?.message}

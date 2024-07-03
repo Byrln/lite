@@ -9,7 +9,7 @@ import {
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import {
     ReservationStatusSWR,
     ReservationSourceAPI,
@@ -44,6 +44,7 @@ const ReservationStatus = ({ ChannelSourceID }: any) => {
     });
 
     const onSubmit = async (values: any) => {
+        const intl = useIntl();
         setLoading(true);
         try {
             await ReservationSourceAPI?.reservationStatus(

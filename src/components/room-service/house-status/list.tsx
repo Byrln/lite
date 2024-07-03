@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import {
@@ -19,6 +19,7 @@ import StatusChange from "components/room-service/house-status/additional-action
 import StatusRemove from "components/room-service/house-status/additional-actions/status-remove";
 
 const HouseStatusList = ({ title }: any) => {
+    const intl = useIntl();
     const validationSchema = yup.object().shape({
         RoomTypeID: yup.string().nullable(),
     });
@@ -42,24 +43,24 @@ const HouseStatusList = ({ title }: any) => {
             dataIndex: "№",
         },
         {
-            title: "Өрөө",
-            key: "RoomNo",
-            dataIndex: "RoomNo",
+            title: intl.formatMessage({id:"ConfigRooms"}), 
+            key: "ConfigRooms",
+            dataIndex: "ConfigRooms",
         },
         {
-            title: "Өр.төрөл",
-            key: "RoomTypeName",
-            dataIndex: "RoomTypeName",
+            title: intl.formatMessage({id:"ReportRoomType"}), 
+            key: "ReportRoomType",
+            dataIndex: "ReportRoomType",
         },
         {
-            title: "Цэвэрлэгээ/төлөв",
-            key: "HKSDescription",
-            dataIndex: "HKSDescription",
+            title: intl.formatMessage({id:"RowHeaderHouseStatus"}), 
+            key: "RowHeaderHouseStatus",
+            dataIndex: "RowHeaderHouseStatus",
         },
         {
-            title: "Үйлдэл",
-            key: "Action",
-            dataIndex: "Action",
+            title: intl.formatMessage({id:"RowHeaderAction"}), 
+            key: "RowHeaderAction",
+            dataIndex: "RowHeaderAction",
             excelRenderPass: true,
             render: function render(id: any, record: any, entity: any) {
                 return (
@@ -81,19 +82,19 @@ const HouseStatusList = ({ title }: any) => {
             },
         },
         {
-            title: "Зочны төлөв",
-            key: "RSDescription",
-            dataIndex: "RSDescription",
+            title: intl.formatMessage({id:"RowHeaderRoomStatus"}), 
+            key: "RowHeaderRoomStatus",
+            dataIndex: "RowHeaderRoomStatus",
         },
         {
-            title: "Өрөө үйлчлэгч",
-            key: "HKUserName",
-            dataIndex: "HKUserName",
+            title: intl.formatMessage({id:"RowHeaderHouseKeeper"}), 
+            key: "RowHeaderHouseKeeper",
+            dataIndex: "RowHeaderHouseKeeper",
         },
         {
-            title: "Үйлдэл",
-            key: "Action",
-            dataIndex: "Action",
+            title: intl.formatMessage({id:"RowHeaderAction"}), 
+            key: "RowHeaderAction",
+            dataIndex: "RowHeaderAction",
             excelRenderPass: true,
             render: function render(id: any, record: any, entity: any) {
                 return (

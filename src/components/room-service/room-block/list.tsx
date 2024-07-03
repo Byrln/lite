@@ -2,6 +2,7 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { useIntl } from "react-intl";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
     Checkbox,
@@ -26,6 +27,7 @@ import Typography from "@mui/material/Typography";
 
 const RoomBlockList = ({ title, workingDate }: any) => {
     const [entity, setEntity] = useState<any>({});
+    const intl = useIntl();
     const [rerenderKey, setRerenderKey] = useState(0);
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -115,9 +117,9 @@ const RoomBlockList = ({ title, workingDate }: any) => {
             dataIndex: "test",
         },
         {
-            title: "",
-            key: "check",
-            dataIndex: "check",
+            title: intl.formatMessage({id:"ReportCheck"}), 
+            key: "ReportCheck",
+            dataIndex: "ReportCheck",
             withCheckBox: true,
             onChange: onCheckboxChange,
             render: function render(
@@ -145,34 +147,34 @@ const RoomBlockList = ({ title, workingDate }: any) => {
             },
         },
         {
-            title: "Өрөө",
-            key: "RoomFullName",
-            dataIndex: "RoomFullName",
+            title: intl.formatMessage({id:"MenuRooms"}), 
+            key: "MenuRooms",
+            dataIndex: "MenuRooms",
         },
         {
-            title: "Эхлэх огноо",
-            key: "BeginDate",
-            dataIndex: "BeginDate",
+            title: intl.formatMessage({id:"RowHeaderBeginDate"}), 
+            key: "RowHeaderBeginDate",
+            dataIndex: "RowHeaderBeginDate",
         },
         {
-            title: "Дуусах огноо",
-            key: "EndDate",
-            dataIndex: "EndDate",
+            title: intl.formatMessage({id:"RowHeaderEndDate"}), 
+            key: "RowHeaderEndDate",
+            dataIndex: "RowHeaderEndDate",
         },
         {
-            title: "Блоклох",
-            key: "CreatedDate",
-            dataIndex: "CreatedDate",
+            title: intl.formatMessage({id:"RowHeaderBlockedOn"}), 
+            key: "RowHeaderBlockedOn",
+            dataIndex: "RowHeaderBlockedOn",
         },
         {
-            title: "Блоклосон",
-            key: "UserName",
-            dataIndex: "UserName",
+            title: intl.formatMessage({id:"RowHeaderBlockedBy"}), 
+            key: "RowHeaderBlockedBy",
+            dataIndex: "RowHeaderBlockedBy",
         },
         {
-            title: "Шалтгаан",
-            key: "Description",
-            dataIndex: "Description",
+            title: intl.formatMessage({id:"ConfigReasons"}), 
+            key: "ConfigReasons",
+            dataIndex: "ConfigReasons",
         },
     ];
     console.log("entity", entity);

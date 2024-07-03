@@ -3,54 +3,56 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { format } from "date-fns";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import { ReasonSWR, ReasonAPI, listUrl } from "lib/api/reason";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-const columns = [
-    {
-        title: "Шалтгаан",
-        key: "ReasonName",
-        dataIndex: "ReasonName",
-    },
-    {
-        title: "Төрөл",
-        key: "ReasonTypeName",
-        dataIndex: "ReasonTypeName",
-    },
-    {
-        title: "Хэрэглэгчийн нэр",
-        key: "UserName",
-        dataIndex: "UserName",
-    },
-    {
-        title: "Огноо өөрчлөх",
-        key: "CreatedDate",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                element.row.CreatedDate &&
-                format(
-                    new Date(element.row.CreatedDate.replace(/ /g, "T")),
-                    "MM/dd/yyyy hh:mm:ss a"
-                )
-            );
-        },
-    },
-    {
-        title: "Сүлжээний хаяг",
-        key: "IPAddress",
-        dataIndex: "IPAddress",
-    },
-];
 
 const ReasonList = ({ title }: any) => {
+    const intl = useIntl();
     const validationSchema = yup.object().shape({
         ReasonTypeID: yup.string().nullable(),
     });
+    const columns = [
+        {
+            title: intl.formatMessage({id:"ReportReason"}), 
+            key: "ReportReason",
+            dataIndex: "ReportReason",
+        },
+        {
+            title: intl.formatMessage({id:"ReportReason"}), 
+            key: "ReasonTypeName",
+            dataIndex: "ReasonTypeName",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderUserName"}), 
+            key: "RowHeaderUserName",
+            dataIndex: "RowHeaderUserName",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderChangedDate"}), 
+            key: "RowHeaderChangedDate",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    element.row.CreatedDate &&
+                    format(
+                        new Date(element.row.CreatedDate.replace(/ /g, "T")),
+                        "MM/dd/yyyy hh:mm:ss a"
+                    )
+                );
+            },
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderIPAddress"}), 
+            key: "RowHeaderIPAddress",
+            dataIndex: "RowHeaderIPAddress",
+        },
+    ];
+    
     const formOptions = { resolver: yupResolver(validationSchema) };
     const {
         reset,

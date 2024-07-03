@@ -4,7 +4,7 @@ import { TextField, Grid, Box } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-
+import { useIntl } from "react-intl";
 import { EmailAPI } from "lib/api/email-conf";
 import SubmitButton from "components/common/submit-button";
 import { ModalContext } from "lib/context/modal";
@@ -19,6 +19,7 @@ const validationSchema = yup.object().shape({
 });
 
 const ChangePassword = ({ id }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const {
@@ -50,9 +51,9 @@ const ChangePassword = ({ id }: any) => {
                         size="small"
                         type="password"
                         fullWidth
-                        id="OldPassword"
-                        label="Хуучин нууц үг"
-                        {...register("OldPassword")}
+                        id="TextOldPassword"
+                        label={intl.formatMessage({id:"TextOldPassword"}) }
+                        {...register("TextOldPassword")}
                         margin="dense"
                         error={errors.OldPassword?.message}
                         helperText={errors.OldPassword?.message}
@@ -63,9 +64,9 @@ const ChangePassword = ({ id }: any) => {
                         size="small"
                         type="password"
                         fullWidth
-                        id="NewPassword"
-                        label="Шинэ нууц үг"
-                        {...register("NewPassword")}
+                        id="TextNewPassword"
+                        label={intl.formatMessage({id:"TextNewPassword"}) }
+                        {...register("TextNewPassword")}
                         margin="dense"
                         error={errors.NewPassword?.message}
                         helperText={errors.NewPassword?.message}
@@ -76,9 +77,9 @@ const ChangePassword = ({ id }: any) => {
                         size="small"
                         type="password"
                         fullWidth
-                        id="NewPasswordConfirmation"
-                        label="Нууц үгээ дахин оруул"
-                        {...register("NewPasswordConfirmation")}
+                        id="TextConfirmNewPassword"
+                        label={intl.formatMessage({id:"TextConfirmNewPassword"}) }
+                        {...register("TextConfirmNewPassword")}
                         margin="dense"
                         error={errors.NewPasswordConfirmation?.message}
                         helperText={errors.NewPasswordConfirmation?.message}

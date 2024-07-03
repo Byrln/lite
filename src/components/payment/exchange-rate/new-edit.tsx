@@ -1,6 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
-
+import { useIntl } from "react-intl";
 import {
     FormControlLabel,
     TextField,
@@ -27,6 +27,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
     const [values, setValues]: any = useState(null);
 
@@ -92,9 +93,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="CurrencyName"
-                        label="CurrencyName"
-                        {...register("CurrencyName")}
+                        id="TextCurrencyName"
+                        label={intl.formatMessage({id:"TextCurrencyName"}) }
+                        {...register("TextCurrencyName")}
                         margin="dense"
                         error={errors.CurrencyName?.message}
                         helperText={errors.CurrencyName?.message}
@@ -104,9 +105,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="CurrencyCode"
-                        label="CurrencyCode"
-                        {...register("CurrencyCode")}
+                        id="TextCurrencyCode"
+                        label={intl.formatMessage({id:"TextCurrencyCode"}) }
+                        {...register("TextCurrencyCode")}
                         margin="dense"
                         error={errors.CurrencyCode?.message}
                         helperText={errors.CurrencyCode?.message}
@@ -116,9 +117,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="CurrencySymbol"
-                        label="CurrencySymbol"
-                        {...register("CurrencySymbol")}
+                        id="RowHeaderCurrencySymbol"
+                        label={intl.formatMessage({id:"RowHeaderCurrencySymbol"}) }
+                        {...register("RowHeaderCurrencySymbol")}
                         margin="dense"
                         error={errors.CurrencySymbol?.message}
                         helperText={errors.CurrencySymbol?.message}
@@ -146,9 +147,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="CurrencyRate1"
-                                label="CurrencyRate1"
-                                {...register("CurrencyRate1")}
+                                id="TitleCurrencyRate1"
+                                label={intl.formatMessage({id:"TitleCurrencyRate1"}) }
+                                {...register("TitleCurrencyRate1")}
                                 margin="dense"
                                 error={errors.CurrencyRate1?.message}
                                 helperText={errors.CurrencyRate1?.message}
@@ -159,9 +160,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="TargetCurrencyRate1"
-                                label="TargetCurrencyRate1"
-                                {...register("TargetCurrencyRate1")}
+                                id="TitleCurrencyRate2"
+                                label={intl.formatMessage({id:"TitleCurrencyRate2"}) }
+                                {...register("TitleCurrencyRate2")}
                                 margin="dense"
                                 error={errors.TargetCurrencyRate1?.message}
                                 helperText={errors.TargetCurrencyRate1?.message}
@@ -172,9 +173,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="CurrencyRate2"
-                                label="CurrencyRate2"
-                                {...register("CurrencyRate2")}
+                                id="TitleTargetCurrencyRate2"
+                                label={intl.formatMessage({id:"TitleTargetCurrencyRate2"}) }
+                                {...register("TitleTargetCurrencyRate2")}
                                 margin="dense"
                                 error={errors.CurrencyRate2?.message}
                                 helperText={errors.CurrencyRate2?.message}
@@ -185,9 +186,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="TargetCurrencyRate2"
-                                label="TargetCurrencyRate2"
-                                {...register("TargetCurrencyRate2")}
+                                id="TitleCurrencyRate2"
+                                label={intl.formatMessage({id:"TitleTargetCurrencyRate1"}) }
+                                {...register("TitleTargetCurrencyRate1")}
                                 margin="dense"
                                 error={errors.TargetCurrencyRate2?.message}
                                 helperText={errors.TargetCurrencyRate2?.message}

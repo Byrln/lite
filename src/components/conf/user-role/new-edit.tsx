@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { UserRoleAPI, listUrl } from "lib/api/user-role";
 import { useAppState } from "lib/context/app";
@@ -20,6 +20,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
     const [state]: any = useAppState();
     const {
@@ -45,9 +46,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="UserRoleShortName"
-                        label="Short Code"
-                        {...register("UserRoleShortName")}
+                        id="RowHeaderShortCode"
+                        label={intl.formatMessage({id:"RowHeaderShortCode"}) }
+                        {...register("RowHeaderShortCode")}
                         margin="dense"
                         error={errors.UserRoleShortName?.message}
                         helperText={errors.UserRoleShortName?.message}
@@ -57,9 +58,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="UserRoleName"
-                        label="User Role"
-                        {...register("UserRoleName")}
+                        id="ConfigUserRole"
+                        label={intl.formatMessage({id:"ConfigUserRole"}) }
+                        {...register("ConfigUserRole")}
                         margin="dense"
                         error={errors.UserRoleName?.message}
                         helperText={errors.UserRoleName?.message}
@@ -71,9 +72,9 @@ const NewEdit = () => {
                         fullWidth
                         multiline
                         rows={3}
-                        id="Description"
-                        label="Description"
-                        {...register("Description")}
+                        id="RowHeaderDescription"
+                        label={intl.formatMessage({id:"RowHeaderDescription"}) }
+                        {...register("RowHeaderDescription")}
                         margin="dense"
                         error={errors.Description?.message}
                         helperText={errors.Description?.message}

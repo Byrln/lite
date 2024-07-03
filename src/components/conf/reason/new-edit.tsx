@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Grid } from "@mui/material";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { ReasonAPI, listUrl } from "lib/api/reason";
 import { useAppState } from "lib/context/app";
@@ -15,6 +15,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -38,7 +39,9 @@ const NewEdit = () => {
                     <ReasonTypeSelect
                         register={register}
                         errors={errors}
-                        label="Төрөл"
+                        id="TextType"
+                        label={intl.formatMessage({id:"TextType"}) }
+                        {...register("TextType")}
                         ReasonTypeID={1}
                     />
                 </Grid>
@@ -46,9 +49,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="Description"
-                        label="Шалтгаан"
-                        {...register("Description")}
+                        id="RowHeaderReason"
+                        label={intl.formatMessage({id:"RowHeaderReason"}) }
+                        {...register("RowHeaderReason")}
                         margin="dense"
                         error={errors.Description?.message}
                         helperText={errors.Description?.message}

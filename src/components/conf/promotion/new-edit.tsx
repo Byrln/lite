@@ -6,7 +6,7 @@ import { DatePicker } from "@mui/lab";
 import moment from "moment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { PromotionAPI, listUrl } from "lib/api/promotion";
 import { useAppState } from "lib/context/app";
@@ -26,6 +26,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -52,9 +53,9 @@ const NewEdit = () => {
                 <TextField
                     size="small"
                     fullWidth
-                    id="PromotionCode"
-                    label="Promotion Code"
-                    {...register("PromotionCode")}
+                    id="TextPromotionCode"
+                        label={intl.formatMessage({id:"TextPromotionCode"}) }
+                        {...register("TextPromotionCode")}
                     margin="dense"
                     error={errors.PromotionCode?.message}
                     helperText={errors.PromotionCode?.message}
@@ -67,9 +68,9 @@ const NewEdit = () => {
                     fullWidth
                     multiline
                     rows={3}
-                    id="Description"
-                    label="Description"
-                    {...register("Description")}
+                    id="TextDescription"
+                    label={intl.formatMessage({id:"TextDescription"}) }
+                    {...register("TextDescription")}
                     margin="dense"
                     error={errors.Description?.message}
                     helperText={errors.Description?.message}

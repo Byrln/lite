@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { TextField, Grid, Card, CardContent, Typography } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { CompanyDatabaseAPI, listUrl } from "lib/api/company-database";
 import { useAppState } from "lib/context/app";
@@ -36,6 +36,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
     const [state]: any = useAppState();
     const {
@@ -64,9 +65,10 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="Company Name"
-                                label="Компанийн нэр"
-                                {...register("CustomerName")}
+                                id="RowHeaderCompanyName"
+                                label={intl.formatMessage({id:"RowHeaderCompanyName"}) }
+                                {...register("RowHeaderCompanyName")}
+        
                                 margin="dense"
                                 error={errors.CustomerName?.message}
                                 helperText={errors.CustomerName?.message}
@@ -85,9 +87,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="City"
-                                label="Хот"
-                                {...register("City")}
+                                id="TextCity"
+                                label={intl.formatMessage({id:"TextCity"}) }
+                                {...register("TextCity")}  
                                 margin="dense"
                                 error={errors.City?.message}
                                 helperText={errors.City?.message}
@@ -98,9 +100,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="RegisterNo"
-                                label="Регистерийн дугаар"
-                                {...register("RegisterNo")}
+                                id="TextRegisterNo"
+                                label={intl.formatMessage({id:"TextRegisterNo"}) }
+                                {...register("TextRegisterNo")}    
                                 margin="dense"
                                 error={errors.RegisterNo?.message}
                                 helperText={errors.RegisterNo?.message}
@@ -110,9 +112,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="Phone"
-                                label="Утас"
-                                {...register("Phone")}
+                                id="ReportPhone"
+                                label={intl.formatMessage({id:"ReportPhone"}) }
+                                {...register("ReportPhone")}    
                                 margin="dense"
                                 error={errors.Phone?.message}
                                 helperText={errors.Phone?.message}
@@ -122,9 +124,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="Email"
-                                label="Цах.Шуудан"
-                                {...register("Email")}
+                                id="RowHeaderEmail"
+                                label={intl.formatMessage({id:"RowHeaderEmail"}) }
+                                {...register("RowHeaderEmail")}    
                                 margin="dense"
                                 error={errors.Email?.message}
                                 helperText={errors.Email?.message}
@@ -152,9 +154,9 @@ const NewEdit = () => {
                                 fullWidth
                                 multiline
                                 rows={3}
-                                id="Address"
-                                label="Хаяг"
-                                {...register("Address")}
+                                id="ReportAddress"
+                                label={intl.formatMessage({id:"ReportAddress"}) }
+                                {...register("ReportAddress")}   
                                 margin="dense"
                                 error={errors.Address?.message}
                                 helperText={errors.Address?.message}
@@ -180,9 +182,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonFirstName1"
-                                        label="Нэр"
-                                        {...register("ContactPersonFirstName1")}
+                                        id="RowHeaderFirstName"
+                                        label={intl.formatMessage({id:"RowHeaderFirstName"}) }
+                                        {...register("RowHeaderFirstName")}   
                                         margin="dense"
                                         error={
                                             errors.ContactPersonFirstName1
@@ -198,9 +200,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonLastName1"
-                                        label="Овог"
-                                        {...register("ContactPersonLastName1")}
+                                        id="RowHeaderLastName"
+                                        label={intl.formatMessage({id:"RowHeaderLastName"}) }
+                                        {...register("RowHeaderLastName")}   
                                         margin="dense"
                                         error={
                                             errors.ContactPersonLastName1
@@ -216,9 +218,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonPosition1"
-                                        label="Албан тушаал"
-                                        {...register("ContactPersonPosition1")}
+                                        id="TextWorkPosition"
+                                        label={intl.formatMessage({id:"TextWorkPosition"}) }
+                                        {...register("TextWorkPosition")}   
                                         margin="dense"
                                         error={
                                             errors.ContactPersonPosition1
@@ -234,10 +236,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonPhone1"
-                                        label="Утас"
-                                        {...register("ContactPersonPhone1")}
-                                        margin="dense"
+                                        id="ReportPhone"                                  
+                                        label={intl.formatMessage({id:"ReportPhone"}) }
+                                        {...register("ReportPhone")} 
                                         error={
                                             errors.ContactPersonPhone1?.message
                                         }
@@ -250,9 +251,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonEmail1"
-                                        label="Цах.Шуудан"
-                                        {...register("ContactPersonEmail1")}
+                                        id="RowHeaderEmail"                                  
+                                        label={intl.formatMessage({id:"RowHeaderEmail"}) }
+                                        {...register("RowHeaderEmail")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonEmail1?.message
@@ -279,9 +280,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonFirstName2"
-                                        label="Нэр"
-                                        {...register("ContactPersonFirstName2")}
+                                        id="RowHeaderFirstName"                                  
+                                        label={intl.formatMessage({id:"RowHeaderFirstName"}) }
+                                        {...register("RowHeaderFirstName")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonFirstName2
@@ -297,9 +298,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonLastName2"
-                                        label="Овог"
-                                        {...register("ContactPersonLastName2")}
+                                        id="RowHeaderLastName"                                  
+                                        label={intl.formatMessage({id:"RowHeaderLastName"}) }
+                                        {...register("RowHeaderLastName")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonLastName2
@@ -315,9 +316,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonPosition2"
-                                        label="Албан тушаал"
-                                        {...register("ContactPersonPosition2")}
+                                        id="TextWorkPosition"                                  
+                                        label={intl.formatMessage({id:"TextWorkPosition"}) }
+                                        {...register("TextWorkPosition")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonPosition2
@@ -333,9 +334,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonPhone2"
-                                        label="Утас"
-                                        {...register("ContactPersonPhone2")}
+                                        id="ReportPhone"                                  
+                                        label={intl.formatMessage({id:"ReportPhone"}) }
+                                        {...register("ReportPhone")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonPhone2?.message
@@ -349,9 +350,7 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ContactPersonEmail2"
-                                        label="Цах.Шуудан"
-                                        {...register("ContactPersonEmail2")}
+                                       
                                         margin="dense"
                                         error={
                                             errors.ContactPersonEmail2?.message

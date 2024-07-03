@@ -3,7 +3,7 @@ import { FormControlLabel, TextField, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { VipStatusAPI, listUrl } from "lib/api/vip-status";
 import { useAppState } from "lib/context/app";
@@ -15,6 +15,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -39,9 +40,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="VipStatusName"
-                        label="ВИП төлөвийн нэр"
-                        {...register("VipStatusName")}
+                        id="TextVipStatusName"
+                        label={intl.formatMessage({id:"TextVipStatusName"}) }
+                        {...register("TextVipStatusName")}
                         margin="dense"
                         error={errors.VipStatusName?.message}
                         helperText={errors.VipStatusName?.message}
@@ -52,7 +53,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="VipStatusDescription"
-                        label="Тайлбар"
+                        label={intl.formatMessage({id:"VipStatusDescription"}) }
                         {...register("VipStatusDescription")}
                         margin="dense"
                         error={errors.VipStatusDescription?.message}
@@ -76,7 +77,8 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                label="Анхааруулга харуулах"
+                label={intl.formatMessage({id:"ShowWarning"}) }
+
             />
         </NewEditForm>
     );

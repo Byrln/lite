@@ -1,6 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
+import { useIntl } from "react-intl";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -21,6 +22,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -48,9 +50,9 @@ const NewEdit = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="TaxCode"
-                            label="Код"
-                            {...register("TaxCode")}
+                            id="RowHeaderTaxCode"
+                            label={intl.formatMessage({id:"RowHeaderTaxCode"}) }
+                            {...register("RowHeaderTaxCode")}
                             margin="dense"
                             error={errors.TaxCode?.message}
                             helperText={errors.TaxCode?.message}
@@ -60,9 +62,9 @@ const NewEdit = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="TaxName"
-                            label="Нэр"
-                            {...register("TaxName")}
+                            id="RowHeaderTaxName"
+                            label={intl.formatMessage({id:"RowHeaderTaxName"}) }
+                            {...register("RowHeaderTaxName")}
                             margin="dense"
                             error={errors.TaxName?.message}
                             helperText={errors.TaxName?.message}
@@ -73,10 +75,9 @@ const NewEdit = () => {
                             size="small"
                             type="number"
                             fullWidth
-                            id="TaxAmount"
-                            label="Дүн"
-                            InputProps={{ inputProps: { min: 0, max: 99 } }}
-                            {...register("TaxAmount")}
+                            id="ReportAmount"
+                            label={intl.formatMessage({id:"ReportAmount"}) }
+                            {...register("ReportAmount")}
                             margin="dense"
                             error={errors.TaxAmount?.message}
                             helperText={errors.TaxAmount?.message}
@@ -88,8 +89,9 @@ const NewEdit = () => {
                             control={control}
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
-                                <DatePicker
-                                    label="Эхлэх огноо"
+                                <DatePicker                       
+                                label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
+                                {...register("RowHeaderBeginDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -128,7 +130,8 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Дуусах огноо"
+                                label={intl.formatMessage({id:"RowHeaderEndDate"}) }
+                                {...register("RowHeaderEndDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(

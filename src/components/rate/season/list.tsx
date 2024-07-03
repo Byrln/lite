@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useIntl } from "react-intl";
 
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
@@ -11,20 +12,38 @@ import { SeasonSWR, SeasonAPI, listUrl } from "lib/api/season";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
+
+const SeasonList = ({ title }: any) => {
+    const intl = useIntl();
+    const validationSchema = yup.object().shape({
+        SearchStr: yup.string().nullable(),
+    });
+    const formOptions = { resolver: yupResolver(validationSchema) };
+    const {
+        reset,
+        register,
+        handleSubmit,
+        formState: { errors },
+        control,
+    } = useForm(formOptions);
+
+    const [search, setSearch] = useState({});
+
+    const { data, error } = SeasonSWR(search);
+
+
 const columns = [
-    { title: "Улирлын нэр", key: "SeasonName", dataIndex: "SeasonName" },
+    { title: intl.formatMessage({id:"RowHeaderSeasonName"}), key: "SeasonName", dataIndex: "SeasonName" },
+
+    { title: intl.formatMessage({id:"TextDateFrom"}), key: "Datefrom", dataIndex: "Datefrom" },
+    
+    { title: intl.formatMessage({id:"TextDateTo"}), 
+    key: "DateTo",
+     dataIndex: "DateTo" },
+    
+       
     {
-        title: "Эхлэх өдөр",
-        key: "BeginDayMonth",
-        dataIndex: "BeginDayMonth",
-    },
-    {
-        title: "Дуусах өдөр",
-        key: "EndDayMonth",
-        dataIndex: "EndDayMonth",
-    },
-    {
-        title: "Эхлэх огноо",
+        title: intl.formatMessage({id:"RowHeaderBeginDate"}), 
         key: "BeginDate",
         dataIndex: "BeginDate",
         excelRenderPass: true,
@@ -39,7 +58,7 @@ const columns = [
         },
     },
     {
-        title: "Дуусах огноо",
+        title: intl.formatMessage({id:"RowHeaderEndDate"}),
         key: "EndDate",
         dataIndex: "EndDate",
         excelRenderPass: true,
@@ -53,9 +72,10 @@ const columns = [
             );
         },
     },
-    { title: "Зэрэглэл", key: "Priority", dataIndex: "Priority" },
+    {   title: intl.formatMessage({id:"TextPriority"}), 
+        key: "Priority", dataIndex: "Priority" },
     {
-        title: "Төлөв",
+        title: intl.formatMessage({id:"Left_SortByStatus"}), 
         key: "Status",
         dataIndex: "Status",
         excelRenderPass: true,
@@ -72,23 +92,6 @@ const columns = [
         },
     },
 ];
-
-const SeasonList = ({ title }: any) => {
-    const validationSchema = yup.object().shape({
-        SearchStr: yup.string().nullable(),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
-    const {
-        reset,
-        register,
-        handleSubmit,
-        formState: { errors },
-        control,
-    } = useForm(formOptions);
-
-    const [search, setSearch] = useState({});
-
-    const { data, error } = SeasonSWR(search);
 
     return (
         <>

@@ -8,7 +8,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import mn from "date-fns/locale/mn";
 import { useState, useEffect } from "react";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { WorkOrderAPI, listUrl } from "lib/api/work-order";
 import { useAppState } from "lib/context/app";
@@ -30,6 +30,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
     const [roomBlock, setRoomBlock]: any = useState(false);
     const [baseStay, setBaseStay]: any = useState({
@@ -163,9 +164,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="WorkOrderNo"
-                                label="Ажлын дугаар"
-                                {...register("WorkOrderNo")}
+                                id="TextWorkOrderNo"
+                        label={intl.formatMessage({id:"TextWorkOrderNo"}) }
+                        {...register("TextWorkOrderNo")}
                                 margin="dense"
                                 error={errors.WorkOrderNo?.message}
                                 helperText={errors.WorkOrderNo?.message}
@@ -179,7 +180,9 @@ const NewEdit = () => {
                             register={register}
                             errors={errors}
                             type="WorkOrderPriority"
-                            label="Чухал байдал"
+                            id="RowHeaderPriority"
+                        label={intl.formatMessage({id:"RowHeaderPriority"}) }
+                        {...register("RowHeaderPriority")}
                             optionValue="WorkOrderPriorityID"
                             optionLabel="Description"
                         />
@@ -189,7 +192,9 @@ const NewEdit = () => {
                             register={register}
                             errors={errors}
                             type="WorkOrderStatus"
-                            label="Төлөв"
+                            id="Left_SortByStatus"
+                            label={intl.formatMessage({id:"Left_SortByStatus"}) }
+                            {...register("Left_SortByStatus")}
                             optionValue="WorkOrderStatusID"
                             optionLabel="Description"
                         />
@@ -218,7 +223,8 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Сүүлийн хугацаа"
+                                label={intl.formatMessage({id:"TextDeadline"}) }
+                                {...register("TextDeadline")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -236,8 +242,9 @@ const NewEdit = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             size="small"
-                                            id="Deadline"
-                                            {...register("Deadline")}
+                                            id="TextDeadline"
+                                            label={intl.formatMessage({id:"TextDeadline"}) }
+                                            {...register("TextDeadline")}
                                             margin="dense"
                                             fullWidth
                                             {...params}
@@ -257,9 +264,9 @@ const NewEdit = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="Description"
-                            label="Тайлбар"
-                            {...register("Description")}
+                            id="RowHeaderDescription"
+                                            label={intl.formatMessage({id:"RowHeaderDescription"}) }
+                                            {...register("RowHeaderDescription")}
                             margin="dense"
                             error={errors.Description?.message}
                             helperText={errors.Description?.message}
@@ -286,7 +293,7 @@ const NewEdit = () => {
                                     )}
                                 />
                             }
-                            label="Өрөө блоклох"
+                            label={intl.formatMessage({id:"ButtonBlockRoom"}) }
                         />
                     </Grid>
                     <Grid item xs={12} />
@@ -302,7 +309,7 @@ const NewEdit = () => {
                                         field: { onChange, value },
                                     }) => (
                                         <DatePicker
-                                            label="Эхлэх огноо"
+                                        label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
                                             value={value}
                                             onChange={(value) =>
                                                 onChange(
@@ -314,8 +321,10 @@ const NewEdit = () => {
                                             renderInput={(params) => (
                                                 <TextField
                                                     size="small"
-                                                    id="BeginDate"
-                                                    {...register("BeginDate")}
+                                                    id="RowHeaderBeginDate"
+                                                    label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
+                                                    {...register("RowHeaderBeginDate")}
+                            
                                                     margin="dense"
                                                     fullWidth
                                                     {...params}
@@ -342,7 +351,8 @@ const NewEdit = () => {
                                         field: { onChange, value },
                                     }) => (
                                         <DatePicker
-                                            label="Дуусах огноо"
+                                        label={intl.formatMessage({id:"RowHeaderEndDate"}) }
+                                        {...register("RowHeaderEndDate")}                
                                             value={value}
                                             onChange={(value) =>
                                                 onChange(
@@ -354,8 +364,9 @@ const NewEdit = () => {
                                             renderInput={(params) => (
                                                 <TextField
                                                     size="small"
-                                                    id="EndDate"
-                                                    {...register("EndDate")}
+                                                    id="RowHeaderEndDate"
+                                                    label={intl.formatMessage({id:"RowHeaderEndDate"}) }
+                                                    {...register("RowHeaderEndDate")}                            
                                                     margin="dense"
                                                     fullWidth
                                                     {...params}

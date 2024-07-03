@@ -6,7 +6,7 @@ import { TextField, Grid, Switch } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import { RateSWR, listUrl, RateAPI } from "lib/api/rate";
@@ -14,6 +14,7 @@ import Search from "./search";
 import { formatNumber } from "lib/utils/helpers";
 
 const RateList = ({ title, taxData }: any) => {
+    const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
         RoomTypeID: yup.string().nullable(),
@@ -44,6 +45,7 @@ const RateList = ({ title, taxData }: any) => {
 
     const onToggleChecked = async () => {
         setLoading(true);
+        const intl = useIntl();
         try {
             setIsChecked(!isChecked);
             setSearch({
@@ -62,33 +64,36 @@ const RateList = ({ title, taxData }: any) => {
             dataIndex: "test",
         },
         {
-            title: "Өрөөний төрөл",
-            key: "RateTypeName",
-            dataIndex: "RateTypeName",
+            title: intl.formatMessage({id:"ConfigRoomType"}), 
+            key: "ConfigRoomType",
+            dataIndex: "ConfigRoomType",
         },
         {
-            title: "Нэр",
+            title: intl.formatMessage({id:"RoomTypeName"}), 
             key: "RoomTypeName",
             dataIndex: "RoomTypeName",
         },
-        { title: "Улирал", key: "SeasonName", dataIndex: "SeasonName" },
+        { 
+            title: intl.formatMessage({id:"TextSeasonName"}), 
+             key: "SeasonName", 
+             dataIndex: "SeasonName" },
         {
-            title: "Зах.эх сурвалж",
+            title: intl.formatMessage({id:"TextSourceName"}), 
             key: "SourceName",
             dataIndex: "SourceName",
         },
         {
-            title: "Компани",
-            key: "CustomerName",
-            dataIndex: "CustomerName",
+            title: intl.formatMessage({id:"ReportCompany"}), 
+            key: "ReportCompany",
+            dataIndex: "ReportCompany",
         },
         {
-            title: "Хугацаа",
-            key: "DurationName",
-            dataIndex: "DurationName",
+            title: intl.formatMessage({id:"RowHeaderDuration"}), 
+            key: "RowHeaderDuration",
+            dataIndex: "RowHeaderDuration",
         },
         {
-            title: "Тариф",
+            title: intl.formatMessage({id:"BaseRate"}), 
             key: "BaseRate",
             dataIndex: "BaseRate",
             excelRenderPass: true,
@@ -124,9 +129,9 @@ const RateList = ({ title, taxData }: any) => {
             },
         },
         {
-            title: "Нэмэлт Т/хүний тариф",
-            key: "ExtraAdult",
-            dataIndex: "ExtraAdult",
+            title: intl.formatMessage({id:"RowHeaderRateExtraAdult"}), 
+            key: "RowHeaderRateExtraAdult",
+            dataIndex: "RowHeaderRateExtraAdult",
             excelRenderPass: true,
 
             render: function render(
@@ -161,9 +166,9 @@ const RateList = ({ title, taxData }: any) => {
         },
 
         {
-            title: "Нэмэлт хүүхдийн тариф",
-            key: "ExtraChild",
-            dataIndex: "ExtraChild",
+            title: intl.formatMessage({id:"RowHeaderRateExtraChild"}), 
+            key: "RowHeaderRateExtraChild",
+            dataIndex: "RowHeaderRateExtraChild",
             excelRenderPass: true,
 
             render: function render(
@@ -200,7 +205,9 @@ const RateList = ({ title, taxData }: any) => {
     ];
 
     const onSubmit = async () => {
+        const intl = useIntl();
         setLoading(true);
+
         try {
             let tempValues = { RateList: entity };
 

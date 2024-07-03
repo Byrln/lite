@@ -4,7 +4,7 @@ import * as React from "react";
 import { useState, useEffect, useContext } from "react";
 import { format } from "date-fns";
 import { mutate } from "swr";
-
+import { useIntl } from "react-intl";
 import CustomTable from "components/common/custom-table";
 import {
     CashierSessionListSWR,
@@ -18,132 +18,8 @@ import CashAddForm from "./actions/cash-add";
 import StartForm from "./actions/start";
 import EndForm from "./actions/end";
 
-const historyColumn = [
-    {
-        title: "№",
-        key: "№",
-        dataIndex: "№",
-    },
-    {
-        title: "Касс",
-        key: "UserName",
-        dataIndex: "UserName",
-    },
-    {
-        title: "Эхлэсэн огноо",
-        key: "StartDate",
-        dataIndex: "StartDate",
-        render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy HH:mm:ss"
-                )
-            );
-        },
-    },
-    {
-        title: "Дууссан огноо",
-        key: "EndDate",
-        dataIndex: "EndDate",
-        render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy HH:mm:ss"
-                )
-            );
-        },
-    },
-];
-
-const columns = [
-    {
-        title: "№",
-        key: "№",
-        dataIndex: "№",
-    },
-    {
-        title: "Хураангуй",
-        key: "name",
-        dataIndex: "name",
-    },
-    {
-        title: "Гүйлгээний тоо",
-        key: "CountTrans",
-        dataIndex: "CountTrans",
-    },
-    {
-        title: "Дүн",
-        key: "Amount",
-        dataIndex: "Amount",
-    },
-    {
-        title: "Дүн",
-        key: "TotalAmount",
-        dataIndex: "TotalAmount",
-    },
-];
-
-const detailColumns = [
-    {
-        title: "№",
-        key: "№",
-        dataIndex: "№",
-    },
-    {
-        title: "Өдөр/цаг",
-        key: "CurrDateTime",
-        dataIndex: "CurrDateTime",
-        render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy HH:mm:ss"
-                )
-            );
-        },
-    },
-    {
-        title: "Өрөө/Төрөл",
-        key: "RoomName",
-        dataIndex: "RoomName",
-    },
-    {
-        title: "Зочны нэр",
-        key: "GuestName",
-        dataIndex: "GuestName",
-    },
-    {
-        title: "Тэмдэглэгээ",
-        key: "Description",
-        dataIndex: "Description",
-    },
-    {
-        title: "",
-        key: "AmountCalculated",
-        dataIndex: "AmountCalculated",
-        render: function render(id: any, value: any, entity: any) {
-            return value + "₮";
-        },
-    },
-];
-
-const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-))({
-    [`& .${tooltipClasses.tooltip}`]: {
-        maxWidth: 500,
-        background: "white",
-        border: "rgba(0, 0, 0, .2) 1px solid",
-        overflow: "scroll",
-    },
-});
-
 const CashierList = ({ title }: any) => {
+    const intl = useIntl();
     const [activeSessionID, setActiveSessionID] = useState<any>(null);
     const [detailData, setDetailData] = useState(null);
     const [summary, setSummary] = useState(null);
@@ -151,7 +27,132 @@ const CashierList = ({ title }: any) => {
 
     const { data: listData, error: listError } = CashierSessionListSWR({});
     const { data, error } = CashierSessionSummarySWR(244);
-
+    const historyColumn = [
+    
+        {
+            title: "№",
+            key: "№",
+            dataIndex: "№",
+        },
+        {
+            title: intl.formatMessage({id:"TitleCashier"}), 
+            key: "TitleCashier",
+            dataIndex: "TitleCashier",
+        },
+        {
+            title: intl.formatMessage({id:"TStartDate"}), 
+            key: "TStartDate",
+            dataIndex: "TStartDate",
+            render: function render(id: any, value: any) {
+                return (
+                    value &&
+                    format(
+                        new Date(value.replace(/ /g, "T")),
+                        "MM/dd/yyyy HH:mm:ss"
+                    )
+                );
+            },
+        },
+        {
+            title: intl.formatMessage({id:"End Date"}), 
+            key: "EndDate",
+            dataIndex: "EndDate",
+            render: function render(id: any, value: any) {
+                return (
+                    value &&
+                    format(
+                        new Date(value.replace(/ /g, "T")),
+                        "MM/dd/yyyy HH:mm:ss"
+                    )
+                );
+            },
+        },
+    ];
+    
+    const columns = [
+        {
+            title: "№",
+            key: "№",
+            dataIndex: "№",
+        },
+        {
+            title: intl.formatMessage({id:"ReportQuickReview"}), 
+            key: "ReportQuickReview",
+            dataIndex: "ReportQuickReview",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderNoOfTransaction"}), 
+            key: "RowHeaderNoOfTransaction",
+            dataIndex: "RowHeaderNoOfTransaction",
+        },
+        {
+            title: intl.formatMessage({id:"ReportAmount"}), 
+            key: "ReportAmount",
+            dataIndex: "ReportAmount",
+        },
+        {
+            title: intl.formatMessage({id:"ReportAmount"}), 
+            key: "ReportAmount",
+            dataIndex: "ReportAmount",
+        },
+    ];
+    
+    const detailColumns = [
+        {
+            title: "№",
+            key: "№",
+            dataIndex: "№",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderDateTime"}), 
+            key: "RowHeaderDateTime",
+            dataIndex: "RowHeaderDateTime",
+            render: function render(id: any, value: any) {
+                return (
+                    value &&
+                    format(
+                        new Date(value.replace(/ /g, "T")),
+                        "MM/dd/yyyy HH:mm:ss"
+                    )
+                );
+            },
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderRoomandType"}), 
+            key: "RowHeaderRoomandType",
+            dataIndex: "RowHeaderRoomandType",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderGuestName"}), 
+            key: "RowHeaderGuestName",
+            dataIndex: "RowHeaderGuestName",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderNote"}), 
+            key: "RowHeaderNote",
+            dataIndex: "RowHeaderNote",
+        },
+        {
+            title: "",
+            key: "AmountCalculated",
+            dataIndex: "AmountCalculated",
+            render: function render(id: any, value: any, entity: any) {
+                return value + "₮";
+            },
+        },
+    ];
+    
+    const CustomWidthTooltip = styled(({ className, ...props }: TooltipProps) => (
+        
+        <Tooltip {...props} classes={{ popper: className }} />
+    ))({
+        [`& .${tooltipClasses.tooltip}`]: {
+            maxWidth: 500,
+            background: "white",
+            border: "rgba(0, 0, 0, .2) 1px solid",
+            overflow: "scroll",
+        },
+    });
     // const { data: detailData, error: detailError } =
     //     CashierSessionDetailSWR(activeSessionID);
 

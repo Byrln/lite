@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -11,57 +11,59 @@ import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-const columns = [
-    {
-        title: "Мини бар бүлэг",
-        key: "RoomChargeTypeGroupName",
-        dataIndex: "RoomChargeTypeGroupName",
-    },
-    {
-        title: "Мини бар бараа",
-        key: "RoomChargeTypeName",
-        dataIndex: "RoomChargeTypeName",
-    },
-    {
-        title: "Тариф",
-        key: "RoomChargeTypeRate",
-        dataIndex: "RoomChargeTypeRate",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                element.row.RoomChargeTypeRate &&
-                formatPrice(element.row.RoomChargeTypeRate)
-            );
-        },
-    },
-    {
-        title: "Эрэмбэлэх",
-        key: "SortOrder",
-        dataIndex: "SortOrder",
-    },
-    {
-        title: "Төлөв",
-        key: "Status",
-        dataIndex: "Status",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                <ToggleChecked
-                    id={element.id}
-                    checked={element.row.Status}
-                    api={ChargeTypeAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-];
 
 const MiniBarItemList = ({ title }: any) => {
+    const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
     });
+    const columns = [
+        {
+            title: intl.formatMessage({id:"ConfigMiniBarGroups"}), 
+            key: "ConfigMiniBarGroups",
+            dataIndex: "ConfigMiniBarGroups",
+        },
+        {
+            title: intl.formatMessage({id:"ConfigMiniBarItem"}), 
+            key: "ConfigMiniBarItem",
+            dataIndex: "ConfigMiniBarItem",
+        },
+        {
+            title: intl.formatMessage({id:"ReportRate"}), 
+            key: "ReportRate",
+            dataIndex: "ReportRate",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    element.row.RoomChargeTypeRate &&
+                    formatPrice(element.row.RoomChargeTypeRate)
+                );
+            },
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderSortOrder"}), 
+            key: "RowHeaderSortOrder",
+            dataIndex: "RowHeaderSortOrder",
+        },
+        {
+            title: intl.formatMessage({id:"ReportStatus"}), 
+            key: "ReportStatus",
+            dataIndex: "ReportStatus",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.Status}
+                        api={ChargeTypeAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+    ];
+    
     const formOptions = { resolver: yupResolver(validationSchema) };
     const {
         reset,

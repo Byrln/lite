@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -14,6 +14,7 @@ import SetPassword from "./set-password";
 import { ModalContext } from "lib/context/modal";
 
 const UserList = ({ title }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
 
     const validationSchema = yup.object().shape({
@@ -35,34 +36,34 @@ const UserList = ({ title }: any) => {
 
     const columns = [
         {
-            title: "Хэрэглэгчийн нэр",
-            key: "UserName",
-            dataIndex: "UserName",
+            title: intl.formatMessage({id:"RowHeaderUserName"}), 
+            key: "RowHeaderUserName",
+            dataIndex: "RowHeaderUserName",
         },
         {
-            title: "Нэвтрэх нэр",
-            key: "LoginName",
-            dataIndex: "LoginName",
+            title: intl.formatMessage({id:"RowHeaderLoginName"}), 
+            key: "RowHeaderLoginName",
+            dataIndex: "RowHeaderLoginName",
         },
         {
-            title: "Хэрэглэгчийн төрөл",
-            key: "UserRoleName",
-            dataIndex: "UserRoleName",
+            title: intl.formatMessage({id:"ConfigUserRole"}), 
+            key: "ConfigUserRole",
+            dataIndex: "ConfigUserRole",
         },
         {
-            title: "Хэл",
-            key: "Language",
-            dataIndex: "Language",
+            title: intl.formatMessage({id:"RowHeaderLanguage"}), 
+            key: "RowHeaderLanguage",
+            dataIndex: "RowHeaderLanguage",
         },
         {
-            title: "Цах.шуудан",
-            key: "Email",
-            dataIndex: "Email",
+            title: intl.formatMessage({id:"RowHeaderEmail"}), 
+            key: "RowHeaderEmail",
+            dataIndex: "RowHeaderEmail",
         },
         {
-            title: "Төлөв",
-            key: "Status",
-            dataIndex: "Status",
+            title: intl.formatMessage({id:"ReportStatus"}), 
+            key: "ReportStatus",
+            dataIndex: "ReportStatus",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -77,9 +78,9 @@ const UserList = ({ title }: any) => {
             },
         },
         {
-            title: "Нэмэлт үйлдэл",
-            key: "Action",
-            dataIndex: "Action",
+            title: intl.formatMessage({id:"RowHeaderAdditionalAction"}), 
+            key: "RowHeaderAdditionalAction",
+            dataIndex: "RowHeaderAdditionalAction",
             renderCell: (element: any) => {
                 return (
                     <Button
@@ -94,7 +95,8 @@ const UserList = ({ title }: any) => {
                             )
                         }
                     >
-                        Нууц үг солих
+                        {intl.formatMessage({id:"ButtonSetPassword"}) }
+
                     </Button>
                 );
             },

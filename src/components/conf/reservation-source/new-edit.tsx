@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Grid, TextField } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { ReservationSourceAPI, listUrl } from "lib/api/reservation-source";
 import { useAppState } from "lib/context/app";
@@ -17,6 +17,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
 
     const [state]: any = useAppState();
@@ -46,9 +47,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="ReservationSourceName"
-                        label="Захиалгын эх сурвалж"
-                        {...register("ReservationSourceName")}
+                        id="ConfigReservationSource"
+                        label={intl.formatMessage({id:"ConfigReservationSource"}) }
+                        {...register("ConfigReservationSource")}
                         margin="dense"
                         error={errors.ReservationSourceName?.message}
                         helperText={errors.ReservationSourceName?.message}

@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 import mn from "date-fns/locale/mn";
+import { useIntl } from "react-intl";
 
 import NewEditForm from "components/common/new-edit-form";
 import { SeasonAPI, listUrl } from "lib/api/season";
@@ -30,6 +31,8 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
+
     const [state]: any = useAppState();
     const {
         register,
@@ -62,7 +65,7 @@ const NewEdit = () => {
                             size="small"
                             fullWidth
                             id="SeasonCode"
-                            label="Код"
+                            label={intl.formatMessage({id:"TextSeasonCode"}) }
                             {...register("SeasonCode")}
                             margin="dense"
                             error={errors.SeasonCode?.message}
@@ -75,7 +78,7 @@ const NewEdit = () => {
                             size="small"
                             fullWidth
                             id="SeasonName"
-                            label="Нэр"
+                            label={intl.formatMessage({id:"TextSeasonName"}) }
                             {...register("SeasonName")}
                             margin="dense"
                             error={errors.SeasonName?.message}
@@ -88,7 +91,8 @@ const NewEdit = () => {
                             register={register}
                             errors={errors}
                             field="BeginMonth"
-                            label="Эхлэх сар"
+                            
+                            label={intl.formatMessage({id:"TextFromMonth"}) }
                             options={months}
                             optionValue="value"
                             optionLabel="name"
@@ -101,7 +105,7 @@ const NewEdit = () => {
                             register={register}
                             errors={errors}
                             field="BeginDay"
-                            label="Эхлэх өдөр"
+                            label={intl.formatMessage({id:"TextDateFrom"}) }
                             options={days}
                             optionValue="value"
                             optionLabel="value"
@@ -114,7 +118,7 @@ const NewEdit = () => {
                             register={register}
                             errors={errors}
                             field="EndMonth"
-                            label="Дуусах сар"
+                            label={intl.formatMessage({id:"TextDateTo"}) }
                             options={months}
                             optionValue="value"
                             optionLabel="name"
@@ -126,7 +130,7 @@ const NewEdit = () => {
                             register={register}
                             errors={errors}
                             field="EndDay"
-                            label="Дуусах өдөр"
+                            label={intl.formatMessage({id:"TextDateTo"}) }
                             options={days}
                             optionValue="value"
                             optionLabel="value"
@@ -141,7 +145,7 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Эхлэх огноо"
+                                    label={intl.formatMessage({id:"TextBeginDate"}) }
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -184,7 +188,7 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Дуусах огноо"
+                                label={intl.formatMessage({id:"RowHeaderEndDate"}) }
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -221,7 +225,7 @@ const NewEdit = () => {
                             type="number"
                             fullWidth
                             id="Priority"
-                            label="Зэрэглэл"
+                            label={intl.formatMessage({id:"TextPriority"}) }
                             {...register("Priority")}
                             margin="dense"
                             error={errors.Priority?.message}

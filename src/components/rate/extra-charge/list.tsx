@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -11,87 +11,11 @@ import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-const columns = [
-    {
-        title: "Нэмэлт үйлчилгээний бүлэг",
-        key: "RoomChargeTypeGroupName",
-        dataIndex: "RoomChargeTypeGroupName",
-    },
 
-    {
-        title: "Нэмэлт үйлчилгээ",
-        key: "RoomChargeTypeName",
-        dataIndex: "RoomChargeTypeName",
-    },
-    {
-        title: "Тариф",
-        key: "RoomChargeTypeRate",
-        dataIndex: "RoomChargeTypeRate",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                element.row.RoomChargeTypeRate &&
-                formatPrice(element.row.RoomChargeTypeRate)
-            );
-        },
-    },
-    {
-        title: "Засагдахуйц",
-        key: "IsEditable",
-        dataIndex: "IsEditable",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                <ToggleChecked
-                    id={element.id}
-                    checked={element.row.IsEditable}
-                    disabled={true}
-                />
-            );
-        },
-    },
-    {
-        title: "Дараалал",
-        key: "SortOrder",
-        dataIndex: "SortOrder",
-    },
-    {
-        title: "Төлөв",
-        key: "Status",
-        dataIndex: "Status",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                <ToggleChecked
-                    id={element.id}
-                    checked={element.row.Status}
-                    api={ChargeTypeAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-    {
-        title: "Inclusion",
-        key: "IsInclusion",
-        dataIndex: "IsInclusion",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                <ToggleChecked
-                    id={element.id}
-                    checked={element.row.IsInclusion}
-                    // api={ChargeTypeAPI}
-                    // apiUrl="IsInclusion"
-                    // mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-];
+
 
 const ExtraChargeList = ({ title }: any) => {
+    const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
         RoomChargeTypeGroupID: yup.string().nullable(),
@@ -108,6 +32,86 @@ const ExtraChargeList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = ChargeTypeSWR(search);
+    const columns = [
+    
+        {
+            title: intl.formatMessage({id:"RowHeaderExtraChargeGroup"}), 
+            key: "RowHeaderExtraChargeGroup",
+            dataIndex: "RowHeaderExtraChargeGroup",
+        },
+    
+        {
+            title: intl.formatMessage({id:"RowHeaderExtraCharge"}), 
+            key: "RowHeaderExtraCharge",
+            dataIndex: "RowHeaderExtraCharge",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderRate"}), 
+            key: "RowHeaderRate",
+            dataIndex: "RowHeaderRate",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    element.row.RoomChargeTypeRate &&
+                    formatPrice(element.row.RoomChargeTypeRate)
+                );
+            },
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderEditable"}), 
+            key: "RowHeaderEditable",
+            dataIndex: "RowHeaderEditable",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.IsEditable}
+                        disabled={true}
+                    />
+                );
+            },
+        },
+        {
+            title: intl.formatMessage({id:"SortOrder"}), 
+            key: "SortOrder",
+            dataIndex: "SortOrder",
+        },
+        {
+            title: intl.formatMessage({id:"ReportStatus"}), 
+            key: "ReportStatus",
+            dataIndex: "ReportStatus",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.Status}
+                        api={ChargeTypeAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderInclusion"}), 
+            key: "RowHeaderInclusion",
+            dataIndex: "RowHeaderInclusion",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.IsInclusion}
+                        // api={ChargeTypeAPI}
+                        // apiUrl="IsInclusion"
+                        // mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+    ];
 
     return (
         <>

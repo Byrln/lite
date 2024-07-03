@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -10,43 +10,49 @@ import { AmenitySWR, AmenityAPI, listUrl } from "lib/api/amenity";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-const columns = [
-    {
-        title: "Онцлогийн төрөл",
-        key: "AmenityTypeName",
-        dataIndex: "AmenityTypeName",
-    },
-    {
-        title: "Богино нэр",
-        key: "AmenityShortName",
-        dataIndex: "AmenityShortName",
-    },
-    {
-        title: "Нэр",
-        key: "AmenityName",
-        dataIndex: "AmenityName",
-    },
-    { title: "Дараалал", key: "SortOrder", dataIndex: "SortOrder" },
-    {
-        title: "Төлөв",
-        key: "Status",
-        dataIndex: "Status",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                <ToggleChecked
-                    id={element.id}
-                    checked={element.row.Status}
-                    api={AmenityAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-];
+
 
 const AmenityList = ({ title }: any) => {
+    
+    const intl = useIntl();
+    const columns = [
+    
+        {
+            title: intl.formatMessage({id:"AmenityTypeName"}), 
+            key: "AmenityTypeName",
+            dataIndex: "AmenityTypeName",
+        },
+        {
+            title: intl.formatMessage({id:"AmenityShortName"}),
+            key: "AmenityShortName",
+            dataIndex: "AmenityShortName",
+        },
+        {
+            title: intl.formatMessage({id:"AmenityName"}),
+            key: "AmenityName",
+            dataIndex: "AmenityName",
+        },
+        {   title: intl.formatMessage({id:"SortOrder"}),
+            key: "SortOrder", 
+            dataIndex: "SortOrder" },
+        {
+            title: intl.formatMessage({id:"Left_SortByStatus"}),
+            key: "Status",
+            dataIndex: "Status",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.Status}
+                        api={AmenityAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+    ];
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
     });

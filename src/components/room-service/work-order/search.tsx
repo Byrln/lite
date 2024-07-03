@@ -2,12 +2,13 @@ import { TextField, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
-
+import { useIntl } from "react-intl";
 import RoomSelect from "components/select/room";
 import ReferenceSelect from "components/select/reference";
 import UserSelect from "components/select/user";
 
 const Search = ({ register, errors, control, reset }: any) => {
+    const intl = useIntl();
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
@@ -29,7 +30,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     register={register}
                     errors={errors}
                     type="WorkOrderPriority"
-                    label="Чухал байдал"
+                    id="RowHeaderPriority"
+                    label={intl.formatMessage({id:"RowHeaderPriority"}) }
+                    {...register("RowHeaderPriority")}
                     optionValue="WorkOrderPriorityID"
                     optionLabel="Description"
                 />
@@ -49,7 +52,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     register={register}
                     errors={errors}
                     type="WorkOrderStatus"
-                    label="Төлөв"
+                    id="Left_SortByStatus"
+                    label={intl.formatMessage({id:"Left_SortByStatus"}) }
+                    {...register("Left_SortByStatus")}
                     optionValue="WorkOrderStatusID"
                     optionLabel="Description"
                 />

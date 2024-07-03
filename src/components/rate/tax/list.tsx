@@ -1,40 +1,43 @@
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
+import { useIntl } from "react-intl";
 import { TaxSWR, TaxAPI, listUrl } from "lib/api/tax";
 import NewEdit from "./new-edit";
 
-const columns = [
-    {
-        title: "Татварын код",
-        key: "TaxCode",
-        dataIndex: "TaxCode",
-    },
-    {
-        title: "Татварын нэр",
-        key: "TaxName",
-        dataIndex: "TaxName",
-    },
-    {
-        title: "Төлөв",
-        key: "Status",
-        dataIndex: "Status",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                <ToggleChecked
-                    id={element.id}
-                    checked={element.row.Status}
-                    api={TaxAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-];
 
 const TaxList = ({ title }: any) => {
+    const intl = useIntl();
     const { data, error } = TaxSWR();
+    const columns = [
+        {
+            title: intl.formatMessage({id:"RowHeaderTaxCode"}), 
+            key: "RowHeaderTaxCode",
+            dataIndex: "RowHeaderTaxCode",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderTaxName"}), 
+            key: "RowHeaderTaxName",
+            dataIndex: "RowHeaderTaxName",
+        },
+        {
+            title: intl.formatMessage({id:"ReportStatus"}), 
+            key: "ReportStatus",
+            dataIndex: "ReportStatus",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.Status}
+                        api={TaxAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+    ];
+    
 
     return (
         <CustomTable

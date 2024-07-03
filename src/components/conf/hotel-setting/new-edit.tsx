@@ -8,7 +8,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import moment from "moment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { HotelSettingAPI, listUrl } from "lib/api/hotel-setting";
 import { useAppState } from "lib/context/app";
@@ -22,6 +22,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
 
     const [state]: any = useAppState();
@@ -54,9 +55,9 @@ const NewEdit = () => {
                                 <TextField
                                     size="small"
                                     fullWidth
-                                    id="HotelCode"
-                                    label="Буудлын код"
-                                    {...register("HotelCode")}
+                                    id="RowHeaderHotelCode"
+                                    label={intl.formatMessage({id:"RowHeaderHotelCode"}) }
+                                    {...register("RowHeaderHotelCode")}            
                                     margin="dense"
                                     error={errors.HotelCode?.message}
                                     helperText={errors.HotelCode?.message}
@@ -67,9 +68,9 @@ const NewEdit = () => {
                                 <TextField
                                     size="small"
                                     fullWidth
-                                    id="HotelName"
-                                    label="Буудлын нэр"
-                                    {...register("HotelName")}
+                                    id="RowHeaderHotelName"
+                                    label={intl.formatMessage({id:"RowHeaderHotelName"}) }
+                                    {...register("RowHeaderHotelCode")}    
                                     margin="dense"
                                     error={errors.HotelName?.message}
                                     helperText={errors.HotelName?.message}

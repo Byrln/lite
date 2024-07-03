@@ -6,11 +6,12 @@ import BankAccount from "./BankAccount";
 import BookingEngine from "./BookingEngine";
 import Banner from "./Banner";
 import MainPictures from "./MainPictures";
-
+import { useIntl } from "react-intl";
 const HotelInformation = () => {
+    const intl = useIntl();
     const tabs = [
         {
-            label: "Үндсэн тохиргоо",
+            label: intl.formatMessage({id:"TextPicture"}),
             component: (
                 <>
                     <GeneralForm />
@@ -18,7 +19,7 @@ const HotelInformation = () => {
             ),
         },
         {
-            label: "Дансны тохиргоо",
+            label: intl.formatMessage({id:"AccountSettings"}),
             component: (
                 <>
                     <BankAccount title={"Банкны данс"} />
@@ -26,7 +27,7 @@ const HotelInformation = () => {
             ),
         },
         {
-            label: "Шууд захиалга",
+            label: intl.formatMessage({id:"TextBookingEngine"}),
             component: (
                 <>
                     <BookingEngine />
@@ -34,7 +35,7 @@ const HotelInformation = () => {
             ),
         },
         {
-            label: "Баннер",
+            label: intl.formatMessage({id:"TextBanner"}),
             component: (
                 <>
                     <Banner />
@@ -42,7 +43,7 @@ const HotelInformation = () => {
             ),
         },
         {
-            label: "Буудлын зураг",
+            label: intl.formatMessage({id:"TextHotelPictures"}),
             component: (
                 <>
                     <MainPictures />

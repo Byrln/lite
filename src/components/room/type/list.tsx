@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -10,39 +10,48 @@ import { RoomTypeSWR, RoomTypeAPI, listUrl } from "lib/api/room-type";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-const columns = [
-    {
-        title: "Богино нэр",
-        key: "RoomTypeShortName",
-        dataIndex: "RoomTypeShortName",
-    },
-    {
-        title: "Өрөөний төрөл",
-        key: "RoomTypeName",
-        dataIndex: "RoomTypeName",
-    },
-    { title: "Хүний тоо (Т/Х)", key: "BaseAC", dataIndex: "BaseAC" },
-    { title: "Хүний тоо/дээд (Т/Х)", key: "MaxAC", dataIndex: "MaxAC" },
-    {
-        title: "Төлөв",
-        key: "Status",
-        dataIndex: "Status",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                <ToggleChecked
-                    id={element.id}
-                    checked={element.row.Status}
-                    api={RoomTypeAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-];
+
 
 const RoomTypeList = ({ title }: any) => {
+    const intl = useIntl();
+    const columns = [
+        {
+            title: intl.formatMessage({id:"AmenityShortName"}), 
+            key: "RoomTypeShortName",
+            dataIndex: "RoomTypeShortName",
+        },
+        {
+            title: intl.formatMessage({id:"Left_SortByRoomType"}), 
+            key: "RoomTypeName",
+            dataIndex: "RoomTypeName",
+        },
+        { title: intl.formatMessage({id:"ReportPax"}), 
+             key: "BaseAC",
+              dataIndex: "BaseAC" },
+
+        { title: intl.formatMessage({id:"RowHeaderMaxAC"}), 
+            key: "MaxAC", 
+            dataIndex: "MaxAC" },
+        {
+
+
+            title: intl.formatMessage({id:"Left_SortByStatus"}), 
+            key: "Status",
+            dataIndex: "Status",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.Status}
+                        api={RoomTypeAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+    ];
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
         RoomChargeTypeGroupID: yup.string().nullable(),

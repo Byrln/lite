@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-
+import { useIntl } from "react-intl";
 import { HotelAPI } from "lib/api/hotel";
 import SubmitButton from "components/common/submit-button";
 import ReferenceSelect from "components/select/reference";
@@ -33,6 +33,7 @@ const validationSchemaHotel = yup.object().shape({
 });
 
 const GeneralForm = () => {
+    const intl = useIntl();
     const [loadingData, setLoadingData] = useState(true);
     const [data, setData] = useState({ Logo: null });
     const [loading, setLoading] = useState(false);
@@ -91,9 +92,9 @@ const GeneralForm = () => {
                             size="small"
                             disabled
                             fullWidth
-                            id="HotelCode"
-                            label="Зочид буудлын код"
-                            {...register("HotelCode")}
+                            id="HoteLCode"                      
+                            label={intl.formatMessage({id:"HoteLCode"}) }
+                            {...register("HoteLCode")}
                             margin="dense"
                             error={errors.HotelCode?.message}
                             helperText={errors.HotelCode?.message}
@@ -101,9 +102,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="HotelName"
-                            label="Зочид буудлын нэр"
-                            {...register("HotelName")}
+                            id="MsgHotelName"                      
+                            label={intl.formatMessage({id:"MsgHotelName"}) }
+                            {...register("MsgHotelName")}
                             margin="dense"
                             error={errors.HotelName?.message}
                             helperText={errors.HotelName?.message}
@@ -111,9 +112,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="CompanyName"
-                            label="Компанийн нэр"
-                            {...register("CompanyName")}
+                            id="TextCompanyName"                      
+                            label={intl.formatMessage({id:"TextCompanyName"}) }
+                            {...register("TextCompanyName")}
                             margin="dense"
                             error={errors.CompanyName?.message}
                             helperText={errors.CompanyName?.message}
@@ -121,9 +122,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="RegistryNo"
-                            label="Регистерийн дугаар"
-                            {...register("RegistryNo")}
+                            id="TextRegisterNo"                      
+                            label={intl.formatMessage({id:"TextRegisterNo"}) }
+                            {...register("TextRegisterNo")}
                             margin="dense"
                             error={errors.RegistryNo?.message}
                             helperText={errors.RegistryNo?.message}
@@ -131,9 +132,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="ReceptionPhone"
-                            label="Ресепшн утасны дугаар"
-                            {...register("ReceptionPhone")}
+                            id="RowHeaderReceptionPhone"                      
+                            label={intl.formatMessage({id:"RowHeaderReceptionPhone"}) }
+                            {...register("RowHeaderReceptionPhone")}
                             margin="dense"
                             error={errors.ReceptionPhone?.message}
                             helperText={errors.ReceptionPhone?.message}
@@ -143,9 +144,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="Address1"
-                            label="Хаяг 1"
-                            {...register("Address1")}
+                            id="TextAddress1"                      
+                            label={intl.formatMessage({id:"TextAddress1"}) }
+                            {...register("TextAddress1")}
                             margin="dense"
                             error={errors.Address1?.message}
                             helperText={errors.Address1?.message}
@@ -153,9 +154,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="Address2"
-                            label="Хаяг 2"
-                            {...register("Address2")}
+                            id="TextAddress2"                      
+                            label={intl.formatMessage({id:"TextAddress2"}) }
+                            {...register("TextAddress2")}
                             margin="dense"
                             error={errors.Address2?.message}
                             helperText={errors.Address2?.message}
@@ -163,9 +164,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="City"
-                            label="Хот"
-                            {...register("City")}
+                            id="TextCity"                      
+                            label={intl.formatMessage({id:"TextCity"}) }
+                            {...register("TextCity")}
                             margin="dense"
                             error={errors.City?.message}
                             helperText={errors.City?.message}
@@ -173,9 +174,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="State"
-                            label="Дүүрэг/Аймаг"
-                            {...register("State")}
+                            id="District/Province"                      
+                            label={intl.formatMessage({id:"District/Province"}) }
+                            {...register("District/Province")}
                             margin="dense"
                             error={errors.State?.message}
                             helperText={errors.State?.message}
@@ -184,7 +185,8 @@ const GeneralForm = () => {
                             register={register}
                             errors={errors}
                             type="Country"
-                            label="Улс"
+                            label={intl.formatMessage({id:"ReportCountry"}) }
+                            {...register("ReportCountry")}
                             optionValue="CountryID"
                             optionLabel="CountryName"
                         />
@@ -193,8 +195,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="ReservePhone"
-                            label="Захиалгын утас"
+                            id="ReservePhone"                      
+                            label={intl.formatMessage({id:"ReservePhone"}) }
                             {...register("ReservePhone")}
                             margin="dense"
                             error={errors.ReservePhone?.message}
@@ -203,9 +205,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="ReserveEmail"
-                            label="И-майл"
-                            {...register("ReserveEmail")}
+                            id="ReportEmail"                      
+                            label={intl.formatMessage({id:"ReportEmail"}) }
+                            {...register("ReportEmail")}
                             margin="dense"
                             error={errors.ReserveEmail?.message}
                             helperText={errors.ReserveEmail?.message}
@@ -213,8 +215,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="HotelType"
-                            label="Зочид буудлын төрөл"
+                            id="HotelType"                      
+                            label={intl.formatMessage({id:"HotelType"}) }
                             {...register("HotelType")}
                             margin="dense"
                             error={errors.HotelType?.message}
@@ -223,8 +225,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="Website"
-                            label="Вэбсайт"
+                            id="Website"                      
+                            label={intl.formatMessage({id:"Website"}) }
                             {...register("Website")}
                             margin="dense"
                             error={errors.Website?.message}
@@ -233,8 +235,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="HotelRating"
-                            label="Түвшин"
+                            id="HotelRating"                      
+                            label={intl.formatMessage({id:"HotelRating"}) }
                             {...register("HotelRating")}
                             margin="dense"
                             error={errors.HotelRating?.message}
@@ -248,8 +250,8 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="HotelPolicy"
-                            label="Зочид буудлын үйлчилгээний нөхцөл"
+                            id="HotelPolicy"                      
+                            label={intl.formatMessage({id:"HotelPolicy"}) }
                             {...register("HotelPolicy")}
                             margin="dense"
                             error={errors.HotelPolicy?.message}
@@ -262,8 +264,8 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="CancelPolicy"
-                            label="Зочид буудлын захиалга цуцлах нөхцөл"
+                            id="CancelPolicy"                      
+                            label={intl.formatMessage({id:"CancelPolicy"}) }
                             {...register("CancelPolicy")}
                             margin="dense"
                             error={errors.CancelPolicy?.message}

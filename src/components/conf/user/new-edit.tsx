@@ -3,7 +3,7 @@ import { FormControlLabel, TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState, useEffect } from "react";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { UserAPI, listUrl } from "lib/api/user";
 import { useAppState } from "lib/context/app";
@@ -22,6 +22,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -128,9 +129,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="UserName"
-                        label="Хэрэглэгчин нэр"
-                        {...register("UserName")}
+                        id="RowHeaderUserName"
+                        label={intl.formatMessage({id:"RowHeaderUserName"}) }
+                        {...register("RowHeaderUserName")}
                         margin="dense"
                         error={errors.UserName?.message}
                         helperText={errors.UserName?.message}
@@ -140,9 +141,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="LoginName"
-                        label="Нэвтрэх нэр"
-                        {...register("LoginName")}
+                        id="TextLoginName"
+                        label={intl.formatMessage({id:"TextLoginName"}) }
+                        {...register("TextLoginName")}
                         margin="dense"
                         error={errors.LoginName?.message}
                         helperText={errors.LoginName?.message}
@@ -156,9 +157,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="Email"
-                        label="Цахим шуудан"
-                        {...register("Email")}
+                        id="TextEmail"
+                        label={intl.formatMessage({id:"TextEmail"}) }
+                        {...register("TextEmail")}
                         margin="dense"
                         error={errors.Email?.message}
                         helperText={errors.Email?.message}

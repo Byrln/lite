@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -14,37 +14,39 @@ import {
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-const columns = [
-    {
-        title: "Бүлгийн нэр",
-        key: "RoomChargeTypeGroupName",
-        dataIndex: "RoomChargeTypeGroupName",
-    },
-    {
-        title: "Эрэмбэлэх",
-        key: "SortOrder",
-        dataIndex: "SortOrder",
-    },
-    {
-        title: "Төлөв",
-        key: "Status",
-        dataIndex: "Status",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                <ToggleChecked
-                    id={element.id}
-                    checked={element.row.Status}
-                    api={ChargeTypeGroupAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-];
 
 const MiniBarGroupList = ({ title }: any) => {
+    const intl = useIntl();
+
+    const columns = [
+        {
+            title: intl.formatMessage({id:"RowHeaderGroupName"}), 
+            key: "RowHeaderGroupName",
+            dataIndex: "RowHeaderGroupName",
+        },
+        {
+            title: intl.formatMessage({id:"RowHeaderSortOrder"}), 
+            key: "RowHeaderSortOrder",
+            dataIndex: "RowHeaderSortOrder",
+        },
+        {
+            title: intl.formatMessage({id:"ReportStatus"}), 
+            key: "ReportStatus",
+            dataIndex: "ReportStatus",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.Status}
+                        api={ChargeTypeGroupAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+    ];
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
     });

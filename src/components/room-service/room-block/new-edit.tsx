@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { RoomBlockAPI, listUrl } from "lib/api/room-block";
 import { useAppState } from "lib/context/app";
@@ -26,6 +26,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [loading, setLoading] = useState(false);
 
     const [data, setData]: any = useState([]);
@@ -146,7 +147,8 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Эхлэх огноо"
+                                label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
+                                {...register("RowHeaderBeginDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -156,8 +158,9 @@ const NewEdit = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             size="small"
-                                            id="BeginDate"
-                                            {...register("BeginDate")}
+                                            id="RowHeaderBeginDate"
+                        label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
+                        {...register("RowHeaderBeginDate")}
                                             margin="dense"
                                             fullWidth
                                             {...params}
@@ -178,7 +181,8 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                    label="Дуусах огноо"
+                                label={intl.formatMessage({id:"RowHeaderEndDate"}) }
+                                {...register("RowHeaderEndDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(

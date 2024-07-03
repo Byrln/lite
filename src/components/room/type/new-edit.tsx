@@ -13,6 +13,8 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { TextField } from "@mui/material";
 import * as yup from "yup";
+
+import { useIntl } from "react-intl";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
@@ -39,6 +41,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
 
     const formRef = createRef<HTMLButtonElement>();
@@ -169,9 +172,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="RoomTypeShortName"
-                                label="Товч нэр"
-                                {...register("RoomTypeShortName")}
+                                id="RowHeaderShortName"
+                                label={intl.formatMessage({id:"RowHeaderShortName"}) }
+                                {...register("RowHeaderShortName")}
                                 margin="dense"
                                 value={entity && entity.RoomTypeShortName}
                                 onChange={(evt: any) => {
@@ -194,8 +197,8 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="RoomTypeName"
-                                label="Нэр"
+                                  id="RoomTypeName"
+                                label={intl.formatMessage({id:"RoomTypeName"}) }
                                 {...register("RoomTypeName")}
                                 margin="dense"
                                 value={entity && entity.RoomTypeName}
@@ -220,9 +223,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="BaseAdult"
-                                label="Том хүн - үндсэн"
-                                {...register("BaseAdult")}
+                                id="TextBasicAdult"
+                            label={intl.formatMessage({id:"TextBasicAdult"}) }
+                            {...register("TextBasicAdult")}
                                 margin="dense"
                                 value={
                                     entity &&

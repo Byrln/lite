@@ -2,10 +2,11 @@ import { TextField, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
-
+import { useIntl } from "react-intl";
 import { dateStringToObj } from "lib/utils/helpers";
 
 const Search = ({ register, errors, control, reset }: any) => {
+    const intl = useIntl();
     reset({
         BeginDate: new Date(new Date().getFullYear(), 0, 1),
         EndDate: new Date(new Date().getFullYear(), 11, 31),
@@ -16,9 +17,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <TextField
                     size="small"
                     fullWidth
-                    id="SearchStr"
-                    label="Package Name"
-                    {...register("SearchStr")}
+                    id="RowHeaderPackageName"
+                        label={intl.formatMessage({id:"RowHeaderEndDate"}) }
+                        {...register("RowHeaderEndDate")}
                     margin="dense"
                     error={errors.SearchStr?.message}
                     helperText={errors.SearchStr?.message}

@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import { Button } from "@mui/material";
 import Link from "next/link";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import { PackageSWR, PackageAPI, listUrl } from "lib/api/package";
@@ -17,23 +17,24 @@ import { dateStringToObj } from "lib/utils/helpers";
 import RoomList from "./room-list";
 
 const PackageList = ({ title }: any) => {
+    const intl = useIntl();
     // const { handleModal }: any = useContext(ModalContext);
 
     const columns = [
         {
-            title: "Package Name",
-            key: "PackageName",
-            dataIndex: "PackageName",
+            title: intl.formatMessage({id:"RowHeaderPackageName"}), 
+            key: "RowHeaderPackageName",
+            dataIndex: "RowHeaderPackageName",
         },
         {
-            title: "Nights",
-            key: "Nights",
-            dataIndex: "Nights",
+            title: intl.formatMessage({id:"ReportNights"}), 
+            key: "ReportNights",
+            dataIndex: "ReportNights",
         },
         {
-            title: "Begin Date",
-            key: "BeginDate",
-            dataIndex: "BeginDate",
+            title: intl.formatMessage({id:"TextBeginDate"}),
+            key: "TextBeginDate",
+            dataIndex: "TextBeginDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -46,9 +47,9 @@ const PackageList = ({ title }: any) => {
             },
         },
         {
-            title: "End Date",
-            key: "EndDate",
-            dataIndex: "EndDate",
+            title: intl.formatMessage({id:"TextEndDate"}),
+            key: "TextEndDate",
+            dataIndex: "TextEndDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -61,14 +62,14 @@ const PackageList = ({ title }: any) => {
             },
         },
         {
-            title: "Room Count",
-            key: "RoomCount",
-            dataIndex: "RoomCount",
+            title: intl.formatMessage({id:"TextRoomCount"}),
+            key: "TextRoomCount",
+            dataIndex: "TextRoomCount",
         },
         {
-            title: "Room",
-            key: "RoomAmount",
-            dataIndex: "RoomAmount",
+            title: intl.formatMessage({id:"TextRoomAmount"}),
+            key: "TextRoomAmount",
+            dataIndex: "TextRoomAmount",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -78,7 +79,7 @@ const PackageList = ({ title }: any) => {
             },
         },
         {
-            title: "Extra Charge",
+            title: intl.formatMessage({id:"ExtraChargeAmount"}),
             key: "ExtraChargeAmount",
             dataIndex: "ExtraChargeAmount",
             excelRenderPass: true,
@@ -90,19 +91,19 @@ const PackageList = ({ title }: any) => {
             },
         },
         {
-            title: "User Name",
-            key: "UserName",
-            dataIndex: "UserName",
+            title: intl.formatMessage({id:"RowHeaderUserName"}),
+            key: "RowHeaderUserName",
+            dataIndex: "RowHeaderUserName",
         },
         {
-            title: "IP Address",
-            key: "IPAddress",
-            dataIndex: "IPAddress",
+            title: intl.formatMessage({id:"RowHeaderIPAddress"}),
+            key: "RowHeaderIPAddress",
+            dataIndex: "RowHeaderIPAddress",
         },
         {
-            title: "Нэмэлт үйлдэл",
-            key: "Action",
-            dataIndex: "Action",
+            title: intl.formatMessage({id:"RowHeaderAction"}),
+            key: "RowHeaderAction",
+            dataIndex: "RowHeaderAction",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

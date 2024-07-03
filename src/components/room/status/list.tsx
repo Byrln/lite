@@ -3,21 +3,27 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Tooltip } from "@mui/material";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import CustomTable from "components/common/custom-table";
 import { RoomStatusSWR, RoomStatusAPI, listUrl } from "lib/api/room-status";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
+
+const RoomStatusList = ({ title }: any) => {
+    const intl = useIntl();
+
+
 const columns = [
+    
     {
-        title: "Өрөөний төлөв",
+        title: intl.formatMessage({id:"StatusCode"}), 
         key: "StatusCode",
         dataIndex: "StatusCode",
     },
     {
-        title: "Өнгө",
+        title: intl.formatMessage({id:"StatusColor"}), 
         key: "StatusColor",
         dataIndex: "StatusColor",
         excelRenderPass: true,
@@ -47,11 +53,13 @@ const columns = [
             );
         },
     },
-    { title: "Тайлбар", key: "Description", dataIndex: "Description" },
+    { title: intl.formatMessage({id:"RowHeaderDescription"}),  
+        key: "Description", 
+        dataIndex: "Description" },
 ];
 
-const RoomStatusList = ({ title }: any) => {
     const validationSchema = yup.object().shape({
+        
         SearchStr: yup.string().nullable(),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };

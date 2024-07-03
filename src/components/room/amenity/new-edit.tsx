@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useIntl } from "react-intl";
 
 import NewEditForm from "components/common/new-edit-form";
 import { AmenityAPI, listUrl } from "lib/api/amenity";
@@ -16,6 +17,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+     const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -41,7 +43,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="AmenityShortName"
-                        label="Богино нэр"
+                        label={intl.formatMessage({id:"AmenityShortName"}) }
                         {...register("AmenityShortName")}
                         margin="dense"
                         error={errors.AmenityShortName?.message}
@@ -53,7 +55,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="AmenityName"
-                        label="Нэр"
+                        label={intl.formatMessage({id:"AmenityName"}) }
                         {...register("AmenityName")}
                         margin="dense"
                         error={errors.AmenityName?.message}
@@ -66,7 +68,7 @@ const NewEdit = () => {
                         type="number"
                         fullWidth
                         id="SortOrder"
-                        label="Дараалал"
+                        label={intl.formatMessage({id:"SortOrder"}) }
                         {...register("SortOrder")}
                         margin="dense"
                         error={errors.SortOrder?.message}

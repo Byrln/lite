@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Stack } from "@mui/material";
-
+import { useIntl } from "react-intl";
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -20,28 +20,29 @@ import ReservationStatus from "./reservation-status";
 import { ModalContext } from "lib/context/modal";
 
 const ReservationSourceList = ({ title }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
 
     const columns = [
         {
-            title: "Захиалгын эх сурвалж",
-            key: "ReservationSourceName",
-            dataIndex: "ReservationSourceName",
+            title: intl.formatMessage({id:"ConfigReservationSource"}), 
+            key: "ConfigReservationSource",
+            dataIndex: "ConfigReservationSource",
         },
         {
-            title: "Суваг",
-            key: "ChannelName",
-            dataIndex: "ChannelName",
+            title: intl.formatMessage({id:"RowHeaderChannel"}), 
+            key: "RowHeaderChannel",
+            dataIndex: "RowHeaderChannel",
         },
         {
-            title: "Хэрэглэгчийн нэр",
-            key: "UserName",
-            dataIndex: "UserName",
+            title: intl.formatMessage({id:"RowHeaderUserName"}), 
+            key: "RowHeaderUserName",
+            dataIndex: "RowHeaderUserName",
         },
         {
-            title: "Огноо өөрчлөх",
-            key: "CreatedDate",
-            dataIndex: "CreatedDate",
+            title: intl.formatMessage({id:"RowHeaderChangedDate"}), 
+            key: "RowHeaderChangedDate",
+            dataIndex: "RowHeaderChangedDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -54,14 +55,14 @@ const ReservationSourceList = ({ title }: any) => {
             },
         },
         {
-            title: "Сүлжээний хаяг",
-            key: "IPAddress",
-            dataIndex: "IPAddress",
+            title: intl.formatMessage({id:"RowHeaderIPAddress"}), 
+            key: "RowHeaderIPAddress",
+            dataIndex: "RowHeaderIPAddress",
         },
         {
-            title: "Төлөв",
-            key: "Status",
-            dataIndex: "Status",
+            title: intl.formatMessage({id:"ReportStatus"}), 
+            key: "ReportStatus",
+            dataIndex: "ReportStatus",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -76,9 +77,9 @@ const ReservationSourceList = ({ title }: any) => {
             },
         },
         {
-            title: "Нэмэлт үйлдэл",
-            key: "Action",
-            dataIndex: "Action",
+            title: intl.formatMessage({id:"RowHeaderAdditionalAction"}), 
+            key: "RowHeaderAdditionalAction",
+            dataIndex: "RowHeaderAdditionalAction",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return element.row.ChannelID == 2 ? (

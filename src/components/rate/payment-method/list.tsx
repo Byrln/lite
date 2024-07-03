@@ -1,5 +1,6 @@
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
+import { useIntl } from "react-intl";
 import {
     PaymentMethodSWR,
     PaymentMethodAPI,
@@ -7,40 +8,41 @@ import {
 } from "lib/api/payment-method";
 import NewEdit from "./new-edit";
 
-const columns = [
-    {
-        title: "Бүлгийн нэр",
-        key: "PaymentMethodGroupName",
-        dataIndex: "PaymentMethodGroupName",
-    },
-
-    {
-        title: "Төлбөрийн хэлбэр",
-        key: "PaymentMethodName",
-        dataIndex: "PaymentMethodName",
-    },
-    {
-        title: "Төлөв",
-        key: "Status",
-        dataIndex: "Status",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                <ToggleChecked
-                    id={element.id}
-                    checked={element.row.Status}
-                    api={PaymentMethodAPI}
-                    apiUrl="UpdateStatus"
-                    mutateUrl={`${listUrl}`}
-                />
-            );
-        },
-    },
-];
 
 const PaymentMethodList = ({ title }: any) => {
+    const intl = useIntl();
     const { data, error } = PaymentMethodSWR();
-
+    const columns = [
+        {
+            title: intl.formatMessage({id:"ReportGroupName"}), 
+            key: "ReportGroupName",
+            dataIndex: "ReportGroupName",
+        },
+    
+        {
+            title: intl.formatMessage({id:"ConfigPaymentMethod"}), 
+            key: "ConfigPaymentMethod",
+            dataIndex: "ConfigPaymentMethod",
+        },
+        {
+            title: intl.formatMessage({id:"ReportStatus"}), 
+            key: "ReportStatus",
+            dataIndex: "ReportStatus",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.Status}
+                        api={PaymentMethodAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
+                );
+            },
+        },
+    ];
+    
     return (
         <CustomTable
             columns={columns}

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-
+import { useIntl } from "react-intl";
 import { HotelAPI } from "lib/api/hotel";
 import SubmitButton from "components/common/submit-button";
 import ReferenceSelect from "components/select/reference";
@@ -20,6 +20,7 @@ const validationSchemaHotel = yup.object().shape({
 });
 
 const GeneralForm = () => {
+    const intl = useIntl();
     const [hotelAmenities, setHotelAmenities]: any = useState(null);
     const [entity, setEntity]: any = useState(null);
     const [loadingData, setLoadingData] = useState(true);
@@ -120,9 +121,9 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="DescriptionBooking"
-                            label="Буудлын тайлбар"
-                            {...register("DescriptionBooking")}
+                            id="TextHotelDescription"                     
+                             label={intl.formatMessage({id:"TextHotelDescription"}) }
+                        {...register("TextHotelDescription")}
                             margin="dense"
                             error={errors.DescriptionBooking?.message}
                             helperText={errors.DescriptionBooking?.message}
@@ -133,9 +134,9 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="HotelPolicyBooking"
-                            label="Зочид буудлын журам"
-                            {...register("HotelPolicyBooking")}
+                            id="TextHotelPolicy"                     
+                            label={intl.formatMessage({id:"TextHotelPolicy"}) }
+                       {...register("TextHotelPolicy")}
                             margin="dense"
                             error={errors.HotelPolicyBooking?.message}
                             helperText={errors.HotelPolicyBooking?.message}
@@ -145,9 +146,9 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="CancelPolicyBooking"
-                            label="Захиалга цуцлалт"
-                            {...register("CancelPolicyBooking")}
+                            id="TextCancelPolicy"                     
+                            label={intl.formatMessage({id:"TextCancelPolicy"}) }
+                       {...register("TextCancelPolicy")}
                             margin="dense"
                             error={errors.CancelPolicyBooking?.message}
                             helperText={errors.CancelPolicyBooking?.message}

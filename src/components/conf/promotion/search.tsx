@@ -2,11 +2,12 @@ import { TextField, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
-
+import { useIntl } from "react-intl";
 import ReservationSourceSelect from "components/select/reservation-source";
 import { dateStringToObj } from "lib/utils/helpers";
 
 const Search = ({ register, errors, control, reset }: any) => {
+      const intl = useIntl();
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
@@ -16,7 +17,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-                            label="Эхлэх огноо"
+                        label={intl.formatMessage({id:"TextBeginDate"}) }
                             value={value}
                             onChange={(value) =>
                                 onChange(
@@ -52,7 +53,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-                            label="Дуусах огноо"
+
+                        label={intl.formatMessage({id:"RowHeaderEndDate"}) }
+            
                             value={value}
                             onChange={(value) =>
                                 onChange(

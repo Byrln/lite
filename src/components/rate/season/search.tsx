@@ -1,6 +1,9 @@
 import { TextField, Grid } from "@mui/material";
+import { useIntl } from "react-intl";
 
 const Search = ({ register, errors, control, reset }: any) => {
+    const intl = useIntl();
+
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
@@ -8,7 +11,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     size="small"
                     fullWidth
                     id="SearchStr"
-                    label="Улирлын нэр"
+                    label={intl.formatMessage({id:"TextSeasonName"})}
                     {...register("SearchStr")}
                     margin="dense"
                     error={errors.SearchStr?.message}

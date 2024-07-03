@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
+import { useIntl } from "react-intl";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
@@ -30,6 +31,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const { data, error } = TaxSWR();
 
     const { handleModal }: any = useContext(ModalContext);
@@ -137,8 +139,8 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="RateTypeCode"
-                        label="Богино код"
-                        {...register("RateTypeCode")}
+                        label={intl.formatMessage({id:"RowHeaderShortCode"}) }
+                        {...register("RowHeaderShortCode")}
                         margin="dense"
                         error={errors.RateTypeCode?.message}
                         helperText={errors.RateTypeCode?.message}
@@ -148,9 +150,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="RateTypeName"
-                        label="Нэр"
-                        {...register("RateTypeName")}
+                        id="TextFirstName"
+                        label={intl.formatMessage({id:"TextFirstName"}) }
+                        {...register("TextFirstName")}
                         margin="dense"
                         error={errors.RateTypeName?.message}
                         helperText={errors.RateTypeName?.message}
@@ -161,7 +163,9 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         type="ReservationChannel"
-                        label="Суваг"
+                        id="RowHeaderChannel"
+                        label={intl.formatMessage({id:"RowHeaderChannel"}) }
+                        {...register("RowHeaderChannel")}
                         optionValue="ChannelID"
                         optionLabel="ChannelName"
                     />
@@ -193,7 +197,9 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                label="Өглөөний цайтай эсэх"
+                id="BreakfastIncluded"
+                label={intl.formatMessage({id:"BreakfastIncluded"}) }
+                {...register("BreakfastIncluded")}
             />
 
             <FormControlLabel
@@ -212,8 +218,7 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                label={
-                    "Өрөөний тариф нь" +
+                label={ "Өрөөний тариф нь" +
                     " " +
                     (data &&
                         data.map((item: any) => {

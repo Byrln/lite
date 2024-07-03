@@ -3,7 +3,7 @@ import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { RoomAPI, listUrl } from "lib/api/room";
 import RoomTypeSelect from "components/select/room-type";
@@ -24,6 +24,8 @@ const baseStayDefault = {
 };
 
 const NewEdit = () => {
+
+    const intl = useIntl();
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
 
     const onRoomTypeChange = (rt: any) => {
@@ -57,9 +59,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="RoomNo"
-                        label="Өрөөний дугаар"
-                        {...register("RoomNo")}
+                        id="TextRoomNo"
+                        label={intl.formatMessage({id:"TextRoomNo"}) }
+                        {...register("TextRoomNo")}
                         margin="dense"
                         error={errors.RoomNo?.message}
                         helperText={errors.RoomNo?.message}
@@ -80,9 +82,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="RoomPhone"
-                        label="Өрөөний утас"
-                        {...register("RoomPhone")}
+                        id="TextRoomPhone"
+                        label={intl.formatMessage({id:"TextRoomPhone"}) }
+                        {...register("TextRoomPhone")}
                         margin="dense"
                         error={errors.RoomPhone?.message}
                         helperText={errors.RoomPhone?.message}
@@ -92,9 +94,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="Description"
-                        label="Тайлбар"
-                        {...register("Description")}
+                        id="RowHeaderDescription"
+                        label={intl.formatMessage({id:"RowHeaderDescription"}) }
+                        {...register("RowHeaderDescription")}
                         margin="dense"
                         error={errors.Description?.message}
                         helperText={errors.Description?.message}
@@ -106,7 +108,7 @@ const NewEdit = () => {
                         type="number"
                         fullWidth
                         id="SortOrder"
-                        label="Дараалал"
+                        label={intl.formatMessage({id:"SortOrder"}) }
                         {...register("SortOrder")}
                         margin="dense"
                         error={errors.SortOrder?.message}

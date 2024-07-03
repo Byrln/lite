@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { EmailAPI, listUrl } from "lib/api/email-conf";
 import { useAppState } from "lib/context/app";
@@ -16,6 +16,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -39,9 +40,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="Email"
-                        label="И-Мэйл"
-                        {...register("Email")}
+                        id="ReportEmail"
+                        label={intl.formatMessage({id:"ReportEmail"}) }
+                        {...register("ReportEmail")}
                         margin="dense"
                         error={errors.Email?.message}
                         helperText={errors.Email?.message}
@@ -51,9 +52,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="EmailHost"
-                        label="И-Мэйл сервер"
-                        {...register("EmailHost")}
+                        id="RowHeaderEmailServer"
+                        label={intl.formatMessage({id:"RowHeaderEmailServer"}) }
+                        {...register("RowHeaderEmailServer")}
                         margin="dense"
                         error={errors.EmailHost?.message}
                         helperText={errors.EmailHost?.message}
@@ -64,9 +65,9 @@ const NewEdit = () => {
                         size="small"
                         type="number"
                         fullWidth
-                        id="Port"
-                        label="Порт"
-                        {...register("Port")}
+                        id="RowHeaderPort"
+                        label={intl.formatMessage({id:"RowHeaderPort"}) }
+                        {...register("RowHeaderPort")}
                         margin="dense"
                         error={errors.Port?.message}
                         helperText={errors.Port?.message}
@@ -76,9 +77,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="UserName"
-                        label="Хэрэглэгчийн нэр"
-                        {...register("UserName")}
+                        id="RowHeaderUserName"
+                        label={intl.formatMessage({id:"RowHeaderUserName"}) }
+                        {...register("RowHeaderUserName")}
                         margin="dense"
                         error={errors.UserName?.message}
                         helperText={errors.UserName?.message}
@@ -89,10 +90,10 @@ const NewEdit = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="Password"
-                            label="Нууц үг"
+                            id="TextPassword"
+                            label={intl.formatMessage({id:"TextPassword"}) }
+                            {...register("TextPassword")}
                             type="password"
-                            {...register("Password")}
                             margin="dense"
                             error={errors.Password?.message}
                             helperText={errors.Password?.message}

@@ -4,7 +4,7 @@ import { FormControlLabel, TextField, Grid } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { NotificationAPI, listUrl } from "lib/api/notification";
 import { useAppState } from "lib/context/app";
@@ -14,6 +14,7 @@ import CustomSelect from "components/common/custom-select";
 import { notificationType } from "lib/utils/helpers";
 
 const validationSchema = yup.object().shape({
+    
     NotificationTypeID: yup.string().required("Бөглөнө үү"),
     UserTypeID: yup.string().required("Бөглөнө үү"),
     ItemID: yup.string().required("Бөглөнө үү"),
@@ -22,6 +23,7 @@ const validationSchema = yup.object().shape({
 const notifType = notificationType();
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
     const [notificationTypeID, setNotificationTypeID]: any = useState(0);
     const [userTypeID, setUserTypeID]: any = useState(null);
@@ -62,7 +64,9 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         field="UserTypeID"
-                        label="Type"
+                        id="RowHeaderReasonType"
+                        label={intl.formatMessage({id:"RowHeaderReasonType"}) }
+                        {...register("RowHeaderReasonType")}
                         options={notifType}
                         optionValue="value"
                         optionLabel="name"

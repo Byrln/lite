@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { mutate } from "swr";
-
+import { useIntl } from "react-intl";
 // Handsontable
 import "handsontable/dist/handsontable.full.min.css";
 import dynamic from "next/dynamic";
@@ -67,10 +67,12 @@ function getNumberOfDays(start: Date, end: Date, hour = 12) {
 }
 
 const myClick = () => {
+    
     console.log("clicked ...");
 };
 
 const TimelineTable = ({ props, workingDate }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [dayCount, setDayCount] = useState("30");
     const [columns, setColumns] = useState([]);
@@ -515,12 +517,17 @@ const TimelineTable = ({ props, workingDate }: any) => {
                             <FormControlLabel
                                 value="7"
                                 control={<Radio />}
-                                label="7 хоног"
+                                 id="TextWeekly"
+                                label={intl.formatMessage({id:"TextWeekly"}) }
+                                {...register("TextWeekly")}
+        
                             />
                             <FormControlLabel
                                 value="15"
                                 control={<Radio />}
-                                label="15 хоног"
+                                id="TextWeekly"
+                                label={intl.formatMessage({id:"TextWeekly"}) }
+                                {...register("TextWeekly")}
                             />
                             <FormControlLabel
                                 value="30"

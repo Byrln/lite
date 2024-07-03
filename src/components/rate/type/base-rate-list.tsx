@@ -1,4 +1,5 @@
 import Alert from "@mui/material/Alert";
+import { useIntl } from "react-intl";
 import Skeleton from "@mui/material/Skeleton";
 import {
     Box,
@@ -13,6 +14,7 @@ import { BaseRateSWR } from "lib/api/rate-type";
 import { Controller } from "react-hook-form";
 
 const BaseRateList = ({
+    
     id,
     register,
     errors,
@@ -21,6 +23,7 @@ const BaseRateList = ({
     setEntity,
 }: any) => {
     const { data, error } = BaseRateSWR(id);
+    const intl = useIntl();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -106,9 +109,9 @@ const BaseRateList = ({
                             size="small"
                             type="number"
                             fullWidth
-                            id="BaseRate"
-                            label="Тариф"
-                            {...register(`RoomTypes[${index}].BaseRate`)}
+                            id="BaseRate"                      
+                            label={intl.formatMessage({id:"BaseRate"}) }
+                            {...register("BaseRate")}
                             margin="dense"
                             error={errors.BaseRate?.message}
                             helperText={errors.BaseRate?.message}
@@ -119,9 +122,9 @@ const BaseRateList = ({
                             size="small"
                             type="number"
                             fullWidth
-                            id="Extra Adult"
-                            label="Нэмэлт Т/Хүн"
-                            {...register(`RoomTypes[${index}].ExtraAdult`)}
+                            id="RowHeaderExtraAdult Adult"
+                            label={intl.formatMessage({id:"RowHeaderExtraAdult"}) }
+                            {...register("RowHeaderExtraAdult")}
                             margin="dense"
                             error={errors.ExtraAdult?.message}
                             helperText={errors.ExtraAdult?.message}
@@ -132,9 +135,9 @@ const BaseRateList = ({
                             size="small"
                             type="number"
                             fullWidth
-                            id={`Extra Child`}
-                            label="Нэмэлт хүүхэд"
-                            {...register(`RoomTypes[${index}].ExtraChild`)}
+                            id={`RowHeaderExtraChild`}
+                            label={intl.formatMessage({id:"RowHeaderExtraChild"}) }
+                            {...register("RowHeaderExtraChild")}
                             margin="dense"
                             error={errors.ExtraChild?.message}
                             helperText={errors.ExtraChild?.message}
