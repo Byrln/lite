@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -10,6 +11,7 @@ import {
 import { ReportAPI } from "lib/api/report";
 
 const Summary = ({ search, rerenderKey }: any) => {
+    const intl = useIntl();
     const [summaryData, setSummaryData]: any = useState();
 
     const groupBy = (items: any, key: any) =>
@@ -40,7 +42,7 @@ const Summary = ({ search, rerenderKey }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Хураангуй :
+                     {intl.formatMessage({id:"RowHeaderSummary"}) }
                 </span>
             </Typography>
 
@@ -61,7 +63,7 @@ const Summary = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Өрөө
+                           {intl.formatMessage({id:"ConfigRooms"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -70,7 +72,7 @@ const Summary = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Том хүн
+                           {intl.formatMessage({id:"ReportAdult"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -79,7 +81,7 @@ const Summary = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Хүүхэд
+                           {intl.formatMessage({id:"ReportChild"}) }
                         </TableCell>
                     </TableRow>
                 </TableHead>

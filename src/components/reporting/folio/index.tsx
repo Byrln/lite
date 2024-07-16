@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import moment from "moment";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Grid,
@@ -26,6 +27,7 @@ import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
 const Folio = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [reportData, setReportData] = useState<any>(null);
     const [totalBalance, setTotalBalance] = useState<any>(null);
@@ -190,13 +192,13 @@ const Folio = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            Төлбөрийн бүртгэлийн тайлан
+                             { intl.formatMessage({id:"PaymentLogReport"}) } 
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            { intl.formatMessage({id:"ReportingPeriod"}) } 
                         </span>{" "}
                         (
                         {search.StartDate &&
@@ -227,63 +229,63 @@ const Folio = ({ title, workingDate }: any) => {
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Өрөө
+                                        { intl.formatMessage({id:"ConfigRooms"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Байгууллага
+                                       { intl.formatMessage({id:"TextOrganization"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Овог нэр
+                                        { intl.formatMessage({id:"TextSurname"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Буусан
+                                        { intl.formatMessage({id:"ReportCheckedIn"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Хоног
+                                     { intl.formatMessage({id:"TextNights"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Гарсан
+                                       { intl.formatMessage({id:"ReportCheckedOut"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Өрөөн дүн
+                                      { intl.formatMessage({id:"AmountOfRoom"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Үйлчилгээ дүн
+                                        { intl.formatMessage({id:"ServiceAmount"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Нийт төлөх
+                                      { intl.formatMessage({id:"TotalPayment"}) } 
                                     </TableCell>
                                     {/* <TableCell
                                         align="left"
@@ -300,14 +302,14 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         colSpan={4}
                                     >
-                                        Төлбөрийн хэлбэр
+                                         { intl.formatMessage({id:"ConfigPaymentMethod"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        Төлбөрийн хаалт
+                                       { intl.formatMessage({id:"ConfigPaymentclosure"}) } 
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
@@ -315,25 +317,25 @@ const Folio = ({ title, workingDate }: any) => {
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Бэлэн мөнгө
+                                        { intl.formatMessage({id:"TextCash"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Нэхэмжлэх
+                                        { intl.formatMessage({id:"ReportInvoice"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Картаар
+                                         { intl.formatMessage({id:"ByCard"}) } 
                                     </TableCell>
                                     <TableCell
                                         style={{ fontWeight: "bold" }}
                                         align="right"
                                     >
-                                        А/Авлага
+                                         { intl.formatMessage({id:"A/Receivables"}) } 
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -648,7 +650,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                Нийт дүн :{" "}
+                                 { intl.formatMessage({id:"TextTotalAmount"}) } 
                             </div>
                         </div>
                         <div
@@ -682,7 +684,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                Хөнгөлөлт :{" "}
+                                { intl.formatMessage({id:"ReportDiscount"}) } 
                             </div>
                         </div>
                         <div
@@ -717,7 +719,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                Бэлэн мөнгө :{" "}
+                                 { intl.formatMessage({id:"TextCash"}) } 
                             </div>
                         </div>
                         <div
@@ -751,7 +753,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                Нэхэмжлэх :{" "}
+                                { intl.formatMessage({id:"ReportInvoice"}) } 
                             </div>
                         </div>
                         <div
@@ -785,7 +787,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                Картаар :
+                                 { intl.formatMessage({id:"ByCard"}) } 
                             </div>
                         </div>
                         <div
@@ -811,7 +813,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                Төлсөн :
+                                 { intl.formatMessage({id:"RowHeaderPaid"}) } 
                             </span>
                         </div>
                     </Grid>
@@ -823,7 +825,7 @@ const Folio = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                { intl.formatMessage({id:"ReportPrinted"}) } 
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -838,7 +840,7 @@ const Folio = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                { intl.formatMessage({id:"DateToPrinted"}) } 
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

@@ -1,8 +1,11 @@
 // import { format } from "date-fns";
+
 import { useState, useContext, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+
 import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
     Button,
     Typography,
@@ -28,6 +31,8 @@ import { ModalContext } from "lib/context/modal";
 import { formatPrice } from "lib/utils/helpers";
 
 const ReservationsList = ({ title, workingDate }: any) => {
+    const intl = useIntl();
+    
     const componentRef: any = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const { StatusGroup, StartDate, EndDate, ReservationTypeID } = router.query;
@@ -61,7 +66,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
         setRerenderKey((prevKey) => prevKey + 1);
     }, [StatusGroup, StartDate, EndDate, ReservationTypeID]);
 
-    const intl = useIntl();
+    
 
     const { handleModal }: any = useContext(ModalContext);
 
@@ -119,7 +124,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                      {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -157,7 +162,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Эх.Хугацаа :{" "}
+                                {intl.formatMessage({id:"ReportStartDate"}) }
                             </span>{" "}
                             {moment(search.StartDate).format("YYYY-MM-DD")}
                         </Typography>
@@ -170,7 +175,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Дуус.Хугацаа :{" "}
+                                {intl.formatMessage({id:"ReportEndDate"}) }
                             </span>{" "}
                             {moment(search.EndDate).format("YYYY-MM-DD")}
                         </Typography>
@@ -180,43 +185,43 @@ const ReservationsList = ({ title, workingDate }: any) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Ирэх
+                                    {intl.formatMessage({id:"RowHeaderArrival"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Гарах
+                                    {intl.formatMessage({id:"ReportDeparture"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Зочны нэр
+                                    {intl.formatMessage({id:"Left_SortByGuestName"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Улс
+                                    {intl.formatMessage({id:"ReportCountry"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Өрөө/төрөл
+                                    {intl.formatMessage({id:"ReportRoomAndType"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Төлөв
+                                    {intl.formatMessage({id:"Left_SortByStatus"}) }
                                     </TableCell>
                                     <TableCell
                                         style={{ fontWeight: "bold" }}
                                         align="center"
                                     >
-                                        Хүний тоо
+                                        {intl.formatMessage({id:"ReportPax"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Компани
+                                    {intl.formatMessage({id:"ReportCompany"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Төлбөр
+                                        {intl.formatMessage({id:"ReportPayment"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Үлдэгдэл
+                                      {intl.formatMessage({id:"ReportBalance"}) }
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -422,7 +427,8 @@ const ReservationsList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
+
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -437,7 +443,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

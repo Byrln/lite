@@ -36,19 +36,19 @@ const ExtraChargeList = ({ title }: any) => {
     
         {
             title: intl.formatMessage({id:"RowHeaderExtraChargeGroup"}), 
-            key: "RowHeaderExtraChargeGroup",
-            dataIndex: "RowHeaderExtraChargeGroup",
+            key: "RoomChargeTypeGroupName",
+            dataIndex: "RoomChargeTypeGroupName",
         },
     
         {
             title: intl.formatMessage({id:"RowHeaderExtraCharge"}), 
-            key: "RowHeaderExtraCharge",
-            dataIndex: "RowHeaderExtraCharge",
+            key: "RoomChargeTypeName",
+            dataIndex: "RoomChargeTypeName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderRate"}), 
-            key: "RowHeaderRate",
-            dataIndex: "RowHeaderRate",
+            key: "RoomChargeTypeRate",
+            dataIndex: "RoomChargeTypeRate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -59,8 +59,8 @@ const ExtraChargeList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderEditable"}), 
-            key: "RowHeaderEditable",
-            dataIndex: "RowHeaderEditable",
+            key: "IsEditable",
+            dataIndex: "IsEditable",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -79,8 +79,8 @@ const ExtraChargeList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"ReportStatus"}), 
-            key: "ReportStatus",
-            dataIndex: "ReportStatus",
+            key: "Status",
+            dataIndex: "Status",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -96,8 +96,8 @@ const ExtraChargeList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderInclusion"}), 
-            key: "RowHeaderInclusion",
-            dataIndex: "RowHeaderInclusion",
+            key: "Inclusion",
+            dataIndex: "Inclusion",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

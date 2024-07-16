@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -24,6 +25,7 @@ import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
 const ReportingList = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
 
     const [search, setSearch] = useState({
@@ -93,7 +95,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                     {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -130,7 +132,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Эх.Хугацаа :{" "}
+                                {intl.formatMessage({id:"ReportStartDate"}) }
                             </span>{" "}
                             {moment(search.StartDate).format("YYYY-MM-DD")}
                         </Typography>
@@ -143,7 +145,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Дуус.Хугацаа :{" "}
+                                {intl.formatMessage({id:"ReportEndDate"}) }
                             </span>{" "}
                             {moment(search.EndDate).format("YYYY-MM-DD")}
                         </Typography>
@@ -153,58 +155,62 @@ const ReportingList = ({ title, workingDate }: any) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Зах.№
+                                    {intl.formatMessage({id:"ReportResNo"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Блок эхлэх
+                                    {intl.formatMessage({id:"ReportBookedOn"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Зочны нэр
+                                    {intl.formatMessage({id:"Left_SortByGuestName"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Ирэх
+                                    {intl.formatMessage({id:"ReportArrival"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Хоног
+                                       {intl.formatMessage({id:"ReportNights"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Өр.Төрөл
+                                    {intl.formatMessage({id:"ReportRoomType"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Тариф.төр
+                                    {intl.formatMessage({id:"ReportRateType"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Тохир.үнэ
+                                        {intl.formatMessage({id:"ReportRateOffered"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Төлсөн
+                                     {intl.formatMessage({id:"TextPaid"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        З.Цуц.Орлого
+                                       {intl.formatMessage({id:"ReportCancelRev"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Үлдэгдэл
+                                        {intl.formatMessage({id:"ReportBalance"}) }
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Цуцласан
+
+                                    {intl.formatMessage({id:"ReportCancelBy"}) }
+
                                     </TableCell>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Цуцал.Огноо
+
+                                    {intl.formatMessage({id:"ReportCancelDate"}) }
+
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -419,8 +425,9 @@ const ReportingList = ({ title, workingDate }: any) => {
                             className="mr-1"
                         >
                             <span style={{ fontWeight: "bold" }}>
-                                {" "}
-                                Хэвлэсэн :{" "}
+                                
+
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -434,8 +441,10 @@ const ReportingList = ({ title, workingDate }: any) => {
                             className="mr-1"
                         >
                             <span style={{ fontWeight: "bold" }}>
-                                {" "}
-                                Хэвлэсэн огноо :{" "}
+                               
+
+                                {intl.formatMessage({id:"DateToPrinted"}) }
+
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

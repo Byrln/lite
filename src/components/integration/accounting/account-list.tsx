@@ -11,20 +11,20 @@ const AccountingList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"TextAccountName"}), 
-            key: "TextAccountName",
-            dataIndex: "TextAccountName",
+            key: "AccountName",
+            dataIndex: "AccountName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderDebitAccount"}), 
-            key: "RowHeaderDebitAccount",
-            dataindex: "RowHeaderDebitAccount",
+            key: "AccountNo",
+            dataindex: "AccountNo",
             renderCell: (element: any) =>
                 element.row.IsDebit === false ? element.row.IsDebit : "",
         },
         {
             title: intl.formatMessage({id:"RowHeaderCreditAccount"}), 
-            key: "RowHeaderCreditAccount",
-            dataIndex: "RowHeaderCreditAccount",
+            key: "Credit account",
+            dataIndex: "Credit account",
             renderCell: (element: any) =>
                 element.row.IsCredit === false ? element.row.IsCredit : "",
         },

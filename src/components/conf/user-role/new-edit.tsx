@@ -46,9 +46,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="RowHeaderShortCode"
+                        id="UserRoleShortName"
                         label={intl.formatMessage({id:"RowHeaderShortCode"}) }
-                        {...register("RowHeaderShortCode")}
+                        {...register("UserRoleShortName")}
                         margin="dense"
                         error={errors.UserRoleShortName?.message}
                         helperText={errors.UserRoleShortName?.message}
@@ -58,9 +58,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="ConfigUserRole"
+                        id="UserRoleName"
                         label={intl.formatMessage({id:"ConfigUserRole"}) }
-                        {...register("ConfigUserRole")}
+                        {...register("UserRoleName")}
                         margin="dense"
                         error={errors.UserRoleName?.message}
                         helperText={errors.UserRoleName?.message}
@@ -72,9 +72,9 @@ const NewEdit = () => {
                         fullWidth
                         multiline
                         rows={3}
-                        id="RowHeaderDescription"
+                        id="Description"
                         label={intl.formatMessage({id:"RowHeaderDescription"}) }
-                        {...register("RowHeaderDescription")}
+                        {...register("Description")}
                         margin="dense"
                         error={errors.Description?.message}
                         helperText={errors.Description?.message}

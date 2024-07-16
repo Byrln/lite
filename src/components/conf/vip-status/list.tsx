@@ -21,8 +21,8 @@ const VipStatusList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderShowWarning"}), 
-            key: "RowHeaderShowWarning",
-            dataIndex: "RowHeaderShowWarning",
+            key: "ShowWarning",
+            dataIndex: "ShowWarning",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -36,7 +36,7 @@ const VipStatusList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"ReportStatus"}), 
-            key: "ReportStatus",
+            key: "Status",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

@@ -44,9 +44,9 @@ const NewEdit = ({ UserID }: any) => {
             <TextField
                 size="small"
                 fullWidth
-                id="TextPassword"
+                id="Password"
                         label={intl.formatMessage({id:"TextPassword"}) }
-                        {...register("TextPassword")}
+                        {...register("Password")}
                 margin="dense"
                 error={errors.Password?.message}
                 helperText={errors.Password?.message}

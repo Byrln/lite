@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -30,6 +31,7 @@ import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
 
 const Folio = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [reportData, setReportData] = useState<any>(null);
     const [totalBalance, setTotalBalance] = useState<any>(null);
@@ -178,7 +180,7 @@ const Folio = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                    {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -216,13 +218,13 @@ const Folio = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            Буудлын борлуулалт
+                              {intl.formatMessage({id:"TextHotelSales"}) }
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            {intl.formatMessage({id:"ReportingPeriod"}) }
                         </span>{" "}
                         {search.StartDate &&
                             moment(search.StartDate, "YYYY.MM.DD").format(
@@ -249,7 +251,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Өр.Төрөл
+                                          {intl.formatMessage({id:"ReportRoomType"}) }
                                     </TableCell>
 
                                     <TableCell
@@ -260,7 +262,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Байгууллага
+                                        {intl.formatMessage({id:"TextOrganization"}) }
                                     </TableCell>
 
                                     <TableCell
@@ -271,7 +273,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Зочин
+                                        {intl.formatMessage({id:"RowHeaderGuest"}) }
                                     </TableCell>
 
                                     <TableCell
@@ -283,7 +285,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Ирсэн
+                                        {intl.formatMessage({id:"RowHeaderArrived"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -294,7 +296,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Гарсан
+                                       {intl.formatMessage({id:"TextCheckedOut"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -305,7 +307,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Хөнгөлөлт
+                                        {intl.formatMessage({id:"ReportDiscount"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -316,7 +318,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Буудлын орлого
+                                      {intl.formatMessage({id:"TextHotelIncome"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -332,7 +334,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                 : 1
                                         }
                                     >
-                                        Үйлчилгээ
+                                        {intl.formatMessage({id:"RowHeaderIsService"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -343,7 +345,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Нийт
+                                      {intl.formatMessage({id:"ReportTotal"}) }
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
@@ -896,7 +898,7 @@ const Folio = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -911,7 +913,7 @@ const Folio = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -14,6 +15,7 @@ import moment from "moment";
 import { ReportAPI } from "lib/api/report";
 
 const CheckedIn = ({ sessionId }: any) => {
+    const intl = useIntl();
     const [data, setData]: any = useState();
     const [groupedData, setGroupedData]: any = useState();
 
@@ -49,7 +51,7 @@ const CheckedIn = ({ sessionId }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Буусан :
+                      {intl.formatMessage({id:"ReportCheckedIn"}) }
                 </span>
             </Typography>
 
@@ -65,7 +67,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Өрөө/төрөл
+                                   {intl.formatMessage({id:"ReportRoomAndType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -74,7 +76,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Зочны нэр
+                                  {intl.formatMessage({id:"RowHeaderGuestName"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -83,7 +85,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Компани
+                                     {intl.formatMessage({id:"ReportCompany"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -93,7 +95,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Хүний тоо
+                                   {intl.formatMessage({id:"ReportPax"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -102,7 +104,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Ирэх өдөр
+                                    {intl.formatMessage({id:"ReportArrivalDate"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -111,7 +113,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Гарах өдөр
+                                    {intl.formatMessage({id:"ReportDepartureDate"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -120,7 +122,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Тариф.төр
+                                     {intl.formatMessage({id:"ReportRateType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -130,7 +132,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                     }}
                                     align="right"
                                 >
-                                    Тариф
+                                   {intl.formatMessage({id:"ReportRate"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -139,7 +141,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Буулгасан
+                                     {intl.formatMessage({id:"ReportCheckedInBy"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -269,7 +271,7 @@ const CheckedIn = ({ sessionId }: any) => {
                                         fontWeight: "bold",
                                     }}
                                 >
-                                    Нийт ирсэн
+                                     {intl.formatMessage({id:"ReportTotalArrival"}) }
                                 </TableCell>
                                 <TableCell
                                     component="th"

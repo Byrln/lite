@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import moment from "moment";
+import { useIntl } from "react-intl";
 import { Typography, Grid, Button } from "@mui/material";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
@@ -17,6 +18,7 @@ import PaymentSummary from "./payment-summary";
 import PaymentDetail from "./payment-detail";
 
 const AvailableRoom = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
 
@@ -77,7 +79,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                    { intl.formatMessage({id:"ButtonPrint"}) } 
                 </Button>
 
                 <CustomSearch
@@ -114,7 +116,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Эх.Хугацаа :{" "}
+                                { intl.formatMessage({id:"ReportStartDate"}) } 
                             </span>{" "}
                             {moment(search.CurrDate, "YYYY-MM-DD").format(
                                 "YYYY-MM-DD"
@@ -158,7 +160,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -173,7 +175,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

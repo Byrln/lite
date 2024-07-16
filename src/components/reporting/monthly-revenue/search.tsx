@@ -1,6 +1,7 @@
 import { TextField, Grid, MenuItem } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Controller } from "react-hook-form";
+import { useIntl } from "react-intl";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 
@@ -15,6 +16,7 @@ const Search = ({
     setReportType,
     ReportType,
 }: any) => {
+    const intl = useIntl();
     const handleReportType = (event: SelectChangeEvent) => {
         setReportType(event.target.value as string);
     };
@@ -28,7 +30,7 @@ const Search = ({
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
                             views={["year", "month"]}
-                            label="Эхлэх огноо"
+                            label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
                             value={value}
                             onChange={(value) =>
                                 onChange(moment(value, "YYYY-MM-DD"))

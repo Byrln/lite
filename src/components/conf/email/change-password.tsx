@@ -51,9 +51,9 @@ const ChangePassword = ({ id }: any) => {
                         size="small"
                         type="password"
                         fullWidth
-                        id="TextOldPassword"
+                        id="OldPassword"
                         label={intl.formatMessage({id:"TextOldPassword"}) }
-                        {...register("TextOldPassword")}
+                        {...register("OldPassword")}
                         margin="dense"
                         error={errors.OldPassword?.message}
                         helperText={errors.OldPassword?.message}
@@ -64,9 +64,9 @@ const ChangePassword = ({ id }: any) => {
                         size="small"
                         type="password"
                         fullWidth
-                        id="TextNewPassword"
+                        id="NewPassword"
                         label={intl.formatMessage({id:"TextNewPassword"}) }
-                        {...register("TextNewPassword")}
+                        {...register("NewPassword")}
                         margin="dense"
                         error={errors.NewPassword?.message}
                         helperText={errors.NewPassword?.message}
@@ -77,9 +77,9 @@ const ChangePassword = ({ id }: any) => {
                         size="small"
                         type="password"
                         fullWidth
-                        id="TextConfirmNewPassword"
+                        id="NewPasswordConfirmation"
                         label={intl.formatMessage({id:"TextConfirmNewPassword"}) }
-                        {...register("TextConfirmNewPassword")}
+                        {...register("NewPasswordConfirmation")}
                         margin="dense"
                         error={errors.NewPasswordConfirmation?.message}
                         helperText={errors.NewPasswordConfirmation?.message}

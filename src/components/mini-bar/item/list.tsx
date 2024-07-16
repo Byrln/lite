@@ -20,18 +20,18 @@ const MiniBarItemList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"ConfigMiniBarGroups"}), 
-            key: "ConfigMiniBarGroups",
-            dataIndex: "ConfigMiniBarGroups",
+            key: "RoomChargeTypeGroupName",
+            dataIndex: "RoomChargeTypeGroupName",
         },
         {
             title: intl.formatMessage({id:"ConfigMiniBarItem"}), 
-            key: "ConfigMiniBarItem",
-            dataIndex: "ConfigMiniBarItem",
+            key: "RoomChargeTypeName",
+            dataIndex: "RoomChargeTypeName",
         },
         {
             title: intl.formatMessage({id:"ReportRate"}), 
-            key: "ReportRate",
-            dataIndex: "ReportRate",
+            key: "SortOrder",
+            dataIndex: "SortOrder",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

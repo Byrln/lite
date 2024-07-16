@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -25,6 +26,7 @@ import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
 const Folio = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [reportData, setReportData] = useState<any>(null);
@@ -254,7 +256,7 @@ const Folio = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Тайлант үе :{" "}
+                                {intl.formatMessage({id:"ReportingPeriod"}) }
                             </span>{" "}
                             {search.CurrDate
                                 ? moment(search.CurrDate, "YYYY.MM.DD").format(
@@ -281,7 +283,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "40px",
                                     }}
                                 >
-                                    Бэлэн байгаа
+                                    {intl.formatMessage({id:"TextReady"}) }
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -292,7 +294,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "50px",
                                     }}
                                 >
-                                    Rooms
+                                    {intl.formatMessage({id:"ConfigRooms"}) }
                                 </TableCell>
 
                                 <TableCell
@@ -305,7 +307,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "130px",
                                     }}
                                 >
-                                    OCC/Guest name
+                                  {intl.formatMessage({id:"OCC/GuestName"}) }
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -317,7 +319,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "130px",
                                     }}
                                 >
-                                    ARR/Guest name
+                                {intl.formatMessage({id:"ARR/GuestName"}) }
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -328,7 +330,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "50px",
                                     }}
                                 >
-                                    Нэмэлт ор
+                                 {intl.formatMessage({id:"TextExtraBed"}) }
                                 </TableCell>
                                 {/* <TableCell
                                 align="left"
@@ -349,7 +351,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "30px",
                                     }}
                                 >
-                                    So
+                                      {intl.formatMessage({id:"TextSo"}) }
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -371,7 +373,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "30px",
                                     }}
                                 >
-                                    do
+                                     {intl.formatMessage({id:"TextDo"}) }
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -393,7 +395,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     }}
                                     width={250}
                                 >
-                                    Тайлбар
+                                     {intl.formatMessage({id:"RowHeaderDescription"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -432,7 +434,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                         }}
                                                         colSpan={11}
                                                     >
-                                                        Давхар {key}
+                                                          {intl.formatMessage({id:"TextFloor"}) }
+                                                             {key}
                                                     </TableCell>
                                                 </TableRow>
                                                 {roomsData[key] &&
@@ -1035,7 +1038,7 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 <span style={{ fontWeight: "bold" }}>
                                     {" "}
-                                    Хэвлэсэн :{" "}
+                                    {intl.formatMessage({id:"ReportPrinted"}) }
                                 </span>{" "}
                                 {localStorage.getItem("username")}
                             </Typography>
@@ -1049,7 +1052,7 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 <span style={{ fontWeight: "bold" }}>
                                     {" "}
-                                    Хэвлэсэн огноо :{" "}
+                                    {intl.formatMessage({id:"DateToPrinted"}) }
                                 </span>{" "}
                                 {moment(new Date()).format(
                                     "YYYY-MM-DD HH:mm:ss"

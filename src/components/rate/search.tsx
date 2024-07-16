@@ -9,8 +9,9 @@ import ReservationSourceSelect from "components/select/reservation-source";
 import RoomChargeDurationSelect from "components/select/duration";
 import CustomerSelect from "components/select/customer";
 import { RateTypeSWR } from "lib/api/rate-type";
-
+import { useIntl } from "react-intl";
 const Search = ({ register, errors, control, reset }: any) => {
+    const intl = useIntl();
     const { data, error } = RateTypeSWR({});
 
     const [customerVisibility, setCustomerVisibility] = useState(false);
@@ -68,7 +69,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <ReservationSourceSelect
                     register={register}
                     errors={errors}
-                    label="Зах.эх сурвалж"
+                    label={intl.formatMessage({id:"RowHeaderResSource"}) }
                     ChannelID={2}
                     field="SourceID"
                 />

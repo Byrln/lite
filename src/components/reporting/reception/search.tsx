@@ -1,6 +1,7 @@
 import { TextField, Grid } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useIntl } from "react-intl";
 import moment from "moment";
 
 import CashierSessionSelect from "components/select/cashier-session";
@@ -17,6 +18,7 @@ const Search = ({
     sessionId,
     setSessionId,
 }: any) => {
+    const intl = useIntl();
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
@@ -27,7 +29,7 @@ const Search = ({
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
                             views={["year", "month"]}
-                            label="Эхлэх огноо"
+                            label={intl.formatMessage({id:"TextStartDate"}) }
                             value={`${year}-${month}-01`}
                             onChange={(value) => (
                                 setMonth(Number(moment(value).month()) + 1),

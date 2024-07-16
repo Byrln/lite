@@ -44,23 +44,23 @@ const HouseStatusList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"ConfigRooms"}), 
-            key: "ConfigRooms",
-            dataIndex: "ConfigRooms",
+            key: "RoomNo",
+            dataIndex: "RoomNo",
         },
         {
             title: intl.formatMessage({id:"ReportRoomType"}), 
-            key: "ReportRoomType",
-            dataIndex: "ReportRoomType",
+            key: "RoomTypeName",
+            dataIndex: "RoomTypeName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderHouseStatus"}), 
-            key: "RowHeaderHouseStatus",
-            dataIndex: "RowHeaderHouseStatus",
+            key: "HKSDescription",
+            dataIndex: "HKSDescription",
         },
         {
             title: intl.formatMessage({id:"RowHeaderAction"}), 
-            key: "RowHeaderAction",
-            dataIndex: "RowHeaderAction",
+            key: "Action",
+            dataIndex: "Action",
             excelRenderPass: true,
             render: function render(id: any, record: any, entity: any) {
                 return (
@@ -83,18 +83,18 @@ const HouseStatusList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderRoomStatus"}), 
-            key: "RowHeaderRoomStatus",
-            dataIndex: "RowHeaderRoomStatus",
+            key: "RSDescription",
+            dataIndex: "RSDescription",
         },
         {
             title: intl.formatMessage({id:"RowHeaderHouseKeeper"}), 
-            key: "RowHeaderHouseKeeper",
-            dataIndex: "RowHeaderHouseKeeper",
+            key: "HKUserName",
+            dataIndex: "HKUserName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderAction"}), 
-            key: "RowHeaderAction",
-            dataIndex: "RowHeaderAction",
+            key: "Action",
+            dataIndex: "Action",
             excelRenderPass: true,
             render: function render(id: any, record: any, entity: any) {
                 return (

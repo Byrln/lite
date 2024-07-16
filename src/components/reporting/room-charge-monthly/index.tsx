@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -26,6 +27,7 @@ import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
 const AvailableRoom = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const router = useRouter();
     const { CurrDate } = router.query;
     const componentRef: any = useRef<HTMLDivElement>(null);
@@ -170,7 +172,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                    {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -207,7 +209,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хугацаа :{" "}
+                                {intl.formatMessage({id:"TextDuration"}) }
                             </span>{" "}
                             {moment(search.CurrDate, "YYYY-MM-DD").format(
                                 "YYYY-MM"
@@ -233,7 +235,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Өрөөний төрөл
+                                      {intl.formatMessage({id:"ConfigRoomType"}) }
                                     </TableCell>
                                     <TableCell
                                         style={{
@@ -243,7 +245,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                        Өрөө
+                                       {intl.formatMessage({id:"ConfigRooms"}) }
                                     </TableCell>
                                     {dates &&
                                         dates.map((item: any) => (
@@ -274,7 +276,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                         fontSize: "10px",
                                                     }}
                                                 >
-                                                    Үндсэн үнэ
+                                                   {intl.formatMessage({id:"TextBasePrice"}) }
                                                 </TableCell>
                                                 <TableCell
                                                     key={item}
@@ -285,7 +287,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                         fontSize: "10px",
                                                     }}
                                                 >
-                                                    Хямдрал
+                                                     {intl.formatMessage({id:"TextSale"}) }
                                                 </TableCell>
                                                 <TableCell
                                                     key={item}
@@ -296,7 +298,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                         fontSize: "10px",
                                                     }}
                                                 >
-                                                    Орлого
+                                                    {intl.formatMessage({id:"TextIncome"}) }
                                                 </TableCell>
                                             </>
                                         ))}
@@ -792,7 +794,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                         }}
                                         colSpan={2}
                                     >
-                                        Нийт тоо
+                                      {intl.formatMessage({id:"TextTotalNumber"}) }
                                     </TableCell>
                                     {dates &&
                                         dates.map((item: any) => (
@@ -832,7 +834,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -847,7 +849,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

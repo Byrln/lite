@@ -15,19 +15,19 @@ const PaymentMethodList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"ReportGroupName"}), 
-            key: "ReportGroupName",
-            dataIndex: "ReportGroupName",
+            key: "PaymentMethodGroupName",
+            dataIndex: "PaymentMethodGroupName",
         },
     
         {
             title: intl.formatMessage({id:"ConfigPaymentMethod"}), 
-            key: "ConfigPaymentMethod",
-            dataIndex: "ConfigPaymentMethod",
+            key: "PaymentMethodName",
+            dataIndex: "PaymentMethodName",
         },
         {
             title: intl.formatMessage({id:"ReportStatus"}), 
-            key: "ReportStatus",
-            dataIndex: "ReportStatus",
+            key: "Status",
+            dataIndex: "Status",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

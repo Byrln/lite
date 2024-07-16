@@ -118,8 +118,8 @@ const RoomBlockList = ({ title, workingDate }: any) => {
         },
         {
             title: intl.formatMessage({id:"ReportCheck"}), 
-            key: "ReportCheck",
-            dataIndex: "ReportCheck",
+            key: "check",
+            dataIndex: "check",
             withCheckBox: true,
             onChange: onCheckboxChange,
             render: function render(
@@ -148,18 +148,18 @@ const RoomBlockList = ({ title, workingDate }: any) => {
         },
         {
             title: intl.formatMessage({id:"MenuRooms"}), 
-            key: "MenuRooms",
-            dataIndex: "MenuRooms",
+            key: "RoomFullName",
+            dataIndex: "RoomFullName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderBeginDate"}), 
-            key: "RowHeaderBeginDate",
-            dataIndex: "RowHeaderBeginDate",
+            key: "BeginDate",
+            dataIndex: "BeginDate",
         },
         {
             title: intl.formatMessage({id:"RowHeaderEndDate"}), 
-            key: "RowHeaderEndDate",
-            dataIndex: "RowHeaderEndDate",
+            key: "EndDate",
+            dataIndex: "EndDate",
         },
         {
             title: intl.formatMessage({id:"RowHeaderBlockedOn"}), 
@@ -168,13 +168,13 @@ const RoomBlockList = ({ title, workingDate }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderBlockedBy"}), 
-            key: "RowHeaderBlockedBy",
-            dataIndex: "RowHeaderBlockedBy",
+            key: "CreatedDate",
+            dataIndex: "CreatedDate",
         },
         {
             title: intl.formatMessage({id:"ConfigReasons"}), 
-            key: "ConfigReasons",
-            dataIndex: "ConfigReasons",
+            key: "UserName",
+            dataIndex: "UserName",
         },
     ];
     console.log("entity", entity);

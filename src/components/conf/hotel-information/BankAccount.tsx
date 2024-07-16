@@ -32,18 +32,18 @@ const BankAccountList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"ReportBank"}), 
-            key: "ReportBank",
-            dataIndex: "ReportBank",
+            key: "Bank",
+            dataIndex: "Bank",
         },
         {
             title: intl.formatMessage({id:"RowHeaderAccountNo"}), 
-            key: "RowHeaderAccountNo",
-            dataIndex: "RowHeaderAccountNo",
+            key: "AccountNo",
+            dataIndex: "AccountNo",
         },
         {
             title: intl.formatMessage({id:"RowHeaderAccountName"}), 
-            key: "RowHeaderAccountName",
-            dataIndex: "RowHeaderAccountName",
+            key: "AccountName",
+            dataIndex: "AccountName",
         },
         {
             title: "Status",

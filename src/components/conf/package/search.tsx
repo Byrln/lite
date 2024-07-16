@@ -17,9 +17,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <TextField
                     size="small"
                     fullWidth
-                    id="RowHeaderPackageName"
+                    id="SearchStr"
                         label={intl.formatMessage({id:"RowHeaderEndDate"}) }
-                        {...register("RowHeaderEndDate")}
+                        {...register("SearchStr")}
                     margin="dense"
                     error={errors.SearchStr?.message}
                     helperText={errors.SearchStr?.message}

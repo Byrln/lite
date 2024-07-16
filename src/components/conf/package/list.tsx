@@ -23,18 +23,18 @@ const PackageList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"RowHeaderPackageName"}), 
-            key: "RowHeaderPackageName",
-            dataIndex: "RowHeaderPackageName",
+            key: "PackageName",
+            dataIndex: "PackageName",
         },
         {
             title: intl.formatMessage({id:"ReportNights"}), 
-            key: "ReportNights",
-            dataIndex: "ReportNights",
+            key: "Nights",
+            dataIndex: "Nights",
         },
         {
             title: intl.formatMessage({id:"TextBeginDate"}),
-            key: "TextBeginDate",
-            dataIndex: "TextBeginDate",
+            key: "BeginDate",
+            dataIndex: "BeginDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -48,8 +48,8 @@ const PackageList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"TextEndDate"}),
-            key: "TextEndDate",
-            dataIndex: "TextEndDate",
+            key: "EndDate",
+            dataIndex: "EndDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -63,13 +63,13 @@ const PackageList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"TextRoomCount"}),
-            key: "TextRoomCount",
-            dataIndex: "TextRoomCount",
+            key: "RoomCount",
+            dataIndex: "RoomCount",
         },
         {
             title: intl.formatMessage({id:"TextRoomAmount"}),
-            key: "TextRoomAmount",
-            dataIndex: "TextRoomAmount",
+            key: "RoomAmount",
+            dataIndex: "RoomAmount",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -92,18 +92,18 @@ const PackageList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderUserName"}),
-            key: "RowHeaderUserName",
-            dataIndex: "RowHeaderUserName",
+            key: "UserName",
+            dataIndex: "UserName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderIPAddress"}),
-            key: "RowHeaderIPAddress",
-            dataIndex: "RowHeaderIPAddress",
+            key: "IPAddress",
+            dataIndex: "IPAddress",
         },
         {
             title: intl.formatMessage({id:"RowHeaderAction"}),
-            key: "RowHeaderAction",
-            dataIndex: "RowHeaderAction",
+            key: "Action",
+            dataIndex: "Action",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

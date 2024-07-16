@@ -1,5 +1,6 @@
 import { TextField, Grid, MenuItem } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useIntl } from "react-intl";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
@@ -15,7 +16,9 @@ const Search = ({
     setReportType,
     ReportType,
 }: any) => {
+    const intl = useIntl();
     const handleReportType = (event: SelectChangeEvent) => {
+      
         setReportType(event.target.value as string);
     };
     return (
@@ -27,7 +30,7 @@ const Search = ({
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-                            label="Эхлэх хугацаа"
+                        label={intl.formatMessage({id:"TextStartDate"}) }
                             value={value}
                             onChange={(value) =>
                                 onChange(moment(value).format("YYYY-MM-DD"))
@@ -55,7 +58,7 @@ const Search = ({
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-                            label="Дуусах хугацаа"
+                        label={intl.formatMessage({id:"TextEndDate"}) }
                             value={value}
                             onChange={(value) =>
                                 onChange(moment(value).format("YYYY-MM-DD"))

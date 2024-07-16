@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -22,6 +23,7 @@ import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
 const AvailableRoom = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [dates, setDates] = useState<any>([]);
     const [dDays, setDDays] = useState<any>([]);
@@ -137,7 +139,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                     style={{ textAlign: "center" }}
                     className="mb-3"
                 >
-                    Боломжит өрөө
+                   {intl.formatMessage({id:"MenuReportAvailableRooms"}) }
                 </Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={4}>
@@ -149,7 +151,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Эх.Хугацаа :{" "}
+                                {intl.formatMessage({id:"ReportStartDate"}) }
                             </span>{" "}
                             {moment(search.CurrDate, "YYYY-MM-DD").format(
                                 "YYYY-MM-DD"
@@ -165,7 +167,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Харилцагч :{" "}
+                                {intl.formatMessage({id:"TextCustomer"}) }
                             </span>{" "}
                             {customerName}
                         </Typography>
@@ -197,6 +199,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                     fontSize: "10px",
                                                 }}
                                             >
+                                                
                                                 {moment(item).date()}
                                             </TableCell>
                                         ))}

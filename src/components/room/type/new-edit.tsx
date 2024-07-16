@@ -172,9 +172,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="RowHeaderShortName"
+                                id="RoomTypeShortName"
                                 label={intl.formatMessage({id:"RowHeaderShortName"}) }
-                                {...register("RowHeaderShortName")}
+                                {...register("RoomTypeShortName")}
                                 margin="dense"
                                 value={entity && entity.RoomTypeShortName}
                                 onChange={(evt: any) => {
@@ -223,9 +223,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="TextBasicAdult"
+                                id="BaseAdult"
                             label={intl.formatMessage({id:"TextBasicAdult"}) }
-                            {...register("TextBasicAdult")}
+                            {...register("BaseAdult")}
                                 margin="dense"
                                 value={
                                     entity &&
@@ -254,7 +254,7 @@ const NewEdit = () => {
                                 type="number"
                                 fullWidth
                                 id="MaxAdult"
-                                label="Том хүний тоо - дээд хязгаар"
+                                label={intl.formatMessage({id:"TheNumberOfAdultsTheUpperLimit"}) }
                                 {...register("MaxAdult")}
                                 margin="dense"
                                 value={
@@ -284,7 +284,7 @@ const NewEdit = () => {
                                 type="number"
                                 fullWidth
                                 id="BaseChild"
-                                label="Хүүхэд - үндсэн"
+                                label={intl.formatMessage({id:"ChildrenBasic"}) }
                                 {...register("BaseChild")}
                                 value={
                                     entity &&
@@ -314,7 +314,7 @@ const NewEdit = () => {
                                 type="number"
                                 fullWidth
                                 id="MaxChild"
-                                label="Хүүхдийн тоо - дээд хязгаар"
+                                label={intl.formatMessage({id:"NumberOfChildren-Maximum"}) }
                                 {...register("MaxChild")}
                                 value={
                                     entity &&
@@ -343,7 +343,7 @@ const NewEdit = () => {
                                 type="number"
                                 fullWidth
                                 id="SortOrder"
-                                label="Дараалал"
+                                label={intl.formatMessage({id:"SortOrder"}) }
                                 {...register("SortOrder")}
                                 margin="dense"
                                 value={
@@ -389,7 +389,7 @@ const NewEdit = () => {
                                 size="small"
                                 fullWidth
                                 id="BookingDescription"
-                                label="Товч тайлбар (Онлайн захиалга)"
+                                label={intl.formatMessage({id:"BriefDescription(OnlineOrder)"}) }
                                 multiline
                                 {...register("BookingDescription")}
                                 margin="dense"
@@ -457,7 +457,8 @@ const NewEdit = () => {
                                 )}
                             />
                         }
-                        label="Онлайн захиалга дээр харуулах эсэх"
+                        label={intl.formatMessage({id:"WhetherToDisplayOnLineOrders"}) }
+                       
                     />
                     {/* <FormGroup>
                         <FormControlLabel
@@ -515,7 +516,7 @@ const NewEdit = () => {
                                             size="small"
                                             fullWidth
                                             id="RoomTypeShortName"
-                                            label="Товч нэр"
+                                            label={intl.formatMessage({id:"RowHeaderShortName"}) }
                                             {...register("RoomTypeShortName")}
                                             margin="dense"
                                             value={
@@ -551,7 +552,7 @@ const NewEdit = () => {
                                             size="small"
                                             fullWidth
                                             id="RoomTypeName"
-                                            label="Нэр"
+                                            label={intl.formatMessage({id:"RowHeaderFirstName"}) }
                                             {...register("RoomTypeName")}
                                             margin="dense"
                                             value={
@@ -583,7 +584,7 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="BaseAdult"
-                                            label="Том хүн - үндсэн"
+                                            label={intl.formatMessage({id:"TextBaseAdult"}) }
                                             {...register("BaseAdult")}
                                             margin="dense"
                                             value={
@@ -615,7 +616,7 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="MaxAdult"
-                                            label="Том хүний тоо - дээд хязгаар"
+                                            label={intl.formatMessage({id:"TheNumberOfAdultsTheUpperLimit"}) }
                                             {...register("MaxAdult")}
                                             margin="dense"
                                             value={
@@ -647,7 +648,7 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="BaseChild"
-                                            label="Хүүхэд - үндсэн"
+                                            label={intl.formatMessage({id:"ChildrenBasic"}) }
                                             {...register("BaseChild")}
                                             value={
                                                 entity &&
@@ -679,7 +680,7 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="MaxChild"
-                                            label="Хүүхдийн тоо - дээд хязгаар"
+                                            label={intl.formatMessage({id:"NumberOfChildren-Maximum"}) }
                                             {...register("MaxChild")}
                                             value={
                                                 entity &&
@@ -710,7 +711,7 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="SortOrder"
-                                            label="Дараалал"
+                                            label={intl.formatMessage({id:"SortOrder"}) }
                                             {...register("SortOrder")}
                                             margin="dense"
                                             value={
@@ -765,7 +766,7 @@ const NewEdit = () => {
                                             size="small"
                                             fullWidth
                                             id="BookingDescription"
-                                            label="Товч тайлбар (Онлайн захиалга)"
+                                            label={intl.formatMessage({id:"BriefDescription(OnlineOrder"}) }
                                             multiline
                                             {...register("BookingDescription")}
                                             margin="dense"
@@ -847,7 +848,7 @@ const NewEdit = () => {
                                             )}
                                         />
                                     }
-                                    label="Онлайн захиалга дээр харуулах эсэх"
+                                    label={intl.formatMessage({id:"WhetherToDisplayOnLineOrders"}) }
                                 />
                                 {/* <FormGroup>
                                     <FormControlLabel

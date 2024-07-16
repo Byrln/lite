@@ -25,38 +25,38 @@ const CompanyDatabaseList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"RowHeaderCustomerName"}), 
-            key: "RowHeaderCustomerName",
-            dataIndex: "RowHeaderCustomerName",
+            key: "CustomerName",
+            dataIndex: "CustomerName",
         },
         {
             title: intl.formatMessage({id:"TextGroupName"}), 
-            key: "TextGroupName",
-            dataIndex: "TextGroupName",
+            key: "CustomerGroupName",
+            dataIndex: "CustomerGroupName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderRegistryNo"}), 
-            key: "RowHeaderRegistryNo",
-            dataIndex: "RowHeaderRegistryNo",
+            key: "RegisterNo",
+            dataIndex: "RegisterNo",
         },
         {
             title: intl.formatMessage({id:"ReportPhone"}), 
-            key: "ReportPhone",
-            dataIndex: "ReportPhone",
+            key: "Phone",
+            dataIndex: "Phone",
         },
         {
             title: intl.formatMessage({id:"RowHeaderEmail"}), 
-            key: "RowHeaderEmail",
-            dataIndex: "RowHeaderEmail",
+            key: "Email",
+            dataIndex: "Email",
         },
         {
             title: intl.formatMessage({id:"TextCity"}), 
-            key: "TextCity",
-            dataIndex: "TextCity",
+            key: "City",
+            dataIndex: "City",
         },
         {
             title: intl.formatMessage({id:"ReportCountry"}), 
-            key: "ReportCountry",
-            dataIndex: "ReportCountry",
+            key: "CountryName",
+            dataIndex: "CountryName",
         },
     ];
 

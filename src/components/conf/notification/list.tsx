@@ -16,28 +16,28 @@ const NotificationList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"TextNotificationTypeID"}), 
-            key: "TextNotificationTypeID",
-            dataIndex: "TextNotificationTypeID",
+            key: "NotificationTypeID",
+            dataIndex: "NotificationTypeID",
         },
         {
             title: intl.formatMessage({id:"TextNotificationTypeName"}), 
-            key: "TextNotificationTypeName",
-            dataIndex: "TextNotificationTypeName",
+            key: "NotificationTypeName",
+            dataIndex: "NotificationTypeName",
         },
         {
             title: intl.formatMessage({id:"TextUserID"}), 
-            key: "TextUserID",
-            dataIndex: "TextUserID",
+            key: "UserID",
+            dataIndex: "UserID",
         },
         {
             title: intl.formatMessage({id:"RowHeaderUserName"}), 
-            key: "RowHeaderUserName",
-            dataIndex: "RowHeaderUserName",
+            key: "UserName",
+            dataIndex: "UserName",
         },
         {
             title: intl.formatMessage({id:"Left_SortByStatus"}), 
-            key: "Left_SortByStatus",
-            dataIndex: "Left_SortByStatus",
+            key: "Status",
+            dataIndex: "Status",
             render: function render(id: any, value: any) {
                 return (
                     <ToggleChecked

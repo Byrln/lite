@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -14,6 +15,7 @@ import moment from "moment";
 import { ReportAPI } from "lib/api/report";
 
 const ExtraCharge = ({ sessionId }: any) => {
+    const intl = useIntl();
     const [data, setData]: any = useState();
     const [groupedData, setGroupedData]: any = useState();
 
@@ -49,7 +51,7 @@ const ExtraCharge = ({ sessionId }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Нэмэлт тооцоо :
+                   {intl.formatMessage({id:"ConfigExtraCharges"}) }
                 </span>
             </Typography>
 
@@ -65,7 +67,7 @@ const ExtraCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Өрөө/төрөл
+                                    {intl.formatMessage({id:"ReportRoomAndType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -74,7 +76,7 @@ const ExtraCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Зочны нэр
+                                    {intl.formatMessage({id:"ReportGuestName"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -83,7 +85,7 @@ const ExtraCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Тооц.№
+                                  {intl.formatMessage({id:"ReportFolioNo"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -92,7 +94,7 @@ const ExtraCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Ирэх өдөр
+                                    {intl.formatMessage({id:"ReportArrivalDate"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -101,17 +103,7 @@ const ExtraCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Гарах өдөр
-                                </TableCell>
-                                <TableCell
-                                    align="right"
-                                    style={{
-                                        fontWeight: "bold",
-                                        padding: "2px",
-                                        fontSize: "10px",
-                                    }}
-                                >
-                                    Хөнгөлөлт
+                                 {intl.formatMessage({id:"ReportDepartureDate"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -121,7 +113,17 @@ const ExtraCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Нэмэлт тооцоо
+                                   {intl.formatMessage({id:"ReportDiscount"}) }
+                                </TableCell>
+                                <TableCell
+                                    align="right"
+                                    style={{
+                                        fontWeight: "bold",
+                                        padding: "2px",
+                                        fontSize: "10px",
+                                    }}
+                                >
+                                    {intl.formatMessage({id:"ConfigExtraCharges"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>

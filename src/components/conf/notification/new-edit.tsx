@@ -64,9 +64,9 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         field="UserTypeID"
-                        id="RowHeaderReasonType"
+                     
                         label={intl.formatMessage({id:"RowHeaderReasonType"}) }
-                        {...register("RowHeaderReasonType")}
+                    
                         options={notifType}
                         optionValue="value"
                         optionLabel="name"

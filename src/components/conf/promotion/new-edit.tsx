@@ -53,9 +53,9 @@ const NewEdit = () => {
                 <TextField
                     size="small"
                     fullWidth
-                    id="TextPromotionCode"
+                    id="PromotionCode"
                         label={intl.formatMessage({id:"TextPromotionCode"}) }
-                        {...register("TextPromotionCode")}
+                        {...register("PromotionCode")}
                     margin="dense"
                     error={errors.PromotionCode?.message}
                     helperText={errors.PromotionCode?.message}
@@ -68,9 +68,9 @@ const NewEdit = () => {
                     fullWidth
                     multiline
                     rows={3}
-                    id="TextDescription"
+                    id="Description"
                     label={intl.formatMessage({id:"TextDescription"}) }
-                    {...register("TextDescription")}
+                    {...register("Description")}
                     margin="dense"
                     error={errors.Description?.message}
                     helperText={errors.Description?.message}

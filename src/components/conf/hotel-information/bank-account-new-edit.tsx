@@ -41,9 +41,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="ReportBank"                     
+                        id="Bank"                     
                          label={intl.formatMessage({id:"ReportBank"}) }
-                        {...register("ReportBank")}
+                        {...register("Bank")}
                         margin="dense"
                         error={errors.Bank?.message}
                         helperText={errors.Bank?.message}
@@ -53,9 +53,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="TextAccountNo"                     
+                        id="AccountNo"                     
                         label={intl.formatMessage({id:"TextAccountNo"}) }
-                       {...register("TextAccountNo")}
+                       {...register("AccountNo")}
                         margin="dense"
                         error={errors.AccountNo?.message}
                         helperText={errors.AccountNo?.message}
@@ -65,9 +65,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="TextAccountName"                     
+                        id="AccountName"                     
                         label={intl.formatMessage({id:"TextAccountName"}) }
-                       {...register("TextAccountName")}
+                       {...register("AccountName")}
                         margin="dense"
                         error={errors.AccountName?.message}
                         helperText={errors.AccountName?.message}

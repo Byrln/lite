@@ -17,13 +17,13 @@ const PromotionList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"TextPromotionCode"}), 
-            key: "TextPromotionCode",
-            dataIndex: "TextPromotionCode",
+            key: "PromotionCode",
+            dataIndex: "PromotionCode",
         },
         {
             title: intl.formatMessage({id:"TextBeginDate"}), 
-            key: "TextBeginDate",
-            dataIndex: "TextBeginDate",
+            key: "BeginDate",
+            dataIndex: "BeginDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -37,8 +37,8 @@ const PromotionList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"TextEndDate"}),
-            key: "TextEndDate",
-            dataIndex: "TextEndDate",
+            key: "EndDate",
+            dataIndex: "EndDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -51,8 +51,8 @@ const PromotionList = ({ title }: any) => {
             },
         },
         {   title: intl.formatMessage({id:"TextAvailableOn"}),
-            key: "TextAvailableOn",
-            dataIndex: "TextAvailableOn",
+            key: "Available On",
+            dataIndex: "Available On",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return element.row.AvailableOn === 1
@@ -66,8 +66,8 @@ const PromotionList = ({ title }: any) => {
         },
         {
             title: "TextWeekDaysEnable",
-            key: "TextWeekDaysEnable",
-            dataIndex: "TextWeekDaysEnable",
+            key: "WeekDaysEnabled",
+            dataIndex: "WeekDaysEnabled",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return element.row.WeekDaysEnabled

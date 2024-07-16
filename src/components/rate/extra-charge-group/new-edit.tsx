@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { ChargeTypeGroupAPI, listUrl } from "lib/api/charge-type-group";
 import { useAppState } from "lib/context/app";
@@ -13,6 +13,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -43,7 +44,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="RoomChargeTypeGroupName"
-                        label="Бүлгийн нэр"
+                        label={intl.formatMessage({id:"RowHeaderGroupName"}) }
                         {...register("RoomChargeTypeGroupName")}
                         margin="dense"
                         error={errors.RoomChargeTypeGroupName?.message}
@@ -56,7 +57,7 @@ const NewEdit = () => {
                         type="number"
                         fullWidth
                         id="SortOrder"
-                        label="Дараалал"
+                        label={intl.formatMessage({id:"SortOrder"}) }
                         {...register("SortOrder")}
                         margin="dense"
                         error={errors.SortOrder?.message}

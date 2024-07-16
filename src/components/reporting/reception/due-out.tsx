@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -14,6 +15,7 @@ import moment from "moment";
 import { ReportAPI } from "lib/api/report";
 
 const DueOut = ({ sessionId }: any) => {
+    const intl = useIntl();
     const [data, setData]: any = useState();
     const [groupedData, setGroupedData]: any = useState();
 
@@ -47,7 +49,7 @@ const DueOut = ({ sessionId }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Үлдээж буй тооцоо :
+                     {intl.formatMessage({id:"ReportDueOutStayOverRooms"}) }
                 </span>
             </Typography>
 
@@ -63,7 +65,7 @@ const DueOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Өрөө/төрөл
+                                    {intl.formatMessage({id:"ReportRoomAndType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -72,7 +74,7 @@ const DueOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Зочны нэр
+                                    {intl.formatMessage({id:"Left_SortByGuestName"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -81,7 +83,7 @@ const DueOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Тооц.№
+                                  {intl.formatMessage({id:"ReportFolioNo"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -90,7 +92,7 @@ const DueOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Компани
+                                 {intl.formatMessage({id:"ReportCompany"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -99,7 +101,7 @@ const DueOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Ирэх өдөр
+                                    {intl.formatMessage({id:"ReportArrivalDate"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -108,17 +110,7 @@ const DueOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Гарах өдөр
-                                </TableCell>
-                                <TableCell
-                                    align="right"
-                                    style={{
-                                        fontWeight: "bold",
-                                        padding: "2px",
-                                        fontSize: "10px",
-                                    }}
-                                >
-                                    Нийт тооцоо
+                                    {intl.formatMessage({id:"ReportDepartureDate"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -128,7 +120,7 @@ const DueOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Төлбөр
+                                    {intl.formatMessage({id:"ReportTotalCharge"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -138,7 +130,17 @@ const DueOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Үлдэгдэл
+                                    {intl.formatMessage({id:"ReportPayment"}) }
+                                </TableCell>
+                                <TableCell
+                                    align="right"
+                                    style={{
+                                        fontWeight: "bold",
+                                        padding: "2px",
+                                        fontSize: "10px",
+                                    }}
+                                >
+                                  {intl.formatMessage({id:"ReportBalance"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -147,7 +149,7 @@ const DueOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Хэрэглэгч
+                                  {intl.formatMessage({id:"ConfigUser"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -282,7 +284,7 @@ const DueOut = ({ sessionId }: any) => {
                                         fontWeight: "bold",
                                     }}
                                 >
-                                    Нийт
+                                     {intl.formatMessage({id:"ReportSum"}) }
                                 </TableCell>
                                 <TableCell
                                     component="th"

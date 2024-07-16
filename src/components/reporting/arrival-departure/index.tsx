@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -24,6 +25,7 @@ import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
 const ArrivalDeparture = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [reportData, setReportData]: any = useState(null);
@@ -151,7 +153,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                    {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -228,7 +230,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Guest name
+                                       {intl.formatMessage({id:"Left_SortByGuestName"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -239,7 +241,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Room/Type
+                                      {intl.formatMessage({id:"ConfigRoomType"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -250,7 +252,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Arrival Date
+                                        {intl.formatMessage({id:"ReportArrivalDate"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -261,7 +263,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Departure Date
+                                   {intl.formatMessage({id:"ReportDepartureDate"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -271,7 +273,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Pick up
+                                      {intl.formatMessage({id:"TextPickUp"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -281,7 +283,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Drop Off
+                                        {intl.formatMessage({id:"TextDropOff"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -291,7 +293,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Extra Bed
+                                        {intl.formatMessage({id:"TextExtraBed"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -301,7 +303,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Breakfast
+                                      {intl.formatMessage({id:"TextBreakfast"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -311,7 +313,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Early Check in
+                                         {intl.formatMessage({id:"TextEarlyCheckIn"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -321,7 +323,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Late check Out
+                                        {intl.formatMessage({id:"TextLateCheckOut"}) }
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -550,8 +552,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                             className="mr-1"
                         >
                             <span style={{ fontWeight: "bold" }}>
-                                {" "}
-                                Хэвлэсэн :{" "}
+                            {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -566,7 +567,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

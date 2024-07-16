@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -13,6 +14,7 @@ import { ReportAPI } from "lib/api/report";
 import { formatPrice } from "lib/utils/helpers";
 
 const CheckedOut = ({ search, rerenderKey }: any) => {
+    const intl = useIntl();
     const [checkedOutData, setCheckedOutData]: any = useState(null);
 
     useEffect(() => {
@@ -35,7 +37,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Гарсан :
+                   { intl.formatMessage({id:"ReportCheckedOut"}) } 
                 </span>
             </Typography>
 
@@ -49,7 +51,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Өрөө/төрөл
+                           { intl.formatMessage({id:"ReportRoomAndType"}) } 
                         </TableCell>
                         <TableCell
                             style={{
@@ -58,7 +60,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Компани
+                           { intl.formatMessage({id:"ReportCompany"}) } 
                         </TableCell>
                         <TableCell
                             style={{
@@ -67,7 +69,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Улс
+                             { intl.formatMessage({id:"ReportCountry"}) } 
                         </TableCell>
                         <TableCell
                             style={{
@@ -76,7 +78,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Эх.сур
+                             { intl.formatMessage({id:"ReportSource"}) } 
                         </TableCell>
                         <TableCell
                             style={{
@@ -85,7 +87,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Зочны нэр
+                           { intl.formatMessage({id:"ReportGuestName"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -94,7 +96,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Ирэх өдөр
+                             { intl.formatMessage({id:"ReportArrivalDate"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -103,17 +105,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Гарах өдөр
-                        </TableCell>
-                        <TableCell
-                            align="right"
-                            style={{
-                                fontWeight: "bold",
-                                padding: "2px",
-                                fontSize: "10px",
-                            }}
-                        >
-                            Нийт тооцоо
+                             { intl.formatMessage({id:"ReportDepartureDate"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -123,7 +115,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Өрөөний тооцоо
+                           { intl.formatMessage({id:"ReportTotalCharge"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -133,7 +125,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Нэмэлт тооцоо
+                           { intl.formatMessage({id:"ReportRoomCharge"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -143,7 +135,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Хөнгөлөлт
+                             { intl.formatMessage({id:"ConfigExtraCharges"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -153,7 +145,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Нийт төлсөн
+                           { intl.formatMessage({id:"ReportDiscount"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -163,7 +155,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Бэлэн
+                             { intl.formatMessage({id:"ReportTotalPaid"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -173,7 +165,7 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Банк
+                              { intl.formatMessage({id:"ReportCash"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -183,7 +175,17 @@ const CheckedOut = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Нэхэмжлэх
+                             { intl.formatMessage({id:"ReportBank"}) }
+                        </TableCell>
+                        <TableCell
+                            align="right"
+                            style={{
+                                fontWeight: "bold",
+                                padding: "2px",
+                                fontSize: "10px",
+                            }}
+                        >
+                            { intl.formatMessage({id:"ReportInvoice"}) }
                         </TableCell>
                     </TableRow>
                 </TableHead>

@@ -20,8 +20,8 @@ const ExchangeRateList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"TextDate"}), 
-            key: "TextDate",
-            dataIndex: "TextDate",
+            key: "BeginDate",
+            dataIndex: "BeginDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -35,48 +35,48 @@ const ExchangeRateList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderCountry"}), 
-            key: "RowHeaderCountry",
-            dataIndex: "RowHeaderCountry",
+            key: "CountryName",
+            dataIndex: "CountryName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderExchangeRate"}), 
-            key: "RowHeaderExchangeRate",
-            dataIndex: "RowHeaderExchangeRate",
+            key: "CurrencyName",
+            dataIndex: "CurrencyName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderCurrencyCode"}), 
-            key: "RowHeaderCurrencyCode",
-            dataIndex: "RowHeaderCurrencyCode",
+            key: "CurrencyCode",
+            dataIndex: "CurrencyCode",
         },
         {
             title: intl.formatMessage({id:"RowHeaderCurrencySymbol"}), 
-            key: "RowHeaderCurrencySymbol",
-            dataIndex: "RowHeaderCurrencySymbol",
+            key: "CurrencySymbol",
+            dataIndex: "CurrencySymbol",
         },
         {
             title: intl.formatMessage({id:"RowHeaderBuyRate"}), 
-            key: "RowHeaderBuyRate",
-            dataIndex: "RowHeaderBuyRate",
+            key: "CurrencyID",
+            dataIndex: "CurrencyID",
         },
         {
             title: intl.formatMessage({id:"RowHeaderSellRate"}),
-            key: "RowHeaderSellRate",
-            dataIndex: "RowHeaderSellRate",
+            key: "CountryID",
+            dataIndex: "CountryID",
         },
         {
             title: intl.formatMessage({id:"RowHeaderMain"}),
-            key: "RowHeaderMain",
-            dataIndex: "RowHeaderMain",
+            key: "Main",
+            dataIndex: "Main",
         },
         {
             title: intl.formatMessage({id:"Default_LabelUserName"}),
-            key: "Default_LabelUserName",
-            dataIndex: "Default_LabelUserName",
+            key: "UserName",
+            dataIndex: "UserName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderAdditionalAction"}),
-            key: "RowHeaderAdditionalAction",
-            dataIndex: "RowHeaderAdditionalAction",
+            key: "Action",
+            dataIndex: "Action",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

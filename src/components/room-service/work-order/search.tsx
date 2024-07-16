@@ -30,9 +30,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     register={register}
                     errors={errors}
                     type="WorkOrderPriority"
-                    id="RowHeaderPriority"
+                   
                     label={intl.formatMessage({id:"RowHeaderPriority"}) }
-                    {...register("RowHeaderPriority")}
+                
                     optionValue="WorkOrderPriorityID"
                     optionLabel="Description"
                 />
@@ -52,9 +52,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     register={register}
                     errors={errors}
                     type="WorkOrderStatus"
-                    id="Left_SortByStatus"
+                 
                     label={intl.formatMessage({id:"Left_SortByStatus"}) }
-                    {...register("Left_SortByStatus")}
+          
                     optionValue="WorkOrderStatusID"
                     optionLabel="Description"
                 />

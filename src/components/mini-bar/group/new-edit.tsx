@@ -45,9 +45,9 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="RowHeaderGroupName"
+                id="RoomChargeTypeGroupName"
                         label={intl.formatMessage({id:"RowHeaderGroupName"}) }
-                        {...register("RowHeaderGroupName")}
+                        {...register("RoomChargeTypeGroupName")}
                 margin="dense"
                 error={errors.RoomChargeTypeGroupName?.message}
                 helperText={errors.RoomChargeTypeGroupName?.message}

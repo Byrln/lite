@@ -3,6 +3,7 @@ import { lazy, useEffect, useContext } from "react";
 import { withAuthServerSideProps } from "lib/utils/with-auth-server-side-props";
 import { FrontOfficeAPI, FrontOfficeSWR, listUrl } from "lib/api/front-office";
 import * as yup from "yup";
+
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { mutate } from "swr";
@@ -480,11 +481,13 @@ const TimelineTable = ({ props, workingDate }: any) => {
     return (
         <>
             <Head>
-                <title>Календар</title>
+                <title>
+                {intl.formatMessage({id:"Calendar"}) }
+                    </title>
             </Head>
             <Page>
                 <Container maxWidth="xl">
-                    <h4>Календар</h4>
+                    <h4>  {intl.formatMessage({id:"Calendar"}) }</h4>
                     <br />
                     <CustomSearch
                         listUrl={listUrl}

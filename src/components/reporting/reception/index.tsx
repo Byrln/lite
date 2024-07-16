@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import { Typography, Grid, Button, Box } from "@mui/material";
 import { useReactToPrint } from "react-to-print";
@@ -21,6 +22,7 @@ import DueOut from "./due-out";
 import CancelVoidNoShow from "./cancel-void-noshow";
 
 const Reception = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [ReportType, setReportType] = useState<any>("arrival");
     const [year, setYear] = useState(moment(workingDate).year());
@@ -96,7 +98,7 @@ const Reception = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                      {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -145,7 +147,7 @@ const Reception = ({ title, workingDate }: any) => {
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            {intl.formatMessage({id:"ReportingPeriod"}) }
                         </span>{" "}
                         {month && year && `(${year}-${month})`}
                     </Typography>
@@ -196,7 +198,7 @@ const Reception = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -211,7 +213,7 @@ const Reception = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

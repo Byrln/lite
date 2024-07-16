@@ -40,9 +40,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="ReportEmail"
+                        id="Email"
                         label={intl.formatMessage({id:"ReportEmail"}) }
-                        {...register("ReportEmail")}
+                        {...register("Email")}
                         margin="dense"
                         error={errors.Email?.message}
                         helperText={errors.Email?.message}
@@ -52,9 +52,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="RowHeaderEmailServer"
+                        id="EmailHost"
                         label={intl.formatMessage({id:"RowHeaderEmailServer"}) }
-                        {...register("RowHeaderEmailServer")}
+                        {...register("EmailHost")}
                         margin="dense"
                         error={errors.EmailHost?.message}
                         helperText={errors.EmailHost?.message}
@@ -65,9 +65,9 @@ const NewEdit = () => {
                         size="small"
                         type="number"
                         fullWidth
-                        id="RowHeaderPort"
+                        id="Port"
                         label={intl.formatMessage({id:"RowHeaderPort"}) }
-                        {...register("RowHeaderPort")}
+                        {...register("Port")}
                         margin="dense"
                         error={errors.Port?.message}
                         helperText={errors.Port?.message}
@@ -77,9 +77,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="RowHeaderUserName"
+                        id="UserName"
                         label={intl.formatMessage({id:"RowHeaderUserName"}) }
-                        {...register("RowHeaderUserName")}
+                        {...register("UserName")}
                         margin="dense"
                         error={errors.UserName?.message}
                         helperText={errors.UserName?.message}
@@ -90,9 +90,9 @@ const NewEdit = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="TextPassword"
+                            id="Password"
                             label={intl.formatMessage({id:"TextPassword"}) }
-                            {...register("TextPassword")}
+                            {...register("Password")}
                             type="password"
                             margin="dense"
                             error={errors.Password?.message}

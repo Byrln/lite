@@ -37,33 +37,33 @@ const UserList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"RowHeaderUserName"}), 
-            key: "RowHeaderUserName",
-            dataIndex: "RowHeaderUserName",
+            key: "UserName",
+            dataIndex: "UserName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderLoginName"}), 
-            key: "RowHeaderLoginName",
-            dataIndex: "RowHeaderLoginName",
+            key: "LoginName",
+            dataIndex: "LoginName",
         },
         {
             title: intl.formatMessage({id:"ConfigUserRole"}), 
-            key: "ConfigUserRole",
-            dataIndex: "ConfigUserRole",
+            key: "UserRoleName",
+            dataIndex: "UserRoleName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderLanguage"}), 
-            key: "RowHeaderLanguage",
-            dataIndex: "RowHeaderLanguage",
+            key: "Language",
+            dataIndex: "Language",
         },
         {
             title: intl.formatMessage({id:"RowHeaderEmail"}), 
-            key: "RowHeaderEmail",
-            dataIndex: "RowHeaderEmail",
+            key: "Email",
+            dataIndex: "Email",
         },
         {
             title: intl.formatMessage({id:"ReportStatus"}), 
-            key: "ReportStatus",
-            dataIndex: "ReportStatus",
+            key: "Status",
+            dataIndex: "Status",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

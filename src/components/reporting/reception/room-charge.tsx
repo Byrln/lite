@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -15,6 +16,7 @@ import { ReportAPI } from "lib/api/report";
 
 const RoomCharge = ({ sessionId }: any) => {
     const [data, setData]: any = useState();
+    const intl = useIntl();
     const [groupedData, setGroupedData]: any = useState();
 
     const groupBy = (items: any, key: any) =>
@@ -49,7 +51,7 @@ const RoomCharge = ({ sessionId }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Өрөөний тооцоо :
+                  {intl.formatMessage({id:"ReportRoomCharge"}) }
                 </span>
             </Typography>
 
@@ -65,7 +67,7 @@ const RoomCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Өрөө/төрөл
+                                   {intl.formatMessage({id:"TextRoomandType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -74,7 +76,7 @@ const RoomCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Хонох огноо
+                                   {intl.formatMessage({id:"ReportStayDate"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -83,7 +85,7 @@ const RoomCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Өрөөний тооцоо
+                                    {intl.formatMessage({id:"ReportRoomCharge"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -92,7 +94,7 @@ const RoomCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Зочны нэр
+                                   {intl.formatMessage({id:"Left_SortByGuestName"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -101,7 +103,7 @@ const RoomCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Компани
+                                    {intl.formatMessage({id:"ReportCompany"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -110,27 +112,7 @@ const RoomCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Тариф.төр
-                                </TableCell>
-                                <TableCell
-                                    align="right"
-                                    style={{
-                                        fontWeight: "bold",
-                                        padding: "2px",
-                                        fontSize: "10px",
-                                    }}
-                                >
-                                    Үндсэн тариф
-                                </TableCell>
-                                <TableCell
-                                    style={{
-                                        fontWeight: "bold",
-                                        padding: "2px",
-                                        fontSize: "10px",
-                                    }}
-                                    align="right"
-                                >
-                                    Санал болгосон
+                                  {intl.formatMessage({id:"ReportRateType"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -140,7 +122,27 @@ const RoomCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Зөрүү
+                                    {intl.formatMessage({id:"ReportNormalRate"}) }
+                                </TableCell>
+                                <TableCell
+                                    style={{
+                                        fontWeight: "bold",
+                                        padding: "2px",
+                                        fontSize: "10px",
+                                    }}
+                                    align="right"
+                                >
+                                   {intl.formatMessage({id:"ReportOfferedRate"}) }
+                                </TableCell>
+                                <TableCell
+                                    align="right"
+                                    style={{
+                                        fontWeight: "bold",
+                                        padding: "2px",
+                                        fontSize: "10px",
+                                    }}
+                                >
+                                   {intl.formatMessage({id:"ReportDifference"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -149,7 +151,7 @@ const RoomCharge = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Буулгасан
+                                    {intl.formatMessage({id:"ReportCheckedInBy"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>

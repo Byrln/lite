@@ -17,23 +17,23 @@ const HotelSettingList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"RowHeaderHotelCode"}), 
-            key: "RowHeaderHotelCode",
-            dataIndex: "RowHeaderHotelCode",
+            key: "HotelCode",
+            dataIndex: "HotelCode",
         },
         {
             title: intl.formatMessage({id:"RowHeaderHotelName"}), 
-            key: "RowHeaderHotelName",
-            dataIndex: "RowHeaderHotelName",
+            key: "HotelName",
+            dataIndex: "HotelName",
         },
         {
             title: intl.formatMessage({id:"TextRoomCount"}), 
-            key: "TextRoomCount",
-            dataIndex: "TextRoomCount",
+            key: "RoomCount",
+            dataIndex: "RoomCount",
         },
         {
             title: intl.formatMessage({id:"TextPMSStart"}), 
-            key: "TextPMSStart",
-            dataIndex: "TextPMSStart",
+            key: "PMSStart",
+            dataIndex: "PMSStart",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -47,8 +47,8 @@ const HotelSettingList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"TextPMSEnd"}), 
-            key: "TextPMSEnd",
-            dataIndex: "TextPMSEnd",
+            key: "PMSEnd",
+            dataIndex: "PMSEnd",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -62,8 +62,8 @@ const HotelSettingList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"TextBookingEngine"}), 
-            key: "TextBookingEngine",
-            dataIndex: "TextBookingEngine",
+            key: "BookingEngine",
+            dataIndex: "BookingEngine",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -77,8 +77,8 @@ const HotelSettingList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"TextCommission"}), 
-            key: "TextCommission",
-            dataIndex: "TextCommission",
+            key: "RoomChargeDuration",
+            dataIndex: "RoomChargeDuration",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -89,8 +89,8 @@ const HotelSettingList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderPackageName"}), 
-            key: "RowHeaderPackageName",
-            dataIndex: "RowHeaderPackageName",
+            key: "EditionName",
+            dataIndex: "EditionName",
         },
     ];
     

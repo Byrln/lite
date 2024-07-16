@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -13,6 +14,7 @@ import { formatPrice } from "lib/utils/helpers";
 import { ReportAPI } from "lib/api/report";
 
 const Summary = ({ sessionId }: any) => {
+    const intl = useIntl();
     const [summaryData, setSummaryData]: any = useState();
     const [summaryGroupedData, setSummaryGroupedData]: any = useState();
 
@@ -48,7 +50,7 @@ const Summary = ({ sessionId }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Төлбөрийн хураангуй :
+                     {intl.formatMessage({id:"ReportPaymentSummary"}) }
                 </span>
             </Typography>
 
@@ -64,7 +66,7 @@ const Summary = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Хэрэглэгч
+                                   {intl.formatMessage({id:"ConfigUser"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -73,7 +75,7 @@ const Summary = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Төлбөрийн хэлбэр
+                                    {intl.formatMessage({id:"ConfigPaymentMethod"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -82,7 +84,7 @@ const Summary = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Валют
+                                    {intl.formatMessage({id:"ReportCurrency"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -92,7 +94,7 @@ const Summary = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Дүн
+                                 {intl.formatMessage({id:"ReportAmount"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -165,7 +167,7 @@ const Summary = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Төлбөрийн хэлбэр
+                                    {intl.formatMessage({id:"ConfigPaymentMethod"}) }
                                 </TableCell>
 
                                 <TableCell
@@ -176,7 +178,7 @@ const Summary = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Дүн
+                                     {intl.formatMessage({id:"ReportAmount"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -242,7 +244,7 @@ const Summary = ({ sessionId }: any) => {
                                         fontWeight: "bold",
                                     }}
                                 >
-                                    Нийт :
+                                    {intl.formatMessage({id:"ReportSum"}) }
                                 </TableCell>
 
                                 <TableCell

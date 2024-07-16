@@ -15,13 +15,13 @@ const CustomerGroupList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"RowHeaderGroupName"}), 
-            key: "RowHeaderGroupName",
-            dataIndex: "RowHeaderGroupName",
+            key: "CustomerGroupName",
+            dataIndex: "CustomerGroupName",
         },
         {
             title: intl.formatMessage({id:"ReportStatus"}), 
-            key: "ReportStatus",
-            dataIndex: "ReportStatus",
+            key: "Status",
+            dataIndex: "Status",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

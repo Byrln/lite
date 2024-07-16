@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -12,6 +13,7 @@ import { ReportAPI } from "lib/api/report";
 import { formatPrice } from "lib/utils/helpers";
 
 const RoomCharge = ({ search, rerenderKey }: any) => {
+    const intl = useIntl();
     const [roomChargeData, setRoomChargeData]: any = useState(null);
 
     useEffect(() => {
@@ -34,7 +36,7 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Өрөөний тооцоо :
+                    {intl.formatMessage({id:"ReportRoomCharge"}) }
                 </span>
             </Typography>
 
@@ -48,7 +50,7 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Өрөө/төрөл
+                          {intl.formatMessage({id:"ReportRoomAndType"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -57,7 +59,7 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Нийт
+                             {intl.formatMessage({id:"ReportSum"}) }
                         </TableCell>
                         <TableCell
                             align="center"
@@ -67,7 +69,7 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Тооц.№
+                            {intl.formatMessage({id:"ReportFolioNo"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -76,7 +78,7 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Зочны нэр
+                            {intl.formatMessage({id:"Left_SortByGuestName"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -85,7 +87,7 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Компани
+                           {intl.formatMessage({id:"ReportCompany"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -94,17 +96,7 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Тариф.төр
-                        </TableCell>
-                        <TableCell
-                            align="right"
-                            style={{
-                                fontWeight: "bold",
-                                padding: "2px",
-                                fontSize: "10px",
-                            }}
-                        >
-                            Үндсэн тариф
+                            {intl.formatMessage({id:"ReportRateType"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -114,7 +106,7 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Санал болгосон
+                            {intl.formatMessage({id:"ReportNormalRate"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -124,7 +116,17 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Зөрүү
+                            {intl.formatMessage({id:"ReportOfferedRate"}) }
+                        </TableCell>
+                        <TableCell
+                            align="right"
+                            style={{
+                                fontWeight: "bold",
+                                padding: "2px",
+                                fontSize: "10px",
+                            }}
+                        >
+                           {intl.formatMessage({id:"ReportDifference"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -133,7 +135,7 @@ const RoomCharge = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Буулгасан
+                           {intl.formatMessage({id:"ReportCheckedInBy"}) }
                         </TableCell>
                     </TableRow>
                 </TableHead>

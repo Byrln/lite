@@ -1,5 +1,7 @@
+
 import { useState, useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useIntl } from "react-intl";
 import {
     FormControlLabel,
     TextField,
@@ -8,7 +10,6 @@ import {
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import * as yup from "yup";
-import { useIntl } from "react-intl";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
@@ -140,7 +141,7 @@ const NewEdit = () => {
                         fullWidth
                         id="RateTypeCode"
                         label={intl.formatMessage({id:"RowHeaderShortCode"}) }
-                        {...register("RowHeaderShortCode")}
+                        {...register("RateTypeCode")}
                         margin="dense"
                         error={errors.RateTypeCode?.message}
                         helperText={errors.RateTypeCode?.message}
@@ -150,9 +151,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="TextFirstName"
+                        id="RateTypeName"
                         label={intl.formatMessage({id:"TextFirstName"}) }
-                        {...register("TextFirstName")}
+                        {...register("RateTypeName")}
                         margin="dense"
                         error={errors.RateTypeName?.message}
                         helperText={errors.RateTypeName?.message}
@@ -163,9 +164,7 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         type="ReservationChannel"
-                        id="RowHeaderChannel"
                         label={intl.formatMessage({id:"RowHeaderChannel"}) }
-                        {...register("RowHeaderChannel")}
                         optionValue="ChannelID"
                         optionLabel="ChannelName"
                     />
@@ -197,9 +196,7 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                id="BreakfastIncluded"
-                label={intl.formatMessage({id:"BreakfastIncluded"}) }
-                {...register("BreakfastIncluded")}
+                label="Өглөөний цайтай эсэх"
             />
 
             <FormControlLabel
@@ -218,7 +215,8 @@ const NewEdit = () => {
                         )}
                     />
                 }
-                label={ "Өрөөний тариф нь" +
+                label={
+                    "Өрөөний тариф нь" +
                     " " +
                     (data &&
                         data.map((item: any) => {

@@ -20,18 +20,18 @@ const UserRoleList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"RowHeaderShortCode"}), 
-            key: "RowHeaderShortCode",
-            dataIndex: "RowHeaderShortCode",
+            key: "UserRoleShortName",
+            dataIndex: "UserRoleShortName",
         },
         {
             title: intl.formatMessage({id:"ConfigUserRole"}), 
-            key: "ConfigUserRole",
-            dataIndex: "ConfigUserRole",
+            key: "UserRoleName",
+            dataIndex: "UserRoleName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderDescription"}), 
-            key: "RowHeaderDescription",
-            dataIndex: "RowHeaderDescription",
+            key: "Description",
+            dataIndex: "Description",
         },
         {
             title: intl.formatMessage({id:"ReportStatus"}), 

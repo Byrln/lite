@@ -36,13 +36,13 @@ const CashierList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"TitleCashier"}), 
-            key: "TitleCashier",
-            dataIndex: "TitleCashier",
+            key: "UserName",
+            dataIndex: "UserName",
         },
         {
             title: intl.formatMessage({id:"TStartDate"}), 
-            key: "TStartDate",
-            dataIndex: "TStartDate",
+            key: "StartDate",
+            dataIndex: "StartDate",
             render: function render(id: any, value: any) {
                 return (
                     value &&
@@ -77,23 +77,23 @@ const CashierList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"ReportQuickReview"}), 
-            key: "ReportQuickReview",
-            dataIndex: "ReportQuickReview",
+            key: "name",
+            dataIndex: "name",
         },
         {
             title: intl.formatMessage({id:"RowHeaderNoOfTransaction"}), 
-            key: "RowHeaderNoOfTransaction",
-            dataIndex: "RowHeaderNoOfTransaction",
+            key: "CountTrans",
+            dataIndex: "CountTrans",
         },
         {
             title: intl.formatMessage({id:"ReportAmount"}), 
-            key: "ReportAmount",
-            dataIndex: "ReportAmount",
+            key: "Amount",
+            dataIndex: "Amount",
         },
         {
             title: intl.formatMessage({id:"ReportAmount"}), 
-            key: "ReportAmount",
-            dataIndex: "ReportAmount",
+            key: "TotalAmount",
+            dataIndex: "TotalAmount",
         },
     ];
     
@@ -105,8 +105,8 @@ const CashierList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderDateTime"}), 
-            key: "RowHeaderDateTime",
-            dataIndex: "RowHeaderDateTime",
+            key: "CurrDateTime",
+            dataIndex: "CurrDateTime",
             render: function render(id: any, value: any) {
                 return (
                     value &&
@@ -119,21 +119,21 @@ const CashierList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderRoomandType"}), 
-            key: "RowHeaderRoomandType",
-            dataIndex: "RowHeaderRoomandType",
+            key: "RoomName",
+            dataIndex: "RoomName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderGuestName"}), 
-            key: "RowHeaderGuestName",
-            dataIndex: "RowHeaderGuestName",
+            key: "GuestName",
+            dataIndex: "GuestName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderNote"}), 
-            key: "RowHeaderNote",
-            dataIndex: "RowHeaderNote",
+            key: "Description",
+            dataIndex: "Description",
         },
         {
-            title: "",
+            title: intl.formatMessage({id:"AmountCalculated"}), 
             key: "AmountCalculated",
             dataIndex: "AmountCalculated",
             render: function render(id: any, value: any, entity: any) {

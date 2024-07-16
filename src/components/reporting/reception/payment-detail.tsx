@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -14,6 +15,7 @@ import moment from "moment";
 import { ReportAPI } from "lib/api/report";
 
 const PaymentDetail = ({ sessionId }: any) => {
+    const intl = useIntl();
     const [data, setData]: any = useState();
     const [groupedData, setGroupedData]: any = useState();
 
@@ -49,7 +51,7 @@ const PaymentDetail = ({ sessionId }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Тооцооны хуудас :
+                   {intl.formatMessage({id:"ReportReceiptDetails"}) }
                 </span>
             </Typography>
 
@@ -65,7 +67,7 @@ const PaymentDetail = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Өрөө/төрөл
+                                  {intl.formatMessage({id:"ReportRoomAndType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -74,7 +76,7 @@ const PaymentDetail = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Зочны нэр
+                                    {intl.formatMessage({id:"ReportGuestName"}) }
                                 </TableCell>
                                 <TableCell
                                     align="center"
@@ -84,7 +86,7 @@ const PaymentDetail = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Тооц.№
+                                   {intl.formatMessage({id:"ReportFolioNo"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -94,7 +96,7 @@ const PaymentDetail = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Дүн
+                                   {intl.formatMessage({id:"ReportAmount"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -103,7 +105,7 @@ const PaymentDetail = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Дүн (Бусад)
+                                   {intl.formatMessage({id:"ReportAmountOther"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -112,7 +114,7 @@ const PaymentDetail = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Төлбөрийн хэлбэр
+                                  {intl.formatMessage({id:"ConfigPaymentMethod"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -121,7 +123,7 @@ const PaymentDetail = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Хэрэглэгч
+                                   {intl.formatMessage({id:"ConfigUser"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -130,7 +132,7 @@ const PaymentDetail = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Оруулсан
+                                   {intl.formatMessage({id:"TextEntered"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>

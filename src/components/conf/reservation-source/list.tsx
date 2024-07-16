@@ -26,23 +26,23 @@ const ReservationSourceList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"ConfigReservationSource"}), 
-            key: "ConfigReservationSource",
-            dataIndex: "ConfigReservationSource",
+            key: "ReservationSourceName",
+            dataIndex: "ReservationSourceName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderChannel"}), 
-            key: "RowHeaderChannel",
-            dataIndex: "RowHeaderChannel",
+            key: "ChannelName",
+            dataIndex: "ChannelName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderUserName"}), 
-            key: "RowHeaderUserName",
-            dataIndex: "RowHeaderUserName",
+            key: "UserName",
+            dataIndex: "UserName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderChangedDate"}), 
-            key: "RowHeaderChangedDate",
-            dataIndex: "RowHeaderChangedDate",
+            key: "CreatedDate",
+            dataIndex: "CreatedDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -56,13 +56,13 @@ const ReservationSourceList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderIPAddress"}), 
-            key: "RowHeaderIPAddress",
-            dataIndex: "RowHeaderIPAddress",
+            key: "IPAddress",
+            dataIndex: "IPAddress",
         },
         {
             title: intl.formatMessage({id:"ReportStatus"}), 
-            key: "ReportStatus",
-            dataIndex: "ReportStatus",
+            key: "Status",
+            dataIndex: "Status",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -78,8 +78,8 @@ const ReservationSourceList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderAdditionalAction"}), 
-            key: "RowHeaderAdditionalAction",
-            dataIndex: "RowHeaderAdditionalAction",
+            key: "Action",
+            dataIndex: "Action",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return element.row.ChannelID == 2 ? (

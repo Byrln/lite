@@ -1,5 +1,5 @@
 import { TextField, Grid } from "@mui/material";
-
+import { useIntl } from "react-intl";
 import { Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
@@ -14,6 +14,8 @@ const Search = ({
     ArrivalTime,
     DepartureTime,
 }: any) => {
+    const intl = useIntl();
+
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
@@ -23,7 +25,7 @@ const Search = ({
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-                            label="Огноо"
+                        label={intl.formatMessage({id:"RowHeaderStarDate"}) }
                             value={value}
                             onChange={(value) =>
                                 onChange(moment(value, "YYYY-MM-DD"))

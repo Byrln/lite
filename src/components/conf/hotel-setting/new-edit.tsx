@@ -55,9 +55,9 @@ const NewEdit = () => {
                                 <TextField
                                     size="small"
                                     fullWidth
-                                    id="RowHeaderHotelCode"
+                                    id="HotelCode"
                                     label={intl.formatMessage({id:"RowHeaderHotelCode"}) }
-                                    {...register("RowHeaderHotelCode")}            
+                                    {...register("HotelCode")}            
                                     margin="dense"
                                     error={errors.HotelCode?.message}
                                     helperText={errors.HotelCode?.message}
@@ -68,9 +68,9 @@ const NewEdit = () => {
                                 <TextField
                                     size="small"
                                     fullWidth
-                                    id="RowHeaderHotelName"
+                                    id="HotelName"
                                     label={intl.formatMessage({id:"RowHeaderHotelName"}) }
-                                    {...register("RowHeaderHotelCode")}    
+                                    {...register("HotelName")}    
                                     margin="dense"
                                     error={errors.HotelName?.message}
                                     helperText={errors.HotelName?.message}

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -28,6 +29,7 @@ import CustomSearch from "components/common/custom-search";
 import Search from "./search";
 
 const ChargeByReception = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [year, setYear] = useState(moment(workingDate).year());
     const [month, setMonth] = useState(moment(workingDate).month() + 1);
@@ -108,7 +110,7 @@ const ChargeByReception = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                    { intl.formatMessage({id:"ButtonPrint"}) } 
                 </Button>
 
                 <CustomSearch
@@ -150,7 +152,7 @@ const ChargeByReception = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Эх.Хугацаа :{" "}
+                                { intl.formatMessage({id:"TextStartDate"}) } 
                             </span>{" "}
                             {moment(search.CurrDate)
                                 .startOf("month")
@@ -165,7 +167,7 @@ const ChargeByReception = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Дуус.Хугацаа :{" "}
+                                { intl.formatMessage({id:"TextEndDate"}) } 
                             </span>{" "}
                             {moment(search.CurrDate)
                                 .endOf("month")
@@ -382,7 +384,7 @@ const ChargeByReception = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                { intl.formatMessage({id:"ReportPrinted"}) } 
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -397,7 +399,7 @@ const ChargeByReception = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                { intl.formatMessage({id:"DateToPrinted"}) } 
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

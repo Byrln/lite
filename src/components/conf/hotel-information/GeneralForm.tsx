@@ -102,9 +102,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="MsgHotelName"                      
+                            id="HotelName"                      
                             label={intl.formatMessage({id:"MsgHotelName"}) }
-                            {...register("MsgHotelName")}
+                            {...register("HotelName")}
                             margin="dense"
                             error={errors.HotelName?.message}
                             helperText={errors.HotelName?.message}
@@ -112,9 +112,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="TextCompanyName"                      
+                            id="CompanyName"                      
                             label={intl.formatMessage({id:"TextCompanyName"}) }
-                            {...register("TextCompanyName")}
+                            {...register("CompanyName")}
                             margin="dense"
                             error={errors.CompanyName?.message}
                             helperText={errors.CompanyName?.message}
@@ -122,9 +122,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="TextRegisterNo"                      
+                            id="RegistryNo"                      
                             label={intl.formatMessage({id:"TextRegisterNo"}) }
-                            {...register("TextRegisterNo")}
+                            {...register("RegistryNo")}
                             margin="dense"
                             error={errors.RegistryNo?.message}
                             helperText={errors.RegistryNo?.message}
@@ -132,9 +132,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="RowHeaderReceptionPhone"                      
+                            id="ReceptionPhone"                      
                             label={intl.formatMessage({id:"RowHeaderReceptionPhone"}) }
-                            {...register("RowHeaderReceptionPhone")}
+                            {...register("ReceptionPhone")}
                             margin="dense"
                             error={errors.ReceptionPhone?.message}
                             helperText={errors.ReceptionPhone?.message}
@@ -144,9 +144,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="TextAddress1"                      
+                            id="Address1"                      
                             label={intl.formatMessage({id:"TextAddress1"}) }
-                            {...register("TextAddress1")}
+                            {...register("Address1")}
                             margin="dense"
                             error={errors.Address1?.message}
                             helperText={errors.Address1?.message}
@@ -154,9 +154,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="TextAddress2"                      
+                            id="Address2"                      
                             label={intl.formatMessage({id:"TextAddress2"}) }
-                            {...register("TextAddress2")}
+                            {...register("Address2")}
                             margin="dense"
                             error={errors.Address2?.message}
                             helperText={errors.Address2?.message}
@@ -164,9 +164,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="TextCity"                      
+                            id="City"                      
                             label={intl.formatMessage({id:"TextCity"}) }
-                            {...register("TextCity")}
+                            {...register("City")}
                             margin="dense"
                             error={errors.City?.message}
                             helperText={errors.City?.message}
@@ -174,9 +174,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="District/Province"                      
+                            id="State"                      
                             label={intl.formatMessage({id:"District/Province"}) }
-                            {...register("District/Province")}
+                            {...register("State")}
                             margin="dense"
                             error={errors.State?.message}
                             helperText={errors.State?.message}
@@ -205,9 +205,9 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="ReportEmail"                      
+                            id="ReserveEmail"                      
                             label={intl.formatMessage({id:"ReportEmail"}) }
-                            {...register("ReportEmail")}
+                            {...register("ReserveEmail")}
                             margin="dense"
                             error={errors.ReserveEmail?.message}
                             helperText={errors.ReserveEmail?.message}

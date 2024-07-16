@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import moment from "moment";
+
+import { useIntl } from "react-intl";
 import {
     Typography,
     Grid,
@@ -26,6 +28,7 @@ import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
 
 const Breakfast = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [reportData, setReportData]: any = useState(null);
@@ -110,7 +113,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                     {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -144,13 +147,13 @@ const Breakfast = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            Өглөөний цай
+                            {intl.formatMessage({id:"TextBreakfast"}) }
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            {intl.formatMessage({id:"ReportingPeriod"}) }
                         </span>{" "}
                         (
                         {search.StartDate &&
@@ -183,25 +186,25 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Огноо
+                                         {intl.formatMessage({id:"ReportActionDate"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Нийт өрөө
+                                          {intl.formatMessage({id:"ReportTotalRooms"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Нийт зочин
+                                       {intl.formatMessage({id:"TotalGuest"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Өглөөний цайтай
+                                        {intl.formatMessage({id:"BreakfastIsAvailable"}) }
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -270,7 +273,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -285,7 +288,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

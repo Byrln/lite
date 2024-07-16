@@ -121,9 +121,9 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="TextHotelDescription"                     
+                            id="DescriptionBooking"                     
                              label={intl.formatMessage({id:"TextHotelDescription"}) }
-                        {...register("TextHotelDescription")}
+                        {...register("DescriptionBooking")}
                             margin="dense"
                             error={errors.DescriptionBooking?.message}
                             helperText={errors.DescriptionBooking?.message}
@@ -134,9 +134,9 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="TextHotelPolicy"                     
+                            id="HotelPolicyBooking"                     
                             label={intl.formatMessage({id:"TextHotelPolicy"}) }
-                       {...register("TextHotelPolicy")}
+                       {...register("HotelPolicyBooking")}
                             margin="dense"
                             error={errors.HotelPolicyBooking?.message}
                             helperText={errors.HotelPolicyBooking?.message}
@@ -146,9 +146,9 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="TextCancelPolicy"                     
+                            id="CancelPolicyBooking"                     
                             label={intl.formatMessage({id:"TextCancelPolicy"}) }
-                       {...register("TextCancelPolicy")}
+                       {...register("CancelPolicyBooking")}
                             margin="dense"
                             error={errors.CancelPolicyBooking?.message}
                             helperText={errors.CancelPolicyBooking?.message}

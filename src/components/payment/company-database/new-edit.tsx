@@ -65,9 +65,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="RowHeaderCompanyName"
+                                id="Company Name"
                                 label={intl.formatMessage({id:"RowHeaderCompanyName"}) }
-                                {...register("RowHeaderCompanyName")}
+                                {...register("Company Name")}
         
                                 margin="dense"
                                 error={errors.CustomerName?.message}
@@ -87,9 +87,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="TextCity"
+                                id="City"
                                 label={intl.formatMessage({id:"TextCity"}) }
-                                {...register("TextCity")}  
+                                {...register("City")}  
                                 margin="dense"
                                 error={errors.City?.message}
                                 helperText={errors.City?.message}
@@ -100,9 +100,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="TextRegisterNo"
+                                id="RegisterNo"
                                 label={intl.formatMessage({id:"TextRegisterNo"}) }
-                                {...register("TextRegisterNo")}    
+                                {...register("RegisterNo")}    
                                 margin="dense"
                                 error={errors.RegisterNo?.message}
                                 helperText={errors.RegisterNo?.message}
@@ -112,9 +112,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="ReportPhone"
+                                id="Phone"
                                 label={intl.formatMessage({id:"ReportPhone"}) }
-                                {...register("ReportPhone")}    
+                                {...register("Phone")}    
                                 margin="dense"
                                 error={errors.Phone?.message}
                                 helperText={errors.Phone?.message}
@@ -124,9 +124,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="RowHeaderEmail"
+                                id="Email"
                                 label={intl.formatMessage({id:"RowHeaderEmail"}) }
-                                {...register("RowHeaderEmail")}    
+                                {...register("Email")}    
                                 margin="dense"
                                 error={errors.Email?.message}
                                 helperText={errors.Email?.message}
@@ -154,9 +154,9 @@ const NewEdit = () => {
                                 fullWidth
                                 multiline
                                 rows={3}
-                                id="ReportAddress"
+                                id="Address"
                                 label={intl.formatMessage({id:"ReportAddress"}) }
-                                {...register("ReportAddress")}   
+                                {...register("Address")}   
                                 margin="dense"
                                 error={errors.Address?.message}
                                 helperText={errors.Address?.message}
@@ -182,9 +182,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="RowHeaderFirstName"
+                                        id="ContactPersonFirstName1"
                                         label={intl.formatMessage({id:"RowHeaderFirstName"}) }
-                                        {...register("RowHeaderFirstName")}   
+                                        {...register("ContactPersonFirstName1")}   
                                         margin="dense"
                                         error={
                                             errors.ContactPersonFirstName1
@@ -200,9 +200,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="RowHeaderLastName"
+                                        id="ContactPersonLastName1"
                                         label={intl.formatMessage({id:"RowHeaderLastName"}) }
-                                        {...register("RowHeaderLastName")}   
+                                        {...register("ContactPersonLastName1")}   
                                         margin="dense"
                                         error={
                                             errors.ContactPersonLastName1
@@ -218,9 +218,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="TextWorkPosition"
+                                        id="ContactPersonPosition1"
                                         label={intl.formatMessage({id:"TextWorkPosition"}) }
-                                        {...register("TextWorkPosition")}   
+                                        {...register("ContactPersonPosition1")}   
                                         margin="dense"
                                         error={
                                             errors.ContactPersonPosition1
@@ -236,9 +236,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ReportPhone"                                  
+                                        id="ContactPersonPhone1"                                  
                                         label={intl.formatMessage({id:"ReportPhone"}) }
-                                        {...register("ReportPhone")} 
+                                        {...register("ContactPersonPhone1")} 
                                         error={
                                             errors.ContactPersonPhone1?.message
                                         }
@@ -251,9 +251,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="RowHeaderEmail"                                  
+                                        id="ContactPersonEmail1"                                  
                                         label={intl.formatMessage({id:"RowHeaderEmail"}) }
-                                        {...register("RowHeaderEmail")} 
+                                        {...register("ContactPersonEmail1")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonEmail1?.message
@@ -280,9 +280,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="RowHeaderFirstName"                                  
+                                        id="ContactPersonFirstName2"                                  
                                         label={intl.formatMessage({id:"RowHeaderFirstName"}) }
-                                        {...register("RowHeaderFirstName")} 
+                                        {...register("ContactPersonFirstName2")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonFirstName2
@@ -298,9 +298,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="RowHeaderLastName"                                  
+                                        id="ContactPersonLastName2"                                  
                                         label={intl.formatMessage({id:"RowHeaderLastName"}) }
-                                        {...register("RowHeaderLastName")} 
+                                        {...register("ContactPersonLastName2")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonLastName2
@@ -316,9 +316,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="TextWorkPosition"                                  
+                                        id="ContactPersonPosition2"                                  
                                         label={intl.formatMessage({id:"TextWorkPosition"}) }
-                                        {...register("TextWorkPosition")} 
+                                        {...register("ContactPersonPosition2")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonPosition2
@@ -334,9 +334,9 @@ const NewEdit = () => {
                                     <TextField
                                         size="small"
                                         fullWidth
-                                        id="ReportPhone"                                  
+                                        id="ContactPersonPhone2"                                  
                                         label={intl.formatMessage({id:"ReportPhone"}) }
-                                        {...register("ReportPhone")} 
+                                        {...register("ContactPersonPhone2")} 
                                         margin="dense"
                                         error={
                                             errors.ContactPersonPhone2?.message

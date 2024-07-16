@@ -65,8 +65,8 @@ const RateList = ({ title, taxData }: any) => {
         },
         {
             title: intl.formatMessage({id:"ConfigRoomType"}), 
-            key: "ConfigRoomType",
-            dataIndex: "ConfigRoomType",
+            key: "RateTypeName",
+            dataIndex: "RateTypeName",
         },
         {
             title: intl.formatMessage({id:"RoomTypeName"}), 
@@ -84,13 +84,13 @@ const RateList = ({ title, taxData }: any) => {
         },
         {
             title: intl.formatMessage({id:"ReportCompany"}), 
-            key: "ReportCompany",
-            dataIndex: "ReportCompany",
+            key: "CustomerName",
+            dataIndex: "CustomerName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderDuration"}), 
-            key: "RowHeaderDuration",
-            dataIndex: "RowHeaderDuration",
+            key: "DurationName",
+            dataIndex: "DurationName",
         },
         {
             title: intl.formatMessage({id:"BaseRate"}), 
@@ -130,8 +130,8 @@ const RateList = ({ title, taxData }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderRateExtraAdult"}), 
-            key: "RowHeaderRateExtraAdult",
-            dataIndex: "RowHeaderRateExtraAdult",
+            key: "ExtraAdult",
+            dataIndex: "ExtraAdult",
             excelRenderPass: true,
 
             render: function render(
@@ -167,8 +167,8 @@ const RateList = ({ title, taxData }: any) => {
 
         {
             title: intl.formatMessage({id:"RowHeaderRateExtraChild"}), 
-            key: "RowHeaderRateExtraChild",
-            dataIndex: "RowHeaderRateExtraChild",
+            key: "ExtraChild",
+            dataIndex: "ExtraChild",
             excelRenderPass: true,
 
             render: function render(

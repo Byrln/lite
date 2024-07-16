@@ -164,9 +164,9 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="TextWorkOrderNo"
+                                id="WorkOrderNo"
                         label={intl.formatMessage({id:"TextWorkOrderNo"}) }
-                        {...register("TextWorkOrderNo")}
+                        {...register("WorkOrderNo")}
                                 margin="dense"
                                 error={errors.WorkOrderNo?.message}
                                 helperText={errors.WorkOrderNo?.message}
@@ -224,7 +224,7 @@ const NewEdit = () => {
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
                                 label={intl.formatMessage({id:"TextDeadline"}) }
-                                {...register("TextDeadline")}
+                                {...register("Deadline")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -264,9 +264,9 @@ const NewEdit = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="RowHeaderDescription"
+                            id="Description"
                                             label={intl.formatMessage({id:"RowHeaderDescription"}) }
-                                            {...register("RowHeaderDescription")}
+                                            {...register("Description")}
                             margin="dense"
                             error={errors.Description?.message}
                             helperText={errors.Description?.message}
@@ -321,9 +321,9 @@ const NewEdit = () => {
                                             renderInput={(params) => (
                                                 <TextField
                                                     size="small"
-                                                    id="RowHeaderBeginDate"
+                                                    id="BeginDate"
                                                     label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
-                                                    {...register("RowHeaderBeginDate")}
+                                                    {...register("BeginDate")}
                             
                                                     margin="dense"
                                                     fullWidth
@@ -352,7 +352,7 @@ const NewEdit = () => {
                                     }) => (
                                         <DatePicker
                                         label={intl.formatMessage({id:"RowHeaderEndDate"}) }
-                                        {...register("RowHeaderEndDate")}                
+                                        {...register("EndDate")}                
                                             value={value}
                                             onChange={(value) =>
                                                 onChange(
@@ -364,9 +364,9 @@ const NewEdit = () => {
                                             renderInput={(params) => (
                                                 <TextField
                                                     size="small"
-                                                    id="RowHeaderEndDate"
+                                                    id="EndDate"
                                                     label={intl.formatMessage({id:"RowHeaderEndDate"}) }
-                                                    {...register("RowHeaderEndDate")}                            
+                                                    {...register("EndDate")}                            
                                                     margin="dense"
                                                     fullWidth
                                                     {...params}

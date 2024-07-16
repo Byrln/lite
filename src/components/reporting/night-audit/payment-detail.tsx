@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -14,6 +15,7 @@ import { ReportAPI } from "lib/api/report";
 import { formatPrice } from "lib/utils/helpers";
 
 const PaymentDetail = ({ search, rerenderKey }: any) => {
+    const intl = useIntl();
     const [PaymentDetailData, setPaymentDetailData]: any = useState(null);
 
     useEffect(() => {
@@ -35,7 +37,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Тооцооны хуудас :
+                    {intl.formatMessage({id:"ReportReceiptDetails"}) }
                 </span>
             </Typography>
 
@@ -49,7 +51,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Өрөө/төрөл
+                           {intl.formatMessage({id:"ReportRoomAndType"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -58,7 +60,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Зочны нэр
+                           {intl.formatMessage({id:"ReportGuestName"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -68,7 +70,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                             }}
                             align="center"
                         >
-                            Тооц.№
+                            {intl.formatMessage({id:"ReportFolioNo"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -78,7 +80,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Дүн
+                          {intl.formatMessage({id:"ReportAmount"}) }
                         </TableCell>
                         <TableCell
                             align="right"
@@ -88,7 +90,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Дүн (бусад)
+                            {intl.formatMessage({id:"ReportAmountOther"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -97,7 +99,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Төлбөрийн хэлбэр
+                            {intl.formatMessage({id:"ConfigPaymentMethod"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -106,7 +108,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Хэрэглэгч
+                          {intl.formatMessage({id:"ConfigUser"}) }
                         </TableCell>
                         <TableCell
                             style={{
@@ -115,7 +117,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                                 fontSize: "10px",
                             }}
                         >
-                            Оруулсан
+                            {intl.formatMessage({id:"TextEntered"}) }
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -237,7 +239,7 @@ const PaymentDetail = ({ search, rerenderKey }: any) => {
                             }}
                             colSpan={3}
                         >
-                            Нийт :
+                           {intl.formatMessage({id:"ReportTotal"}) }
                         </TableCell>
                         <TableCell
                             component="th"

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -14,6 +15,7 @@ import moment from "moment";
 import { ReportAPI } from "lib/api/report";
 
 const CheckedOut = ({ sessionId }: any) => {
+    const intl = useIntl();
     const [data, setData]: any = useState();
     const [groupedData, setGroupedData]: any = useState();
 
@@ -49,7 +51,7 @@ const CheckedOut = ({ sessionId }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Гарсан :
+                     {intl.formatMessage({id:"ReportCheckedOut"}) }
                 </span>
             </Typography>
 
@@ -65,7 +67,7 @@ const CheckedOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Өрөө/төрөл
+                                   {intl.formatMessage({id:"ReportRoomAndType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -74,7 +76,7 @@ const CheckedOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Зочны нэр
+                                    {intl.formatMessage({id:"Left_SortByGuestName"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -83,7 +85,7 @@ const CheckedOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Ирэх өдөр
+                                   {intl.formatMessage({id:"ReportArrivalDate"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -92,17 +94,7 @@ const CheckedOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Гарах өдөр
-                                </TableCell>
-                                <TableCell
-                                    align="right"
-                                    style={{
-                                        fontWeight: "bold",
-                                        padding: "2px",
-                                        fontSize: "10px",
-                                    }}
-                                >
-                                    Хоног
+                                  {intl.formatMessage({id:"ReportDepartureDate"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -112,7 +104,7 @@ const CheckedOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Өрөөний тооцоо
+                                   {intl.formatMessage({id:"ReportNights"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -122,17 +114,7 @@ const CheckedOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Нэмэлт тооцоо
-                                </TableCell>
-                                <TableCell
-                                    style={{
-                                        fontWeight: "bold",
-                                        padding: "2px",
-                                        fontSize: "10px",
-                                    }}
-                                    align="right"
-                                >
-                                    Хөнгөлөлт
+                                   {intl.formatMessage({id:"ReportRoomCharge"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -142,7 +124,17 @@ const CheckedOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Төлсөн
+                                    {intl.formatMessage({id:"ConfigExtraCharges"}) }
+                                </TableCell>
+                                <TableCell
+                                    style={{
+                                        fontWeight: "bold",
+                                        padding: "2px",
+                                        fontSize: "10px",
+                                    }}
+                                    align="right"
+                                >
+                                   {intl.formatMessage({id:"ReportDiscount"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -152,7 +144,17 @@ const CheckedOut = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Үлдэгдэл
+                                  {intl.formatMessage({id:"ReportPaid"}) }
+                                </TableCell>
+                                <TableCell
+                                    align="right"
+                                    style={{
+                                        fontWeight: "bold",
+                                        padding: "2px",
+                                        fontSize: "10px",
+                                    }}
+                                >
+                                   {intl.formatMessage({id:"StayView_LabelBalance"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -160,8 +162,7 @@ const CheckedOut = ({ sessionId }: any) => {
                                         padding: "2px",
                                         fontSize: "10px",
                                     }}
-                                >
-                                    Гаргасан
+                                > {intl.formatMessage({id:"ReportCheckedOutBy"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -332,7 +333,7 @@ const CheckedOut = ({ sessionId }: any) => {
                                         fontWeight: "bold",
                                     }}
                                 >
-                                    Нийт:
+                                    {intl.formatMessage({id:"ReportSum"}) }
                                 </TableCell>
                                 <TableCell
                                     component="th"

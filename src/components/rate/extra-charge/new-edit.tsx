@@ -8,7 +8,7 @@ import NewEditForm from "components/common/new-edit-form";
 import { ChargeTypeAPI, listUrl } from "lib/api/charge-type";
 import ChargeTypeGroupSelect from "components/select/charge-type-group";
 import { useAppState } from "lib/context/app";
-
+import { useIntl } from "react-intl";
 const validationSchema = yup.object().shape({
     RoomChargeTypeGroupID: yup
         .number()
@@ -25,6 +25,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -60,7 +61,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="RoomChargeTypeName"
-                        label="Нэр"
+                        label={intl.formatMessage({id:"RowHeaderFirstName"}) }
                         {...register("RoomChargeTypeName")}
                         margin="dense"
                         error={errors.RoomChargeTypeName?.message}
@@ -73,7 +74,7 @@ const NewEdit = () => {
                         type="number"
                         fullWidth
                         id="RoomChargeTypeRate"
-                        label="Үнийн дүн"
+                        label={intl.formatMessage({id:"RoomChargeTypeRate"}) }
                         {...register("RoomChargeTypeRate")}
                         margin="dense"
                         error={errors.RoomChargeTypeRate?.message}
@@ -86,7 +87,7 @@ const NewEdit = () => {
                         type="number"
                         fullWidth
                         id="SortOrder"
-                        label="Дараалал"
+                        label={intl.formatMessage({id:"SortOrder"}) }
                         {...register("SortOrder")}
                         margin="dense"
                         error={errors.SortOrder?.message}

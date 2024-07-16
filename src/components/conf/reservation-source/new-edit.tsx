@@ -47,9 +47,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="ConfigReservationSource"
+                        id="ReservationSourceName"
                         label={intl.formatMessage({id:"ConfigReservationSource"}) }
-                        {...register("ConfigReservationSource")}
+                        {...register("ReservationSourceName")}
                         margin="dense"
                         error={errors.ReservationSourceName?.message}
                         helperText={errors.ReservationSourceName?.message}

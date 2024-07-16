@@ -49,9 +49,9 @@ const NewEdit = ({ entity }: any) => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="RowHeaderFirstName"
+                        id="PaymentMethodName"
                         label={intl.formatMessage({id:"RowHeaderFirstName"}) }
-                        {...register("RowHeaderFirstName")}
+                        {...register("PaymentMethodName")}
                         margin="dense"
                         error={errors.PaymentMethodName?.message}
                         helperText={errors.PaymentMethodName?.message}

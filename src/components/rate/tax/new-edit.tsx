@@ -50,9 +50,9 @@ const NewEdit = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="RowHeaderTaxCode"
+                            id="TaxCode"
                             label={intl.formatMessage({id:"RowHeaderTaxCode"}) }
-                            {...register("RowHeaderTaxCode")}
+                            {...register("TaxCode")}
                             margin="dense"
                             error={errors.TaxCode?.message}
                             helperText={errors.TaxCode?.message}
@@ -62,9 +62,9 @@ const NewEdit = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="RowHeaderTaxName"
+                            id="TaxName"
                             label={intl.formatMessage({id:"RowHeaderTaxName"}) }
-                            {...register("RowHeaderTaxName")}
+                            {...register("TaxName")}
                             margin="dense"
                             error={errors.TaxName?.message}
                             helperText={errors.TaxName?.message}
@@ -75,9 +75,9 @@ const NewEdit = () => {
                             size="small"
                             type="number"
                             fullWidth
-                            id="ReportAmount"
+                            id="TaxAmount"
                             label={intl.formatMessage({id:"ReportAmount"}) }
-                            {...register("ReportAmount")}
+                            {...register("TaxAmount")}
                             margin="dense"
                             error={errors.TaxAmount?.message}
                             helperText={errors.TaxAmount?.message}
@@ -91,7 +91,7 @@ const NewEdit = () => {
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker                       
                                 label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
-                                {...register("RowHeaderBeginDate")}
+                                {...register("BeginDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -131,7 +131,7 @@ const NewEdit = () => {
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
                                 label={intl.formatMessage({id:"RowHeaderEndDate"}) }
-                                {...register("RowHeaderEndDate")}
+                                {...register("EndDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import moment from "moment";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Grid,
@@ -26,6 +27,7 @@ import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
 
 const Breakfast = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [mandatoryData, setMandatoryData]: any = useState(null);
@@ -193,7 +195,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                    { intl.formatMessage({id:"ButtonPrint"}) } 
                 </Button>
 
                 <CustomSearch
@@ -227,13 +229,13 @@ const Breakfast = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            Өглөөний цайнд орох зочид
+                          { intl.formatMessage({id:"ReportGuestforBreakfast"}) } 
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            { intl.formatMessage({id:"ButtonReport"}) } 
                         </span>{" "}
                         {search.CurrDate &&
                             moment(search.CurrDate, "YYYY.MM.DD").format(
@@ -249,7 +251,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                         marginBottom: "12px",
                     }}
                 >
-                    Өдөр:
+                    { intl.formatMessage({id:"RowHeaderDate"}) } 
                 </div>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -269,32 +271,32 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Байгууллага
+                                    { intl.formatMessage({id:"TextOrganization"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Нэр
+                                         { intl.formatMessage({id:"RowHeaderName"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Улс
+                                         { intl.formatMessage({id:"ReportCountry"}) } 
                                     </TableCell>
 
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Өрөө
+                                         { intl.formatMessage({id:"Left_SortByRoom"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Ө.Ц тоо
+                                        { intl.formatMessage({id:"MenuNumber"}) } 
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -431,7 +433,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                     align="right"
                                                     colSpan={1}
                                                 >
-                                                    Өрөө:{" "}
+                                                  { intl.formatMessage({id:"ConfigRooms"}) } 
                                                     {mandatoryData &&
                                                         mandatoryData[key] &&
                                                         mandatoryData[key][0] &&
@@ -450,7 +452,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                     align="right"
                                                     colSpan={1}
                                                 >
-                                                    Зочин:{" "}
+                                                  {intl.formatMessage({id:"RowHeaderGuest"}) }
                                                     {mandatoryData &&
                                                         mandatoryData[key] &&
                                                         mandatoryData[key][0] &&
@@ -480,7 +482,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="right"
                                         colSpan={4}
                                     >
-                                        Нийт зочдын өглөөний цайны тоо:{" "}
+                                       { intl.formatMessage({id:"TotalNumberOfBreakfastGuests"}) } 
                                         {totalMandatory &&
                                             totalMandatory.Total &&
                                             totalMandatory.Total}
@@ -495,7 +497,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="right"
                                         colSpan={1}
                                     >
-                                        Өрөө:{" "}
+                                        { intl.formatMessage({id:"ConfigRooms"}) } 
                                         {totalMandatory &&
                                             totalMandatory.RoomCount &&
                                             totalMandatory.RoomCount}
@@ -510,7 +512,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="right"
                                         colSpan={1}
                                     >
-                                        Зочин:{" "}
+                                        { intl.formatMessage({id:"RowHeaderGuest"}) } 
                                         {totalMandatory &&
                                             totalMandatory.GuestCount &&
                                             totalMandatory.GuestCount}
@@ -539,13 +541,13 @@ const Breakfast = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            Өглөөний цайнд орох магадлалтай зочид
+                            { intl.formatMessage({id:"ReportGuestforBreakfast"}) } 
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            { intl.formatMessage({id:"ButtonReport"}) } 
                         </span>{" "}
                         {search.CurrDate &&
                             moment(search.CurrDate, "YYYY.MM.DD").format(
@@ -561,7 +563,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                         marginBottom: "12px",
                     }}
                 >
-                    Өдөр:
+                     { intl.formatMessage({id:"RowHeaderDate"}) } 
                 </div>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -581,32 +583,32 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Байгууллага
+                                       { intl.formatMessage({id:"TextOrganization"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Нэр
+                                         { intl.formatMessage({id:"RowHeaderFirstName"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Улс
+                                        { intl.formatMessage({id:"ReportCountry"}) } 
                                     </TableCell>
 
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Өрөө
+                                         { intl.formatMessage({id:"Left_SortByRoom"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Ө.Ц тоо
+                                        { intl.formatMessage({id:"MenuNumber"}) } 
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -743,7 +745,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                     align="right"
                                                     colSpan={1}
                                                 >
-                                                    Өрөө:{" "}
+                                                     {intl.formatMessage({id:"ConfigRooms"}) }
                                                     {nonMandatoryData &&
                                                         nonMandatoryData[key] &&
                                                         nonMandatoryData[
@@ -764,7 +766,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                     align="right"
                                                     colSpan={1}
                                                 >
-                                                    Зочин:{" "}
+                                                   {intl.formatMessage({id:"RowHeaderGuest"}) }
                                                     {nonMandatoryData &&
                                                         nonMandatoryData[key] &&
                                                         nonMandatoryData[
@@ -796,7 +798,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="right"
                                         colSpan={4}
                                     >
-                                        Нийт захиалгын өглөөний цайны тоо:{" "}
+                                       {intl.formatMessage({id:"NumberOfBreakfast"}) }
                                         {totalNonMandatory &&
                                             totalNonMandatory.Total &&
                                             totalNonMandatory.Total}
@@ -811,7 +813,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="right"
                                         colSpan={1}
                                     >
-                                        Өрөө:{" "}
+                                 {intl.formatMessage({id:"ConfigRooms"}) }
                                         {totalNonMandatory &&
                                             totalNonMandatory.RoomCount &&
                                             totalNonMandatory.RoomCount}
@@ -826,7 +828,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                         align="right"
                                         colSpan={1}
                                     >
-                                        Зочин:{" "}
+                                         {intl.formatMessage({id:"RowHeaderGuest"}) }
                                         {totalNonMandatory &&
                                             totalNonMandatory.GuestCount &&
                                             totalNonMandatory.GuestCount}
@@ -843,7 +845,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -858,7 +860,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -13,6 +14,7 @@ import { ReportAPI } from "lib/api/report";
 import { formatPrice } from "lib/utils/helpers";
 
 const PaymentSummary = ({ search, rerenderKey }: any) => {
+    const intl = useIntl();
     const [PaymentSummaryData, setPaymentSummaryData]: any = useState(null);
     const [PaymentSummaryData2, setPaymentSummaryData2]: any = useState(null);
 
@@ -51,7 +53,7 @@ const PaymentSummary = ({ search, rerenderKey }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Төлбөрийн хураангуй :
+                  {intl.formatMessage({id:"ReportPaymentSummary"}) }
                 </span>
             </Typography>
 
@@ -67,7 +69,7 @@ const PaymentSummary = ({ search, rerenderKey }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Хэрэглэгч
+                                   {intl.formatMessage({id:"ConfigUser"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -76,7 +78,7 @@ const PaymentSummary = ({ search, rerenderKey }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Төлбөрийн хэлбэр
+                                   {intl.formatMessage({id:"ConfigPaymentMethod"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -85,7 +87,7 @@ const PaymentSummary = ({ search, rerenderKey }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Валют
+                                    {intl.formatMessage({id:"ReportCurrency"}) }
                                 </TableCell>
                                 <TableCell
                                     align="right"
@@ -95,7 +97,7 @@ const PaymentSummary = ({ search, rerenderKey }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Дүн
+                                    {intl.formatMessage({id:"ReportAmount"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -173,7 +175,7 @@ const PaymentSummary = ({ search, rerenderKey }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Төлбөрийн хэлбэр
+                                  {intl.formatMessage({id:"ConfigPaymentMethod"}) }
                                 </TableCell>
 
                                 <TableCell
@@ -184,7 +186,7 @@ const PaymentSummary = ({ search, rerenderKey }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Дүн
+                                    {intl.formatMessage({id:"ReportAmount"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>

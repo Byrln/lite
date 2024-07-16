@@ -19,7 +19,7 @@ const ReasonList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"ReportReason"}), 
-            key: "ReportReason",
+            key: "ReasonName",
             dataIndex: "ReportReason",
         },
         {
@@ -29,12 +29,12 @@ const ReasonList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderUserName"}), 
-            key: "RowHeaderUserName",
-            dataIndex: "RowHeaderUserName",
+            key: "UserName",
+            dataIndex: "UserName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderChangedDate"}), 
-            key: "RowHeaderChangedDate",
+            key: "CreatedDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
@@ -48,8 +48,8 @@ const ReasonList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"RowHeaderIPAddress"}), 
-            key: "RowHeaderIPAddress",
-            dataIndex: "RowHeaderIPAddress",
+            key: "IPAddress",
+            dataIndex: "IPAddress",
         },
     ];
     

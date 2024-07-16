@@ -12,8 +12,8 @@ const BankAccountList = () => {
     const columns = [
         {
             title: intl.formatMessage({id:"TextPicture"}), 
-            key: "TextPicture", 
-            dataIndex: "TextPicture",
+            key: "PictureFile", 
+            dataIndex: "PictureFile",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

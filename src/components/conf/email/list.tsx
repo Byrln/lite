@@ -16,30 +16,30 @@ const EmailList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"RowHeaderEmail"}), 
-            key: "RowHeaderEmail",
-            dataIndex: "RowHeaderEmail",
+            key: "Email",
+            dataIndex: "Email",
         },
 
         {
             title: intl.formatMessage({id:"RowHeaderEmailServer"}), 
-            key: "RowHeaderEmailServer",
-            dataIndex: "RowHeaderEmailServer",
+            key: "EmailHost",
+            dataIndex: "EmailHost",
         },
         {
             title: intl.formatMessage({id:"RowHeaderPort"}), 
-            key: "RowHeaderPort",
-            dataIndex: "RowHeaderPort",
+            key: "Port",
+            dataIndex: "Port",
         },
 
         {
             title: intl.formatMessage({id:"RowHeaderUserName"}), 
-            key: "RowHeaderUserName",
-            dataIndex: "RowHeaderUserName",
+            key: "UserName",
+            dataIndex: "UserName",
         },
         {
             title: intl.formatMessage({id:"TextMain"}), 
-            key: "TextMain",
-            dataIndex: "TextMain",
+            key: "IsMain",
+            dataIndex: "IsMain",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return element.row.IsMain && "";
@@ -47,8 +47,8 @@ const EmailList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({id:"TextChangePassword"}), 
-            key: "TextChangePassword",
-            dataIndex: "TextChangePassword",
+            key: "ChangePassword",
+            dataIndex: "ChangePassword",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

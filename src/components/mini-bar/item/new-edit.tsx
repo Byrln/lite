@@ -62,9 +62,9 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="RowHeaderFirstName"
+                id="RoomChargeTypeName"
                         label={intl.formatMessage({id:"RowHeaderFirstName"}) }
-                        {...register("RowHeaderFirstName")}
+                        {...register("RoomChargeTypeName")}
                 margin="dense"
                 error={errors.RoomChargeTypeName?.message}
                 helperText={errors.RoomChargeTypeName?.message}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Table,
@@ -14,6 +15,7 @@ import moment from "moment";
 import { ReportAPI } from "lib/api/report";
 
 const CancelVoidNoShow = ({ sessionId }: any) => {
+    const intl = useIntl();
     const [data, setData]: any = useState();
     const [groupedData, setGroupedData]: any = useState();
 
@@ -49,7 +51,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                         textDecoration: "underline",
                     }}
                 >
-                    Цуцласан болон устгасан захиалга :
+                      {intl.formatMessage({id:"ReportVoidCancelReservation"}) }
                 </span>
             </Typography>
 
@@ -65,7 +67,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Өрөө/төрөл
+                                  {intl.formatMessage({id:"ReportRoomAndType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -74,7 +76,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Зочны нэр
+                                 {intl.formatMessage({id:"Left_SortByGuestName"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -83,7 +85,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Ирэх өдөр
+                                    {intl.formatMessage({id:"ReportArrivalDate"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -92,7 +94,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Гарах өдөр
+                                   {intl.formatMessage({id:"ReportDepartureDate"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -101,7 +103,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Эх.сур
+                                    {intl.formatMessage({id:"ReportSource"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -110,7 +112,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Төрөл
+                                    {intl.formatMessage({id:"ReportType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -119,7 +121,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Тариф.төр
+                                  {intl.formatMessage({id:"ReportRateType"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -128,7 +130,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Шалтгаан
+                                  {intl.formatMessage({id:"ConfigReasons"}) }
                                 </TableCell>
                                 <TableCell
                                     style={{
@@ -137,7 +139,7 @@ const CancelVoidNoShow = ({ sessionId }: any) => {
                                         fontSize: "10px",
                                     }}
                                 >
-                                    Огноо
+                                  {intl.formatMessage({id:"ConfigReasons"}) }
                                 </TableCell>
                             </TableRow>
                         </TableHead>

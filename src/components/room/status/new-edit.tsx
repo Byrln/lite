@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { MuiColorInput } from "mui-color-input";
 import { useState, useEffect } from "react";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { RoomStatusAPI, listUrl } from "lib/api/room-status";
 import { useAppState } from "lib/context/app";
@@ -15,6 +15,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -63,7 +64,7 @@ const NewEdit = () => {
                         disabled
                         fullWidth
                         id="StatusCode"
-                        label="Өрөөний статус"
+                        label={intl.formatMessage({id:"RoomStatus"}) }
                         {...register("StatusCode")}
                         margin="dense"
                         error={errors.RoomNo?.message}
@@ -75,7 +76,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="StatusColor"
-                        label="Өнгө"
+                        label={intl.formatMessage({id:"RowHeaderColor"}) }
                         {...register("StatusColor")}
                         margin="dense"
                         error={errors.StatusColor?.message}
@@ -102,7 +103,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="Description"
-                        label="Тайлбар"
+                        label={intl.formatMessage({id:"RowHeaderDescription"}) }
                         {...register("Description")}
                         margin="dense"
                         error={errors.Description?.message}

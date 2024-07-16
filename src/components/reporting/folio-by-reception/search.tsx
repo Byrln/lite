@@ -1,5 +1,8 @@
+import { useIntl } from "react-intl";
 import {
+    
     TextField,
+    
     Grid,
     FormControlLabel,
     FormGroup,
@@ -39,6 +42,7 @@ const Search = ({
 
     useEffect(() => {
         const fetchDatas = async () => {
+            const intl = useIntl();
             if (year && month) {
                 try {
                     const arr: any = await CashierSessionAPI?.list({

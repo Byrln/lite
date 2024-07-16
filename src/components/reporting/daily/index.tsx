@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -28,6 +29,7 @@ import { formatPrice } from "lib/utils/helpers";
 import { DailyInfoSWR } from "lib/api/report";
 
 const Folio = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [totalBalance, setTotalBalance] = useState<any>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
@@ -106,13 +108,13 @@ const Folio = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            Өдрийн мэдээ
+                            {intl.formatMessage({id:"TextDailyNews"}) }
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            {intl.formatMessage({id:"ReportingPeriod"}) }
                         </span>{" "}
                         {workingDate &&
                             moment(workingDate, "YYYY.MM.DD").format(
@@ -138,7 +140,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                     >
                                         {" "}
-                                        {key} давхар
+                                        {key}  {intl.formatMessage({id:"RowHeaderFloor"}) }
                                     </div>
 
                                     <Table
@@ -156,7 +158,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    Өрөө
+                                                   {intl.formatMessage({id:"RowHeaderRoom"}) }
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -166,7 +168,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    Байгууллага
+                                                    {intl.formatMessage({id:"TextOrganization"}) }
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -176,7 +178,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    Улс
+                                                    {intl.formatMessage({id:"RowHeaderCountry"}) }
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -186,7 +188,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    Ирэх
+                                                   {intl.formatMessage({id:"ReportArrival"}) }
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -196,7 +198,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    Гарах
+                                                   {intl.formatMessage({id:"RowHeaderDeparture"}) }
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -206,7 +208,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    Тоо
+                                                     {intl.formatMessage({id:"TextNumber"}) }
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -216,7 +218,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    Төлөх
+                                                    {intl.formatMessage({id:"TextToPay"}) }
                                                 </TableCell>
                                             </TableRow>
                                         </TableHead>
@@ -380,7 +382,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                         }}
                                                     >
-                                                        Ирэх:
+                                                         {intl.formatMessage({id:"ReportArrival"}) }
                                                     </div>
                                                     <div
                                                         style={{
@@ -389,7 +391,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         }}
                                                     >
                                                         <div className="mr-2">
-                                                            Өрөө:{" "}
+                                                        {intl.formatMessage({id:"RowHeaderRoom"}) }
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -425,7 +427,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             </span>
                                                         </div>
                                                         <div>
-                                                            Зочин :{" "}
+                                                        {intl.formatMessage({id:"RowHeaderGuest"}) }
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -479,7 +481,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                         }}
                                                     >
-                                                        Байгаа:
+                                                         {intl.formatMessage({id:"TextHave"}) }
                                                     </div>
                                                     <div
                                                         style={{
@@ -488,7 +490,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         }}
                                                     >
                                                         <div className="mr-2">
-                                                            Байгаа:{" "}
+                                                        {intl.formatMessage({id:"TextHave"}) }
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -527,7 +529,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             </span>
                                                         </div>
                                                         <div>
-                                                            Зочин :{" "}
+                                                        {intl.formatMessage({id:"RowHeaderGuest"}) }
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -584,7 +586,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                         }}
                                                     >
-                                                        Гарах:
+                                                         {intl.formatMessage({id:"RowHeaderDeparture"}) }
                                                     </div>
                                                     <div
                                                         style={{
@@ -593,7 +595,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                         }}
                                                     >
                                                         <div className="mr-2">
-                                                            Өрөө:{" "}
+                                                        {intl.formatMessage({id:"RowHeaderRoom"}) }
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -629,7 +631,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             </span>
                                                         </div>
                                                         <div>
-                                                            Зочин :{" "}
+                                                        {intl.formatMessage({id:"RowHeaderGuest"}) }
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -684,7 +686,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                         }}
                                                     >
-                                                        Орлого :{" "}
+                                                               {intl.formatMessage({id:"TextIncome"}) }
                                                         {finalData[key] &&
                                                             formatPrice(
                                                                 finalData[
@@ -756,7 +758,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                 fontWeight: "bold",
                                             }}
                                         >
-                                            Ирэх:
+                                            {intl.formatMessage({id:"ReportArrival"}) }
                                         </div>
                                         <div
                                             style={{
@@ -765,7 +767,7 @@ const Folio = ({ title, workingDate }: any) => {
                                             }}
                                         >
                                             <div className="mr-2">
-                                                Өрөө:{" "}
+                                            {intl.formatMessage({id:"RowHeaderRoom"}) }
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -796,7 +798,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                 </span>
                                             </div>
                                             <div>
-                                                Зочин :{" "}
+                                            {intl.formatMessage({id:"RowHeaderGuest"}) }
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -845,7 +847,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                 fontWeight: "bold",
                                             }}
                                         >
-                                            Байгаа:
+                                           {intl.formatMessage({id:"TextHave"}) }
                                         </div>
                                         <div
                                             style={{
@@ -854,7 +856,7 @@ const Folio = ({ title, workingDate }: any) => {
                                             }}
                                         >
                                             <div className="mr-2">
-                                                Байгаа:{" "}
+                                            {intl.formatMessage({id:"TextHave"}) }
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -888,7 +890,8 @@ const Folio = ({ title, workingDate }: any) => {
                                                 </span>
                                             </div>
                                             <div>
-                                                Зочин :{" "}
+                                            {intl.formatMessage({id:"RowHeaderGuest"}) }
+                                               
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -940,7 +943,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                 fontWeight: "bold",
                                             }}
                                         >
-                                            Гарах:
+                                             {intl.formatMessage({id:"RowHeaderDeparture"}) }
                                         </div>
                                         <div
                                             style={{
@@ -949,7 +952,7 @@ const Folio = ({ title, workingDate }: any) => {
                                             }}
                                         >
                                             <div className="mr-2">
-                                                Өрөө:{" "}
+                                            {intl.formatMessage({id:"RowHeaderRoom"}) }
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -980,7 +983,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                 </span>
                                             </div>
                                             <div>
-                                                Зочин :{" "}
+                                            {intl.formatMessage({id:"RowHeaderGuest"}) }
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -1030,7 +1033,7 @@ const Folio = ({ title, workingDate }: any) => {
                                                 fontWeight: "bold",
                                             }}
                                         >
-                                            Орлого :{" "}
+                                            {intl.formatMessage({id:"TextIncome"}) }
                                             {data &&
                                                 formatPrice(
                                                     data.reduce(
@@ -1052,7 +1055,7 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 <span style={{ fontWeight: "bold" }}>
                                     {" "}
-                                    Хэвлэсэн :{" "}
+                                    {intl.formatMessage({id:"ReportPrinted"}) }
                                 </span>{" "}
                                 {localStorage.getItem("username")}
                             </Typography>
@@ -1063,7 +1066,7 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 <span style={{ fontWeight: "bold" }}>
                                     {" "}
-                                    Хэвлэсэн огноо :{" "}
+                                    {intl.formatMessage({id:"DateToPrinted"}) }
                                 </span>{" "}
                                 {moment(new Date()).format(
                                     "YYYY-MM-DD HH:mm:ss"

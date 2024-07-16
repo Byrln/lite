@@ -10,9 +10,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <ReasonTypeSelect
                     register={register}
                     errors={errors}
-                    id="TextType"
                     label={intl.formatMessage({id:"TextType"}) }
-                    {...register("TextType")}
                 />
             </Grid>
         </Grid>

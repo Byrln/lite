@@ -3,11 +3,12 @@ import { TextField } from "@mui/material";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { TaxAPI, listUrl } from "lib/api/tax";
 
 const NewEdit = ({ entity }: any) => {
+    const intl = useIntl();
     const validationSchema = yup.object().shape({
         TaxCode: yup.string().required("Бөглөнө үү"),
         TaxName: yup.string().required("Бөглөнө үү"),
@@ -33,7 +34,7 @@ const NewEdit = ({ entity }: any) => {
             <TextField
                 fullWidth
                 id="TaxCode"
-                label="Код"
+                label={intl.formatMessage({id:"RowHeaderCurrencyCode"}) }
                 {...register("TaxCode")}
                 margin="dense"
                 error={errors.TaxCode?.message}
@@ -43,7 +44,7 @@ const NewEdit = ({ entity }: any) => {
             <TextField
                 fullWidth
                 id="TaxName"
-                label="Нэр"
+                label={intl.formatMessage({id:"RowHeaderFirstName"}) }
                 {...register("TaxName")}
                 margin="dense"
                 error={errors.TaxName?.message}
@@ -54,7 +55,7 @@ const NewEdit = ({ entity }: any) => {
                 type="number"
                 fullWidth
                 id="TaxAmount"
-                label="Дүн"
+                label={intl.formatMessage({id:"ReportAmount"}) }
                 InputProps={{ inputProps: { min: 0, max: 99 } }}
                 {...register("TaxAmount")}
                 margin="dense"
@@ -66,7 +67,7 @@ const NewEdit = ({ entity }: any) => {
                 type="date"
                 fullWidth
                 id="BeginDate"
-                label="Эхлэх огноо"
+                label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
                 {...register("BeginDate")}
                 margin="dense"
                 error={errors.BeginDate?.message}
@@ -77,7 +78,7 @@ const NewEdit = ({ entity }: any) => {
                 type="date"
                 fullWidth
                 id="EndDate"
-                label="Дуусах огноо"
+                label={intl.formatMessage({id:"RowHeaderEndDate"}) }
                 {...register("EndDate")}
                 margin="dense"
                 error={errors.EndDate?.message}

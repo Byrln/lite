@@ -1,6 +1,6 @@
 import Alert from "@mui/material/Alert";
-import { useIntl } from "react-intl";
 import Skeleton from "@mui/material/Skeleton";
+import { useIntl } from "react-intl";
 import {
     Box,
     Checkbox,
@@ -14,7 +14,6 @@ import { BaseRateSWR } from "lib/api/rate-type";
 import { Controller } from "react-hook-form";
 
 const BaseRateList = ({
-    
     id,
     register,
     errors,
@@ -109,9 +108,9 @@ const BaseRateList = ({
                             size="small"
                             type="number"
                             fullWidth
-                            id="BaseRate"                      
+                            id="BaseRate"
                             label={intl.formatMessage({id:"BaseRate"}) }
-                            {...register("BaseRate")}
+                            {...register(`RoomTypes[${index}].BaseRate`)}
                             margin="dense"
                             error={errors.BaseRate?.message}
                             helperText={errors.BaseRate?.message}
@@ -122,9 +121,9 @@ const BaseRateList = ({
                             size="small"
                             type="number"
                             fullWidth
-                            id="RowHeaderExtraAdult Adult"
+                            id="Extra Adult"
                             label={intl.formatMessage({id:"RowHeaderExtraAdult"}) }
-                            {...register("RowHeaderExtraAdult")}
+                            {...register(`RoomTypes[${index}].ExtraAdult`)}
                             margin="dense"
                             error={errors.ExtraAdult?.message}
                             helperText={errors.ExtraAdult?.message}
@@ -135,9 +134,9 @@ const BaseRateList = ({
                             size="small"
                             type="number"
                             fullWidth
-                            id={`RowHeaderExtraChild`}
+                            id={`Extra Child`}
                             label={intl.formatMessage({id:"RowHeaderExtraChild"}) }
-                            {...register("RowHeaderExtraChild")}
+                            {...register(`RoomTypes[${index}].ExtraChild`)}
                             margin="dense"
                             error={errors.ExtraChild?.message}
                             helperText={errors.ExtraChild?.message}

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -24,6 +25,7 @@ import Search from "./search";
 import { formatPrice } from "lib/utils/helpers";
 
 const MonthlyRevenue = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [reportData, setReportData]: any = useState(null);
@@ -110,7 +112,8 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                      {intl.formatMessage({id:"ButtonPrint"}) }
+
                 </Button>
 
                 <CustomSearch
@@ -152,7 +155,8 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            {intl.formatMessage({id:"ReportingPeriod"}) }
+
                         </span>{" "}
                         {search.CurrDate &&
                             `(${moment(search.CurrDate).format("YYYY.MM")})`}
@@ -176,7 +180,8 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Огноо
+                                           {intl.formatMessage({id:"ReportActionDate"}) }
+
                                     </TableCell>
 
                                     <TableCell
@@ -187,7 +192,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Боломжтой өрөө
+                                         {intl.formatMessage({id:"ReportAvailableRooms"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -198,7 +203,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Зар.Өрөө
+                                         {intl.formatMessage({id:"ReportSoldRooms"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -209,7 +214,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Үнэгүй
+                                       {intl.formatMessage({id:"ReportComplimentary"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -219,7 +224,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Ачаалал (%)
+                                       {intl.formatMessage({id:"ReportOccupancyPerc"}) } 
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -249,7 +254,8 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Хүний тоо
+                                         {intl.formatMessage({id:"ReportPax"}) }
+
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -259,7 +265,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Өрөөний тооцоо
+                                      {intl.formatMessage({id:"ReportRoomCharge"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -269,7 +275,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Нэмэлт тооцоо
+                                       {intl.formatMessage({id:"ConfigExtraCharges"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -279,7 +285,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Татвар
+                                         {intl.formatMessage({id:"ConfigTax"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
@@ -289,7 +295,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Төлбөр
+                                         {intl.formatMessage({id:"ReportPayment"}) }
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -722,7 +728,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -737,7 +743,7 @@ const MonthlyRevenue = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

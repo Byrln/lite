@@ -40,9 +40,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="TextVipStatusName"
+                        id="VipStatusName"
                         label={intl.formatMessage({id:"TextVipStatusName"}) }
-                        {...register("TextVipStatusName")}
+                        {...register("VipStatusName")}
                         margin="dense"
                         error={errors.VipStatusName?.message}
                         helperText={errors.VipStatusName?.message}

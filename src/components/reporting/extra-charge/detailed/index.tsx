@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -25,6 +26,7 @@ import Search from "./search";
 import { formatPrice } from "lib/utils/helpers";
 
 const ArrivalDeparture = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [reportData, setReportData]: any = useState(null);
@@ -134,7 +136,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                   {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -176,7 +178,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            {intl.formatMessage({id:"ReportingPeriod"}) }
                         </span>{" "}
                         {search.StartDate &&
                             `(${moment(search.StartDate).format(
@@ -207,7 +209,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                                     fontSize: "10px",
                                                 }}
                                             >
-                                                Барааны нэр
+                                               {intl.formatMessage({id:"ReportItemName"}) }
                                             </TableCell>
 
                                             <TableCell
@@ -218,7 +220,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                                     fontSize: "10px",
                                                 }}
                                             >
-                                                Өрөө/төрөл
+                                               {intl.formatMessage({id:"ReportRoomAndType"}) }
                                             </TableCell>
                                             <TableCell
                                                 align="left"
@@ -229,7 +231,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                                     fontSize: "10px",
                                                 }}
                                             >
-                                                Огноо
+                                               {intl.formatMessage({id:"ReportActionDate"}) }
                                             </TableCell>
                                             <TableCell
                                                 align="right"
@@ -240,7 +242,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                                     fontSize: "10px",
                                                 }}
                                             >
-                                                Нэгж үнэ
+                                               {intl.formatMessage({id:"ReportUnitPrice"}) }
                                             </TableCell>
                                             <TableCell
                                                 align="right"
@@ -251,7 +253,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                                     fontSize: "10px",
                                                 }}
                                             >
-                                                Тоо ш.
+                                               {intl.formatMessage({id:"ReportQuantity"}) }
                                             </TableCell>
                                             <TableCell
                                                 align="right"
@@ -261,7 +263,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                                     padding: "2px",
                                                 }}
                                             >
-                                                Нийт
+                                               {intl.formatMessage({id:"ReportSum"}) }
                                             </TableCell>
                                             <TableCell
                                                 align="left"
@@ -271,7 +273,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                                     padding: "2px",
                                                 }}
                                             >
-                                                Хэрэглэгч
+                                               {intl.formatMessage({id:"ConfigUser"}) }
                                             </TableCell>
                                             <TableCell
                                                 align="left"
@@ -281,7 +283,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                                                     padding: "2px",
                                                 }}
                                             >
-                                                Оруулсан
+                                               {intl.formatMessage({id:"TextEntered"}) }
                                             </TableCell>
                                         </TableRow>
                                     </TableHead>
@@ -636,7 +638,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -651,7 +653,7 @@ const ArrivalDeparture = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

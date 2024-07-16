@@ -15,48 +15,48 @@ const WorkOrderList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"RowHeaderWorkOrderNo"}), 
-            key: "RowHeaderWorkOrderNo",
-            dataIndex: "RowHeaderWorkOrderNo",
+            key: "WorkOrderNo",
+            dataIndex: "WorkOrderNo",
         },
         {
             title: intl.formatMessage({id:"ConfigRooms"}), 
-            key: "ConfigRooms",
-            dataIndex: "ConfigRooms",
+            key: "RoomFullName",
+            dataIndex: "RoomFullName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderPriority"}), 
-            key: "RowHeaderPriority",
-            dataIndex: "RowHeaderPriority",
+            key: "WorkOrderPriorityCode",
+            dataIndex: "WorkOrderPriorityCode",
         },
         {
             title: intl.formatMessage({id:"RowHeaderWODescription"}), 
-            key: "RowHeaderWODescription",
-            dataIndex: "RowHeaderWODescription",
+            key: "WODescription",
+            dataIndex: "WODescription",
         },
         {
             title: intl.formatMessage({id:"RowHeaderStarted"}), 
-            key: "RowHeaderStarted",
-            dataIndex: "RowHeaderStarted",
+            key: "CreatedDate",
+            dataIndex: "CreatedDate",
         },
         {
             title: intl.formatMessage({id:"RowHeaderDeadline"}), 
-            key: "RowHeaderDeadline",
-            dataIndex: "RowHeaderDeadline",
+            key: "Deadline",
+            dataIndex: "Deadline",
         },
         {
             title: intl.formatMessage({id:"TargetedEmployee"}), 
-            key: "TargetedEmployee",
-            dataIndex: "TargetedEmployee",
+            key: "UserName",
+            dataIndex: "UserName",
         },
         {
             title: intl.formatMessage({id:"RowHeaderAssignedTo"}), 
-            key: "RowHeaderAssignedTo",
-            dataIndex: "RowHeaderAssignedTo",
+            key: "AssignedUser",
+            dataIndex: "AssignedUser",
         },
         {
             title: intl.formatMessage({id:"ReportStatus"}), 
-            key: "ReportStatus",
-            dataIndex: "ReportStatus",
+            key: "StDescription",
+            dataIndex: "StDescription",
         },
     ];
     

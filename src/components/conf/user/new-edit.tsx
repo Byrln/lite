@@ -129,9 +129,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="RowHeaderUserName"
+                        id="UserName"
                         label={intl.formatMessage({id:"RowHeaderUserName"}) }
-                        {...register("RowHeaderUserName")}
+                        {...register("UserName")}
                         margin="dense"
                         error={errors.UserName?.message}
                         helperText={errors.UserName?.message}
@@ -141,9 +141,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="TextLoginName"
+                        id="LoginName"
                         label={intl.formatMessage({id:"TextLoginName"}) }
-                        {...register("TextLoginName")}
+                        {...register("LoginName")}
                         margin="dense"
                         error={errors.LoginName?.message}
                         helperText={errors.LoginName?.message}
@@ -157,9 +157,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="TextEmail"
+                        id="Email"
                         label={intl.formatMessage({id:"TextEmail"}) }
-                        {...register("TextEmail")}
+                        {...register("Email")}
                         margin="dense"
                         error={errors.Email?.message}
                         helperText={errors.Email?.message}

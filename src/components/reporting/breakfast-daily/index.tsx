@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import moment from "moment";
+import { useIntl } from "react-intl";
 import {
     Typography,
     Grid,
@@ -27,6 +28,7 @@ import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
 
 const Breakfast = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [reportData, setReportData]: any = useState(null);
@@ -140,7 +142,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+                        {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -174,13 +176,13 @@ const Breakfast = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            Өглөөний цай
+                               {intl.formatMessage({id:"TextBreakfast"}) }
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            Тайлант үе :{" "}
+                            {intl.formatMessage({id:"ReportingPeriod"}) }
                         </span>{" "}
                         {search.CurrDate &&
                             `${moment(search.CurrDate, "YYYY.MM.DD").format(
@@ -228,7 +230,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Өрөө №
+                                            {intl.formatMessage({id:"ConfigRooms№"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -239,7 +241,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Зочны тоо
+                                       {intl.formatMessage({id:"NumberOfGuests"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -250,7 +252,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             fontSize: "10px",
                                         }}
                                     >
-                                        Өглөөний цайтай эсэх
+                                        {intl.formatMessage({id:"BreakfastIncluded"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -261,7 +263,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             width: "50px",
                                         }}
                                     >
-                                        Ирсэн
+                                          {intl.formatMessage({id:"RowHeaderArrived"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -271,7 +273,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Улс орон
+                                       {intl.formatMessage({id:"ReportCountry"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -282,7 +284,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Өрөөнд эсвэл ресторан /Хэдэн цагт/
+                                       {intl.formatMessage({id:"InTheRoomOrRestaurant/WhatTime/"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -292,7 +294,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Вауцертай эсэх
+                                         {intl.formatMessage({id:"voucher"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
@@ -303,7 +305,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                             padding: "2px",
                                         }}
                                     >
-                                        Нэмэлт тайлбар
+                                        {intl.formatMessage({id:"AdditionalExplanation"}) }
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -461,7 +463,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                 marginRight: "11px",
                                             }}
                                         >
-                                            Хянасан ресепшн :{" "}
+                                                {intl.formatMessage({id:"ControlledReception"}) }
                                         </span>
                                         <span
                                             style={{
@@ -476,7 +478,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                 marginRight: "11px",
                                             }}
                                         >
-                                            Нийт зочин :{" "}
+                                            {intl.formatMessage({id:"TotalGuest"}) }
                                         </span>
                                         <span
                                             style={{
@@ -498,7 +500,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                 marginRight: "11px",
                                             }}
                                         >
-                                            Өглөөний цайнд орох зочин :{" "}
+                                          {intl.formatMessage({id:"TextBreakfastGuest"}) }
                                         </span>
                                         <span
                                             style={{
@@ -582,7 +584,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                 marginRight: "11px",
                                             }}
                                         >
-                                            Цагаан хоол :{" "}
+                                                {intl.formatMessage({id:"TextVegetarianFood"}) }
                                         </span>
                                         <span
                                             style={{
@@ -597,7 +599,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                                                 marginRight: "11px",
                                             }}
                                         >
-                                            Бусад тайлбар :{" "}
+                                            {intl.formatMessage({id:"TextOtherComments"}) }
                                         </span>
                                         <span
                                             style={{
@@ -622,7 +624,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -637,7 +639,7 @@ const Breakfast = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

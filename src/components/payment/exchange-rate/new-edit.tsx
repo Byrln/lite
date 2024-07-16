@@ -93,9 +93,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="TextCurrencyName"
+                        id="CurrencyName"
                         label={intl.formatMessage({id:"TextCurrencyName"}) }
-                        {...register("TextCurrencyName")}
+                        {...register("CurrencyName")}
                         margin="dense"
                         error={errors.CurrencyName?.message}
                         helperText={errors.CurrencyName?.message}
@@ -105,9 +105,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="TextCurrencyCode"
+                        id="CurrencyCode"
                         label={intl.formatMessage({id:"TextCurrencyCode"}) }
-                        {...register("TextCurrencyCode")}
+                        {...register("CurrencyCode")}
                         margin="dense"
                         error={errors.CurrencyCode?.message}
                         helperText={errors.CurrencyCode?.message}
@@ -117,9 +117,9 @@ const NewEdit = () => {
                     <TextField
                         size="small"
                         fullWidth
-                        id="RowHeaderCurrencySymbol"
+                        id="CurrencySymbol"
                         label={intl.formatMessage({id:"RowHeaderCurrencySymbol"}) }
-                        {...register("RowHeaderCurrencySymbol")}
+                        {...register("CurrencySymbol")}
                         margin="dense"
                         error={errors.CurrencySymbol?.message}
                         helperText={errors.CurrencySymbol?.message}
@@ -147,9 +147,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="TitleCurrencyRate1"
+                                id="CurrencyRate1"
                                 label={intl.formatMessage({id:"TitleCurrencyRate1"}) }
-                                {...register("TitleCurrencyRate1")}
+                                {...register("CurrencyRate1")}
                                 margin="dense"
                                 error={errors.CurrencyRate1?.message}
                                 helperText={errors.CurrencyRate1?.message}
@@ -160,9 +160,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="TitleCurrencyRate2"
+                                id="TargetCurrencyRate1"
                                 label={intl.formatMessage({id:"TitleCurrencyRate2"}) }
-                                {...register("TitleCurrencyRate2")}
+                                {...register("TargetCurrencyRate1")}
                                 margin="dense"
                                 error={errors.TargetCurrencyRate1?.message}
                                 helperText={errors.TargetCurrencyRate1?.message}
@@ -173,9 +173,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="TitleTargetCurrencyRate2"
-                                label={intl.formatMessage({id:"TitleTargetCurrencyRate2"}) }
-                                {...register("TitleTargetCurrencyRate2")}
+                                id="CurrencyRate2"
+                                label={intl.formatMessage({id:"CurrencyRate2"}) }
+                                {...register("CurrencyRate2")}
                                 margin="dense"
                                 error={errors.CurrencyRate2?.message}
                                 helperText={errors.CurrencyRate2?.message}
@@ -186,9 +186,9 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="TitleCurrencyRate2"
+                                id="TargetCurrencyRate2"
                                 label={intl.formatMessage({id:"TitleTargetCurrencyRate1"}) }
-                                {...register("TitleTargetCurrencyRate1")}
+                                {...register("TargetCurrencyRate2")}
                                 margin="dense"
                                 error={errors.TargetCurrencyRate2?.message}
                                 helperText={errors.TargetCurrencyRate2?.message}

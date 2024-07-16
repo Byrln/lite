@@ -11,18 +11,18 @@ const TaxList = ({ title }: any) => {
     const columns = [
         {
             title: intl.formatMessage({id:"RowHeaderTaxCode"}), 
-            key: "RowHeaderTaxCode",
-            dataIndex: "RowHeaderTaxCode",
+            key: "TaxCode",
+            dataIndex: "TaxCode",
         },
         {
             title: intl.formatMessage({id:"RowHeaderTaxName"}), 
-            key: "RowHeaderTaxName",
-            dataIndex: "RowHeaderTaxName",
+            key: "TaxName",
+            dataIndex: "TaxName",
         },
         {
             title: intl.formatMessage({id:"ReportStatus"}), 
-            key: "ReportStatus",
-            dataIndex: "ReportStatus",
+            key: "Status",
+            dataIndex: "Status",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (

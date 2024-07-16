@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useIntl } from "react-intl";
 import moment from "moment";
 import {
     Typography,
@@ -26,6 +27,7 @@ import { CustomerSWR } from "lib/api/customer";
 import Search from "./search";
 
 const ReportingList = ({ title, workingDate }: any) => {
+    const intl = useIntl();
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [reportData, setReportData] = useState<any>(null);
     const [totalBalance, setTotalBalance] = useState<any>(null);
@@ -159,7 +161,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    Хэвлэх
+             {intl.formatMessage({id:"ButtonPrint"}) }
                 </Button>
 
                 <CustomSearch
@@ -188,7 +190,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                     style={{ textAlign: "center" }}
                     className="mb-3"
                 >
-                    Үлдэгдлийн тайлан
+                       {intl.formatMessage({id:"TitleReportBalance"}) }
                 </Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={4}>
@@ -200,7 +202,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Эх.Хугацаа :{" "}
+                                {intl.formatMessage({id:"ReportStartDate"}) }
                             </span>{" "}
                             {moment(search.StartDate, "YYYY-MM-DD").format(
                                 "YYYY-MM-DD"
@@ -219,7 +221,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Дуус.Хугацаа :{" "}
+                                {intl.formatMessage({id:"ReportEndDate"}) }
                             </span>{" "}
                             {moment(search.EndDate, "YYYY-MM-DD").format(
                                 "YYYY-MM-DD"
@@ -238,7 +240,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Харилцагч :{" "}
+                                {intl.formatMessage({id:"TextCustomer"}) }
                             </span>{" "}
                             {customerName}
                         </Typography>
@@ -253,67 +255,67 @@ const ReportingList = ({ title, workingDate }: any) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                        Өр.Төрөл
+                                    {intl.formatMessage({id:"ReportRoomType"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Зочны нэр
+                                        {intl.formatMessage({id:"Left_SortByGuestName"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Төлөв
+                                        {intl.formatMessage({id:"Left_SortByStatus"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Ирэх
+                                       {intl.formatMessage({id:"ReportArrival"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Гарах
+                                       {intl.formatMessage({id:"RowHeaderDeparture"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Эх.сур
+                                       {intl.formatMessage({id:"ReportSource"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Тооц.№
+                                      {intl.formatMessage({id:"ReportFolioNo"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Тариф.төр
+                                       {intl.formatMessage({id:"ReportRateType"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Нийт төлбөр
+                                         {intl.formatMessage({id:"ReportDebit"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Төлсөн
+                                       {intl.formatMessage({id:"ReportPaid"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        Үлдэгдэл
+                                        {intl.formatMessage({id:"ReportBalance"}) }
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -587,7 +589,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн :{" "}
+                                {intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -602,7 +604,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                Хэвлэсэн огноо :{" "}
+                                {intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>
