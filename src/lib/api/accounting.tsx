@@ -5,6 +5,8 @@ import axios from "lib/utils/axios";
 const urlPrefix = "/api/accounting";
 export const accountListUrl = `${urlPrefix}/Account/List`;
 export const extraChargeUrl = `${urlPrefix}/ExtraCharge/List`;
+export const accountGroupUrl = `${urlPrefix}/Account/Group`;
+export const detailExtUrl = `${urlPrefix}/Account/DetailExt`;
 
 export const AccountListSWR = (search: any) => {
     if (search.IsDebit && search.IsDebit != 0) {
@@ -34,6 +36,22 @@ export const AccountingAPI = {
         };
 
         const res = await axios.post(accountListUrl, values);
+
+        return res.data.JsonData;
+    },
+
+    detailExt: async (search: any) => {
+        const res = await axios.post(detailExtUrl, search);
+
+        return res.data.JsonData;
+    },
+
+    accountGroup: async (IsDebit: any) => {
+        const values = {
+            IsDebit: IsDebit,
+        };
+
+        const res = await axios.post(accountGroupUrl, values);
 
         return res.data.JsonData;
     },

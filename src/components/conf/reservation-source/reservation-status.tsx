@@ -44,7 +44,6 @@ const ReservationStatus = ({ ChannelSourceID }: any) => {
     });
 
     const onSubmit = async (values: any) => {
-        const intl = useIntl();
         setLoading(true);
         try {
             await ReservationSourceAPI?.reservationStatus(

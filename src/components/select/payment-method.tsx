@@ -55,6 +55,22 @@ const PaymentMethodSelect = ({
             onChange={(evt: any) => {
                 onchange(evt.target.value);
             }}
+            error={
+                errors[
+                    customRegisterName ? customRegisterName : "PaymentMethodID"
+                ] &&
+                errors[
+                    customRegisterName ? customRegisterName : "PaymentMethodID"
+                ].message
+            }
+            helperText={
+                errors[
+                    customRegisterName ? customRegisterName : "PaymentMethodID"
+                ] &&
+                errors[
+                    customRegisterName ? customRegisterName : "PaymentMethodID"
+                ].message
+            }
         >
             {data &&
                 data.map((element: any) => (

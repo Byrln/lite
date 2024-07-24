@@ -1,8 +1,5 @@
 import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
-import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import { useState, useEffect } from "react";
 
 const NumberSelect = ({

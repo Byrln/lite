@@ -38,8 +38,8 @@ const Index = () => {
                             <RoomList
                                 title={title}
                                 packageId={id}
-                                data={data}
-                                error={error}
+                                // data={data}
+                                // error={error}
                             />
                         </Grid>
                     </Grid>

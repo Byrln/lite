@@ -239,7 +239,7 @@ const ChargeList = ({ entity, handleModal }: any) => {
                     datagrid={false}
                 />
             )}
-            <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+            {/* <div style={{ display: "flex", flexDirection: "row-reverse" }}>
                 <LoadingButton
                     loading={loading}
                     variant="contained"
@@ -253,7 +253,7 @@ const ChargeList = ({ entity, handleModal }: any) => {
                     />
                     {intl.formatMessage({ id: "ButtonSave" })}
                 </LoadingButton>
-            </div>
+            </div> */}
         </>
     );
 };

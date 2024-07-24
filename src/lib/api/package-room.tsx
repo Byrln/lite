@@ -28,7 +28,10 @@ export const PackageRoomAPI = {
     },
 
     new: async (values: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/New`, values);
+        const { data, status } = await axios.post(
+            `${urlPrefix}/InsertWU`,
+            values
+        );
 
         return {
             data,

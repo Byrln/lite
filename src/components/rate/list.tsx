@@ -45,7 +45,7 @@ const RateList = ({ title, taxData }: any) => {
 
     const onToggleChecked = async () => {
         setLoading(true);
-        const intl = useIntl();
+
         try {
             setIsChecked(!isChecked);
             setSearch({
@@ -64,36 +64,37 @@ const RateList = ({ title, taxData }: any) => {
             dataIndex: "test",
         },
         {
-            title: intl.formatMessage({id:"ConfigRoomType"}), 
+            title: intl.formatMessage({ id: "ConfigRoomType" }),
             key: "RateTypeName",
             dataIndex: "RateTypeName",
         },
         {
-            title: intl.formatMessage({id:"RoomTypeName"}), 
+            title: intl.formatMessage({ id: "RoomTypeName" }),
             key: "RoomTypeName",
             dataIndex: "RoomTypeName",
         },
-        { 
-            title: intl.formatMessage({id:"TextSeasonName"}), 
-             key: "SeasonName", 
-             dataIndex: "SeasonName" },
         {
-            title: intl.formatMessage({id:"TextSourceName"}), 
+            title: intl.formatMessage({ id: "TextSeasonName" }),
+            key: "SeasonName",
+            dataIndex: "SeasonName",
+        },
+        {
+            title: intl.formatMessage({ id: "TextSourceName" }),
             key: "SourceName",
             dataIndex: "SourceName",
         },
         {
-            title: intl.formatMessage({id:"ReportCompany"}), 
+            title: intl.formatMessage({ id: "ReportCompany" }),
             key: "CustomerName",
             dataIndex: "CustomerName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderDuration"}), 
+            title: intl.formatMessage({ id: "RowHeaderDuration" }),
             key: "DurationName",
             dataIndex: "DurationName",
         },
         {
-            title: intl.formatMessage({id:"BaseRate"}), 
+            title: intl.formatMessage({ id: "BaseRate" }),
             key: "BaseRate",
             dataIndex: "BaseRate",
             excelRenderPass: true,
@@ -129,7 +130,7 @@ const RateList = ({ title, taxData }: any) => {
             },
         },
         {
-            title: intl.formatMessage({id:"RowHeaderRateExtraAdult"}), 
+            title: intl.formatMessage({ id: "RowHeaderRateExtraAdult" }),
             key: "ExtraAdult",
             dataIndex: "ExtraAdult",
             excelRenderPass: true,
@@ -166,7 +167,7 @@ const RateList = ({ title, taxData }: any) => {
         },
 
         {
-            title: intl.formatMessage({id:"RowHeaderRateExtraChild"}), 
+            title: intl.formatMessage({ id: "RowHeaderRateExtraChild" }),
             key: "ExtraChild",
             dataIndex: "ExtraChild",
             excelRenderPass: true,
@@ -205,7 +206,6 @@ const RateList = ({ title, taxData }: any) => {
     ];
 
     const onSubmit = async () => {
-        const intl = useIntl();
         setLoading(true);
 
         try {

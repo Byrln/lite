@@ -128,45 +128,47 @@ const AccountList = ({ title }: any) => {
                 );
             },
         },
-        // {
-        //     title: "Үйлдэл",
-        //     key: "Action",
-        //     dataIndex: "Action",
-        //     renderCell: (element: any) => {
-        //         return (
-        //             <>
-        //                 <Button
-        //                     variant={"outlined"}
-        //                     size="small"
-        //                     onClick={() => {
-        //                         handleModal(
-        //                             true,
-        //                             "Засах",
-        //                             <NewEdit
-        //                                 GroupID={element.row.GroupID}
-        //                                 CurrencyID={element.row.CurrencyID}
-        //                                 AccountID={element.row.AccountID}
-        //                                 handleModal={handleModal}
-        //                             />,
-        //                             null,
-        //                             "large"
-        //                         );
-        //                         dispatch({
-        //                             type: "isShow",
-        //                             isShow: null,
-        //                         });
-        //                         dispatch({
-        //                             type: "editId",
-        //                             editId: element.row.AccountID,
-        //                         });
-        //                     }}
-        //                 >
-        //                     Засах
-        //                 </Button>
-        //             </>
-        //         );
-        //     },
-        // },
+        {
+            title: "Үйлдэл",
+            key: "Action",
+            dataIndex: "Action",
+            renderCell: (element: any) => {
+                return (
+                    <>
+                        <Button
+                            variant={"outlined"}
+                            size="small"
+                            onClick={() => {
+                                handleModal(
+                                    true,
+                                    "Засах",
+                                    <NewEdit
+                                        IsDebit={element.row.IsDebit}
+                                        GroupID={element.row.GroupID}
+                                        CurrencyID={element.row.CurrencyID}
+                                        AccountID={element.row.AccountID}
+                                        handleModal={handleModal}
+                                        ItemID={element.row.ItemID}
+                                    />,
+                                    null,
+                                    "large"
+                                );
+                                dispatch({
+                                    type: "isShow",
+                                    isShow: null,
+                                });
+                                dispatch({
+                                    type: "editId",
+                                    editId: element.row.AccountID,
+                                });
+                            }}
+                        >
+                            Засах
+                        </Button>
+                    </>
+                );
+            },
+        },
     ];
 
     return (
@@ -176,7 +178,7 @@ const AccountList = ({ title }: any) => {
                 data={data}
                 error={error}
                 api={AccountingAPI}
-                hasNew={false}
+                hasNew={true}
                 hasUpdate={false}
                 hasShow={false}
                 hasDelete={false}

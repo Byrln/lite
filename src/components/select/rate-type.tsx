@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { RateTypeSWR } from "lib/api/rate-type";
 import { elementAcceptingRef } from "@mui/utils";
 
-const RateTypeSelect = ({ register, errors, onChange }: any) => {
+const RateTypeSelect = ({ register, errors, onChange, value }: any) => {
     const { data, error } = RateTypeSWR({});
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -33,6 +33,10 @@ const RateTypeSelect = ({ register, errors, onChange }: any) => {
             helperText={errors.RateTypeID?.message}
             size="small"
             onChange={onChange}
+            value={value ? value : null}
+            InputLabelProps={{
+                shrink: value ? value : null,
+            }}
         >
             {data.map((element: any) => {
                 return (

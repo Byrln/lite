@@ -72,6 +72,13 @@ const RoomTypeSelect = ({
             onChange={(evt: any) => {
                 eventRoomTypeChange(evt.target.value);
             }}
+            InputLabelProps={{
+                shrink:
+                    baseStay &&
+                    (baseStay?.roomType
+                        ? baseStay?.roomType?.RoomTypeID
+                        : baseStay?.RoomTypeID),
+            }}
             value={
                 baseStay &&
                 (baseStay?.roomType
