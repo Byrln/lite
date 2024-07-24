@@ -256,7 +256,7 @@ const Folio = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                {intl.formatMessage({id:"ReportingPeriod"}) }
+                                {intl.formatMessage({ id: "ReportingPeriod" })}
                             </span>{" "}
                             {search.CurrDate
                                 ? moment(search.CurrDate, "YYYY.MM.DD").format(
@@ -283,7 +283,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "40px",
                                     }}
                                 >
-                                    {intl.formatMessage({id:"TextReady"}) }
+                                    {intl.formatMessage({ id: "TextReady" })}
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -294,7 +294,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "50px",
                                     }}
                                 >
-                                    {intl.formatMessage({id:"ConfigRooms"}) }
+                                    {intl.formatMessage({ id: "ConfigRooms" })}
                                 </TableCell>
 
                                 <TableCell
@@ -307,7 +307,9 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "130px",
                                     }}
                                 >
-                                  {intl.formatMessage({id:"OCC/GuestName"}) }
+                                    {intl.formatMessage({
+                                        id: "OCC/GuestName",
+                                    })}
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -319,7 +321,9 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "130px",
                                     }}
                                 >
-                                {intl.formatMessage({id:"ARR/GuestName"}) }
+                                    {intl.formatMessage({
+                                        id: "ARR/GuestName",
+                                    })}
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -330,7 +334,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "50px",
                                     }}
                                 >
-                                 {intl.formatMessage({id:"TextExtraBed"}) }
+                                    {intl.formatMessage({ id: "TextExtraBed" })}
                                 </TableCell>
                                 {/* <TableCell
                                 align="left"
@@ -351,7 +355,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "30px",
                                     }}
                                 >
-                                      {intl.formatMessage({id:"TextSo"}) }
+                                    {intl.formatMessage({ id: "TextSo" })}
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -373,7 +377,7 @@ const Folio = ({ title, workingDate }: any) => {
                                         width: "30px",
                                     }}
                                 >
-                                     {intl.formatMessage({id:"TextDo"}) }
+                                    {intl.formatMessage({ id: "TextDo" })}
                                 </TableCell>
                                 <TableCell
                                     align="left"
@@ -395,7 +399,9 @@ const Folio = ({ title, workingDate }: any) => {
                                     }}
                                     width={250}
                                 >
-                                     {intl.formatMessage({id:"RowHeaderDescription"}) }
+                                    {intl.formatMessage({
+                                        id: "RowHeaderDescription",
+                                    })}
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -434,8 +440,10 @@ const Folio = ({ title, workingDate }: any) => {
                                                         }}
                                                         colSpan={11}
                                                     >
-                                                          {intl.formatMessage({id:"TextFloor"}) }
-                                                             {key}
+                                                        {intl.formatMessage({
+                                                            id: "TextFloor",
+                                                        })}
+                                                        {key}
                                                     </TableCell>
                                                 </TableRow>
                                                 {roomsData[key] &&
@@ -587,6 +595,24 @@ const Folio = ({ title, workingDate }: any) => {
                                                                                   ][0]
                                                                                       .ArrivalName
                                                                                 ? ""
+                                                                                : reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .CustomerName
+                                                                                ? reportData[
+                                                                                      roomsData[
+                                                                                          key
+                                                                                      ][
+                                                                                          key2
+                                                                                      ]
+                                                                                          .RoomNo
+                                                                                  ][0]
+                                                                                      .CustomerName
                                                                                 : reportData[
                                                                                       roomsData[
                                                                                           key
@@ -1038,7 +1064,9 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 <span style={{ fontWeight: "bold" }}>
                                     {" "}
-                                    {intl.formatMessage({id:"ReportPrinted"}) }
+                                    {intl.formatMessage({
+                                        id: "ReportPrinted",
+                                    })}
                                 </span>{" "}
                                 {localStorage.getItem("username")}
                             </Typography>
@@ -1052,7 +1080,9 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 <span style={{ fontWeight: "bold" }}>
                                     {" "}
-                                    {intl.formatMessage({id:"DateToPrinted"}) }
+                                    {intl.formatMessage({
+                                        id: "DateToPrinted",
+                                    })}
                                 </span>{" "}
                                 {moment(new Date()).format(
                                     "YYYY-MM-DD HH:mm:ss"
