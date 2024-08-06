@@ -9,8 +9,8 @@ import { useIntl } from "react-intl";
 import { PackageRoomAPI, listUrl } from "lib/api/package-room";
 import CustomTable from "components/common/custom-table";
 import { PackageRoomSWR } from "lib/api/package-room";
-import NewEdit from "./new-edit";
 import { ModalContext } from "lib/context/modal";
+import NewEdit from "./new-edit";
 
 const PackageList = ({ title, packageId }: any) => {
     const intl = useIntl();
