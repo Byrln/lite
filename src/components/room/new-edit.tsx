@@ -57,7 +57,7 @@ const NewEdit = () => {
                         fullWidth
                         id="TextRoomNo"
                         label={intl.formatMessage({ id: "TextRoomNo" })}
-                        {...register("TextRoomNo")}
+                        {...register("RoomNo")}
                         margin="dense"
                         error={errors.RoomNo?.message}
                         helperText={errors.RoomNo?.message}
@@ -80,7 +80,7 @@ const NewEdit = () => {
                         fullWidth
                         id="TextRoomPhone"
                         label={intl.formatMessage({ id: "TextRoomPhone" })}
-                        {...register("TextRoomPhone")}
+                        {...register("RoomPhone")}
                         margin="dense"
                         error={errors.RoomPhone?.message}
                         helperText={errors.RoomPhone?.message}
@@ -94,7 +94,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({
                             id: "RowHeaderDescription",
                         })}
-                        {...register("RowHeaderDescription")}
+                        {...register("Description")}
                         margin="dense"
                         error={errors.Description?.message}
                         helperText={errors.Description?.message}
