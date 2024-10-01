@@ -13,9 +13,6 @@ import { useAppState } from "lib/context/app";
 const validationSchema = yup.object().shape({
     RoomNo: yup.string().required("Бөглөнө үү"),
     RoomTypeID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    FloorID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    RoomPhone: yup.string().required("Бөглөнө үү"),
-    Description: yup.string().required("Бөглөнө үү"),
     SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
@@ -24,7 +21,6 @@ const baseStayDefault = {
 };
 
 const NewEdit = () => {
-
     const intl = useIntl();
     const [baseStay, setBaseStay]: any = useState(baseStayDefault);
 
@@ -60,7 +56,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="TextRoomNo"
-                        label={intl.formatMessage({id:"TextRoomNo"}) }
+                        label={intl.formatMessage({ id: "TextRoomNo" })}
                         {...register("TextRoomNo")}
                         margin="dense"
                         error={errors.RoomNo?.message}
@@ -83,7 +79,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="TextRoomPhone"
-                        label={intl.formatMessage({id:"TextRoomPhone"}) }
+                        label={intl.formatMessage({ id: "TextRoomPhone" })}
                         {...register("TextRoomPhone")}
                         margin="dense"
                         error={errors.RoomPhone?.message}
@@ -95,7 +91,9 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="RowHeaderDescription"
-                        label={intl.formatMessage({id:"RowHeaderDescription"}) }
+                        label={intl.formatMessage({
+                            id: "RowHeaderDescription",
+                        })}
                         {...register("RowHeaderDescription")}
                         margin="dense"
                         error={errors.Description?.message}
@@ -108,7 +106,7 @@ const NewEdit = () => {
                         type="number"
                         fullWidth
                         id="SortOrder"
-                        label={intl.formatMessage({id:"SortOrder"}) }
+                        label={intl.formatMessage({ id: "SortOrder" })}
                         {...register("SortOrder")}
                         margin="dense"
                         error={errors.SortOrder?.message}
