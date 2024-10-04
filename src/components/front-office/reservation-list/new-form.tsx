@@ -82,6 +82,7 @@ const NewEdit = ({
 
     useEffect(() => {
         if (getValues(`TransactionDetail[${id}]`)) {
+            console.log("nabababa");
             if (getValues(`TransactionDetail[${id}].RoomTypeID`)) {
                 setRoomTypeID(getValues(`TransactionDetail[${id}].RoomTypeID`));
             }
@@ -117,6 +118,24 @@ const NewEdit = ({
                 //         getValues(`TransactionDetail[${id}].RateTypeID`)
                 //     ),
                 // });
+                console.log("testestestse22222");
+            } else {
+                console.log("testestestse");
+                if (rateTypeData) {
+                    resetField(`TransactionDetail.${id}.RateTypeID`, {
+                        defaultValue: rateTypeData[0].RateTypeID,
+                    });
+                    setRate(rateTypeData[0]);
+                    if (
+                        rateTypeData[0].BreakfastIncluded &&
+                        setBreakfastIncluded
+                    ) {
+                        setBreakfastIncluded(rateTypeData[0].BreakfastIncluded);
+                    }
+                    if (rateTypeData[0].TaxIncluded && setTaxIncluded) {
+                        setTaxIncluded(rateTypeData[0].TaxIncluded);
+                    }
+                }
             }
             if (getValues(`TransactionDetail[${id}].CurrencyAmount`)) {
                 setCurrencyAmount(
@@ -191,8 +210,22 @@ const NewEdit = ({
                     MaxChild: MaxChild,
                 });
             }
+        } else {
+            console.log("testestestse");
+            if (rateTypeData) {
+                resetField(`TransactionDetail.${id}.RateTypeID`, {
+                    defaultValue: rateTypeData[0].RateTypeID,
+                });
+                setRate(rateTypeData[0]);
+                if (rateTypeData[0].BreakfastIncluded && setBreakfastIncluded) {
+                    setBreakfastIncluded(rateTypeData[0].BreakfastIncluded);
+                }
+                if (rateTypeData[0].TaxIncluded && setTaxIncluded) {
+                    setTaxIncluded(rateTypeData[0].TaxIncluded);
+                }
+            }
         }
-    }, [id]);
+    }, [id, rateTypeData]);
 
     const onRoomTypeChange = (rt: any, index: number) => {
         setRoomTypeID(rt.RoomTypeID);
@@ -320,7 +353,7 @@ const NewEdit = ({
                     {id + 1}
                 </Typography>
             </Grid>
-            <Grid item xs={6} sm={4} md={2}>
+            <Grid item xs={6} sm={6} md={4}>
                 <RoomTypeSelect
                     register={register}
                     errors={errors}
@@ -346,7 +379,7 @@ const NewEdit = ({
             </Grid>
             {RoomTypeID && (
                 <>
-                    <Grid item xs={6} sm={4} md={1}>
+                    <Grid item xs={6} sm={3} md={2}>
                         <RoomSelect
                             register={register}
                             errors={errors}
@@ -359,7 +392,51 @@ const NewEdit = ({
                             RoomID={RoomID}
                         />
                     </Grid>
-                    <Grid item xs={6} sm={2} md={1}>
+
+                    <Grid item xs={6} sm={3} md={2}>
+                        <RoomRateTypeSelect
+                            register={register}
+                            errors={errors}
+                            reset={reset}
+                            customRegisterName={`TransactionDetail.${id}.RateTypeID`}
+                            RoomTypeID={RoomTypeID}
+                            setRate={setRate}
+                            Rate={Rate}
+                            setBreakfastIncluded={setBreakfastIncluded}
+                            setTaxIncluded={setTaxIncluded}
+                            id={id}
+                            resetField={resetField}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6} sm={6} md={4}>
+                        <CurrencyAmount
+                            register={register}
+                            errors={errors}
+                            reset={reset}
+                            ArrivalDate={ArrivalDate}
+                            RoomTypeID={RoomTypeID}
+                            RateTypeID={Rate && Rate.RateTypeID}
+                            TaxIncluded={TaxIncluded}
+                            Nights={Nights}
+                            setCurrencyAmount={setCurrencyAmount}
+                            currencyAmount={currencyAmount}
+                            resetField={resetField}
+                            id={id}
+                            setCurrency={setCurrency}
+                            Currency={Currency}
+                            control={control}
+                            Controller={Controller}
+                            selectedAdult={selectedAdult}
+                            selectedChild={selectedChild}
+                            rateCurrencyID={Rate.CurrencyID}
+                            getValues={getValues}
+                            isRoomList={true}
+                            CustomerID={CustomerID}
+                            ContractRate={Rate.ContractRate}
+                        />
+                    </Grid>
+                    <Grid item xs={6} sm={3} md={2}>
                         <NumberSelect
                             numberMin={1}
                             numberMax={
@@ -390,7 +467,7 @@ const NewEdit = ({
                         />
                     </Grid>
 
-                    <Grid item xs={6} sm={2} md={1}>
+                    <Grid item xs={6} sm={3} md={2}>
                         <NumberSelect
                             numberMin={0}
                             numberMax={
@@ -407,49 +484,20 @@ const NewEdit = ({
                         />
                     </Grid>
 
-                    <Grid item xs={6} sm={4} md={2}>
-                        <RoomRateTypeSelect
-                            register={register}
-                            errors={errors}
-                            reset={reset}
-                            customRegisterName={`TransactionDetail.${id}.RateTypeID`}
-                            RoomTypeID={RoomTypeID}
-                            setRate={setRate}
-                            Rate={Rate}
-                            setBreakfastIncluded={setBreakfastIncluded}
-                            setTaxIncluded={setTaxIncluded}
+                    <Grid item xs={6} sm={6} md={4}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Name"
+                            label={intl.formatMessage({
+                                id: "TextName",
+                            })}
+                            {...register(
+                                `TransactionDetail.${id}.GuestDetail.Name`
+                            )}
+                            margin="dense"
                         />
-                    </Grid>
-
-                    <Grid item xs={6} sm={3} md={2}>
-                        <CurrencyAmount
-                            register={register}
-                            errors={errors}
-                            reset={reset}
-                            ArrivalDate={ArrivalDate}
-                            RoomTypeID={RoomTypeID}
-                            RateTypeID={Rate && Rate.RateTypeID}
-                            TaxIncluded={TaxIncluded}
-                            Nights={Nights}
-                            setCurrencyAmount={setCurrencyAmount}
-                            currencyAmount={currencyAmount}
-                            resetField={resetField}
-                            id={id}
-                            setCurrency={setCurrency}
-                            Currency={Currency}
-                            control={control}
-                            Controller={Controller}
-                            selectedAdult={selectedAdult}
-                            selectedChild={selectedChild}
-                            rateCurrencyID={Rate.CurrencyID}
-                            getValues={getValues}
-                            isRoomList={true}
-                            CustomerID={CustomerID}
-                            ContractRate={Rate.ContractRate}
-                        />
-                    </Grid>
-                    <Grid item xs={11} sm={4} md={2}>
-                        <GuestSelect
+                        {/* <GuestSelect
                             register={register}
                             errors={errors}
                             onRoomTypeChange={onRoomTypeChange}
@@ -476,14 +524,14 @@ const NewEdit = ({
                                 errors.TransactionDetail[id].GuestName &&
                                 errors.TransactionDetail[id].GuestName.message
                             }
-                        />
+                        /> */}
                     </Grid>
 
                     <Grid
                         item
-                        xs={1}
-                        sm={1}
-                        lg={1}
+                        xs={6}
+                        sm={6}
+                        md={4}
                         style={{
                             display: "flex",
                             flexDirection: "column",
@@ -493,6 +541,7 @@ const NewEdit = ({
                         <Tooltip title="Duplicate">
                             <IconButton
                                 aria-label="close"
+                                style={{ width: "fit-content" }}
                                 onClick={() =>
                                     //@ts-ignore
                                     {
@@ -524,6 +573,7 @@ const NewEdit = ({
                                 aria-label="close"
                                 onClick={() => remove(id)}
                                 disabled={id == 0}
+                                style={{ width: "fit-content" }}
                             >
                                 <DeleteIcon />
                             </IconButton>

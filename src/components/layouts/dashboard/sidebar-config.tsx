@@ -23,30 +23,37 @@ const sidebarConfig = [
         icon: getIcon(pieChart2Fill),
         oldPath: "FrontOffice/StayView.aspx",
     },
+    // {
+    //     title: "захиалга",
+    //     titleEn: "reservation",
+    //     icon: getIcon(shoppingCartFill),
+    //     children: [
+    //         {
+    //             title: "захиалгын жагсаалт",
+    //             titleEn: "Reservation List",
+    //             path: "/front-office/reservation-list",
+    //             oldPath: "FrontOffice/ReservationList.aspx",
+    //         },
+    //         {
+    //             title: "өдрийн өндөрлөгөө",
+    //             titleEn: "Night Audit",
+    //             path: "/front-office/night-audit",
+    //             oldPath: "FrontOffice/NightAudit.aspx",
+    //         },
+    //         {
+    //             title: "Зочдын бааз",
+    //             titleEn: "Guest Database",
+    //             path: "/front-office/guest-database",
+    //             oldPath: "FrontOffice/Guests.aspx",
+    //         },
+    //     ],
+    // },
     {
-        title: "захиалга",
-        titleEn: "reservation",
+        title: "захиалгын жагсаалт",
+        titleEn: "Reservation List",
+        path: "/front-office/reservation-list",
+        oldPath: "FrontOffice/ReservationList.aspx",
         icon: getIcon(shoppingCartFill),
-        children: [
-            {
-                title: "захиалгын жагсаалт",
-                titleEn: "Reservation List",
-                path: "/front-office/reservation-list",
-                oldPath: "FrontOffice/ReservationList.aspx",
-            },
-            {
-                title: "өдрийн өндөрлөгөө",
-                titleEn: "Night Audit",
-                path: "/front-office/night-audit",
-                oldPath: "FrontOffice/NightAudit.aspx",
-            },
-            {
-                title: "Зочдын бааз",
-                titleEn: "Guest Database",
-                path: "/front-office/guest-database",
-                oldPath: "FrontOffice/Guests.aspx",
-            },
-        ],
     },
     {
         title: "Бүлэг",

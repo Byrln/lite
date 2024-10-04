@@ -333,308 +333,359 @@ const NewEdit = ({
                 <Card className="mb-3">
                     <CardContent>
                         <Grid key="General" container spacing={1}>
-                            <Grid item sm={4} xs={8}>
-                                <Controller
-                                    name={`ArrivalDate`}
-                                    control={control}
-                                    render={({
-                                        field: { onChange, value },
-                                    }) => (
-                                        <DatePicker
-                                            label={intl.formatMessage({
-                                                id: "TextArrivalDate",
-                                            })}
-                                            value={value}
-                                            minDate={new Date(workingDate)}
-                                            onChange={(value) => (
-                                                onChange(
-                                                    // moment(value, "YYYY-MM-DD")
-
-                                                    // moment(
-                                                    //     dateStringToObj(
-                                                    //         moment(
-                                                    //             value
-                                                    //         ).format(
-                                                    //             "YYYY-MM-DD"
-                                                    //         )
-                                                    //     ),
-                                                    //     "YYYY-MM-DD"
-                                                    // )
-                                                    moment(value).format(
-                                                        "YYYY-MM-DD"
-                                                    )
-                                                ),
-                                                setArrivalDate(
-                                                    // moment(value, "YYYY-MM-DD")
-
-                                                    // moment(
-                                                    //     dateStringToObj(
-                                                    //         moment(
-                                                    //             value
-                                                    //         ).format(
-                                                    //             "YYYY-MM-DD"
-                                                    //         )
-                                                    //     ),
-                                                    //     "YYYY-MM-DD"
-                                                    // ).format("YYYY-MM-DD")
-                                                    moment(value).format(
-                                                        "YYYY-MM-DD"
-                                                    )
-                                                )
-                                            )}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    size="small"
-                                                    id={`ArrivalDate`}
-                                                    {...register(`ArrivalDate`)}
-                                                    margin="dense"
-                                                    fullWidth
-                                                    {...params}
-                                                    error={
-                                                        !!errors.ArrivalDate
-                                                            ?.message
+                            <Grid
+                                item
+                                sm={6}
+                                xs={12}
+                                style={{
+                                    padding: "10px",
+                                    borderRadius: "16px",
+                                    border: "1px solid #E6E8EE",
+                                }}
+                            >
+                                <Grid key="dates" container spacing={1}>
+                                    <Grid item xs={8}>
+                                        <Controller
+                                            name={`ArrivalDate`}
+                                            control={control}
+                                            render={({
+                                                field: { onChange, value },
+                                            }) => (
+                                                <DatePicker
+                                                    label={intl.formatMessage({
+                                                        id: "TextArrivalDate",
+                                                    })}
+                                                    value={value}
+                                                    minDate={
+                                                        new Date(workingDate)
                                                     }
-                                                    helperText={
-                                                        errors.ArrivalDate
-                                                            ?.message
-                                                    }
-                                                />
-                                            )}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item sm={2} xs={4}>
-                                <TextField
-                                    id="ArrivalTime"
-                                    label={intl.formatMessage({
-                                        id: "TextArrivalTime",
-                                    })}
-                                    type="time"
-                                    margin="dense"
-                                    {...register("ArrivalTime")}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    sx={{ width: "100%" }}
-                                    size="small"
-                                    onChange={(value) =>
-                                        setArrivalTime(value.target.value)
-                                    }
-                                />
-                            </Grid>
-                            <Grid item sm={4} xs={8}>
-                                <Controller
-                                    name={`DepartureDate`}
-                                    control={control}
-                                    render={({
-                                        field: { onChange, value },
-                                    }) => (
-                                        <DatePicker
-                                            label={intl.formatMessage({
-                                                id: "TextDepartureDate",
-                                            })}
-                                            value={value}
-                                            minDate={new Date(ArrivalDate)}
-                                            onChange={(value) => (
-                                                onChange(
-                                                    moment(value).format(
-                                                        "YYYY-MM-DD"
-                                                    )
-                                                    // moment(
-                                                    //     dateStringToObj(
-                                                    //         moment(
-                                                    //             value
-                                                    //         ).format(
-                                                    //             "YYYY-MM-DD"
-                                                    //         )
-                                                    //     ),
-                                                    //     "YYYY-MM-DD"
-                                                    // )
-                                                    // moment(value, "YYYY-MM-DD")
-                                                ),
-                                                setDepartureDate(
-                                                    // moment(value, "YYYY-MM-DD")
-                                                    // moment(
-                                                    //     dateStringToObj(
-                                                    //         moment(
-                                                    //             value
-                                                    //         ).format(
-                                                    //             "YYYY-MM-DD"
-                                                    //         )
-                                                    //     ),
-                                                    //     "YYYY-MM-DD"
-                                                    // ).format("YYYY-MM-DD")
-                                                    moment(value).format(
-                                                        "YYYY-MM-DD"
-                                                    )
-                                                )
-                                            )}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    size="small"
-                                                    id={`DepartureDate`}
-                                                    {...register(
-                                                        `DepartureDate`
+                                                    onChange={(value) => (
+                                                        onChange(
+                                                            // moment(value, "YYYY-MM-DD")
+
+                                                            // moment(
+                                                            //     dateStringToObj(
+                                                            //         moment(
+                                                            //             value
+                                                            //         ).format(
+                                                            //             "YYYY-MM-DD"
+                                                            //         )
+                                                            //     ),
+                                                            //     "YYYY-MM-DD"
+                                                            // )
+                                                            moment(
+                                                                value
+                                                            ).format(
+                                                                "YYYY-MM-DD"
+                                                            )
+                                                        ),
+                                                        setArrivalDate(
+                                                            // moment(value, "YYYY-MM-DD")
+
+                                                            // moment(
+                                                            //     dateStringToObj(
+                                                            //         moment(
+                                                            //             value
+                                                            //         ).format(
+                                                            //             "YYYY-MM-DD"
+                                                            //         )
+                                                            //     ),
+                                                            //     "YYYY-MM-DD"
+                                                            // ).format("YYYY-MM-DD")
+                                                            moment(
+                                                                value
+                                                            ).format(
+                                                                "YYYY-MM-DD"
+                                                            )
+                                                        )
                                                     )}
-                                                    margin="dense"
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            size="small"
+                                                            id={`ArrivalDate`}
+                                                            {...register(
+                                                                `ArrivalDate`
+                                                            )}
+                                                            margin="dense"
+                                                            fullWidth
+                                                            {...params}
+                                                            error={
+                                                                !!errors
+                                                                    .ArrivalDate
+                                                                    ?.message
+                                                            }
+                                                            helperText={
+                                                                errors
+                                                                    .ArrivalDate
+                                                                    ?.message
+                                                            }
+                                                        />
+                                                    )}
+                                                />
+                                            )}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        {" "}
+                                        <TextField
+                                            id="ArrivalTime"
+                                            label={intl.formatMessage({
+                                                id: "TextArrivalTime",
+                                            })}
+                                            type="time"
+                                            margin="dense"
+                                            {...register("ArrivalTime")}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            sx={{ width: "100%" }}
+                                            size="small"
+                                            onChange={(value) =>
+                                                setArrivalTime(
+                                                    value.target.value
+                                                )
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={8}>
+                                        {" "}
+                                        <Controller
+                                            name={`DepartureDate`}
+                                            control={control}
+                                            render={({
+                                                field: { onChange, value },
+                                            }) => (
+                                                <DatePicker
+                                                    label={intl.formatMessage({
+                                                        id: "TextDepartureDate",
+                                                    })}
+                                                    value={value}
+                                                    minDate={
+                                                        new Date(ArrivalDate)
+                                                    }
+                                                    onChange={(value) => (
+                                                        onChange(
+                                                            moment(
+                                                                value
+                                                            ).format(
+                                                                "YYYY-MM-DD"
+                                                            )
+                                                            // moment(
+                                                            //     dateStringToObj(
+                                                            //         moment(
+                                                            //             value
+                                                            //         ).format(
+                                                            //             "YYYY-MM-DD"
+                                                            //         )
+                                                            //     ),
+                                                            //     "YYYY-MM-DD"
+                                                            // )
+                                                            // moment(value, "YYYY-MM-DD")
+                                                        ),
+                                                        setDepartureDate(
+                                                            // moment(value, "YYYY-MM-DD")
+                                                            // moment(
+                                                            //     dateStringToObj(
+                                                            //         moment(
+                                                            //             value
+                                                            //         ).format(
+                                                            //             "YYYY-MM-DD"
+                                                            //         )
+                                                            //     ),
+                                                            //     "YYYY-MM-DD"
+                                                            // ).format("YYYY-MM-DD")
+                                                            moment(
+                                                                value
+                                                            ).format(
+                                                                "YYYY-MM-DD"
+                                                            )
+                                                        )
+                                                    )}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            size="small"
+                                                            id={`DepartureDate`}
+                                                            {...register(
+                                                                `DepartureDate`
+                                                            )}
+                                                            margin="dense"
+                                                            fullWidth
+                                                            {...params}
+                                                            error={
+                                                                !!errors
+                                                                    .DepartureDate
+                                                                    ?.message
+                                                            }
+                                                            helperText={
+                                                                errors
+                                                                    .DepartureDate
+                                                                    ?.message
+                                                            }
+                                                        />
+                                                    )}
+                                                />
+                                            )}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        {" "}
+                                        <TextField
+                                            id="DepartureTime"
+                                            label={intl.formatMessage({
+                                                id: "TextDepartureTime",
+                                            })}
+                                            type="time"
+                                            margin="dense"
+                                            {...register("DepartureTime")}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            sx={{ width: "100%" }}
+                                            size="small"
+                                            onChange={(value) =>
+                                                setDepartureTime(
+                                                    value.target.value
+                                                )
+                                            }
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                            <Grid
+                                item
+                                sm={6}
+                                xs={12}
+                                style={{
+                                    padding: "10px",
+                                    borderRadius: "16px",
+                                    border: "1px solid #E6E8EE",
+                                }}
+                            >
+                                <Grid key="otherSettings" container spacing={1}>
+                                    <Grid item xs={16}>
+                                        <CustomerSelect
+                                            register={register}
+                                            errors={errors}
+                                            setEntity={setCustomerID}
+                                            isCustomSelect={true}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={16}>
+                                        <FormControlLabel
+                                            control={
+                                                <Controller
+                                                    name={`IsBooker`}
+                                                    control={control}
+                                                    render={(props: any) => (
+                                                        <Checkbox
+                                                            checked={
+                                                                isBooker == true
+                                                                    ? true
+                                                                    : false
+                                                            }
+                                                            onChange={(e) =>
+                                                                setIsBooker(
+                                                                    e.target
+                                                                        .checked
+                                                                )
+                                                            }
+                                                        />
+                                                    )}
+                                                />
+                                            }
+                                            label={intl.formatMessage({
+                                                id: "TextBookerInformation",
+                                            })}
+                                        />
+                                    </Grid>
+                                    {isBooker ? (
+                                        <>
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    size="small"
                                                     fullWidth
-                                                    {...params}
-                                                    error={
-                                                        !!errors.DepartureDate
-                                                            ?.message
-                                                    }
-                                                    helperText={
-                                                        errors.DepartureDate
-                                                            ?.message
-                                                    }
+                                                    id="BookerName"
+                                                    label={intl.formatMessage({
+                                                        id: "TextName",
+                                                    })}
+                                                    {...register(`BookerName`)}
+                                                    margin="dense"
                                                 />
-                                            )}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item sm={2} xs={4}>
-                                <TextField
-                                    id="DepartureTime"
-                                    label={intl.formatMessage({
-                                        id: "TextDepartureTime",
-                                    })}
-                                    type="time"
-                                    margin="dense"
-                                    {...register("DepartureTime")}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    sx={{ width: "100%" }}
-                                    size="small"
-                                    onChange={(value) =>
-                                        setDepartureTime(value.target.value)
-                                    }
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <CustomerSelect
-                                    register={register}
-                                    errors={errors}
-                                    setEntity={setCustomerID}
-                                    isCustomSelect={true}
-                                />
-                            </Grid>
-
-                            <Grid item xs={16}>
-                                <FormControlLabel
-                                    control={
-                                        <Controller
-                                            name={`IsBooker`}
-                                            control={control}
-                                            render={(props: any) => (
-                                                <Checkbox
-                                                    checked={
-                                                        isBooker == true
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    onChange={(e) =>
-                                                        setIsBooker(
-                                                            e.target.checked
-                                                        )
-                                                    }
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    size="small"
+                                                    fullWidth
+                                                    id="BookerPhone"
+                                                    label={intl.formatMessage({
+                                                        id: "TextPhone",
+                                                    })}
+                                                    {...register(`BookerPhone`)}
+                                                    margin="dense"
                                                 />
-                                            )}
-                                        />
-                                    }
-                                    label={intl.formatMessage({
-                                        id: "TextBookerInformation",
-                                    })}
-                                />
-                            </Grid>
-
-                            {isBooker ? (
-                                <>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            size="small"
-                                            fullWidth
-                                            id="BookerName"
-                                            label={intl.formatMessage({
-                                                id: "TextName",
-                                            })}
-                                            {...register(`BookerName`)}
-                                            margin="dense"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            size="small"
-                                            fullWidth
-                                            id="BookerPhone"
-                                            label={intl.formatMessage({
-                                                id: "TextPhone",
-                                            })}
-                                            {...register(`BookerPhone`)}
-                                            margin="dense"
-                                        />
-                                    </Grid>
-                                </>
-                            ) : null}
-
-                            <Grid item xs={16}>
-                                <FormControlLabel
-                                    control={
-                                        <Controller
-                                            name={`IsGuide`}
-                                            control={control}
-                                            render={(props: any) => (
-                                                <Checkbox
-                                                    checked={
-                                                        isGuide == true
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    onChange={(e) =>
-                                                        setIsGuide(
-                                                            e.target.checked
-                                                        )
-                                                    }
+                                            </Grid>
+                                        </>
+                                    ) : null}
+                                    <Grid item xs={12}>
+                                        <FormControlLabel
+                                            control={
+                                                <Controller
+                                                    name={`IsGuide`}
+                                                    control={control}
+                                                    render={(props: any) => (
+                                                        <Checkbox
+                                                            checked={
+                                                                isGuide == true
+                                                                    ? true
+                                                                    : false
+                                                            }
+                                                            onChange={(e) =>
+                                                                setIsGuide(
+                                                                    e.target
+                                                                        .checked
+                                                                )
+                                                            }
+                                                        />
+                                                    )}
                                                 />
-                                            )}
+                                            }
+                                            label={intl.formatMessage({
+                                                id: "TextGuideInformation",
+                                            })}
                                         />
-                                    }
-                                    label={intl.formatMessage({
-                                        id: "TextGuideInformation",
-                                    })}
-                                />
-                            </Grid>
+                                    </Grid>
 
-                            {isGuide ? (
-                                <>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            size="small"
-                                            fullWidth
-                                            id="GuideName"
-                                            label={intl.formatMessage({
-                                                id: "TextName",
-                                            })}
-                                            {...register(`GuideName`)}
-                                            margin="dense"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            size="small"
-                                            fullWidth
-                                            id="GuidePhone"
-                                            label={intl.formatMessage({
-                                                id: "TextPhone",
-                                            })}
-                                            {...register(`GuidePhone`)}
-                                            margin="dense"
-                                        />
-                                    </Grid>
-                                </>
-                            ) : null}
+                                    {isGuide ? (
+                                        <>
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    size="small"
+                                                    fullWidth
+                                                    id="GuideName"
+                                                    label={intl.formatMessage({
+                                                        id: "TextName",
+                                                    })}
+                                                    {...register(`GuideName`)}
+                                                    margin="dense"
+                                                />
+                                            </Grid>
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    size="small"
+                                                    fullWidth
+                                                    id="GuidePhone"
+                                                    label={intl.formatMessage({
+                                                        id: "TextPhone",
+                                                    })}
+                                                    {...register(`GuidePhone`)}
+                                                    margin="dense"
+                                                />
+                                            </Grid>
+                                        </>
+                                    ) : null}
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </CardContent>
                 </Card>
@@ -802,7 +853,37 @@ const NewEdit = ({
                     </CardContent>
                 </Card>
 
-                <Card className="mb-3" key={"Payment"}>
+                <Grid container spacing={1}>
+                    <Grid item sm={12} md={4}>
+                        <Typography variant="caption" gutterBottom>
+                            {intl.formatMessage({
+                                id: "TextNights",
+                            })}
+                            : {nights}
+                        </Typography>
+                    </Grid>
+                    <Grid item sm={12} md={4}>
+                        <Typography variant="caption" gutterBottom>
+                            {intl.formatMessage({
+                                id: "ReportTotalRooms",
+                            })}
+                            : {fields.length}
+                        </Typography>
+                    </Grid>
+                    <Grid item sm={12} md={4}>
+                        <Typography variant="caption" gutterBottom>
+                            {intl.formatMessage({
+                                id: "ReportTotalCharge",
+                            })}
+                            : {formatPrice(totalAmount)}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Card
+                    className="mb-3"
+                    key={"Payment"}
+                    style={{ display: "none" }}
+                >
                     <CardContent>
                         <div
                             style={{

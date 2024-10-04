@@ -20,13 +20,14 @@ const styles = {
         transform: "translate(-50%, -50%)",
         bgcolor: "background.paper",
         boxShadow: 24,
-        py: 1,
-        px: 4,
-        pb: 3,
+
         maxHeight: "90%",
-        width: "30%",
+        width: "90%",
         overflow: "auto",
         borderRadius: "10px",
+        "@media (min-width: 768px)": {
+            width: "30%", // Width for tablet or larger devices
+        },
     },
     medium: {
         position: "absolute" as "absolute",
@@ -35,13 +36,13 @@ const styles = {
         transform: "translate(-50%, -50%)",
         bgcolor: "background.paper",
         boxShadow: 24,
-        py: 1,
-        px: 4,
-        pb: 3,
         maxHeight: "90%",
-        width: "60%",
+        width: "90%",
         overflow: "auto",
         borderRadius: "10px",
+        "@media (min-width: 768px)": {
+            width: "60%", // Width for tablet or larger devices
+        },
     },
     large: {
         position: "absolute" as "absolute",
@@ -50,13 +51,23 @@ const styles = {
         transform: "translate(-50%, -50%)",
         bgcolor: "background.paper",
         boxShadow: 24,
-        py: 1,
-        px: 4,
-        pb: 3,
         maxHeight: "90%",
         width: "90%",
         overflow: "auto",
         borderRadius: "10px",
+    },
+    boxContainer: {
+        // py: 1,
+        px: 4,
+        // pb: ,
+        backgroundColor: "#804fe6e6",
+        color: "white",
+    },
+
+    bodyContainer: {
+        py: 1,
+        px: 4,
+        pb: 3,
     },
 };
 
@@ -100,6 +111,7 @@ const CustomModal = () => {
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"
+                        sx={styles.boxContainer}
                     >
                         <Typography
                             id="modal-modal-title"
@@ -112,6 +124,7 @@ const CustomModal = () => {
 
                         <IconButton
                             aria-label="close"
+                            style={{ color: "white" }}
                             onClick={() => handleModal()}
                         >
                             <CloseIcon />
@@ -121,7 +134,10 @@ const CustomModal = () => {
 
                 <Divider />
 
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                <Typography
+                    id="modal-modal-description"
+                    sx={styles.bodyContainer}
+                >
                     {modalContent}
 
                     {!emptyModal && (
@@ -156,12 +172,13 @@ const CustomModal = () => {
                                 </Box>
                             ) : (
                                 <>
-                                    <Divider className="mt-3 mb-3" />
+                                    {/* <Divider className="mt-3 mb-3" /> */}
                                     <Box
                                         sx={{
                                             mx: "auto",
                                             textAlign: "right",
                                         }}
+                                        className="mt-3"
                                     >
                                         <Button
                                             size="small"

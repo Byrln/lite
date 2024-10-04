@@ -46,52 +46,58 @@ const NewEdit = () => {
                 dateAdapter={AdapterDateFns}
             >
                 <Grid container spacing={1}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <TextField
                             size="small"
                             fullWidth
                             id="TaxCode"
-                            label={intl.formatMessage({id:"RowHeaderTaxCode"}) }
+                            label={intl.formatMessage({
+                                id: "RowHeaderTaxCode",
+                            })}
                             {...register("TaxCode")}
                             margin="dense"
                             error={errors.TaxCode?.message}
                             helperText={errors.TaxCode?.message}
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <TextField
                             size="small"
                             fullWidth
                             id="TaxName"
-                            label={intl.formatMessage({id:"RowHeaderTaxName"}) }
+                            label={intl.formatMessage({
+                                id: "RowHeaderTaxName",
+                            })}
                             {...register("TaxName")}
                             margin="dense"
                             error={errors.TaxName?.message}
                             helperText={errors.TaxName?.message}
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <TextField
                             size="small"
                             type="number"
                             fullWidth
                             id="TaxAmount"
-                            label={intl.formatMessage({id:"ReportAmount"}) }
+                            label={intl.formatMessage({ id: "ReportAmount" })}
                             {...register("TaxAmount")}
                             margin="dense"
                             error={errors.TaxAmount?.message}
                             helperText={errors.TaxAmount?.message}
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <Controller
                             name="BeginDate"
                             control={control}
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
-                                <DatePicker                       
-                                label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
-                                {...register("BeginDate")}
+                                <DatePicker
+                                    label={intl.formatMessage({
+                                        id: "RowHeaderBeginDate",
+                                    })}
+                                    {...register("BeginDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -123,15 +129,17 @@ const NewEdit = () => {
                             )}
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <Controller
                             name="EndDate"
                             control={control}
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                label={intl.formatMessage({id:"RowHeaderEndDate"}) }
-                                {...register("EndDate")}
+                                    label={intl.formatMessage({
+                                        id: "RowHeaderEndDate",
+                                    })}
+                                    {...register("EndDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(

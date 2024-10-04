@@ -73,52 +73,54 @@ const RateTypeList = ({ title }: any) => {
 
     const { data, error } = RateTypeSWR(search);
 
-const columns = [
-    {
-        title: intl.formatMessage({id:"RowHeaderFirstName"}), 
-        key: "RateTypeName",
-        dataIndex: "RateTypeName",
-    },
-    {
-        title: intl.formatMessage({id:"BreakfastIncluded"}), 
-        key: "BreakfastIncluded",
-        dataIndex: "BreakfastIncluded",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                element.row.BreakfastIncluded && (
-                    <ToggleChecked
-                        id={element.id}
-                        checked={element.row.BreakfastIncluded}
-                        disabled={true}
-                    />
-                )
-            );
+    const columns = [
+        {
+            title: intl.formatMessage({ id: "RowHeaderFirstName" }),
+            key: "RateTypeName",
+            dataIndex: "RateTypeName",
         },
-    },
-    {             title: intl.formatMessage({id:"ChannelName"}), 
-         key: "ChannelName", 
-         dataIndex: "ChannelName" },
-    {
-        title: intl.formatMessage({id:"Left_SortByStatus"}), 
-        key: "Status",
-        dataIndex: "Status",
-        excelRenderPass: true,
-        renderCell: (element: any) => {
-            return (
-                element.row.Status && (
-                    <ToggleChecked
-                        id={element.id}
-                        checked={element.row.Status}
-                        api={RateTypeAPI}
-                        apiUrl="UpdateStatus"
-                        mutateUrl={`${listUrl}`}
-                    />
-                )
-            );
+        {
+            title: intl.formatMessage({ id: "BreakfastIncluded" }),
+            key: "BreakfastIncluded",
+            dataIndex: "BreakfastIncluded",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    element.row.BreakfastIncluded && (
+                        <ToggleChecked
+                            id={element.id}
+                            checked={element.row.BreakfastIncluded}
+                            disabled={true}
+                        />
+                    )
+                );
+            },
         },
-    },
-];
+        {
+            title: intl.formatMessage({ id: "ChannelName" }),
+            key: "ChannelName",
+            dataIndex: "ChannelName",
+        },
+        {
+            title: intl.formatMessage({ id: "Left_SortByStatus" }),
+            key: "Status",
+            dataIndex: "Status",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    element.row.Status && (
+                        <ToggleChecked
+                            id={element.id}
+                            checked={element.row.Status}
+                            api={RateTypeAPI}
+                            apiUrl="UpdateStatus"
+                            mutateUrl={`${listUrl}`}
+                        />
+                    )
+                );
+            },
+        },
+    ];
     return (
         <>
             <CustomTable
@@ -150,6 +152,7 @@ const columns = [
                         />
                     </CustomSearch>
                 }
+                modalsize="medium"
             />
         </>
     );

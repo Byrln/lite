@@ -130,7 +130,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="UserName"
-                        label={intl.formatMessage({id:"RowHeaderUserName"}) }
+                        label={intl.formatMessage({ id: "RowHeaderUserName" })}
                         {...register("UserName")}
                         margin="dense"
                         error={errors.UserName?.message}
@@ -142,7 +142,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="LoginName"
-                        label={intl.formatMessage({id:"TextLoginName"}) }
+                        label={intl.formatMessage({ id: "TextLoginName" })}
                         {...register("LoginName")}
                         margin="dense"
                         error={errors.LoginName?.message}
@@ -158,7 +158,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="Email"
-                        label={intl.formatMessage({id:"TextEmail"}) }
+                        label={intl.formatMessage({ id: "TextEmail" })}
                         {...register("Email")}
                         margin="dense"
                         error={errors.Email?.message}

@@ -270,3 +270,7 @@ a.fc-event {
 .fc .fc-timeline-slot-minor {
     border-style: none;
 }
+
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+    border-color: rgba(0, 0, 0, 0.4) !important;
+}

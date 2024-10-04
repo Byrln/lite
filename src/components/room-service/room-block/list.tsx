@@ -117,7 +117,7 @@ const RoomBlockList = ({ title, workingDate }: any) => {
             dataIndex: "test",
         },
         {
-            title: intl.formatMessage({id:"ReportCheck"}), 
+            title: intl.formatMessage({ id: "ReportCheck" }),
             key: "check",
             dataIndex: "check",
             withCheckBox: true,
@@ -147,37 +147,38 @@ const RoomBlockList = ({ title, workingDate }: any) => {
             },
         },
         {
-            title: intl.formatMessage({id:"MenuRooms"}), 
+            title: intl.formatMessage({ id: "MenuRooms" }),
             key: "RoomFullName",
             dataIndex: "RoomFullName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderBeginDate"}), 
+            title: intl.formatMessage({ id: "RowHeaderBeginDate" }),
             key: "BeginDate",
             dataIndex: "BeginDate",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderEndDate"}), 
+            title: intl.formatMessage({ id: "RowHeaderEndDate" }),
             key: "EndDate",
             dataIndex: "EndDate",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderBlockedOn"}), 
+            title: intl.formatMessage({ id: "RowHeaderBlockedOn" }),
             key: "RowHeaderBlockedOn",
             dataIndex: "RowHeaderBlockedOn",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderBlockedBy"}), 
+            title: intl.formatMessage({ id: "RowHeaderBlockedBy" }),
             key: "CreatedDate",
             dataIndex: "CreatedDate",
         },
         {
-            title: intl.formatMessage({id:"ConfigReasons"}), 
+            title: intl.formatMessage({ id: "ConfigReasons" }),
             key: "UserName",
             dataIndex: "UserName",
         },
     ];
     console.log("entity", entity);
+
     return (
         <CustomTable
             columns={columns}

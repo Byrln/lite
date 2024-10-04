@@ -173,7 +173,9 @@ const NewEdit = () => {
                                 size="small"
                                 fullWidth
                                 id="RoomTypeShortName"
-                                label={intl.formatMessage({id:"RowHeaderShortName"}) }
+                                label={intl.formatMessage({
+                                    id: "RowHeaderShortName",
+                                })}
                                 {...register("RoomTypeShortName")}
                                 margin="dense"
                                 value={entity && entity.RoomTypeShortName}
@@ -197,8 +199,10 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                  id="RoomTypeName"
-                                label={intl.formatMessage({id:"RoomTypeName"}) }
+                                id="RoomTypeName"
+                                label={intl.formatMessage({
+                                    id: "RoomTypeName",
+                                })}
                                 {...register("RoomTypeName")}
                                 margin="dense"
                                 value={entity && entity.RoomTypeName}
@@ -224,8 +228,10 @@ const NewEdit = () => {
                                 type="number"
                                 fullWidth
                                 id="BaseAdult"
-                            label={intl.formatMessage({id:"TextBasicAdult"}) }
-                            {...register("BaseAdult")}
+                                label={intl.formatMessage({
+                                    id: "TextBasicAdult",
+                                })}
+                                {...register("BaseAdult")}
                                 margin="dense"
                                 value={
                                     entity &&
@@ -254,7 +260,9 @@ const NewEdit = () => {
                                 type="number"
                                 fullWidth
                                 id="MaxAdult"
-                                label={intl.formatMessage({id:"TheNumberOfAdultsTheUpperLimit"}) }
+                                label={intl.formatMessage({
+                                    id: "TextMaxAdult",
+                                })}
                                 {...register("MaxAdult")}
                                 margin="dense"
                                 value={
@@ -284,7 +292,9 @@ const NewEdit = () => {
                                 type="number"
                                 fullWidth
                                 id="BaseChild"
-                                label={intl.formatMessage({id:"ChildrenBasic"}) }
+                                label={intl.formatMessage({
+                                    id: "TextBaseChild",
+                                })}
                                 {...register("BaseChild")}
                                 value={
                                     entity &&
@@ -314,7 +324,9 @@ const NewEdit = () => {
                                 type="number"
                                 fullWidth
                                 id="MaxChild"
-                                label={intl.formatMessage({id:"NumberOfChildren-Maximum"}) }
+                                label={intl.formatMessage({
+                                    id: "TextMaxChild",
+                                })}
                                 {...register("MaxChild")}
                                 value={
                                     entity &&
@@ -343,7 +355,7 @@ const NewEdit = () => {
                                 type="number"
                                 fullWidth
                                 id="SortOrder"
-                                label={intl.formatMessage({id:"SortOrder"}) }
+                                label={intl.formatMessage({ id: "SortOrder" })}
                                 {...register("SortOrder")}
                                 margin="dense"
                                 value={
@@ -389,7 +401,9 @@ const NewEdit = () => {
                                 size="small"
                                 fullWidth
                                 id="BookingDescription"
-                                label={intl.formatMessage({id:"BriefDescription(OnlineOrder)"}) }
+                                label={intl.formatMessage({
+                                    id: "BriefDescription(OnlineOrder)",
+                                })}
                                 multiline
                                 {...register("BookingDescription")}
                                 margin="dense"
@@ -457,8 +471,9 @@ const NewEdit = () => {
                                 )}
                             />
                         }
-                        label={intl.formatMessage({id:"WhetherToDisplayOnLineOrders"}) }
-                       
+                        label={intl.formatMessage({
+                            id: "WhetherToDisplayOnLineOrders",
+                        })}
                     />
                     {/* <FormGroup>
                         <FormControlLabel
@@ -500,7 +515,7 @@ const NewEdit = () => {
             <Box sx={{ width: "100%" }}>
                 {/* <CustomTab tabs={tabs} /> */}
                 <Grid container spacing={1}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <Card className="mt-3">
                             <CardContent>
                                 <Typography
@@ -516,7 +531,9 @@ const NewEdit = () => {
                                             size="small"
                                             fullWidth
                                             id="RoomTypeShortName"
-                                            label={intl.formatMessage({id:"RowHeaderShortName"}) }
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderShortName",
+                                            })}
                                             {...register("RoomTypeShortName")}
                                             margin="dense"
                                             value={
@@ -552,7 +569,9 @@ const NewEdit = () => {
                                             size="small"
                                             fullWidth
                                             id="RoomTypeName"
-                                            label={intl.formatMessage({id:"RowHeaderFirstName"}) }
+                                            label={intl.formatMessage({
+                                                id: "RoomTypeName",
+                                            })}
                                             {...register("RoomTypeName")}
                                             margin="dense"
                                             value={
@@ -584,7 +603,9 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="BaseAdult"
-                                            label={intl.formatMessage({id:"TextBaseAdult"}) }
+                                            label={intl.formatMessage({
+                                                id: "TextBaseAdult",
+                                            })}
                                             {...register("BaseAdult")}
                                             margin="dense"
                                             value={
@@ -616,7 +637,9 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="MaxAdult"
-                                            label={intl.formatMessage({id:"TheNumberOfAdultsTheUpperLimit"}) }
+                                            label={intl.formatMessage({
+                                                id: "TheNumberOfAdultsTheUpperLimit",
+                                            })}
                                             {...register("MaxAdult")}
                                             margin="dense"
                                             value={
@@ -648,7 +671,9 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="BaseChild"
-                                            label={intl.formatMessage({id:"ChildrenBasic"}) }
+                                            label={intl.formatMessage({
+                                                id: "ChildrenBasic",
+                                            })}
                                             {...register("BaseChild")}
                                             value={
                                                 entity &&
@@ -680,7 +705,9 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="MaxChild"
-                                            label={intl.formatMessage({id:"NumberOfChildren-Maximum"}) }
+                                            label={intl.formatMessage({
+                                                id: "NumberOfChildren-Maximum",
+                                            })}
                                             {...register("MaxChild")}
                                             value={
                                                 entity &&
@@ -711,13 +738,15 @@ const NewEdit = () => {
                                             type="number"
                                             fullWidth
                                             id="SortOrder"
-                                            label={intl.formatMessage({id:"SortOrder"}) }
+                                            label={intl.formatMessage({
+                                                id: "SortOrder",
+                                            })}
                                             {...register("SortOrder")}
                                             margin="dense"
                                             value={
-                                                entity &&
-                                                entity.SortOrder > 0 &&
-                                                entity.SortOrder
+                                                entity && entity.SortOrder > 0
+                                                    ? entity.SortOrder
+                                                    : 1
                                             }
                                             onChange={(evt: any) => {
                                                 setEntity({
@@ -726,10 +755,7 @@ const NewEdit = () => {
                                                 });
                                             }}
                                             InputLabelProps={{
-                                                shrink:
-                                                    entity &&
-                                                    (entity.SortOrder ||
-                                                        entity.SortOrder == 0),
+                                                shrink: true,
                                             }}
                                             error={errors.SortOrder?.message}
                                             helperText={
@@ -749,7 +775,7 @@ const NewEdit = () => {
                             </CardContent>
                         </Card>
                     </Grid>{" "}
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <Card className="mt-3">
                             <CardContent>
                                 <Typography
@@ -766,7 +792,9 @@ const NewEdit = () => {
                                             size="small"
                                             fullWidth
                                             id="BookingDescription"
-                                            label={intl.formatMessage({id:"BriefDescription(OnlineOrder"}) }
+                                            label={intl.formatMessage({
+                                                id: "BriefDescription(OnlineOrder",
+                                            })}
                                             multiline
                                             {...register("BookingDescription")}
                                             margin="dense"
@@ -848,7 +876,9 @@ const NewEdit = () => {
                                             )}
                                         />
                                     }
-                                    label={intl.formatMessage({id:"WhetherToDisplayOnLineOrders"}) }
+                                    label={intl.formatMessage({
+                                        id: "WhetherToDisplayOnLineOrders",
+                                    })}
                                 />
                                 {/* <FormGroup>
                                     <FormControlLabel

@@ -35,12 +35,23 @@ const NewEdit = () => {
                 size="small"
                 fullWidth
                 id="CustomerGroupName"
-                label={intl.formatMessage({id:"RowHeaderGroupName"}) }
+                label={intl.formatMessage({ id: "RowHeaderGroupName" })}
                 {...register("CustomerGroupName")}
                 margin="dense"
                 error={errors.CustomerGroupName?.message}
                 helperText={errors.CustomerGroupName?.message}
             />
+
+            {/* <TextField
+                size="small"
+                fullWidth
+                id="Description"
+                label={intl.formatMessage({ id: "Description" })}
+                {...register("Description")}
+                margin="dense"
+                error={errors.Description?.message}
+                helperText={errors.Description?.message}
+            /> */}
         </NewEditForm>
     );
 };

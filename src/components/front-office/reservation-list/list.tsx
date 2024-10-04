@@ -215,6 +215,7 @@ const DeparturedListList = ({ title, workingDate }: any) => {
                             />
                         </CustomSearch>
                     }
+                    modalsize="medium"
                 />
             )}
         </>

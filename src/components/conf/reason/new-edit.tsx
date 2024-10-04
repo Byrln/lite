@@ -35,22 +35,22 @@ const NewEdit = () => {
             handleSubmit={handleSubmit}
         >
             <Grid container spacing={1}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <ReasonTypeSelect
                         register={register}
                         errors={errors}
                         id="TextType"
-                        label={intl.formatMessage({id:"TextType"}) }
+                        label={intl.formatMessage({ id: "TextType" })}
                         {...register("TextType")}
                         ReasonTypeID={1}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <TextField
                         size="small"
                         fullWidth
                         id="Description"
-                        label={intl.formatMessage({id:"RowHeaderReason"}) }
+                        label={intl.formatMessage({ id: "RowHeaderReason" })}
                         {...register("Description")}
                         margin="dense"
                         error={errors.Description?.message}

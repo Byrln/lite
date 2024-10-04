@@ -39,31 +39,31 @@ const NewEdit = ({ entity }: any) => {
             handleSubmit={handleSubmit}
         >
             <Grid container spacing={1}>
-                <Grid item xs={4}>
+                <Grid item xs={12}>
                     <PaymentMethodGroupSelect
                         register={register}
                         errors={errors}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12}>
                     <TextField
                         size="small"
                         fullWidth
                         id="PaymentMethodName"
-                        label={intl.formatMessage({id:"RowHeaderFirstName"}) }
+                        label={intl.formatMessage({ id: "RowHeaderFirstName" })}
                         {...register("PaymentMethodName")}
                         margin="dense"
                         error={errors.PaymentMethodName?.message}
                         helperText={errors.PaymentMethodName?.message}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12}>
                     <TextField
                         size="small"
                         type="number"
                         fullWidth
                         id="SortOrder"
-                        label={intl.formatMessage({id:"SortOrder"}) }
+                        label={intl.formatMessage({ id: "SortOrder" })}
                         {...register("SortOrder")}
                         margin="dense"
                         error={errors.SortOrder?.message}

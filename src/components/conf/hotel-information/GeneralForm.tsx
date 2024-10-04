@@ -92,9 +92,9 @@ const GeneralForm = () => {
                             size="small"
                             disabled
                             fullWidth
-                            id="HoteLCode"                      
-                            label={intl.formatMessage({id:"HoteLCode"}) }
-                            {...register("HoteLCode")}
+                            id="HotelCode"
+                            label={intl.formatMessage({ id: "HotelCode" })}
+                            {...register("HotelCode")}
                             margin="dense"
                             error={errors.HotelCode?.message}
                             helperText={errors.HotelCode?.message}
@@ -102,8 +102,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="HotelName"                      
-                            label={intl.formatMessage({id:"MsgHotelName"}) }
+                            id="HotelName"
+                            label={intl.formatMessage({ id: "MsgHotelName" })}
                             {...register("HotelName")}
                             margin="dense"
                             error={errors.HotelName?.message}
@@ -112,8 +112,10 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="CompanyName"                      
-                            label={intl.formatMessage({id:"TextCompanyName"}) }
+                            id="CompanyName"
+                            label={intl.formatMessage({
+                                id: "TextCompanyName",
+                            })}
                             {...register("CompanyName")}
                             margin="dense"
                             error={errors.CompanyName?.message}
@@ -122,8 +124,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="RegistryNo"                      
-                            label={intl.formatMessage({id:"TextRegisterNo"}) }
+                            id="RegistryNo"
+                            label={intl.formatMessage({ id: "TextRegisterNo" })}
                             {...register("RegistryNo")}
                             margin="dense"
                             error={errors.RegistryNo?.message}
@@ -132,8 +134,10 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="ReceptionPhone"                      
-                            label={intl.formatMessage({id:"RowHeaderReceptionPhone"}) }
+                            id="ReceptionPhone"
+                            label={intl.formatMessage({
+                                id: "RowHeaderReceptionPhone",
+                            })}
                             {...register("ReceptionPhone")}
                             margin="dense"
                             error={errors.ReceptionPhone?.message}
@@ -144,8 +148,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="Address1"                      
-                            label={intl.formatMessage({id:"TextAddress1"}) }
+                            id="Address1"
+                            label={intl.formatMessage({ id: "TextAddress1" })}
                             {...register("Address1")}
                             margin="dense"
                             error={errors.Address1?.message}
@@ -154,8 +158,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="Address2"                      
-                            label={intl.formatMessage({id:"TextAddress2"}) }
+                            id="Address2"
+                            label={intl.formatMessage({ id: "TextAddress2" })}
                             {...register("Address2")}
                             margin="dense"
                             error={errors.Address2?.message}
@@ -164,8 +168,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="City"                      
-                            label={intl.formatMessage({id:"TextCity"}) }
+                            id="City"
+                            label={intl.formatMessage({ id: "TextCity" })}
                             {...register("City")}
                             margin="dense"
                             error={errors.City?.message}
@@ -174,8 +178,10 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="State"                      
-                            label={intl.formatMessage({id:"District/Province"}) }
+                            id="State"
+                            label={intl.formatMessage({
+                                id: "District/Province",
+                            })}
                             {...register("State")}
                             margin="dense"
                             error={errors.State?.message}
@@ -185,7 +191,7 @@ const GeneralForm = () => {
                             register={register}
                             errors={errors}
                             type="Country"
-                            label={intl.formatMessage({id:"ReportCountry"}) }
+                            label={intl.formatMessage({ id: "ReportCountry" })}
                             {...register("ReportCountry")}
                             optionValue="CountryID"
                             optionLabel="CountryName"
@@ -195,8 +201,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="ReservePhone"                      
-                            label={intl.formatMessage({id:"ReservePhone"}) }
+                            id="ReservePhone"
+                            label={intl.formatMessage({ id: "ReservePhone" })}
                             {...register("ReservePhone")}
                             margin="dense"
                             error={errors.ReservePhone?.message}
@@ -205,8 +211,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="ReserveEmail"                      
-                            label={intl.formatMessage({id:"ReportEmail"}) }
+                            id="ReserveEmail"
+                            label={intl.formatMessage({ id: "ReportEmail" })}
                             {...register("ReserveEmail")}
                             margin="dense"
                             error={errors.ReserveEmail?.message}
@@ -215,8 +221,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="HotelType"                      
-                            label={intl.formatMessage({id:"HotelType"}) }
+                            id="HotelType"
+                            label={intl.formatMessage({ id: "HotelType" })}
                             {...register("HotelType")}
                             margin="dense"
                             error={errors.HotelType?.message}
@@ -225,8 +231,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="Website"                      
-                            label={intl.formatMessage({id:"Website"}) }
+                            id="Website"
+                            label={intl.formatMessage({ id: "Website" })}
                             {...register("Website")}
                             margin="dense"
                             error={errors.Website?.message}
@@ -235,8 +241,8 @@ const GeneralForm = () => {
                         <TextField
                             size="small"
                             fullWidth
-                            id="HotelRating"                      
-                            label={intl.formatMessage({id:"HotelRating"}) }
+                            id="HotelRating"
+                            label={intl.formatMessage({ id: "HotelRating" })}
                             {...register("HotelRating")}
                             margin="dense"
                             error={errors.HotelRating?.message}
@@ -249,9 +255,9 @@ const GeneralForm = () => {
                             size="small"
                             fullWidth
                             multiline
-                            rows={3}
-                            id="HotelPolicy"                      
-                            label={intl.formatMessage({id:"HotelPolicy"}) }
+                            rows={10}
+                            id="HotelPolicy"
+                            label={intl.formatMessage({ id: "HotelPolicy" })}
                             {...register("HotelPolicy")}
                             margin="dense"
                             error={errors.HotelPolicy?.message}
@@ -263,9 +269,9 @@ const GeneralForm = () => {
                             size="small"
                             fullWidth
                             multiline
-                            rows={3}
-                            id="CancelPolicy"                      
-                            label={intl.formatMessage({id:"CancelPolicy"}) }
+                            rows={10}
+                            id="CancelPolicy"
+                            label={intl.formatMessage({ id: "CancelPolicy" })}
                             {...register("CancelPolicy")}
                             margin="dense"
                             error={errors.CancelPolicy?.message}
@@ -280,9 +286,9 @@ const GeneralForm = () => {
                                 /> */}
                     </Grid>
                 </Grid>
-                <Box>
-                    <SubmitButton loading={loading} />
-                </Box>
+                <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                    <SubmitButton loading={loading} fullWidth={false} />
+                </div>
             </form>
             <br />
             <Box sx={{ width: "100%" }}>

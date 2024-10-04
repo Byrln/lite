@@ -36,32 +36,32 @@ const UserList = ({ title }: any) => {
 
     const columns = [
         {
-            title: intl.formatMessage({id:"RowHeaderUserName"}), 
+            title: intl.formatMessage({ id: "RowHeaderUserName" }),
             key: "UserName",
             dataIndex: "UserName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderLoginName"}), 
+            title: intl.formatMessage({ id: "RowHeaderLoginName" }),
             key: "LoginName",
             dataIndex: "LoginName",
         },
         {
-            title: intl.formatMessage({id:"ConfigUserRole"}), 
+            title: intl.formatMessage({ id: "ConfigUserRole" }),
             key: "UserRoleName",
             dataIndex: "UserRoleName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderLanguage"}), 
+            title: intl.formatMessage({ id: "RowHeaderLanguage" }),
             key: "Language",
             dataIndex: "Language",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderEmail"}), 
+            title: intl.formatMessage({ id: "RowHeaderEmail" }),
             key: "Email",
             dataIndex: "Email",
         },
         {
-            title: intl.formatMessage({id:"ReportStatus"}), 
+            title: intl.formatMessage({ id: "ReportStatus" }),
             key: "Status",
             dataIndex: "Status",
             excelRenderPass: true,
@@ -78,7 +78,7 @@ const UserList = ({ title }: any) => {
             },
         },
         {
-            title: intl.formatMessage({id:"RowHeaderAdditionalAction"}), 
+            title: intl.formatMessage({ id: "RowHeaderAdditionalAction" }),
             key: "RowHeaderAdditionalAction",
             dataIndex: "RowHeaderAdditionalAction",
             renderCell: (element: any) => {
@@ -95,8 +95,7 @@ const UserList = ({ title }: any) => {
                             )
                         }
                     >
-                        {intl.formatMessage({id:"ButtonSetPassword"}) }
-
+                        {intl.formatMessage({ id: "ButtonSetPassword" })}
                     </Button>
                 );
             },
@@ -134,6 +133,7 @@ const UserList = ({ title }: any) => {
                         />
                     </CustomSearch>
                 }
+                modalsize="medium"
             />
         </>
     );

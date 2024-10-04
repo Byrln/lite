@@ -51,9 +51,8 @@ const RoomMoveForm = ({
     });
 
     const isManualRate = () => {
-        return (
-            rateCondition.overrideRate && rateCondition.newRateMode === "manual"
-        );
+        return (rateCondition.overrideRate =
+            "on" && rateCondition.newRateMode === "manual");
     };
 
     const onRoomChange = (r: any) => {
@@ -80,6 +79,7 @@ const RoomMoveForm = ({
         handleSubmit,
         formState: { errors },
         reset,
+        resetField,
     } = useForm(formOptions);
 
     const onSubmit = async (values: any) => {
@@ -145,14 +145,14 @@ const RoomMoveForm = ({
             var rates = await RateAPI.listByDate(values);
 
             var amount;
+
             if (rates.length > 0) {
                 amount = rates[0].BaseRate;
             } else {
                 return;
             }
-
-            reset({
-                NewRate: amount,
+            resetField(`NewRate`, {
+                defaultValue: amount,
             });
 
             setBaseStay({
@@ -190,7 +190,7 @@ const RoomMoveForm = ({
                 />
 
                 <Grid container spacing={2}>
-                    <Grid item xs={8}>
+                    <Grid item xs={12}>
                         <RoomTypeSelect
                             register={register}
                             errors={errors}
@@ -199,7 +199,7 @@ const RoomMoveForm = ({
                         />
                     </Grid>
                     {roomType && (
-                        <Grid item xs={4}>
+                        <Grid item xs={12}>
                             <RoomSelect
                                 register={register}
                                 errors={errors}
@@ -212,7 +212,7 @@ const RoomMoveForm = ({
                 </Grid>
 
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <div>
                             <FormControlLabel
                                 sx={{ my: 2 }}
@@ -264,35 +264,41 @@ const RoomMoveForm = ({
                             </FormControl>
                         </div>
 
-                        <TextField
-                            fullWidth
-                            id="NewRate"
-                            label={intl.formatMessage({
-                                id: "TextAmount",
-                            })}
-                            {...register("NewRate")}
-                            margin="dense"
-                            error={errors.NewRate?.message}
-                            helperText={errors.NewRate?.message}
-                            disabled={!isManualRate()}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
+                        {isManualRate() ? (
+                            <TextField
+                                fullWidth
+                                id="NewRate"
+                                label={intl.formatMessage({
+                                    id: "TextAmount",
+                                })}
+                                {...register("NewRate")}
+                                margin="dense"
+                                error={errors.NewRate?.message}
+                                helperText={errors.NewRate?.message}
+                                disabled={!isManualRate()}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        ) : (
+                            <></>
+                        )}
                     </Grid>
                 </Grid>
 
-                <LoadingButton
-                    size="small"
-                    type="submit"
-                    variant="contained"
-                    loading={loading}
-                    className="mt-3"
-                >
-                    {intl.formatMessage({
-                        id: "ButtonRoomMove",
-                    })}
-                </LoadingButton>
+                <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                    <LoadingButton
+                        size="small"
+                        type="submit"
+                        variant="contained"
+                        loading={loading}
+                        className="mt-3"
+                    >
+                        {intl.formatMessage({
+                            id: "ButtonRoomMove",
+                        })}
+                    </LoadingButton>
+                </div>
             </form>
         </>
     );

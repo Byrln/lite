@@ -23,7 +23,9 @@ const NewEdit = () => {
         reset,
         handleSubmit,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(validationSchema) });
+    } = useForm({
+        resolver: yupResolver(validationSchema),
+    });
 
     return (
         <NewEditForm
@@ -36,62 +38,66 @@ const NewEdit = () => {
             handleSubmit={handleSubmit}
         >
             <Grid container spacing={1}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <TextField
                         size="small"
                         fullWidth
                         id="Email"
-                        label={intl.formatMessage({id:"ReportEmail"}) }
+                        label={intl.formatMessage({ id: "ReportEmail" })}
                         {...register("Email")}
                         margin="dense"
                         error={errors.Email?.message}
                         helperText={errors.Email?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <TextField
                         size="small"
                         fullWidth
                         id="EmailHost"
-                        label={intl.formatMessage({id:"RowHeaderEmailServer"}) }
+                        label={intl.formatMessage({
+                            id: "RowHeaderEmailServer",
+                        })}
                         {...register("EmailHost")}
                         margin="dense"
                         error={errors.EmailHost?.message}
                         helperText={errors.EmailHost?.message}
+                        defaultValue={"smtp.gmail.com"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <TextField
                         size="small"
                         type="number"
                         fullWidth
                         id="Port"
-                        label={intl.formatMessage({id:"RowHeaderPort"}) }
+                        label={intl.formatMessage({ id: "RowHeaderPort" })}
                         {...register("Port")}
                         margin="dense"
                         error={errors.Port?.message}
                         helperText={errors.Port?.message}
+                        defaultValue={"587"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <TextField
                         size="small"
                         fullWidth
                         id="UserName"
-                        label={intl.formatMessage({id:"RowHeaderUserName"}) }
+                        label={intl.formatMessage({ id: "RowHeaderUserName" })}
                         {...register("UserName")}
                         margin="dense"
                         error={errors.UserName?.message}
                         helperText={errors.UserName?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     {!state.editId && (
                         <TextField
                             size="small"
                             fullWidth
                             id="Password"
-                            label={intl.formatMessage({id:"TextPassword"}) }
+                            label={intl.formatMessage({ id: "TextPassword" })}
                             {...register("Password")}
                             type="password"
                             margin="dense"

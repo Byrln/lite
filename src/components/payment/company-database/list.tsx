@@ -13,8 +13,6 @@ import {
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
-
 const CompanyDatabaseList = ({ title }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
@@ -24,37 +22,37 @@ const CompanyDatabaseList = ({ title }: any) => {
     });
     const columns = [
         {
-            title: intl.formatMessage({id:"RowHeaderCustomerName"}), 
+            title: intl.formatMessage({ id: "RowHeaderCustomerName" }),
             key: "CustomerName",
             dataIndex: "CustomerName",
         },
         {
-            title: intl.formatMessage({id:"TextGroupName"}), 
+            title: intl.formatMessage({ id: "TextGroupName" }),
             key: "CustomerGroupName",
             dataIndex: "CustomerGroupName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderRegistryNo"}), 
+            title: intl.formatMessage({ id: "RowHeaderRegistryNo" }),
             key: "RegisterNo",
             dataIndex: "RegisterNo",
         },
         {
-            title: intl.formatMessage({id:"ReportPhone"}), 
+            title: intl.formatMessage({ id: "ReportPhone" }),
             key: "Phone",
             dataIndex: "Phone",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderEmail"}), 
+            title: intl.formatMessage({ id: "RowHeaderEmail" }),
             key: "Email",
             dataIndex: "Email",
         },
         {
-            title: intl.formatMessage({id:"TextCity"}), 
+            title: intl.formatMessage({ id: "TextCity" }),
             key: "City",
             dataIndex: "City",
         },
         {
-            title: intl.formatMessage({id:"ReportCountry"}), 
+            title: intl.formatMessage({ id: "ReportCountry" }),
             key: "CountryName",
             dataIndex: "CountryName",
         },
@@ -104,6 +102,7 @@ const CompanyDatabaseList = ({ title }: any) => {
                         />
                     </CustomSearch>
                 }
+                modalsize="medium"
             />
         </>
     );

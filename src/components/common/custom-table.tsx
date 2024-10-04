@@ -55,6 +55,7 @@ const CustomTable = ({
     rowColor,
     functionAfterSubmit,
     customHeight,
+    modalsize = "small",
 }: any) => {
     const intl = useIntl();
     const [state, dispatch]: any = useAppState();
@@ -108,7 +109,7 @@ const CustomTable = ({
                                         })}`,
                                         modalContent,
                                         null,
-                                        "large"
+                                        modalsize
                                     );
                                     dispatch({
                                         type: "isShow",
@@ -140,7 +141,7 @@ const CustomTable = ({
                                         })}`,
                                         modalContent,
                                         null,
-                                        "large"
+                                        modalsize
                                     );
                                     dispatch({
                                         type: "isShow",
@@ -232,7 +233,7 @@ const CustomTable = ({
                                         })}`,
                                         modalContent,
                                         null,
-                                        "large"
+                                        modalsize
                                     );
                                     dispatch({
                                         type: "editId",
@@ -433,7 +434,8 @@ const CustomTable = ({
                                                                                         `${modalTitle} засах`,
                                                                                         modalContent,
                                                                                         null,
-                                                                                        "large"
+
+                                                                                        modalsize
                                                                                     );
                                                                                     dispatch(
                                                                                         {
@@ -469,7 +471,8 @@ const CustomTable = ({
                                                                                         `${modalTitle} харах`,
                                                                                         modalContent,
                                                                                         null,
-                                                                                        "large"
+
+                                                                                        modalsize
                                                                                     );
                                                                                     dispatch(
                                                                                         {

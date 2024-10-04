@@ -59,22 +59,23 @@ const NewEdit = () => {
             setEntity={setEntity}
         >
             <Grid container spacing={1}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <Grid container spacing={1}>
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <TextField
                                 size="small"
                                 fullWidth
                                 id="Company Name"
-                                label={intl.formatMessage({id:"RowHeaderCompanyName"}) }
+                                label={intl.formatMessage({
+                                    id: "RowHeaderCompanyName",
+                                })}
                                 {...register("Company Name")}
-        
                                 margin="dense"
                                 error={errors.CustomerName?.message}
                                 helperText={errors.CustomerName?.message}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <CountrySelect
                                 register={register}
                                 errors={errors}
@@ -83,56 +84,62 @@ const NewEdit = () => {
                             />
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <TextField
                                 size="small"
                                 fullWidth
                                 id="City"
-                                label={intl.formatMessage({id:"TextCity"}) }
-                                {...register("City")}  
+                                label={intl.formatMessage({ id: "TextCity" })}
+                                {...register("City")}
                                 margin="dense"
                                 error={errors.City?.message}
                                 helperText={errors.City?.message}
                             />
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <TextField
                                 size="small"
                                 fullWidth
                                 id="RegisterNo"
-                                label={intl.formatMessage({id:"TextRegisterNo"}) }
-                                {...register("RegisterNo")}    
+                                label={intl.formatMessage({
+                                    id: "TextRegisterNo",
+                                })}
+                                {...register("RegisterNo")}
                                 margin="dense"
                                 error={errors.RegisterNo?.message}
                                 helperText={errors.RegisterNo?.message}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <TextField
                                 size="small"
                                 fullWidth
                                 id="Phone"
-                                label={intl.formatMessage({id:"ReportPhone"}) }
-                                {...register("Phone")}    
+                                label={intl.formatMessage({
+                                    id: "ReportPhone",
+                                })}
+                                {...register("Phone")}
                                 margin="dense"
                                 error={errors.Phone?.message}
                                 helperText={errors.Phone?.message}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <TextField
                                 size="small"
                                 fullWidth
                                 id="Email"
-                                label={intl.formatMessage({id:"RowHeaderEmail"}) }
-                                {...register("Email")}    
+                                label={intl.formatMessage({
+                                    id: "RowHeaderEmail",
+                                })}
+                                {...register("Email")}
                                 margin="dense"
                                 error={errors.Email?.message}
                                 helperText={errors.Email?.message}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <CustomerGroupSelect
                                 register={register}
                                 errors={errors}
@@ -140,7 +147,7 @@ const NewEdit = () => {
                                 setEntity={setEntity}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <CustomerTypeSelect
                                 register={register}
                                 errors={errors}
@@ -148,15 +155,17 @@ const NewEdit = () => {
                                 setEntity={setEntity}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={12}>
                             <TextField
                                 size="small"
                                 fullWidth
                                 multiline
                                 rows={3}
                                 id="Address"
-                                label={intl.formatMessage({id:"ReportAddress"}) }
-                                {...register("Address")}   
+                                label={intl.formatMessage({
+                                    id: "ReportAddress",
+                                })}
+                                {...register("Address")}
                                 margin="dense"
                                 error={errors.Address?.message}
                                 helperText={errors.Address?.message}
@@ -167,202 +176,260 @@ const NewEdit = () => {
                     {/* <Remarks GuestID={state.editId} /> */}
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
-                    <Card>
-                        <CardContent>
-                            <Typography
-                                variant="subtitle1"
-                                component="div"
-                                className="mb-3"
+                <Grid item xs={12}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                            <div
+                                style={{
+                                    padding: "10px",
+                                    borderRadius: "16px",
+                                    border: "1px solid #E6E8EE",
+                                }}
                             >
-                                Холбогдох хүн 1
-                            </Typography>
-                            <Grid container spacing={1}>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                        id="ContactPersonFirstName1"
-                                        label={intl.formatMessage({id:"RowHeaderFirstName"}) }
-                                        {...register("ContactPersonFirstName1")}   
-                                        margin="dense"
-                                        error={
-                                            errors.ContactPersonFirstName1
-                                                ?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonFirstName1
-                                                ?.message
-                                        }
-                                    />
+                                {/* <CardContent> */}
+                                <Typography
+                                    variant="subtitle1"
+                                    component="div"
+                                    className="mb-3"
+                                >
+                                    Холбогдох хүн 1
+                                </Typography>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="ContactPersonFirstName1"
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderFirstName",
+                                            })}
+                                            {...register(
+                                                "ContactPersonFirstName1"
+                                            )}
+                                            margin="dense"
+                                            error={
+                                                errors.ContactPersonFirstName1
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonFirstName1
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="ContactPersonLastName1"
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderLastName",
+                                            })}
+                                            {...register(
+                                                "ContactPersonLastName1"
+                                            )}
+                                            margin="dense"
+                                            error={
+                                                errors.ContactPersonLastName1
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonLastName1
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="ContactPersonPosition1"
+                                            label={intl.formatMessage({
+                                                id: "TextWorkPosition",
+                                            })}
+                                            {...register(
+                                                "ContactPersonPosition1"
+                                            )}
+                                            margin="dense"
+                                            error={
+                                                errors.ContactPersonPosition1
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonPosition1
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="ContactPersonPhone1"
+                                            label={intl.formatMessage({
+                                                id: "ReportPhone",
+                                            })}
+                                            {...register("ContactPersonPhone1")}
+                                            error={
+                                                errors.ContactPersonPhone1
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonPhone1
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="ContactPersonEmail1"
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderEmail",
+                                            })}
+                                            {...register("ContactPersonEmail1")}
+                                            margin="dense"
+                                            error={
+                                                errors.ContactPersonEmail1
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonEmail1
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                        id="ContactPersonLastName1"
-                                        label={intl.formatMessage({id:"RowHeaderLastName"}) }
-                                        {...register("ContactPersonLastName1")}   
-                                        margin="dense"
-                                        error={
-                                            errors.ContactPersonLastName1
-                                                ?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonLastName1
-                                                ?.message
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                        id="ContactPersonPosition1"
-                                        label={intl.formatMessage({id:"TextWorkPosition"}) }
-                                        {...register("ContactPersonPosition1")}   
-                                        margin="dense"
-                                        error={
-                                            errors.ContactPersonPosition1
-                                                ?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonPosition1
-                                                ?.message
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                        id="ContactPersonPhone1"                                  
-                                        label={intl.formatMessage({id:"ReportPhone"}) }
-                                        {...register("ContactPersonPhone1")} 
-                                        error={
-                                            errors.ContactPersonPhone1?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonPhone1?.message
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                        id="ContactPersonEmail1"                                  
-                                        label={intl.formatMessage({id:"RowHeaderEmail"}) }
-                                        {...register("ContactPersonEmail1")} 
-                                        margin="dense"
-                                        error={
-                                            errors.ContactPersonEmail1?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonEmail1?.message
-                                        }
-                                    />
-                                </Grid>
-                            </Grid>
-                        </CardContent>
-                    </Card>
-                    <Card className="mt-3">
-                        <CardContent>
-                            <Typography
-                                variant="subtitle1"
-                                component="div"
-                                className="mb-3"
+                                {/* </CardContent> */}
+                            </div>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <div
+                                style={{
+                                    padding: "10px",
+                                    borderRadius: "16px",
+                                    border: "1px solid #E6E8EE",
+                                }}
                             >
-                                Холбогдох хүн 2
-                            </Typography>
-                            <Grid container spacing={1}>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                        id="ContactPersonFirstName2"                                  
-                                        label={intl.formatMessage({id:"RowHeaderFirstName"}) }
-                                        {...register("ContactPersonFirstName2")} 
-                                        margin="dense"
-                                        error={
-                                            errors.ContactPersonFirstName2
-                                                ?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonFirstName2
-                                                ?.message
-                                        }
-                                    />
+                                {/* <CardContent> */}
+                                <Typography
+                                    variant="subtitle1"
+                                    component="div"
+                                    className="mb-3"
+                                >
+                                    Холбогдох хүн 2
+                                </Typography>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="ContactPersonFirstName2"
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderFirstName",
+                                            })}
+                                            {...register(
+                                                "ContactPersonFirstName2"
+                                            )}
+                                            margin="dense"
+                                            error={
+                                                errors.ContactPersonFirstName2
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonFirstName2
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="ContactPersonLastName2"
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderLastName",
+                                            })}
+                                            {...register(
+                                                "ContactPersonLastName2"
+                                            )}
+                                            margin="dense"
+                                            error={
+                                                errors.ContactPersonLastName2
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonLastName2
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="ContactPersonPosition2"
+                                            label={intl.formatMessage({
+                                                id: "TextWorkPosition",
+                                            })}
+                                            {...register(
+                                                "ContactPersonPosition2"
+                                            )}
+                                            margin="dense"
+                                            error={
+                                                errors.ContactPersonPosition2
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonPosition2
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            id="ContactPersonPhone2"
+                                            label={intl.formatMessage({
+                                                id: "ReportPhone",
+                                            })}
+                                            {...register("ContactPersonPhone2")}
+                                            margin="dense"
+                                            error={
+                                                errors.ContactPersonPhone2
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonPhone2
+                                                    ?.message
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            size="small"
+                                            fullWidth
+                                            margin="dense"
+                                            error={
+                                                errors.ContactPersonEmail2
+                                                    ?.message
+                                            }
+                                            helperText={
+                                                errors.ContactPersonEmail2
+                                                    ?.message
+                                            }
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderEmail",
+                                            })}
+                                        />
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                        id="ContactPersonLastName2"                                  
-                                        label={intl.formatMessage({id:"RowHeaderLastName"}) }
-                                        {...register("ContactPersonLastName2")} 
-                                        margin="dense"
-                                        error={
-                                            errors.ContactPersonLastName2
-                                                ?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonLastName2
-                                                ?.message
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                        id="ContactPersonPosition2"                                  
-                                        label={intl.formatMessage({id:"TextWorkPosition"}) }
-                                        {...register("ContactPersonPosition2")} 
-                                        margin="dense"
-                                        error={
-                                            errors.ContactPersonPosition2
-                                                ?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonPosition2
-                                                ?.message
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                        id="ContactPersonPhone2"                                  
-                                        label={intl.formatMessage({id:"ReportPhone"}) }
-                                        {...register("ContactPersonPhone2")} 
-                                        margin="dense"
-                                        error={
-                                            errors.ContactPersonPhone2?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonPhone2?.message
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <TextField
-                                        size="small"
-                                        fullWidth
-                                       
-                                        margin="dense"
-                                        error={
-                                            errors.ContactPersonEmail2?.message
-                                        }
-                                        helperText={
-                                            errors.ContactPersonEmail2?.message
-                                        }
-                                    />
-                                </Grid>
-                            </Grid>
-                        </CardContent>
-                    </Card>
+                                {/* </CardContent> */}
+                            </div>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         </NewEditForm>

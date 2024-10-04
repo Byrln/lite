@@ -42,15 +42,15 @@ import CustomSearch from "components/common/custom-search";
 import ReservationEdit from "components/front-office/reservation-list/edit";
 import RoomMoveForm from "components/reservation/room-move";
 import AmendStayForm from "components/reservation/amend-stay";
-import {
-    CashierSessionActiveSWR,
-    CashierSessionListSWR,
-} from "lib/api/cashier-session";
+
 import RoomAssignGroup from "components/reservation/room-assign-group";
 import Iconify from "components/iconify/iconify";
 import { getContrastYIQ } from "lib/utils/helpers";
+import { useIntl } from "react-intl";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
+    const intl = useIntl();
+
     const router = useRouter();
     const [state, dispatch]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
@@ -62,7 +62,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     });
     const [searchCurrDate, setSearchCurrDate] = useState(workingDate);
     const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
-    const [activeSessionID, setActiveSessionID] = useState<any>(null);
+    // const [activeSessionID, setActiveSessionID] = useState<any>(null);
 
     function extractNumberFromString(str: any) {
         const parts = str.split("-");
@@ -109,10 +109,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         RoomTypeID: searchRoomTypeID,
     });
     const { data: rooms, error: roomSwrError } = RoomSWR({});
-    const { data: listData, error: listError } = CashierSessionListSWR({});
+    // const { data: listData, error: listError } = CashierSessionListSWR({});
 
-    const { data: cashierActive, error: cashierActiveError } =
-        CashierSessionActiveSWR();
+    // const { data: cashierActive, error: cashierActiveError } =
+    //     CashierSessionActiveSWR();
 
     const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR({
         //@ts-ignore
@@ -430,31 +430,33 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         setHeight(window.innerHeight - 200);
     }, [window.innerHeight]);
 
-    const fetchTest = async () => {
-        if (listData) {
-            let filteredItemData = listData.filter(
-                (event: any) => event.IsActive === true
-            );
-            if (filteredItemData && filteredItemData.length) {
-                setActiveSessionID(listData[0].SessionID);
-            } else {
-                setActiveSessionID("-1");
-            }
-        }
-    };
+    // const fetchTest = async () => {
+    //     if (listData) {
+    //         let filteredItemData = listData.filter(
+    //             (event: any) => event.IsActive === true
+    //         );
+    //         if (filteredItemData && filteredItemData.length) {
+    //             setActiveSessionID(listData[0].SessionID);
+    //         } else {
+    //             setActiveSessionID("-1");
+    //         }
+    //     }
+    // };
 
-    useEffect(() => {
-        fetchTest();
-    }, [listData]);
+    // useEffect(() => {
+    //     fetchTest();
+    // }, [listData]);
 
     const handleEventClick = (info: any) => {
         if (info.event._instance.range.end > new Date(workingDate)) {
-            activeSessionID && activeSessionID == "-1" && handleCashierOpen();
+            // activeSessionID && activeSessionID == "-1" && handleCashierOpen();
 
             if (info.event._def.extendedProps.entities) {
                 handleModal(
                     true,
-                    `Захиалга`,
+                    intl.formatMessage({
+                        id: "ButtonAssignRoom",
+                    }),
                     <RoomAssignGroup
                         entities={info.event._def.extendedProps.entities}
                         additionalMutateUrl="/api/Reservation/List"
@@ -468,7 +470,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             } else {
                 handleModal(
                     true,
-                    `Захиалга`,
+                    intl.formatMessage({
+                        id: "FrontNewReservation",
+                    }),
                     <ReservationEdit
                         transactionID={
                             info.event._def.extendedProps.transactionID
@@ -482,8 +486,66 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     const handleEventDrop = (info: any) => {
-        if (info.event._instance.range.end > new Date(workingDate)) {
-            console.log("info", info);
+        // if (info.event._instance.range.end > new Date(workingDate)) {
+        console.log("info", info);
+
+        if (
+            areDatesOnSameDay(
+                new Date(info.event._def.extendedProps.startDate),
+                info.event._instance.range.start
+            ) == false
+        ) {
+            if (Number(info.event._def.extendedProps.transactionID)) {
+                dispatch({
+                    type: "editId",
+                    editId: Number(info.event._def.extendedProps.transactionID),
+                });
+            } else {
+                dispatch({
+                    type: "editId",
+                    editId: "",
+                });
+            }
+            const newEventObject = {
+                title: "New Event",
+                ArrivalDate: info.event._instance.range.start,
+                DepartureDate: info.event._instance.range.end,
+                RoomTypeID: Number(info.event._def.extendedProps.roomTypeID),
+                RoomID: Number(info.event._def.resourceIds[0]),
+                TransactionID: info.event._def.extendedProps.transactionID,
+            };
+            let filteredItemData = itemData.filter(
+                (event: any) =>
+                    event.roomTypeID ===
+                        Number(info.event._def.extendedProps.roomTypeID) &&
+                    event.resourceId ==
+                        Number(info.event._def.resourceIds[0]) &&
+                    event.id != info.event._def.extendedProps.transactionID &&
+                    new Date(event.start) <=
+                        new Date(info.event._instance.range.end) &&
+                    new Date(event.end) >
+                        new Date(info.event._instance.range.start)
+            );
+
+            if (filteredItemData.length > 0) {
+                toast("Захиалга давхцаж байна.");
+            } else {
+                handleModal(
+                    true,
+                    intl.formatMessage({
+                        id: "ButtonAmendStay",
+                    }),
+                    <AmendStayForm
+                        transactionInfo={newEventObject}
+                        reservation={newEventObject}
+                        additionalMutateUrl="/api/Reservation/List"
+                    />,
+                    false,
+                    "small"
+                );
+            }
+            setRerenderKey((prevKey) => prevKey + 1);
+        } else {
             const newEventObject = {
                 title: "New Event",
                 ArrivalDate: info.event._instance.range.start,
@@ -519,7 +581,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 } else {
                     handleModal(
                         true,
-                        `New Reservation`,
+                        `Room move`,
                         <RoomMoveForm
                             transactionInfo={newEventObject}
                             additionalMutateUrl="/api/Reservation/List"
@@ -528,11 +590,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             )}
                         />,
                         null,
-                        "large"
+                        "small"
                     );
                 }
             }
         }
+        // }
     };
 
     const handleEventResize = async (info: any) => {
@@ -579,7 +642,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         transactionInfo={newEventObject}
                         reservation={newEventObject}
                         additionalMutateUrl="/api/Reservation/List"
-                    />
+                    />,
+                    false,
+                    "small"
                 );
             }
             setRerenderKey((prevKey) => prevKey + 1);
@@ -616,7 +681,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 ),
             };
 
-            activeSessionID && activeSessionID == "-1" && handleCashierOpen();
+            // activeSessionID && activeSessionID == "-1" && handleCashierOpen();
 
             if (newEventObject.roomID) {
                 handleModal(
@@ -636,7 +701,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         workingDate={workingDate}
                     />,
                     null,
-                    "large"
+                    "medium"
                 );
             }
         }
@@ -762,9 +827,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         variant="contained"
                         className="mr-3"
                         onClick={() => {
-                            activeSessionID &&
-                                activeSessionID == "-1" &&
-                                handleCashierOpen();
+                            // activeSessionID &&
+                            //     activeSessionID == "-1" &&
+                            //     handleCashierOpen();
                             dispatch({
                                 type: "editId",
                                 editId: null,
@@ -774,12 +839,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 `Захиалга нэмэх`,
                                 <NewReservation workingDate={workingDate} />,
                                 null,
-                                "large"
+                                "medium"
                             );
                         }}
                         startIcon={<Icon icon={plusFill} />}
                     >
-                        Шинэ захиалга
+                        {intl.formatMessage({
+                            id: "FrontNewReservation",
+                        })}
                     </Button>
 
                     {/* {timeStart && dayCount && (
@@ -914,7 +981,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                         new Date(workingDate) >
                                             draggedEvent._instance.range.start
                                     ) {
-                                        return false;
+                                        return true;
                                     }
                                     return true;
                                 }}

@@ -100,26 +100,29 @@ const UserRolePrivilegeSelect = ({
 
             <FormGroup>
                 <Grid container spacing={1}>
-                    {permissions.map(
-                        (element: any, index: number) =>
-                            element &&
-                            element.GroupType === type && (
-                                <Grid item xs={2}>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                ref={title}
-                                                {...register("ActionID")}
-                                                checked={element.Status}
-                                                onChange={handleToggle(element)}
-                                                value={element.ActionID}
-                                            />
-                                        }
-                                        label={element.ActionName}
-                                    />
-                                </Grid>
-                            )
-                    )}
+                    {permissions &&
+                        permissions.map(
+                            (element: any, index: number) =>
+                                element &&
+                                element.GroupType === type && (
+                                    <Grid item xs={6} sm={4} md={3}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    ref={title}
+                                                    {...register("ActionID")}
+                                                    checked={element.Status}
+                                                    onChange={handleToggle(
+                                                        element
+                                                    )}
+                                                    value={element.ActionID}
+                                                />
+                                            }
+                                            label={element.ActionName}
+                                        />
+                                    </Grid>
+                                )
+                        )}
                 </Grid>
             </FormGroup>
             <FormHelperText error>{errors.ActionID?.message}</FormHelperText>

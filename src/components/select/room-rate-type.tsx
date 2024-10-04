@@ -1,6 +1,7 @@
 import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { useIntl } from "react-intl";
+import { useEffect } from "react";
 
 import { RateTypeSWR } from "lib/api/rate-type";
 
@@ -15,9 +16,34 @@ const RoomRateTypeSelect = ({
     Rate,
     setBreakfastIncluded,
     setTaxIncluded,
+    id,
+    resetField,
 }: any) => {
     const intl = useIntl();
     const { data, error } = RateTypeSWR({});
+
+    useEffect(() => {
+        if (data) {
+            if (setRate) {
+                setRate(data[0]);
+                if (data[0].BreakfastIncluded && setBreakfastIncluded) {
+                    setBreakfastIncluded(data[0].BreakfastIncluded);
+                }
+                if (data[0].TaxIncluded && setTaxIncluded) {
+                    setTaxIncluded(data[0].TaxIncluded);
+                }
+            }
+            console.log("data", data[0]);
+            if (resetField && id) {
+                resetField(
+                    customRegisterName ? customRegisterName : "RateTypeID",
+                    {
+                        defaultValue: data[0].RateTypeID,
+                    }
+                );
+            }
+        }
+    }, [data]);
 
     const onChange = (evt: any) => {
         var rate = null;
@@ -38,7 +64,7 @@ const RoomRateTypeSelect = ({
             }
         }
     };
-
+    console.log("rate", Rate);
     return (
         <TextField
             fullWidth

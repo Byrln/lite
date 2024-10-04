@@ -40,7 +40,7 @@ const CurrencyAmount = ({
 }: any) => {
     const intl = useIntl();
     const [isCurrencyAmountEditable, setIsCurrencyAmountEditable]: any =
-        useState(false);
+        useState(true);
 
     const [defaultCurrencyAmount, setDefaultCurrencyAmount]: any = useState();
 
@@ -226,7 +226,7 @@ const CurrencyAmount = ({
                         })
                     }
                 />
-                <FormControlLabel
+                {/* <FormControlLabel
                     control={
                         <Controller
                             name={`TransactionDetail.${id}.isCurrencyAmountEditable`}
@@ -251,7 +251,7 @@ const CurrencyAmount = ({
                     label={intl.formatMessage({
                         id: "TextManualRate",
                     })}
-                />
+                /> */}
             </Grid>
         </>
     );

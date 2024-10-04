@@ -209,7 +209,7 @@ const AmendStayForm = ({
                 <input type="hidden" {...register("NewNights")} />
 
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={8}>
                         <TextField
                             type="date"
                             fullWidth
@@ -217,6 +217,7 @@ const AmendStayForm = ({
                             label={intl.formatMessage({
                                 id: "TextArrivalDate",
                             })}
+                            size="small"
                             {...register("ArrivalDate")}
                             margin="dense"
                             error={errors.ArrivalDate?.message}
@@ -228,8 +229,9 @@ const AmendStayForm = ({
                             }}
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                         <TextField
+                            fullWidth
                             id="ArrivalTime"
                             label={intl.formatMessage({
                                 id: "TextArrivalTime",
@@ -243,14 +245,14 @@ const AmendStayForm = ({
                             inputProps={{
                                 step: 600, // 5 min
                             }}
-                            sx={{ width: 150 }}
+                            size="small"
                             onChange={onArrivalTimeChange}
                         />
                     </Grid>
                 </Grid>
 
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={8}>
                         <TextField
                             type="date"
                             fullWidth
@@ -260,6 +262,7 @@ const AmendStayForm = ({
                             })}
                             {...register("DepartureDate")}
                             margin="dense"
+                            size="small"
                             error={errors.DepartureDate?.message}
                             helperText={errors.DepartureDate?.message}
                             InputLabelProps={{ shrink: true }}
@@ -269,8 +272,9 @@ const AmendStayForm = ({
                             }}
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                         <TextField
+                            fullWidth
                             id="DepartureTime"
                             label={intl.formatMessage({
                                 id: "TextDepartureTime",
@@ -284,7 +288,7 @@ const AmendStayForm = ({
                             inputProps={{
                                 step: 600, // 5 min
                             }}
-                            sx={{ width: 150 }}
+                            size="small"
                             onChange={(evt: any) => {}}
                         />
                     </Grid>
@@ -301,8 +305,9 @@ const AmendStayForm = ({
                         id: "TextOverrideRate",
                     })}
                 />
-
-                <SubmitButton loading={loading} />
+                <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                    <SubmitButton loading={loading} fullWidth={false} />
+                </div>
             </form>
         </>
     );

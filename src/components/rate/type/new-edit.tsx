@@ -1,4 +1,3 @@
-
 import { useState, useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
@@ -140,7 +139,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="RateTypeCode"
-                        label={intl.formatMessage({id:"RowHeaderShortCode"}) }
+                        label={intl.formatMessage({ id: "RowHeaderShortCode" })}
                         {...register("RateTypeCode")}
                         margin="dense"
                         error={errors.RateTypeCode?.message}
@@ -152,7 +151,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="RateTypeName"
-                        label={intl.formatMessage({id:"TextFirstName"}) }
+                        label={intl.formatMessage({ id: "TextFirstName" })}
                         {...register("RateTypeName")}
                         margin="dense"
                         error={errors.RateTypeName?.message}
@@ -164,7 +163,7 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         type="ReservationChannel"
-                        label={intl.formatMessage({id:"RowHeaderChannel"}) }
+                        label={intl.formatMessage({ id: "RowHeaderChannel" })}
                         optionValue="ChannelID"
                         optionLabel="ChannelName"
                     />
