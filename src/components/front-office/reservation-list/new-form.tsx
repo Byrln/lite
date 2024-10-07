@@ -496,6 +496,20 @@ const NewEdit = ({
                                 `TransactionDetail.${id}.GuestDetail.Name`
                             )}
                             margin="dense"
+                            error={
+                                errors &&
+                                errors?.TransactionDetail &&
+                                errors.TransactionDetail[id] &&
+                                errors.TransactionDetail[id].Name &&
+                                errors.TransactionDetail[id].Name.message
+                            }
+                            helperText={
+                                errors &&
+                                errors?.TransactionDetail &&
+                                errors.TransactionDetail[id] &&
+                                errors.TransactionDetail[id].Name &&
+                                errors.TransactionDetail[id].Name.message
+                            }
                         />
                         {/* <GuestSelect
                             register={register}

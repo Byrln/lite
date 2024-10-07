@@ -98,10 +98,16 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         NumberOfDays: dayCount,
         RoomTypeID: searchRoomTypeID,
     });
-    const [timeStart, setTimeStart] = useState(new Date(workingDate));
+    const [timeStart, setTimeStart] = useState(
+        new Date(searchCurrDate ? searchCurrDate : workingDate)
+    );
     const [timeEnd, setTimeEnd] = useState(
         new Date(
-            new Date(workingDate).setDate(new Date(workingDate).getDate() + 7)
+            new Date(searchCurrDate ? searchCurrDate : workingDate).setDate(
+                new Date(
+                    searchCurrDate ? searchCurrDate : workingDate
+                ).getDate() + dayCount
+            )
         )
     );
 
@@ -116,8 +122,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR({
         //@ts-ignore
-        StartDate: dateToCustomFormat(timeStart, "yyyy MMM dd"),
-        EndDate: dateToCustomFormat(timeEnd, "yyyy MMM dd"),
+        StartDate: dateToCustomFormat(timeStart, "yyyy-MM-dd"),
+        EndDate: dateToCustomFormat(timeEnd, "yyyy-MM-dd"),
     });
     const [resources, setResources] = useState<any>(null);
     const [itemData, setItemData] = useState<any>(null);
@@ -144,41 +150,48 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     useEffect(() => {
         (async () => {
-            if (searchCurrDate == "Invalid date") {
-                setSearchCurrDate(new Date(workingDate));
+            try {
+                if (searchCurrDate == "Invalid date") {
+                    setSearchCurrDate(new Date(workingDate));
 
-                setTimeStart(new Date(workingDate));
-                setTimeEnd(
-                    new Date(
-                        new Date(workingDate).setDate(
-                            new Date(workingDate).getDate() + 7
+                    setTimeStart(new Date(workingDate));
+                    setTimeEnd(
+                        new Date(
+                            new Date(workingDate).setDate(
+                                new Date(workingDate).getDate() + 7
+                            )
                         )
-                    )
-                );
-            } else {
-                setTimeStart(new Date(searchCurrDate));
-                setTimeEnd(
-                    new Date(
-                        new Date(searchCurrDate).setDate(
-                            new Date(searchCurrDate).getDate() + 7
+                    );
+                } else {
+                    setTimeStart(new Date(searchCurrDate));
+                    setTimeEnd(
+                        new Date(
+                            new Date(searchCurrDate).setDate(
+                                new Date(searchCurrDate).getDate() + 7
+                            )
                         )
-                    )
-                );
+                    );
+                }
+
+                await mutate("/api/RoomBlock/List");
+                await mutate("/api/RoomType/List");
+                await mutate("/api/FrontOffice/StayView2");
+                await mutate("/api/FrontOffice/ReservationDetailsByDate");
+                setRerenderKey((prevKey) => prevKey + 1);
+            } finally {
             }
-
-            setRerenderKey((prevKey) => prevKey + 1);
-
-            await mutate("/api/RoomType/List");
-            await mutate("/api/FrontOffice/StayView2");
-            await mutate("/api/FrontOffice/ReservationDetailsByDate");
         })();
     }, [searchCurrDate, searchRoomTypeID]);
 
     const handleChange = async (event: any) => {
-        setDayCount(Number(event.target.value));
-        await mutate("/api/RoomType/List");
-        await mutate("/api/FrontOffice/StayView2");
-        await mutate("/api/FrontOffice/ReservationDetailsByDate");
+        try {
+            await setDayCount(Number(event.target.value));
+            await mutate("/api/RoomBlock/List");
+            await mutate("/api/RoomType/List");
+            await mutate("/api/FrontOffice/StayView2");
+            await mutate("/api/FrontOffice/ReservationDetailsByDate");
+        } finally {
+        }
     };
 
     const groupEventsByDate = (events: any) => {
@@ -218,7 +231,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             Object.values(dateGroup)
         );
     };
-
     useEffect(() => {
         let itemDataConcated: any = [];
         let letNewEvents: any = null;
@@ -332,16 +344,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         block: true,
                     };
                 });
-
+                // Concatenate the room blocks first
                 itemDataConcated = itemDataConcated.concat(newRoomBlockDta);
             }
         }
 
         for (let i = 0; i < dayCount; i++) {
-            const currentDate = new Date(new Date(searchCurrDate).getTime()); // Create a new Date object to avoid modifying the original date
-            currentDate.setDate(currentDate.getDate() + i); // Increment the date by i days
-
-            let cols: any = [];
+            const currentDate = new Date(new Date(searchCurrDate).getTime());
+            currentDate.setDate(currentDate.getDate() + i);
 
             roomTypes &&
                 roomTypes.map((obj: any) => {
@@ -388,10 +398,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         });
                     }
                 });
-            roomTypes;
         }
 
-        itemDataConcated = newItemDta.concat(roomTypesObj);
+        // Concatenate roomTypesObj and newItemDta
+        itemDataConcated = itemDataConcated
+            .concat(newItemDta)
+            .concat(roomTypesObj);
         setItemData(itemDataConcated);
         setRerenderKey((prevKey) => prevKey + 1);
     }, [items, dayCount]);
@@ -448,7 +460,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     // }, [listData]);
 
     const handleEventClick = (info: any) => {
-        if (info.event._instance.range.end > new Date(workingDate)) {
+        if (
+            info.event._instance.range.end > new Date(workingDate) &&
+            info.event._def.title != "Blocked"
+        ) {
             // activeSessionID && activeSessionID == "-1" && handleCashierOpen();
 
             if (info.event._def.extendedProps.entities) {
@@ -744,9 +759,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         arg.event.title == "Blocked"
                             ? "black"
                             : arg.event._def.extendedProps.statusColor,
-                    color: getContrastYIQ(
-                        arg.event._def.extendedProps.statusColor
-                    ),
+                    color: arg.event._def.extendedProps.statusColor
+                        ? getContrastYIQ(
+                              arg.event._def.extendedProps.statusColor
+                          )
+                        : "white",
 
                     border:
                         arg.event._def.extendedProps.statusColor == "#EFF0F6"

@@ -54,7 +54,6 @@ const validationSchema = yup.object().shape({
             yup.object().shape({
                 RoomTypeID: yup.string().required("Өрөөний төрөл сонгоно уу!"),
                 Adult: yup.string().required("Том хүний тоо оруулна уу!"),
-                GuestName: yup.string().required("Зочин сонгоно уу!"),
             })
         ),
 });
@@ -307,7 +306,7 @@ const NewEdit = ({
     const onColorChange = (color: any) => {
         setGroupColor(color);
     };
-
+    console.log("error", errors);
     return (
         <NewEditForm
             api={ReservationAPI}
