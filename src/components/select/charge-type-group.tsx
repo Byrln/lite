@@ -13,6 +13,7 @@ const ChargeTypeGroupSelect = ({
     IsExtraCharge,
     IsMiniBar,
     IsDiscount,
+    onChange,
 }: any) => {
     const intl = useIntl();
     const { data, error } = ChargeTypeGroupSWR({
@@ -41,6 +42,7 @@ const ChargeTypeGroupSelect = ({
             options={data}
             optionValue="RoomChargeTypeGroupID"
             optionLabel="RoomChargeTypeGroupName"
+            onChange={onChange}
         />
     );
 };

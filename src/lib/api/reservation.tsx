@@ -164,11 +164,7 @@ export const ReservationAPI = {
         const res = await axios.post(`${urlPrefix}/Cancel`, values);
         return res;
     },
-    noShow: async (TransactionID: any) => {
-        const values = {
-            TransactionID: TransactionID,
-            Description: " ",
-        };
+    noShow: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/NoShow`, values);
     },
     void: async (values: any) => {

@@ -532,7 +532,7 @@ const NewEdit = () => {
                                             fullWidth
                                             id="RoomTypeShortName"
                                             label={intl.formatMessage({
-                                                id: "RowHeaderShortName",
+                                                id: "AmenityShortName",
                                             })}
                                             {...register("RoomTypeShortName")}
                                             margin="dense"
@@ -675,12 +675,7 @@ const NewEdit = () => {
                                                 id: "ChildrenBasic",
                                             })}
                                             {...register("BaseChild")}
-                                            value={
-                                                entity &&
-                                                (entity.BaseChild == 0
-                                                    ? ""
-                                                    : entity.BaseChild)
-                                            }
+                                            value={entity && entity.BaseChild}
                                             onChange={(evt: any) => {
                                                 setEntity({
                                                     ...entity,

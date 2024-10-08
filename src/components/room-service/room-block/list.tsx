@@ -33,7 +33,7 @@ const RoomBlockList = ({ title, workingDate }: any) => {
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState({
         StartDate: moment(workingDate).format("YYYY-MM-DD"),
-        EndDate: moment(workingDate).add(1, "days").format("YYYY-MM-DD"),
+        EndDate: moment(workingDate).add(15, "days").format("YYYY-MM-DD"),
     });
     const { data, error } = RoomBlockSWR(search);
 
@@ -180,81 +180,86 @@ const RoomBlockList = ({ title, workingDate }: any) => {
     console.log("entity", entity);
 
     return (
-        <CustomTable
-            columns={columns}
-            data={data}
-            error={error}
-            api={RoomBlockAPI}
-            hasNew={true}
-            //hasUpdate={true}
-            //hasDelete={true}
-            id="RoomBlockID"
-            listUrl={listUrl}
-            modalTitle={title}
-            modalContent={<NewEdit />}
-            excelName={title}
-            datagrid={false}
-            search={
-                <CustomSearch
-                    listUrl={listUrl}
-                    search={search}
-                    setSearch={setSearch}
-                    handleSubmit={handleSubmit}
-                    reset={reset}
-                >
-                    <Search
-                        register={register}
-                        errors={errors}
-                        control={control}
+        <>
+            {moment(workingDate).format("YYYY-MM-DD") +
+                " - " +
+                moment(workingDate).add(1, "days").format("YYYY-MM-DD")}
+            <CustomTable
+                columns={columns}
+                data={data}
+                error={error}
+                api={RoomBlockAPI}
+                hasNew={true}
+                //hasUpdate={true}
+                //hasDelete={true}
+                id="RoomBlockID"
+                listUrl={listUrl}
+                modalTitle={title}
+                modalContent={<NewEdit />}
+                excelName={title}
+                datagrid={false}
+                search={
+                    <CustomSearch
+                        listUrl={listUrl}
+                        search={search}
+                        setSearch={setSearch}
+                        handleSubmit={handleSubmit}
                         reset={reset}
-                    />
-                </CustomSearch>
-            }
-            additionalButtons={
-                <>
-                    <Button
-                        disabled={loading}
-                        variant="outlined"
-                        onClick={handleClickOpen}
-                        className="mr-3"
                     >
-                        Өр.Блок болих
-                    </Button>
-                    <Dialog
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        {/*<DialogTitle id="alert-dialog-title" className=""></DialogTitle>*/}
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                <Stack
-                                    direction="row"
-                                    alignItems="center"
-                                    gap={1}
+                        <Search
+                            register={register}
+                            errors={errors}
+                            control={control}
+                            reset={reset}
+                        />
+                    </CustomSearch>
+                }
+                additionalButtons={
+                    <>
+                        <Button
+                            disabled={loading}
+                            variant="outlined"
+                            onClick={handleClickOpen}
+                            className="mr-3"
+                        >
+                            Өр.Блок болих
+                        </Button>
+                        <Dialog
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            {/*<DialogTitle id="alert-dialog-title" className=""></DialogTitle>*/}
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    <Stack
+                                        direction="row"
+                                        alignItems="center"
+                                        gap={1}
+                                    >
+                                        <HelpOutlineIcon />
+                                        <Typography>
+                                            Та итгэлтэй байна уу?
+                                        </Typography>
+                                    </Stack>
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose}>Үгүй</Button>
+                                <LoadingButton
+                                    loading={loading}
+                                    onClick={handleDelete}
+                                    autoFocus
                                 >
-                                    <HelpOutlineIcon />
-                                    <Typography>
-                                        Та итгэлтэй байна уу?
-                                    </Typography>
-                                </Stack>
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleClose}>Үгүй</Button>
-                            <LoadingButton
-                                loading={loading}
-                                onClick={handleDelete}
-                                autoFocus
-                            >
-                                Тийм
-                            </LoadingButton>
-                        </DialogActions>
-                    </Dialog>
-                </>
-            }
-        />
+                                    Тийм
+                                </LoadingButton>
+                            </DialogActions>
+                        </Dialog>
+                    </>
+                }
+            />
+        </>
     );
 };
 

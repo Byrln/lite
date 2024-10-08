@@ -54,6 +54,7 @@ const validationSchema = yup.object().shape({
             yup.object().shape({
                 RoomTypeID: yup.string().required("Өрөөний төрөл сонгоно уу!"),
                 Adult: yup.string().required("Том хүний тоо оруулна уу!"),
+                Name: yup.string().required("Зочны нэр оруулна уу!"),
             })
         ),
 });
@@ -219,6 +220,7 @@ const NewEdit = ({
 
     const customSubmit = async (values: any) => {
         try {
+            console.log("values", values);
             let tempValues = { ...values };
             tempValues.TransactionDetail[0].PayAmount = values.PayAmount;
             tempValues.TransactionDetail[0].PayCurrencyID =
@@ -230,10 +232,9 @@ const NewEdit = ({
             tempValues.TransactionDetail[0].CustomerID = values.CustomerID;
             tempValues.TransactionDetail[0].GroupColor = groupColor;
             tempValues.TransactionDetail[0].Remarks = values.Remarks;
-            tempValues.ArrivalDate =
-                values.ArrivalDate + " " + values.ArrivalTime;
+            tempValues.ArrivalDate = values.ArrivalDate + " " + ArrivalTime;
             tempValues.DepartureDate =
-                values.DepartureDate + " " + values.DepartureTime;
+                values.DepartureDate + " " + DepartureTime;
 
             if (groupID) {
                 tempValues.IsGroup = true;
@@ -267,11 +268,13 @@ const NewEdit = ({
                 tempValues.TransactionDetail[index].ReservationSourceID =
                     values.ReservationSourceID;
                 tempValues.TransactionDetail[index].ArrivalDate =
-                    values.ArrivalDate + " " + values.ArrivalTime;
+                    values.ArrivalDate + " " + ArrivalTime;
                 tempValues.TransactionDetail[index].DepartureDate =
-                    values.DepartureDate + " " + values.DepartureTime;
+                    values.DepartureDate + " " + DepartureTime;
                 tempValues.TransactionDetail[index].CustomerID =
                     values.CustomerID;
+                tempValues.TransactionDetail[index].GuestDetail.Name =
+                    values.TransactionDetail[index].Name;
 
                 if (isBooker == true) {
                     tempValues.TransactionDetail[index].BookerName =
@@ -439,6 +442,7 @@ const NewEdit = ({
                                             }}
                                             sx={{ width: "100%" }}
                                             size="small"
+                                            value={ArrivalTime}
                                             onChange={(value) =>
                                                 setArrivalTime(
                                                     value.target.value
@@ -463,42 +467,70 @@ const NewEdit = ({
                                                         new Date(ArrivalDate)
                                                     }
                                                     onChange={(value) => (
-                                                        onChange(
+                                                        moment(ArrivalDate).set(
+                                                            {
+                                                                hour: 0,
+                                                                minute: 0,
+                                                                second: 0,
+                                                            }
+                                                        ) >
+                                                        moment(value).set({
+                                                            hour: 0,
+                                                            minute: 0,
+                                                            second: 0,
+                                                        })
+                                                            ? null
+                                                            : onChange(
+                                                                  moment(
+                                                                      value
+                                                                  ).format(
+                                                                      "YYYY-MM-DD"
+                                                                  )
+                                                                  // moment(
+                                                                  //     dateStringToObj(
+                                                                  //         moment(
+                                                                  //             value
+                                                                  //         ).format(
+                                                                  //             "YYYY-MM-DD"
+                                                                  //         )
+                                                                  //     ),
+                                                                  //     "YYYY-MM-DD"
+                                                                  // )
+                                                                  // moment(value, "YYYY-MM-DD")
+                                                              ),
+                                                        moment(ArrivalDate).set(
+                                                            {
+                                                                hour: 0,
+                                                                minute: 0,
+                                                                second: 0,
+                                                            }
+                                                        ) >
+                                                        moment(value).set({
+                                                            hour: 0,
+                                                            minute: 0,
+                                                            second: 0,
+                                                        })
+                                                            ? null
+                                                            : setDepartureDate(
+                                                                  moment(
+                                                                      value
+                                                                  ).format(
+                                                                      "YYYY-MM-DD"
+                                                                  )
+                                                              ),
+                                                        moment(
+                                                            ArrivalDate
+                                                        ).format(
+                                                            "yyyy-MM-DD"
+                                                        ) ==
                                                             moment(
                                                                 value
                                                             ).format(
-                                                                "YYYY-MM-DD"
+                                                                "yyyy-MM-DD"
+                                                            ) &&
+                                                            setDepartureTime(
+                                                                ArrivalTime
                                                             )
-                                                            // moment(
-                                                            //     dateStringToObj(
-                                                            //         moment(
-                                                            //             value
-                                                            //         ).format(
-                                                            //             "YYYY-MM-DD"
-                                                            //         )
-                                                            //     ),
-                                                            //     "YYYY-MM-DD"
-                                                            // )
-                                                            // moment(value, "YYYY-MM-DD")
-                                                        ),
-                                                        setDepartureDate(
-                                                            // moment(value, "YYYY-MM-DD")
-                                                            // moment(
-                                                            //     dateStringToObj(
-                                                            //         moment(
-                                                            //             value
-                                                            //         ).format(
-                                                            //             "YYYY-MM-DD"
-                                                            //         )
-                                                            //     ),
-                                                            //     "YYYY-MM-DD"
-                                                            // ).format("YYYY-MM-DD")
-                                                            moment(
-                                                                value
-                                                            ).format(
-                                                                "YYYY-MM-DD"
-                                                            )
-                                                        )
                                                     )}
                                                     renderInput={(params) => (
                                                         <TextField
@@ -526,28 +558,92 @@ const NewEdit = ({
                                             )}
                                         />
                                     </Grid>
-                                    <Grid item xs={4}>
-                                        {" "}
-                                        <TextField
-                                            id="DepartureTime"
-                                            label={intl.formatMessage({
-                                                id: "TextDepartureTime",
-                                            })}
-                                            type="time"
-                                            margin="dense"
-                                            {...register("DepartureTime")}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            sx={{ width: "100%" }}
-                                            size="small"
-                                            onChange={(value) =>
-                                                setDepartureTime(
-                                                    value.target.value
-                                                )
-                                            }
-                                        />
-                                    </Grid>
+                                    {DepartureTime && (
+                                        <Grid item xs={4}>
+                                            {" "}
+                                            <TextField
+                                                id="DepartureTime"
+                                                label={intl.formatMessage({
+                                                    id: "TextDepartureTime",
+                                                })}
+                                                inputProps={{
+                                                    min:
+                                                        moment(ArrivalDate).set(
+                                                            {
+                                                                hour: 0,
+                                                                minute: 0,
+                                                                second: 0,
+                                                            }
+                                                        ) ==
+                                                        moment(
+                                                            DepartureDate
+                                                        ).set({
+                                                            hour: 0,
+                                                            minute: 0,
+                                                            second: 0,
+                                                        })
+                                                            ? ArrivalTime
+                                                            : "9:00",
+                                                }}
+                                                type="time"
+                                                margin="dense"
+                                                {...register("DepartureTime")}
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                sx={{ width: "100%" }}
+                                                size="small"
+                                                value={DepartureTime}
+                                                onChange={(value) => (
+                                                    console.log(
+                                                        "moment(ArrivalDate)",
+                                                        moment(ArrivalDate).set(
+                                                            {
+                                                                hour: 0,
+                                                                minute: 0,
+                                                                second: 0,
+                                                            }
+                                                        )
+                                                    ),
+                                                    console.log(
+                                                        "moment(DepartureDate)",
+                                                        moment(
+                                                            DepartureDate
+                                                        ).format("yyyy-MM-DD")
+                                                    ),
+                                                    console.log(
+                                                        "testeest",
+                                                        moment(
+                                                            ArrivalDate
+                                                        ).format(
+                                                            "yyyy-MM-DD"
+                                                        ) ==
+                                                            moment(
+                                                                DepartureDate
+                                                            ).format(
+                                                                "yyyy-MM-DD"
+                                                            )
+                                                    ),
+                                                    moment(ArrivalDate).format(
+                                                        "yyyy-MM-DD"
+                                                    ) ==
+                                                    moment(
+                                                        DepartureDate
+                                                    ).format("yyyy-MM-DD")
+                                                        ? value.target.value <
+                                                          ArrivalTime
+                                                            ? ""
+                                                            : setDepartureTime(
+                                                                  value.target
+                                                                      .value
+                                                              )
+                                                        : setDepartureTime(
+                                                              value.target.value
+                                                          )
+                                                )}
+                                            />
+                                        </Grid>
+                                    )}
                                 </Grid>
                             </Grid>
 
@@ -779,10 +875,16 @@ const NewEdit = ({
                                     onClick={() =>
                                         //@ts-ignore
                                         {
-                                            let tempValue = getValues(
-                                                //@ts-ignore
-                                                `TransactionDetail[0]`
-                                            );
+                                            let tempValue = {
+                                                ...getValues(
+                                                    //@ts-ignore
+                                                    `TransactionDetail[0]`
+                                                ),
+                                            };
+                                            // let tempValue = getValues(
+                                            //     //@ts-ignore
+                                            //     `TransactionDetail[0]`
+                                            // );
                                             if (newRoomTypeID) {
                                                 tempValue.RoomTypeID =
                                                     newRoomTypeID.RoomTypeID;

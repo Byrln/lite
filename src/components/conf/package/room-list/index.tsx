@@ -22,10 +22,13 @@ const PackageList = ({ title, packageId }: any) => {
     const { handleModal }: any = useContext(ModalContext);
 
     useEffect(() => {
+        let i = 0;
         if (data) {
             let tempValue: any = [];
-            data.forEach((element: any) => {
+            data.forEach((element: any, key: any) => {
+                console.log("keyshuudee", element);
                 tempValue.push({
+                    ID: i,
                     RoomTypeID: element.RoomTypeID,
                     RoomID: element.RoomID,
                     RateTypeID: element.RateTypeID,
@@ -37,11 +40,12 @@ const PackageList = ({ title, packageId }: any) => {
                     RateTypeName: element.RateTypeName,
                     RoomTypeName: element.RoomTypeName,
                 });
+                i++;
             });
             setEntity(tempValue);
         }
     }, [data]);
-
+    console.log("entity", JSON.stringify(entity));
     const columns = [
         {
             title: "Room Type",
@@ -63,6 +67,7 @@ const PackageList = ({ title, packageId }: any) => {
             key: "Action",
             dataIndex: "Action",
             renderCell: (element: any) => {
+                console.log("element", element);
                 return (
                     <>
                         <Button
@@ -77,9 +82,10 @@ const PackageList = ({ title, packageId }: any) => {
                                         handleModal={handleModal}
                                         entity={entity}
                                         setEntity={setEntity}
+                                        key={element}
                                     />,
                                     null,
-                                    "large"
+                                    "medium"
                                 );
                             }}
                         >
@@ -116,7 +122,7 @@ const PackageList = ({ title, packageId }: any) => {
                 hasNew={true}
                 hasUpdate={false}
                 hasShow={false}
-                id="RateTypeID"
+                id="ID"
                 listUrl={listUrl}
                 modalTitle={title}
                 modalContent={
@@ -127,6 +133,7 @@ const PackageList = ({ title, packageId }: any) => {
                     />
                 }
                 excelName={title}
+                modalsize="medium"
             />
             <div style={{ display: "flex", flexDirection: "row-reverse" }}>
                 <LoadingButton

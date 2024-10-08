@@ -26,6 +26,7 @@ import ExtraCharge from "components/reservation/extra-charge";
 import Checkout from "components/front-office/night-audit/PendingDueOut/additional-actions/checkout";
 
 import { listUrl } from "lib/api/front-office";
+import MarkNoShowForm from "./no-show";
 
 const buttonStyle = {
     borderBottom: "1px solid #efefef",
@@ -130,11 +131,11 @@ const ReservationNav = ({
                 border: "1px solid #efefef",
             }}
         >
-            <Button variant={"text"} size="small" sx={buttonStyle}>
+            {/* <Button variant={"text"} size="small" sx={buttonStyle}>
                 {intl.formatMessage({
                     id: "ButtonCard",
                 })}
-            </Button>
+            </Button> */}
             {reservation.CheckIn && (
                 <Button
                     variant={"text"}
@@ -147,7 +148,7 @@ const ReservationNav = ({
                     })}
                 </Button>
             )}
-            {reservation.NoShow && (
+            {/* {reservation.NoShow && (
                 <Button
                     variant={"text"}
                     size="small"
@@ -158,8 +159,32 @@ const ReservationNav = ({
                         id: "ButtonMarkNoShow",
                     })}
                 </Button>
+            )} */}
+            {reservation.NoShow && (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                    onClick={() => {
+                        handleModal(
+                            true,
+                            intl.formatMessage({
+                                id: "ButtonMarkNoShow",
+                            }),
+                            <MarkNoShowForm
+                                transactionInfo={reservation}
+                                reservation={reservation}
+                                additionalMutateUrl={additionalMutateUrl}
+                            />
+                        );
+                    }}
+                >
+                    {intl.formatMessage({
+                        id: "ButtonMarkNoShow",
+                    })}
+                </Button>
             )}
-            <Dialog
+            {/* <Dialog
                 open={openNoShow}
                 onClose={handleCloseNoShow}
                 aria-labelledby="alert-dialog-title"
@@ -190,7 +215,7 @@ const ReservationNav = ({
                         })}
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog> */}
             <a href={`/transaction/edit/${reservation.TransactionID}`}>
                 <Button variant={"text"} size="small" sx={buttonStyle}>
                     {intl.formatMessage({
@@ -214,7 +239,7 @@ const ReservationNav = ({
                             additionalMutateUrl={additionalMutateUrl}
                         />,
                         null,
-                        "large"
+                        "medium"
                     );
                 }}
             >
@@ -222,7 +247,7 @@ const ReservationNav = ({
                     id: "ButtonExtraCharge",
                 })}
             </Button>
-            {reservation.GroupOperation && (
+            {/* {reservation.GroupOperation && (
                 <a href={`transaction/group-edit/${reservation.GroupID}`}>
                     <Button variant={"text"} size="small" sx={buttonStyle}>
                         {intl.formatMessage({
@@ -230,7 +255,7 @@ const ReservationNav = ({
                         })}
                     </Button>
                 </a>
-            )}
+            )} */}
             {reservation.MoveRoom && (
                 <Button
                     variant={"text"}

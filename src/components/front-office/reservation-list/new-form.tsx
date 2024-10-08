@@ -492,9 +492,7 @@ const NewEdit = ({
                             label={intl.formatMessage({
                                 id: "TextName",
                             })}
-                            {...register(
-                                `TransactionDetail.${id}.GuestDetail.Name`
-                            )}
+                            {...register(`TransactionDetail.${id}.Name`)}
                             margin="dense"
                             error={
                                 errors &&
@@ -559,10 +557,12 @@ const NewEdit = ({
                                 onClick={() =>
                                     //@ts-ignore
                                     {
-                                        let tempValue = getValues(
-                                            //@ts-ignore
-                                            `TransactionDetail[${id}]`
-                                        );
+                                        let tempValue = {
+                                            ...getValues(
+                                                //@ts-ignore
+                                                `TransactionDetail[${id}]`
+                                            ),
+                                        };
 
                                         tempValue.RoomID = null;
 

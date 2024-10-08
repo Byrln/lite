@@ -40,7 +40,7 @@ const RoomCharge = ({ TransactionID }: any) => {
 
     const { data, error } = FolioItemSWR(FolioID);
 
-    console.log(data)
+    console.log(data);
 
     useEffect(() => {
         if (data) {
@@ -283,6 +283,7 @@ const RoomCharge = ({ TransactionID }: any) => {
                 }
                 api={FolioAPI}
                 listUrl={listUrl}
+                modalsize="large"
                 additionalButtons={
                     <>
                         <Button

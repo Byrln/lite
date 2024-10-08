@@ -91,7 +91,7 @@ const UserList = ({ title }: any) => {
                                 `Захиалга`,
                                 <SetPassword UserID={element.row.UserID} />,
                                 null,
-                                "large"
+                                "small"
                             )
                         }
                     >

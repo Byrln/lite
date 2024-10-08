@@ -7,6 +7,7 @@ import { formatNumber } from "lib/utils/helpers";
 import { PaymentMethodAPI } from "lib/api/payment-method";
 import CustomTable from "components/common/custom-table";
 import CurrencySelect from "components/select/currency";
+import { formatPrice } from "lib/utils/helpers";
 
 const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
     const intl = useIntl();
@@ -168,19 +169,30 @@ const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
     ];
 
     return (
-        <CustomTable
-            columns={columns}
-            data={entity}
-            hasNew={false}
-            //hasUpdate={true}
-            //hasDelete={true}
-            id="PaymentMethodID"
-            listUrl={listUrl}
-            datagrid={false}
-            hasPrint={false}
-            hasExcel={false}
-            customHeight="none"
-        />
+        <>
+            <CustomTable
+                columns={columns}
+                data={entity}
+                hasNew={false}
+                //hasUpdate={true}
+                //hasDelete={true}
+                id="PaymentMethodID"
+                listUrl={listUrl}
+                datagrid={false}
+                hasPrint={false}
+                hasExcel={false}
+                customHeight="none"
+            />
+            Нийт:
+            {entity &&
+                formatPrice(
+                    entity.reduce(
+                        (acc: any, obj: any) =>
+                            acc + (obj.Amount ? obj.Amount : 0),
+                        0
+                    )
+                )}
+        </>
     );
 };
 

@@ -10,32 +10,32 @@ import { RoomTypeSWR, RoomTypeAPI, listUrl } from "lib/api/room-type";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
-
 const RoomTypeList = ({ title }: any) => {
     const intl = useIntl();
     const columns = [
         {
-            title: intl.formatMessage({id:"AmenityShortName"}), 
+            title: intl.formatMessage({ id: "AmenityShortName" }),
             key: "RoomTypeShortName",
             dataIndex: "RoomTypeShortName",
         },
         {
-            title: intl.formatMessage({id:"Left_SortByRoomType"}), 
+            title: intl.formatMessage({ id: "Left_SortByRoomType" }),
             key: "RoomTypeName",
             dataIndex: "RoomTypeName",
         },
-        { title: intl.formatMessage({id:"ReportPax"}), 
-             key: "BaseAC",
-              dataIndex: "BaseAC" },
-
-        { title: intl.formatMessage({id:"RowHeaderMaxAC"}), 
-            key: "MaxAC", 
-            dataIndex: "MaxAC" },
         {
+            title: intl.formatMessage({ id: "ReportPax" }),
+            key: "BaseAC",
+            dataIndex: "BaseAC",
+        },
 
-
-            title: intl.formatMessage({id:"Left_SortByStatus"}), 
+        {
+            title: intl.formatMessage({ id: "RowHeaderMaxAC" }),
+            key: "MaxAC",
+            dataIndex: "MaxAC",
+        },
+        {
+            title: intl.formatMessage({ id: "Left_SortByStatus" }),
             key: "Status",
             dataIndex: "Status",
             excelRenderPass: true,
@@ -100,6 +100,7 @@ const RoomTypeList = ({ title }: any) => {
                         />
                     </CustomSearch>
                 }
+                modalsize="medium"
             />
         </>
     );

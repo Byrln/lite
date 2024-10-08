@@ -85,7 +85,12 @@ const RoomMoveForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            values.NewRoomTypeID = values.RoomTypeID;
+            console.log("roomType", roomType);
+
+            console.log("baseStay", baseStay);
+            values.NewRoomTypeID = roomType.RoomTypeID
+                ? roomType.RoomTypeID
+                : values.RoomTypeID;
             values.NewRoomID = values.RoomID;
             delete values.RoomTypeID;
             delete values.RoomID;
@@ -111,11 +116,11 @@ const RoomMoveForm = ({
             handleModal();
         }
     };
-
     const onOverrideRateChange = (evt: any) => {
+        console.log("evt", evt.target.checked);
         setRateCondition({
             ...rateCondition,
-            overrideRate: evt.target.value,
+            overrideRate: evt.target.checked,
         });
     };
 
@@ -172,7 +177,9 @@ const RoomMoveForm = ({
         if (!isManualRate()) {
             calculateAmount(rt);
         }
+        console.log(rt);
     };
+    console.log("baseStay", baseStay);
 
     useEffect(() => {
         if (transactionInfo && transactionInfo.RoomTypeID) {
@@ -182,6 +189,7 @@ const RoomMoveForm = ({
 
     return (
         <>
+            tews
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input
                     type="hidden"
@@ -190,14 +198,16 @@ const RoomMoveForm = ({
                 />
 
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <RoomTypeSelect
-                            register={register}
-                            errors={errors}
-                            onRoomTypeChange={onRoomTypeChange}
-                            baseStay={baseStay}
-                        />
-                    </Grid>
+                    {roomType && (
+                        <Grid item xs={12}>
+                            <RoomTypeSelect
+                                register={register}
+                                errors={errors}
+                                onRoomTypeChange={onRoomTypeChange}
+                                baseStay={roomType}
+                            />
+                        </Grid>
+                    )}
                     {roomType && (
                         <Grid item xs={12}>
                             <RoomSelect
@@ -213,22 +223,24 @@ const RoomMoveForm = ({
 
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <div>
-                            <FormControlLabel
-                                sx={{ my: 2 }}
-                                control={
-                                    <Checkbox
-                                        id={"OverrideRate"}
-                                        {...register("OverrideRate")}
-                                        onChange={onOverrideRateChange}
-                                        checked={rateCondition.overrideRate}
-                                    />
-                                }
-                                label={intl.formatMessage({
-                                    id: "TextOverrideRoomRate",
-                                })}
-                            />
-                        </div>
+                        {rateCondition && (
+                            <div>
+                                <FormControlLabel
+                                    sx={{ my: 2 }}
+                                    control={
+                                        <Checkbox
+                                            id={"OverrideRate"}
+                                            {...register("OverrideRate")}
+                                            onChange={onOverrideRateChange}
+                                            // checked={rateCondition.overrideRate}
+                                        />
+                                    }
+                                    label={intl.formatMessage({
+                                        id: "TextOverrideRoomRate",
+                                    })}
+                                />
+                            </div>
+                        )}
 
                         <div>
                             <FormControl component="fieldset">
@@ -264,25 +276,25 @@ const RoomMoveForm = ({
                             </FormControl>
                         </div>
 
-                        {isManualRate() ? (
-                            <TextField
-                                fullWidth
-                                id="NewRate"
-                                label={intl.formatMessage({
-                                    id: "TextAmount",
-                                })}
-                                {...register("NewRate")}
-                                margin="dense"
-                                error={errors.NewRate?.message}
-                                helperText={errors.NewRate?.message}
-                                disabled={!isManualRate()}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        ) : (
+                        {/* {isManualRate() ? ( */}
+                        <TextField
+                            fullWidth
+                            id="NewRate"
+                            label={intl.formatMessage({
+                                id: "TextAmount",
+                            })}
+                            {...register("NewRate")}
+                            margin="dense"
+                            error={errors.NewRate?.message}
+                            helperText={errors.NewRate?.message}
+                            disabled={!isManualRate()}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        {/* ) : (
                             <></>
-                        )}
+                        )} */}
                     </Grid>
                 </Grid>
 

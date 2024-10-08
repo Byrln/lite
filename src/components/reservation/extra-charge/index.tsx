@@ -1,11 +1,12 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { ModalContext } from "lib/context/modal";
 import { LoadingButton } from "@mui/lab";
 import { useIntl } from "react-intl";
+import { Box } from "@mui/material";
 
 import ChargeType from "./charge-type";
 import PaymentMethod from "./payment-method";
@@ -39,7 +40,7 @@ const ExtraCharge = ({
 
         try {
             let tempValue: any = {};
-
+            console.log("chargeTypes", chargeTypes);
             chargeTypes.forEach((element: any) => {
                 if (element.isChecked && element.isChecked == true) {
                     tempValue.TransactionID = values.TransactionID
@@ -56,7 +57,9 @@ const ExtraCharge = ({
                     tempValue.ItemID = element.RoomChargeTypeID
                         ? element.RoomChargeTypeID
                         : null;
-                    tempValue.Amount = element.Total ? element.Total : null;
+                    tempValue.Amount = element.RoomChargeTypeRate
+                        ? element.RoomChargeTypeRate
+                        : null;
                     tempValue.Quantity = element.BaseRate
                         ? element.BaseRate
                         : null;
@@ -119,53 +122,65 @@ const ExtraCharge = ({
             handleModal();
         }
     };
-
+    console.log("chargeTypes", chargeTypes);
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input
-                    type="hidden"
-                    {...register("TransactionID")}
-                    value={transactionInfo.TransactionID}
-                />
-                <FolioSelect
-                    register={register}
-                    errors={errors}
-                    TransactionID={transactionInfo.TransactionID}
-                    resetField={resetField}
-                />
-                <br />
-                <br />
-                <ChargeType
-                    additionalMutateUrl={additionalMutateUrl}
-                    entity={chargeTypes}
-                    setEntity={setChargeTypes}
-                />
-                <br />
-                <br />
-                {intl.formatMessage({
-                    id: "TextPayment",
-                })}
-                <br />
-                <br />
-                <PaymentMethod
-                    additionalMutateUrl={additionalMutateUrl}
-                    entity={paymentMethods}
-                    setEntity={setPaymentMethods}
-                    register={register}
-                    errors={errors}
-                />
-                <LoadingButton
-                    size="small"
-                    type="submit"
-                    variant="contained"
-                    loading={loading}
-                    className="mt-3"
-                >
+                <div style={{ height: "60vh", overflow: "scroll" }}>
+                    <input
+                        type="hidden"
+                        {...register("TransactionID")}
+                        value={transactionInfo.TransactionID}
+                    />
+                    <FolioSelect
+                        register={register}
+                        errors={errors}
+                        TransactionID={transactionInfo.TransactionID}
+                        resetField={resetField}
+                    />
+                    <ChargeType
+                        additionalMutateUrl={additionalMutateUrl}
+                        entity={chargeTypes}
+                        setEntity={setChargeTypes}
+                        register={register}
+                        errors={errors}
+                    />
+
+                    <br />
                     {intl.formatMessage({
-                        id: "ButtonSave",
+                        id: "TextPayment",
                     })}
-                </LoadingButton>
+                    <br />
+                    <PaymentMethod
+                        additionalMutateUrl={additionalMutateUrl}
+                        entity={paymentMethods}
+                        setEntity={setPaymentMethods}
+                        register={register}
+                        errors={errors}
+                    />
+                </div>
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "100%",
+                        flexWrap: "wrap",
+                        flexDirection: "row-reverse",
+                    }}
+                    className="mb-1"
+                >
+                    <LoadingButton
+                        size="small"
+                        type="submit"
+                        variant="contained"
+                        loading={loading}
+                        className="mt-3"
+                    >
+                        {intl.formatMessage({
+                            id: "ButtonSave",
+                        })}
+                    </LoadingButton>
+                </Box>
             </form>
         </>
     );

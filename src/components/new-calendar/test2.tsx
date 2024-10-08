@@ -158,7 +158,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     setTimeEnd(
                         new Date(
                             new Date(workingDate).setDate(
-                                new Date(workingDate).getDate() + 7
+                                new Date(workingDate).getDate() + dayCount
                             )
                         )
                     );
@@ -167,7 +167,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     setTimeEnd(
                         new Date(
                             new Date(searchCurrDate).setDate(
-                                new Date(searchCurrDate).getDate() + 7
+                                new Date(searchCurrDate).getDate() + dayCount
                             )
                         )
                     );
@@ -290,7 +290,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           title: obj.GuestName,
                           start: obj.StartDate,
                           end: obj.EndDate,
-                          resourceId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                          resourceId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
                           roomTypeID: obj.RoomTypeID,
                           transactionID: obj.TransactionID,
                           startDate: obj.StartDate,
@@ -383,7 +383,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             end: `${moment(currentDate).format(
                                 "YYYY-MM-DD"
                             )} 23:59:59`,
-                            resourceId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                            resourceId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
                             startDate: `${moment(currentDate).format(
                                 "YYYY-MM-DD"
                             )} 00:00:00`,
@@ -412,7 +412,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         if (rooms && roomTypes) {
             const newRoomTypeData = roomTypes.map((obj: any) => {
                 return {
-                    id: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                    id: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
                     title: obj.RoomTypeName,
                     SortOrder: obj.SortOrder,
                 };
@@ -421,7 +421,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 .filter((event: any) => event.Status === true)
                 .map((obj: any) => {
                     return {
-                        parentId: `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                        parentId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
                         roomTypeId: obj.RoomTypeID,
                         id: obj.RoomID,
                         title: obj.RoomNo,
@@ -461,7 +461,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleEventClick = (info: any) => {
         if (
-            info.event._instance.range.end > new Date(workingDate) &&
+            // info.event._instance.range.end > new Date(workingDate) &&
             info.event._def.title != "Blocked"
         ) {
             // activeSessionID && activeSessionID == "-1" && handleCashierOpen();
@@ -565,8 +565,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 title: "New Event",
                 ArrivalDate: info.event._instance.range.start,
                 DepartureDate: info.event._instance.range.end,
-                RoomTypeID: extractNumberFromString(
-                    info.newResource._resource.parentId
+                RoomTypeID: Number(
+                    info.newResource._resource.parentId.split("?")[1]
                 ),
                 RoomID: Number(info.event._def.resourceIds[0]),
                 TransactionID: Number(

@@ -6,14 +6,20 @@ import { listUrl } from "lib/api/front-office";
 import { formatNumber } from "lib/utils/helpers";
 import { ChargeTypeAPI } from "lib/api/charge-type";
 import CustomTable from "components/common/custom-table";
+import ChargeTypeGroupSelect from "components/select/charge-type-group";
+import { formatPrice } from "lib/utils/helpers";
 
-const ExtraCharge = ({ entity, setEntity }: any) => {
+const ExtraCharge = ({ entity, setEntity, register, errors }: any) => {
     const intl = useIntl();
     const [rerenderKey, setRerenderKey] = useState(0);
+    const [chargeType, setChargeType] = useState(null);
 
     const fetchDatas = async () => {
         try {
-            const arr: any = await ChargeTypeAPI.list({ IsExtraCharge: true });
+            const arr: any = await ChargeTypeAPI.list({
+                IsExtraCharge: true,
+                RoomChargeTypeGroupID: chargeType,
+            });
             if (arr) {
                 setEntity(arr);
             }
@@ -23,7 +29,7 @@ const ExtraCharge = ({ entity, setEntity }: any) => {
 
     useEffect(() => {
         fetchDatas();
-    }, []);
+    }, [chargeType]);
 
     const onCheckboxChange = (e: any) => {
         let tempEntity = [...entity];
@@ -206,22 +212,43 @@ const ExtraCharge = ({ entity, setEntity }: any) => {
             },
         },
     ];
-
+    console.log("chargeType", chargeType);
     return (
-        <CustomTable
-            columns={columns}
-            data={entity}
-            hasNew={false}
-            id="RoomChargeTypeID"
-            listUrl={listUrl}
-            excelName={intl.formatMessage({
-                id: "ButtonExtraCharge",
-            })}
-            datagrid={false}
-            hasPrint={false}
-            hasExcel={false}
-            customHeight="none"
-        />
+        <>
+            <ChargeTypeGroupSelect
+                IsRoomCharge={false}
+                IsExtraCharge={true}
+                IsMiniBar={false}
+                IsDiscount={false}
+                register={register}
+                errors={errors}
+                onChange={setChargeType}
+            />
+            <CustomTable
+                columns={columns}
+                data={entity}
+                hasNew={false}
+                id="RoomChargeTypeID"
+                listUrl={listUrl}
+                excelName={intl.formatMessage({
+                    id: "ButtonExtraCharge",
+                })}
+                datagrid={false}
+                hasPrint={false}
+                hasExcel={false}
+                customHeight="none"
+                size="small"
+            />
+            Нийт:
+            {entity &&
+                formatPrice(
+                    entity.reduce(
+                        (acc: any, obj: any) =>
+                            acc + (obj.Total ? obj.Total : 0),
+                        0
+                    )
+                )}
+        </>
     );
 };
 

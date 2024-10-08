@@ -54,7 +54,7 @@ export default function DashboardNavbar({ onOpenSidebar }: any) {
                     spacing={{ xs: 0.5, sm: 1.5 }}
                 >
                     <LanguagePopover />
-                    <NotificationsPopover />
+                    {/* <NotificationsPopover /> */}
                     <AccountPopover />
                 </Stack>
             </ToolbarStyle>

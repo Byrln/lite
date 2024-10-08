@@ -147,8 +147,9 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
-                             
+                                    label={intl.formatMessage({
+                                        id: "RowHeaderBeginDate",
+                                    })}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -159,8 +160,10 @@ const NewEdit = () => {
                                         <TextField
                                             size="small"
                                             id="RowHeaderBeginDate"
-                        label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
-                        {...register("BeginDate")}
+                                            label={intl.formatMessage({
+                                                id: "RowHeaderBeginDate",
+                                            })}
+                                            {...register("BeginDate")}
                                             margin="dense"
                                             fullWidth
                                             {...params}
@@ -181,8 +184,10 @@ const NewEdit = () => {
                             defaultValue={null}
                             render={({ field: { onChange, value } }) => (
                                 <DatePicker
-                                label={intl.formatMessage({id:"RowHeaderEndDate"}) }
-                                {...register("EndDate")}
+                                    label={intl.formatMessage({
+                                        id: "RowHeaderEndDate",
+                                    })}
+                                    {...register("EndDate")}
                                     value={value}
                                     onChange={(value) =>
                                         onChange(
@@ -223,14 +228,7 @@ const NewEdit = () => {
                     {data &&
                         data.map((room: any, index: any) => {
                             return (
-                                <Grid
-                                    item
-                                    xs={6}
-                                    sm={3}
-                                    md={2}
-                                    lg={1}
-                                    key={room.RoomID}
-                                >
+                                <Grid item xs={6} sm={3} key={room.RoomID}>
                                     <FormControlLabel
                                         control={
                                             <Controller

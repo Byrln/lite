@@ -22,6 +22,7 @@ const validationSchema = yup.object().shape({
     RoomRate: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     RoomTypeName: yup.string().notRequired(),
     RateTypeName: yup.string().notRequired(),
+    Quantity: yup.number().notRequired(),
     RoomRateExtraAdult: yup
         .number()
         .required("Бөглөнө үү")
@@ -30,17 +31,15 @@ const validationSchema = yup.object().shape({
         .number()
         .required("Бөглөнө үү")
         .typeError("Бөглөнө үү"),
-    MaxAdult: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    MaxChild: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
-const NewEdit = ({ entity, setEntity, currentData, handleModal }: any) => {
+const NewEdit = ({ entity, setEntity, currentData, handleModal, key }: any) => {
     const intl = useIntl();
     const [roomType, setRoomType] = useState<any>(null);
     const [rateType, setRateType] = useState<any>(null);
     const [maxAdult, setMaxAdult] = useState<any>(null);
     const [maxChild, setMaxChild] = useState<any>(null);
-
+    console.log("roomType", roomType);
     const { data, error } = RateTypeSWR({});
     const [state]: any = useAppState();
     const {
@@ -52,6 +51,7 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal }: any) => {
         resetField,
         getValues,
     } = useForm({ resolver: yupResolver(validationSchema) });
+    console.log("errors", errors);
 
     useEffect(() => {
         if (currentData) {
@@ -62,7 +62,7 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal }: any) => {
             setMaxAdult(currentData.MaxAdult);
         }
     }, [currentData]);
-
+    console.log("currentdata", currentData);
     const onRoomTypeChange = async (evt: any) => {
         try {
             setRoomType(evt);
@@ -138,13 +138,34 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal }: any) => {
         } finally {
         }
     };
-
     const customSubmit = async (values: any) => {
+        console.log("values", values);
         try {
             values.Rate = values.RoomRate;
             let newEntity = [...entity];
-            newEntity.push(values);
-            setEntity(newEntity);
+            console.log("resultValues", values);
+            if (currentData && currentData.ID) {
+                const updatedData = newEntity.map((item: any) => {
+                    if (item.ID === values.ID) {
+                        return values; // Replacing the object with ID=1
+                    }
+                    return item; // Keep other items as they are
+                });
+                setEntity(updatedData);
+            } else {
+                if (values.Quantity && values.Quantity > 1) {
+                    for (let i = 0; i < parseInt(values.Quantity); i++) {
+                        let tempValue = { ...values };
+                        tempValue.ID = entity.length + i;
+                        delete tempValue.Quantity;
+                        newEntity.push(tempValue);
+                    }
+                } else {
+                    values.ID = entity.length;
+                    newEntity.push(values);
+                }
+                setEntity(newEntity);
+            }
             handleModal();
         } finally {
         }
@@ -177,7 +198,7 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal }: any) => {
                                 ? maxAdult
                                 : roomType?.MaxAdult
                                 ? roomType?.MaxAdult
-                                : 0
+                                : 3
                         }
                         nameKey={`Adult`}
                         register={register}
@@ -199,7 +220,7 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal }: any) => {
                                 ? maxChild
                                 : roomType?.MaxChild
                                 ? roomType?.MaxChild
-                                : 0
+                                : 3
                         }
                         nameKey={`Child`}
                         register={register}
@@ -271,17 +292,21 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal }: any) => {
                     />
                 </Grid>
 
-                <Grid item xs={12}>
-                    <TextField
-                        size="small"
-                        type="number"
-                        fullWidth
-                        id="Quantity"
-                        label="Quantity"
-                        {...register(`Quantity`)}
-                        margin="dense"
-                    />
-                </Grid>
+                {currentData && currentData.ID ? (
+                    <></>
+                ) : (
+                    <Grid item xs={12}>
+                        <TextField
+                            size="small"
+                            type="number"
+                            fullWidth
+                            id="Quantity"
+                            label="Quantity"
+                            {...register(`Quantity`)}
+                            margin="dense"
+                        />
+                    </Grid>
+                )}
 
                 <Grid item xs={12}>
                     <TextField

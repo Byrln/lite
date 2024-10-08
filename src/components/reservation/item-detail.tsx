@@ -87,9 +87,9 @@ const ItemDetail = ({
                                     </Paper>
                                     <p style={{ fontSize: "12px" }}>
                                         {intl.formatMessage({
-                                            id: "TextCheckInNo",
+                                            id: "Reservation_ReservationNo",
                                         })}{" "}
-                                        {reservation.CheckinNo}
+                                        {reservation.ReservationNo}
                                     </p>
                                 </div>
                             </Box>
@@ -155,10 +155,9 @@ const ItemDetail = ({
                                             </b>
                                         </TableCell>
                                         <TableCell>
-                                            {reservation.ReservationNo}
+                                            {reservation.FolioNo}
                                         </TableCell>
                                     </TableRow>
-
                                     <TableRow>
                                         <TableCell>
                                             <b>
@@ -169,19 +168,6 @@ const ItemDetail = ({
                                         </TableCell>
                                         <TableCell>
                                             {reservation.GroupCode}
-                                        </TableCell>
-                                    </TableRow>
-
-                                    <TableRow>
-                                        <TableCell>
-                                            <b>
-                                                {intl.formatMessage({
-                                                    id: "TextFolioNo",
-                                                })}
-                                            </b>
-                                        </TableCell>
-                                        <TableCell>
-                                            {reservation.FolioNo}
                                         </TableCell>
                                     </TableRow>
 

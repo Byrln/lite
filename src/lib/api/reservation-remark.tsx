@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Remark/ReservationRemark";
+const urlPrefix = "/api/Remark/Reservation";
 export const listUrl = `${urlPrefix}`;
 
 export const ReservationRemarkSWR = (TransactionID: any) => {
@@ -21,7 +21,7 @@ export const ReservationRemarkSWR = (TransactionID: any) => {
 
 export const ReservationRemarkAPI = {
     new: async (values: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}New`, values);
+        const { data, status } = await axios.post(`${urlPrefix}/New`, values);
 
         return {
             data,
