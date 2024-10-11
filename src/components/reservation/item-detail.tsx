@@ -202,12 +202,17 @@ const ItemDetail = ({
                                 variant={"text"}
                                 size="small"
                                 className="mr-3"
+                                style={{ color: "#804fe6" }}
                             >
                                 {intl.formatMessage({
                                     id: "ButtonSendConfirmation",
                                 })}
                             </Button>
-                            <Button variant={"text"} size="small">
+                            <Button
+                                variant={"text"}
+                                size="small"
+                                style={{ color: "#804fe6" }}
+                            >
                                 {intl.formatMessage({
                                     id: "ButtonPrintRegistrationForm",
                                 })}
@@ -294,6 +299,7 @@ const ItemDetail = ({
                                 variant={"text"}
                                 size="small"
                                 className="mr-3"
+                                style={{ color: "#804fe6" }}
                                 onClick={() => {
                                     handleModal(
                                         true,
@@ -312,6 +318,7 @@ const ItemDetail = ({
                                 variant={"text"}
                                 size="small"
                                 className="mr-3"
+                                style={{ color: "#804fe6" }}
                                 // onClick={() => handleInvoice()}
                                 onClick={() => {
                                     handleModal(
@@ -327,7 +334,11 @@ const ItemDetail = ({
                             >
                                 Нэх.хэвлэх
                             </Button>
-                            <Button variant={"text"} size="small">
+                            <Button
+                                variant={"text"}
+                                size="small"
+                                style={{ color: "#804fe6" }}
+                            >
                                 Е-Баримт хэвлэх
                             </Button>
                         </Grid>

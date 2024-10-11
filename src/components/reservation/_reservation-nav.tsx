@@ -31,6 +31,7 @@ import MarkNoShowForm from "./no-show";
 
 const buttonStyle = {
     // borderBottom: "1px solid #efefef",
+    color: "#804fe6",
     width: "100%",
 };
 
