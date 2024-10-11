@@ -147,7 +147,7 @@ const UserRolePrivilegeSelect = ({
                             (element: any, index: number) =>
                                 element &&
                                 element.GroupType === type && (
-                                    <Grid item xs={6} sm={4} md={3}>
+                                    <Grid item xs={6} sm={4} md={3} key={index}>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox

@@ -149,7 +149,7 @@ const UserRolePrivilegeSelect = ({
                 <Grid container spacing={1}>
                     {sources &&
                         sources.map((element: any, index: number) => (
-                            <Grid item xs={6}>
+                            <Grid item xs={6} key={index}>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
