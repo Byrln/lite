@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { listUrl as calendarItemsURL } from "lib/api/front-office";
 import { useIntl } from "react-intl";
+import { useRouter } from "next/router";
 
 import { mutate } from "swr";
 import { ModalContext } from "lib/context/modal";
@@ -29,7 +30,7 @@ import { listUrl } from "lib/api/front-office";
 import MarkNoShowForm from "./no-show";
 
 const buttonStyle = {
-    borderBottom: "1px solid #efefef",
+    // borderBottom: "1px solid #efefef",
     width: "100%",
 };
 
@@ -39,6 +40,7 @@ const ReservationNav = ({
     reloadDetailInfo,
     additionalMutateUrl,
 }: any) => {
+    const { locale }: any = useRouter();
     const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [openNoShow, setOpenNoShow] = useState(false);
@@ -175,7 +177,9 @@ const ReservationNav = ({
                                 transactionInfo={reservation}
                                 reservation={reservation}
                                 additionalMutateUrl={additionalMutateUrl}
-                            />
+                            />,
+                            null,
+                            "small"
                         );
                     }}
                 >

@@ -586,6 +586,12 @@ const sidebarConfig = [
                 path: "/conf/accounting",
                 oldPath: "",
             },
+            {
+                title: "Pos Api тохиргоо",
+                titleEn: "Pos Api Config",
+                path: "/conf/pos-api",
+                oldPath: "",
+            },
         ],
     },
     {

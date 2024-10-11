@@ -4,6 +4,7 @@ import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/Promotion";
 export const listUrl = `${urlPrefix}/List`;
+export const detail = `${urlPrefix}/Detail`;
 
 export const PromotionSWR = (search: any) => {
     if (!search.PromotionID) {
@@ -22,7 +23,7 @@ export const PromotionAPI = {
             PromotionID: id,
         };
 
-        const res = await axios.post(listUrl, values);
+        const res = await axios.post(detail, values);
 
         return res.data.JsonData;
     },
@@ -49,9 +50,13 @@ export const PromotionAPI = {
     },
 
     delete: async (id: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
-            PromotionID: id,
-        });
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Status/Update`,
+            {
+                PromotionID: id,
+                Status: false,
+            }
+        );
 
         return {
             data,

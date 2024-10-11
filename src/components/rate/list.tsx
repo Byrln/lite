@@ -115,7 +115,7 @@ const RateList = ({ title, taxData }: any) => {
                             formatNumber(entity[dataIndex].BaseRate)
                         }
                         InputLabelProps={{
-                            shrink: value || value == 0,
+                            shrink: true,
                         }}
                         margin="dense"
                         onChange={(evt: any) => {
@@ -151,7 +151,7 @@ const RateList = ({ title, taxData }: any) => {
                             formatNumber(entity[dataIndex].ExtraAdult)
                         }
                         InputLabelProps={{
-                            shrink: value || value == 0,
+                            shrink: true,
                         }}
                         margin="dense"
                         onChange={(evt: any) => {
@@ -189,7 +189,7 @@ const RateList = ({ title, taxData }: any) => {
                             formatNumber(entity[dataIndex].ExtraChild)
                         }
                         InputLabelProps={{
-                            shrink: value || value == 0,
+                            shrink: true,
                         }}
                         margin="dense"
                         onChange={(evt: any) => {

@@ -2,22 +2,57 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/PosApi";
+const urlPrefix = "/api/Ebarimt/Pos";
 export const listUrl = `${urlPrefix}/List`;
+export const infoUrl = `${urlPrefix}/Info`;
+export const checkUrl = `${urlPrefix}/Check`;
+export const sendUrl = `${urlPrefix}/Send`;
 
 export const PosApiSWR = () => {
-    const values = {
-        PosApiID: null,
-        EmptyRow: 0,
-    };
-
     const fetcher = async (url: any) =>
-        await axios.post(url, values).then((res: any) => res.data.JsonData);
+        await axios
+            .post(url)
+            .then((res: any) =>
+                res.data.JsonData.filter(
+                    (item: any) =>
+                        item.HotelID == localStorage.getItem("hotelId")
+                )
+            );
 
     return useSWR(listUrl, fetcher);
 };
 
+export const PosApiCheckSWR = (HotelCode: any) => {
+    const values = { Code: HotelCode };
+    const fetcher = async (url: any) =>
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonString));
+
+    return useSWR(checkUrl, fetcher);
+};
+
+export const PosApiInfoSWR = (HotelCode: any) => {
+    const values = { Code: HotelCode };
+    const fetcher = async (url: any) =>
+        await axios
+            .post(url, values)
+            .then((res: any) => JSON.parse(res.data.JsonString));
+
+    return useSWR(infoUrl, fetcher);
+};
+
 export const PosApiAPI = {
+    info: async (id: any) => {
+        const values = {
+            Code: id,
+        };
+
+        const res = await axios.post(infoUrl, values);
+
+        return JSON.parse(res.data.JsonString);
+    },
+
     get: async (id: any) => {
         const values = {
             PosApiID: id,
@@ -75,5 +110,15 @@ export const PosApiAPI = {
             data,
             status,
         };
+    },
+
+    send: async (id: any) => {
+        const values = {
+            Code: id,
+        };
+
+        const res = await axios.post(sendUrl, values);
+
+        return res.data.JsonData;
     },
 };

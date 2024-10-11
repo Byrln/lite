@@ -1,6 +1,7 @@
 import { Checkbox, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useIntl } from "react-intl";
+import { Box } from "@mui/material";
 
 import { listUrl } from "lib/api/front-office";
 import { formatNumber } from "lib/utils/helpers";
@@ -39,7 +40,7 @@ const ExtraCharge = ({ entity, setEntity, register, errors }: any) => {
         setEntity(tempEntity);
         setRerenderKey((prevKey) => prevKey + 1);
     };
-
+    console.log("entity", entity);
     const columns = [
         {
             title: "№",
@@ -118,7 +119,10 @@ const ExtraCharge = ({ entity, setEntity, register, errors }: any) => {
                         disabled={
                             entity &&
                             entity[dataIndex] &&
-                            !entity[dataIndex].isChecked
+                            (!entity[dataIndex].isChecked ||
+                                !entity[dataIndex].EditableRate ||
+                                entity[dataIndex].RoomChargeTypeGroupName ==
+                                    "Mini Bar")
                         }
                         value={
                             entity &&
@@ -126,7 +130,7 @@ const ExtraCharge = ({ entity, setEntity, register, errors }: any) => {
                             formatNumber(entity[dataIndex].RoomChargeTypeRate)
                         }
                         InputLabelProps={{
-                            shrink: value || value == 0,
+                            shrink: true,
                         }}
                         margin="dense"
                         onChange={(evt: any) => {
@@ -171,7 +175,7 @@ const ExtraCharge = ({ entity, setEntity, register, errors }: any) => {
                             formatNumber(entity[dataIndex].BaseRate)
                         }
                         InputLabelProps={{
-                            shrink: value || value == 0,
+                            shrink: true,
                         }}
                         margin="dense"
                         onChange={(evt: any) => {
@@ -239,15 +243,28 @@ const ExtraCharge = ({ entity, setEntity, register, errors }: any) => {
                 customHeight="none"
                 size="small"
             />
-            Нийт:
-            {entity &&
-                formatPrice(
-                    entity.reduce(
-                        (acc: any, obj: any) =>
-                            acc + (obj.Total ? obj.Total : 0),
-                        0
-                    )
-                )}
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    flexWrap: "wrap",
+                    flexDirection: "row-reverse",
+                }}
+                className="mb-1"
+            >
+                <div>
+                    Нийт:
+                    {entity &&
+                        formatPrice(
+                            entity.reduce(
+                                (acc: any, obj: any) =>
+                                    acc + (obj.Total ? obj.Total : 0),
+                                0
+                            )
+                        )}
+                </div>
+            </Box>
         </>
     );
 };

@@ -49,6 +49,12 @@ export const BookingSourceSWR = () => {
 };
 
 export const ReservationSourceAPI = {
+    list: async (values: any) => {
+        const res = await axios.post(listUrl, values);
+
+        return res.data.JsonData;
+    },
+
     get: async (id: any) => {
         const values = {
             ReservationSourceID: id,

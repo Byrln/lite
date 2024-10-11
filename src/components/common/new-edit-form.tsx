@@ -68,8 +68,7 @@ const NewEditForm = ({
                     }
                     if (customResetEvent) {
                         customResetEvent(arr);
-                    }
-                    {
+                    } else {
                         reset(arr[0]);
                     }
                 } finally {

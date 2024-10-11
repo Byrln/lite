@@ -87,7 +87,7 @@ const ChargeList = ({ entity, handleModal }: any) => {
                             tableData[dataIndex].ItemCode
                         }
                         InputLabelProps={{
-                            shrink: value || value == 0,
+                            shrink: true,
                         }}
                         margin="dense"
                         onChange={(evt: any) => {
@@ -122,7 +122,7 @@ const ChargeList = ({ entity, handleModal }: any) => {
                             tableData[dataIndex].Location
                         }
                         InputLabelProps={{
-                            shrink: value || value == 0,
+                            shrink: true,
                         }}
                         margin="dense"
                         onChange={(evt: any) => {
@@ -157,7 +157,7 @@ const ChargeList = ({ entity, handleModal }: any) => {
                             tableData[dataIndex].ExpenseAccountNo
                         }
                         InputLabelProps={{
-                            shrink: value || value == 0,
+                            shrink: true,
                         }}
                         margin="dense"
                         onChange={(evt: any) => {

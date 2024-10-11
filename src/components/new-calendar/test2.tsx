@@ -494,7 +494,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         }
                     />,
                     null,
-                    "large"
+                    "medium"
                 );
             }
         }

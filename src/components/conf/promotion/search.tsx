@@ -7,7 +7,7 @@ import ReservationSourceSelect from "components/select/reservation-source";
 import { dateStringToObj } from "lib/utils/helpers";
 
 const Search = ({ register, errors, control, reset }: any) => {
-      const intl = useIntl();
+    const intl = useIntl();
     return (
         <Grid container spacing={1}>
             <Grid item xs={3}>
@@ -17,17 +17,10 @@ const Search = ({ register, errors, control, reset }: any) => {
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-                        label={intl.formatMessage({id:"TextBeginDate"}) }
+                            label={intl.formatMessage({ id: "TextBeginDate" })}
                             value={value}
                             onChange={(value) =>
-                                onChange(
-                                    moment(
-                                        dateStringToObj(
-                                            moment(value).format("YYYY-MM-DD")
-                                        ),
-                                        "YYYY-MM-DD"
-                                    )
-                                )
+                                onChange(moment(value).format("YYYY-MM-DD"))
                             }
                             renderInput={(params) => (
                                 <TextField
@@ -53,19 +46,12 @@ const Search = ({ register, errors, control, reset }: any) => {
                     defaultValue={null}
                     render={({ field: { onChange, value } }) => (
                         <DatePicker
-
-                        label={intl.formatMessage({id:"RowHeaderEndDate"}) }
-            
+                            label={intl.formatMessage({
+                                id: "RowHeaderEndDate",
+                            })}
                             value={value}
                             onChange={(value) =>
-                                onChange(
-                                    moment(
-                                        dateStringToObj(
-                                            moment(value).format("YYYY-MM-DD")
-                                        ),
-                                        "YYYY-MM-DD"
-                                    )
-                                )
+                                onChange(moment(value).format("YYYY-MM-DD"))
                             }
                             renderInput={(params) => (
                                 <TextField

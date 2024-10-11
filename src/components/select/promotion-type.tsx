@@ -25,7 +25,7 @@ const PromotionTypeSelect = ({ register, errors }: any) => {
             field="PromotionTypeID"
             label="Promotion Type"
             options={data}
-            optionValue="PromtionTypeID"
+            optionValue="PromotionTypeID"
             optionLabel="PromotionTypeName"
         />
     );

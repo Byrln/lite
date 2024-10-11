@@ -1,4 +1,4 @@
-import { Checkbox, TextField } from "@mui/material";
+import { Checkbox, TextField, Box } from "@mui/material";
 import { useState, useEffect } from "react";
 import { listUrl } from "lib/api/front-office";
 import { useIntl } from "react-intl";
@@ -152,7 +152,7 @@ const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
                             formatNumber(entity[dataIndex].Amount)
                         }
                         InputLabelProps={{
-                            shrink: value || value == 0,
+                            shrink: true,
                         }}
                         margin="dense"
                         onChange={(evt: any) => {
@@ -183,15 +183,28 @@ const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
                 hasExcel={false}
                 customHeight="none"
             />
-            Нийт:
-            {entity &&
-                formatPrice(
-                    entity.reduce(
-                        (acc: any, obj: any) =>
-                            acc + (obj.Amount ? obj.Amount : 0),
-                        0
-                    )
-                )}
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    flexWrap: "wrap",
+                    flexDirection: "row-reverse",
+                }}
+                className="mb-1"
+            >
+                <div>
+                    Нийт:
+                    {entity &&
+                        formatPrice(
+                            entity.reduce(
+                                (acc: any, obj: any) =>
+                                    acc + (obj.Amount ? obj.Amount : 0),
+                                0
+                            )
+                        )}
+                </div>
+            </Box>
         </>
     );
 };

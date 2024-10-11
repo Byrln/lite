@@ -10,18 +10,17 @@ import { PromotionSWR, PromotionAPI, listUrl } from "lib/api/promotion";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
 const PromotionList = ({ title }: any) => {
     const intl = useIntl();
 
     const columns = [
         {
-            title: intl.formatMessage({id:"TextPromotionCode"}), 
+            title: intl.formatMessage({ id: "TextPromotionCode" }),
             key: "PromotionCode",
             dataIndex: "PromotionCode",
         },
         {
-            title: intl.formatMessage({id:"TextBeginDate"}), 
+            title: intl.formatMessage({ id: "TextBeginDate" }),
             key: "BeginDate",
             dataIndex: "BeginDate",
             excelRenderPass: true,
@@ -36,7 +35,7 @@ const PromotionList = ({ title }: any) => {
             },
         },
         {
-            title: intl.formatMessage({id:"TextEndDate"}),
+            title: intl.formatMessage({ id: "TextEndDate" }),
             key: "EndDate",
             dataIndex: "EndDate",
             excelRenderPass: true,
@@ -50,7 +49,8 @@ const PromotionList = ({ title }: any) => {
                 );
             },
         },
-        {   title: intl.formatMessage({id:"TextAvailableOn"}),
+        {
+            title: intl.formatMessage({ id: "TextAvailableOn" }),
             key: "Available On",
             dataIndex: "Available On",
             excelRenderPass: true,
@@ -123,6 +123,7 @@ const PromotionList = ({ title }: any) => {
                         />
                     </CustomSearch>
                 }
+                modalsize="medium"
             />
         </>
     );

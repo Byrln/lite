@@ -37,6 +37,9 @@ const CurrencySelect = ({
             select
             disabled={disabled}
             margin="dense"
+            InputLabelProps={{
+                shrink: true,
+            }}
             error={errors[nameKey]?.message}
             helperText={errors[nameKey]?.message}
             value={

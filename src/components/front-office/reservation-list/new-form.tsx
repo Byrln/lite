@@ -91,6 +91,10 @@ const NewEdit = ({
             }
 
             if (getValues(`TransactionDetail[${id}].RateTypeID`)) {
+                console.log(
+                    "testestsetes",
+                    getValues(`TransactionDetail[${id}].RateTypeID`)
+                );
                 var rate = null;
                 if (rateTypeData) {
                     for (var r of rateTypeData) {
@@ -103,6 +107,9 @@ const NewEdit = ({
                         }
                     }
                     if (rate) {
+                        resetField(`TransactionDetail.${id}.RateTypeID`, {
+                            defaultValue: rate.RateTypeID,
+                        });
                         setRate(rate);
                         if (rate.BreakfastIncluded && setBreakfastIncluded) {
                             setBreakfastIncluded(rate.BreakfastIncluded);
@@ -537,6 +544,37 @@ const NewEdit = ({
                                 errors.TransactionDetail[id].GuestName.message
                             }
                         /> */}
+                    </Grid>
+
+                    <Grid item xs={6} sm={6} md={4}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Email"
+                            label={intl.formatMessage({
+                                id: "TextEmail",
+                            })}
+                            type="email"
+                            {...register(
+                                `TransactionDetail.${id}.GuestDetail.Email`
+                            )}
+                            margin="dense"
+                        />
+                    </Grid>
+
+                    <Grid item xs={6} sm={6} md={4}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="Mobile"
+                            label={intl.formatMessage({
+                                id: "TextMobile",
+                            })}
+                            {...register(
+                                `TransactionDetail.${id}.GuestDetail.Mobile`
+                            )}
+                            margin="dense"
+                        />
                     </Grid>
 
                     <Grid

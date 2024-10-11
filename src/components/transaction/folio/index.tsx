@@ -74,35 +74,35 @@ const RoomCharge = ({ TransactionID }: any) => {
             key: "№",
             dataIndex: "№",
         },
-        {
-            title: "",
-            key: "№",
-            dataIndex: "№",
-            withCheckBox: true,
-            onChange: onCheckboxChange,
-            render: function render(
-                id: any,
-                value: any,
-                element: any,
-                dataIndex: any
-            ) {
-                return (
-                    <Checkbox
-                        key={rerenderKey}
-                        checked={
-                            entity &&
-                            entity[dataIndex] &&
-                            entity[dataIndex].isChecked
-                        }
-                        onChange={(e: any) => {
-                            let tempEntity = [...entity];
-                            tempEntity[dataIndex].isChecked = e.target.checked;
-                            setEntity(tempEntity);
-                        }}
-                    />
-                );
-            },
-        },
+        // {
+        //     title: "",
+        //     key: "№",
+        //     dataIndex: "№",
+        //     withCheckBox: true,
+        //     onChange: onCheckboxChange,
+        //     render: function render(
+        //         id: any,
+        //         value: any,
+        //         element: any,
+        //         dataIndex: any
+        //     ) {
+        //         return (
+        //             <Checkbox
+        //                 key={rerenderKey}
+        //                 checked={
+        //                     entity &&
+        //                     entity[dataIndex] &&
+        //                     entity[dataIndex].isChecked
+        //                 }
+        //                 onChange={(e: any) => {
+        //                     let tempEntity = [...entity];
+        //                     tempEntity[dataIndex].isChecked = e.target.checked;
+        //                     setEntity(tempEntity);
+        //                 }}
+        //             />
+        //         );
+        //     },
+        // },
         {
             title: "Огноо",
             key: "CurrDate",
@@ -286,7 +286,7 @@ const RoomCharge = ({ TransactionID }: any) => {
                 modalsize="large"
                 additionalButtons={
                     <>
-                        <Button
+                        {/* <Button
                             key={0}
                             variant={"outlined"}
                             className="mr-3"
@@ -306,7 +306,7 @@ const RoomCharge = ({ TransactionID }: any) => {
                             }}
                         >
                             Тооцоо хуваах
-                        </Button>
+                        </Button> */}
 
                         <Button
                             key={1}

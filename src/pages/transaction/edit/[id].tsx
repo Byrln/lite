@@ -353,9 +353,9 @@ const TransactionEdit = () => {
 
                                         <GuestInformation
                                             name={transaction.GuestName}
-                                            phone={transaction.BookerPhone}
-                                            email="test@mail.com"
-                                            address="test address"
+                                            phone={transaction.GuestPhone}
+                                            email={transaction.GuestEmail}
+                                            address={transaction.GuestAddress}
                                         />
                                     </CardContent>
                                 </Card>

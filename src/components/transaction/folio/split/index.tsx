@@ -44,8 +44,62 @@ const NewEdit = ({ TransactionID, FolioID, handleModal, entities }: any) => {
         // Filter folios based on stay date range
         if (data && (beginDate || endDate)) {
             const filtered = data.filter((folio: any) => {
-                const stayDate = new Date(folio.StayDate);
-                return stayDate >= beginDate && stayDate <= endDate;
+                // const stayDate = new Date(folio.StayDate);
+                console.log(
+                    "stayDate11",
+                    moment(folio.stayDate).set({
+                        hour: 0,
+                        minute: 0,
+                        second: 0,
+                    })
+                );
+                console.log(
+                    "beginDate11",
+                    moment(beginDate).set({
+                        hour: 0,
+                        minute: 0,
+                        second: 0,
+                    })
+                );
+                console.log(
+                    "endDate11",
+                    moment(endDate).set({
+                        hour: 0,
+                        minute: 0,
+                        second: 0,
+                    })
+                );
+
+                return (
+                    moment(folio.StayDate)
+                        .set({
+                            hour: 0,
+                            minute: 0,
+                            second: 0,
+                        })
+                        .format("YYYY-MM-DD") >=
+                        moment(beginDate)
+                            .set({
+                                hour: 0,
+                                minute: 0,
+                                second: 0,
+                            })
+                            .format("YYYY-MM-DD") &&
+                    moment(folio.StayDate)
+                        .set({
+                            hour: 0,
+                            minute: 0,
+                            second: 0,
+                        })
+                        .format("YYYY-MM-DD") <=
+                        moment(endDate)
+                            .set({
+                                hour: 23,
+                                minute: 59,
+                                second: 59,
+                            })
+                            .format("YYYY-MM-DD")
+                );
             });
             setNewData(filtered);
             setSelectedFolio(null);
@@ -111,7 +165,7 @@ const NewEdit = ({ TransactionID, FolioID, handleModal, entities }: any) => {
                 <Skeleton animation="wave" />
             </Box>
         );
-
+    console.log("newData", newData);
     return (
         <NewEditForm
             api={FolioAPI}

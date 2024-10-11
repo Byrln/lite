@@ -35,6 +35,12 @@ export const RoomTypeAvailableSWR = (search: any) => {
 };
 
 export const RoomTypeAPI = {
+    // list: async (values: any) => {
+    //     const res = await axios.post(listUrl, values);
+
+    //     return res.data.JsonData;
+    // },
+
     get: async (id: any) => {
         const values = {
             RoomTypeID: id,
