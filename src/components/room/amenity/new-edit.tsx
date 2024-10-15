@@ -17,7 +17,7 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = () => {
-     const intl = useIntl();
+    const intl = useIntl();
     const [state]: any = useAppState();
     const {
         register,
@@ -43,7 +43,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="AmenityShortName"
-                        label={intl.formatMessage({id:"AmenityShortName"}) }
+                        label={intl.formatMessage({ id: "AmenityShortName" })}
                         {...register("AmenityShortName")}
                         margin="dense"
                         error={errors.AmenityShortName?.message}
@@ -55,7 +55,7 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="AmenityName"
-                        label={intl.formatMessage({id:"AmenityName"}) }
+                        label={intl.formatMessage({ id: "AmenityName" })}
                         {...register("AmenityName")}
                         margin="dense"
                         error={errors.AmenityName?.message}
@@ -68,8 +68,9 @@ const NewEdit = () => {
                         type="number"
                         fullWidth
                         id="SortOrder"
-                        label={intl.formatMessage({id:"SortOrder"}) }
+                        label={intl.formatMessage({ id: "SortOrder" })}
                         {...register("SortOrder")}
+                        defaultValue={1}
                         margin="dense"
                         error={errors.SortOrder?.message}
                         helperText={errors.SortOrder?.message}

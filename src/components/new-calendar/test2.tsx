@@ -321,11 +321,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         startDate: `${level2.date} 00:00:00`,
                         endDate: `${level2.date} 23:59:59`,
                         editable: true,
-                        color: "white",
+                        color: "red",
                         textColor: "black",
                         border: "none",
                         entities: level2.events,
-                        statusColor: "#EFF0F6",
+                        statusColor: "rgba(255, 220, 40, 0.15)",
                     };
                 });
             });
@@ -394,7 +394,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             color: "white",
                             textColor: "black",
                             border: "none",
-                            statusColor: "#EFF0F6",
+                            statusColor: "rgba(255, 220, 40, 0.15)",
                         });
                     }
                 });
@@ -668,6 +668,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleSelect = (info: any) => {
         const { start, end, resourceId } = info;
+        console.log("info", info);
         if (start > new Date(workingDate)) {
             dispatch({
                 type: "editId",
@@ -677,7 +678,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             const newEventObject = {
                 title: "New Event",
                 start: start,
-                end: end,
+                end: end.setDate(end.getDate() - 1),
                 roomTypeID: Number(
                     info.resource._resource.extendedProps.roomTypeId
                 ),
@@ -741,7 +742,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 className="event-custom"
                 style={{
                     display:
-                        arg.event._def.extendedProps.statusColor != "#EFF0F6" ||
+                        arg.event._def.extendedProps.statusColor !=
+                            "rgba(255, 220, 40, 0.15)" ||
                         arg.event.title == "Blocked"
                             ? "flex"
                             : "",
@@ -751,7 +753,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     margin: "-2px -3px -2px -1px",
                     height: "100%",
                     textAlign:
-                        arg.event._def.extendedProps.statusColor != "#EFF0F6" ||
+                        arg.event._def.extendedProps.statusColor !=
+                            "rgba(255, 220, 40, 0.15)" ||
                         arg.event.title == "Blocked"
                             ? "left"
                             : "center",
@@ -760,14 +763,18 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             ? "black"
                             : arg.event._def.extendedProps.statusColor,
                     color: arg.event._def.extendedProps.statusColor
-                        ? getContrastYIQ(
-                              arg.event._def.extendedProps.statusColor
-                          )
+                        ? arg.event._def.extendedProps.statusColor !=
+                          "rgba(255, 220, 40, 0.15)"
+                            ? getContrastYIQ(
+                                  arg.event._def.extendedProps.statusColor
+                              )
+                            : "#3699ff"
                         : "white",
 
                     border:
-                        arg.event._def.extendedProps.statusColor == "#EFF0F6"
-                            ? `1px solid #EFF0F6`
+                        arg.event._def.extendedProps.statusColor ==
+                        "rgba(255, 220, 40, 0.15)"
+                            ? `1px solid rgba(255, 220, 40, 0.15)`
                             : "null",
                 }}
             >
@@ -939,7 +946,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     style={{
                         borderRadius: "10px",
                         overflow: "hidden",
-                        border: "1px solid #EFF0F6",
+                        border: "1px solid #eff0f6",
                     }}
                 >
                     {resources &&
@@ -981,7 +988,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                         .add(dayCount, "days")
                                         .format("YYYY-MM-DD"),
                                 }}
-                                slotDuration="12:00:00"
+                                slotDuration="24:00:00"
                                 slotLabelInterval={{ hours: 24 }}
                                 resourceAreaWidth={150}
                                 slotMinWidth={15}

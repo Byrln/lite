@@ -1,14 +1,6 @@
 import { ReservationAPI } from "lib/api/reservation";
 import { useState, useContext } from "react";
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { listUrl as calendarItemsURL } from "lib/api/front-office";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
@@ -30,7 +22,6 @@ import { listUrl } from "lib/api/front-office";
 import MarkNoShowForm from "./no-show";
 
 const buttonStyle = {
-    // borderBottom: "1px solid #efefef",
     color: "#804fe6",
     width: "100%",
 };
@@ -221,7 +212,13 @@ const ReservationNav = ({
                     </Button>
                 </DialogActions>
             </Dialog> */}
-            <a href={`/transaction/edit/${reservation.TransactionID}`}>
+            <a
+                href={
+                    locale == "mon"
+                        ? `/mon/transaction/edit/${reservation.TransactionID}`
+                        : `/transaction/edit/${reservation.TransactionID}`
+                }
+            >
                 <Button variant={"text"} size="small" sx={buttonStyle}>
                     {intl.formatMessage({
                         id: "ButtonEditTransaction",

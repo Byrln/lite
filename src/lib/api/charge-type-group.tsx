@@ -53,6 +53,11 @@ export function useGetChargeTypeGroupAPI() {
 }
 
 export const ChargeTypeGroupAPI = {
+    list: async () => {
+        const res = await axios.post(listUrl);
+
+        return res.data.JsonData;
+    },
     get: async (id: any, additionalValues: any) => {
         let values = {
             RoomChargeTypeGroupID: id,

@@ -969,5 +969,6 @@
     "TextBaseAdult": "Base Adult",
     "TextBaseChild": "Base Child",
     "TextMaxAdult": "Max Adult",
-    "TextMaxChild": "Max Child"
+    "TextMaxChild": "Max Child",
+    "TitleEmailConfiguration": "E-mail Configuration"
 }

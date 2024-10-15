@@ -1,30 +1,37 @@
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
+import { useIntl } from "react-intl";
 
 import Page from "components/page";
 import CustomerGroup from "components/conf/customer-group/list";
 
-const title = "Харилцагчийн бүлэг";
+const Index = () => {
+    const intl = useIntl();
 
-const Index = () => (
-    <>
-        <Head>
-            <title>{title}</title>
-        </Head>
+    const title = intl.formatMessage({
+        id: "MenuCustomerGroup",
+    });
 
-        <Page>
-            <Container maxWidth="xl">
-                <Box sx={{ pb: 1 }}>
-                    <Typography variant="h6">{title}</Typography>
-                </Box>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <CustomerGroup title={title} />
+    return (
+        <>
+            <Head>
+                <title>{title}</title>
+            </Head>
+
+            <Page>
+                <Container maxWidth="xl">
+                    <Box sx={{ pb: 1 }}>
+                        <Typography variant="h6">{title}</Typography>
+                    </Box>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <CustomerGroup title={title} />
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Container>
-        </Page>
-    </>
-);
+                </Container>
+            </Page>
+        </>
+    );
+};
 
 export default Index;

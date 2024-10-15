@@ -29,7 +29,9 @@ const NewEdit = () => {
     const intl = useIntl();
     const [entity, setEntity]: any = useState(null);
     const [values, setValues]: any = useState(null);
+    const [currentCurrency, setCurrentCurrecy]: any = useState(null);
 
+    console.log("entity", entity);
     const [state]: any = useAppState();
     const {
         register,
@@ -58,6 +60,7 @@ const NewEdit = () => {
 
                         if (arr[0].CountryID != entity.CountryID) {
                         } else {
+                            setCurrentCurrecy(arr[0]);
                             reset({
                                 CurrencyID: arr[0].CurrencyID,
                                 CountryID: arr[0].CountryID,
@@ -73,6 +76,8 @@ const NewEdit = () => {
                         }
                     } else {
                         console.log("333", arr[0]);
+                        setCurrentCurrecy(arr[0]);
+
                         reset({
                             CurrencyID: Number(arr[0].CurrencyID),
                             CountryID: arr[0].CountryID,
@@ -92,7 +97,7 @@ const NewEdit = () => {
             fetchDatas();
         }
     }, [entity]);
-
+    console.log("currentCurrency", currentCurrency);
     return (
         <NewEditForm
             api={ExchangeRateAPI}
@@ -177,14 +182,14 @@ const NewEdit = () => {
                     </Typography>
 
                     <Grid container spacing={1}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={4} sm={4} md={5}>
                             <TextField
                                 size="small"
                                 type="number"
                                 fullWidth
                                 id="CurrencyRate1"
                                 label={intl.formatMessage({
-                                    id: "TitleCurrencyRate1",
+                                    id: "Худалдан авах",
                                 })}
                                 {...register("CurrencyRate1")}
                                 margin="dense"
@@ -195,14 +200,23 @@ const NewEdit = () => {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid
+                            item
+                            xs={2}
+                            sm={2}
+                            md={1}
+                            style={{ fontSize: "12px", paddingTop: "20px" }}
+                        >
+                            {currentCurrency && currentCurrency.CurrencyCode} =
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={5}>
                             <TextField
                                 size="small"
                                 type="number"
                                 fullWidth
                                 id="TargetCurrencyRate1"
                                 label={intl.formatMessage({
-                                    id: "TitleCurrencyRate2",
+                                    id: "TargetCurrencyRate1",
                                 })}
                                 {...register("TargetCurrencyRate1")}
                                 margin="dense"
@@ -213,14 +227,23 @@ const NewEdit = () => {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid
+                            item
+                            xs={2}
+                            sm={2}
+                            md={1}
+                            style={{ fontSize: "12px", paddingTop: "20px" }}
+                        >
+                            {currentCurrency && currentCurrency.CurrencySymbol2}
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={5}>
                             <TextField
                                 size="small"
                                 type="number"
                                 fullWidth
                                 id="CurrencyRate2"
                                 label={intl.formatMessage({
-                                    id: "CurrencyRate2",
+                                    id: "Зарах",
                                 })}
                                 {...register("CurrencyRate2")}
                                 margin="dense"
@@ -231,14 +254,24 @@ const NewEdit = () => {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid
+                            item
+                            xs={2}
+                            sm={2}
+                            md={1}
+                            style={{ fontSize: "12px", paddingTop: "20px" }}
+                        >
+                            {currentCurrency && currentCurrency.CurrencySymbol2}
+                            =
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={5}>
                             <TextField
                                 size="small"
                                 type="number"
                                 fullWidth
                                 id="TargetCurrencyRate2"
                                 label={intl.formatMessage({
-                                    id: "TitleTargetCurrencyRate1",
+                                    id: "TargetCurrencyRate2",
                                 })}
                                 {...register("TargetCurrencyRate2")}
                                 margin="dense"
@@ -248,6 +281,15 @@ const NewEdit = () => {
                                     shrink: true,
                                 }}
                             />
+                        </Grid>
+                        <Grid
+                            item
+                            xs={2}
+                            sm={2}
+                            md={1}
+                            style={{ fontSize: "12px", paddingTop: "20px" }}
+                        >
+                            {currentCurrency && currentCurrency.CurrencyCode}
                         </Grid>
                     </Grid>
                 </CardContent>

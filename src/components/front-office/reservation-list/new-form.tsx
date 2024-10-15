@@ -255,7 +255,6 @@ const NewEdit = ({
     const onChildChange = (evt: any) => {
         setSelectedChild(evt.target.value);
     };
-
     return (
         <Grid key={id} container spacing={1}>
             <input
@@ -480,7 +479,7 @@ const NewEdit = ({
                             numberMax={
                                 RoomType?.MaxChild ? RoomType?.MaxChild : 0
                             }
-                            defaultValue={RoomType?.BaseChild}
+                            defaultValue={0}
                             nameKey={`TransactionDetail.${id}.Child`}
                             register={register}
                             errors={errors}

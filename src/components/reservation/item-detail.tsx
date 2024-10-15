@@ -20,6 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { ModalContext } from "lib/context/modal";
 import InvoiceSelect from "components/reporting/invoice/select";
 import ReceiptSelect from "components/reporting/receipt/select";
+import EbarimtSelect from "components/reporting/ebarimt/select";
 
 const styleTime = {
     backgroundColor: "#00008B",
@@ -53,14 +54,21 @@ const ItemDetail = ({
 }: any) => {
     const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
-
+    console.log("reservation", reservation);
     return (
         <>
             {reservation ? (
                 <Box>
                     <Grid container spacing={2} sx={{ mb: 2 }}>
                         <Grid item xs={6}>
-                            <h4>{reservation?.GuestName}</h4>
+                            <div style={{ display: "flex" }}>
+                                <h4>{reservation?.GuestName}</h4>{" "}
+                                <div>
+                                    ({reservation?.Adult}/{reservation?.Child})
+                                </div>{" "}
+                                <div> {reservation?.GuestPhone}</div>
+                            </div>
+                            <div>{reservation?.GuestEmail}</div>
                         </Grid>
                         <Grid item xs={6}>
                             <Box
@@ -338,6 +346,17 @@ const ItemDetail = ({
                                 variant={"text"}
                                 size="small"
                                 style={{ color: "#804fe6" }}
+                                onClick={() => {
+                                    handleModal(
+                                        true,
+                                        "Е-Баримт",
+                                        <EbarimtSelect
+                                            FolioID={reservation.FolioID}
+                                        ></EbarimtSelect>,
+                                        null,
+                                        "large"
+                                    );
+                                }}
                             >
                                 Е-Баримт хэвлэх
                             </Button>

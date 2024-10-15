@@ -18,15 +18,11 @@ const PosApiCheck = ({ HotelCode }: any) => {
             </Stack>
             <Stack direction="row">
                 <div className="mr-1">Count Lottery : </div>
-                {data && data.extraInfo && data.extraInfo.countLottery}
+                {data && data.leftLotteries}
             </Stack>
             <Stack direction="row">
                 <div className="mr-1">Last sent date : </div>
-                {data &&
-                    data.extraInfo &&
-                    moment(data.extraInfo.lastSentDate).format(
-                        "YYYY-MM-DD HH:mm:ss"
-                    )}
+                {data && data.lastSentDate}
             </Stack>
         </>
     );

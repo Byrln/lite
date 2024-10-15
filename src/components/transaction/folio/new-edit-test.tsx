@@ -16,7 +16,6 @@ import FolioCharge from "./charge";
 import ChargeFormArray from "./charge-form-array";
 import PaymentFormArray from "./payment-from-array";
 
-
 const NewEditTest = ({ FolioID, TransactionID, handleModal }: any) => {
     const [workingDate, setWorkingDate] = useState(null);
     const [entity, setEntity] = useState<any>({});
@@ -71,13 +70,13 @@ const NewEditTest = ({ FolioID, TransactionID, handleModal }: any) => {
     const TABS = [
         {
             value: "Төлбөр",
-            label:(
+            label: (
                 <PaymentFormArray
                     FolioID={FolioID}
                     TransactionID={TransactionID}
                     handleModal={handleModal}
                 />
-            )
+            ),
         },
         {
             value: "Тооцоо",
@@ -122,22 +121,19 @@ const NewEditTest = ({ FolioID, TransactionID, handleModal }: any) => {
                         ))}
                     </Tabs>
 
-                    <Box>
-                        {TABS.slice(0, 5).map(
-                            (tab) =>
-                                tab.value === currentTab && (
-                                    <Box
-                                        key={tab.value}
-                                        sx={{
-                                            p: 2,
-                                            borderRadius: 1,
-                                        }}
-                                    >
-                                        {tab.label}
-                                    </Box>
-                                )
-                        )}
-                    </Box>
+                    {TABS.slice(0, 5).map(
+                        (tab) =>
+                            tab.value === currentTab && (
+                                <Box
+                                    key={tab.value}
+                                    sx={{
+                                        borderRadius: 1,
+                                    }}
+                                >
+                                    {tab.label}
+                                </Box>
+                            )
+                    )}
                 </Stack>
             </LocalizationProvider>
         </div>

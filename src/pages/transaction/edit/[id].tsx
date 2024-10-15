@@ -153,11 +153,11 @@ const TransactionEdit = () => {
         fetchTest();
     }, [listData]);
 
-    useEffect(() => {
-        if (activeSessionID && activeSessionID == "-1") {
-            setCashierOpen(true);
-        }
-    }, [cashierActive, activeSessionID]);
+    // useEffect(() => {
+    // if (activeSessionID && activeSessionID == "-1") {
+    //     setCashierOpen(true);
+    // }
+    // }, [cashierActive, activeSessionID]);
 
     const handleCashierOpen = () => {
         setCashierOpen(true);

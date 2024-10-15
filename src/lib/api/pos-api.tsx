@@ -2,11 +2,15 @@ import useSWR from "swr";
 
 import axios from "lib/utils/axios";
 
-const urlPrefix = "/api/Ebarimt/Pos";
+const urlPrefix = "/api/Ebarimt3/Pos";
 export const listUrl = `${urlPrefix}/List`;
 export const infoUrl = `${urlPrefix}/Info`;
 export const checkUrl = `${urlPrefix}/Check`;
 export const sendUrl = `${urlPrefix}/Send`;
+export const districtUrl = `/api/Ebarimt3/District/List`;
+export const itemCodeUrl = `/api/Ebarimt3/ItemCode/List`;
+export const customerNameUrl = `/api/Ebarimt3/CustomerName`;
+export const printUrl = `/api/Ebarimt3/Print`;
 
 export const PosApiSWR = () => {
     const fetcher = async (url: any) =>
@@ -20,6 +24,13 @@ export const PosApiSWR = () => {
             );
 
     return useSWR(listUrl, fetcher);
+};
+
+export const ItemCodeSWR = (search: any) => {
+    const fetcher = async (url: any) =>
+        await axios.post(url, search).then((res: any) => res.data.JsonData);
+
+    return useSWR(itemCodeUrl, fetcher);
 };
 
 export const PosApiCheckSWR = (HotelCode: any) => {
@@ -42,7 +53,23 @@ export const PosApiInfoSWR = (HotelCode: any) => {
     return useSWR(infoUrl, fetcher);
 };
 
+export const PosApiDistrictListSWR = () => {
+    const fetcher = async (url: any) =>
+        await axios.post(url).then((res: any) => res.data.JsonData);
+
+    return useSWR(districtUrl, fetcher);
+};
+
 export const PosApiAPI = {
+    district: async (id: any) => {
+        const values = {
+            Code: id,
+        };
+
+        const res = await axios.post(districtUrl, values);
+        return JSON.parse(res.data.JsonString);
+    },
+
     info: async (id: any) => {
         const values = {
             Code: id,
@@ -51,6 +78,12 @@ export const PosApiAPI = {
         const res = await axios.post(infoUrl, values);
 
         return JSON.parse(res.data.JsonString);
+    },
+
+    itemCode: async () => {
+        const res = await axios.post(itemCodeUrl);
+
+        return res.data.JsonData;
     },
 
     get: async (id: any) => {
@@ -64,7 +97,16 @@ export const PosApiAPI = {
     },
 
     new: async (values: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/New`, values);
+        let tempValues = {
+            PosApiID: values.PosApiID,
+            BranchNo: values.BranchNo,
+            DistrictCode: values.DistrictCode,
+            SubDistrictCode: values.SubDistrictCode,
+        };
+        const { data, status } = await axios.post(
+            `${urlPrefix}/Update`,
+            tempValues
+        );
 
         return {
             data,
@@ -73,9 +115,15 @@ export const PosApiAPI = {
     },
 
     update: async (values: any) => {
+        let tempValues = {
+            PosApiID: values.PosApiID,
+            BranchNo: values.BranchNo,
+            DistrictCode: values.DistrictCode,
+            SubDistrictCode: values.SubDistrictCode,
+        };
         const { data, status } = await axios.post(
             `${urlPrefix}/Update`,
-            values
+            tempValues
         );
 
         return {
@@ -120,5 +168,21 @@ export const PosApiAPI = {
         const res = await axios.post(sendUrl, values);
 
         return res.data.JsonData;
+    },
+
+    customerName: async (CompanyID: any) => {
+        const values = {
+            CompanyID: CompanyID,
+        };
+
+        const res = await axios.post(customerNameUrl, values);
+
+        return JSON.parse(res.data.JsonString);
+    },
+
+    print: async (values: any) => {
+        const res = await axios.post(printUrl, values);
+
+        return res.data;
     },
 };

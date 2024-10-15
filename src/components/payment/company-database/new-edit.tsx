@@ -65,11 +65,11 @@ const NewEdit = () => {
                             <TextField
                                 size="small"
                                 fullWidth
-                                id="Company Name"
+                                id="CustomerName"
                                 label={intl.formatMessage({
                                     id: "RowHeaderCompanyName",
                                 })}
-                                {...register("Company Name")}
+                                {...register("CustomerName")}
                                 margin="dense"
                                 error={errors.CustomerName?.message}
                                 helperText={errors.CustomerName?.message}

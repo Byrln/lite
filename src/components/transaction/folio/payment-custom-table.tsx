@@ -114,15 +114,19 @@ export default function PaymentCustomTableData({ FolioID }: any) {
                     direction="column"
                     justifyContent="center"
                     alignItems="center"
-                    height={128}
                     width="100%"
                     spacing={1}
+                    style={{ marginTop: "10px", padding: "0px" }}
                 >
-                    <Typography fontSize={18} fontWeight={600}>
+                    <Typography
+                        fontSize={18}
+                        fontWeight={600}
+                        style={{ color: "black" }}
+                    >
                         Үлдэгдэл
                     </Typography>
 
-                    <Typography fontSize={32} fontWeight={700} color="#7F49E5">
+                    <Typography fontSize={24} fontWeight={700} color="#7F49E5">
                         {data && data.length > 0
                             ? formatPrice(
                                   data.reduce(

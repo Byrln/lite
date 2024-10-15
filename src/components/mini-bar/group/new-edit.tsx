@@ -46,8 +46,8 @@ const NewEdit = () => {
                 size="small"
                 fullWidth
                 id="RoomChargeTypeGroupName"
-                        label={intl.formatMessage({id:"RowHeaderGroupName"}) }
-                        {...register("RoomChargeTypeGroupName")}
+                label={intl.formatMessage({ id: "RowHeaderGroupName" })}
+                {...register("RoomChargeTypeGroupName")}
                 margin="dense"
                 error={errors.RoomChargeTypeGroupName?.message}
                 helperText={errors.RoomChargeTypeGroupName?.message}
@@ -58,8 +58,9 @@ const NewEdit = () => {
                 type="number"
                 fullWidth
                 id="SortOrder"
-                label={intl.formatMessage({id:"SortOrder"}) }
+                label={intl.formatMessage({ id: "SortOrder" })}
                 {...register("SortOrder")}
+                defaultValue={1}
                 margin="dense"
                 error={errors.SortOrder?.message}
                 helperText={errors.SortOrder?.message}

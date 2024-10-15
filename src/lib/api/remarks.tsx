@@ -3,7 +3,7 @@ import useSWR from "swr";
 import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/Remark";
-export const listUrl = `${urlPrefix}/GuestRemark`;
+export const listUrl = `${urlPrefix}/Guest`;
 
 export const GuestRemarkSWR = (id: any) => {
     const values = {

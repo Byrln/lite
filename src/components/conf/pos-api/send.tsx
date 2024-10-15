@@ -9,10 +9,13 @@ import {
 import { useState } from "react";
 import { mutate } from "swr";
 import { toast } from "react-toastify";
+import { useIntl } from "react-intl";
 
 import { PosApiAPI } from "lib/api/pos-api";
 
-const Void = ({ id, HotelCode, listUrl }: any) => {
+const Send = ({ id, HotelCode, listUrl }: any) => {
+    const intl = useIntl();
+
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -40,7 +43,9 @@ const Void = ({ id, HotelCode, listUrl }: any) => {
     return (
         <>
             <Button key={id} onClick={handleClickOpen}>
-                Илгээх
+                {intl.formatMessage({
+                    id: "ButtonSend",
+                })}
             </Button>
             <Dialog
                 open={open}
@@ -48,16 +53,24 @@ const Void = ({ id, HotelCode, listUrl }: any) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Илгээх</DialogTitle>
+                <DialogTitle id="alert-dialog-title">
+                    {intl.formatMessage({
+                        id: "ButtonSend",
+                    })}
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Та итгэлтэй байна уу
+                        {intl.formatMessage({
+                            id: "MsgConfirmation",
+                        })}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Үгүй</Button>
                     <Button onClick={handleOnClick} autoFocus>
-                        Тийм
+                        {intl.formatMessage({
+                            id: "ButtonOk",
+                        })}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -65,4 +78,4 @@ const Void = ({ id, HotelCode, listUrl }: any) => {
     );
 };
 
-export default Void;
+export default Send;

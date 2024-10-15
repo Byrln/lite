@@ -45,7 +45,6 @@ const ReportingList = ({ title, workingDate }: any) => {
         CurrDate: moment(dateStringToObj(workingDate)),
     });
 
-    // const { data, error } = StayVaaiewSWR(search);
     const { data, error } = FrontOfficeSWR({
         CurrDate: `${moment(search.CurrDate).format("YYYY")}-${moment(
             search.CurrDate

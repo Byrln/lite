@@ -357,6 +357,7 @@ const NewEdit = () => {
                                 id="SortOrder"
                                 label={intl.formatMessage({ id: "SortOrder" })}
                                 {...register("SortOrder")}
+                                defaultValue={1}
                                 margin="dense"
                                 value={
                                     entity &&
@@ -532,7 +533,7 @@ const NewEdit = () => {
                                             fullWidth
                                             id="RoomTypeShortName"
                                             label={intl.formatMessage({
-                                                id: "AmenityShortName",
+                                                id: "RowHeaderShortName",
                                             })}
                                             {...register("RoomTypeShortName")}
                                             margin="dense"
@@ -638,7 +639,7 @@ const NewEdit = () => {
                                             fullWidth
                                             id="MaxAdult"
                                             label={intl.formatMessage({
-                                                id: "TheNumberOfAdultsTheUpperLimit",
+                                                id: "TextMaxAdult",
                                             })}
                                             {...register("MaxAdult")}
                                             margin="dense"
@@ -672,7 +673,7 @@ const NewEdit = () => {
                                             fullWidth
                                             id="BaseChild"
                                             label={intl.formatMessage({
-                                                id: "ChildrenBasic",
+                                                id: "TextBaseChild",
                                             })}
                                             {...register("BaseChild")}
                                             value={entity && entity.BaseChild}
@@ -701,7 +702,7 @@ const NewEdit = () => {
                                             fullWidth
                                             id="MaxChild"
                                             label={intl.formatMessage({
-                                                id: "NumberOfChildren-Maximum",
+                                                id: "TextMaxChild",
                                             })}
                                             {...register("MaxChild")}
                                             value={
@@ -737,6 +738,7 @@ const NewEdit = () => {
                                                 id: "SortOrder",
                                             })}
                                             {...register("SortOrder")}
+                                            defaultValue={1}
                                             margin="dense"
                                             value={
                                                 entity && entity.SortOrder > 0

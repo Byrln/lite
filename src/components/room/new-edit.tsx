@@ -108,6 +108,7 @@ const NewEdit = () => {
                         id="SortOrder"
                         label={intl.formatMessage({ id: "SortOrder" })}
                         {...register("SortOrder")}
+                        defaultValue={1}
                         margin="dense"
                         error={errors.SortOrder?.message}
                         helperText={errors.SortOrder?.message}

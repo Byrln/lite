@@ -32,7 +32,6 @@ import FolioCharge from "./charge";
 import { FolioAPI } from "lib/api/folio";
 import { mutate } from "swr";
 
-
 export default function ChargeFormArray({
     FolioID,
     TransactionID,
@@ -124,112 +123,121 @@ export default function ChargeFormArray({
                 dateAdapter={AdapterDateFns}
                 adapterLocale={mn}
             >
-                <Stack direction='column' spacing={3} mt={-3}>
-
-                
-                <Stack direction='column' spacing='8px' px='30px'>
-
-                <Typography fontSize='16px' fontWeight={400}>Date</Typography>
-
-                
-                <Stack direction="row" spacing='30px' alignItems="center" >
-
-                <DateTimePicker
-                        disabled={enableDate}
-                        value={setedDate}
-                        onChange={(newValue: any) => setSetedDate(newValue)}
-                        renderInput={(params) => (
-                            <TextField  {...params} sx={{
-                                fontSize: '16px',
-                                width: '300px',
-                                fontWeight: 400,
-                            }} />
-                        )}
-                    />
-                    
-                    <Stack direction="row" spacing={1.5} alignItems="center" >
-
-                    <Checkbox checked={chekedTrue} onChange={handleChekbox}  sx={{ '& .MuiSvgIcon-root': { fontSize: 24 } }}/>
-
-                    <Typography fontSize='16px' fontWeight={400}>Огноо өөрчлөх</Typography>
-
-                    </Stack>
-                    </Stack>
-
-                    
-                </Stack>
-
-                <Divider  />
-
-                <Box px='30px'>
-
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    {fields.map((field, index) => (
-                        <>
-                            <FolioCharge
-                                id={index}
-                                register={register}
-                                remove={remove}
-                                FolioID={FolioID}
-                                TransactionID={TransactionID}
-                                resetField={resetField}
-                            />
-                        </>
-                    ))}
-                    
-                    <Stack
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="flex-end"
-                        spacing={0}
-                    >
-                        <TextField
-                            
-                            type="number"
-                            margin="dense"
-                            size="small"
-                            style={{
-                                width: "40px",
-                            }}
-                            value={newGroupCount}
-                            onChange={(e: any) => {
-                                setNewGroupCount(e.target.value);
-                            }}
+                <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                        <Typography fontSize="14px" fontWeight={400}>
+                            Date
+                        </Typography>
+                        <DateTimePicker
+                            disabled={enableDate}
+                            value={setedDate}
+                            onChange={(newValue: any) => setSetedDate(newValue)}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    size="small"
+                                    sx={{
+                                        fontSize: "14px",
+                                        width: "100%",
+                                        fontWeight: 400,
+                                    }}
+                                />
+                            )}
                         />
-
-                        <Button
-                            onClick={() => {
-                                // append({
-                                //     GroupID: null,
-                                //     ItemID: null,
-                                //     Amount: null,
-                                //     Quantity: 1,
-                                //     Description: " ",
-                                // });
-                                for (let i = 0; i < newGroupCount; i++) {
-                                    append({
-                                        GroupID: null,
-                                        ItemID: null,
-                                        Amount: null,
-                                        Quantity: 1,
-                                        Description: " ",
-                                    });
-                                }
-                                setNewGroupCount(1);
-                            }}
-                        >
-                            <Typography fontSize={20} fontWeight={700}>
-                                +
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div style={{ display: "flex" }} className="mt-3">
+                            {" "}
+                            <Checkbox
+                                checked={chekedTrue}
+                                onChange={handleChekbox}
+                                sx={{
+                                    "& .MuiSvgIcon-root": { fontSize: 16 },
+                                }}
+                            />{" "}
+                            <Typography
+                                fontSize="14px"
+                                fontWeight={400}
+                                className="mt-2"
+                            >
+                                Огноо өөрчлөх
                             </Typography>
-                        </Button>
-                    </Stack>
-                    <Stack alignItems='flex-end' mt={1}>
-                    <Button variant="contained" type="submit" >Хадгалах</Button>
-                    </Stack>
-                </form>
-                </Box>
+                        </div>
+                    </Grid>
+                    <Divider />
 
-                </Stack>
+                    <Grid item xs={12}>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            {fields.map((field, index) => (
+                                <>
+                                    <FolioCharge
+                                        id={index}
+                                        register={register}
+                                        remove={remove}
+                                        FolioID={FolioID}
+                                        TransactionID={TransactionID}
+                                        resetField={resetField}
+                                    />
+                                </>
+                            ))}
+
+                            <Stack
+                                direction="row"
+                                justifyContent="flex-end"
+                                alignItems="flex-end"
+                                spacing={0}
+                            >
+                                <TextField
+                                    type="number"
+                                    margin="dense"
+                                    size="small"
+                                    style={{
+                                        width: "40px",
+                                    }}
+                                    value={newGroupCount}
+                                    onChange={(e: any) => {
+                                        setNewGroupCount(e.target.value);
+                                    }}
+                                />
+
+                                <Button
+                                    onClick={() => {
+                                        // append({
+                                        //     GroupID: null,
+                                        //     ItemID: null,
+                                        //     Amount: null,
+                                        //     Quantity: 1,
+                                        //     Description: " ",
+                                        // });
+                                        for (
+                                            let i = 0;
+                                            i < newGroupCount;
+                                            i++
+                                        ) {
+                                            append({
+                                                GroupID: null,
+                                                ItemID: null,
+                                                Amount: null,
+                                                Quantity: 1,
+                                                Description: " ",
+                                            });
+                                        }
+                                        setNewGroupCount(1);
+                                    }}
+                                >
+                                    <Typography fontSize={20} fontWeight={700}>
+                                        +
+                                    </Typography>
+                                </Button>
+                            </Stack>
+                            <Stack alignItems="flex-end" mt={1}>
+                                <Button variant="contained" type="submit">
+                                    Хадгалах
+                                </Button>
+                            </Stack>
+                        </form>
+                    </Grid>
+                </Grid>
             </LocalizationProvider>
         </div>
     );

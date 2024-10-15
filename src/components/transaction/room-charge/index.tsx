@@ -127,7 +127,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                                 RoomTypeID={RoomTypeID}
                                             />,
                                             null,
-                                            "large"
+                                            "small"
                                         );
                                         handleClose();
                                     }}
@@ -145,7 +145,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                                 RoomTypeID={RoomTypeID}
                                             />,
                                             null,
-                                            "large"
+                                            "small"
                                         );
                                         handleClose();
                                     }}
@@ -164,7 +164,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                                 RoomTypeID={RoomTypeID}
                                             />,
                                             null,
-                                            "large"
+                                            "small"
                                         );
                                         handleClose();
                                     }}

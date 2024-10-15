@@ -71,13 +71,25 @@ const NewEdit = ({
     workingDate,
     groupID,
 }: any) => {
+    console.log("dateStart", dateStart);
+    console.log("dateEnd", dateEnd);
+    console.log("dateEquaal", dateStart == dateEnd);
+
     const intl = useIntl();
     const [CustomerID, setCustomerID]: any = useState(0);
     const [ArrivalDate, setArrivalDate]: any = useState(
         dateStart ? dateStart : workingDate
     );
     const [ArrivalTime, setArrivalTime]: any = useState("14:00");
-    const [DepartureTime, setDepartureTime]: any = useState("12:00");
+    const [DepartureTime, setDepartureTime]: any = useState(
+        dateStart &&
+            dateEnd &&
+            dateStart.getFullYear() === dateEnd.getFullYear() &&
+            dateStart.getMonth() === dateEnd.getMonth() &&
+            dateStart.getDate() === dateEnd.getDate()
+            ? "18:00"
+            : "12:00"
+    );
     const { data: rateTypeData, error: rateTypeError } = RateTypeSWR({});
 
     const [DepartureDate, setDepartureDate]: any = useState(
@@ -260,6 +272,8 @@ const NewEdit = ({
             }
 
             values.TransactionDetail.forEach((detail: any, index: any) => {
+                tempValues.TransactionDetail[index].Amount =
+                    detail.CurrencyAmount;
                 tempValues.TransactionDetail[index].TaxIncluded = TaxIncluded;
                 tempValues.TransactionDetail[index].BreakfastIncluded =
                     BreakfastIncluded;

@@ -1,20 +1,28 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
+import { TextField, FormControlLabel, Checkbox } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useIntl } from "react-intl";
+import { useState } from "react";
 
 import NewEditForm from "components/common/new-edit-form";
 import { PosApiAPI, listUrl } from "lib/api/pos-api";
 import { useAppState } from "lib/context/app";
+import DistrictSelect from "components/select/district";
 
 const validationSchema = yup.object().shape({
-    PosApiName: yup.string().required("Бөглөнө үү"),
-    PosApiDescription: yup.string().required("Бөглөнө үү"),
-    ShowWarning: yup.boolean(),
+    DistrictCode: yup.string().required("Бөглөнө үү"),
+    BranchNo: yup.string().required("Бөглөнө үү"),
+    SubDistrictCode: yup.string().required("Бөглөнө үү"),
 });
 
-const NewEdit = () => {
+const NewEdit = ({ data }: any) => {
+    console.log("data11", data);
+    const intl = useIntl();
+    const [entity, setEntity]: any = useState({
+        SubDistrictCode: data.SubDistrictCode,
+        DistrictCode: data.DistrictCode,
+    });
     const [state]: any = useAppState();
     const {
         register,
@@ -22,14 +30,26 @@ const NewEdit = () => {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(validationSchema) });
+    } = useForm({
+        defaultValues: {
+            RegisterNo: data.RegisterNo,
+            CompanyName: data.CompanyName,
+            BranchNo: data.BranchNo,
+            SubDistrictCode: data.SubDistrictCode,
+            DistrictCode: data.DistrictCode,
+            MerchantTin: data.MerchantTin,
+            IsVat: data.IsVat,
+            IsCityTax: data.IsCityTax,
+        },
+        resolver: yupResolver(validationSchema),
+    });
 
     return (
         <NewEditForm
             api={PosApiAPI}
             listUrl={listUrl}
             additionalValues={{
-                PosApiID: state.editId,
+                PosApiID: data.PosApiID,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
@@ -37,42 +57,97 @@ const NewEdit = () => {
             <TextField
                 size="small"
                 fullWidth
-                id="PosApiName"
-                label="PosApiName"
-                {...register("PosApiName")}
+                id="RegisterNo"
+                label={intl.formatMessage({
+                    id: "TextRegisterNo",
+                })}
+                {...register("RegisterNo")}
                 margin="dense"
-                error={errors.PosApiName?.message}
-                helperText={errors.PosApiName?.message}
+                error={errors.RegisterNo?.message}
+                helperText={errors.RegisterNo?.message}
+                disabled
             />
-
             <TextField
                 size="small"
                 fullWidth
-                id="PosApiDescription"
-                label="PosApiDescription"
-                {...register("PosApiDescription")}
+                id="CompanyName"
+                label={intl.formatMessage({
+                    id: "TextCompanyName",
+                })}
+                {...register("CompanyName")}
                 margin="dense"
-                error={errors.PosApiDescription?.message}
-                helperText={errors.PosApiDescription?.message}
+                error={errors.CompanyName?.message}
+                helperText={errors.CompanyName?.message}
+                disabled
             />
-
+            <TextField
+                size="small"
+                fullWidth
+                id="BranchNo"
+                label={intl.formatMessage({
+                    id: "TextBranchNo",
+                })}
+                {...register("BranchNo")}
+                margin="dense"
+                error={errors.BranchNo?.message}
+                helperText={errors.BranchNo?.message}
+            />
+            <DistrictSelect
+                register={register}
+                errors={errors}
+                entity={entity}
+                setEntity={setEntity}
+            />
+            <TextField
+                size="small"
+                fullWidth
+                id="MerchantTin"
+                label={intl.formatMessage({
+                    id: "MerchantTin",
+                })}
+                {...register("MerchantTin")}
+                margin="dense"
+                error={errors.MerchantTin?.message}
+                helperText={errors.MerchantTin?.message}
+                disabled
+            />
             <FormControlLabel
                 control={
                     <Controller
-                        name="ShowWarning"
+                        name="IsVat"
                         control={control}
                         render={(props: any) => (
                             <Checkbox
-                                {...register("ShowWarning")}
+                                {...register("IsVat")}
                                 checked={props.field.value}
                                 onChange={(e) =>
                                     props.field.onChange(e.target.checked)
                                 }
+                                disabled
                             />
                         )}
                     />
                 }
-                label="ShowWarning"
+                label={intl.formatMessage({ id: "RowHeaderIsVat" })}
+            />
+            <FormControlLabel
+                control={
+                    <Controller
+                        name="IsCityTax"
+                        control={control}
+                        render={(props: any) => (
+                            <Checkbox
+                                {...register("IsCityTax")}
+                                checked={props.field.value}
+                                onChange={(e) =>
+                                    props.field.onChange(e.target.checked)
+                                }
+                                disabled
+                            />
+                        )}
+                    />
+                }
+                label={intl.formatMessage({ id: "RowHeaderIsCityTax" })}
             />
         </NewEditForm>
     );

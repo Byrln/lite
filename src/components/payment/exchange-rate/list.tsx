@@ -19,7 +19,7 @@ const ExchangeRateList = ({ title }: any) => {
 
     const columns = [
         {
-            title: intl.formatMessage({id:"TextDate"}), 
+            title: intl.formatMessage({ id: "TextDate" }),
             key: "BeginDate",
             dataIndex: "BeginDate",
             excelRenderPass: true,
@@ -34,47 +34,47 @@ const ExchangeRateList = ({ title }: any) => {
             },
         },
         {
-            title: intl.formatMessage({id:"RowHeaderCountry"}), 
+            title: intl.formatMessage({ id: "RowHeaderCountry" }),
             key: "CountryName",
             dataIndex: "CountryName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderExchangeRate"}), 
+            title: intl.formatMessage({ id: "RowHeaderExchangeRate" }),
             key: "CurrencyName",
             dataIndex: "CurrencyName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderCurrencyCode"}), 
+            title: intl.formatMessage({ id: "RowHeaderCurrencyCode" }),
             key: "CurrencyCode",
             dataIndex: "CurrencyCode",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderCurrencySymbol"}), 
+            title: intl.formatMessage({ id: "RowHeaderCurrencySymbol" }),
             key: "CurrencySymbol",
             dataIndex: "CurrencySymbol",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderBuyRate"}), 
+            title: intl.formatMessage({ id: "RowHeaderBuyRate" }),
             key: "CurrencyID",
             dataIndex: "CurrencyID",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderSellRate"}),
+            title: intl.formatMessage({ id: "RowHeaderSellRate" }),
             key: "CountryID",
             dataIndex: "CountryID",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderMain"}),
+            title: intl.formatMessage({ id: "RowHeaderMain" }),
             key: "Main",
             dataIndex: "Main",
         },
         {
-            title: intl.formatMessage({id:"Default_LabelUserName"}),
+            title: intl.formatMessage({ id: "Default_LabelUserName" }),
             key: "UserName",
             dataIndex: "UserName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderAdditionalAction"}),
+            title: intl.formatMessage({ id: "RowHeaderAdditionalAction" }),
             key: "Action",
             dataIndex: "Action",
             excelRenderPass: true,
@@ -113,6 +113,7 @@ const ExchangeRateList = ({ title }: any) => {
             modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}
+            modalsize="medium"
         />
     );
 };

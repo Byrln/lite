@@ -63,8 +63,8 @@ const NewEdit = () => {
                 size="small"
                 fullWidth
                 id="RoomChargeTypeName"
-                        label={intl.formatMessage({id:"RowHeaderFirstName"}) }
-                        {...register("RoomChargeTypeName")}
+                label={intl.formatMessage({ id: "RowHeaderFirstName" })}
+                {...register("RoomChargeTypeName")}
                 margin="dense"
                 error={errors.RoomChargeTypeName?.message}
                 helperText={errors.RoomChargeTypeName?.message}
@@ -74,8 +74,8 @@ const NewEdit = () => {
                 size="small"
                 fullWidth
                 id="RoomChargeTypeNameCustom"
-                        label={intl.formatMessage({id:"RoomChargeTypeNameCustom"}) }
-                        {...register("RoomChargeTypeNameCustom")}
+                label={intl.formatMessage({ id: "RoomChargeTypeNameCustom" })}
+                {...register("RoomChargeTypeNameCustom")}
                 margin="dense"
                 error={errors.RoomChargeTypeNameCustom?.message}
                 helperText={errors.RoomChargeTypeNameCustom?.message}
@@ -86,7 +86,7 @@ const NewEdit = () => {
                 type="number"
                 fullWidth
                 id="RoomChargeTypeRate"
-                label={intl.formatMessage({id:"RoomChargeTypeRate"}) }
+                label={intl.formatMessage({ id: "RoomChargeTypeRate" })}
                 {...register("RoomChargeTypeRate")}
                 margin="dense"
                 error={errors.RoomChargeTypeRate?.message}
@@ -98,8 +98,9 @@ const NewEdit = () => {
                 type="number"
                 fullWidth
                 id="SortOrder"
-                label={intl.formatMessage({id:"SortOrder"}) }
+                label={intl.formatMessage({ id: "SortOrder" })}
                 {...register("SortOrder")}
+                defaultValue={1}
                 margin="dense"
                 error={errors.SortOrder?.message}
                 helperText={errors.SortOrder?.message}

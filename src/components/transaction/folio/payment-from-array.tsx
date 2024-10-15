@@ -4,6 +4,9 @@ import { useForm, useFieldArray, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
+import { styled } from "@mui/material/styles";
+import * as React from "react";
 
 import { Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
@@ -123,32 +126,58 @@ export default function PaymentFormArray({
         }
         await mutate(`/api/Folio/Items`);
         handleModal();
-
-        console.log(data);
     };
+
+    const CustomWidthTooltip = styled(
+        ({ className, ...props }: TooltipProps) => (
+            <Tooltip {...props} classes={{ popper: className }} />
+        )
+    )({
+        [`& .${tooltipClasses.tooltip}`]: {
+            maxWidth: 500,
+            background: "white",
+            border: "rgba(0, 0, 0, .2) 1px solid",
+            overflow: "scroll",
+        },
+    });
 
     return (
         <div>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    flexWrap: "wrap",
+                    flexDirection: "row-reverse",
+                }}
+                className="mb-1"
+            >
+                <CustomWidthTooltip
+                    title={
+                        <React.Fragment>
+                            <div>
+                                <PaymentCustomTableData FolioID={FolioID} />
+                            </div>
+                        </React.Fragment>
+                    }
+                >
+                    <Button>Нийт төлбөр</Button>
+                </CustomWidthTooltip>
+            </Box>
             <LocalizationProvider
                 //@ts-ignore
                 dateAdapter={AdapterDateFns}
                 adapterLocale={mn}
             >
-                <Grid container>
-                    <Grid item xs={12} md={6} lg={6}>
-                        <PaymentCustomTableData FolioID={FolioID} />
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={6}>
-                        <Stack direction="column" spacing="8px" px="30px">
-                            <Typography fontSize="16px" fontWeight={400}>
-                                Date
-                            </Typography>
+                <Grid container spacing={1}>
+                    <Grid item xs={12} md={12} lg={12} className="mb-3">
+                        <Grid container spacing={1}>
+                            <Grid item xs={12} md={6} lg={6}>
+                                <Typography fontSize="14px" fontWeight={400}>
+                                    Date
+                                </Typography>
 
-                            <Stack
-                                direction="row"
-                                spacing="30px"
-                                alignItems="center"
-                            >
                                 <DateTimePicker
                                     disabled={enableDate}
                                     value={setedDate}
@@ -161,17 +190,17 @@ export default function PaymentFormArray({
                                             {...params}
                                             sx={{
                                                 fontSize: "16px",
-                                                width: "300px",
                                                 fontWeight: 400,
+                                                width: "100%",
                                             }}
                                         />
                                     )}
                                 />
-
-                                <Stack
-                                    direction="row"
-                                    spacing={1.5}
-                                    alignItems="center"
+                            </Grid>
+                            <Grid item xs={12} md={6} lg={6}>
+                                <div
+                                    style={{ display: "flex" }}
+                                    className="mt-3"
                                 >
                                     <Checkbox
                                         checked={chekedTrue}
@@ -183,32 +212,34 @@ export default function PaymentFormArray({
                                             },
                                         }}
                                     />
-
                                     <Typography
                                         fontSize="12px"
+                                        className="mt-2"
                                         fontWeight={400}
                                     >
                                         Огноо өөрчлөх
                                     </Typography>
-                                </Stack>
-                            </Stack>
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <Box height={300} overflow="auto">
-                                    {fields.map((field, index) => (
-                                        <>
-                                            <FolioPayment
-                                                id={index}
-                                                register={register}
-                                                remove={remove}
-                                                FolioID={FolioID}
-                                                TransactionID={TransactionID}
-                                                resetField={resetField}
-                                            />
-                                        </>
-                                    ))}
-                                </Box>
+                                </div>
+                            </Grid>
+                        </Grid>
 
-                                <Stack
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <Box overflow="auto">
+                                {fields.map((field, index) => (
+                                    <>
+                                        <FolioPayment
+                                            id={index}
+                                            register={register}
+                                            remove={remove}
+                                            FolioID={FolioID}
+                                            TransactionID={TransactionID}
+                                            resetField={resetField}
+                                        />
+                                    </>
+                                ))}
+                            </Box>
+
+                            {/* <Stack
                                     direction="row"
                                     justifyContent="flex-end"
                                     alignItems="flex-end"
@@ -260,16 +291,18 @@ export default function PaymentFormArray({
                                             +
                                         </Typography>
                                     </Button>
-                                </Stack>
+                                </Stack> */}
 
-                                <Stack alignItems="flex-end" mt={1}>
-                                    <Button variant="contained" type="submit">
-                                        Хадгалах
-                                    </Button>
-                                </Stack>
-                            </form>
-                        </Stack>
+                            <Stack alignItems="flex-end" mt={1}>
+                                <Button variant="contained" type="submit">
+                                    Хадгалах
+                                </Button>
+                            </Stack>
+                        </form>
                     </Grid>
+                    {/* <Grid item xs={12} md={12} lg={12}>
+                        <PaymentCustomTableData FolioID={FolioID} />
+                    </Grid> */}
                 </Grid>
             </LocalizationProvider>
         </div>

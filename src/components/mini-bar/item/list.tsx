@@ -11,7 +11,6 @@ import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
 const MiniBarItemList = ({ title }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
@@ -19,34 +18,34 @@ const MiniBarItemList = ({ title }: any) => {
     });
     const columns = [
         {
-            title: intl.formatMessage({id:"ConfigMiniBarGroups"}), 
+            title: intl.formatMessage({ id: "ConfigMiniBarGroups" }),
             key: "RoomChargeTypeGroupName",
             dataIndex: "RoomChargeTypeGroupName",
         },
         {
-            title: intl.formatMessage({id:"ConfigMiniBarItem"}), 
+            title: intl.formatMessage({ id: "ConfigMiniBarItem" }),
             key: "RoomChargeTypeName",
             dataIndex: "RoomChargeTypeName",
         },
         {
-            title: intl.formatMessage({id:"ReportRate"}), 
-            key: "SortOrder",
-            dataIndex: "SortOrder",
+            title: intl.formatMessage({ id: "ReportRate" }),
+            key: "RoomChargeTypeRate",
+            dataIndex: "RoomChargeTypeRate",
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
-                    element.row.RoomChargeTypeRate &&
+                    element.row.SortOrder &&
                     formatPrice(element.row.RoomChargeTypeRate)
                 );
             },
         },
         {
-            title: intl.formatMessage({id:"RowHeaderSortOrder"}), 
-            key: "RowHeaderSortOrder",
-            dataIndex: "RowHeaderSortOrder",
+            title: intl.formatMessage({ id: "RowHeaderSortOrder" }),
+            key: "SortOrder",
+            dataIndex: "SortOrder",
         },
         {
-            title: intl.formatMessage({id:"ReportStatus"}), 
+            title: intl.formatMessage({ id: "ReportStatus" }),
             key: "ReportStatus",
             dataIndex: "ReportStatus",
             excelRenderPass: true,
@@ -63,7 +62,7 @@ const MiniBarItemList = ({ title }: any) => {
             },
         },
     ];
-    
+
     const formOptions = { resolver: yupResolver(validationSchema) };
     const {
         reset,
