@@ -57,8 +57,9 @@ const catchAxiosError = (error: any) => {
     if (typeof window !== "undefined") {
         toast(message);
     }
-
-    throw new Error(message);
+    if (message != "Өрөөг амжилттай болиуллаа") {
+        throw new Error(message);
+    }
 };
 
 export default catchAxiosError;
