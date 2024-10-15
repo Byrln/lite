@@ -16,6 +16,8 @@ const RoomSelect = ({
     groupIndex,
     roomType,
     isSearch,
+    resetField,
+    setBaseStay,
 }: any) => {
     const intl = useIntl();
     const [data, setData]: any = useState([]);
@@ -64,12 +66,27 @@ const RoomSelect = ({
             EndDate: dateToSimpleFormat(baseStay.dateEnd),
         };
         var d = await RoomAPI.listAvailable(values);
-        setData(d);
-    };
 
+        setData(d);
+        console.log("RoomID", d[0]);
+
+        // setBaseStay({
+        //     ...baseStay,
+        //     room: d[0],
+        // });
+        // onRoomChange(d[0]);
+        resetField(`RoomID`, {
+            defaultValue: d[0].RoomID,
+        });
+    };
+    console.log("baseStay", baseStay);
     useEffect(() => {
-        if (data && data.length > 0 && baseStay.room) {
-            eventRoomChange(baseStay.room?.RoomID);
+        if (data && data.length > 0) {
+            if (baseStay.room) {
+                eventRoomChange(baseStay.room?.RoomID);
+            } else {
+                eventRoomChange(data[0].RoomID);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);

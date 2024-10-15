@@ -329,6 +329,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     };
                 });
             });
+            console.log("letNewEvents", letNewEvents);
 
             if (roomBlocks) {
                 const newRoomBlockDta = roomBlocks.map((obj: any) => {
@@ -361,16 +362,17 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             `${moment(currentDate).format(
                                 "YYYY-MM-DD"
                             )} 00:00:00`,
-                            `${obj.RoomTypeName}-${obj.RoomTypeID}`
+                            `${obj.RoomTypeName}?${obj.RoomTypeID}`
                         )
                     ) {
+                        console.log("test22222", obj);
                         roomTypesObj.push(
                             doesCombinationExist(
                                 letNewEvents,
                                 `${moment(currentDate).format(
                                     "YYYY-MM-DD"
                                 )} 00:00:00`,
-                                `${obj.RoomTypeName}-${obj.RoomTypeID}`
+                                `${obj.RoomTypeName}?${obj.RoomTypeID}`
                             )
                         );
                     } else {

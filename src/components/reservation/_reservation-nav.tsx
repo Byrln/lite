@@ -83,7 +83,7 @@ const ReservationNav = ({
         ) {
             return;
         }
-        var res = await ReservationAPI.checkIn(reservation.TransactionID);
+        await ReservationAPI.checkIn(reservation.TransactionID);
         await mutate(calendarItemsURL);
         if (additionalMutateUrl) {
             await mutate(additionalMutateUrl);

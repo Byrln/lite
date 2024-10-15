@@ -39,7 +39,7 @@ const RoomAssign = ({
             RoomTypeID: transactionInfo.RoomTypeID,
         },
         room: {
-            RoomID: transactionInfo.RoomID,
+            RoomID: transactionInfo.RoomID ? transactionInfo.RoomID : null,
         },
         dateStart: new Date(transactionInfo.ArrivalDate),
         dateEnd: new Date(transactionInfo.DepartureDate),
@@ -65,6 +65,7 @@ const RoomAssign = ({
         handleSubmit,
         formState: { errors },
         reset,
+        resetField,
     } = useForm(formOptions);
 
     const onRoomChange = (room: any) => {
@@ -115,6 +116,8 @@ const RoomAssign = ({
                             baseStay={baseStay}
                             onRoomChange={onRoomChange}
                             roomAutoAssign={roomAutoAssign}
+                            resetField={resetField}
+                            setBaseStay={setBaseStay}
                         />
                     </Grid>
                 </Grid>
