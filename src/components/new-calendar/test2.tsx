@@ -670,58 +670,47 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleSelect = (info: any) => {
         const { start, end, resourceId } = info;
-        console.log("info", info);
-        if (start > new Date(workingDate)) {
-            dispatch({
-                type: "editId",
-                editId: "",
-            });
+        dispatch({
+            type: "editId",
+            editId: "",
+        });
 
-            const newEventObject = {
-                title: "New Event",
-                start: start,
-                end: end.setDate(end.getDate() - 1),
-                roomTypeID: Number(
-                    info.resource._resource.extendedProps.roomTypeId
-                ),
-                roomID: Number(info.resource._resource.id),
-                BaseAdult: Number(
-                    info.resource._resource.extendedProps.BaseAdult
-                ),
-                BaseChild: Number(
-                    info.resource._resource.extendedProps.BaseChild
-                ),
-                MaxAdult: Number(
-                    info.resource._resource.extendedProps.MaxAdult
-                ),
-                MaxChild: Number(
-                    info.resource._resource.extendedProps.MaxChild
-                ),
-            };
+        const newEventObject = {
+            title: "New Event",
+            start: start,
+            end: end.setDate(end.getDate() - 1),
+            roomTypeID: Number(
+                info.resource._resource.extendedProps.roomTypeId
+            ),
+            roomID: Number(info.resource._resource.id),
+            BaseAdult: Number(info.resource._resource.extendedProps.BaseAdult),
+            BaseChild: Number(info.resource._resource.extendedProps.BaseChild),
+            MaxAdult: Number(info.resource._resource.extendedProps.MaxAdult),
+            MaxChild: Number(info.resource._resource.extendedProps.MaxChild),
+        };
 
-            // activeSessionID && activeSessionID == "-1" && handleCashierOpen();
+        // activeSessionID && activeSessionID == "-1" && handleCashierOpen();
 
-            if (newEventObject.roomID) {
-                handleModal(
-                    true,
-                    `New Reservation`,
-                    <NewReservation
-                        dateStart={start}
-                        dateEnd={end}
-                        // // @ts-ignore
-                        roomType={newEventObject.roomTypeID}
-                        // // @ts-ignore
-                        room={newEventObject.roomID}
-                        BaseAdult={newEventObject.BaseAdult}
-                        BaseChild={newEventObject.BaseChild}
-                        MaxAdult={newEventObject.MaxAdult}
-                        MaxChild={newEventObject.MaxChild}
-                        workingDate={workingDate}
-                    />,
-                    null,
-                    "medium"
-                );
-            }
+        if (newEventObject.roomID) {
+            handleModal(
+                true,
+                `New Reservation`,
+                <NewReservation
+                    dateStart={start}
+                    dateEnd={end}
+                    // // @ts-ignore
+                    roomType={newEventObject.roomTypeID}
+                    // // @ts-ignore
+                    room={newEventObject.roomID}
+                    BaseAdult={newEventObject.BaseAdult}
+                    BaseChild={newEventObject.BaseChild}
+                    MaxAdult={newEventObject.MaxAdult}
+                    MaxChild={newEventObject.MaxChild}
+                    workingDate={workingDate}
+                />,
+                null,
+                "medium"
+            );
         }
     };
 

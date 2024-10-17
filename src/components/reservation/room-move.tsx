@@ -94,6 +94,7 @@ const RoomMoveForm = ({
             values.NewRoomID = values.RoomID;
             delete values.RoomTypeID;
             delete values.RoomID;
+
             const res = await ReservationAPI.roomMove(values);
 
             await mutate(listUrl);
