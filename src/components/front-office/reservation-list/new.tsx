@@ -133,6 +133,7 @@ const NewEdit = ({
         handleSubmit,
         control,
         getValues,
+        setValue,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -372,49 +373,56 @@ const NewEdit = ({
                                                         id: "TextArrivalDate",
                                                     })}
                                                     value={value}
-                                                    minDate={
-                                                        new Date(workingDate)
-                                                    }
-                                                    onChange={(value) => (
+                                                    onChange={(value) => {
                                                         onChange(
-                                                            // moment(value, "YYYY-MM-DD")
-
-                                                            // moment(
-                                                            //     dateStringToObj(
-                                                            //         moment(
-                                                            //             value
-                                                            //         ).format(
-                                                            //             "YYYY-MM-DD"
-                                                            //         )
-                                                            //     ),
-                                                            //     "YYYY-MM-DD"
-                                                            // )
                                                             moment(
                                                                 value
                                                             ).format(
                                                                 "YYYY-MM-DD"
                                                             )
-                                                        ),
+                                                        );
                                                         setArrivalDate(
-                                                            // moment(value, "YYYY-MM-DD")
-
-                                                            // moment(
-                                                            //     dateStringToObj(
-                                                            //         moment(
-                                                            //             value
-                                                            //         ).format(
-                                                            //             "YYYY-MM-DD"
-                                                            //         )
-                                                            //     ),
-                                                            //     "YYYY-MM-DD"
-                                                            // ).format("YYYY-MM-DD")
                                                             moment(
                                                                 value
                                                             ).format(
                                                                 "YYYY-MM-DD"
                                                             )
-                                                        )
-                                                    )}
+                                                        );
+                                                        if (
+                                                            new Date(
+                                                                moment(
+                                                                    value
+                                                                ).format(
+                                                                    "YYYY-MM-DD"
+                                                                )
+                                                            ) >
+                                                            new Date(
+                                                                DepartureDate
+                                                            )
+                                                        ) {
+                                                            setDepartureDate(
+                                                                moment(value)
+                                                                    .add(
+                                                                        1,
+                                                                        "days"
+                                                                    )
+                                                                    .format(
+                                                                        "YYYY-MM-DD"
+                                                                    )
+                                                            );
+                                                            setValue(
+                                                                "DepartureDate",
+                                                                moment(value)
+                                                                    .add(
+                                                                        1,
+                                                                        "days"
+                                                                    )
+                                                                    .format(
+                                                                        "YYYY-MM-DD"
+                                                                    )
+                                                            );
+                                                        }
+                                                    }}
                                                     renderInput={(params) => (
                                                         <TextField
                                                             size="small"

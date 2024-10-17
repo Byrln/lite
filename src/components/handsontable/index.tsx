@@ -68,7 +68,6 @@ function getNumberOfDays(start: Date, end: Date, hour = 12) {
 }
 
 const myClick = () => {
-    
     console.log("clicked ...");
 };
 
@@ -481,13 +480,11 @@ const TimelineTable = ({ props, workingDate }: any) => {
     return (
         <>
             <Head>
-                <title>
-                {intl.formatMessage({id:"Calendar"}) }
-                    </title>
+                <title>{intl.formatMessage({ id: "Calendar" })}</title>
             </Head>
             <Page>
                 <Container maxWidth="xl">
-                    <h4>  {intl.formatMessage({id:"Calendar"}) }</h4>
+                    <h4> {intl.formatMessage({ id: "Calendar" })}</h4>
                     <br />
                     <CustomSearch
                         listUrl={listUrl}
@@ -520,16 +517,15 @@ const TimelineTable = ({ props, workingDate }: any) => {
                             <FormControlLabel
                                 value="7"
                                 control={<Radio />}
-                                 id="TextWeekly"
-                                label={intl.formatMessage({id:"TextWeekly"}) }
+                                id="TextWeekly"
+                                label={intl.formatMessage({ id: "TextWeekly" })}
                                 {...register("TextWeekly")}
-        
                             />
                             <FormControlLabel
                                 value="15"
                                 control={<Radio />}
                                 id="TextWeekly"
-                                label={intl.formatMessage({id:"TextWeekly"}) }
+                                label={intl.formatMessage({ id: "TextWeekly" })}
                                 {...register("TextWeekly")}
                             />
                             <FormControlLabel
