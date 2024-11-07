@@ -4,17 +4,18 @@ import { useContext } from "react";
 import { useIntl } from "react-intl";
 import CustomTable from "components/common/custom-table";
 import {
-    ExchangeRateSWR,
+    ExchangeRateListSWR,
     ExchangeRateAPI,
-    listUrl,
+    exchangeRateListUrl as listUrl,
 } from "lib/api/exchange-rate";
 import NewEdit from "./new-edit";
 import { ModalContext } from "lib/context/modal";
 import History from "./history";
+import ToggleChecked from "components/common/custom-switch";
 
 const ExchangeRateList = ({ title }: any) => {
     const intl = useIntl();
-    const { data, error } = ExchangeRateSWR();
+    const { data, error } = ExchangeRateListSWR();
     const { handleModal }: any = useContext(ModalContext);
 
     const columns = [
@@ -55,18 +56,29 @@ const ExchangeRateList = ({ title }: any) => {
         },
         {
             title: intl.formatMessage({ id: "RowHeaderBuyRate" }),
-            key: "CurrencyID",
-            dataIndex: "CurrencyID",
+            key: "BuyRate",
+            dataIndex: "BuyRate",
         },
         {
             title: intl.formatMessage({ id: "RowHeaderSellRate" }),
-            key: "CountryID",
-            dataIndex: "CountryID",
+            key: "SellRate",
+            dataIndex: "SellRate",
         },
         {
             title: intl.formatMessage({ id: "RowHeaderMain" }),
-            key: "Main",
-            dataIndex: "Main",
+            key: "IsCurrent",
+            dataIndex: "IsCurrent",
+            renderCell: (element: any) => {
+                return (
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.IsCurrent}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                        disabled={true}
+                    />
+                );
+            },
         },
         {
             title: intl.formatMessage({ id: "Default_LabelUserName" }),

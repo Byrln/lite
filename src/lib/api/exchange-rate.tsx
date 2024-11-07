@@ -4,6 +4,7 @@ import axios from "lib/utils/axios";
 
 const urlPrefix = "/api/Currency";
 export const listUrl = `${urlPrefix}/list`;
+export const exchangeRateListUrl = `${urlPrefix}/ExchangeRate`;
 
 export const ExchangeRateSWR = () => {
     const values = {
@@ -14,6 +15,17 @@ export const ExchangeRateSWR = () => {
         await axios.post(url, values).then((res: any) => res.data.JsonData);
 
     return useSWR(listUrl, fetcher);
+};
+
+export const ExchangeRateListSWR = () => {
+    const values = {
+        IsCurrent: false,
+    };
+
+    const fetcher = async (url: any) =>
+        await axios.post(url, values).then((res: any) => res.data.JsonData);
+
+    return useSWR(exchangeRateListUrl, fetcher);
 };
 
 export const ExchangeRateAPI = {

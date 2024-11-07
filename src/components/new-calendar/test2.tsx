@@ -365,7 +365,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             `${obj.RoomTypeName}?${obj.RoomTypeID}`
                         )
                     ) {
-                        console.log("test22222", obj);
                         roomTypesObj.push(
                             doesCombinationExist(
                                 letNewEvents,
@@ -678,7 +677,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         const newEventObject = {
             title: "New Event",
             start: start,
-            end: end.setDate(end.getDate() - 1),
+            end: end,
             roomTypeID: Number(
                 info.resource._resource.extendedProps.roomTypeId
             ),
@@ -738,6 +737,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         arg.event.title == "Blocked"
                             ? "flex"
                             : "",
+                    borderRadius:
+                        arg.event._def.extendedProps.statusColor !=
+                        "rgba(255, 220, 40, 0.15)"
+                            ? "5px"
+                            : "0px",
                     background: "none",
                     padding: "4px 4px 0px 4px",
                     overflow: "",
