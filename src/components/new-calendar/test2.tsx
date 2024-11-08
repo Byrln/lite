@@ -615,56 +615,54 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     const handleEventResize = async (info: any) => {
-        if (info.event._instance.range.end > new Date(workingDate)) {
-            if (Number(info.event._def.extendedProps.transactionID)) {
-                dispatch({
-                    type: "editId",
-                    editId: Number(info.event._def.extendedProps.transactionID),
-                });
-            } else {
-                dispatch({
-                    type: "editId",
-                    editId: "",
-                });
-            }
-            const newEventObject = {
-                title: "New Event",
-                ArrivalDate: info.event._instance.range.start,
-                DepartureDate: info.event._instance.range.end,
-                RoomTypeID: Number(info.event._def.extendedProps.roomTypeID),
-                RoomID: Number(info.event._def.resourceIds[0]),
-                TransactionID: info.event._def.extendedProps.transactionID,
-            };
-            let filteredItemData = itemData.filter(
-                (event: any) =>
-                    event.roomTypeID ===
-                        Number(info.event._def.extendedProps.roomTypeID) &&
-                    event.resourceId ==
-                        Number(info.event._def.resourceIds[0]) &&
-                    event.id != info.event._def.extendedProps.transactionID &&
-                    new Date(event.start) <=
-                        new Date(info.event._instance.range.end) &&
-                    new Date(event.end) >
-                        new Date(info.event._instance.range.start)
-            );
-
-            if (filteredItemData.length > 0) {
-                toast("Захиалга давхцаж байна.");
-            } else {
-                handleModal(
-                    true,
-                    "Amend Stay",
-                    <AmendStayForm
-                        transactionInfo={newEventObject}
-                        reservation={newEventObject}
-                        additionalMutateUrl="/api/Reservation/List"
-                    />,
-                    false,
-                    "small"
-                );
-            }
-            setRerenderKey((prevKey) => prevKey + 1);
+        // if (info.event._instance.range.end > new Date(workingDate)) {
+        if (Number(info.event._def.extendedProps.transactionID)) {
+            dispatch({
+                type: "editId",
+                editId: Number(info.event._def.extendedProps.transactionID),
+            });
+        } else {
+            dispatch({
+                type: "editId",
+                editId: "",
+            });
         }
+        const newEventObject = {
+            title: "New Event",
+            ArrivalDate: info.event._instance.range.start,
+            DepartureDate: info.event._instance.range.end,
+            RoomTypeID: Number(info.event._def.extendedProps.roomTypeID),
+            RoomID: Number(info.event._def.resourceIds[0]),
+            TransactionID: info.event._def.extendedProps.transactionID,
+        };
+        let filteredItemData = itemData.filter(
+            (event: any) =>
+                event.roomTypeID ===
+                    Number(info.event._def.extendedProps.roomTypeID) &&
+                event.resourceId == Number(info.event._def.resourceIds[0]) &&
+                event.id != info.event._def.extendedProps.transactionID &&
+                new Date(event.start) <=
+                    new Date(info.event._instance.range.end) &&
+                new Date(event.end) > new Date(info.event._instance.range.start)
+        );
+
+        if (filteredItemData.length > 0) {
+            toast("Захиалга давхцаж байна.");
+        } else {
+            handleModal(
+                true,
+                "Amend Stay",
+                <AmendStayForm
+                    transactionInfo={newEventObject}
+                    reservation={newEventObject}
+                    additionalMutateUrl="/api/Reservation/List"
+                />,
+                false,
+                "small"
+            );
+        }
+        setRerenderKey((prevKey) => prevKey + 1);
+        // }
     };
 
     const handleSelect = (info: any) => {

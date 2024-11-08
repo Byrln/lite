@@ -135,6 +135,7 @@ export default function PaymentFormArray({
     )({
         [`& .${tooltipClasses.tooltip}`]: {
             maxWidth: 500,
+            maxHeight: 400,
             background: "white",
             border: "rgba(0, 0, 0, .2) 1px solid",
             overflow: "scroll",

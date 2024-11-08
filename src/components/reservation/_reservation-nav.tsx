@@ -125,6 +125,14 @@ const ReservationNav = ({
                 border: "1px solid #efefef",
             }}
         >
+            {reservation.CheckOut && (
+                <Checkout
+                    key={`checkout-${reservation.TransactionID}`}
+                    TransactionID={reservation.TransactionID}
+                    listUrl={additionalMutateUrl}
+                    buttonVariant="text"
+                />
+            )}
             {/* <Button variant={"text"} size="small" sx={buttonStyle}>
                 {intl.formatMessage({
                     id: "ButtonCard",
@@ -338,14 +346,6 @@ const ReservationNav = ({
                 </Button>
             )}
 
-            {reservation.CheckOut && (
-                <Checkout
-                    key={`checkout-${reservation.TransactionID}`}
-                    TransactionID={reservation.TransactionID}
-                    listUrl={additionalMutateUrl}
-                    buttonVariant="text"
-                />
-            )}
             {reservation.Cancel && (
                 <Button
                     variant={"text"}

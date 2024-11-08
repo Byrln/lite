@@ -78,6 +78,35 @@ export default function PaymentCustomTableData({ FolioID }: any) {
     return (
         <div>
             <Stack direction="column" spacing={3}>
+                <Stack
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    width="100%"
+                    spacing={1}
+                    style={{ marginTop: "10px", padding: "0px" }}
+                >
+                    <Typography
+                        fontSize={18}
+                        fontWeight={600}
+                        style={{ color: "black" }}
+                    >
+                        Үлдэгдэл
+                    </Typography>
+
+                    <Typography fontSize={24} fontWeight={700} color="#7F49E5">
+                        {data && data.length > 0
+                            ? formatPrice(
+                                  data.reduce(
+                                      (acc: any, obj: any) =>
+                                          Number(acc) + Number(obj.Amount2),
+                                      0
+                                  )
+                              )
+                            : 0}
+                        MNT
+                    </Typography>
+                </Stack>
                 <Box sx={{ maxHeight: "500px", width: "100%" }}>
                     <DataGrid
                         rows={data}
@@ -109,36 +138,6 @@ export default function PaymentCustomTableData({ FolioID }: any) {
                         }
                     />
                 </Box>
-
-                <Stack
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                    width="100%"
-                    spacing={1}
-                    style={{ marginTop: "10px", padding: "0px" }}
-                >
-                    <Typography
-                        fontSize={18}
-                        fontWeight={600}
-                        style={{ color: "black" }}
-                    >
-                        Үлдэгдэл
-                    </Typography>
-
-                    <Typography fontSize={24} fontWeight={700} color="#7F49E5">
-                        {data && data.length > 0
-                            ? formatPrice(
-                                  data.reduce(
-                                      (acc: any, obj: any) =>
-                                          Number(acc) + Number(obj.Amount2),
-                                      0
-                                  )
-                              )
-                            : 0}
-                        MNT
-                    </Typography>
-                </Stack>
             </Stack>
         </div>
     );
