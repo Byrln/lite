@@ -273,6 +273,14 @@ a.fc-event {
     min-width: fit-content;
 }
 
+.hover-visible {
+    display: none;
+}
+
+.hover-visible:hover {
+    display: block;
+}
+
 .fc .fc-timeline-slot-minor {
     border-style: none;
 }

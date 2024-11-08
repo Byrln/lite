@@ -133,11 +133,7 @@ const ReservationNav = ({
                     buttonVariant="text"
                 />
             )}
-            {/* <Button variant={"text"} size="small" sx={buttonStyle}>
-                {intl.formatMessage({
-                    id: "ButtonCard",
-                })}
-            </Button> */}
+
             {reservation.CheckIn && (
                 <Button
                     variant={"text"}
@@ -150,18 +146,7 @@ const ReservationNav = ({
                     })}
                 </Button>
             )}
-            {/* {reservation.NoShow && (
-                <Button
-                    variant={"text"}
-                    size="small"
-                    sx={buttonStyle}
-                    onClick={handleClickOpenNoShow}
-                >
-                    {intl.formatMessage({
-                        id: "ButtonMarkNoShow",
-                    })}
-                </Button>
-            )} */}
+
             {reservation.NoShow && (
                 <Button
                     variant={"text"}
@@ -188,38 +173,7 @@ const ReservationNav = ({
                     })}
                 </Button>
             )}
-            {/* <Dialog
-                open={openNoShow}
-                onClose={handleCloseNoShow}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {" "}
-                    {intl.formatMessage({
-                        id: "ButtonMarkNoShow",
-                    })}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        {intl.formatMessage({
-                            id: "MsgConfirmation",
-                        })}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseNoShow}>
-                        {intl.formatMessage({
-                            id: "ButtonCancel",
-                        })}
-                    </Button>
-                    <Button onClick={handleOnClickNoShow} autoFocus>
-                        {intl.formatMessage({
-                            id: "ButtonOk",
-                        })}
-                    </Button>
-                </DialogActions>
-            </Dialog> */}
+
             <a
                 href={
                     locale == "mon"
@@ -257,15 +211,7 @@ const ReservationNav = ({
                     id: "ButtonExtraCharge",
                 })}
             </Button>
-            {/* {reservation.GroupOperation && (
-                <a href={`transaction/group-edit/${reservation.GroupID}`}>
-                    <Button variant={"text"} size="small" sx={buttonStyle}>
-                        {intl.formatMessage({
-                            id: "ButtonEditGroup",
-                        })}
-                    </Button>
-                </a>
-            )} */}
+
             {reservation.MoveRoom && (
                 <Button
                     variant={"text"}
@@ -314,13 +260,7 @@ const ReservationNav = ({
                     })}
                 </Button>
             )}
-            {/*{reservation.SetMessage && (*/}
-            {/*    <Button*/}
-            {/*        variant={"text"}*/}
-            {/*        size="small"*/}
-            {/*        sx={buttonStyle}*/}
-            {/*    >Set Message</Button>*/}
-            {/*)}*/}
+
             {reservation.Void && (
                 <Button
                     variant={"text"}

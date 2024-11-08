@@ -10,6 +10,7 @@ import { Icon } from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
 import { mutate } from "swr";
 import {
+    Tooltip,
     FormControl,
     FormControlLabel,
     RadioGroup,
@@ -42,7 +43,6 @@ import CustomSearch from "components/common/custom-search";
 import ReservationEdit from "components/front-office/reservation-list/edit";
 import RoomMoveForm from "components/reservation/room-move";
 import AmendStayForm from "components/reservation/amend-stay";
-
 import RoomAssignGroup from "components/reservation/room-assign-group";
 import Iconify from "components/iconify/iconify";
 import { getContrastYIQ } from "lib/utils/helpers";
@@ -726,82 +726,139 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const eventContent = (arg: any) => {
         // Customize the content and styles of each event
         return (
-            <div
-                className="event-custom"
-                style={{
-                    display:
-                        arg.event._def.extendedProps.statusColor !=
-                            "rgba(255, 220, 40, 0.15)" ||
-                        arg.event.title == "Blocked"
-                            ? "flex"
-                            : "",
-                    borderRadius:
-                        arg.event._def.extendedProps.statusColor !=
-                        "rgba(255, 220, 40, 0.15)"
-                            ? "5px"
-                            : "0px",
-                    background: "none",
-                    padding: "4px 4px 0px 4px",
-                    overflow: "",
-                    margin: "-2px -3px -2px -1px",
-                    height: "100%",
-                    textAlign:
-                        arg.event._def.extendedProps.statusColor !=
-                            "rgba(255, 220, 40, 0.15)" ||
-                        arg.event.title == "Blocked"
-                            ? "left"
-                            : "center",
-                    backgroundColor:
-                        arg.event.title == "Blocked"
-                            ? "black"
-                            : arg.event._def.extendedProps.statusColor,
-                    color: arg.event._def.extendedProps.statusColor
-                        ? arg.event._def.extendedProps.statusColor !=
-                          "rgba(255, 220, 40, 0.15)"
-                            ? getContrastYIQ(
-                                  arg.event._def.extendedProps.statusColor
-                              )
-                            : "#3699ff"
-                        : "white",
-
-                    border:
-                        arg.event._def.extendedProps.statusColor ==
-                        "rgba(255, 220, 40, 0.15)"
-                            ? `1px solid rgba(255, 220, 40, 0.15)`
-                            : "null",
-                }}
+            <Tooltip
+                title={
+                    arg.event._def.extendedProps.statusColor ==
+                    "rgba(255, 220, 40, 0.15)" ? (
+                        <div>Unassigned Rooms : {arg.event.title}</div>
+                    ) : arg.event.title == "Blocked" ? (
+                        <div>Blocked</div>
+                    ) : (
+                        <div>
+                            <div> Name : {arg.event.title}</div>
+                            <div>
+                                Balance : {arg.event._def.extendedProps.Balance}
+                            </div>
+                            <div>
+                                Breakfast :{" "}
+                                {arg.event._def.extendedProps.Breakfast &&
+                                arg.event._def.extendedProps.Breakfast == true
+                                    ? "Yes"
+                                    : "No"}
+                            </div>
+                            <div>
+                                Group :{" "}
+                                {arg.event._def.extendedProps.GroupID &&
+                                arg.event._def.extendedProps.GroupID != ""
+                                    ? "Yes"
+                                    : "No"}
+                            </div>
+                        </div>
+                    )
+                }
             >
-                {arg.event._def.extendedProps.GroupID &&
-                arg.event._def.extendedProps.GroupID != "" ? (
-                    <span style={{ marginRight: "5px", marginTop: "2px" }}>
-                        {" "}
-                        <Iconify icon="clarity:group-line" width="12px" />
-                    </span>
-                ) : (
-                    <></>
-                )}
+                <div
+                    className="event-custom"
+                    style={{
+                        display:
+                            arg.event._def.extendedProps.statusColor !=
+                                "rgba(255, 220, 40, 0.15)" ||
+                            arg.event.title == "Blocked"
+                                ? "flex"
+                                : "",
+                        borderRadius:
+                            arg.event._def.extendedProps.statusColor !=
+                            "rgba(255, 220, 40, 0.15)"
+                                ? "5px"
+                                : "0px",
+                        background: "none",
+                        padding: "4px 4px 0px 4px",
+                        overflow: "",
+                        margin: "-2px -3px -2px -1px",
+                        height: "100%",
+                        textAlign:
+                            arg.event._def.extendedProps.statusColor !=
+                                "rgba(255, 220, 40, 0.15)" ||
+                            arg.event.title == "Blocked"
+                                ? "left"
+                                : "center",
+                        backgroundColor:
+                            arg.event.title == "Blocked"
+                                ? "black"
+                                : arg.event._def.extendedProps.statusColor,
+                        color: arg.event._def.extendedProps.statusColor
+                            ? arg.event._def.extendedProps.statusColor !=
+                              "rgba(255, 220, 40, 0.15)"
+                                ? getContrastYIQ(
+                                      arg.event._def.extendedProps.statusColor
+                                  )
+                                : "#3699ff"
+                            : "white",
 
-                {arg.event._def.extendedProps.Balance &&
-                Number(arg.event._def.extendedProps.Balance) > 0 ? (
-                    <span style={{ marginRight: "5px", marginTop: "2px" }}>
-                        {" "}
-                        <Iconify icon="vaadin:cash" width="12px" />
-                    </span>
-                ) : (
-                    <></>
-                )}
+                        border:
+                            arg.event._def.extendedProps.statusColor ==
+                            "rgba(255, 220, 40, 0.15)"
+                                ? `1px solid rgba(255, 220, 40, 0.15)`
+                                : "null",
+                    }}
+                >
+                    {arg.event._def.extendedProps.statusColor !=
+                    "rgba(255, 220, 40, 0.15)" ? (
+                        <Iconify
+                            icon="lsicon:drag-filled"
+                            width="12px"
+                            style={{ marginRight: "5px", marginTop: "2px" }}
+                        />
+                    ) : (
+                        ""
+                    )}
 
-                {arg.event._def.extendedProps.Breakfast &&
-                arg.event._def.extendedProps.Breakfast == true ? (
-                    <span style={{ marginRight: "5px", marginTop: "2px" }}>
-                        {" "}
-                        <Iconify icon="fluent:food-16-regular" width="12px" />
-                    </span>
-                ) : (
-                    <></>
-                )}
-                {arg.event.title}
-            </div>
+                    {arg.event._def.extendedProps.GroupID &&
+                    arg.event._def.extendedProps.GroupID != "" ? (
+                        <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                            {" "}
+                            <Iconify icon="clarity:group-line" width="12px" />
+                        </span>
+                    ) : (
+                        <></>
+                    )}
+
+                    {arg.event._def.extendedProps.Balance &&
+                    Number(arg.event._def.extendedProps.Balance) > 0 ? (
+                        <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                            {" "}
+                            <Iconify icon="vaadin:cash" width="12px" />
+                        </span>
+                    ) : (
+                        <></>
+                    )}
+
+                    {arg.event._def.extendedProps.Breakfast &&
+                    arg.event._def.extendedProps.Breakfast == true ? (
+                        <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                            {" "}
+                            <Iconify
+                                icon="fluent:food-16-regular"
+                                width="12px"
+                            />
+                        </span>
+                    ) : (
+                        <></>
+                    )}
+                    {arg.event.title}
+
+                    {arg.event._def.extendedProps.statusColor !=
+                    "rgba(255, 220, 40, 0.15)" ? (
+                        <Iconify
+                            icon="lsicon:drag-filled"
+                            width="12px"
+                            style={{ marginLeft: "5px", marginTop: "2px" }}
+                        />
+                    ) : (
+                        ""
+                    )}
+                </div>
+            </Tooltip>
         );
     };
 
