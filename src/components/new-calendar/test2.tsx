@@ -271,6 +271,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           Balance: obj.Balance,
                           Breakfast: obj.Breakfast,
                           endDate: obj.EndDate,
+                          groupColor: `${obj.GroupColor}`,
                           statusColor: `#${obj.StatusColor}`,
                           editable: true,
                           color: getContrastYIQ(`#${obj.StatusColor}`),
@@ -725,6 +726,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const eventContent = (arg: any) => {
         // Customize the content and styles of each event
+        console.log("testestsetes", arg.event._def.extendedProps);
         return (
             <Tooltip
                 title={
@@ -815,7 +817,19 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
                     {arg.event._def.extendedProps.GroupID &&
                     arg.event._def.extendedProps.GroupID != "" ? (
-                        <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                        <span
+                            style={{
+                                marginRight: "5px",
+                                marginTop: "2px",
+                                color:
+                                    arg.event._def.extendedProps.groupColor &&
+                                    arg.event._def.extendedProps.groupColor !=
+                                        ""
+                                        ? arg.event._def.extendedProps
+                                              .groupColor
+                                        : "black",
+                            }}
+                        >
                             {" "}
                             <Iconify icon="clarity:group-line" width="12px" />
                         </span>

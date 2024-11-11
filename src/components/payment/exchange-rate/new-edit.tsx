@@ -241,14 +241,14 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="CurrencyRate2"
+                                id="TargetCurrencyRate2"
                                 label={intl.formatMessage({
-                                    id: "Зарах",
+                                    id: "TargetCurrencyRate2",
                                 })}
-                                {...register("CurrencyRate2")}
+                                {...register("TargetCurrencyRate2")}
                                 margin="dense"
-                                error={errors.CurrencyRate2?.message}
-                                helperText={errors.CurrencyRate2?.message}
+                                error={errors.TargetCurrencyRate2?.message}
+                                helperText={errors.TargetCurrencyRate2?.message}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -269,14 +269,14 @@ const NewEdit = () => {
                                 size="small"
                                 type="number"
                                 fullWidth
-                                id="TargetCurrencyRate2"
+                                id="CurrencyRate2"
                                 label={intl.formatMessage({
-                                    id: "TargetCurrencyRate2",
+                                    id: "Зарах",
                                 })}
-                                {...register("TargetCurrencyRate2")}
+                                {...register("CurrencyRate2")}
                                 margin="dense"
-                                error={errors.TargetCurrencyRate2?.message}
-                                helperText={errors.TargetCurrencyRate2?.message}
+                                error={errors.CurrencyRate2?.message}
+                                helperText={errors.CurrencyRate2?.message}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}

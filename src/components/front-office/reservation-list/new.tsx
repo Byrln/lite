@@ -4,6 +4,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { mutate } from "swr";
 import { useIntl } from "react-intl";
 
+import ColorPicker from "components/select/color";
 import ReservationSourceSelect from "components/select/reservation-source";
 import {
     Card,
@@ -248,6 +249,7 @@ const NewEdit = ({
             tempValues.ArrivalDate = values.ArrivalDate + " " + ArrivalTime;
             tempValues.DepartureDate =
                 values.DepartureDate + " " + DepartureTime;
+            tempValues.GroupColor = groupColor;
 
             if (groupID) {
                 tempValues.IsGroup = true;
@@ -890,7 +892,7 @@ const NewEdit = ({
                                         setNewGroupCount(e.target.value);
                                     }}
                                 />
-                                {/* <ColorPicker onColorChange={onColorChange} /> */}
+                                <ColorPicker onColorChange={onColorChange} />
 
                                 <Button
                                     variant="outlined"
