@@ -24,7 +24,10 @@ const NewEdit = () => {
         reset,
         handleSubmit,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(validationSchema) });
+    } = useForm<any>({
+        defaultValues: { AmenityTypeID: 1 },
+        resolver: yupResolver(validationSchema),
+    });
 
     return (
         <NewEditForm

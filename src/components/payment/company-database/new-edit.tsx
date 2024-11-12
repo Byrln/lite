@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useForm } from "react-hook-form";
-import { TextField, Grid, Card, CardContent, Typography } from "@mui/material";
+import { TextField, Grid, Typography } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
@@ -11,18 +11,17 @@ import { useAppState } from "lib/context/app";
 import CountrySelect from "components/select/country";
 import CustomerGroupSelect from "components/select/customer-group";
 import CustomerTypeSelect from "components/select/customer-type";
-import Remarks from "./remarks";
 
 const validationSchema = yup.object().shape({
-    CustomerName: yup.string().nullable(),
+    CustomerName: yup.string().required("Бөглөнө үү"),
     CountryID: yup.string().nullable(),
     City: yup.string().nullable(),
     Address: yup.string().nullable(),
     RegisterNo: yup.string().nullable(),
     Phone: yup.string().nullable(),
     Email: yup.string().nullable(),
-    CustomerGroupID: yup.string().nullable(),
-    CustomerTypeID: yup.string().nullable(),
+    CustomerGroupID: yup.string().required("Сонгоно уу"),
+    CustomerTypeID: yup.string().required("Сонгоно уу"),
     ContactPersonFirstName1: yup.string().nullable(),
     ContactPersonLastName1: yup.string().nullable(),
     ContactPersonPosition1: yup.string().nullable(),
@@ -37,7 +36,7 @@ const validationSchema = yup.object().shape({
 
 const NewEdit = () => {
     const intl = useIntl();
-    const [entity, setEntity]: any = useState(null);
+    const [entity, setEntity]: any = useState({ CountryID: 146 });
     const [state]: any = useAppState();
     const {
         register,
@@ -45,7 +44,13 @@ const NewEdit = () => {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(validationSchema) });
+    } = useForm<any>({
+        defaultValues: {
+            CountryID: 146,
+        },
+
+        resolver: yupResolver(validationSchema),
+    });
 
     return (
         <NewEditForm
@@ -53,6 +58,8 @@ const NewEdit = () => {
             listUrl={listUrl}
             additionalValues={{
                 CustomerID: state.editId,
+                ContactPersonTitleID1: 0,
+                ContactPersonTitleID2: 0,
             }}
             reset={reset}
             handleSubmit={handleSubmit}

@@ -303,3 +303,12 @@ a.fc-event {
 .fc-event:focus::after {
     background: none !important;
 }
+
+.css-1rxj8va-MuiTableCell-root {
+    border: 1px solid rgba(241, 243, 244, 1);
+}
+
+.css-1b9g8m6-MuiTableRow-root:last-child td,
+.css-1b9g8m6-MuiTableRow-root:last-child th {
+    border: 1px solid rgba(241, 243, 244, 1);
+}

@@ -26,7 +26,8 @@ const NewEdit = ({ entity }: any) => {
         reset,
         handleSubmit,
         formState: { errors },
-    } = useForm({
+    } = useForm<any>({
+        defaultValues: { PaymentMethodGroupID: 1 },
         resolver: yupResolver(validationSchema),
     });
 

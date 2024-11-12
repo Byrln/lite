@@ -31,7 +31,6 @@ const NewEdit = () => {
     const [values, setValues]: any = useState(null);
     const [currentCurrency, setCurrentCurrecy]: any = useState(null);
 
-    console.log("entity", entity);
     const [state]: any = useAppState();
     const {
         register,
@@ -39,7 +38,15 @@ const NewEdit = () => {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(validationSchema) });
+    } = useForm<any>({
+        defaultValues: {
+            CurrencyRate1: 1,
+            CurrencyRate2: 1,
+            TargetCurrencyRate1: 1,
+            TargetCurrencyRate2: 1,
+        },
+        resolver: yupResolver(validationSchema),
+    });
     console.log("errors", errors);
     useEffect(() => {
         if (values) {
@@ -97,7 +104,7 @@ const NewEdit = () => {
             fetchDatas();
         }
     }, [entity]);
-    console.log("currentCurrency", currentCurrency);
+
     return (
         <NewEditForm
             api={ExchangeRateAPI}

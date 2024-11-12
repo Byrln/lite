@@ -17,8 +17,8 @@ const validationSchema = yup.object().shape({
     TaxCode: yup.string().required("Бөглөнө үү"),
     TaxName: yup.string().required("Бөглөнө үү"),
     TaxAmount: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    BeginDate: yup.date().required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    EndDate: yup.date().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    BeginDate: yup.date().nullable(),
+    EndDate: yup.date().nullable(),
 });
 
 const NewEdit = () => {

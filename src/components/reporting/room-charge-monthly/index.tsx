@@ -49,6 +49,10 @@ const AvailableRoom = ({ title, workingDate }: any) => {
     const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({});
     const { data: rooms, error: roomsError } = RoomSWR({});
 
+    function isDecimal(num: any) {
+        return !Number.isInteger(num);
+    }
+
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
             @page {
@@ -163,6 +167,14 @@ const AvailableRoom = ({ title, workingDate }: any) => {
         control,
     } = useForm(formOptions);
 
+    console.log("dataGroupedByDate", dataGroupedByDate);
+    console.log("datesdates", dates);
+    console.log("reportdata", reportData);
+    console.log("testtest11", dates[0]);
+
+    console.log("testtest22", new Date(dates[0]).getDate() / 2);
+
+    console.log("testtest33", isDecimal(new Date(dates[0]).getDate() / 2));
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -172,7 +184,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-                    {intl.formatMessage({id:"ButtonPrint"}) }
+                    {intl.formatMessage({ id: "ButtonPrint" })}
                 </Button>
 
                 <CustomSearch
@@ -209,7 +221,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                {intl.formatMessage({id:"TextDuration"}) }
+                                {intl.formatMessage({ id: "TextDuration" })}
                             </span>{" "}
                             {moment(search.CurrDate, "YYYY-MM-DD").format(
                                 "YYYY-MM"
@@ -235,7 +247,9 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                      {intl.formatMessage({id:"ConfigRoomType"}) }
+                                        {intl.formatMessage({
+                                            id: "ConfigRoomType",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         style={{
@@ -245,7 +259,9 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                         }}
                                         rowSpan={2}
                                     >
-                                       {intl.formatMessage({id:"ConfigRooms"}) }
+                                        {intl.formatMessage({
+                                            id: "ConfigRooms",
+                                        })}
                                     </TableCell>
                                     {dates &&
                                         dates.map((item: any) => (
@@ -276,7 +292,9 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                         fontSize: "10px",
                                                     }}
                                                 >
-                                                   {intl.formatMessage({id:"TextBasePrice"}) }
+                                                    {intl.formatMessage({
+                                                        id: "TextBasePrice",
+                                                    })}
                                                 </TableCell>
                                                 <TableCell
                                                     key={item}
@@ -287,7 +305,9 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                         fontSize: "10px",
                                                     }}
                                                 >
-                                                     {intl.formatMessage({id:"TextSale"}) }
+                                                    {intl.formatMessage({
+                                                        id: "TextSale",
+                                                    })}
                                                 </TableCell>
                                                 <TableCell
                                                     key={item}
@@ -298,7 +318,9 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                         fontSize: "10px",
                                                     }}
                                                 >
-                                                    {intl.formatMessage({id:"TextIncome"}) }
+                                                    {intl.formatMessage({
+                                                        id: "TextIncome",
+                                                    })}
                                                 </TableCell>
                                             </>
                                         ))}
@@ -415,6 +437,16 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                                                                 "10px",
                                                                                             padding:
                                                                                                 "2px",
+                                                                                            backgroundColor:
+                                                                                                isDecimal(
+                                                                                                    new Date(
+                                                                                                        item
+                                                                                                    ).getDate() /
+                                                                                                        2
+                                                                                                ) ==
+                                                                                                true
+                                                                                                    ? "white"
+                                                                                                    : "rgb(128 79 230 / 31%)",
                                                                                         }}
                                                                                     >
                                                                                         <div
@@ -448,6 +480,16 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                                                                 "10px",
                                                                                             padding:
                                                                                                 "2px",
+                                                                                            backgroundColor:
+                                                                                                isDecimal(
+                                                                                                    new Date(
+                                                                                                        item
+                                                                                                    ).getDate() /
+                                                                                                        2
+                                                                                                ) ==
+                                                                                                true
+                                                                                                    ? "white"
+                                                                                                    : "rgb(128 79 230 / 31%)",
                                                                                         }}
                                                                                     >
                                                                                         <div
@@ -549,6 +591,16 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                                                                 "10px",
                                                                                             padding:
                                                                                                 "2px",
+                                                                                            backgroundColor:
+                                                                                                isDecimal(
+                                                                                                    new Date(
+                                                                                                        item
+                                                                                                    ).getDate() /
+                                                                                                        2
+                                                                                                ) ==
+                                                                                                true
+                                                                                                    ? "white"
+                                                                                                    : "rgb(128 79 230 / 31%)",
                                                                                         }}
                                                                                     >
                                                                                         <div
@@ -585,6 +637,16 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                                                                 "10px",
                                                                                             padding:
                                                                                                 "2px",
+                                                                                            backgroundColor:
+                                                                                                isDecimal(
+                                                                                                    new Date(
+                                                                                                        item
+                                                                                                    ).getDate() /
+                                                                                                        2
+                                                                                                ) ==
+                                                                                                true
+                                                                                                    ? "white"
+                                                                                                    : "rgb(128 79 230 / 31%)",
                                                                                         }}
                                                                                     >
                                                                                         <div
@@ -605,6 +667,16 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                                                                 "10px",
                                                                                             padding:
                                                                                                 "2px",
+                                                                                            backgroundColor:
+                                                                                                isDecimal(
+                                                                                                    new Date(
+                                                                                                        item
+                                                                                                    ).getDate() /
+                                                                                                        2
+                                                                                                ) ==
+                                                                                                true
+                                                                                                    ? "white"
+                                                                                                    : "rgb(128 79 230 / 31%)",
                                                                                         }}
                                                                                     >
                                                                                         <div
@@ -625,6 +697,17 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                                                                 "10px",
                                                                                             padding:
                                                                                                 "2px",
+
+                                                                                            backgroundColor:
+                                                                                                isDecimal(
+                                                                                                    new Date(
+                                                                                                        item
+                                                                                                    ).getDate() /
+                                                                                                        2
+                                                                                                ) ==
+                                                                                                true
+                                                                                                    ? "white"
+                                                                                                    : "rgb(128 79 230 / 31%)",
                                                                                         }}
                                                                                     >
                                                                                         <div
@@ -658,6 +741,14 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                                 fontSize:
                                                                     "10px",
                                                                 padding: "2px",
+                                                                backgroundColor:
+                                                                    isDecimal(
+                                                                        index +
+                                                                            1 /
+                                                                                2
+                                                                    ) == true
+                                                                        ? "white"
+                                                                        : "rgb(128 79 230 / 31%)",
                                                             }}
                                                             colSpan={
                                                                 dates
@@ -711,6 +802,15 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                             fontSize: "10px",
                                                             padding: "2px",
                                                             fontWeight: "bold",
+                                                            backgroundColor:
+                                                                isDecimal(
+                                                                    new Date(
+                                                                        item
+                                                                    ).getDate() /
+                                                                        2
+                                                                ) == true
+                                                                    ? "white"
+                                                                    : "rgb(128 79 230 / 31%)",
                                                         }}
                                                     >
                                                         {}
@@ -739,6 +839,15 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                             fontSize: "10px",
                                                             padding: "2px",
                                                             fontWeight: "bold",
+                                                            backgroundColor:
+                                                                isDecimal(
+                                                                    new Date(
+                                                                        item
+                                                                    ).getDate() /
+                                                                        2
+                                                                ) == true
+                                                                    ? "white"
+                                                                    : "rgb(128 79 230 / 31%)",
                                                         }}
                                                     ></TableCell>
                                                     <TableCell
@@ -748,6 +857,15 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                             fontSize: "10px",
                                                             padding: "2px",
                                                             fontWeight: "bold",
+                                                            backgroundColor:
+                                                                isDecimal(
+                                                                    new Date(
+                                                                        item
+                                                                    ).getDate() /
+                                                                        2
+                                                                ) == true
+                                                                    ? "white"
+                                                                    : "rgb(128 79 230 / 31%)",
                                                         }}
                                                     >
                                                         {}
@@ -794,7 +912,9 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                         }}
                                         colSpan={2}
                                     >
-                                      {intl.formatMessage({id:"TextTotalNumber"}) }
+                                        {intl.formatMessage({
+                                            id: "TextTotalNumber",
+                                        })}
                                     </TableCell>
                                     {dates &&
                                         dates.map((item: any) => (
@@ -806,6 +926,14 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                                                         fontSize: "10px",
                                                         padding: "2px",
                                                         fontWeight: "bold",
+                                                        backgroundColor:
+                                                            isDecimal(
+                                                                new Date(
+                                                                    item
+                                                                ).getDate() / 2
+                                                            ) == true
+                                                                ? "white"
+                                                                : "rgb(128 79 230 / 31%)",
                                                     }}
                                                     colSpan={3}
                                                     align="center"
@@ -834,7 +962,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                {intl.formatMessage({id:"ReportPrinted"}) }
+                                {intl.formatMessage({ id: "ReportPrinted" })}
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -849,7 +977,7 @@ const AvailableRoom = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                {intl.formatMessage({id:"DateToPrinted"}) }
+                                {intl.formatMessage({ id: "DateToPrinted" })}
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>
