@@ -54,7 +54,7 @@ export const ExchangeRateAPI = {
 
     update: async (values: any) => {
         const { data, status } = await axios.post(
-            `${urlPrefix}/Update`,
+            `${urlPrefix}/ExchangeRate/InsertWU`,
             values
         );
 
