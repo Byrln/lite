@@ -57,7 +57,6 @@ const NewEdit = ({
 
     const customSubmit = async (values: any) => {
         try {
-            console.log("values", values);
             const response: any = await CashierSessionAPI.start(values);
 
             await mutate(`/api/CashierSession/List`);

@@ -78,7 +78,6 @@ const RoomAssign = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            console.log(values);
 
             const res = await ReservationAPI.roomAssign(values);
 

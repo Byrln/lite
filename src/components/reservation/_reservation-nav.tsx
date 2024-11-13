@@ -1,9 +1,11 @@
 import { ReservationAPI } from "lib/api/reservation";
 import { useState, useContext } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 import { listUrl as calendarItemsURL } from "lib/api/front-office";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { Icon } from "@iconify/react";
 
 import { mutate } from "swr";
 import { ModalContext } from "lib/context/modal";
@@ -213,102 +215,188 @@ const ReservationNav = ({
             </Button>
 
             {reservation.MoveRoom && (
-                <Button
-                    variant={"text"}
-                    size="small"
-                    sx={buttonStyle}
-                    onClick={() => {
-                        handleModal(
-                            true,
-                            intl.formatMessage({
-                                id: "ButtonRoomMove",
-                            }),
-                            <RoomMoveForm
-                                transactionInfo={reservation}
-                                reservation={reservation}
-                                additionalMutateUrl={additionalMutateUrl}
-                            />
-                        );
-                    }}
-                >
-                    {intl.formatMessage({
-                        id: "ButtonRoomMove",
-                    })}
-                </Button>
+                <div style={{ width: "100%", display: "flex" }}>
+                    <Button
+                        variant={"text"}
+                        size="small"
+                        sx={buttonStyle}
+                        onClick={() => {
+                            handleModal(
+                                true,
+                                intl.formatMessage({
+                                    id: "ButtonRoomMove",
+                                }),
+                                <RoomMoveForm
+                                    transactionInfo={reservation}
+                                    reservation={reservation}
+                                    additionalMutateUrl={additionalMutateUrl}
+                                />
+                            );
+                        }}
+                    >
+                        {intl.formatMessage({
+                            id: "ButtonRoomMove",
+                        })}
+                    </Button>
+                    <Tooltip title="Заавар">
+                        <Link href="https://youtu.be/Sy-JD06vChY" passHref>
+                            <a
+                                target="_blank"
+                                style={{
+                                    paddingLeft: "6px",
+                                    paddingRight: "6px",
+                                    paddingTop: "3px",
+                                }}
+                            >
+                                <Icon
+                                    icon="material-symbols:help-outline"
+                                    color="#1877F2"
+                                    height={16}
+                                />
+                            </a>
+                        </Link>
+                    </Tooltip>
+                </div>
             )}
             {reservation.AmendStay && (
-                <Button
-                    variant={"text"}
-                    size="small"
-                    onClick={() => {
-                        handleModal(
-                            true,
-                            intl.formatMessage({
-                                id: "ButtonAmendStay",
-                            }),
-                            <AmendStayForm
-                                transactionInfo={reservation}
-                                reservation={reservation}
-                                additionalMutateUrl={additionalMutateUrl}
-                            />
-                        );
-                    }}
-                    sx={buttonStyle}
-                >
-                    {intl.formatMessage({
-                        id: "ButtonAmendStay",
-                    })}
-                </Button>
+                <div style={{ width: "100%", display: "flex" }}>
+                    <Button
+                        variant={"text"}
+                        size="small"
+                        onClick={() => {
+                            handleModal(
+                                true,
+                                intl.formatMessage({
+                                    id: "ButtonAmendStay",
+                                }),
+                                <AmendStayForm
+                                    transactionInfo={reservation}
+                                    reservation={reservation}
+                                    additionalMutateUrl={additionalMutateUrl}
+                                />
+                            );
+                        }}
+                        sx={buttonStyle}
+                    >
+                        {intl.formatMessage({
+                            id: "ButtonAmendStay",
+                        })}
+                    </Button>
+                    <Tooltip title="Заавар">
+                        <Link href="https://youtu.be/rvXMlvBKgfI" passHref>
+                            <a
+                                target="_blank"
+                                style={{
+                                    paddingLeft: "6px",
+                                    paddingRight: "6px",
+                                    paddingTop: "3px",
+                                }}
+                            >
+                                <Icon
+                                    icon="material-symbols:help-outline"
+                                    color="#1877F2"
+                                    height={16}
+                                />
+                            </a>
+                        </Link>
+                    </Tooltip>
+                </div>
             )}
 
             {reservation.Void && (
-                <Button
-                    variant={"text"}
-                    size="small"
-                    onClick={(evt: any) => {
-                        handleModal(
-                            true,
-                            intl.formatMessage({
-                                id: "ButtonVoidTransaction",
-                            }),
-                            <VoidTransactionForm
-                                transactionInfo={reservation}
-                                reservation={reservation}
-                                customMutateUrl={additionalMutateUrl}
-                            />
-                        );
-                    }}
-                    sx={buttonStyle}
-                >
-                    {intl.formatMessage({
-                        id: "ButtonVoidTransaction",
-                    })}
-                </Button>
+                <div style={{ width: "100%", display: "flex" }}>
+                    <Button
+                        variant={"text"}
+                        size="small"
+                        onClick={(evt: any) => {
+                            handleModal(
+                                true,
+                                intl.formatMessage({
+                                    id: "ButtonVoidTransaction",
+                                }),
+                                <VoidTransactionForm
+                                    transactionInfo={reservation}
+                                    reservation={reservation}
+                                    customMutateUrl={additionalMutateUrl}
+                                />
+                            );
+                        }}
+                        sx={buttonStyle}
+                    >
+                        {intl.formatMessage({
+                            id: "ButtonVoidTransaction",
+                        })}
+                    </Button>
+                    <Tooltip title="Заавар">
+                        <Link
+                            href="https://youtu.be/0Qa_qgWXlvM?si=lMb9Qyq4m9IwFyRX"
+                            passHref
+                        >
+                            <a
+                                target="_blank"
+                                style={{
+                                    paddingLeft: "6px",
+                                    paddingRight: "6px",
+                                    paddingTop: "3px",
+                                }}
+                            >
+                                <Icon
+                                    icon="material-symbols:help-outline"
+                                    color="#1877F2"
+                                    height={16}
+                                />
+                            </a>
+                        </Link>
+                    </Tooltip>
+                </div>
             )}
 
             {reservation.Cancel && (
-                <Button
-                    variant={"text"}
-                    size="small"
-                    sx={buttonStyle}
-                    onClick={(evt: any) => {
-                        handleModal(
-                            true,
-                            intl.formatMessage({
-                                id: "ButtonCancelReservation",
-                            }),
-                            <CancelReservationForm
-                                transactionInfo={reservation}
-                                reservation={reservation}
-                                customMutateUrl={additionalMutateUrl}
-                            />
-                        );
-                    }}
-                >
-                    {intl.formatMessage({
-                        id: "ButtonCancelReservation",
-                    })}
-                </Button>
+                <div style={{ width: "100%", display: "flex" }}>
+                    <Button
+                        variant={"text"}
+                        size="small"
+                        sx={buttonStyle}
+                        onClick={(evt: any) => {
+                            handleModal(
+                                true,
+                                intl.formatMessage({
+                                    id: "ButtonCancelReservation",
+                                }),
+                                <CancelReservationForm
+                                    transactionInfo={reservation}
+                                    reservation={reservation}
+                                    customMutateUrl={additionalMutateUrl}
+                                />
+                            );
+                        }}
+                    >
+                        {intl.formatMessage({
+                            id: "ButtonCancelReservation",
+                        })}
+                    </Button>
+                    <Tooltip title="Заавар">
+                        <Link
+                            href="https://youtu.be/-BIFndvkXRo?si=RmQ_k9OzLk3YQamM"
+                            passHref
+                        >
+                            <a
+                                target="_blank"
+                                style={{
+                                    paddingLeft: "6px",
+                                    paddingRight: "6px",
+                                    paddingTop: "3px",
+                                }}
+                            >
+                                <Icon
+                                    icon="material-symbols:help-outline"
+                                    color="#1877F2"
+                                    height={16}
+                                />
+                            </a>
+                        </Link>
+                    </Tooltip>
+                </div>
             )}
             {reservation.Assign && (
                 <Button
@@ -339,7 +427,9 @@ const ReservationNav = ({
                     sx={buttonStyle}
                     onClick={unassignRoom}
                 >
-                    Unassign Room
+                    {intl.formatMessage({
+                        id: "ButtonUnassignRoom",
+                    })}
                 </Button>
             )}
             {reservation.AuditTrail && (

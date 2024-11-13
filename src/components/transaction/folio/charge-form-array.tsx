@@ -113,7 +113,6 @@ export default function ChargeFormArray({
         }
         await mutate(`/api/Folio/Items`);
         handleModal();
-        console.log("data", data);
     };
 
     return (

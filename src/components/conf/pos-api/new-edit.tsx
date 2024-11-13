@@ -17,7 +17,6 @@ const validationSchema = yup.object().shape({
 });
 
 const NewEdit = ({ data }: any) => {
-    console.log("data11", data);
     const intl = useIntl();
     const [entity, setEntity]: any = useState({
         SubDistrictCode: data.SubDistrictCode,

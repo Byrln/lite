@@ -141,7 +141,6 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
                 element: any,
                 dataIndex: any
             ) {
-                console.log("test", dataIndex);
                 return (
                     <Checkbox
                         key={rerenderKey}

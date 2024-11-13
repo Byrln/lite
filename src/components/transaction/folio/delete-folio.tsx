@@ -23,7 +23,7 @@ export default function DeleteFolio({FolioID,
     handleModal,
     TransactionID,
 }: any){
-    
+
     useEffect(() => {
         fetchDatas();
     }, [FolioID, CurrID, TypeID]);
@@ -32,13 +32,13 @@ export default function DeleteFolio({FolioID,
     const [newData, setNewData]=useState<any>()
 
     const [canVoid, setCanVoid]=useState<any>()
-    
+
 
     const fetchDatas = async () => {
         let response = await FolioAPI.edits(FolioID, CurrID, TypeID);
 
         setCanVoid(response[0].CanVoid)
-        
+
         setNewData(response);
 
 
@@ -47,7 +47,7 @@ export default function DeleteFolio({FolioID,
     const { data, error } = ReasonSWR({ ReasonTypeID: 2 });
 
 
-    
+
 
     const [reasonID, setReasonID]=useState<any>("5")
 
@@ -80,18 +80,14 @@ export default function DeleteFolio({FolioID,
         handleModal();
     }
 
-    console.log(newData)
-
-
-
     return<div>
         <Stack direction='column' spacing={2}>
         <Stack direction='row' spacing={2} alignItems='center'>
         <Typography>
             Устгах шалтгаан сонгох
         </Typography>
-        
-        <Select value={reasonID} fullWidth onChange={handleReasonSelect}> 
+
+        <Select value={reasonID} fullWidth onChange={handleReasonSelect}>
             {
                 data?.map((element: any) => {
                     return (

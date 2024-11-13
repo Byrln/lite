@@ -5,7 +5,6 @@ import { PosApiInfoSWR } from "lib/api/pos-api";
 
 const PosApiCheck = ({ HotelCode }: any) => {
     const { data, error } = PosApiInfoSWR(HotelCode);
-    console.log("data", data);
     return (
         <>
             <Stack direction="row">

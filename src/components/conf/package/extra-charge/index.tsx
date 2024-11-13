@@ -48,7 +48,7 @@ const PackageList = ({ title, packageId, data, setData, error }: any) => {
             },
         },
     ];
-    // console.log("data", data);
+
     return (
         <>
             <CustomTable

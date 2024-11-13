@@ -68,7 +68,6 @@ const RoomSelect = ({
         var d = await RoomAPI.listAvailable(values);
 
         setData(d);
-        console.log("RoomID", d[0]);
 
         // setBaseStay({
         //     ...baseStay,
@@ -79,7 +78,6 @@ const RoomSelect = ({
             defaultValue: d[0].RoomID,
         });
     };
-    console.log("baseStay", baseStay);
     useEffect(() => {
         if (data && data.length > 0) {
             if (baseStay.room) {
@@ -92,7 +90,6 @@ const RoomSelect = ({
     }, [data]);
 
     useEffect(() => {
-        console.log("===== baseStay change =====");
 
         fetchRooms();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,7 +100,6 @@ const RoomSelect = ({
             // @ts-ignore
             onRoomChange(data[0]);
         }
-        console.log("Data", data[0]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomAutoAssign]);
 

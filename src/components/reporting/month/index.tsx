@@ -149,7 +149,6 @@ const ReportingList = ({ title, workingDate }: any) => {
     useEffect(() => {
         if (data) {
             setColumns(generateColumns());
-            console.log("data", data);
 
             let tempValue = groupBy(data, "RoomTypeName");
 
@@ -360,10 +359,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                                                         (
                                                                                             blog: any
                                                                                         ) => {
-                                                                                            console.log(
-                                                                                                "blog",
-                                                                                                blog
-                                                                                            );
+
                                                                                             return (
                                                                                                 <TableCell
                                                                                                     style={{
@@ -778,9 +774,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                 </TableRow>
                                             </>
                                         )
-                                        // console.log(
-                                        //     `${key}: ${reportData[key]}`
-                                        // );
+
                                     )}
 
                                 <TableRow

@@ -469,7 +469,6 @@ const TimelineTable = ({ props, workingDate }: any) => {
         setRecords(records);
         // @ts-ignore
         setCells(cells);
-        // console.log(mergeCells)
         // @ts-ignore
         setMergeCells(mergeCells);
         // @ts-ignore

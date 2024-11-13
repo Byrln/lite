@@ -40,7 +40,6 @@ const ExtraCharge = ({
 
         try {
             let tempValue: any = {};
-            console.log("chargeTypes", chargeTypes);
             chargeTypes.forEach((element: any) => {
                 if (element.isChecked && element.isChecked == true) {
                     tempValue.TransactionID = values.TransactionID
@@ -122,7 +121,6 @@ const ExtraCharge = ({
             handleModal();
         }
     };
-    console.log("chargeTypes", chargeTypes);
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>

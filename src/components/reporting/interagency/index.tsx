@@ -282,328 +282,322 @@ const Folio = ({ title, initialData }: any) => {
                             </TableHead>
                             <TableBody>
                                 {reportData &&
-                                    Object.keys(reportData).map(
-                                        (key) => (
-                                            <>
-                                                <TableRow
-                                                    key={key}
-                                                    sx={{
-                                                        "&:last-child td, &:last-child th":
-                                                            { border: 0 },
+                                    Object.keys(reportData).map((key) => (
+                                        <>
+                                            <TableRow
+                                                key={key}
+                                                sx={{
+                                                    "&:last-child td, &:last-child th":
+                                                        { border: 0 },
+                                                }}
+                                            >
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                        paddingLeft: "30px",
                                                     }}
+                                                    colSpan={11}
                                                 >
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                            paddingLeft: "30px",
-                                                        }}
-                                                        colSpan={11}
-                                                    >
-                                                        {key}
-                                                    </TableCell>
-                                                </TableRow>
-                                                {reportData[key] &&
-                                                    Object.keys(
-                                                        reportData[key]
-                                                    ).map((key2) => (
-                                                        <>
-                                                            <TableRow
-                                                                key={key}
-                                                                sx={{
-                                                                    "&:last-child td, &:last-child th":
-                                                                        {
-                                                                            border: 0,
-                                                                        },
-                                                                }}
+                                                    {key}
+                                                </TableCell>
+                                            </TableRow>
+                                            {reportData[key] &&
+                                                Object.keys(
+                                                    reportData[key]
+                                                ).map((key2) => (
+                                                    <>
+                                                        <TableRow
+                                                            key={key}
+                                                            sx={{
+                                                                "&:last-child td, &:last-child th":
+                                                                    {
+                                                                        border: 0,
+                                                                    },
+                                                            }}
+                                                        >
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
                                                             >
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .GuestName
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {reportData[
+                                                                {
+                                                                    reportData[
                                                                         key
                                                                     ][key2]
-                                                                        .Arrival
-                                                                        ? moment(
-                                                                              reportData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .Arrival
-                                                                          ).format(
-                                                                              "YYYY-MM-DD"
-                                                                          )
-                                                                        : ""}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {reportData[
+                                                                        .GuestName
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                            >
+                                                                {reportData[
+                                                                    key
+                                                                ][key2].Arrival
+                                                                    ? moment(
+                                                                          reportData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .Arrival
+                                                                      ).format(
+                                                                          "YYYY-MM-DD"
+                                                                      )
+                                                                    : ""}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                            >
+                                                                {reportData[
+                                                                    key
+                                                                ][key2]
+                                                                    .Departure
+                                                                    ? moment(
+                                                                          reportData[
+                                                                              key
+                                                                          ][
+                                                                              key2
+                                                                          ]
+                                                                              .Departure
+                                                                      ).format(
+                                                                          "YYYY-MM-DD"
+                                                                      )
+                                                                    : ""}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                            >
+                                                                {
+                                                                    reportData[
                                                                         key
                                                                     ][key2]
-                                                                        .Departure
-                                                                        ? moment(
-                                                                              reportData[
-                                                                                  key
-                                                                              ][
-                                                                                  key2
-                                                                              ]
-                                                                                  .Departure
-                                                                          ).format(
-                                                                              "YYYY-MM-DD"
-                                                                          )
-                                                                        : ""}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .RoomFullName
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                >
-                                                                    {
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .FolioNo
-                                                                    }
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                    align="right"
-                                                                >
-                                                                    {formatPrice(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .Debit
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                    align="right"
-                                                                >
-                                                                    {formatPrice(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .CashAmount
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                    align="right"
-                                                                >
-                                                                    {formatPrice(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .BankAmount
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                    align="right"
-                                                                >
-                                                                    {formatPrice(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .InvoiceAmount
-                                                                    )}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    component="th"
-                                                                    scope="row"
-                                                                    align="right"
-                                                                >
-                                                                    {formatPrice(
-                                                                        reportData[
-                                                                            key
-                                                                        ][key2]
-                                                                            .Balance
-                                                                    )}
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        </>
-                                                    ))}
-                                                <TableRow
-                                                    key={key}
-                                                    sx={{
-                                                        "&:last-child td, &:last-child th":
-                                                            { border: 0 },
+                                                                        .RoomFullName
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                            >
+                                                                {
+                                                                    reportData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .FolioNo
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                align="right"
+                                                            >
+                                                                {formatPrice(
+                                                                    reportData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .Debit
+                                                                )}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                align="right"
+                                                            >
+                                                                {formatPrice(
+                                                                    reportData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .CashAmount
+                                                                )}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                align="right"
+                                                            >
+                                                                {formatPrice(
+                                                                    reportData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .BankAmount
+                                                                )}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                align="right"
+                                                            >
+                                                                {formatPrice(
+                                                                    reportData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .InvoiceAmount
+                                                                )}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                component="th"
+                                                                scope="row"
+                                                                align="right"
+                                                            >
+                                                                {formatPrice(
+                                                                    reportData[
+                                                                        key
+                                                                    ][key2]
+                                                                        .Balance
+                                                                )}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    </>
+                                                ))}
+                                            <TableRow
+                                                key={key}
+                                                sx={{
+                                                    "&:last-child td, &:last-child th":
+                                                        { border: 0 },
+                                                }}
+                                            >
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
                                                     }}
+                                                    align="right"
+                                                    colSpan={5}
                                                 >
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        align="right"
-                                                        colSpan={5}
-                                                    >
-                                                        Нийт:
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        align="right"
-                                                        colSpan={1}
-                                                    >
-                                                        {reportData &&
-                                                            reportData[key] &&
-                                                            formatPrice(
-                                                                reportData[
-                                                                    key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        obj.Debit,
-                                                                    0
-                                                                )
-                                                            )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        align="right"
-                                                        colSpan={1}
-                                                    >
-                                                        {reportData &&
-                                                            reportData[key] &&
-                                                            formatPrice(
-                                                                reportData[
-                                                                    key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        obj.CashAmount,
-                                                                    0
-                                                                )
-                                                            )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        align="right"
-                                                        colSpan={1}
-                                                    >
-                                                        {reportData &&
-                                                            reportData[key] &&
-                                                            formatPrice(
-                                                                reportData[
-                                                                    key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        obj.BankAmount,
-                                                                    0
-                                                                )
-                                                            )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        align="right"
-                                                        colSpan={1}
-                                                    >
-                                                        {reportData &&
-                                                            reportData[key] &&
-                                                            formatPrice(
-                                                                reportData[
-                                                                    key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        obj.InvoiceAmount,
-                                                                    0
-                                                                )
-                                                            )}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                        align="right"
-                                                        colSpan={1}
-                                                    >
-                                                        {reportData &&
-                                                            reportData[key] &&
-                                                            formatPrice(
-                                                                reportData[
-                                                                    key
-                                                                ].reduce(
-                                                                    (
-                                                                        acc: any,
-                                                                        obj: any
-                                                                    ) =>
-                                                                        acc +
-                                                                        obj.Balance,
-                                                                    0
-                                                                )
-                                                            )}
-                                                    </TableCell>
-                                                </TableRow>
-                                            </>
-                                        )
-                                        // console.log(
-                                        //     `${key}: ${reportData[key]}`
-                                        // );
-                                    )}
+                                                    Нийт:
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    align="right"
+                                                    colSpan={1}
+                                                >
+                                                    {reportData &&
+                                                        reportData[key] &&
+                                                        formatPrice(
+                                                            reportData[
+                                                                key
+                                                            ].reduce(
+                                                                (
+                                                                    acc: any,
+                                                                    obj: any
+                                                                ) =>
+                                                                    acc +
+                                                                    obj.Debit,
+                                                                0
+                                                            )
+                                                        )}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    align="right"
+                                                    colSpan={1}
+                                                >
+                                                    {reportData &&
+                                                        reportData[key] &&
+                                                        formatPrice(
+                                                            reportData[
+                                                                key
+                                                            ].reduce(
+                                                                (
+                                                                    acc: any,
+                                                                    obj: any
+                                                                ) =>
+                                                                    acc +
+                                                                    obj.CashAmount,
+                                                                0
+                                                            )
+                                                        )}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    align="right"
+                                                    colSpan={1}
+                                                >
+                                                    {reportData &&
+                                                        reportData[key] &&
+                                                        formatPrice(
+                                                            reportData[
+                                                                key
+                                                            ].reduce(
+                                                                (
+                                                                    acc: any,
+                                                                    obj: any
+                                                                ) =>
+                                                                    acc +
+                                                                    obj.BankAmount,
+                                                                0
+                                                            )
+                                                        )}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    align="right"
+                                                    colSpan={1}
+                                                >
+                                                    {reportData &&
+                                                        reportData[key] &&
+                                                        formatPrice(
+                                                            reportData[
+                                                                key
+                                                            ].reduce(
+                                                                (
+                                                                    acc: any,
+                                                                    obj: any
+                                                                ) =>
+                                                                    acc +
+                                                                    obj.InvoiceAmount,
+                                                                0
+                                                            )
+                                                        )}
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{
+                                                        fontWeight: "bold",
+                                                    }}
+                                                    align="right"
+                                                    colSpan={1}
+                                                >
+                                                    {reportData &&
+                                                        reportData[key] &&
+                                                        formatPrice(
+                                                            reportData[
+                                                                key
+                                                            ].reduce(
+                                                                (
+                                                                    acc: any,
+                                                                    obj: any
+                                                                ) =>
+                                                                    acc +
+                                                                    obj.Balance,
+                                                                0
+                                                            )
+                                                        )}
+                                                </TableCell>
+                                            </TableRow>
+                                        </>
+                                    ))}
 
                                 <TableRow
                                     key={"total"}

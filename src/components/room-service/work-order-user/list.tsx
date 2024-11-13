@@ -37,7 +37,7 @@ const HouseKeepingList = ({ title }: any) => {
     const [loading, setLoading] = useState(false);
     const columns = [
         {
-            title: intl.formatMessage({id:"ReportReservationNo"}), 
+            title: intl.formatMessage({id:"ReportReservationNo"}),
             key: "ReportReservationNo",
             dataIndex: "ReportReservationNo",
         },
@@ -204,7 +204,6 @@ const HouseKeepingList = ({ title }: any) => {
                                             </Button>
                                         </div>
                                     );
-                                console.log("items", field);
                             }}
                         >
                             <Card

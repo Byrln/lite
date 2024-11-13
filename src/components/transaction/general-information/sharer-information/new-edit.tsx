@@ -32,8 +32,7 @@ const NewEdit = ({ TransactionID }: any) => {
 
     const customSubmit = async (values: any) => {
         try {
-            console.log("values", values);
-            console.log("selectedGuest", selectedGuest);
+
             let tempGuestValues = {
                 Name: values.Name ? values.Name : "",
                 Surname: values.Surname ? values.Surname : "",

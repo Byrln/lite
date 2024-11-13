@@ -40,7 +40,7 @@ const ExtraCharge = ({ entity, setEntity, register, errors }: any) => {
         setEntity(tempEntity);
         setRerenderKey((prevKey) => prevKey + 1);
     };
-    console.log("entity", entity);
+
     const columns = [
         {
             title: "№",
@@ -216,7 +216,7 @@ const ExtraCharge = ({ entity, setEntity, register, errors }: any) => {
             },
         },
     ];
-    console.log("chargeType", chargeType);
+
     return (
         <>
             <ChargeTypeGroupSelect

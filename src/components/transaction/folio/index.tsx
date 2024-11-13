@@ -28,7 +28,6 @@ const RoomCharge = ({ TransactionID }: any) => {
     const [selectedRow, setSelectedRow] = useState<any>(null);
 
     const handleClick = (event: any, row: any) => {
-        console.log("row", row);
         setAnchorEl(event.currentTarget);
         setSelectedRow(row);
     };
@@ -40,7 +39,6 @@ const RoomCharge = ({ TransactionID }: any) => {
 
     const { data, error } = FolioItemSWR(FolioID);
 
-    console.log(data);
 
     useEffect(() => {
         if (data) {

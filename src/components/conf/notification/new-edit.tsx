@@ -14,7 +14,7 @@ import CustomSelect from "components/common/custom-select";
 import { notificationType } from "lib/utils/helpers";
 
 const validationSchema = yup.object().shape({
-    
+
     NotificationTypeID: yup.string().required("Бөглөнө үү"),
     UserTypeID: yup.string().required("Бөглөнө үү"),
     ItemID: yup.string().required("Бөглөнө үү"),
@@ -28,7 +28,6 @@ const NewEdit = () => {
     const [notificationTypeID, setNotificationTypeID]: any = useState(0);
     const [userTypeID, setUserTypeID]: any = useState(null);
 
-    console.log("notificationTypeID", notificationTypeID);
     const [state]: any = useAppState();
     const {
         register,
@@ -64,9 +63,9 @@ const NewEdit = () => {
                         register={register}
                         errors={errors}
                         field="UserTypeID"
-                     
+
                         label={intl.formatMessage({id:"RowHeaderReasonType"}) }
-                    
+
                         options={notifType}
                         optionValue="value"
                         optionLabel="name"

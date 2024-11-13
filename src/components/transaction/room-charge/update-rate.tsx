@@ -20,7 +20,6 @@ const validationSchema = yup.object().shape({
 });
 
 const UpdateRate = ({ element, RoomTypeID }: any) => {
-    console.log("element", element);
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
 
@@ -61,7 +60,6 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
 
     useEffect(() => {
         if (element) {
-            console.log("element", element);
             // reset(element);
             resetField(`Amount`, {
                 defaultValue: element.RateAmount,

@@ -64,7 +64,6 @@ const NewEdit = ({ timelineCoord, defaultEntity }: any) => {
     } = useForm(formOptions);
 
     const onRoomTypeChange = (roomType: any) => {
-        console.log(roomType);
         setBaseStay({
             ...baseStay,
             roomType: roomType,
@@ -97,7 +96,6 @@ const NewEdit = ({ timelineCoord, defaultEntity }: any) => {
         }
 
         if (defaultEntity) {
-            console.log(defaultEntity);
             reset({
                 RoomTypeID: defaultEntity.RoomTypeID,
                 RoomID: defaultEntity.RoomID,

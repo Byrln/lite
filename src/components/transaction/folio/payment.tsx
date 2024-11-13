@@ -66,7 +66,6 @@ export default function FolioPayment({
 
         setNewChargeType(tempfiltered);
 
-        console.log(tempfiltered);
         setTypePick("");
     };
 

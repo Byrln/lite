@@ -42,13 +42,7 @@ const MarkNoShowForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            // values.NewRoomTypeID = roomType.RoomTypeID
-            //     ? roomType.RoomTypeID
-            //     : values.RoomTypeID;
-            // values.NewRoomID = values.RoomID;
-            // delete values.RoomTypeID;
-            // delete values.RoomID;
-            console.log("values", values);
+
             const res = await ReservationAPI.noShow(values);
 
             await mutate(listUrl);

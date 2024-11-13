@@ -56,7 +56,6 @@ const NewEdit = ({
     });
 
     const handleOnChange = (value: any) => {
-        console.log("value", value);
         setPaymentMethodGroupID(value);
         mutate(paymentMethodUrl);
     };

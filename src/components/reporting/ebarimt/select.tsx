@@ -29,7 +29,7 @@ const EbarimtSelect = ({ FolioID }: any) => {
             if (response) {
                 setCustomer(response.data);
             }
-            console.log("check ", response.data);
+
             setLoading(false);
         } finally {
         }
@@ -47,15 +47,10 @@ const EbarimtSelect = ({ FolioID }: any) => {
             };
 
             const response = await PosApiAPI.print(values);
-            // if (response) {
-            //     setCustomer(response.data);
-            // }
-            console.log("check ", response);
             setLoading(false);
         } finally {
         }
     };
-    console.log("customer", customer);
     return (
         <>
             <Grid container spacing={1}>

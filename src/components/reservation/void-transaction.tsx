@@ -34,7 +34,6 @@ const VoidTransactionForm = ({
         formState: { errors },
         reset,
     } = useForm(formOptions);
-    console.log("transactionInfo", transactionInfo);
     useEffect(() => {
         reset({
             TransactionID: transactionInfo.TransactionID,
@@ -50,7 +49,6 @@ const VoidTransactionForm = ({
             ) {
                 transactionInfo.forEach(async (room: any) => {
                     if (room.isChecked == true) {
-                        console.log("room", room);
                         let tempValue: any = {};
                         tempValue.ReasonID = values.ReasonID;
                         tempValue.TransactionID = room.TransactionID;

@@ -3,12 +3,16 @@ import MenuItem from "@mui/material/MenuItem";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
-import { useEffect } from "react";
 
 import { CustomerTypeSWR } from "lib/api/customer-type";
-import { elementAcceptingRef } from "@mui/utils";
 
-const CustomerTypeSelect = ({ register, errors, entity, setEntity }: any) => {
+const CustomerTypeSelect = ({
+    register,
+    errors,
+    entity,
+    setEntity,
+    disabled,
+}: any) => {
     const { data, error } = CustomerTypeSWR();
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -32,6 +36,7 @@ const CustomerTypeSelect = ({ register, errors, entity, setEntity }: any) => {
             error={errors.CustomerTypeID?.message}
             helperText={errors.CustomerTypeID?.message}
             value={entity && entity.CustomerTypeID}
+            disabled={disabled}
             onChange={(evt: any) => {
                 setEntity &&
                     setEntity({

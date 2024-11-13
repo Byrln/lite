@@ -272,6 +272,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           Breakfast: obj.Breakfast,
                           endDate: obj.EndDate,
                           groupColor: `${obj.GroupColor}`,
+                          GroupCode: `${obj.GroupCode}`,
+                          IsGroupOwner: `${obj.IsGroupOwner}`,
                           statusColor: `#${obj.StatusColor}`,
                           editable: true,
                           color: getContrastYIQ(`#${obj.StatusColor}`),
@@ -330,7 +332,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     };
                 });
             });
-            console.log("letNewEvents", letNewEvents);
 
             if (roomBlocks) {
                 const newRoomBlockDta = roomBlocks.map((obj: any) => {
@@ -504,7 +505,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const handleEventDrop = (info: any) => {
         // if (info.event._instance.range.end > new Date(workingDate)) {
-        console.log("info", info);
 
         if (
             areDatesOnSameDay(
@@ -726,7 +726,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
     const eventContent = (arg: any) => {
         // Customize the content and styles of each event
-        console.log("testestsetes", arg.event._def.extendedProps);
         return (
             <Tooltip
                 title={
@@ -737,6 +736,15 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         <div>Blocked</div>
                     ) : (
                         <div>
+                            {arg.event._def.extendedProps.GroupCode &&
+                            arg.event._def.extendedProps.GroupCode != "" ? (
+                                <div>
+                                    Group Code :{" "}
+                                    {arg.event._def.extendedProps.GroupCode}
+                                </div>
+                            ) : (
+                                ""
+                            )}
                             <div> Name : {arg.event.title}</div>
                             <div>
                                 Balance : {arg.event._def.extendedProps.Balance}
@@ -745,13 +753,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 Breakfast :{" "}
                                 {arg.event._def.extendedProps.Breakfast &&
                                 arg.event._def.extendedProps.Breakfast == true
-                                    ? "Yes"
-                                    : "No"}
-                            </div>
-                            <div>
-                                Group :{" "}
-                                {arg.event._def.extendedProps.GroupID &&
-                                arg.event._def.extendedProps.GroupID != ""
                                     ? "Yes"
                                     : "No"}
                             </div>
@@ -830,8 +831,18 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                         : "black",
                             }}
                         >
-                            {" "}
-                            <Iconify icon="clarity:group-line" width="12px" />
+                            {arg.event._def.extendedProps.IsGroupOwner ==
+                            "true" ? (
+                                <Iconify
+                                    icon="solar:crown-outline"
+                                    width="12px"
+                                />
+                            ) : (
+                                <Iconify
+                                    icon="clarity:group-line"
+                                    width="12px"
+                                />
+                            )}
                         </span>
                     ) : (
                         <></>
@@ -883,29 +894,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         }
     };
 
-    // useEffect(() => {
-    //     const currentDate = new Date();
-    //     const dateString = currentDate.toISOString().split("T")[0];
-
-    //     const slots = document.querySelectorAll(".fc-timeline-slot");
-    //     console.log("nabiktest", dateString);
-    //     slots.forEach((slot: Element) => {
-    //         console.log(
-    //             "testesttest",
-    //             moment((slot as HTMLElement).dataset.date).format("YYYY-MM-DD")
-    //         );
-
-    //         if (
-    //             moment((slot as HTMLElement).dataset.date).format(
-    //                 "YYYY-MM-DD"
-    //             ) == dateString
-    //         ) {
-    //             // Cast slot to HTMLElement to access dataset
-    //             (slot as HTMLElement).style.backgroundColor = "lightblue"; // Cast slot to HTMLElement to access style
-    //             // Add any other custom styles here
-    //         }
-    //     });
-    // }, [itemData, rerenderKey]);
 
     return (
         timeStart && (

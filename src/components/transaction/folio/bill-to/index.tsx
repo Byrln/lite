@@ -32,7 +32,6 @@ const NewEdit = ({ TransactionID, FolioID, handleModal }: any) => {
 
     const customSubmit = async (values: any) => {
         try {
-            console.log("entity", entity);
             if (entity == true) {
                 values.BillToGuest = true;
             } else {

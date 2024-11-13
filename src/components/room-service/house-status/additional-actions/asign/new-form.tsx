@@ -42,7 +42,6 @@ const VoidTransactionForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            console.log("values", values);
             const res = await HouseKeepingAPI.assign(values);
 
             await mutate(customMutateUrl ? customMutateUrl : listUrl);

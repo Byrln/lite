@@ -210,7 +210,6 @@ export default function NavSection({ navConfig, ...other }: any) {
     const router = useRouter();
     const match = (path: any) => (path ? path === router.pathname : false);
     const { locale }: any = useRouter();
-    console.log("locale", locale);
     return (
         <Box {...other}>
             <List disablePadding>

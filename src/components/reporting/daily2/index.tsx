@@ -152,7 +152,6 @@ const Folio = ({ title, workingDate }: any) => {
                         mergeTransactions(tempValue[key]))
                 // : tempValue[key])
             );
-            console.log("tempValue", tempValue);
             setReportData(tempValue);
             mutate(listUrl);
         }
@@ -201,7 +200,7 @@ const Folio = ({ title, workingDate }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
-    console.log("search.Floors", search.Floors);
+
     return (
         <>
             <div style={{ display: "flex" }}>

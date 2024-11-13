@@ -47,7 +47,7 @@ const NewEdit = () => {
         },
         resolver: yupResolver(validationSchema),
     });
-    console.log("errors", errors);
+
     useEffect(() => {
         if (values) {
             setEntity({ CountryID: values.CountryID });
@@ -63,7 +63,6 @@ const NewEdit = () => {
                         entity.CountryID
                     );
                     if (entity) {
-                        console.log("1111", arr);
 
                         if (arr[0].CountryID != entity.CountryID) {
                         } else {
@@ -82,7 +81,6 @@ const NewEdit = () => {
                             });
                         }
                     } else {
-                        console.log("333", arr[0]);
                         setCurrentCurrecy(arr[0]);
 
                         reset({

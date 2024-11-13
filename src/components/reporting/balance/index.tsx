@@ -151,7 +151,7 @@ const ReportingList = ({ title, workingDate }: any) => {
         formState: { errors },
         control,
     } = useForm(formOptions);
-    console.log("reportData", reportData && Object.keys(reportData).length);
+
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -161,7 +161,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                     className="mr-3"
                     startIcon={<PrintIcon />}
                 >
-             {intl.formatMessage({id:"ButtonPrint"}) }
+                    {intl.formatMessage({ id: "ButtonPrint" })}
                 </Button>
 
                 <CustomSearch
@@ -190,7 +190,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                     style={{ textAlign: "center" }}
                     className="mb-3"
                 >
-                       {intl.formatMessage({id:"TitleReportBalance"}) }
+                    {intl.formatMessage({ id: "TitleReportBalance" })}
                 </Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={4}>
@@ -202,7 +202,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                {intl.formatMessage({id:"ReportStartDate"}) }
+                                {intl.formatMessage({ id: "ReportStartDate" })}
                             </span>{" "}
                             {moment(search.StartDate, "YYYY-MM-DD").format(
                                 "YYYY-MM-DD"
@@ -221,7 +221,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                {intl.formatMessage({id:"ReportEndDate"}) }
+                                {intl.formatMessage({ id: "ReportEndDate" })}
                             </span>{" "}
                             {moment(search.EndDate, "YYYY-MM-DD").format(
                                 "YYYY-MM-DD"
@@ -240,7 +240,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                {intl.formatMessage({id:"TextCustomer"}) }
+                                {intl.formatMessage({ id: "TextCustomer" })}
                             </span>{" "}
                             {customerName}
                         </Typography>
@@ -255,67 +255,89 @@ const ReportingList = ({ title, workingDate }: any) => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell style={{ fontWeight: "bold" }}>
-                                    {intl.formatMessage({id:"ReportRoomType"}) }
+                                        {intl.formatMessage({
+                                            id: "ReportRoomType",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        {intl.formatMessage({id:"Left_SortByGuestName"}) }
+                                        {intl.formatMessage({
+                                            id: "Left_SortByGuestName",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        {intl.formatMessage({id:"Left_SortByStatus"}) }
+                                        {intl.formatMessage({
+                                            id: "Left_SortByStatus",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                       {intl.formatMessage({id:"ReportArrival"}) }
+                                        {intl.formatMessage({
+                                            id: "ReportArrival",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                       {intl.formatMessage({id:"RowHeaderDeparture"}) }
+                                        {intl.formatMessage({
+                                            id: "RowHeaderDeparture",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                       {intl.formatMessage({id:"ReportSource"}) }
+                                        {intl.formatMessage({
+                                            id: "ReportSource",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                      {intl.formatMessage({id:"ReportFolioNo"}) }
+                                        {intl.formatMessage({
+                                            id: "ReportFolioNo",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                       {intl.formatMessage({id:"ReportRateType"}) }
+                                        {intl.formatMessage({
+                                            id: "ReportRateType",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                         {intl.formatMessage({id:"ReportDebit"}) }
+                                        {intl.formatMessage({
+                                            id: "ReportDebit",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                       {intl.formatMessage({id:"ReportPaid"}) }
+                                        {intl.formatMessage({
+                                            id: "ReportPaid",
+                                        })}
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        {intl.formatMessage({id:"ReportBalance"}) }
+                                        {intl.formatMessage({
+                                            id: "ReportBalance",
+                                        })}
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -523,9 +545,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                 </TableRow>
                                             </>
                                         )
-                                        // console.log(
-                                        //     `${key}: ${reportData[key]}`
-                                        // );
+
                                     )}
 
                                 <TableRow
@@ -589,7 +609,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                {intl.formatMessage({id:"ReportPrinted"}) }
+                                {intl.formatMessage({ id: "ReportPrinted" })}
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -604,7 +624,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                {intl.formatMessage({id:"DateToPrinted"}) }
+                                {intl.formatMessage({ id: "DateToPrinted" })}
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

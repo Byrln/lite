@@ -39,7 +39,6 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal, key }: any) => {
     const [rateType, setRateType] = useState<any>(null);
     const [maxAdult, setMaxAdult] = useState<any>(null);
     const [maxChild, setMaxChild] = useState<any>(null);
-    console.log("roomType", roomType);
     const { data, error } = RateTypeSWR({});
     const [state]: any = useAppState();
     const {
@@ -51,7 +50,6 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal, key }: any) => {
         resetField,
         getValues,
     } = useForm({ resolver: yupResolver(validationSchema) });
-    console.log("errors", errors);
 
     useEffect(() => {
         if (currentData) {
@@ -62,11 +60,10 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal, key }: any) => {
             setMaxAdult(currentData.MaxAdult);
         }
     }, [currentData]);
-    console.log("currentdata", currentData);
+
     const onRoomTypeChange = async (evt: any) => {
         try {
             setRoomType(evt);
-            console.log("evt", evt);
             let contractRates: any = null;
             if (rateType) {
                 const arr2: any = await RateTypeAPI?.baseRateList(rateType);
@@ -139,11 +136,10 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal, key }: any) => {
         }
     };
     const customSubmit = async (values: any) => {
-        console.log("values", values);
         try {
             values.Rate = values.RoomRate;
             let newEntity = [...entity];
-            console.log("resultValues", values);
+
             if (currentData && currentData.ID) {
                 const updatedData = newEntity.map((item: any) => {
                     if (item.ID === values.ID) {

@@ -6,10 +6,6 @@ const StayViewApi = {
     list: async (values: any) => {
         const { status, data }: any = await axios.post(`${uri}`, values);
 
-        console.log("============== response ===================");
-        console.log(status);
-        console.log(data);
-
         if (status != 200) {
             return {
                 status: "error",

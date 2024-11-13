@@ -85,9 +85,7 @@ const RoomMoveForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-            console.log("roomType", roomType);
 
-            console.log("baseStay", baseStay);
             values.NewRoomTypeID = roomType.RoomTypeID
                 ? roomType.RoomTypeID
                 : values.RoomTypeID;
@@ -118,7 +116,6 @@ const RoomMoveForm = ({
         }
     };
     const onOverrideRateChange = (evt: any) => {
-        console.log("evt", evt.target.checked);
         setRateCondition({
             ...rateCondition,
             overrideRate: evt.target.checked,
@@ -178,9 +175,7 @@ const RoomMoveForm = ({
         if (!isManualRate()) {
             calculateAmount(rt);
         }
-        console.log(rt);
     };
-    console.log("baseStay", baseStay);
 
     useEffect(() => {
         if (transactionInfo && transactionInfo.RoomTypeID) {

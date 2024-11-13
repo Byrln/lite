@@ -86,8 +86,6 @@ const NewEdit = () => {
                     newEntity._id = newEntity.GuestID;
                     newEntity.amenity = amenitiesGeneralValue;
                     newEntity.amenity2 = amenitiesBookingValue;
-                    console.log("entity", newEntity);
-                    console.log("entityBooking", newEntity.Booking);
 
                     setEntity(newEntity);
                     reset(newEntity);
@@ -102,7 +100,6 @@ const NewEdit = () => {
     }, [state.editId]);
 
     const onSubmit = async (values: any) => {
-        console.log(values);
         values.RoomTypeID = state.editId;
 
         let amenities = entity.amenity;

@@ -71,8 +71,6 @@ export default function FolioCharge({
         // resetField(`charge.${id}.Amount`,{
         //     defaultValue: typePickFilter && typePickFilter[0] && typePickFilter[0].RoomChargeTypeRate
         // })
-
-        // console.log(typePickFilter)
     };
 
     useEffect(() => {

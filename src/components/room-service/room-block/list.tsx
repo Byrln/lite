@@ -85,7 +85,6 @@ const RoomBlockList = ({ title, workingDate }: any) => {
                         Status: false,
                     };
                     RoomBlockAPI.updateStatus(tempValues);
-                    console.log("room", room);
                 }
             });
 
@@ -128,7 +127,6 @@ const RoomBlockList = ({ title, workingDate }: any) => {
                 element: any,
                 dataIndex: any
             ) {
-                console.log("test", dataIndex);
                 return (
                     <Checkbox
                         key={rerenderKey}
@@ -177,7 +175,6 @@ const RoomBlockList = ({ title, workingDate }: any) => {
             dataIndex: "UserName",
         },
     ];
-    console.log("entity", entity);
 
     return (
         <>

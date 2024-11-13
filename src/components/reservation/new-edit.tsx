@@ -461,7 +461,6 @@ const NewEdit = ({
                 }
                 finalValues.TransactionDetail.push(temp1);
             });
-            console.log("finalValues", finalValues);
             await ReservationAPI.new(finalValues);
 
             handleModal();

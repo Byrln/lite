@@ -10,7 +10,6 @@ const RoomAssignGroup = ({
     additionalMutateUrl,
     customRerender,
 }: any) => {
-    console.log("entities", entities);
     return (
         <>
             {entities &&

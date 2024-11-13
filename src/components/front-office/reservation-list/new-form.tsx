@@ -82,7 +82,6 @@ const NewEdit = ({
 
     useEffect(() => {
         if (getValues(`TransactionDetail[${id}]`)) {
-            console.log("nabababa");
             if (getValues(`TransactionDetail[${id}].RoomTypeID`)) {
                 setRoomTypeID(getValues(`TransactionDetail[${id}].RoomTypeID`));
             }
@@ -91,10 +90,6 @@ const NewEdit = ({
             }
 
             if (getValues(`TransactionDetail[${id}].RateTypeID`)) {
-                console.log(
-                    "testestsetes",
-                    getValues(`TransactionDetail[${id}].RateTypeID`)
-                );
                 var rate = null;
                 if (rateTypeData) {
                     for (var r of rateTypeData) {
@@ -119,15 +114,7 @@ const NewEdit = ({
                         }
                     }
                 }
-
-                // setRate({
-                //     RateTypeID: Number(
-                //         getValues(`TransactionDetail[${id}].RateTypeID`)
-                //     ),
-                // });
-                console.log("testestestse22222");
             } else {
-                console.log("testestestse");
                 if (rateTypeData) {
                     resetField(`TransactionDetail.${id}.RateTypeID`, {
                         defaultValue: rateTypeData[0].RateTypeID,
@@ -218,7 +205,6 @@ const NewEdit = ({
                 });
             }
         } else {
-            console.log("testestestse");
             if (rateTypeData) {
                 resetField(`TransactionDetail.${id}.RateTypeID`, {
                     defaultValue: rateTypeData[0].RateTypeID,

@@ -21,7 +21,6 @@ const validationSchema = yup.object().shape({
 });
 
 const UpdateRate = ({ element, RoomTypeID }: any) => {
-    console.log("element", element);
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
     const [Rate, setRate] = useState<any>({

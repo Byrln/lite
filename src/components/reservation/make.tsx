@@ -106,15 +106,12 @@ const ReservationMake = ({ timelineCoord, workingDate }: any) => {
 
     const onSingleSubmit = (values: any, keyIndex: number) => {
         if (!reservations[keyIndex]) {
-            console.log("Key index does not exists: ", keyIndex);
             return;
         }
 
         var r = [...reservations];
         r[keyIndex].submitValues = values;
         setReservations(r);
-
-        console.log("Reservations for submit: ", reservations);
 
         var complete = true;
         var i;

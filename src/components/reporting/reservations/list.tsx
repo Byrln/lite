@@ -32,7 +32,7 @@ import { formatPrice } from "lib/utils/helpers";
 
 const ReservationsList = ({ title, workingDate }: any) => {
     const intl = useIntl();
-    
+
     const componentRef: any = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const { StatusGroup, StartDate, EndDate, ReservationTypeID } = router.query;
@@ -66,7 +66,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
         setRerenderKey((prevKey) => prevKey + 1);
     }, [StatusGroup, StartDate, EndDate, ReservationTypeID]);
 
-    
+
 
     const { handleModal }: any = useContext(ModalContext);
 
@@ -314,9 +314,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
                                                 </TableRow>
                                             </>
                                         )
-                                        // console.log(
-                                        //     `${key}: ${reportData[key]}`
-                                        // );
+
                                     )}
 
                                 <TableRow

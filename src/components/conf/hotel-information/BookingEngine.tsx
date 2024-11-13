@@ -88,7 +88,7 @@ const GeneralForm = () => {
                 }
                 let newEntity = { amenity2: {} };
                 newEntity.amenity2 = amenitiesBookingValue;
-                console.log("newEntity", newEntity);
+
                 setEntity(newEntity);
                 setData(arr[0]);
                 reset(arr[0]);
@@ -121,7 +121,7 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="DescriptionBooking"                     
+                            id="DescriptionBooking"
                              label={intl.formatMessage({id:"TextHotelDescription"}) }
                         {...register("DescriptionBooking")}
                             margin="dense"
@@ -134,7 +134,7 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="HotelPolicyBooking"                     
+                            id="HotelPolicyBooking"
                             label={intl.formatMessage({id:"TextHotelPolicy"}) }
                        {...register("HotelPolicyBooking")}
                             margin="dense"
@@ -146,7 +146,7 @@ const GeneralForm = () => {
                             fullWidth
                             multiline
                             rows={3}
-                            id="CancelPolicyBooking"                     
+                            id="CancelPolicyBooking"
                             label={intl.formatMessage({id:"TextCancelPolicy"}) }
                        {...register("CancelPolicyBooking")}
                             margin="dense"

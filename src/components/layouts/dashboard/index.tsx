@@ -64,7 +64,6 @@ export default function DashboardLayout({ children }: any) {
     useEffect(() => {
         if (data) {
             // Extracting MenuLink values
-            // console.log("data", data);
             dispatch({
                 type: "userRole",
                 userRole: data,

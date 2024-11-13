@@ -167,14 +167,6 @@ const AvailableRoom = ({ title, workingDate }: any) => {
         control,
     } = useForm(formOptions);
 
-    console.log("dataGroupedByDate", dataGroupedByDate);
-    console.log("datesdates", dates);
-    console.log("reportdata", reportData);
-    console.log("testtest11", dates[0]);
-
-    console.log("testtest22", new Date(dates[0]).getDate() / 2);
-
-    console.log("testtest33", isDecimal(new Date(dates[0]).getDate() / 2));
     return (
         <>
             <div style={{ display: "flex" }}>

@@ -53,7 +53,6 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
     });
 
     const handleOnChange = (value: any) => {
-        console.log("value", value);
         setPaymentMethodGroupID(value);
         mutate(paymentMethodUrl);
     };

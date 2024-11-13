@@ -20,7 +20,7 @@ const validationSchema = yup.object().shape({
     RegisterNo: yup.string().nullable(),
     Phone: yup.string().nullable(),
     Email: yup.string().nullable(),
-    CustomerGroupID: yup.string().required("Сонгоно уу"),
+    CustomerGroupID: yup.string().nullable(),
     CustomerTypeID: yup.string().required("Сонгоно уу"),
     ContactPersonFirstName1: yup.string().nullable(),
     ContactPersonLastName1: yup.string().nullable(),
@@ -36,7 +36,10 @@ const validationSchema = yup.object().shape({
 
 const NewEdit = () => {
     const intl = useIntl();
-    const [entity, setEntity]: any = useState({ CountryID: 146 });
+    const [entity, setEntity]: any = useState({
+        CountryID: 146,
+        CustomerTypeID: 1,
+    });
     const [state]: any = useAppState();
     const {
         register,
@@ -47,6 +50,7 @@ const NewEdit = () => {
     } = useForm<any>({
         defaultValues: {
             CountryID: 146,
+            CustomerTypeID: 1,
         },
 
         resolver: yupResolver(validationSchema),
@@ -160,6 +164,7 @@ const NewEdit = () => {
                                 errors={errors}
                                 entity={entity}
                                 setEntity={setEntity}
+                                disabled={true}
                             />
                         </Grid>
                         <Grid item xs={12}>

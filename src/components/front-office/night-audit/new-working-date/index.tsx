@@ -51,7 +51,7 @@ const NightAuditList = ({ workingDate }: any) => {
             setLoading(false);
         }
     };
-    console.log("isedit", isEditable);
+
     return (
         <>
             <Alert severity="warning">

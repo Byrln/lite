@@ -29,7 +29,6 @@ const NewEdit = () => {
         handleSubmit,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
-    // console.log("entity", entity.ParentID);
     return (
         <NewEditForm
             api={UserRoleAPI}

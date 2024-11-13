@@ -174,14 +174,11 @@ const NewEdit = () => {
             } else {
                 await PromotionAPI?.new(values);
             }
-            console.log("edit", state.editId);
-            // console.log("values", values);
         } finally {
         }
     };
 
     const customResetEvent = (data: any) => {
-        console.log("data", JSON.stringify(data));
         // setRoomAllCheck();
         setRoomAllCheck(data[0].AllRoomType);
         setSourceAllCheck(data[0].AllSource);

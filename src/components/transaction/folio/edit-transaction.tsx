@@ -84,7 +84,6 @@ export default function EditFolioTransaction({
 
     const [useData, setUseData] = useState();
 
-    console.log(useData);
 
     const fetchDatas = async () => {
         let response = await FolioAPI.edits(FolioID, CurrID, TypeID);

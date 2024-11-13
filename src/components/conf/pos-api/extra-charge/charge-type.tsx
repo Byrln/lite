@@ -38,8 +38,6 @@ const ExtraCharge = ({ handleModal }: any) => {
         setRerenderKey((prevKey) => prevKey + 1);
     }, [chargeType]);
 
-    console.log("entity", entity);
-
     const columns = [
         {
             title: "№",
@@ -80,15 +78,10 @@ const ExtraCharge = ({ handleModal }: any) => {
                                     : 0
                             }
                             onChange={(evt: any) => {
-                                console.log("evt", evt);
                                 let tempEntity = [...entity];
                                 tempEntity[dataIndex].ServiceCode =
                                     evt.target.value;
                                 setEntity(tempEntity);
-                                console.log(
-                                    "entity[dataIndex]",
-                                    entity[dataIndex]
-                                );
                             }}
                         />
                     </div>
@@ -96,7 +89,6 @@ const ExtraCharge = ({ handleModal }: any) => {
             },
         },
     ];
-    console.log("chargeType", chargeType);
 
     const validationSchema = yup.object().shape({
         test: yup.string().required("Username is required"),
@@ -112,15 +104,6 @@ const ExtraCharge = ({ handleModal }: any) => {
     const onSubmit = async () => {
         try {
             setLoading(true);
-            console.log(
-                "testestes",
-                entity.filter(
-                    (item: any) =>
-                        item.ServiceCode != " " &&
-                        item.ServiceCode != "" &&
-                        item.ServiceCode != null
-                )
-            );
             entity
                 .filter(
                     (item: any) =>

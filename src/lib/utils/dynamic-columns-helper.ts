@@ -50,7 +50,6 @@ export const calculateColumnsWidth = (
     // Since we have a minimum width (column's width already calculated),
     // now we are going to verify if the cell value is bigger
     // than the column width which is already set
-    console.log("source", source);
     source &&
         source.length > 0 &&
         source?.map((entry: any) => {

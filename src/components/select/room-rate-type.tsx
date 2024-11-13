@@ -25,7 +25,7 @@ const RoomRateTypeSelect = ({
     useEffect(() => {
         if (data) {
             if (setRate) {
-                setRate(data[0]);
+                // setRate(data[0]);
                 if (data[0].BreakfastIncluded && setBreakfastIncluded) {
                     setBreakfastIncluded(data[0].BreakfastIncluded);
                 }
@@ -33,7 +33,6 @@ const RoomRateTypeSelect = ({
                     setTaxIncluded(data[0].TaxIncluded);
                 }
             }
-            console.log("data", data[0]);
             if (resetField && id) {
                 resetField(
                     customRegisterName ? customRegisterName : "RateTypeID",
@@ -56,7 +55,7 @@ const RoomRateTypeSelect = ({
 
         if (rate) {
             setRate(rate);
-            if (rate.BreakfastIncluded && setBreakfastIncluded) {
+            if (rate && setBreakfastIncluded) {
                 setBreakfastIncluded(rate.BreakfastIncluded);
             }
             if (rate.TaxIncluded && setTaxIncluded) {
@@ -64,7 +63,7 @@ const RoomRateTypeSelect = ({
             }
         }
     };
-    console.log("rate", Rate);
+
     return (
         <TextField
             fullWidth

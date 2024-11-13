@@ -74,8 +74,6 @@ const Folio = ({ title, workingDate }: any) => {
     useEffect(() => {
         if (data) {
             let tempValue = groupBy(data, "FloorNo");
-            console.log("data", data);
-            console.log("tempValue", tempValue);
             setFinalData(tempValue);
         }
     }, [data]);
@@ -108,13 +106,13 @@ const Folio = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                            {intl.formatMessage({id:"TextDailyNews"}) }
+                            {intl.formatMessage({ id: "TextDailyNews" })}
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            {intl.formatMessage({id:"ReportingPeriod"}) }
+                            {intl.formatMessage({ id: "ReportingPeriod" })}
                         </span>{" "}
                         {workingDate &&
                             moment(workingDate, "YYYY.MM.DD").format(
@@ -140,7 +138,10 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                     >
                                         {" "}
-                                        {key}  {intl.formatMessage({id:"RowHeaderFloor"}) }
+                                        {key}{" "}
+                                        {intl.formatMessage({
+                                            id: "RowHeaderFloor",
+                                        })}
                                     </div>
 
                                     <Table
@@ -158,7 +159,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                   {intl.formatMessage({id:"RowHeaderRoom"}) }
+                                                    {intl.formatMessage({
+                                                        id: "RowHeaderRoom",
+                                                    })}
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -168,7 +171,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    {intl.formatMessage({id:"TextOrganization"}) }
+                                                    {intl.formatMessage({
+                                                        id: "TextOrganization",
+                                                    })}
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -178,7 +183,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    {intl.formatMessage({id:"RowHeaderCountry"}) }
+                                                    {intl.formatMessage({
+                                                        id: "RowHeaderCountry",
+                                                    })}
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -188,7 +195,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                   {intl.formatMessage({id:"ReportArrival"}) }
+                                                    {intl.formatMessage({
+                                                        id: "ReportArrival",
+                                                    })}
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -198,7 +207,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                   {intl.formatMessage({id:"RowHeaderDeparture"}) }
+                                                    {intl.formatMessage({
+                                                        id: "RowHeaderDeparture",
+                                                    })}
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -208,7 +219,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                     {intl.formatMessage({id:"TextNumber"}) }
+                                                    {intl.formatMessage({
+                                                        id: "TextNumber",
+                                                    })}
                                                 </TableCell>
                                                 <TableCell
                                                     align="left"
@@ -218,7 +231,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                         padding: "2px",
                                                     }}
                                                 >
-                                                    {intl.formatMessage({id:"TextToPay"}) }
+                                                    {intl.formatMessage({
+                                                        id: "TextToPay",
+                                                    })}
                                                 </TableCell>
                                             </TableRow>
                                         </TableHead>
@@ -351,10 +366,6 @@ const Folio = ({ title, workingDate }: any) => {
                                                             </TableRow>
                                                         </>
                                                     )
-
-                                                    // console.log(
-                                                    //     `${key}: ${reportData[key]}`
-                                                    // );
                                                 )}
 
                                             <TableRow
@@ -382,7 +393,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                         }}
                                                     >
-                                                         {intl.formatMessage({id:"ReportArrival"}) }
+                                                        {intl.formatMessage({
+                                                            id: "ReportArrival",
+                                                        })}
                                                     </div>
                                                     <div
                                                         style={{
@@ -391,7 +404,11 @@ const Folio = ({ title, workingDate }: any) => {
                                                         }}
                                                     >
                                                         <div className="mr-2">
-                                                        {intl.formatMessage({id:"RowHeaderRoom"}) }
+                                                            {intl.formatMessage(
+                                                                {
+                                                                    id: "RowHeaderRoom",
+                                                                }
+                                                            )}
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -427,7 +444,11 @@ const Folio = ({ title, workingDate }: any) => {
                                                             </span>
                                                         </div>
                                                         <div>
-                                                        {intl.formatMessage({id:"RowHeaderGuest"}) }
+                                                            {intl.formatMessage(
+                                                                {
+                                                                    id: "RowHeaderGuest",
+                                                                }
+                                                            )}
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -481,7 +502,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                         }}
                                                     >
-                                                         {intl.formatMessage({id:"TextHave"}) }
+                                                        {intl.formatMessage({
+                                                            id: "TextHave",
+                                                        })}
                                                     </div>
                                                     <div
                                                         style={{
@@ -490,7 +513,11 @@ const Folio = ({ title, workingDate }: any) => {
                                                         }}
                                                     >
                                                         <div className="mr-2">
-                                                        {intl.formatMessage({id:"TextHave"}) }
+                                                            {intl.formatMessage(
+                                                                {
+                                                                    id: "TextHave",
+                                                                }
+                                                            )}
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -529,7 +556,11 @@ const Folio = ({ title, workingDate }: any) => {
                                                             </span>
                                                         </div>
                                                         <div>
-                                                        {intl.formatMessage({id:"RowHeaderGuest"}) }
+                                                            {intl.formatMessage(
+                                                                {
+                                                                    id: "RowHeaderGuest",
+                                                                }
+                                                            )}
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -586,7 +617,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                         }}
                                                     >
-                                                         {intl.formatMessage({id:"RowHeaderDeparture"}) }
+                                                        {intl.formatMessage({
+                                                            id: "RowHeaderDeparture",
+                                                        })}
                                                     </div>
                                                     <div
                                                         style={{
@@ -595,7 +628,11 @@ const Folio = ({ title, workingDate }: any) => {
                                                         }}
                                                     >
                                                         <div className="mr-2">
-                                                        {intl.formatMessage({id:"RowHeaderRoom"}) }
+                                                            {intl.formatMessage(
+                                                                {
+                                                                    id: "RowHeaderRoom",
+                                                                }
+                                                            )}
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -631,7 +668,11 @@ const Folio = ({ title, workingDate }: any) => {
                                                             </span>
                                                         </div>
                                                         <div>
-                                                        {intl.formatMessage({id:"RowHeaderGuest"}) }
+                                                            {intl.formatMessage(
+                                                                {
+                                                                    id: "RowHeaderGuest",
+                                                                }
+                                                            )}
                                                             <span
                                                                 style={{
                                                                     fontWeight:
@@ -686,7 +727,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                             fontWeight: "bold",
                                                         }}
                                                     >
-                                                               {intl.formatMessage({id:"TextIncome"}) }
+                                                        {intl.formatMessage({
+                                                            id: "TextIncome",
+                                                        })}
                                                         {finalData[key] &&
                                                             formatPrice(
                                                                 finalData[
@@ -758,7 +801,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                 fontWeight: "bold",
                                             }}
                                         >
-                                            {intl.formatMessage({id:"ReportArrival"}) }
+                                            {intl.formatMessage({
+                                                id: "ReportArrival",
+                                            })}
                                         </div>
                                         <div
                                             style={{
@@ -767,7 +812,9 @@ const Folio = ({ title, workingDate }: any) => {
                                             }}
                                         >
                                             <div className="mr-2">
-                                            {intl.formatMessage({id:"RowHeaderRoom"}) }
+                                                {intl.formatMessage({
+                                                    id: "RowHeaderRoom",
+                                                })}
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -798,7 +845,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                 </span>
                                             </div>
                                             <div>
-                                            {intl.formatMessage({id:"RowHeaderGuest"}) }
+                                                {intl.formatMessage({
+                                                    id: "RowHeaderGuest",
+                                                })}
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -847,7 +896,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                 fontWeight: "bold",
                                             }}
                                         >
-                                           {intl.formatMessage({id:"TextHave"}) }
+                                            {intl.formatMessage({
+                                                id: "TextHave",
+                                            })}
                                         </div>
                                         <div
                                             style={{
@@ -856,7 +907,9 @@ const Folio = ({ title, workingDate }: any) => {
                                             }}
                                         >
                                             <div className="mr-2">
-                                            {intl.formatMessage({id:"TextHave"}) }
+                                                {intl.formatMessage({
+                                                    id: "TextHave",
+                                                })}
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -890,8 +943,10 @@ const Folio = ({ title, workingDate }: any) => {
                                                 </span>
                                             </div>
                                             <div>
-                                            {intl.formatMessage({id:"RowHeaderGuest"}) }
-                                               
+                                                {intl.formatMessage({
+                                                    id: "RowHeaderGuest",
+                                                })}
+
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -943,7 +998,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                 fontWeight: "bold",
                                             }}
                                         >
-                                             {intl.formatMessage({id:"RowHeaderDeparture"}) }
+                                            {intl.formatMessage({
+                                                id: "RowHeaderDeparture",
+                                            })}
                                         </div>
                                         <div
                                             style={{
@@ -952,7 +1009,9 @@ const Folio = ({ title, workingDate }: any) => {
                                             }}
                                         >
                                             <div className="mr-2">
-                                            {intl.formatMessage({id:"RowHeaderRoom"}) }
+                                                {intl.formatMessage({
+                                                    id: "RowHeaderRoom",
+                                                })}
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -983,7 +1042,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                 </span>
                                             </div>
                                             <div>
-                                            {intl.formatMessage({id:"RowHeaderGuest"}) }
+                                                {intl.formatMessage({
+                                                    id: "RowHeaderGuest",
+                                                })}
                                                 <span
                                                     style={{
                                                         fontWeight: "bold",
@@ -1033,7 +1094,9 @@ const Folio = ({ title, workingDate }: any) => {
                                                 fontWeight: "bold",
                                             }}
                                         >
-                                            {intl.formatMessage({id:"TextIncome"}) }
+                                            {intl.formatMessage({
+                                                id: "TextIncome",
+                                            })}
                                             {data &&
                                                 formatPrice(
                                                     data.reduce(
@@ -1055,7 +1118,9 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 <span style={{ fontWeight: "bold" }}>
                                     {" "}
-                                    {intl.formatMessage({id:"ReportPrinted"}) }
+                                    {intl.formatMessage({
+                                        id: "ReportPrinted",
+                                    })}
                                 </span>{" "}
                                 {localStorage.getItem("username")}
                             </Typography>
@@ -1066,7 +1131,9 @@ const Folio = ({ title, workingDate }: any) => {
                             >
                                 <span style={{ fontWeight: "bold" }}>
                                     {" "}
-                                    {intl.formatMessage({id:"DateToPrinted"}) }
+                                    {intl.formatMessage({
+                                        id: "DateToPrinted",
+                                    })}
                                 </span>{" "}
                                 {moment(new Date()).format(
                                     "YYYY-MM-DD HH:mm:ss"

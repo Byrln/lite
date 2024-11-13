@@ -73,7 +73,6 @@ const GuestSelect = ({
                 formData.append("IsMain", IsMain);
             }
             if (IsBanner) {
-                console.log("isBanner", IsBanner);
 
                 formData.append("IsBanner", IsBanner);
             } else {

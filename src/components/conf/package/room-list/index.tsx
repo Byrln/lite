@@ -26,7 +26,6 @@ const PackageList = ({ title, packageId }: any) => {
         if (data) {
             let tempValue: any = [];
             data.forEach((element: any, key: any) => {
-                console.log("keyshuudee", element);
                 tempValue.push({
                     ID: i,
                     RoomTypeID: element.RoomTypeID,
@@ -45,7 +44,7 @@ const PackageList = ({ title, packageId }: any) => {
             setEntity(tempValue);
         }
     }, [data]);
-    console.log("entity", JSON.stringify(entity));
+
     const columns = [
         {
             title: "Room Type",
@@ -67,7 +66,6 @@ const PackageList = ({ title, packageId }: any) => {
             key: "Action",
             dataIndex: "Action",
             renderCell: (element: any) => {
-                console.log("element", element);
                 return (
                     <>
                         <Button

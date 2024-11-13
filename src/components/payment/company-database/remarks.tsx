@@ -27,7 +27,7 @@ const Remarks = ({ GuestID }: any) => {
         control,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
-    console.log(data);
+
     return (
         <Card className="mt-3">
             <CardContent>

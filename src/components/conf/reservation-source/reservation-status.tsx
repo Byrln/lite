@@ -63,12 +63,11 @@ const ReservationStatus = ({ ChannelSourceID }: any) => {
 
     useEffect(() => {
         if (data && data[0]) {
-            console.log("data[0]", data[0]);
             reset(data[0]);
             setEntity(data[0]);
         }
     }, [data]);
-    console.log(entity);
+
     return data && data[0] ? (
         <form onSubmit={handleSubmit(onSubmit)}>
             <ReferenceSelect

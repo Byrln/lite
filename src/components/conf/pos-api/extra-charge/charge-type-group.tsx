@@ -37,8 +37,6 @@ const ExtraCharge = ({ handleModal, data }: any) => {
         setRerenderKey((prevKey) => prevKey + 1);
     }, [chargeType]);
 
-    console.log("entity", entity);
-
     const columns = [
         {
             title: "№",
@@ -78,15 +76,10 @@ const ExtraCharge = ({ handleModal, data }: any) => {
                                         : 0
                                 } // Controlled component with the current selected value
                                 onChange={(evt: any) => {
-                                    console.log("evt", evt);
                                     let tempEntity = [...entity];
                                     tempEntity[dataIndex].PosApiID =
                                         evt.target.value;
                                     setEntity(tempEntity);
-                                    console.log(
-                                        "entity[dataIndex]",
-                                        entity[dataIndex]
-                                    );
                                 }} // onChange handler
                                 key={`${rerenderKey}-${dataIndex}`} // Set a key if needed to force rerender
                                 size="small"
@@ -107,7 +100,6 @@ const ExtraCharge = ({ handleModal, data }: any) => {
             },
         },
     ];
-    console.log("chargeType", chargeType);
 
     const validationSchema = yup.object().shape({
         test: yup.string().required("Username is required"),

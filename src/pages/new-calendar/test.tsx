@@ -64,7 +64,7 @@ const Index = () => {
         const text = ev && ev.text ? ` (${ev.text})` : "";
         const message = `event ${action}: ${id} ${text}`;
         // addMessage(message);
-        console.log("message", message);
+
     };
 
     return (

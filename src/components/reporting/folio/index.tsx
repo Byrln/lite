@@ -192,13 +192,13 @@ const Folio = ({ title, workingDate }: any) => {
                             style={{ textAlign: "center" }}
                             className="mb-3"
                         >
-                             { intl.formatMessage({id:"PaymentLogReport"}) } 
+                             { intl.formatMessage({id:"PaymentLogReport"}) }
                         </Typography>
                     </div>
                     <Typography variant="body1" gutterBottom className="mr-1">
                         <span style={{ fontWeight: "bold" }}>
                             {" "}
-                            { intl.formatMessage({id:"ReportingPeriod"}) } 
+                            { intl.formatMessage({id:"ReportingPeriod"}) }
                         </span>{" "}
                         (
                         {search.StartDate &&
@@ -229,63 +229,63 @@ const Folio = ({ title, workingDate }: any) => {
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        { intl.formatMessage({id:"ConfigRooms"}) } 
+                                        { intl.formatMessage({id:"ConfigRooms"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                       { intl.formatMessage({id:"TextOrganization"}) } 
+                                       { intl.formatMessage({id:"TextOrganization"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        { intl.formatMessage({id:"TextSurname"}) } 
+                                        { intl.formatMessage({id:"TextSurname"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        { intl.formatMessage({id:"ReportCheckedIn"}) } 
+                                        { intl.formatMessage({id:"ReportCheckedIn"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                     { intl.formatMessage({id:"TextNights"}) } 
+                                     { intl.formatMessage({id:"TextNights"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                       { intl.formatMessage({id:"ReportCheckedOut"}) } 
+                                       { intl.formatMessage({id:"ReportCheckedOut"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                      { intl.formatMessage({id:"AmountOfRoom"}) } 
+                                      { intl.formatMessage({id:"AmountOfRoom"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                        { intl.formatMessage({id:"ServiceAmount"}) } 
+                                        { intl.formatMessage({id:"ServiceAmount"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                      { intl.formatMessage({id:"TotalPayment"}) } 
+                                      { intl.formatMessage({id:"TotalPayment"}) }
                                     </TableCell>
                                     {/* <TableCell
                                         align="left"
@@ -302,14 +302,14 @@ const Folio = ({ title, workingDate }: any) => {
                                         }}
                                         colSpan={4}
                                     >
-                                         { intl.formatMessage({id:"ConfigPaymentMethod"}) } 
+                                         { intl.formatMessage({id:"ConfigPaymentMethod"}) }
                                     </TableCell>
                                     <TableCell
                                         align="left"
                                         style={{ fontWeight: "bold" }}
                                         rowSpan={2}
                                     >
-                                       { intl.formatMessage({id:"ConfigPaymentclosure"}) } 
+                                       { intl.formatMessage({id:"ConfigPaymentclosure"}) }
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
@@ -317,25 +317,25 @@ const Folio = ({ title, workingDate }: any) => {
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        { intl.formatMessage({id:"TextCash"}) } 
+                                        { intl.formatMessage({id:"TextCash"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                        { intl.formatMessage({id:"ReportInvoice"}) } 
+                                        { intl.formatMessage({id:"ReportInvoice"}) }
                                     </TableCell>
                                     <TableCell
                                         align="right"
                                         style={{ fontWeight: "bold" }}
                                     >
-                                         { intl.formatMessage({id:"ByCard"}) } 
+                                         { intl.formatMessage({id:"ByCard"}) }
                                     </TableCell>
                                     <TableCell
                                         style={{ fontWeight: "bold" }}
                                         align="right"
                                     >
-                                         { intl.formatMessage({id:"A/Receivables"}) } 
+                                         { intl.formatMessage({id:"A/Receivables"}) }
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -471,9 +471,7 @@ const Folio = ({ title, workingDate }: any) => {
                                             </>
                                         )
 
-                                        // console.log(
-                                        //     `${key}: ${reportData[key]}`
-                                        // );
+
                                     )}
 
                                 {/* {reportData &&
@@ -650,7 +648,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                 { intl.formatMessage({id:"TextTotalAmount"}) } 
+                                 { intl.formatMessage({id:"TextTotalAmount"}) }
                             </div>
                         </div>
                         <div
@@ -684,7 +682,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                { intl.formatMessage({id:"ReportDiscount"}) } 
+                                { intl.formatMessage({id:"ReportDiscount"}) }
                             </div>
                         </div>
                         <div
@@ -719,7 +717,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                 { intl.formatMessage({id:"TextCash"}) } 
+                                 { intl.formatMessage({id:"TextCash"}) }
                             </div>
                         </div>
                         <div
@@ -753,7 +751,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                { intl.formatMessage({id:"ReportInvoice"}) } 
+                                { intl.formatMessage({id:"ReportInvoice"}) }
                             </div>
                         </div>
                         <div
@@ -787,7 +785,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                 { intl.formatMessage({id:"ByCard"}) } 
+                                 { intl.formatMessage({id:"ByCard"}) }
                             </div>
                         </div>
                         <div
@@ -813,7 +811,7 @@ const Folio = ({ title, workingDate }: any) => {
                                     marginRight: "11px",
                                 }}
                             >
-                                 { intl.formatMessage({id:"RowHeaderPaid"}) } 
+                                 { intl.formatMessage({id:"RowHeaderPaid"}) }
                             </span>
                         </div>
                     </Grid>
@@ -825,7 +823,7 @@ const Folio = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                { intl.formatMessage({id:"ReportPrinted"}) } 
+                                { intl.formatMessage({id:"ReportPrinted"}) }
                             </span>{" "}
                             {localStorage.getItem("username")}
                         </Typography>
@@ -840,7 +838,7 @@ const Folio = ({ title, workingDate }: any) => {
                         >
                             <span style={{ fontWeight: "bold" }}>
                                 {" "}
-                                { intl.formatMessage({id:"DateToPrinted"}) } 
+                                { intl.formatMessage({id:"DateToPrinted"}) }
                             </span>{" "}
                             {moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}
                         </Typography>

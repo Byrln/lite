@@ -29,7 +29,7 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
 
     const onSubmit = async (values: any) => {
         setLoading(true);
-        console.log("testestes");
+
         try {
             values.TransactionID = entity.TransactionID;
             await ReservationAPI.cancel(values);

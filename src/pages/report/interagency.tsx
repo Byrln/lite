@@ -40,7 +40,7 @@ const Index = () => {
             });
         }
     };
-    console.log("workingDate", initialData);
+
     return (
         <>
             <Head>

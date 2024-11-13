@@ -28,9 +28,6 @@ const NewEdit = () => {
         control,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
-    console.log("entity", entity);
-    console.log("errors", errors);
-
     return (
         <NewEditForm
             api={ReservationSourceAPI}
@@ -48,7 +45,9 @@ const NewEdit = () => {
                         size="small"
                         fullWidth
                         id="ReservationSourceName"
-                        label={intl.formatMessage({id:"ConfigReservationSource"}) }
+                        label={intl.formatMessage({
+                            id: "ConfigReservationSource",
+                        })}
                         {...register("ReservationSourceName")}
                         margin="dense"
                         error={errors.ReservationSourceName?.message}

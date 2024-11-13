@@ -205,7 +205,6 @@ const HouseKeepingList = ({ title }: any) => {
                                             )}
                                         </div>
                                     );
-                                console.log("items", field);
                             }}
                         >
                             <Card

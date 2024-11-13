@@ -329,9 +329,7 @@ const ReportingList = ({ title, workingDate }: any) => {
                                                 </TableRow>
                                             </>
                                         )
-                                        // console.log(
-                                        //     `${key}: ${reportData[key]}`
-                                        // );
+
                                     )}
 
                                 <TableRow

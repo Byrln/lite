@@ -54,7 +54,7 @@ const ItemDetail = ({
 }: any) => {
     const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
-    console.log("reservation", reservation);
+
     return (
         <>
             {reservation ? (
@@ -108,7 +108,7 @@ const ItemDetail = ({
                     <br />
 
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6} md={2}>
+                        <Grid item xs={12} sm={6}>
                             <Box sx={styleTime}>
                                 <p>
                                     {fToCustom(
@@ -151,7 +151,7 @@ const ItemDetail = ({
                                 </p>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
+                        <Grid item xs={12} sm={6}>
                             <Table aria-label="simple table" size="small">
                                 <TableBody>
                                     <TableRow>
@@ -231,7 +231,7 @@ const ItemDetail = ({
                             item
                             xs={12}
                             sm={6}
-                            display={{ xs: "none", sm: "block", md: "none" }}
+                            display={{ xs: "none", sm: "block" }}
                         >
                             <ReservationNav
                                 reservation={reservation}
@@ -241,7 +241,7 @@ const ItemDetail = ({
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={4}>
+                        <Grid item xs={12} sm={6}>
                             <Table aria-label="simple table" size="small">
                                 <TableBody>
                                     <TableRow>
@@ -365,8 +365,7 @@ const ItemDetail = ({
                             item
                             xs={12}
                             sm={6}
-                            md={2}
-                            display={{ xs: "block", sm: "none", md: "block" }}
+                            display={{ xs: "block", sm: "none" }}
                         >
                             <ReservationNav
                                 reservation={reservation}

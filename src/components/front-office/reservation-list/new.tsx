@@ -72,10 +72,6 @@ const NewEdit = ({
     workingDate,
     groupID,
 }: any) => {
-    console.log("dateStart", dateStart);
-    console.log("dateEnd", dateEnd);
-    console.log("dateEquaal", dateStart == dateEnd);
-
     const intl = useIntl();
     const [CustomerID, setCustomerID]: any = useState(0);
     const [ArrivalDate, setArrivalDate]: any = useState(
@@ -234,7 +230,6 @@ const NewEdit = ({
 
     const customSubmit = async (values: any) => {
         try {
-            console.log("values", values);
             let tempValues = { ...values };
             tempValues.TransactionDetail[0].PayAmount = values.PayAmount;
             tempValues.TransactionDetail[0].PayCurrencyID =
@@ -326,7 +321,7 @@ const NewEdit = ({
     const onColorChange = (color: any) => {
         setGroupColor(color);
     };
-    console.log("error", errors);
+
     return (
         <NewEditForm
             api={ReservationAPI}
@@ -618,36 +613,7 @@ const NewEdit = ({
                                                 sx={{ width: "100%" }}
                                                 size="small"
                                                 value={DepartureTime}
-                                                onChange={(value) => (
-                                                    console.log(
-                                                        "moment(ArrivalDate)",
-                                                        moment(ArrivalDate).set(
-                                                            {
-                                                                hour: 0,
-                                                                minute: 0,
-                                                                second: 0,
-                                                            }
-                                                        )
-                                                    ),
-                                                    console.log(
-                                                        "moment(DepartureDate)",
-                                                        moment(
-                                                            DepartureDate
-                                                        ).format("yyyy-MM-DD")
-                                                    ),
-                                                    console.log(
-                                                        "testeest",
-                                                        moment(
-                                                            ArrivalDate
-                                                        ).format(
-                                                            "yyyy-MM-DD"
-                                                        ) ==
-                                                            moment(
-                                                                DepartureDate
-                                                            ).format(
-                                                                "yyyy-MM-DD"
-                                                            )
-                                                    ),
+                                                onChange={(value) =>
                                                     moment(ArrivalDate).format(
                                                         "yyyy-MM-DD"
                                                     ) ==
@@ -664,7 +630,7 @@ const NewEdit = ({
                                                         : setDepartureTime(
                                                               value.target.value
                                                           )
-                                                )}
+                                                }
                                             />
                                         </Grid>
                                     )}
