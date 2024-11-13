@@ -18,12 +18,13 @@ const RoomRateTypeSelect = ({
     setTaxIncluded,
     id,
     resetField,
+    initialValues,
 }: any) => {
     const intl = useIntl();
     const { data, error } = RateTypeSWR({});
 
     useEffect(() => {
-        if (data) {
+        if (data && !initialValues) {
             if (setRate) {
                 // setRate(data[0]);
                 if (data[0].BreakfastIncluded && setBreakfastIncluded) {

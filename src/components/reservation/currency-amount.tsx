@@ -67,6 +67,8 @@ const CurrencyAmount = ({
                 resetField(`TransactionDetail.${id}.Amount`, {
                     defaultValue: rates[0].BaseRate,
                 });
+
+                console.log("nights", Nights);
                 amount = rates[0].BaseRate * Nights;
                 if (rates[0].BaseAdult < selectedAdult) {
                     amount =

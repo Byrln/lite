@@ -82,6 +82,7 @@ const NewEdit = ({
 
     useEffect(() => {
         if (getValues(`TransactionDetail[${id}]`)) {
+            console.log("test22", getValues(`TransactionDetail[${id}]`));
             if (getValues(`TransactionDetail[${id}].RoomTypeID`)) {
                 setRoomTypeID(getValues(`TransactionDetail[${id}].RoomTypeID`));
             }
@@ -135,7 +136,14 @@ const NewEdit = ({
                 setCurrencyAmount(
                     Number(getValues(`TransactionDetail[${id}].CurrencyAmount`))
                 );
+
+                resetField(`TransactionDetail.${id}.CurrencyAmount`, {
+                    defaultValue: getValues(
+                        `TransactionDetail[${id}].CurrencyAmount`
+                    ),
+                });
             }
+
             if (getValues(`TransactionDetail[${id}].CurrencyID`)) {
                 setCurrency({
                     CurrencyID: Number(
@@ -398,6 +406,9 @@ const NewEdit = ({
                             setTaxIncluded={setTaxIncluded}
                             id={id}
                             resetField={resetField}
+                            initialValues={getValues(
+                                `TransactionDetail[${id}]`
+                            )}
                         />
                     </Grid>
 
