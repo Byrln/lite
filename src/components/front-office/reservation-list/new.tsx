@@ -271,7 +271,7 @@ const NewEdit = ({
 
             values.TransactionDetail.forEach((detail: any, index: any) => {
                 tempValues.TransactionDetail[index].Amount =
-                    detail.CurrencyAmount;
+                    detail.CurrencyAmount / nights;
                 tempValues.TransactionDetail[index].TaxIncluded = TaxIncluded;
                 tempValues.TransactionDetail[index].BreakfastIncluded =
                     BreakfastIncluded;
