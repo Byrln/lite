@@ -31,7 +31,7 @@ const ReasonTypeSelect = ({
         <CustomSelect
             register={register}
             errors={errors}
-            field={nameKey ? nameKey : "ReasonTypeID"}
+            field={nameKey ? nameKey : "ReasonID"}
             label={
                 label
                     ? label
@@ -40,7 +40,7 @@ const ReasonTypeSelect = ({
                       })
             }
             options={data}
-            optionValue="ReasonTypeID"
+            optionValue="ReasonID"
             optionLabel="ReasonName"
         />
     );
