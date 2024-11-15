@@ -68,7 +68,7 @@ const ReservationStatus = ({ ChannelSourceID }: any) => {
         }
     }, [data]);
 
-    return data && data[0] ? (
+    return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <ReferenceSelect
                 register={register}
@@ -121,17 +121,18 @@ const ReservationStatus = ({ ChannelSourceID }: any) => {
             />
             <SubmitButton loading={loading} />
         </form>
-    ) : (
-        <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-        >
-            <CircularProgress color="info" />
-        </Grid>
     );
+    // ) : (
+    //     <Grid
+    //         container
+    //         spacing={0}
+    //         direction="column"
+    //         alignItems="center"
+    //         justifyContent="center"
+    //     >
+    //         <CircularProgress color="info" />
+    //     </Grid>
+    // );
 };
 
 export default ReservationStatus;
