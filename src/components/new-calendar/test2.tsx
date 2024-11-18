@@ -269,6 +269,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           startDate: obj.StartDate,
                           GroupID: obj.GroupID,
                           Balance: obj.Balance,
+                          Adult: obj.Adult,
+                          Child: obj.Child,
+
                           Breakfast: obj.Breakfast,
                           endDate: obj.EndDate,
                           groupColor: `${obj.GroupColor}`,
@@ -433,14 +436,15 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         MaxChild: obj.MaxChild,
                         BaseAdult: obj.BaseAdult,
                         BaseChild: obj.BaseChild,
-                        SortOrder: Number(obj.RoomNo),
+                        SortOrder: Number(obj.SortOrder),
                     };
-                });
+                })
+                .sort((a: any, b: any) => a.SortOrder - b.SortOrder);
 
             setResources(newRoomTypeData.concat(newData));
         }
     }, [roomTypes, rooms]);
-
+    console.log("resources", resources);
     useEffect(() => {
         setHeight(window.innerHeight - 200);
     }, [window.innerHeight]);
@@ -747,6 +751,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             )}
                             <div> Name : {arg.event.title}</div>
                             <div>
+                                Adult : {arg.event._def.extendedProps.Adult}
+                            </div>{" "}
+                            <div>
+                                Child : {arg.event._def.extendedProps.Child}
+                            </div>
+                            <div>
                                 Balance : {arg.event._def.extendedProps.Balance}
                             </div>
                             <div>
@@ -893,7 +903,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             arg.el.style.backgroundColor = "lightgray"; // Change background color for weekends
         }
     };
-
 
     return (
         timeStart && (

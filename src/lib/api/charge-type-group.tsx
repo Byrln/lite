@@ -17,7 +17,7 @@ export const ChargeTypeGroupSWR = (search: any) => {
         search.IsExtraCharge = true;
     }
     if (!search.IsMiniBar) {
-        search.IsMiniBar = false;
+        search.IsMiniBar = null;
     }
     if (!search.IsDiscount) {
         search.IsDiscount = null;

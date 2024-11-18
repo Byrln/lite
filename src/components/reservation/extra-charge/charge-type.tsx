@@ -222,7 +222,6 @@ const ExtraCharge = ({ entity, setEntity, register, errors }: any) => {
             <ChargeTypeGroupSelect
                 IsRoomCharge={false}
                 IsExtraCharge={true}
-                IsMiniBar={false}
                 IsDiscount={false}
                 register={register}
                 errors={errors}

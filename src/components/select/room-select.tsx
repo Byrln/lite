@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
-
+import moment from "moment";
 import { RoomSWR, RoomAPI } from "lib/api/room";
 
 const RoomSelect = ({
@@ -19,6 +19,7 @@ const RoomSelect = ({
     groupIndex,
     RoomID,
 }: any) => {
+    console.log("arrivalarrival", ArrivalDate);
     const intl = useIntl();
 
     const [data, setData]: any = useState([]);
@@ -48,7 +49,7 @@ const RoomSelect = ({
         var values = {
             TransactionID: TransactionID ? TransactionID : "",
             RoomTypeID: RoomTypeID,
-            StartDate: ArrivalDate,
+            StartDate: moment(ArrivalDate).format("YYYY-MM-DD HH:mm:ss"),
             EndDate: DepartureDate,
         };
         var d = await RoomAPI.listAvailable(values);
