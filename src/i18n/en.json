@@ -39,6 +39,7 @@
     "ButtonCheckIn": "Check In",
     "ButtonCheckOut": "Check Out",
     "ButtonClearStatus": "Clear Status",
+    "TextState": "State",
     "ButtonClose": "Close",
     "ButtonConfigure": "Configure",
     "ButtonCopyReservation": "Copy Reservation",

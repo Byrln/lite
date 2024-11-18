@@ -13,10 +13,12 @@ import { useIntl } from "react-intl";
 const Search = ({ register, errors, control, reset }: any) => {
     const intl = useIntl();
     const { data, error } = RateTypeSWR({});
+    const [rateType, setRateType] = useState(null);
 
     const [customerVisibility, setCustomerVisibility] = useState(false);
 
     const onRateTypeChange = (evt: any) => {
+        setRateType(evt.target.value);
         let contractRates = data.filter(
             (entity: any) => entity.ContractRate === true
         );
@@ -49,6 +51,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     register={register}
                     errors={errors}
                     onChange={onRateTypeChange}
+                    value={rateType}
                 />
             </Grid>
 
@@ -69,7 +72,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <ReservationSourceSelect
                     register={register}
                     errors={errors}
-                    label={intl.formatMessage({id:"RowHeaderResSource"}) }
+                    label={intl.formatMessage({ id: "RowHeaderResSource" })}
                     ChannelID={2}
                     field="SourceID"
                 />

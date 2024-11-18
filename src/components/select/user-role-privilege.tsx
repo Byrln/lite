@@ -28,7 +28,7 @@ const UserRolePrivilegeSelect = ({
     const { data, error } = UserID
         ? GetPrivilegesByUserSWR({ UserID: UserID })
         : UserRolePrivilegeSWR(UserRoleID);
-    const [permissions, setPermissions] = useState(data ? data : []);
+    const [permissions, setPermissions] = useState<any>([]);
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
     // eslint-disable-next-line react-hooks/rules-of-hooks

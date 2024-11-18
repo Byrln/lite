@@ -180,7 +180,7 @@ const GeneralForm = () => {
                             fullWidth
                             id="State"
                             label={intl.formatMessage({
-                                id: "District/Province",
+                                id: "TextState",
                             })}
                             {...register("State")}
                             margin="dense"

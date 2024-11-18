@@ -195,10 +195,16 @@ const NewEdit = ({
                 let baseChild = 0;
                 if (getValues(`TransactionDetail[${id}].Adult`)) {
                     baseAdult = getValues(`TransactionDetail[${id}].Adult`);
+                    setSelectedAdult(
+                        getValues(`TransactionDetail[${id}].Adult`)
+                    );
                 }
 
                 if (getValues(`TransactionDetail[${id}].Child`)) {
                     baseChild = getValues(`TransactionDetail[${id}].Child`);
+                    setSelectedChild(
+                        getValues(`TransactionDetail[${id}].Child`)
+                    );
                 }
                 tempRoomType.BaseAdult = baseAdult;
                 tempRoomType.BaseChild = baseChild;
@@ -231,12 +237,12 @@ const NewEdit = ({
     const onRoomTypeChange = (rt: any, index: number) => {
         setRoomTypeID(rt.RoomTypeID);
         setRoomType(rt);
-        resetField(`TransactionDetail.${id}.Adult`, {
-            defaultValue: rt.BaseAdult,
-        });
-        resetField(`TransactionDetail.${id}.Child`, {
-            defaultValue: rt.BaseChild,
-        });
+        // resetField(`TransactionDetail.${id}.Adult`, {
+        //     defaultValue: rt.BaseAdult,
+        // });
+        // resetField(`TransactionDetail.${id}.Child`, {
+        //     defaultValue: rt.BaseChild,
+        // });
     };
     const onRoomChange = (r: any, index: any) => {
         setRoomID(r.RoomID);
@@ -244,11 +250,19 @@ const NewEdit = ({
 
     const onAdultChange = (evt: any) => {
         setSelectedAdult(evt.target.value);
+        resetField(`TransactionDetail.${id}.Adult`, {
+            defaultValue: evt.target.value,
+        });
     };
 
     const onChildChange = (evt: any) => {
         setSelectedChild(evt.target.value);
+        resetField(`TransactionDetail.${id}.Child`, {
+            defaultValue: evt.target.value,
+        });
     };
+
+    console.log("selectedAdults", selectedAdult);
     return (
         <Grid key={id} container spacing={1}>
             <input

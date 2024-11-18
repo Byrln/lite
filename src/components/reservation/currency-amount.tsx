@@ -113,6 +113,7 @@ const CurrencyAmount = ({
         selectedChild,
         CustomerID,
         ContractRate,
+        id,
     ]);
 
     const newCurrencyAmount = async () => {

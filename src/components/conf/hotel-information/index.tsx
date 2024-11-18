@@ -11,7 +11,7 @@ const HotelInformation = () => {
     const intl = useIntl();
     const tabs = [
         {
-            label: intl.formatMessage({id:"TextPicture"}),
+            label: intl.formatMessage({ id: "TextGeneralInformation" }),
             component: (
                 <>
                     <GeneralForm />
@@ -19,7 +19,7 @@ const HotelInformation = () => {
             ),
         },
         {
-            label: intl.formatMessage({id:"AccountSettings"}),
+            label: intl.formatMessage({ id: "AccountSettings" }),
             component: (
                 <>
                     <BankAccount title={"Банкны данс"} />
@@ -27,7 +27,7 @@ const HotelInformation = () => {
             ),
         },
         {
-            label: intl.formatMessage({id:"TextBookingEngine"}),
+            label: intl.formatMessage({ id: "TextBookingEngine" }),
             component: (
                 <>
                     <BookingEngine />
@@ -35,7 +35,7 @@ const HotelInformation = () => {
             ),
         },
         {
-            label: intl.formatMessage({id:"TextBanner"}),
+            label: intl.formatMessage({ id: "TextBanner" }),
             component: (
                 <>
                     <Banner />
@@ -43,7 +43,7 @@ const HotelInformation = () => {
             ),
         },
         {
-            label: intl.formatMessage({id:"TextHotelPictures"}),
+            label: intl.formatMessage({ id: "TextHotelPictures" }),
             component: (
                 <>
                     <MainPictures />
