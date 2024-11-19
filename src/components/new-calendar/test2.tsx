@@ -31,6 +31,7 @@ import { useRouter } from "next/router";
 
 import { RoomTypeSWR } from "../../lib/api/room-type";
 import { RoomSWR } from "lib/api/room";
+import { GroupReservationSWR } from "lib/api/reservation";
 import { StayView2SWR } from "lib/api/stay-view2";
 import { FrontOfficeSWR, listUrl } from "lib/api/front-office";
 import NewReservation from "components/front-office/reservation-list/new";
@@ -125,6 +126,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         StartDate: dateToCustomFormat(timeStart, "yyyy-MM-dd"),
         EndDate: dateToCustomFormat(timeEnd, "yyyy-MM-dd"),
     });
+    const { data: groupReservations, error: groupReservationsError } =
+        GroupReservationSWR({
+            //@ts-ignore
+            StartDate: dateToCustomFormat(timeStart, "yyyy-MM-dd"),
+            EndDate: dateToCustomFormat(timeEnd, "yyyy-MM-dd"),
+        });
     const [resources, setResources] = useState<any>(null);
     const [itemData, setItemData] = useState<any>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
@@ -271,7 +278,17 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           Balance: obj.Balance,
                           Adult: obj.Adult,
                           Child: obj.Child,
-
+                          pax:
+                              obj.GroupID &&
+                              groupReservations &&
+                              groupReservations.filter(
+                                  (item: any) => item.GroupID == obj.GroupID
+                              ).length > 0
+                                  ? groupReservations.filter(
+                                        (item: any) =>
+                                            item.GroupID == obj.GroupID
+                                    )[0].Pax
+                                  : null,
                           Breakfast: obj.Breakfast,
                           endDate: obj.EndDate,
                           groupColor: `${obj.GroupColor}`,
@@ -751,11 +768,17 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             )}
                             <div> Name : {arg.event.title}</div>
                             <div>
-                                Adult : {arg.event._def.extendedProps.Adult}
+                                A/C : {arg.event._def.extendedProps.Adult}/
+                                {arg.event._def.extendedProps.Child}
                             </div>{" "}
-                            <div>
-                                Child : {arg.event._def.extendedProps.Child}
-                            </div>
+                            {arg.event._def.extendedProps.pax ? (
+                                <div>
+                                    Group A/C :{" "}
+                                    {arg.event._def.extendedProps.pax}
+                                </div>
+                            ) : (
+                                ""
+                            )}
                             <div>
                                 Balance : {arg.event._def.extendedProps.Balance}
                             </div>
