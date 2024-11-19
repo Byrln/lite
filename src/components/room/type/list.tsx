@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
+import Link from "next/link";
+import { Button } from "@mui/material";
+
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -48,6 +51,28 @@ const RoomTypeList = ({ title }: any) => {
                         apiUrl="UpdateStatus"
                         mutateUrl={`${listUrl}`}
                     />
+                );
+            },
+        },
+        {
+            title: intl.formatMessage({ id: "RowHeaderAction" }),
+            key: "Action",
+            dataIndex: "Action",
+            excelRenderPass: true,
+            renderCell: (element: any) => {
+                return (
+                    <>
+                        <Link
+                            key={element.id}
+                            href={`/room/type/picture/${element.row.RoomTypeID}`}
+                        >
+                            <Button key={element.id}>
+                                {intl.formatMessage({
+                                    id: "TextPicture",
+                                })}
+                            </Button>
+                        </Link>
+                    </>
                 );
             },
         },
