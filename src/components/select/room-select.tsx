@@ -19,7 +19,6 @@ const RoomSelect = ({
     groupIndex,
     RoomID,
 }: any) => {
-    console.log("arrivalarrival", ArrivalDate);
     const intl = useIntl();
 
     const [data, setData]: any = useState([]);

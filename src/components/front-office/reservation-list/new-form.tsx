@@ -82,7 +82,6 @@ const NewEdit = ({
 
     useEffect(() => {
         if (getValues(`TransactionDetail[${id}]`)) {
-            console.log("test22", getValues(`TransactionDetail[${id}]`));
             if (getValues(`TransactionDetail[${id}].RoomTypeID`)) {
                 setRoomTypeID(getValues(`TransactionDetail[${id}].RoomTypeID`));
             }
@@ -261,8 +260,6 @@ const NewEdit = ({
             defaultValue: evt.target.value,
         });
     };
-
-    console.log("selectedAdults", selectedAdult);
     return (
         <Grid key={id} container spacing={1}>
             <input

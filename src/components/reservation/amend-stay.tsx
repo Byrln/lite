@@ -132,13 +132,18 @@ const AmendStayForm = ({
             ) {
                 transactionInfo.TransactionID.forEach(async (room: any) => {
                     if (room.isChecked == true) {
-                        var vals: any = {
-                            TransactionID: room.TransactionID,
+                        let vals: any = {
                             ArrivalDate: null,
                             DepartureDate: null,
                             OverrideRate: values.OverrideRate,
                             NewNights: values.NewNights,
                         };
+
+                        if (transactionInfo.GroupID && values.isGroup == true) {
+                            vals.GroupID = transactionInfo.GroomID;
+                        } else {
+                            vals.TransactionID = room.TransactionID;
+                        }
 
                         vals.ArrivalDate =
                             fToCustom(
@@ -156,19 +161,66 @@ const AmendStayForm = ({
                             " " +
                             values.DepartureTime +
                             ":00";
-
-                        const res = await ReservationAPI.amendStay(vals);
+                        if (transactionInfo.GroupID && values.isGroup == true) {
+                            const res = await ReservationAPI.groupAmendStay({
+                                ArrivalDate:
+                                    fToCustom(
+                                        values.ArrivalDate.getTime(),
+                                        "yyyy MMM dd"
+                                    ) +
+                                    " " +
+                                    values.ArrivalTime +
+                                    ":00",
+                                DepartureDate:
+                                    fToCustom(
+                                        values.DepartureDate.getTime(),
+                                        "yyyy MMM dd"
+                                    ) +
+                                    " " +
+                                    values.DepartureTime +
+                                    ":00",
+                                OverrideRate: values.OverrideRate,
+                                NewNights: values.NewNights,
+                                GroupID: transactionInfo.GroupID,
+                            });
+                        } else {
+                            const res = await ReservationAPI.amendStay({
+                                ArrivalDate:
+                                    fToCustom(
+                                        values.ArrivalDate.getTime(),
+                                        "yyyy MMM dd"
+                                    ) +
+                                    " " +
+                                    values.ArrivalTime +
+                                    ":00",
+                                DepartureDate:
+                                    fToCustom(
+                                        values.DepartureDate.getTime(),
+                                        "yyyy MMM dd"
+                                    ) +
+                                    " " +
+                                    values.DepartureTime +
+                                    ":00",
+                                OverrideRate: values.OverrideRate,
+                                NewNights: values.NewNights,
+                                TransactionID: room.TransactionID,
+                            });
+                        }
                     }
                 });
             } else {
-                var vals: any = {
-                    TransactionID: transactionInfo.TransactionID,
+                let vals: any = {
                     ArrivalDate: null,
                     DepartureDate: null,
                     OverrideRate: values.OverrideRate,
                     NewNights: values.NewNights,
                 };
 
+                if (transactionInfo.GroupID && values.isGroup == true) {
+                    vals.GroupID = transactionInfo.GroomID;
+                } else {
+                    vals.TransactionID = transactionInfo.TransactionID;
+                }
                 vals.ArrivalDate =
                     fToCustom(values.ArrivalDate.getTime(), "yyyy MMM dd") +
                     " " +
@@ -180,7 +232,51 @@ const AmendStayForm = ({
                     values.DepartureTime +
                     ":00";
 
-                const res = await ReservationAPI.amendStay(vals);
+                if (transactionInfo.GroupID && values.isGroup == true) {
+                    const res = await ReservationAPI.groupAmendStay({
+                        ArrivalDate:
+                            fToCustom(
+                                values.ArrivalDate.getTime(),
+                                "yyyy MMM dd"
+                            ) +
+                            " " +
+                            values.ArrivalTime +
+                            ":00",
+                        DepartureDate:
+                            fToCustom(
+                                values.DepartureDate.getTime(),
+                                "yyyy MMM dd"
+                            ) +
+                            " " +
+                            values.DepartureTime +
+                            ":00",
+                        OverrideRate: values.OverrideRate,
+                        NewNights: values.NewNights,
+                        GroupID: transactionInfo.GroupID,
+                    });
+                } else {
+                    const res = await ReservationAPI.amendStay({
+                        ArrivalDate:
+                            fToCustom(
+                                values.ArrivalDate.getTime(),
+                                "yyyy MMM dd"
+                            ) +
+                            " " +
+                            values.ArrivalTime +
+                            ":00",
+                        DepartureDate:
+                            fToCustom(
+                                values.DepartureDate.getTime(),
+                                "yyyy MMM dd"
+                            ) +
+                            " " +
+                            values.DepartureTime +
+                            ":00",
+                        OverrideRate: values.OverrideRate,
+                        NewNights: values.NewNights,
+                        TransactionID: transactionInfo.TransactionID,
+                    });
+                }
             }
 
             await mutate(listUrl);
@@ -304,6 +400,13 @@ const AmendStayForm = ({
                     label={intl.formatMessage({
                         id: "TextOverrideRate",
                     })}
+                />
+
+                <FormControlLabel
+                    control={
+                        <Checkbox id={"isGroup"} {...register("isGroup")} />
+                    }
+                    label="Группээр сунгах"
                 />
                 <div style={{ display: "flex", flexDirection: "row-reverse" }}>
                     <SubmitButton loading={loading} fullWidth={false} />

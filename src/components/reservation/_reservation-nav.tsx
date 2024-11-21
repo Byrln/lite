@@ -6,11 +6,11 @@ import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-
 import { mutate } from "swr";
 import { ModalContext } from "lib/context/modal";
 import { toast } from "react-toastify";
 
+import NewReservation from "components/front-office/reservation-list/new";
 import AmendStayForm from "components/reservation/amend-stay";
 import VoidTransactionForm from "components/reservation/void-transaction";
 import CancelReservationForm from "components/reservation/cancel-reservation";
@@ -451,6 +451,30 @@ const ReservationNav = ({
                 >
                     Хяналт
                 </Button>
+            )}
+            {reservation.GroupID ? (
+                <Button
+                    variant={"text"}
+                    size="small"
+                    sx={buttonStyle}
+                    onClick={() =>
+                        handleModal(
+                            true,
+                            intl.formatMessage({ id: "ButtonAddNewGuest" }),
+                            <NewReservation
+                                dateStart={new Date(reservation.ArrivalDate)}
+                                dateEnd={new Date(reservation.DepartureDate)}
+                                groupID={reservation.GroupID}
+                            />,
+                            null,
+                            "large"
+                        )
+                    }
+                >
+                    Өрөө нэмэх
+                </Button>
+            ) : (
+                ""
             )}
         </Box>
     );

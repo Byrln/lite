@@ -238,6 +238,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             Object.values(dateGroup)
         );
     };
+
     useEffect(() => {
         let itemDataConcated: any = [];
         let letNewEvents: any = null;
@@ -461,7 +462,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             setResources(newRoomTypeData.concat(newData));
         }
     }, [roomTypes, rooms]);
-    console.log("resources", resources);
+
     useEffect(() => {
         setHeight(window.innerHeight - 200);
     }, [window.innerHeight]);
@@ -516,6 +517,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         transactionID={
                             info.event._def.extendedProps.transactionID
                         }
+                        extendedProps={info.event._def.extendedProps}
                     />,
                     null,
                     "medium"
@@ -551,6 +553,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 RoomTypeID: Number(info.event._def.extendedProps.roomTypeID),
                 RoomID: Number(info.event._def.resourceIds[0]),
                 TransactionID: info.event._def.extendedProps.transactionID,
+                GroupID: info.event.extendedProps.GroupID
+                    ? info.event.extendedProps.GroupID
+                    : null,
             };
             let filteredItemData = itemData.filter(
                 (event: any) =>
@@ -656,6 +661,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             RoomTypeID: Number(info.event._def.extendedProps.roomTypeID),
             RoomID: Number(info.event._def.resourceIds[0]),
             TransactionID: info.event._def.extendedProps.transactionID,
+            GroupID: info.event._def.extendedProps.GroupID
+                ? info.event._def.extendedProps.GroupID
+                : null,
         };
         let filteredItemData = itemData.filter(
             (event: any) =>

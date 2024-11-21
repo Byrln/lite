@@ -160,6 +160,10 @@ export const ReservationAPI = {
         const res = await axios.post(`${urlPrefix}/AmendStay`, values);
         return res;
     },
+    groupAmendStay: async (values: any) => {
+        const res = await axios.post(`${urlPrefix}/GroupAmendStay`, values);
+        return res;
+    },
     cancel: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/Cancel`, values);
         return res;

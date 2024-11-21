@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 
 import { FrontOfficeAPI } from "lib/api/front-office";
 import { ChargeAPI } from "lib/api/charge";
-
 import ReservationDetail from "components/reservation/item-detail";
 
-const NewEdit = ({ transactionID, additionalMutateUrl }: any) => {
+const NewEdit = ({
+    transactionID,
+    additionalMutateUrl,
+    extendedProps,
+}: any) => {
     const [reservation, setReservation]: any = useState(null);
     const [summary, setSummary]: any = useState(null);
 
@@ -33,6 +36,7 @@ const NewEdit = ({ transactionID, additionalMutateUrl }: any) => {
                     reloadDetailInfo={reloadDetailInfo}
                     additionalMutateUrl={additionalMutateUrl}
                     summary={summary}
+                    extendedProps={extendedProps}
                 />
             )}
         </div>

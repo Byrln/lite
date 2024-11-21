@@ -14,6 +14,7 @@ import {
 import { fToCustom, countNights } from "lib/utils/format-time";
 import ReservationNav from "./_reservation-nav";
 import { useIntl } from "react-intl";
+import Iconify from "components/iconify/iconify";
 
 import RemarkList from "./remark/list";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -21,6 +22,7 @@ import { ModalContext } from "lib/context/modal";
 import InvoiceSelect from "components/reporting/invoice/select";
 import ReceiptSelect from "components/reporting/receipt/select";
 import EbarimtSelect from "components/reporting/ebarimt/select";
+import { formatPrice } from "lib/utils/helpers";
 
 const styleTime = {
     backgroundColor: "#00008B",
@@ -51,6 +53,7 @@ const ItemDetail = ({
     reloadDetailInfo,
     additionalMutateUrl,
     summary,
+    extendedProps,
 }: any) => {
     const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
@@ -62,6 +65,35 @@ const ItemDetail = ({
                     <Grid container spacing={2} sx={{ mb: 2 }}>
                         <Grid item xs={6}>
                             <div style={{ display: "flex" }}>
+                                {extendedProps.GroupID &&
+                                extendedProps.GroupID != "" ? (
+                                    <span
+                                        style={{
+                                            marginRight: "5px",
+                                            marginTop: "2px",
+                                            color:
+                                                extendedProps.groupColor &&
+                                                extendedProps.groupColor != ""
+                                                    ? extendedProps.groupColor
+                                                    : "black",
+                                        }}
+                                    >
+                                        {extendedProps.IsGroupOwner ==
+                                        "true" ? (
+                                            <Iconify
+                                                icon="solar:crown-outline"
+                                                width="16px"
+                                            />
+                                        ) : (
+                                            <Iconify
+                                                icon="clarity:group-line"
+                                                width="16px"
+                                            />
+                                        )}
+                                    </span>
+                                ) : (
+                                    <></>
+                                )}
                                 <h4>{reservation?.GuestName}</h4>{" "}
                                 <div>
                                     ({reservation?.Adult}/{reservation?.Child})
@@ -249,7 +281,7 @@ const ItemDetail = ({
                                             <b>Өрөөний тооцоо</b>
                                         </TableCell>
                                         <TableCell>
-                                            {summary.RoomCharges}
+                                            {formatPrice(summary.RoomCharges)}
                                         </TableCell>
                                     </TableRow>
 
@@ -258,24 +290,7 @@ const ItemDetail = ({
                                             <b>Нэмэлт үйлчилгээ</b>
                                         </TableCell>
                                         <TableCell>
-                                            {summary.ExtraCharges}
-                                        </TableCell>
-                                    </TableRow>
-
-                                    <TableRow>
-                                        <TableCell sx={{ textAlign: "right" }}>
-                                            Мини бар
-                                        </TableCell>
-                                        <TableCell>
-                                            {summary.MiniBarCharges}
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell sx={{ textAlign: "right" }}>
-                                            Ресторан
-                                        </TableCell>
-                                        <TableCell>
-                                            {summary.RestaurantCharges}
+                                            {formatPrice(summary.ExtraCharges)}
                                         </TableCell>
                                     </TableRow>
 
@@ -284,7 +299,7 @@ const ItemDetail = ({
                                             <b>Нийт дүн</b>
                                         </TableCell>
                                         <TableCell>
-                                            {summary.TotalCharges}
+                                            {formatPrice(summary.TotalCharges)}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
@@ -292,14 +307,16 @@ const ItemDetail = ({
                                             <b>Урьдчилгаа</b>
                                         </TableCell>
                                         <TableCell>
-                                            {summary.TotalPayments}
+                                            {formatPrice(summary.TotalPayments)}
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>
                                             <b>Үлдэгдэл</b>
                                         </TableCell>
-                                        <TableCell>{summary.Balance}</TableCell>
+                                        <TableCell>
+                                            {formatPrice(summary.Balance)}
+                                        </TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
