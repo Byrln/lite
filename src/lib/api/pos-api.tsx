@@ -19,7 +19,8 @@ export const PosApiSWR = () => {
             .then((res: any) =>
                 res.data.JsonData.filter(
                     (item: any) =>
-                        item.HotelID == localStorage.getItem("hotelId")
+                        item.HotelCode ==
+                        String(localStorage.getItem("hotelId"))
                 )
             );
 
