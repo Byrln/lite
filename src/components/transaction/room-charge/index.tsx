@@ -13,7 +13,7 @@ import UpdateRate from "./update-rate";
 
 const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
-    const { data, error } = RoomChargeSWR(TransactionID);
+    const { data, error } = RoomChargeSWR({ TransactionID: TransactionID });
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedRow, setSelectedRow] = useState<any>(null);
 

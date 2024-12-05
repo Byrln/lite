@@ -31,6 +31,7 @@ const Send = ({ id, HotelCode, listUrl }: any) => {
         setLoading(true);
         try {
             const response = await PosApiAPI.send(HotelCode);
+            console.log("response", response);
             await mutate(listUrl);
             setLoading(false);
             toast(response.Message ? response.Message : "Амжилттай.");

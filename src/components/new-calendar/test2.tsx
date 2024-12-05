@@ -518,6 +518,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             info.event._def.extendedProps.transactionID
                         }
                         extendedProps={info.event._def.extendedProps}
+                        additionalMutateUrl="/api/Reservation/List"
                     />,
                     null,
                     "medium"

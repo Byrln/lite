@@ -22,13 +22,10 @@ export const ChargeSummarySWR = (TransactionID: any) => {
     return useSWR(`${urlPrefix}/Summary`, fetcher);
 };
 
-export const RoomChargeSWR = (TransactionID: any, RoomChargeID = null) => {
+export const RoomChargeSWR = (search: any) => {
     const fetcher = async (url: any) =>
         await axios
-            .post(`${urlPrefix}/RoomCharge`, {
-                TransactionID: TransactionID,
-                RoomChargeID: RoomChargeID,
-            })
+            .post(`${urlPrefix}/RoomCharge`, search)
             .then((res: any) => res.data.JsonData);
 
     return useSWR(`${urlPrefix}/RoomCharge`, fetcher);

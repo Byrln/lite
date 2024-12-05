@@ -14,15 +14,13 @@ export const printUrl = `/api/Ebarimt3/Print`;
 
 export const PosApiSWR = () => {
     const fetcher = async (url: any) =>
-        await axios
-            .post(url)
-            .then((res: any) =>
-                res.data.JsonData.filter(
-                    (item: any) =>
-                        item.HotelCode ==
-                        String(localStorage.getItem("hotelId"))
-                )
-            );
+        await axios.post(url).then(
+            (res: any) => res.data.JsonData
+            // .filter(
+            //     (item: any) =>
+            //         item.HotelID == String(localStorage.getItem("hotelId"))
+            // )
+        );
 
     return useSWR(listUrl, fetcher);
 };
@@ -168,7 +166,7 @@ export const PosApiAPI = {
 
         const res = await axios.post(sendUrl, values);
 
-        return res.data.JsonData;
+        return res.data;
     },
 
     customerName: async (CompanyID: any) => {

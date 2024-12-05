@@ -42,11 +42,15 @@ const EbarimtSelect = ({ FolioID }: any) => {
             let values = {
                 FolioID: FolioID,
                 BillType: billType,
-                CompanyID: billType == 1 ? null : company,
-                CompanyName: billType == 1 ? null : customer.name,
+                CompanyID: billType == 1 ? "" : company,
+                CompanyName: billType == 1 ? "" : customer.name,
             };
 
             const response = await PosApiAPI.print(values);
+
+            // if (response) {
+            //     window.open("google.com", "_blank");
+            // }
             setLoading(false);
         } finally {
         }

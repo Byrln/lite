@@ -42,6 +42,13 @@ export const TransactionInfoSWR = (search: any) => {
 };
 
 export const FrontOfficeAPI = {
+    transactionInfoList: async (search: any) => {
+        const res = await axios.post(`${urlPrefix}/TransactionInfo`, search);
+        var list = res.data.JsonData;
+
+        return list;
+    },
+
     transactionInfo: async (id: any) => {
         const values = {
             TransactionID: id,

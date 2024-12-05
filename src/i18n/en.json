@@ -971,5 +971,7 @@
     "TextBaseChild": "Base Child",
     "TextMaxAdult": "Max Adult",
     "TextMaxChild": "Max Child",
-    "TitleEmailConfiguration": "E-mail Configuration"
+    "TitleEmailConfiguration": "E-mail Configuration",
+    "TextApplytoWholeStay": "Apply to Whole Stay",
+    "TextApplytoSelectedDate": "Apply to Selected Date"
 }

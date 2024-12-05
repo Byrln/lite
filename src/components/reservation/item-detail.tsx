@@ -15,6 +15,7 @@ import { fToCustom, countNights } from "lib/utils/format-time";
 import ReservationNav from "./_reservation-nav";
 import { useIntl } from "react-intl";
 import Iconify from "components/iconify/iconify";
+import Link from "next/link";
 
 import RemarkList from "./remark/list";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -23,6 +24,8 @@ import InvoiceSelect from "components/reporting/invoice/select";
 import ReceiptSelect from "components/reporting/receipt/select";
 import EbarimtSelect from "components/reporting/ebarimt/select";
 import { formatPrice } from "lib/utils/helpers";
+import EditIcon from "@mui/icons-material/Edit";
+import RoomGroupEdit from "components/transaction/group/room/group-edit";
 
 const styleTime = {
     backgroundColor: "#00008B",
@@ -57,6 +60,10 @@ const ItemDetail = ({
 }: any) => {
     const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
+    console.log("extendedProps", extendedProps);
+    console.log("reservation", reservation);
+
+    console.log("reloadDetailInfo", reloadDetailInfo);
 
     return (
         <>
@@ -280,8 +287,51 @@ const ItemDetail = ({
                                         <TableCell>
                                             <b>Өрөөний тооцоо</b>
                                         </TableCell>
-                                        <TableCell>
-                                            {formatPrice(summary.RoomCharges)}
+                                        <TableCell style={{ display: "flex" }}>
+                                            <div>
+                                                {formatPrice(
+                                                    summary.RoomCharges
+                                                )}
+                                            </div>
+                                            <Link href="#" passHref>
+                                                <a
+                                                    className="ml-2"
+                                                    style={{
+                                                        paddingTop: "3px",
+                                                        color: "rgb(24, 119, 242)",
+                                                    }}
+                                                    onClick={() => {
+                                                        handleModal(
+                                                            true,
+                                                            "Edit",
+                                                            <RoomGroupEdit
+                                                                GroupID={
+                                                                    extendedProps.GroupID &&
+                                                                    extendedProps.GroupID >
+                                                                        0
+                                                                        ? extendedProps.GroupID
+                                                                        : null
+                                                                }
+                                                                TransactionID={
+                                                                    extendedProps.GroupID
+                                                                        ? null
+                                                                        : reservation.TransactionID
+                                                                }
+                                                                additionalMutateUrl={
+                                                                    additionalMutateUrl
+                                                                }
+                                                                RoomID={
+                                                                    reservation.RoomID
+                                                                }
+                                                            />,
+                                                            null,
+                                                            "medium"
+                                                        );
+                                                    }}
+                                                >
+                                                    <EditIcon />
+                                                </a>
+                                            </Link>
                                         </TableCell>
                                     </TableRow>
 
