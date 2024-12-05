@@ -703,6 +703,16 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             editId: "",
         });
 
+        let filteredItemData = itemData.filter(
+            (event: any) =>
+                event.roomTypeID ==
+                    Number(info.resource._resource.extendedProps.roomTypeId) &&
+                event.resourceId == Number(info.resource._resource.id) &&
+                new Date(start) <= new Date(event.start) &&
+                new Date(event.start) <= new Date(end) &&
+                new Date(start) <= new Date(event.end) &&
+                new Date(event.end) <= new Date(end)
+        );
         const newEventObject = {
             title: "New Event",
             start: start,
@@ -720,25 +730,29 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         // activeSessionID && activeSessionID == "-1" && handleCashierOpen();
 
         if (newEventObject.roomID) {
-            handleModal(
-                true,
-                `New Reservation`,
-                <NewReservation
-                    dateStart={start}
-                    dateEnd={end}
-                    // // @ts-ignore
-                    roomType={newEventObject.roomTypeID}
-                    // // @ts-ignore
-                    room={newEventObject.roomID}
-                    BaseAdult={newEventObject.BaseAdult}
-                    BaseChild={newEventObject.BaseChild}
-                    MaxAdult={newEventObject.MaxAdult}
-                    MaxChild={newEventObject.MaxChild}
-                    workingDate={workingDate}
-                />,
-                null,
-                "medium"
-            );
+            if (filteredItemData.length > 0) {
+                toast("Захиалга давхцаж байна.");
+            } else {
+                handleModal(
+                    true,
+                    `New Reservation`,
+                    <NewReservation
+                        dateStart={start}
+                        dateEnd={end}
+                        // // @ts-ignore
+                        roomType={newEventObject.roomTypeID}
+                        // // @ts-ignore
+                        room={newEventObject.roomID}
+                        BaseAdult={newEventObject.BaseAdult}
+                        BaseChild={newEventObject.BaseChild}
+                        MaxAdult={newEventObject.MaxAdult}
+                        MaxChild={newEventObject.MaxChild}
+                        workingDate={workingDate}
+                    />,
+                    null,
+                    "medium"
+                );
+            }
         }
     };
 
