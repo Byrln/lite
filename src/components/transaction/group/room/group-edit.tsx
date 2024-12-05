@@ -56,7 +56,8 @@ const NewEdit = ({
     const [dateType, setDateType] = useState<any>("wholeStay");
     const [minDate, setMinDate] = useState<any>(null);
     const [maxDate, setMaxDate] = useState<any>(null);
-
+    const [maxAdult, setMaxAdult] = useState<any>(null);
+    const [maxChild, setMaxChild] = useState<any>(null);
     const [roomsCheck, setRoomsCheck] = useState(false);
     const [initialRooms, setInitialRooms] = useState<any>([String(RoomID)]);
 
@@ -75,9 +76,13 @@ const NewEdit = ({
     useEffect(() => {
         if (data) {
             const dates = data.map((item: any) => new Date(item.StayDate));
+            const adults = data.map((item: any) => item.MaxAdult);
+            const childs = data.map((item: any) => item.MaxChild);
 
             setMinDate(moment(Math.min(...dates)).format("YYYY-MM-DD"));
             setMaxDate(moment(Math.max(...dates)).format("YYYY-MM-DD"));
+            setMaxAdult(Math.min(...adults));
+            setMaxChild(Math.max(...childs));
         }
     }, [data]);
 
@@ -320,7 +325,7 @@ const NewEdit = ({
                         <Grid item xs={6}>
                             <NumberSelect
                                 numberMin={0}
-                                numberMax={5}
+                                numberMax={maxAdult}
                                 nameKey={"Adult"}
                                 register={register}
                                 errors={errors}
@@ -332,7 +337,7 @@ const NewEdit = ({
                         <Grid item xs={6}>
                             <NumberSelect
                                 numberMin={0}
-                                numberMax={5}
+                                numberMax={maxChild}
                                 nameKey={"Child"}
                                 register={register}
                                 errors={errors}
