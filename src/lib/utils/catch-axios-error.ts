@@ -11,9 +11,6 @@ const catchAxiosError = (error: any) => {
     if (response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        console.log("Data", response.data);
-        console.log("Status", response.status);
-        console.log("Headers", response.headers);
 
         message = response.data.detail
             ? response.data.detail

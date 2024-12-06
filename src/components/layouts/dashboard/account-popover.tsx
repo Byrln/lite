@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import homeFill from "@iconify/icons-eva/home-fill";
 import personFill from "@iconify/icons-eva/person-fill";
 import settings2Fill from "@iconify/icons-eva/settings-2-fill";
@@ -15,10 +15,13 @@ import {
     Avatar,
     IconButton,
 } from "@mui/material";
+import { useIntl } from "react-intl";
 
 import MenuPopover from "components/menu-popover";
 import account from "components/_mocks_/account";
-
+import { ModalContext } from "lib/context/modal";
+import { useAppState } from "lib/context/app";
+import NewEdit from "components/common/change-password";
 // const MENU_OPTIONS = [
 //     // {
 //     //     label: "Home",
@@ -40,8 +43,11 @@ import account from "components/_mocks_/account";
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-    const anchorRef = useRef(null);
+    const { handleModal }: any = useContext(ModalContext);
+    const [state, dispatch]: any = useAppState();
     const [open, setOpen] = useState(false);
+    const anchorRef = useRef(null);
+    const intl = useIntl();
 
     const handleOpen = () => {
         setOpen(true);
@@ -86,13 +92,13 @@ export default function AccountPopover() {
                     <Typography variant="subtitle1" noWrap>
                         {localStorage.getItem("username")}
                     </Typography>
-                    {/* <Typography
+                    <Typography
                         variant="body2"
                         sx={{ color: "text.secondary" }}
                         noWrap
                     >
                         {account.email}
-                    </Typography> */}
+                    </Typography>
                 </Box>
 
                 <Divider sx={{ my: 1 }} />
@@ -123,13 +129,45 @@ export default function AccountPopover() {
                         fullWidth
                         color="inherit"
                         variant="outlined"
+                        onClick={() => {
+                            handleModal(
+                                true,
+                                intl.formatMessage({
+                                    id: "MenuChangePassword",
+                                }),
+                                <NewEdit handleModal={handleModal} />,
+                                null,
+                                "small"
+                            );
+                            dispatch({
+                                type: "isShow",
+                                isShow: null,
+                            });
+                            dispatch({
+                                type: "editId",
+                                editId: null,
+                            });
+                        }}
+                        className="mb-3"
+                    >
+                        {intl.formatMessage({
+                            id: "MenuChangePassword",
+                        })}
+                    </Button>
+
+                    <Button
+                        fullWidth
+                        color="inherit"
+                        variant="outlined"
                         onClick={() =>
                             signOut({
                                 callbackUrl: "http://pms2.horecasoft.mn",
                             })
                         }
                     >
-                        Гарах
+                        {intl.formatMessage({
+                            id: "MenuLogOut",
+                        })}
                     </Button>
                 </Box>
             </MenuPopover>

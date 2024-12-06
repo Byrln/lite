@@ -140,4 +140,16 @@ export const UserAPI = {
             status,
         };
     },
+
+    changePassword: async (values: any) => {
+        const { data, status } = await axios.post(
+            `${urlPrefix}/ChangePassword`,
+            values
+        );
+
+        return {
+            data,
+            status,
+        };
+    },
 };

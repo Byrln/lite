@@ -60,10 +60,6 @@ const ItemDetail = ({
 }: any) => {
     const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
-    console.log("extendedProps", extendedProps);
-    console.log("reservation", reservation);
-
-    console.log("reloadDetailInfo", reloadDetailInfo);
 
     return (
         <>
