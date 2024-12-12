@@ -33,6 +33,7 @@ const ReservationNav = ({
     itemInfo,
     reloadDetailInfo,
     additionalMutateUrl,
+    customRerender,
 }: any) => {
     const { locale }: any = useRouter();
     const intl = useIntl();
@@ -90,6 +91,10 @@ const ReservationNav = ({
         if (additionalMutateUrl) {
             await mutate(additionalMutateUrl);
         }
+
+        if (customRerender) {
+            customRerender();
+        }
         finishCall(
             intl.formatMessage({
                 id: "TextSuccess",
@@ -112,6 +117,9 @@ const ReservationNav = ({
         if (additionalMutateUrl) {
             await mutate(additionalMutateUrl);
         }
+        if (customRerender) {
+            customRerender();
+        }
         finishCall(
             intl.formatMessage({
                 id: "TextSuccess",
@@ -133,6 +141,7 @@ const ReservationNav = ({
                     TransactionID={reservation.TransactionID}
                     listUrl={additionalMutateUrl}
                     buttonVariant="text"
+                    customRerender={customRerender}
                 />
             )}
 
@@ -164,6 +173,7 @@ const ReservationNav = ({
                                 transactionInfo={reservation}
                                 reservation={reservation}
                                 additionalMutateUrl={additionalMutateUrl}
+                                customRerender={customRerender}
                             />,
                             null,
                             "small"
@@ -230,6 +240,7 @@ const ReservationNav = ({
                                     transactionInfo={reservation}
                                     reservation={reservation}
                                     additionalMutateUrl={additionalMutateUrl}
+                                    customRerender={customRerender}
                                 />
                             );
                         }}
@@ -273,6 +284,7 @@ const ReservationNav = ({
                                     transactionInfo={reservation}
                                     reservation={reservation}
                                     additionalMutateUrl={additionalMutateUrl}
+                                    customRerender={customRerender}
                                 />
                             );
                         }}
@@ -318,6 +330,7 @@ const ReservationNav = ({
                                     transactionInfo={reservation}
                                     reservation={reservation}
                                     customMutateUrl={additionalMutateUrl}
+                                    customRerender={customRerender}
                                 />
                             );
                         }}
@@ -367,6 +380,7 @@ const ReservationNav = ({
                                     transactionInfo={reservation}
                                     reservation={reservation}
                                     customMutateUrl={additionalMutateUrl}
+                                    customRerender={customRerender}
                                 />
                             );
                         }}
@@ -411,6 +425,7 @@ const ReservationNav = ({
                                 transactionInfo={reservation}
                                 reservation={reservation}
                                 additionalMutateUrl={additionalMutateUrl}
+                                customRerender={customRerender}
                             />
                         );
                     }}
@@ -465,6 +480,7 @@ const ReservationNav = ({
                                 dateStart={new Date(reservation.ArrivalDate)}
                                 dateEnd={new Date(reservation.DepartureDate)}
                                 groupID={reservation.GroupID}
+                                customRerender={customRerender}
                             />,
                             null,
                             "large"

@@ -1,11 +1,6 @@
-import { useForm, useFieldArray } from "react-hook-form";
-import { Controller } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { mutate } from "swr";
 import { useIntl } from "react-intl";
-
-import ColorPicker from "components/select/color";
-import ReservationSourceSelect from "components/select/reservation-source";
 import {
     Card,
     CardContent,
@@ -26,6 +21,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useState, useEffect } from "react";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 
+import ColorPicker from "components/select/color";
+import ReservationSourceSelect from "components/select/reservation-source";
 import { ReservationTypeSelect } from "components/select";
 import NewEditForm from "components/common/new-edit-form";
 import { ReservationAPI } from "lib/api/reservation";
@@ -47,7 +44,6 @@ const validationSchema = yup.object().shape({
     ArrivalTime: yup.string().required("Ирэх цаг сонгоно уу!"),
     DepartureDate: yup.string().required("Гарах огноо сонгоно уу!"),
     DepartureTime: yup.string().required("Гарах цаг сонгоно уу!"),
-
     TransactionDetail: yup
         .array()
         .nullable()
@@ -71,6 +67,7 @@ const NewEdit = ({
     MaxChild,
     workingDate,
     groupID,
+    customRerender,
 }: any) => {
     const intl = useIntl();
     const [CustomerID, setCustomerID]: any = useState(0);
@@ -88,7 +85,6 @@ const NewEdit = ({
             : "12:00"
     );
     const { data: rateTypeData, error: rateTypeError } = RateTypeSWR({});
-
     const [DepartureDate, setDepartureDate]: any = useState(
         dateEnd
             ? dateEnd
@@ -98,8 +94,6 @@ const NewEdit = ({
     const [TaxIncluded, setTaxIncluded]: any = useState("");
     const [ReservationSourceChecked, setReservationSourceChecked]: any =
         useState(false);
-
-    const [selectedGuest, setSelectedGuest]: any = useState(null);
     const [ReservationTypeID, setReservationTypeID]: any = useState(1);
     const [newGroupCount, setNewGroupCount]: any = useState(1);
     const [newRoomTypeID, setNewRoomTypeID]: any = useState<any>(null);
@@ -311,9 +305,9 @@ const NewEdit = ({
                 tempValues.TransactionDetail[index].Remarks = values.Remarks;
             });
             await ReservationAPI.new(tempValues);
-            await mutate("/api/RoomType/List");
-            await mutate("/api/FrontOffice/StayView2");
-            await mutate("/api/FrontOffice/ReservationDetailsByDate");
+            if (customRerender) {
+                customRerender();
+            }
         } finally {
         }
     };

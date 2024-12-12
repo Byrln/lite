@@ -57,10 +57,10 @@ const ItemDetail = ({
     additionalMutateUrl,
     summary,
     extendedProps,
+    customRerender,
 }: any) => {
     const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
-
     return (
         <>
             {reservation ? (
@@ -273,6 +273,7 @@ const ItemDetail = ({
                                 itemInfo={reservation}
                                 reloadDetailInfo={reloadDetailInfo}
                                 additionalMutateUrl={additionalMutateUrl}
+                                customRerender={customRerender}
                             />
                         </Grid>
 
@@ -318,6 +319,9 @@ const ItemDetail = ({
                                                                 }
                                                                 RoomID={
                                                                     reservation.RoomID
+                                                                }
+                                                                customRerender={
+                                                                    customRerender
                                                                 }
                                                             />,
                                                             null,
@@ -434,6 +438,7 @@ const ItemDetail = ({
                                 reservation={reservation}
                                 itemInfo={reservation}
                                 reloadDetailInfo={reloadDetailInfo}
+                                customRerender={customRerender}
                             />
                         </Grid>
                         <Grid item xs={12}>

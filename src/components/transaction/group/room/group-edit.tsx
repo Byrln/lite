@@ -42,6 +42,7 @@ const NewEdit = ({
     TransactionID = null,
     additionalMutateUrl,
     RoomID,
+    customRerender,
 }: any) => {
     const { data, error } = RoomChargeSWR({
         GroupID: GroupID,
@@ -151,6 +152,9 @@ const NewEdit = ({
                 })
             );
         } finally {
+            if (customRerender) {
+                customRerender;
+            }
             mutate("/api/Reservation/List");
         }
     };

@@ -15,7 +15,13 @@ import ReservationEdit from "components/front-office/reservation-list/edit";
 import { ReservationAPI } from "lib/api/reservation";
 import { ModalContext } from "lib/context/modal";
 
-const CheckOut = ({ id, TransactionID, listUrl, buttonVariant }: any) => {
+const CheckOut = ({
+    id,
+    TransactionID,
+    listUrl,
+    buttonVariant,
+    customRerender,
+}: any) => {
     const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
@@ -34,6 +40,9 @@ const CheckOut = ({ id, TransactionID, listUrl, buttonVariant }: any) => {
         try {
             await ReservationAPI.checkOut(TransactionID);
             await mutate(listUrl);
+            if (customRerender) {
+                customRerender();
+            }
             setLoading(false);
             toast(
                 intl.formatMessage({

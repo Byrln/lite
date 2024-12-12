@@ -111,6 +111,7 @@ const ExtraCharge = ({
             setLoading(false);
             setChargeTypes({});
             setPaymentMethods({});
+
             reset();
             handleModal();
         } catch (error) {

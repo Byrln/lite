@@ -282,11 +282,13 @@ const AmendStayForm = ({
             await mutate(listUrl);
 
             await mutate("/api/FrontOffice/TransactionInfo");
+            console.log("22222", customRerender);
 
             if (additionalMutateUrl) {
                 await mutate(additionalMutateUrl);
             }
             if (customRerender) {
+                console.log("testtest1", customRerender);
                 customRerender();
             }
 

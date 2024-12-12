@@ -8,7 +8,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import { Icon } from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
-import { mutate } from "swr";
 import {
     Tooltip,
     FormControl,
@@ -18,25 +17,18 @@ import {
     Box,
     Button,
     Typography,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    Stack,
 } from "@mui/material";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
-import InfoIcon from "@mui/icons-material/Info";
-import { useRouter } from "next/router";
 
-import { RoomTypeSWR } from "../../lib/api/room-type";
-import { RoomSWR } from "lib/api/room";
-import { GroupReservationSWR } from "lib/api/reservation";
-import { StayView2SWR } from "lib/api/stay-view2";
-import { FrontOfficeSWR, listUrl } from "lib/api/front-office";
+import { RoomTypeAPI } from "lib/api/room-type";
+import { RoomAPI } from "lib/api/room";
+import { ReservationAPI } from "lib/api/reservation";
+import { StayView2API } from "lib/api/stay-view2";
+import { FrontOfficeAPI, listUrl } from "lib/api/front-office";
 import NewReservation from "components/front-office/reservation-list/new";
 import { ModalContext } from "lib/context/modal";
-import { RoomBlockSWR } from "lib/api/room-block";
+import { RoomBlockAPI } from "lib/api/room-block";
 import { dateToCustomFormat } from "lib/utils/format-time";
 import { useAppState } from "lib/context/app";
 import Search from "./search";
@@ -51,8 +43,6 @@ import { useIntl } from "react-intl";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const intl = useIntl();
-
-    const router = useRouter();
     const [state, dispatch]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
     const [dayCount, setDayCount] = useState(15);
@@ -63,7 +53,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     });
     const [searchCurrDate, setSearchCurrDate] = useState(workingDate);
     const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
-    // const [activeSessionID, setActiveSessionID] = useState<any>(null);
 
     function extractNumberFromString(str: any) {
         const parts = str.split("-");
@@ -90,15 +79,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         );
     };
 
-    const {
-        data: items,
-        mutate: mutateItems,
-        error: itemsError,
-    } = FrontOfficeSWR({
-        CurrDate: searchCurrDate ? searchCurrDate : workingDate,
-        NumberOfDays: dayCount,
-        RoomTypeID: searchRoomTypeID,
-    });
     const [timeStart, setTimeStart] = useState(
         new Date(searchCurrDate ? searchCurrDate : workingDate)
     );
@@ -111,35 +91,300 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             )
         )
     );
-
-    const { data: roomTypes, error: roomTypeSwrError } = RoomTypeSWR({
-        RoomTypeID: searchRoomTypeID,
-    });
-    const { data: rooms, error: roomSwrError } = RoomSWR({});
-    // const { data: listData, error: listError } = CashierSessionListSWR({});
-
-    // const { data: cashierActive, error: cashierActiveError } =
-    //     CashierSessionActiveSWR();
-
-    const { data: roomBlocks, error: roomBlocksError } = RoomBlockSWR({
-        //@ts-ignore
-        StartDate: dateToCustomFormat(timeStart, "yyyy-MM-dd"),
-        EndDate: dateToCustomFormat(timeEnd, "yyyy-MM-dd"),
-    });
-    const { data: groupReservations, error: groupReservationsError } =
-        GroupReservationSWR({
-            //@ts-ignore
-            StartDate: dateToCustomFormat(timeStart, "yyyy-MM-dd"),
-            EndDate: dateToCustomFormat(timeEnd, "yyyy-MM-dd"),
-        });
     const [resources, setResources] = useState<any>(null);
     const [itemData, setItemData] = useState<any>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
+    const [customMutate, setCustomMutate] = useState(0);
     const [height, setHeight] = useState<any>(null);
-    const { data: availableRooms, error: availableRoomsError } = StayView2SWR(
-        searchCurrDate ? searchCurrDate : workingDate,
-        dayCount
-    );
+    const [availableRooms, setAvailableRooms] = useState<any>(null);
+
+    useEffect(() => {
+        const fetchDatas = async () => {
+            try {
+                const items: any = await FrontOfficeAPI?.list({
+                    CurrDate: searchCurrDate ? searchCurrDate : workingDate,
+                    NumberOfDays: dayCount,
+                    RoomTypeID: searchRoomTypeID,
+                });
+
+                const roomTypes: any = await RoomTypeAPI?.list({
+                    RoomTypeID: searchRoomTypeID,
+                });
+
+                const rooms: any = await RoomAPI?.list({});
+
+                const roomBlocks: any = await RoomBlockAPI?.list({
+                    StartDate: dateToCustomFormat(timeStart, "yyyy-MM-dd"),
+                    EndDate: dateToCustomFormat(timeEnd, "yyyy-MM-dd"),
+                });
+
+                const availableRoomsData: any = await StayView2API?.list(
+                    searchCurrDate ? searchCurrDate : workingDate,
+                    dayCount
+                );
+
+                setAvailableRooms(availableRoomsData);
+
+                const groupReservations: any =
+                    await ReservationAPI?.groupReservation({
+                        StartDate: dateToCustomFormat(timeStart, "yyyy-MM-dd"),
+                        EndDate: dateToCustomFormat(timeEnd, "yyyy-MM-dd"),
+                    });
+
+                let itemDataConcated: any = [];
+                let letNewEvents: any = null;
+                let roomTypesObj: any = [];
+                let newItemDta: any = [];
+
+                let doesCombinationExist = function (
+                    eventsArray: any,
+                    startDateToCheck: any,
+                    resourceIdToCheck: any
+                ) {
+                    for (const event of eventsArray) {
+                        if (
+                            event.startDate === startDateToCheck &&
+                            event.resourceId === resourceIdToCheck
+                        ) {
+                            return event;
+                        }
+                    }
+                    return false;
+                };
+
+                if (items) {
+                    newItemDta = items.map((obj: any) => {
+                        return obj.RoomID
+                            ? {
+                                  id: obj.TransactionID,
+                                  title: obj.GuestName,
+                                  start: obj.StartDate,
+                                  end: obj.EndDate,
+                                  resourceId: obj.RoomID
+                                      ? obj.RoomID
+                                      : `${obj.RoomTypeName}-${obj.RoomTypeID}`,
+                                  roomTypeID: obj.RoomTypeID,
+                                  transactionID: obj.TransactionID,
+                                  startDate: obj.StartDate,
+                                  GroupID: obj.GroupID,
+                                  Balance: obj.Balance,
+                                  Adult: obj.Adult,
+                                  Child: obj.Child,
+                                  pax:
+                                      obj.GroupID &&
+                                      groupReservations &&
+                                      groupReservations.filter(
+                                          (item: any) =>
+                                              item.GroupID == obj.GroupID
+                                      ).length > 0
+                                          ? groupReservations.filter(
+                                                (item: any) =>
+                                                    item.GroupID == obj.GroupID
+                                            )[0].Pax
+                                          : null,
+                                  Breakfast: obj.Breakfast,
+                                  endDate: obj.EndDate,
+                                  groupColor: `${obj.GroupColor}`,
+                                  GroupCode: `${obj.GroupCode}`,
+                                  IsGroupOwner: `${obj.IsGroupOwner}`,
+                                  statusColor: `#${obj.StatusColor}`,
+                                  editable: true,
+                                  color: getContrastYIQ(`#${obj.StatusColor}`),
+                                  textColor: getContrastYIQ(
+                                      `#${obj.StatusColor}`
+                                  ),
+                                  border: "none",
+                              }
+                            : {};
+                    });
+                    newItemDta = newItemDta.filter(
+                        (event: any) => Object.keys(event).length > 0
+                    );
+
+                    let noRooms = items.map((obj: any) => {
+                        return !obj.RoomID
+                            ? {
+                                  id: obj.TransactionID,
+                                  title: obj.GuestName,
+                                  start: obj.StartDate,
+                                  end: obj.EndDate,
+                                  resourceId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
+                                  roomTypeID: obj.RoomTypeID,
+                                  transactionID: obj.TransactionID,
+                                  startDate: obj.StartDate,
+                                  endDate: obj.EndDate,
+                                  statusColor: `#${obj.StatusColor}`,
+                                  editable: true,
+                                  color: getContrastYIQ(`#${obj.StatusColor}`),
+                                  textColor: getContrastYIQ(
+                                      `#${obj.StatusColor}`
+                                  ),
+                                  border: "none",
+                              }
+                            : {};
+                    });
+
+                    noRooms = noRooms.filter(
+                        (event: any) => Object.keys(event).length > 0
+                    );
+
+                    const groupedEvents = groupEventsByDate(noRooms);
+
+                    letNewEvents = groupedEvents.flatMap((dateGroup: any) => {
+                        return dateGroup.map((level2: any, index: any) => {
+                            return {
+                                id: `${level2.resourceId}-${index}`,
+                                title: level2.count,
+                                start: `${level2.date} 00:00:00`,
+                                end: `${level2.date} 23:59:59`,
+                                resourceId: level2.resourceId,
+                                startDate: `${level2.date} 00:00:00`,
+                                endDate: `${level2.date} 23:59:59`,
+                                editable: true,
+                                color: "red",
+                                textColor: "black",
+                                border: "none",
+                                entities: level2.events,
+                                statusColor: "rgba(255, 220, 40, 0.15)",
+                            };
+                        });
+                    });
+
+                    if (roomBlocks) {
+                        const newRoomBlockDta = roomBlocks.map((obj: any) => {
+                            return {
+                                id: obj.RoomBlockID,
+                                title: "Blocked",
+                                start: obj.BeginDate,
+                                end: obj.EndDate,
+                                resourceId: obj.RoomID,
+                                roomTypeID: obj.RoomTypeID,
+                                editable: false,
+                                color: "black",
+                                block: true,
+                            };
+                        });
+                        itemDataConcated =
+                            itemDataConcated.concat(newRoomBlockDta);
+                    }
+                }
+
+                for (let i = 0; i < dayCount; i++) {
+                    const currentDate = new Date(
+                        new Date(searchCurrDate).getTime()
+                    );
+                    currentDate.setDate(currentDate.getDate() + i);
+
+                    roomTypes &&
+                        roomTypes.map((obj: any) => {
+                            if (
+                                doesCombinationExist(
+                                    letNewEvents,
+                                    `${moment(currentDate).format(
+                                        "YYYY-MM-DD"
+                                    )} 00:00:00`,
+                                    `${obj.RoomTypeName}?${obj.RoomTypeID}`
+                                )
+                            ) {
+                                roomTypesObj.push(
+                                    doesCombinationExist(
+                                        letNewEvents,
+                                        `${moment(currentDate).format(
+                                            "YYYY-MM-DD"
+                                        )} 00:00:00`,
+                                        `${obj.RoomTypeName}?${obj.RoomTypeID}`
+                                    )
+                                );
+                            } else {
+                                roomTypesObj.push({
+                                    id: `${obj.RoomTypeName}-${obj.RoomTypeID}-${obj.SortOrder}`,
+                                    title: 0,
+                                    start: `${moment(currentDate).format(
+                                        "YYYY-MM-DD"
+                                    )} 00:00:00`,
+                                    end: `${moment(currentDate).format(
+                                        "YYYY-MM-DD"
+                                    )} 23:59:59`,
+                                    resourceId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
+                                    startDate: `${moment(currentDate).format(
+                                        "YYYY-MM-DD"
+                                    )} 00:00:00`,
+                                    endDate: `${moment(currentDate).format(
+                                        "YYYY-MM-DD"
+                                    )} 23:59:59`,
+                                    editable: true,
+                                    color: "white",
+                                    textColor: "black",
+                                    border: "none",
+                                    statusColor: "rgba(255, 220, 40, 0.15)",
+                                });
+                            }
+                        });
+                }
+
+                itemDataConcated = itemDataConcated
+                    .concat(newItemDta)
+                    .concat(roomTypesObj);
+                setItemData(itemDataConcated);
+
+                if (rooms.data && roomTypes) {
+                    const newRoomTypeData = roomTypes.map((obj: any) => {
+                        return {
+                            id: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
+                            title: obj.RoomTypeName,
+                            SortOrder: obj.SortOrder,
+                        };
+                    });
+                    const newData = rooms.data
+                        .filter((event: any) => event.Status === true)
+                        .map((obj: any) => {
+                            return {
+                                parentId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
+                                roomTypeId: obj.RoomTypeID,
+                                id: obj.RoomID,
+                                title: obj.RoomNo,
+                                resourceLaneContent: obj.RoomNo,
+                                MaxAdult: obj.MaxAdult,
+                                MaxChild: obj.MaxChild,
+                                BaseAdult: obj.BaseAdult,
+                                BaseChild: obj.BaseChild,
+                                SortOrder: Number(obj.SortOrder),
+                            };
+                        })
+                        .sort((a: any, b: any) => a.SortOrder - b.SortOrder);
+
+                    setResources(newRoomTypeData.concat(newData));
+                }
+
+                setRerenderKey((prevKey) => prevKey + 1);
+            } finally {
+            }
+        };
+
+        if (searchCurrDate == "Invalid date") {
+            setSearchCurrDate(new Date(workingDate));
+
+            setTimeStart(new Date(workingDate));
+            setTimeEnd(
+                new Date(
+                    new Date(workingDate).setDate(
+                        new Date(workingDate).getDate() + dayCount
+                    )
+                )
+            );
+        } else {
+            setTimeStart(new Date(searchCurrDate));
+            setTimeEnd(
+                new Date(
+                    new Date(searchCurrDate).setDate(
+                        new Date(searchCurrDate).getDate() + dayCount
+                    )
+                )
+            );
+        }
+
+        fetchDatas();
+    }, [searchRoomTypeID, dayCount, workingDate, searchCurrDate, customMutate]);
 
     const validationSchema = yup.object().shape({
         CurrDate: yup.string().nullable(),
@@ -155,48 +400,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         control,
     } = useForm(formOptions);
 
-    useEffect(() => {
-        (async () => {
-            try {
-                if (searchCurrDate == "Invalid date") {
-                    setSearchCurrDate(new Date(workingDate));
-
-                    setTimeStart(new Date(workingDate));
-                    setTimeEnd(
-                        new Date(
-                            new Date(workingDate).setDate(
-                                new Date(workingDate).getDate() + dayCount
-                            )
-                        )
-                    );
-                } else {
-                    setTimeStart(new Date(searchCurrDate));
-                    setTimeEnd(
-                        new Date(
-                            new Date(searchCurrDate).setDate(
-                                new Date(searchCurrDate).getDate() + dayCount
-                            )
-                        )
-                    );
-                }
-
-                await mutate("/api/RoomBlock/List");
-                await mutate("/api/RoomType/List");
-                await mutate("/api/FrontOffice/StayView2");
-                await mutate("/api/FrontOffice/ReservationDetailsByDate");
-                setRerenderKey((prevKey) => prevKey + 1);
-            } finally {
-            }
-        })();
-    }, [searchCurrDate, searchRoomTypeID]);
-
     const handleChange = async (event: any) => {
         try {
             await setDayCount(Number(event.target.value));
-            await mutate("/api/RoomBlock/List");
-            await mutate("/api/RoomType/List");
-            await mutate("/api/FrontOffice/StayView2");
-            await mutate("/api/FrontOffice/ReservationDetailsByDate");
         } finally {
         }
     };
@@ -209,7 +415,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             const endDate = new Date(event.end);
             const resourceId = event.resourceId;
 
-            let currentDate = new Date(startDate); // Create a copy of startDate
+            let currentDate = new Date(startDate);
 
             while (currentDate <= endDate) {
                 const dateKey = currentDate.toISOString().split("T")[0];
@@ -240,257 +446,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     useEffect(() => {
-        let itemDataConcated: any = [];
-        let letNewEvents: any = null;
-        let roomTypesObj: any = [];
-        let newItemDta: any = [];
-
-        let doesCombinationExist = function (
-            eventsArray: any,
-            startDateToCheck: any,
-            resourceIdToCheck: any
-        ) {
-            for (const event of eventsArray) {
-                if (
-                    event.startDate === startDateToCheck &&
-                    event.resourceId === resourceIdToCheck
-                ) {
-                    return event;
-                }
-            }
-            return false;
-        };
-
-        if (items) {
-            newItemDta = items.map((obj: any) => {
-                return obj.RoomID
-                    ? {
-                          id: obj.TransactionID,
-                          title: obj.GuestName,
-                          start: obj.StartDate,
-                          end: obj.EndDate,
-                          resourceId: obj.RoomID
-                              ? obj.RoomID
-                              : `${obj.RoomTypeName}-${obj.RoomTypeID}`,
-                          roomTypeID: obj.RoomTypeID,
-                          transactionID: obj.TransactionID,
-                          startDate: obj.StartDate,
-                          GroupID: obj.GroupID,
-                          Balance: obj.Balance,
-                          Adult: obj.Adult,
-                          Child: obj.Child,
-                          pax:
-                              obj.GroupID &&
-                              groupReservations &&
-                              groupReservations.filter(
-                                  (item: any) => item.GroupID == obj.GroupID
-                              ).length > 0
-                                  ? groupReservations.filter(
-                                        (item: any) =>
-                                            item.GroupID == obj.GroupID
-                                    )[0].Pax
-                                  : null,
-                          Breakfast: obj.Breakfast,
-                          endDate: obj.EndDate,
-                          groupColor: `${obj.GroupColor}`,
-                          GroupCode: `${obj.GroupCode}`,
-                          IsGroupOwner: `${obj.IsGroupOwner}`,
-                          statusColor: `#${obj.StatusColor}`,
-                          editable: true,
-                          color: getContrastYIQ(`#${obj.StatusColor}`),
-                          textColor: getContrastYIQ(`#${obj.StatusColor}`),
-                          border: "none",
-                      }
-                    : {};
-            });
-            newItemDta = newItemDta.filter(
-                (event: any) => Object.keys(event).length > 0
-            );
-
-            let noRooms = items.map((obj: any) => {
-                return !obj.RoomID
-                    ? {
-                          id: obj.TransactionID,
-                          title: obj.GuestName,
-                          start: obj.StartDate,
-                          end: obj.EndDate,
-                          resourceId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
-                          roomTypeID: obj.RoomTypeID,
-                          transactionID: obj.TransactionID,
-                          startDate: obj.StartDate,
-                          endDate: obj.EndDate,
-                          statusColor: `#${obj.StatusColor}`,
-                          editable: true,
-                          color: getContrastYIQ(`#${obj.StatusColor}`),
-                          textColor: getContrastYIQ(`#${obj.StatusColor}`),
-                          border: "none",
-                      }
-                    : {};
-            });
-
-            noRooms = noRooms.filter(
-                (event: any) => Object.keys(event).length > 0
-            );
-
-            const groupedEvents = groupEventsByDate(noRooms);
-
-            letNewEvents = groupedEvents.flatMap((dateGroup: any) => {
-                return dateGroup.map((level2: any, index: any) => {
-                    return {
-                        id: `${level2.resourceId}-${index}`,
-                        title: level2.count,
-                        start: `${level2.date} 00:00:00`,
-                        end: `${level2.date} 23:59:59`,
-                        resourceId: level2.resourceId,
-                        startDate: `${level2.date} 00:00:00`,
-                        endDate: `${level2.date} 23:59:59`,
-                        editable: true,
-                        color: "red",
-                        textColor: "black",
-                        border: "none",
-                        entities: level2.events,
-                        statusColor: "rgba(255, 220, 40, 0.15)",
-                    };
-                });
-            });
-
-            if (roomBlocks) {
-                const newRoomBlockDta = roomBlocks.map((obj: any) => {
-                    return {
-                        id: obj.RoomBlockID,
-                        title: "Blocked",
-                        start: obj.BeginDate,
-                        end: obj.EndDate,
-                        resourceId: obj.RoomID,
-                        roomTypeID: obj.RoomTypeID,
-                        editable: false,
-                        color: "black",
-                        block: true,
-                    };
-                });
-                // Concatenate the room blocks first
-                itemDataConcated = itemDataConcated.concat(newRoomBlockDta);
-            }
-        }
-
-        for (let i = 0; i < dayCount; i++) {
-            const currentDate = new Date(new Date(searchCurrDate).getTime());
-            currentDate.setDate(currentDate.getDate() + i);
-
-            roomTypes &&
-                roomTypes.map((obj: any) => {
-                    if (
-                        doesCombinationExist(
-                            letNewEvents,
-                            `${moment(currentDate).format(
-                                "YYYY-MM-DD"
-                            )} 00:00:00`,
-                            `${obj.RoomTypeName}?${obj.RoomTypeID}`
-                        )
-                    ) {
-                        roomTypesObj.push(
-                            doesCombinationExist(
-                                letNewEvents,
-                                `${moment(currentDate).format(
-                                    "YYYY-MM-DD"
-                                )} 00:00:00`,
-                                `${obj.RoomTypeName}?${obj.RoomTypeID}`
-                            )
-                        );
-                    } else {
-                        roomTypesObj.push({
-                            id: `${obj.RoomTypeName}-${obj.RoomTypeID}-${obj.SortOrder}`,
-                            title: 0,
-                            start: `${moment(currentDate).format(
-                                "YYYY-MM-DD"
-                            )} 00:00:00`,
-                            end: `${moment(currentDate).format(
-                                "YYYY-MM-DD"
-                            )} 23:59:59`,
-                            resourceId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
-                            startDate: `${moment(currentDate).format(
-                                "YYYY-MM-DD"
-                            )} 00:00:00`,
-                            endDate: `${moment(currentDate).format(
-                                "YYYY-MM-DD"
-                            )} 23:59:59`,
-                            editable: true,
-                            color: "white",
-                            textColor: "black",
-                            border: "none",
-                            statusColor: "rgba(255, 220, 40, 0.15)",
-                        });
-                    }
-                });
-        }
-
-        // Concatenate roomTypesObj and newItemDta
-        itemDataConcated = itemDataConcated
-            .concat(newItemDta)
-            .concat(roomTypesObj);
-        setItemData(itemDataConcated);
-        setRerenderKey((prevKey) => prevKey + 1);
-    }, [items, dayCount]);
-
-    useEffect(() => {
-        if (rooms && roomTypes) {
-            const newRoomTypeData = roomTypes.map((obj: any) => {
-                return {
-                    id: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
-                    title: obj.RoomTypeName,
-                    SortOrder: obj.SortOrder,
-                };
-            });
-            const newData = rooms
-                .filter((event: any) => event.Status === true)
-                .map((obj: any) => {
-                    return {
-                        parentId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
-                        roomTypeId: obj.RoomTypeID,
-                        id: obj.RoomID,
-                        title: obj.RoomNo,
-                        resourceLaneContent: obj.RoomNo,
-                        MaxAdult: obj.MaxAdult,
-                        MaxChild: obj.MaxChild,
-                        BaseAdult: obj.BaseAdult,
-                        BaseChild: obj.BaseChild,
-                        SortOrder: Number(obj.SortOrder),
-                    };
-                })
-                .sort((a: any, b: any) => a.SortOrder - b.SortOrder);
-
-            setResources(newRoomTypeData.concat(newData));
-        }
-    }, [roomTypes, rooms]);
-
-    useEffect(() => {
         setHeight(window.innerHeight - 200);
     }, [window.innerHeight]);
 
-    // const fetchTest = async () => {
-    //     if (listData) {
-    //         let filteredItemData = listData.filter(
-    //             (event: any) => event.IsActive === true
-    //         );
-    //         if (filteredItemData && filteredItemData.length) {
-    //             setActiveSessionID(listData[0].SessionID);
-    //         } else {
-    //             setActiveSessionID("-1");
-    //         }
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchTest();
-    // }, [listData]);
-
     const handleEventClick = (info: any) => {
-        if (
-            // info.event._instance.range.end > new Date(workingDate) &&
-            info.event._def.title != "Blocked"
-        ) {
-            // activeSessionID && activeSessionID == "-1" && handleCashierOpen();
-
+        if (info.event._def.title != "Blocked") {
             if (info.event._def.extendedProps.entities) {
                 handleModal(
                     true,
@@ -500,9 +460,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     <RoomAssignGroup
                         entities={info.event._def.extendedProps.entities}
                         additionalMutateUrl="/api/Reservation/List"
-                        customRerender={setRerenderKey(
-                            (prevKey) => prevKey + 1
-                        )}
+                        customRerender={() =>
+                            setCustomMutate((prevKey) => prevKey + 1)
+                        }
                     />,
                     null,
                     "large"
@@ -519,6 +479,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         }
                         extendedProps={info.event._def.extendedProps}
                         additionalMutateUrl="/api/Reservation/List"
+                        customRerender={() =>
+                            setCustomMutate((prevKey) => prevKey + 1)
+                        }
                     />,
                     null,
                     "medium"
@@ -528,8 +491,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     const handleEventDrop = (info: any) => {
-        // if (info.event._instance.range.end > new Date(workingDate)) {
-
         if (
             areDatesOnSameDay(
                 new Date(info.event._def.extendedProps.startDate),
@@ -583,6 +544,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         transactionInfo={newEventObject}
                         reservation={newEventObject}
                         additionalMutateUrl="/api/Reservation/List"
+                        customRerender={() =>
+                            setCustomMutate((prevKey) => prevKey + 1)
+                        }
                     />,
                     false,
                     "small"
@@ -629,9 +593,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         <RoomMoveForm
                             transactionInfo={newEventObject}
                             additionalMutateUrl="/api/Reservation/List"
-                            customRerender={setRerenderKey(
-                                (prevKey) => prevKey + 1
-                            )}
+                            customRerender={() =>
+                                setCustomMutate((prevKey) => prevKey + 1)
+                            }
                         />,
                         null,
                         "small"
@@ -639,11 +603,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 }
             }
         }
-        // }
     };
 
     const handleEventResize = async (info: any) => {
-        // if (info.event._instance.range.end > new Date(workingDate)) {
         if (Number(info.event._def.extendedProps.transactionID)) {
             dispatch({
                 type: "editId",
@@ -687,13 +649,15 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     transactionInfo={newEventObject}
                     reservation={newEventObject}
                     additionalMutateUrl="/api/Reservation/List"
+                    customRerender={() =>
+                        setCustomMutate((prevKey) => prevKey + 1)
+                    }
                 />,
                 false,
                 "small"
             );
         }
         setRerenderKey((prevKey) => prevKey + 1);
-        // }
     };
 
     const handleSelect = (info: any) => {
@@ -727,8 +691,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             MaxChild: Number(info.resource._resource.extendedProps.MaxChild),
         };
 
-        // activeSessionID && activeSessionID == "-1" && handleCashierOpen();
-
         if (newEventObject.roomID) {
             if (filteredItemData.length > 0) {
                 toast("Захиалга давхцаж байна.");
@@ -739,15 +701,16 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     <NewReservation
                         dateStart={start}
                         dateEnd={end}
-                        // // @ts-ignore
                         roomType={newEventObject.roomTypeID}
-                        // // @ts-ignore
                         room={newEventObject.roomID}
                         BaseAdult={newEventObject.BaseAdult}
                         BaseChild={newEventObject.BaseChild}
                         MaxAdult={newEventObject.MaxAdult}
                         MaxChild={newEventObject.MaxChild}
                         workingDate={workingDate}
+                        customRerender={() =>
+                            setCustomMutate((prevKey) => prevKey + 1)
+                        }
                     />,
                     null,
                     "medium"
@@ -756,20 +719,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         }
     };
 
-    const [cashierOpen, setCashierOpen] = useState(false);
-
-    const handleCashierOpen = () => {
-        setCashierOpen(true);
-    };
-
-    const handleCashierClose = async () => {
-        handleModal();
-        setCashierOpen(false);
-        router.replace("/payment/cashier");
-    };
-
     const eventContent = (arg: any) => {
-        // Customize the content and styles of each event
         return (
             <Tooltip
                 title={
@@ -943,13 +893,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         );
     };
 
-    const handleDayRender = (arg: any) => {
-        // Check if the current day is a weekend (Saturday or Sunday)
-        if (arg.date.getDay() === 0 || arg.date.getDay() === 6) {
-            arg.el.style.backgroundColor = "lightgray"; // Change background color for weekends
-        }
-    };
-
     return (
         timeStart && (
             <>
@@ -958,9 +901,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         variant="contained"
                         className="mr-3"
                         onClick={() => {
-                            // activeSessionID &&
-                            //     activeSessionID == "-1" &&
-                            //     handleCashierOpen();
                             dispatch({
                                 type: "editId",
                                 editId: null,
@@ -979,18 +919,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             id: "FrontNewReservation",
                         })}
                     </Button>
-
-                    {/* {timeStart && dayCount && (
-                        <AvailableRoomTypes
-                            ArrivalDate={format(timeStart, "yyyy/MM/dd ")}
-                            DepartureDate={format(
-                                moment(timeStart)
-                                    .add(dayCount, "days")
-                                    .toDate(),
-                                "yyyy/MM/dd "
-                            )}
-                        />
-                    )} */}
 
                     <FormControl>
                         <RadioGroup
@@ -1084,10 +1012,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 eventResize={handleEventResize}
                                 eventClick={handleEventClick}
                                 now={new Date(workingDate)}
-                                dayCellContent={handleDayRender}
                                 nowIndicator={true}
                                 height={height}
-                                // slotLaneContent={slotLaneContent}
                                 eventContent={eventContent}
                                 visibleRange={{
                                     start: timeStart,
@@ -1192,35 +1118,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             />
                         )}
                 </div>
-                <Dialog
-                    open={cashierOpen}
-                    onClose={handleCashierClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    {/*<DialogTitle id="alert-dialog-title" className=""></DialogTitle>*/}
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            <Stack direction="column" gap={1}>
-                                <Stack
-                                    direction="row"
-                                    alignItems="center"
-                                    gap={1}
-                                >
-                                    <InfoIcon />
-                                    <Typography variant="h6">
-                                        Ээлж эхлүүлнэ үү!
-                                    </Typography>
-                                </Stack>
-                            </Stack>
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCashierClose} autoFocus>
-                            ОК
-                        </Button>
-                    </DialogActions>
-                </Dialog>
             </>
         )
     );

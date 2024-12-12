@@ -8,6 +8,7 @@ const NewEdit = ({
     transactionID,
     additionalMutateUrl,
     extendedProps,
+    customRerender,
 }: any) => {
     const [reservation, setReservation]: any = useState(null);
     const [summary, setSummary]: any = useState(null);
@@ -37,6 +38,7 @@ const NewEdit = ({
                     additionalMutateUrl={additionalMutateUrl}
                     summary={summary}
                     extendedProps={extendedProps}
+                    customRerender={customRerender}
                 />
             )}
         </div>

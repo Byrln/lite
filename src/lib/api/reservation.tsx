@@ -1,8 +1,5 @@
 import useSWR from "swr";
 import axios from "lib/utils/axios";
-import { fToUniversal } from "lib/utils/format-time";
-import { date } from "yup/lib/locale";
-import { SearchTwoTone } from "@mui/icons-material";
 
 export const urlPrefix = "/api/Reservation";
 export const listUrl = `${urlPrefix}/List`;
@@ -46,10 +43,6 @@ export const ReservationLogSWR = (id: any, groupID: any) => {
 };
 
 export const DepartureSWR = (values: any) => {
-    // const values = {
-    //     ReservationTypeID: ReservationTypeID,
-    // };
-
     const fetcher = async (url: any) =>
         await axios
             .get(`${urlPrefix}/DepartureList`)
@@ -59,10 +52,6 @@ export const DepartureSWR = (values: any) => {
 };
 
 export const DepartedListSWR = () => {
-    // const values = {
-    //     ReservationTypeID: ReservationTypeID,
-    // };
-
     const fetcher = async (url: any) =>
         await axios
             .post(`${urlPrefix}/DepartedList`)
@@ -108,6 +97,13 @@ export const SharerListSWR = (TransactionID: any) => {
 };
 
 export const ReservationAPI = {
+    groupReservation: async (search: any) => {
+        const res = await axios.post(`${urlPrefix}/GroupList`, search);
+        var list = res.data.JsonData;
+
+        return list;
+    },
+
     get: async (id: any) => {
         const values = {
             CustomerID: 0,
@@ -133,11 +129,6 @@ export const ReservationAPI = {
 
     new: async (values: any) => {
         var vals = values;
-        // vals.TransactionDetail.map((element: any) => {
-        //     element.ArrivalDate = fToUniversal(element.ArrivalDate) + " 14:00";
-        //     element.DepartureDate =
-        //         fToUniversal(element.DepartureDate) + " 14:00";
-        // });
 
         const { data, status } = await axios.post(`${urlPrefix}/New`, vals);
         return {
