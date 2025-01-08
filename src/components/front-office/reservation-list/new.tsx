@@ -103,6 +103,7 @@ const NewEdit = ({
     const [isBooker, setIsBooker]: any = useState<any>(false);
     const [isGuide, setIsGuide]: any = useState<any>(false);
     const [groupColor, setGroupColor]: any = useState("#0033ff");
+    const [Currency, setCurrency]: any = useState("");
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -129,7 +130,7 @@ const NewEdit = ({
     } = useForm({
         defaultValues: {
             ArrivalTime: "14:00",
-            DepartureTime: "12:00",
+            DepartureTime: "  :00",
             Remarks: null,
             BookerName: null,
             BookerPhone: null,
@@ -281,6 +282,8 @@ const NewEdit = ({
                     values.CustomerID;
                 tempValues.TransactionDetail[index].GuestDetail.Name =
                     values.TransactionDetail[index].Name;
+                tempValues.TransactionDetail[index].CurrencyID =
+                    Currency && Currency.CurrencyID ? Currency.CurrencyID : "";
 
                 if (isBooker == true) {
                     tempValues.TransactionDetail[index].BookerName =
@@ -932,6 +935,8 @@ const NewEdit = ({
                                     setDepartureDate={setDepartureDate}
                                     CustomerID={CustomerID}
                                     rateTypeData={rateTypeData}
+                                    setCurrency={setCurrency}
+                                    Currency={Currency}
                                 />
                             </>
                         ))}

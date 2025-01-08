@@ -43,7 +43,7 @@ const CurrencyAmount = ({
         useState(true);
 
     const [defaultCurrencyAmount, setDefaultCurrencyAmount]: any = useState();
-
+    const [curCurrency, setCurCurreny]: any = useState(null);
     const calculateAmount = async () => {
         if (!(RoomTypeID && RateTypeID && ArrivalDate)) {
             return;
@@ -91,8 +91,11 @@ const CurrencyAmount = ({
             resetField(`TransactionDetail.${id}.CurrencyID`, {
                 defaultValue: rates[0].CurrencyID,
             });
-            setCurrency({ CurrencyID: rates[0].CurrencyID });
-
+            setCurrency({
+                CurrencyID: rates[0].CurrencyID,
+                CurrencySymbol: rates[0].CurrencySymbol,
+            });
+            setCurCurreny();
             resetField(`TransactionDetail.${id}.CurrencyAmount`, {
                 defaultValue: amount,
             });
@@ -139,7 +142,7 @@ const CurrencyAmount = ({
     useEffect(() => {
         newCurrencyAmount();
     }, [Currency]);
-
+    console.log("currecy", Currency);
     return (
         <>
             {!isRoomList ? (
@@ -214,7 +217,11 @@ const CurrencyAmount = ({
                     }}
                     InputProps={{
                         startAdornment: (
-                            <InputAdornment position="start">₮</InputAdornment>
+                            <InputAdornment position="start">
+                                {Currency && Currency.CurrencySymbol
+                                    ? Currency.CurrencySymbol
+                                    : "₮"}
+                            </InputAdornment>
                         ),
                     }}
                     size="small"
