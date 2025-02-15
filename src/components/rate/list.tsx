@@ -13,7 +13,7 @@ import { RateSWR, listUrl, RateAPI } from "lib/api/rate";
 import Search from "./search";
 import { formatNumber } from "lib/utils/helpers";
 
-const RateList = ({ title, taxData }: any) => {
+const RateList = ({ title, taxData, setHasData = null }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
@@ -40,6 +40,9 @@ const RateList = ({ title, taxData }: any) => {
     useEffect(() => {
         if (data) {
             setEntity(data);
+            if (setHasData) {
+                setHasData(true);
+            }
         }
     }, [data]);
 

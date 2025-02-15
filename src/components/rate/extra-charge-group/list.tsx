@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,23 +14,22 @@ import {
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
-const ExtraChargeGroupList = ({ title }: any) => {
+const ExtraChargeGroupList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const columns = [
         {
-            title: intl.formatMessage({id:"RowHeaderGroupName"}), 
+            title: intl.formatMessage({ id: "RowHeaderGroupName" }),
             key: "RoomChargeTypeGroupName",
             dataIndex: "RoomChargeTypeGroupName",
         },
-    
+
         {
-            title: intl.formatMessage({id:"SortOrder"}), 
+            title: intl.formatMessage({ id: "SortOrder" }),
             key: "SortOrder",
             dataIndex: "SortOrder",
         },
         {
-            title: intl.formatMessage({id:"ReportStatus"}), 
+            title: intl.formatMessage({ id: "ReportStatus" }),
             key: "Status",
             dataIndex: "Status",
             excelRenderPass: true,
@@ -62,6 +61,11 @@ const ExtraChargeGroupList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = ChargeTypeGroupSWR(search);
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
 
     return (
         <>

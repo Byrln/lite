@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -55,7 +55,7 @@ const columns = [
     },
 ];
 
-const RateTypeList = ({ title }: any) => {
+const RateTypeList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
@@ -72,6 +72,12 @@ const RateTypeList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = RateTypeSWR(search);
+
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
 
     const columns = [
         {

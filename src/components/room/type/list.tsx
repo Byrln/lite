@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
-import Link from "next/link";
 import { Button } from "@mui/material";
+import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
@@ -13,7 +14,7 @@ import { RoomTypeSWR, RoomTypeAPI, listUrl } from "lib/api/room-type";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-const RoomTypeList = ({ title }: any) => {
+const RoomTypeList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const columns = [
         {
@@ -94,8 +95,35 @@ const RoomTypeList = ({ title }: any) => {
 
     const { data, error } = RoomTypeSWR(search);
 
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
+
     return (
         <>
+            <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                <Link
+                    href="https://youtu.be/AvMN7J9Tp24?si=DuLdUN7HRzm_ktNW"
+                    passHref
+                >
+                    <a
+                        target="_blank"
+                        style={{
+                            paddingLeft: "6px",
+                            paddingRight: "6px",
+                            paddingTop: "3px",
+                        }}
+                    >
+                        <Icon
+                            icon="material-symbols:help-outline"
+                            color="#1877F2"
+                            height={24}
+                        />
+                    </a>
+                </Link>
+            </div>
             <CustomTable
                 columns={columns}
                 data={data}

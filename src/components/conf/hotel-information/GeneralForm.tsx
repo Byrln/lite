@@ -32,7 +32,7 @@ const validationSchemaHotel = yup.object().shape({
     HotelRatingID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
 });
 
-const GeneralForm = () => {
+const GeneralForm = ({ setHasData = null }: any) => {
     const intl = useIntl();
     const [loadingData, setLoadingData] = useState(true);
     const [data, setData] = useState({ Logo: null });
@@ -64,6 +64,9 @@ const GeneralForm = () => {
                 const arr: any = await HotelAPI.get();
                 setData(arr[0]);
                 reset(arr[0]);
+                if (setHasData && arr[0]) {
+                    setHasData(true);
+                }
             } finally {
                 setLoadingData(false);
             }

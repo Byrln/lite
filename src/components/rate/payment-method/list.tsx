@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { useIntl } from "react-intl";
@@ -8,24 +10,30 @@ import {
 } from "lib/api/payment-method";
 import NewEdit from "./new-edit";
 
-
-const PaymentMethodList = ({ title }: any) => {
+const PaymentMethodList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const { data, error } = PaymentMethodSWR();
+
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
+
     const columns = [
         {
-            title: intl.formatMessage({id:"ReportGroupName"}), 
+            title: intl.formatMessage({ id: "ReportGroupName" }),
             key: "PaymentMethodGroupName",
             dataIndex: "PaymentMethodGroupName",
         },
-    
+
         {
-            title: intl.formatMessage({id:"ConfigPaymentMethod"}), 
+            title: intl.formatMessage({ id: "ConfigPaymentMethod" }),
             key: "PaymentMethodName",
             dataIndex: "PaymentMethodName",
         },
         {
-            title: intl.formatMessage({id:"ReportStatus"}), 
+            title: intl.formatMessage({ id: "ReportStatus" }),
             key: "Status",
             dataIndex: "Status",
             excelRenderPass: true,
@@ -42,7 +50,7 @@ const PaymentMethodList = ({ title }: any) => {
             },
         },
     ];
-    
+
     return (
         <CustomTable
             columns={columns}

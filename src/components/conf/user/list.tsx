@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,7 +13,7 @@ import Search from "./search";
 import SetPassword from "./set-password";
 import { ModalContext } from "lib/context/modal";
 
-const UserList = ({ title }: any) => {
+const UserList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
 
@@ -33,6 +33,12 @@ const UserList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = UserSWR(search);
+
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
 
     const columns = [
         {

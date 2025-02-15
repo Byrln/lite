@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
+
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -10,29 +11,30 @@ import { RoomSWR, RoomAPI, listUrl } from "lib/api/room";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
-
-const RoomList = ({ title }: any) => {
+const RoomList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
         RoomTypeID: yup.string().nullable(),
     });
     const columns = [
-        {  title: intl.formatMessage({id:"RowHeaderRoomNo"}), 
-             key: "RoomNo", 
-             dataIndex: "RoomNo" },
         {
-            title: intl.formatMessage({id:"ConfigRoomType"}), 
+            title: intl.formatMessage({ id: "RowHeaderRoomNo" }),
+            key: "RoomNo",
+            dataIndex: "RoomNo",
+        },
+        {
+            title: intl.formatMessage({ id: "ConfigRoomType" }),
             key: "RoomTypeName",
             dataIndex: "RoomTypeName",
         },
-        { 
-            title: intl.formatMessage({id:"TextPhone"}), 
-             key: "TextPhone",
-              dataIndex: "TextPhone" },
         {
-            title: intl.formatMessage({id:"RowHeaderStatus"}), 
+            title: intl.formatMessage({ id: "TextPhone" }),
+            key: "TextPhone",
+            dataIndex: "TextPhone",
+        },
+        {
+            title: intl.formatMessage({ id: "RowHeaderStatus" }),
             key: "RowHeaderStatus",
             dataIndex: "RowHeaderStatus",
             excelRenderPass: true,
@@ -48,10 +50,12 @@ const RoomList = ({ title }: any) => {
                 );
             },
         },
-        { title: intl.formatMessage({id:"RowHeaderFloor"}), 
-             key: "RowHeaderFloor",
-              dataIndex: "RowHeaderFloor",
-               sortable: true },
+        {
+            title: intl.formatMessage({ id: "RowHeaderFloor" }),
+            key: "RowHeaderFloor",
+            dataIndex: "RowHeaderFloor",
+            sortable: true,
+        },
     ];
     const formOptions = { resolver: yupResolver(validationSchema) };
     const {
@@ -65,6 +69,12 @@ const RoomList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = RoomSWR(search);
+
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
 
     return (
         <>

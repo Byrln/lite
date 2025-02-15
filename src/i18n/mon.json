@@ -139,7 +139,7 @@
     "ConfigExtraChargeGroups": "Нэмэлт тооцооны бүлэг",
     "ConfigExtraCharges": "Нэмэлт тооцоо",
     "TextNumber": "тоо",
-    "ConfigHotelInformation": "Зочид буудлын мэдээлэл",
+    "√": "Зочид буудлын мэдээлэл",
     "ConfigHotelSettings": "Зочид буудлын тохиргоо",
     "ConfigInclusion": "Inclusion",
     "ConfigMiniBarGroups": "Мини бар бүлэг",
@@ -536,7 +536,7 @@
     "ReportMonthlyRevenueReport": "Сарын тайлан орлогооор",
     "ReportNightAudit": "Өдрийн өндөрлөгөө",
     "ReportNights": "Хоног",
-    
+
     "ReportNormalRate": "Үндсэн тариф",
     "ReportNoShowReport": "Ирээгүй зочдын тайлан",
     "ReportOccupancy": "Ачаалал",
@@ -913,7 +913,7 @@
     "TextCommission": "Шимтгэл",
     "TextCompany": "Компани",
     "TextCompanyName": "Компанийн нэр",
-  "RowHeaderDateTime": "он сар/ өдөр цаг",
+    "RowHeaderDateTime": "он сар/ өдөр цаг",
     "TextConfiguration": "Тохиргоо",
     "TextConfirmationLetter": "Баталгаажуулах хуудас",
     "TextConfirmationNumber": "Баталгаажуулах дугаар",
@@ -1342,15 +1342,14 @@
     "ReportDailyChargesReception": "Төлбөр тооцооны тайлан Ресепшнээр",
     "BriefDescription(OnlineOrder": "Товч тайлбар (Онлайн захиалга)",
     "TextCreateNew": "Шинээр нэмэх",
-    "AmenityTypeName" : "Онцлогын төрөл",
-    "AmenityShortName" : "Богино нэр",
-    "AmenityName" : "Нэр",
-    "SortOrder" : "Дараалал",
+    "AmenityTypeName": "Онцлогын төрөл",
+    "AmenityShortName": "Богино нэр",
+    "AmenityName": "Нэр",
+    "SortOrder": "Дараалал",
     "StatusColor": "Өнгө",
-    "StatusCode" : "Код",
-    "RoomTypeName" : "Нэр",
-    "TextSourceName" : "Зах.эх сурвалж",
-     "BaseRate" : "Тариф"
-
-    
+    "StatusCode": "Код",
+    "RoomTypeName": "Нэр",
+    "TextSourceName": "Зах.эх сурвалж",
+    "BaseRate": "Тариф",
+    "Guide": "Заавар"
 }

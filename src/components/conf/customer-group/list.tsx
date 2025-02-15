@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import {
@@ -8,18 +9,23 @@ import {
 import { useIntl } from "react-intl";
 import NewEdit from "./new-edit";
 
-
-const CustomerGroupList = ({ title }: any) => {
+const CustomerGroupList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const { data, error } = CustomerGroupSWR();
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
+
     const columns = [
         {
-            title: intl.formatMessage({id:"RowHeaderGroupName"}), 
+            title: intl.formatMessage({ id: "RowHeaderGroupName" }),
             key: "CustomerGroupName",
             dataIndex: "CustomerGroupName",
         },
         {
-            title: intl.formatMessage({id:"ReportStatus"}), 
+            title: intl.formatMessage({ id: "ReportStatus" }),
             key: "Status",
             dataIndex: "Status",
             excelRenderPass: true,
@@ -36,7 +42,7 @@ const CustomerGroupList = ({ title }: any) => {
             },
         },
     ];
-    
+
     return (
         <CustomTable
             columns={columns}

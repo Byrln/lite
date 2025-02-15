@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,7 +11,7 @@ import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-const MiniBarItemList = ({ title }: any) => {
+const MiniBarItemList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
@@ -75,6 +75,12 @@ const MiniBarItemList = ({ title }: any) => {
     const [search, setSearch] = useState({ IsMiniBar: true });
 
     const { data, error } = ChargeTypeSWR(search);
+
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
 
     return (
         <>

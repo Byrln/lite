@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,7 +13,7 @@ import {
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-const CompanyDatabaseList = ({ title }: any) => {
+const CompanyDatabaseList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         CustomerTypeID: yup.string().nullable(),
@@ -70,6 +70,11 @@ const CompanyDatabaseList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = CompanyDatabaseSWR(search);
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
 
     return (
         <>

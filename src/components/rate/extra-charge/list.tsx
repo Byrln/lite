@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,10 +11,7 @@ import { formatPrice } from "lib/utils/helpers";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
-
-
-const ExtraChargeList = ({ title }: any) => {
+const ExtraChargeList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
@@ -32,21 +29,27 @@ const ExtraChargeList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = ChargeTypeSWR(search);
+
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
+
     const columns = [
-    
         {
-            title: intl.formatMessage({id:"RowHeaderExtraChargeGroup"}), 
+            title: intl.formatMessage({ id: "RowHeaderExtraChargeGroup" }),
             key: "RoomChargeTypeGroupName",
             dataIndex: "RoomChargeTypeGroupName",
         },
-    
+
         {
-            title: intl.formatMessage({id:"RowHeaderExtraCharge"}), 
+            title: intl.formatMessage({ id: "RowHeaderExtraCharge" }),
             key: "RoomChargeTypeName",
             dataIndex: "RoomChargeTypeName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderRate"}), 
+            title: intl.formatMessage({ id: "RowHeaderRate" }),
             key: "RoomChargeTypeRate",
             dataIndex: "RoomChargeTypeRate",
             excelRenderPass: true,
@@ -58,7 +61,7 @@ const ExtraChargeList = ({ title }: any) => {
             },
         },
         {
-            title: intl.formatMessage({id:"RowHeaderEditable"}), 
+            title: intl.formatMessage({ id: "RowHeaderEditable" }),
             key: "IsEditable",
             dataIndex: "IsEditable",
             excelRenderPass: true,
@@ -73,12 +76,12 @@ const ExtraChargeList = ({ title }: any) => {
             },
         },
         {
-            title: intl.formatMessage({id:"SortOrder"}), 
+            title: intl.formatMessage({ id: "SortOrder" }),
             key: "SortOrder",
             dataIndex: "SortOrder",
         },
         {
-            title: intl.formatMessage({id:"ReportStatus"}), 
+            title: intl.formatMessage({ id: "ReportStatus" }),
             key: "Status",
             dataIndex: "Status",
             excelRenderPass: true,
@@ -95,7 +98,7 @@ const ExtraChargeList = ({ title }: any) => {
             },
         },
         {
-            title: intl.formatMessage({id:"RowHeaderInclusion"}), 
+            title: intl.formatMessage({ id: "RowHeaderInclusion" }),
             key: "Inclusion",
             dataIndex: "Inclusion",
             excelRenderPass: true,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,30 +10,29 @@ import { ReasonSWR, ReasonAPI, listUrl } from "lib/api/reason";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
-const ReasonList = ({ title }: any) => {
+const ReasonList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         ReasonTypeID: yup.string().nullable(),
     });
     const columns = [
         {
-            title: intl.formatMessage({id:"ReportReason"}), 
+            title: intl.formatMessage({ id: "ReportReason" }),
             key: "ReasonName",
             dataIndex: "ReportReason",
         },
         {
-            title: intl.formatMessage({id:"ReportReason"}), 
+            title: intl.formatMessage({ id: "ReportReason" }),
             key: "ReasonTypeName",
             dataIndex: "ReasonTypeName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderUserName"}), 
+            title: intl.formatMessage({ id: "RowHeaderUserName" }),
             key: "UserName",
             dataIndex: "UserName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderChangedDate"}), 
+            title: intl.formatMessage({ id: "RowHeaderChangedDate" }),
             key: "CreatedDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
@@ -47,12 +46,12 @@ const ReasonList = ({ title }: any) => {
             },
         },
         {
-            title: intl.formatMessage({id:"RowHeaderIPAddress"}), 
+            title: intl.formatMessage({ id: "RowHeaderIPAddress" }),
             key: "IPAddress",
             dataIndex: "IPAddress",
         },
     ];
-    
+
     const formOptions = { resolver: yupResolver(validationSchema) };
     const {
         reset,
@@ -65,6 +64,12 @@ const ReasonList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = ReasonSWR(search);
+
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
 
     return (
         <>

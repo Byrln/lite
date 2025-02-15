@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,31 +10,29 @@ import { UserRoleSWR, UserRoleAPI, listUrl } from "lib/api/user-role";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
-
-const UserRoleList = ({ title }: any) => {
+const UserRoleList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const validationSchema = yup.object().shape({
         SearchStr: yup.string().nullable(),
     });
     const columns = [
         {
-            title: intl.formatMessage({id:"RowHeaderShortCode"}), 
+            title: intl.formatMessage({ id: "RowHeaderShortCode" }),
             key: "UserRoleShortName",
             dataIndex: "UserRoleShortName",
         },
         {
-            title: intl.formatMessage({id:"ConfigUserRole"}), 
+            title: intl.formatMessage({ id: "ConfigUserRole" }),
             key: "UserRoleName",
             dataIndex: "UserRoleName",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderDescription"}), 
+            title: intl.formatMessage({ id: "RowHeaderDescription" }),
             key: "Description",
             dataIndex: "Description",
         },
         {
-            title: intl.formatMessage({id:"ReportStatus"}), 
+            title: intl.formatMessage({ id: "ReportStatus" }),
             key: "ReportStatus",
             excelRenderPass: true,
             renderCell: (element: any) => {
@@ -62,6 +60,12 @@ const UserRoleList = ({ title }: any) => {
     const [search, setSearch] = useState({});
 
     const { data, error } = UserRoleSWR(search);
+
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
 
     return (
         <>

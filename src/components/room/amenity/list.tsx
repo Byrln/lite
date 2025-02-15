@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
+import Link from "next/link";
+import { Icon } from "@iconify/react";
+
 import CustomSearch from "components/common/custom-search";
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
@@ -10,33 +13,31 @@ import { AmenitySWR, AmenityAPI, listUrl } from "lib/api/amenity";
 import NewEdit from "./new-edit";
 import Search from "./search";
 
-
-
-const AmenityList = ({ title }: any) => {
-    
+const AmenityList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const columns = [
-    
         {
-            title: intl.formatMessage({id:"AmenityTypeName"}), 
+            title: intl.formatMessage({ id: "AmenityTypeName" }),
             key: "AmenityTypeName",
             dataIndex: "AmenityTypeName",
         },
         {
-            title: intl.formatMessage({id:"AmenityShortName"}),
+            title: intl.formatMessage({ id: "AmenityShortName" }),
             key: "AmenityShortName",
             dataIndex: "AmenityShortName",
         },
         {
-            title: intl.formatMessage({id:"AmenityName"}),
+            title: intl.formatMessage({ id: "AmenityName" }),
             key: "AmenityName",
             dataIndex: "AmenityName",
         },
-        {   title: intl.formatMessage({id:"SortOrder"}),
-            key: "SortOrder", 
-            dataIndex: "SortOrder" },
         {
-            title: intl.formatMessage({id:"Left_SortByStatus"}),
+            title: intl.formatMessage({ id: "SortOrder" }),
+            key: "SortOrder",
+            dataIndex: "SortOrder",
+        },
+        {
+            title: intl.formatMessage({ id: "Left_SortByStatus" }),
             key: "Status",
             dataIndex: "Status",
             excelRenderPass: true,
@@ -69,8 +70,35 @@ const AmenityList = ({ title }: any) => {
 
     const { data, error } = AmenitySWR(search);
 
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
+
     return (
         <>
+            <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                <Link
+                    href="https://youtu.be/9Wma76JvzHE?si=_WaQU6ExCdgA9CNO"
+                    passHref
+                >
+                    <a
+                        target="_blank"
+                        style={{
+                            paddingLeft: "6px",
+                            paddingRight: "6px",
+                            paddingTop: "3px",
+                        }}
+                    >
+                        <Icon
+                            icon="material-symbols:help-outline"
+                            color="#1877F2"
+                            height={24}
+                        />
+                    </a>
+                </Link>
+            </div>
             <CustomTable
                 columns={columns}
                 data={data}

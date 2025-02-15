@@ -973,5 +973,6 @@
     "TextMaxChild": "Max Child",
     "TitleEmailConfiguration": "E-mail Configuration",
     "TextApplytoWholeStay": "Apply to Whole Stay",
-    "TextApplytoSelectedDate": "Apply to Selected Date"
+    "TextApplytoSelectedDate": "Apply to Selected Date",
+    "Guide": "Guide"
 }

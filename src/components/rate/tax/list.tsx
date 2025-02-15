@@ -1,26 +1,27 @@
+import { useEffect } from "react";
+
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { useIntl } from "react-intl";
 import { TaxSWR, TaxAPI, listUrl } from "lib/api/tax";
 import NewEdit from "./new-edit";
 
-
-const TaxList = ({ title }: any) => {
+const TaxList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const { data, error } = TaxSWR();
     const columns = [
         {
-            title: intl.formatMessage({id:"RowHeaderTaxCode"}), 
+            title: intl.formatMessage({ id: "RowHeaderTaxCode" }),
             key: "TaxCode",
             dataIndex: "TaxCode",
         },
         {
-            title: intl.formatMessage({id:"RowHeaderTaxName"}), 
+            title: intl.formatMessage({ id: "RowHeaderTaxName" }),
             key: "TaxName",
             dataIndex: "TaxName",
         },
         {
-            title: intl.formatMessage({id:"ReportStatus"}), 
+            title: intl.formatMessage({ id: "ReportStatus" }),
             key: "Status",
             dataIndex: "Status",
             excelRenderPass: true,
@@ -37,7 +38,12 @@ const TaxList = ({ title }: any) => {
             },
         },
     ];
-    
+
+    useEffect(() => {
+        if (data && setHasData) {
+            setHasData(true);
+        }
+    }, [data]);
 
     return (
         <CustomTable
