@@ -62,7 +62,7 @@ const UserRoleList = ({ title, setHasData = null }: any) => {
     const { data, error } = UserRoleSWR(search);
 
     useEffect(() => {
-        if (data && setHasData) {
+        if (data && data.length > 0 && setHasData) {
             setHasData(true);
         }
     }, [data]);

@@ -71,7 +71,7 @@ const CompanyDatabaseList = ({ title, setHasData = null }: any) => {
 
     const { data, error } = CompanyDatabaseSWR(search);
     useEffect(() => {
-        if (data && setHasData) {
+        if (data && data.length > 0 && setHasData) {
             setHasData(true);
         }
     }, [data]);

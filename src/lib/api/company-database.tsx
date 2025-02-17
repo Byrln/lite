@@ -17,6 +17,16 @@ export const CompanyDatabaseSWR = (search: any) => {
 };
 
 export const CompanyDatabaseAPI = {
+    list: async (search: any) => {
+        if (!search.CountryID) {
+            search.CountryID = 0;
+        }
+
+        const res = await axios.post(listUrl, search);
+
+        return res.data.JsonData;
+    },
+
     get: async (id: any) => {
         const values = {
             CustomerID: id,

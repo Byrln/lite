@@ -77,7 +77,7 @@ const MiniBarItemList = ({ title, setHasData = null }: any) => {
     const { data, error } = ChargeTypeSWR(search);
 
     useEffect(() => {
-        if (data && setHasData) {
+        if (data && data.length > 0 && setHasData) {
             setHasData(true);
         }
     }, [data]);

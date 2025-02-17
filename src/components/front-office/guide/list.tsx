@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Stepper,
     Step,
@@ -29,15 +29,35 @@ import UserList from "components/conf/user/list";
 import ReasonList from "components/conf/reason/list";
 import CustomerGroupList from "components/conf/customer-group/list";
 import CompanyDatabaseList from "components/payment/company-database/list";
+import { TaxAPI } from "lib/api/tax";
+import { ChargeTypeAPI } from "lib/api/charge-type";
+const GuideList = () => {
+    // useEffect(() => {
+    //     fetchDatas();
+    // }, []);
 
-const GuideList = ({ title, workingDate }: any) => {
+    // const fetchDatas = async () => {
+    //     try {
+    //         let taxResponse = await TaxAPI.list();
+    //         if (taxResponse && taxResponse.length > 0) {
+    //             setActiveStep(4);
+    //         }
+
+    //         let chargeTypeResponse = await ChargeTypeAPI.list({});
+    //         console.log("chargeTypeResponse", chargeTypeResponse);
+    //         if (chargeTypeResponse && chargeTypeResponse.length > 0) {
+    //             setActiveStep(9);
+    //         }
+    //     } finally {
+    //     }
+    // };
     const router = useRouter();
 
     const intl = useIntl();
 
     const steps = [
         intl.formatMessage({
-            id: "ConfigHotelInformation",
+            id: "MenuHotelInformation",
         }),
         intl.formatMessage({
             id: "MenuRoomAmenities",

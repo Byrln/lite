@@ -62,7 +62,7 @@ const ExtraChargeGroupList = ({ title, setHasData = null }: any) => {
 
     const { data, error } = ChargeTypeGroupSWR(search);
     useEffect(() => {
-        if (data && setHasData) {
+        if (data && data.length > 0 && setHasData) {
             setHasData(true);
         }
     }, [data]);

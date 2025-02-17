@@ -20,6 +20,19 @@ export const TaxSWR = () => {
 };
 
 export const TaxAPI = {
+    list: async () => {
+        const values = {
+            TaxID: 0,
+            SearchStr: "",
+            Status: false,
+            IsCurrent: false,
+        };
+
+        const res = await axios.post(listUrl, values);
+
+        return res.data.JsonData;
+    },
+
     get: async (id: any) => {
         const values = {
             TaxID: id,

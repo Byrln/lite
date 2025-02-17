@@ -40,7 +40,7 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
     useEffect(() => {
         if (data) {
             setEntity(data);
-            if (setHasData) {
+            if (setHasData && data.length > 0) {
                 setHasData(true);
             }
         }

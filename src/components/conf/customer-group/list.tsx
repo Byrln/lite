@@ -13,7 +13,7 @@ const CustomerGroupList = ({ title, setHasData = null }: any) => {
     const intl = useIntl();
     const { data, error } = CustomerGroupSWR();
     useEffect(() => {
-        if (data && setHasData) {
+        if (data && data.length > 0 && setHasData) {
             setHasData(true);
         }
     }, [data]);

@@ -22,6 +22,7 @@ import { UserAPI } from "lib/api/user";
 import moment from "moment";
 
 import axios from "lib/utils/axios";
+import { CompanyDatabaseAPI } from "lib/api/company-database";
 
 export default function LoginForm() {
     const router = useRouter();
@@ -88,6 +89,7 @@ export default function LoginForm() {
                     );
 
                     let privileges = await UserAPI.getPrivileges();
+                    let companyDatabase = await CompanyDatabaseAPI.list({});
                     let isHaveDashBoard = false;
                     await privileges.map((action: any) =>
                         action.ActionName == "DashBoard" &&
@@ -96,7 +98,11 @@ export default function LoginForm() {
                             : null
                     );
                     router.replace(
-                        isHaveDashBoard ? "/mon/" : "/mon/report/daily"
+                        companyDatabase && companyDatabase.length > 0
+                            ? isHaveDashBoard
+                                ? "/mon/"
+                                : "/mon/report/daily"
+                            : "/mon/front-office/guide"
                     );
                 } else {
                     axios.defaults.headers.common["Authorization"] = "";

@@ -40,7 +40,7 @@ const TaxList = ({ title, setHasData = null }: any) => {
     ];
 
     useEffect(() => {
-        if (data && setHasData) {
+        if (data && data.length > 0 && setHasData) {
             setHasData(true);
         }
     }, [data]);
