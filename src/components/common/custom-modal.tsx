@@ -100,7 +100,13 @@ const CustomModal = () => {
     return (
         <Modal
             open={visible}
-            onClose={() => handleModal()}
+            onClose={() => (
+                handleModal(),
+                dispatch({
+                    type: "isShow",
+                    isShow: null,
+                })
+            )}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
@@ -125,7 +131,13 @@ const CustomModal = () => {
                         <IconButton
                             aria-label="close"
                             style={{ color: "white" }}
-                            onClick={() => handleModal()}
+                            onClick={() => (
+                                handleModal(),
+                                dispatch({
+                                    type: "isShow",
+                                    isShow: null,
+                                })
+                            )}
                         >
                             <CloseIcon />
                         </IconButton>
@@ -160,6 +172,10 @@ const CustomModal = () => {
                                         onClick={() => (
                                             handleModal(),
                                             dispatch({
+                                                type: "isShow",
+                                                isShow: null,
+                                            }),
+                                            dispatch({
                                                 type: "editId",
                                                 editId: "",
                                             })
@@ -186,6 +202,10 @@ const CustomModal = () => {
                                             key="back"
                                             onClick={() => (
                                                 handleModal(),
+                                                dispatch({
+                                                    type: "isShow",
+                                                    isShow: null,
+                                                }),
                                                 dispatch({
                                                     type: "editId",
                                                     editId: "",

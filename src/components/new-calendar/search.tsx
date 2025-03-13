@@ -30,12 +30,23 @@ const Search = ({
                         <DatePicker
                             label="Эхлэх огноо"
                             value={value}
-                            onChange={(value) =>
-                                value &&
-                                (onChange(moment(value).format("YYYY-MM-DD")),
-                                setSearchCurrDate(
-                                    moment(value).format("YYYY-MM-DD")
-                                ))
+                            onAccept={(acceptedValue) => {
+                                if (acceptedValue) {
+                                    const formatted =
+                                        moment(acceptedValue).format(
+                                            "YYYY-MM-DD"
+                                        );
+                                    onChange(formatted);
+                                    setSearchCurrDate(formatted);
+                                }
+                            }}
+                            onChange={
+                                (value) =>
+                                    value &&
+                                    onChange(moment(value).format("YYYY-MM-DD"))
+                                // setSearchCurrDate(
+                                //     moment(value).format("YYYY-MM-DD")
+                                // ))
                             }
                             // minDate={new Date("1900-01-01")}
                             renderInput={(params) => (
@@ -48,6 +59,25 @@ const Search = ({
                                     {...params}
                                     error={errors.CurrDate?.message}
                                     helperText={errors.CurrDate?.message}
+                                    onBlur={(e) => {
+                                        const typedValue = new Date(
+                                            e.target.value
+                                        );
+
+                                        const parsedDate = moment(
+                                            typedValue,
+                                            "YYYY-MM-DD",
+                                            true
+                                        );
+
+                                        if (parsedDate.isValid()) {
+                                            const formatted =
+                                                parsedDate.format("YYYY-MM-DD");
+
+                                            onChange(formatted);
+                                            setSearchCurrDate(formatted);
+                                        }
+                                    }}
                                 />
                             )}
                         />

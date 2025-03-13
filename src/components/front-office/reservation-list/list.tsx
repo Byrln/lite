@@ -130,7 +130,14 @@ const DeparturedListList = ({ title, workingDate }: any) => {
                                 `${intl.formatMessage({
                                     id: "ButtonEdit",
                                 })}`,
-                                <ReservationEdit transactionID={element.id} />,
+                                <ReservationEdit
+                                    transactionID={element.id}
+                                    extendedProps={{
+                                        GroupID: element.GroupID
+                                            ? element.GroupID
+                                            : null,
+                                    }}
+                                />,
                                 null,
                                 "large"
                             )
