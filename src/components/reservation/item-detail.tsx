@@ -438,6 +438,7 @@ const ItemDetail = ({
                                 reservation={reservation}
                                 itemInfo={reservation}
                                 reloadDetailInfo={reloadDetailInfo}
+                                additionalMutateUrl={additionalMutateUrl}
                                 customRerender={customRerender}
                             />
                         </Grid>

@@ -17,6 +17,7 @@ import {
     Box,
     Button,
     Typography,
+    Checkbox,
 } from "@mui/material";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
@@ -53,6 +54,18 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     });
     const [searchCurrDate, setSearchCurrDate] = useState(workingDate);
     const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
+    const [isHoverEnabled, setIsHoverEnabled] = useState(false);
+
+    useEffect(() => {
+        const hoverSetting = localStorage.getItem("isHover");
+        setIsHoverEnabled(hoverSetting === "true");
+    }, []);
+
+    const handleHoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const checked = e.target.checked;
+        setIsHoverEnabled(checked);
+        localStorage.setItem("isHover", checked.toString());
+    };
 
     function extractNumberFromString(str: any) {
         const parts = str.split("-");
@@ -767,7 +780,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 }
             >
                 <div
-                    className="event-custom"
+                    className={`event-custom ${
+                        isHoverEnabled ? "hover-enabled" : ""
+                    }`}
                     style={{
                         display:
                             arg.event._def.extendedProps.statusColor !=
@@ -919,7 +934,13 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             id: "FrontNewReservation",
                         })}
                     </Button>
-
+                    <div className="mr-3">
+                        <Checkbox
+                            checked={isHoverEnabled}
+                            onChange={handleHoverChange}
+                        />
+                        Hover
+                    </div>
                     <FormControl>
                         <RadioGroup
                             row

@@ -268,7 +268,7 @@ a.fc-event {
     border-radius: 5px;
 }
 
-.event-custom:hover {
+.hover-enabled:hover {
     width: auto;
     min-width: fit-content;
 }

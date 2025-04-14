@@ -54,7 +54,10 @@ const catchAxiosError = (error: any) => {
     if (typeof window !== "undefined") {
         toast(message);
     }
-    if (message != "Өрөөг амжилттай болиуллаа") {
+    if (
+        message != "Өрөөг амжилттай болиуллаа" &&
+        message != "Room unassign completed."
+    ) {
         throw new Error(message);
     }
 };

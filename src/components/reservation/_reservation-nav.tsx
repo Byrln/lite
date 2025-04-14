@@ -95,6 +95,8 @@ const ReservationNav = ({
         if (customRerender) {
             customRerender();
         }
+        handleModal();
+
         finishCall(
             intl.formatMessage({
                 id: "TextSuccess",
@@ -117,9 +119,11 @@ const ReservationNav = ({
         if (additionalMutateUrl) {
             await mutate(additionalMutateUrl);
         }
+
         if (customRerender) {
             customRerender();
         }
+        handleModal();
         finishCall(
             intl.formatMessage({
                 id: "TextSuccess",
