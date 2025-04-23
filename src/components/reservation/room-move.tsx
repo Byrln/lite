@@ -85,7 +85,6 @@ const RoomMoveForm = ({
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
-
             values.NewRoomTypeID = roomType.RoomTypeID
                 ? roomType.RoomTypeID
                 : values.RoomTypeID;
@@ -212,6 +211,7 @@ const RoomMoveForm = ({
                                 baseStay={baseStay}
                                 onRoomChange={onRoomChange}
                                 roomType={roomType}
+                                resetField={resetField}
                             />
                         </Grid>
                     )}

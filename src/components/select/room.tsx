@@ -74,9 +74,10 @@ const RoomSelect = ({
         //     room: d[0],
         // });
         // onRoomChange(d[0]);
-        resetField(`RoomID`, {
-            defaultValue: d[0].RoomID,
-        });
+
+        if (!baseStay || !baseStay.room) {
+            eventRoomChange(d[0].RoomID);
+        }
     };
     useEffect(() => {
         if (data && data.length > 0) {
@@ -90,7 +91,6 @@ const RoomSelect = ({
     }, [data]);
 
     useEffect(() => {
-
         fetchRooms();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);

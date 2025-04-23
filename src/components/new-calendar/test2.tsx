@@ -112,6 +112,28 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [availableRooms, setAvailableRooms] = useState<any>(null);
 
     useEffect(() => {
+        if (searchCurrDate == "Invalid date") {
+            setSearchCurrDate(new Date(workingDate));
+
+            setTimeStart(new Date(workingDate));
+            setTimeEnd(
+                new Date(
+                    new Date(workingDate).setDate(
+                        new Date(workingDate).getDate() + dayCount
+                    )
+                )
+            );
+        } else {
+            setTimeStart(new Date(searchCurrDate));
+            setTimeEnd(
+                new Date(
+                    new Date(searchCurrDate).setDate(
+                        new Date(searchCurrDate).getDate() + dayCount
+                    )
+                )
+            );
+        }
+
         const fetchDatas = async () => {
             try {
                 const items: any = await FrontOfficeAPI?.list({
@@ -127,8 +149,18 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 const rooms: any = await RoomAPI?.list({});
 
                 const roomBlocks: any = await RoomBlockAPI?.list({
-                    StartDate: dateToCustomFormat(timeStart, "yyyy-MM-dd"),
-                    EndDate: dateToCustomFormat(timeEnd, "yyyy-MM-dd"),
+                    StartDate: dateToCustomFormat(
+                        new Date(searchCurrDate),
+                        "yyyy-MM-dd"
+                    ),
+                    EndDate: dateToCustomFormat(
+                        new Date(
+                            new Date(searchCurrDate).setDate(
+                                new Date(searchCurrDate).getDate() + dayCount
+                            )
+                        ),
+                        "yyyy-MM-dd"
+                    ),
                 });
 
                 const availableRoomsData: any = await StayView2API?.list(
@@ -140,8 +172,19 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
                 const groupReservations: any =
                     await ReservationAPI?.groupReservation({
-                        StartDate: dateToCustomFormat(timeStart, "yyyy-MM-dd"),
-                        EndDate: dateToCustomFormat(timeEnd, "yyyy-MM-dd"),
+                        StartDate: dateToCustomFormat(
+                            new Date(searchCurrDate),
+                            "yyyy-MM-dd"
+                        ),
+                        EndDate: dateToCustomFormat(
+                            new Date(
+                                new Date(searchCurrDate).setDate(
+                                    new Date(searchCurrDate).getDate() +
+                                        dayCount
+                                )
+                            ),
+                            "yyyy-MM-dd"
+                        ),
                     });
 
                 let itemDataConcated: any = [];
@@ -374,28 +417,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             }
         };
 
-        if (searchCurrDate == "Invalid date") {
-            setSearchCurrDate(new Date(workingDate));
-
-            setTimeStart(new Date(workingDate));
-            setTimeEnd(
-                new Date(
-                    new Date(workingDate).setDate(
-                        new Date(workingDate).getDate() + dayCount
-                    )
-                )
-            );
-        } else {
-            setTimeStart(new Date(searchCurrDate));
-            setTimeEnd(
-                new Date(
-                    new Date(searchCurrDate).setDate(
-                        new Date(searchCurrDate).getDate() + dayCount
-                    )
-                )
-            );
-        }
-
         fetchDatas();
     }, [searchRoomTypeID, dayCount, workingDate, searchCurrDate, customMutate]);
 
@@ -615,6 +636,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     );
                 }
             }
+            setRerenderKey((prevKey) => prevKey + 1);
         }
     };
 
