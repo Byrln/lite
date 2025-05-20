@@ -10,7 +10,7 @@ export const sendUrl = `${urlPrefix}/Send`;
 export const districtUrl = `/api/Ebarimt3/District/List`;
 export const itemCodeUrl = `/api/Ebarimt3/ItemCode/List`;
 export const customerNameUrl = `/api/Ebarimt3/CustomerName`;
-export const printUrl = `/api/Ebarimt/Print`;
+export const printUrl = `/api/Ebarimt3/Print`;
 
 export const PosApiSWR = () => {
     const fetcher = async (url: any) =>
