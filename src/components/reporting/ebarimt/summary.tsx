@@ -16,29 +16,25 @@ import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
 import { formatPrice } from "lib/utils/helpers";
 import { ReportAPI } from "lib/api/report";
+// @ts-expect-error: No type declarations for 'qrcode'
+import QRCode from "qrcode";
 
-const ReceiptSummary = ({ FolioID, Lang }: any) => {
+const ReceiptSummary = ({ eBarimtData, Lang }: any) => {
     const componentRef: any = useRef<HTMLDivElement>(null);
     const [summary, setSummary]: any = useState(null);
-
     const [rerenderKey, setRerenderKey] = useState(0);
 
-    const [search, setSearch] = useState({
-        FolioID: FolioID,
-    });
-
-    const reloadReservationData = async () => {
-        var res = await ReportAPI.invoiceSummary({
-            FolioID: FolioID,
-            Lang: Lang,
-            IsInvoice: false,
-        });
-        setSummary(res);
-    };
+    const [imgUrl, setImgUrl] = useState("");
 
     useEffect(() => {
-        reloadReservationData();
-    }, [FolioID]);
+        QRCode.toDataURL(
+            eBarimtData && eBarimtData[0] && eBarimtData[0].QrData,
+            { errorCorrectionLevel: "H" },
+            (err: any, url: string) => {
+                if (!err) setImgUrl(url);
+            }
+        );
+    }, [eBarimtData]);
 
     const handlePrint = useReactToPrint({
         pageStyle: `@media print {
@@ -74,7 +70,7 @@ const ReceiptSummary = ({ FolioID, Lang }: any) => {
             }),
             {}
         );
-
+    console.log("eBarimtData", eBarimtData);
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -87,122 +83,28 @@ const ReceiptSummary = ({ FolioID, Lang }: any) => {
                     Хэвлэх
                 </Button>
             </div>
-            {summary && (
-                <div ref={componentRef} style={{ fontSize: "9px" }}>
-                    <Grid container spacing={1}>
-                        {summary[0] &&
-                        summary[0].FormHeaderUse &&
-                        summary[0].FormHeaderUse == true ? (
-                            <>
-                                {" "}
-                                <img
-                                    src={
-                                        summary[0].FormHeaderPictureFile &&
-                                        summary[0].FormHeaderPictureFile
-                                    }
-                                    alt="login"
-                                    style={{
-                                        width: "100%",
-                                        objectFit: "cover",
-                                    }}
-                                />
-                            </>
-                        ) : (
-                            <>
-                                <Grid item xs={6}></Grid>
-                                <Grid item xs={6}>
-                                    <Typography
-                                        variant="h6"
-                                        style={{ fontWeight: "bold" }}
-                                    >
-                                        {summary[0] && summary[0].HotelName}
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={1}></Grid>
-                                <Grid item xs={11}>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            width: "100%",
-                                            flexWrap: "wrap",
-                                        }}
-                                        className="mb-1"
-                                    >
-                                        <div
-                                            style={{
-                                                width: "90px",
-                                                textAlign: "right",
-                                                marginRight: "9px",
-                                            }}
-                                        >
-                                            {Lang == "MN"
-                                                ? "Хаяг : "
-                                                : "Address : "}
-                                        </div>
-                                        <div style={{ fontWeight: "600" }}>
-                                            {summary[0] && summary[0].Address1}
-                                        </div>
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            width: "100%",
-                                            flexWrap: "wrap",
-                                        }}
-                                        className="mb-1"
-                                    >
-                                        <div
-                                            style={{
-                                                width: "90px",
-                                                textAlign: "right",
-                                                marginRight: "9px",
-                                            }}
-                                        >
-                                            {Lang == "MN"
-                                                ? "Утас : "
-                                                : "Phone : "}
-                                        </div>
-                                        <div style={{ fontWeight: "600" }}>
-                                            {summary[0] &&
-                                                summary[0].ReservePhone}
-                                        </div>
-
-                                        <div
-                                            style={{
-                                                width: "90px",
-                                                textAlign: "right",
-                                                marginRight: "9px",
-                                            }}
-                                        >
-                                            {Lang == "MN"
-                                                ? "И-Мэйл : "
-                                                : "E-mail : "}
-                                        </div>
-                                        <div style={{ fontWeight: "600" }}>
-                                            {summary[0] &&
-                                                summary[0].ReserveEmail}
-                                        </div>
-                                    </Box>
-                                </Grid>
-                            </>
-                        )}
-
-                        <Grid item xs={12}>
-                            <Typography variant="h6" align="center">
-                                {Lang == "MN" ? "Receipt : " : "Receipt : "}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
+            {eBarimtData && (
+                <div ref={componentRef} style={{ fontSize: "10px" }}>
+                    <div className="my-3 mx-3">
+                        <Grid container spacing={1}>
                             <Box
                                 sx={{
                                     display: "flex",
                                     width: "100%",
                                     flexWrap: "wrap",
+                                    fontSize: "10px",
                                 }}
-                                className="mb-1"
+                                className="mb-2"
                             >
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].GuestName}
+                                <div
+                                    style={{
+                                        width: " 100px",
+                                        textAlign: "left",
+                                        marginRight: "9px",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    {Lang == "MN" ? "Борлуулагч" : "Борлуулагч"}
                                 </div>
                             </Box>
                             <Box
@@ -215,40 +117,17 @@ const ReceiptSummary = ({ FolioID, Lang }: any) => {
                             >
                                 <div
                                     style={{
-                                        width: "90px",
+                                        width: " 100px",
                                         textAlign: "left",
                                         marginRight: "9px",
                                     }}
                                 >
-                                    {Lang == "MN" ? "Зах.№ : " : "Res.No : "}
+                                    {Lang == "MN" ? "ТТД : " : "ТТД : "}
                                 </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].ReservationNo}
-                                </div>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                    flexWrap: "wrap",
-                                }}
-                                className="mb-1"
-                            >
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "left",
-                                        marginRight: "9px",
-                                    }}
-                                >
-                                    {Lang == "MN"
-                                        ? "Фолио.№ : "
-                                        : "Folio.No : "}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].FolioNo}
+                                <div>
+                                    {eBarimtData &&
+                                        eBarimtData[0] &&
+                                        eBarimtData[0].RegisterNo}
                                 </div>
                             </Box>
                             <Box
@@ -261,17 +140,17 @@ const ReceiptSummary = ({ FolioID, Lang }: any) => {
                             >
                                 <div
                                     style={{
-                                        width: "90px",
+                                        width: " 100px",
                                         textAlign: "left",
                                         marginRight: "9px",
                                     }}
                                 >
-                                    {Lang == "MN"
-                                        ? "Нэхэмж.Огноо : "
-                                        : "Res.Date : "}
+                                    {Lang == "MN" ? "ДДТД : " : "ДДТД : "}
                                 </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {moment().format("YYYY-MM-DD HH:mm:SS")}
+                                <div>
+                                    {eBarimtData &&
+                                        eBarimtData[0] &&
+                                        eBarimtData[0].BIllID}
                                 </div>
                             </Box>
                             <Box
@@ -284,92 +163,22 @@ const ReceiptSummary = ({ FolioID, Lang }: any) => {
                             >
                                 <div
                                     style={{
-                                        width: "90px",
+                                        width: " 100px",
                                         textAlign: "left",
                                         marginRight: "9px",
                                     }}
                                 >
-                                    {Lang == "MN" ? "И-мэйл : " : "E-Mail : "}
+                                    {Lang == "MN" ? "Огноо : " : "Огноо : "}
                                 </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].Email}
-                                </div>
-                            </Box>
-
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                    flexWrap: "wrap",
-                                }}
-                                className="mb-1"
-                            >
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "left",
-                                        marginRight: "9px",
-                                    }}
-                                >
-                                    {Lang == "MN" ? "Утас : " : "Phone : "}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].Phone}
-                                </div>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                    flexWrap: "wrap",
-                                }}
-                                className="mb-1"
-                            >
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "left",
-                                        marginRight: "9px",
-                                    }}
-                                >
-                                    {Lang == "MN" ? "Хаяг : " : "Address : "}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].Address}
-                                </div>
-                            </Box>
-                        </Grid>
-
-                        <Grid item xs={6}>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                    flexWrap: "wrap",
-                                }}
-                                className="mb-1"
-                            >
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "left",
-                                        marginRight: "9px",
-                                    }}
-                                >
-                                    {Lang == "MN"
-                                        ? "Ирэх өдөр : "
-                                        : "Arrival Date : "}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] &&
-                                        moment(summary[0].ArrivalDate).format(
-                                            "YYYY-MM-DD HH:mm:SS"
+                                <div>
+                                    {eBarimtData &&
+                                        eBarimtData[0] &&
+                                        eBarimtData[0].BillDate.replace(
+                                            "T",
+                                            " "
                                         )}
                                 </div>
                             </Box>
-
                             <Box
                                 sx={{
                                     display: "flex",
@@ -380,24 +189,19 @@ const ReceiptSummary = ({ FolioID, Lang }: any) => {
                             >
                                 <div
                                     style={{
-                                        width: "90px",
+                                        width: " 100px",
                                         textAlign: "left",
                                         marginRight: "9px",
                                     }}
                                 >
-                                    {Lang == "MN"
-                                        ? "Гарах өдөр : "
-                                        : "Departure Date : "}
+                                    {Lang == "MN" ? "Касс : " : "Касс : "}
                                 </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] &&
-                                        moment(summary[0].DepartureDate).format(
-                                            "YYYY-MM-DD HH:mm:SS"
-                                        )}
+                                <div>
+                                    {eBarimtData &&
+                                        eBarimtData[0] &&
+                                        eBarimtData[0].PosNo}
                                 </div>
                             </Box>
-                        </Grid>
-                        <Grid item xs={6}>
                             <Box
                                 sx={{
                                     display: "flex",
@@ -408,649 +212,415 @@ const ReceiptSummary = ({ FolioID, Lang }: any) => {
                             >
                                 <div
                                     style={{
-                                        width: "90px",
+                                        width: " 100px",
                                         textAlign: "left",
                                         marginRight: "9px",
                                     }}
                                 >
-                                    {Lang == "MN"
-                                        ? "Өрөөний төрөл : "
-                                        : "Room Type : "}
+                                    {Lang == "MN" ? "Ресепшн : " : "Ресепшн : "}
                                 </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].RoomTypeName}
+                                <div>
+                                    {eBarimtData &&
+                                        eBarimtData[0] &&
+                                        eBarimtData[0].UserName}
                                 </div>
                             </Box>
-
                             <Box
                                 sx={{
                                     display: "flex",
                                     width: "100%",
                                     flexWrap: "wrap",
                                 }}
-                                className="mb-1"
+                                className="mt-3"
                             >
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "left",
-                                        marginRight: "9px",
-                                    }}
-                                >
-                                    {Lang == "MN" ? "Өрөө : " : "Room.No : "}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] && summary[0].RoomNo}
-                                </div>
-                            </Box>
-
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    width: "100%",
-                                    flexWrap: "wrap",
-                                }}
-                                className="mb-1"
-                            >
-                                <div
-                                    style={{
-                                        width: "90px",
-                                        textAlign: "left",
-                                        marginRight: "9px",
-                                    }}
-                                >
-                                    {Lang == "MN"
-                                        ? "Өд.тариф : "
-                                        : "Daily Rate : "}
-                                </div>
-                                <div style={{ fontWeight: "600" }}>
-                                    {summary[0] &&
-                                        `${formatPrice(summary[0].DailyRate)}`}
-                                    {summary[0].Discount &&
-                                        `[-${
-                                            (summary[0].DailyRate *
-                                                summary[0].Discount) /
-                                            100
-                                        }%]=${formatPrice(
-                                            summary[0].DailyRate -
-                                                summary[0].Discount
-                                        )}`}
-                                </div>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Table
-                                sx={{ minWidth: 650 }}
-                                aria-label="simple table"
-                                size="small"
-                                key={rerenderKey}
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell
-                                            align="left"
-                                            style={{
-                                                fontWeight: "bold",
-                                                fontSize: "9px",
-                                                padding: "2px",
-                                            }}
-                                        >
-                                            {Lang == "MN"
-                                                ? "Нэр : "
-                                                : "Name : "}
-                                        </TableCell>
-                                        <TableCell
-                                            align="left"
-                                            style={{
-                                                fontWeight: "bold",
-                                                fontSize: "9px",
-                                                padding: "2px",
-                                            }}
-                                        >
-                                            {Lang == "MN"
-                                                ? "Дүн : "
-                                                : "Amount : "}
-                                        </TableCell>
-                                        <TableCell
-                                            align="left"
-                                            style={{
-                                                fontWeight: "bold",
-                                                fontSize: "9px",
-                                                padding: "2px",
-                                            }}
-                                        >
-                                            {Lang == "MN"
-                                                ? "Төлбөр : "
-                                                : "Payment : "}
-                                        </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {summary[0].ServiceChargeNoTax ? (
-                                        <TableRow
-                                            key={"Service"}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    {
-                                                        border: 0,
-                                                    },
-                                            }}
-                                        >
+                                <Table size="small">
+                                    <TableHead>
+                                        <TableRow>
                                             <TableCell
-                                                component="th"
-                                                scope="row"
                                                 style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {Lang == "MN"
-                                                    ? "Үйлчилгээ : "
-                                                    : "Service Charge : "}
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {formatPrice(
-                                                    summary[0]
-                                                        .ServiceChargeNoTax
-                                                )}
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            ></TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        <></>
-                                    )}
-
-                                    {summary[0].ShowRestaurant ? (
-                                        <TableRow
-                                            key={"Service"}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    {
-                                                        border: 0,
-                                                    },
-                                            }}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {Lang == "MN"
-                                                    ? "Ресторан : "
-                                                    : "Restaurant : "}
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {formatPrice(
-                                                    summary[0].RestaurantNoTax
-                                                )}
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            ></TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        <></>
-                                    )}
-
-                                    {summary[0].TotalAmountNoTax ? (
-                                        <TableRow
-                                            key={"Service"}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    {
-                                                        border: 0,
-                                                    },
-                                            }}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {Lang == "MN"
-                                                    ? "Нийт (Таксгүй) : "
-                                                    : "Total (No Tax) : "}
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {formatPrice(
-                                                    summary[0].TotalAmountNoTax
-                                                )}
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            ></TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        <></>
-                                    )}
-
-                                    {summary[0].Tax1Amount ? (
-                                        <TableRow
-                                            key={"Service"}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    {
-                                                        border: 0,
-                                                    },
-                                            }}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                VAT :
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {formatPrice(
-                                                    summary[0].Tax1Amount
-                                                )}
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            ></TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        <></>
-                                    )}
-
-                                    {summary[0].Tax2Amount ? (
-                                        <TableRow
-                                            key={"Service"}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    {
-                                                        border: 0,
-                                                    },
-                                            }}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                City Tax :
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {formatPrice(
-                                                    summary[0].Tax2Amount
-                                                )}
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                            ></TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        <></>
-                                    )}
-
-                                    {summary[0].TotalAmount ? (
-                                        <TableRow
-                                            key={"Service"}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    {
-                                                        border: 0,
-                                                    },
-                                            }}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
                                                     fontWeight: "bold",
-                                                    padding: "2px",
+                                                    padding: "6px",
+                                                    fontSize: "10px",
+                                                    lineHeight: "14px",
+                                                    backgroundColor: "white",
+                                                    color: "black",
+                                                    width: "100px",
                                                 }}
-                                                align="right"
                                             >
-                                                {Lang == "MN"
-                                                    ? "Нийт : "
-                                                    : "Total : "}
+                                                Огноо
                                             </TableCell>
                                             <TableCell
-                                                component="th"
-                                                scope="row"
                                                 style={{
-                                                    fontSize: "9px",
                                                     fontWeight: "bold",
-                                                    padding: "2px",
+                                                    padding: "6px",
+                                                    fontSize: "10px",
+                                                    lineHeight: "14px",
+                                                    backgroundColor: "white",
+                                                    color: "black",
+                                                    width: "100px",
                                                 }}
-                                                align="right"
                                             >
-                                                {formatPrice(
-                                                    summary[0].TotalAmount
-                                                )}
+                                                Бараа үйлчилгээ
                                             </TableCell>
                                             <TableCell
-                                                component="th"
-                                                scope="row"
                                                 style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
+                                                    fontWeight: "bold",
+                                                    padding: "6px",
+                                                    fontSize: "10px",
+                                                    lineHeight: "14px",
+                                                    backgroundColor: "white",
+                                                    color: "black",
+                                                    width: "100px",
                                                 }}
-                                            ></TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        <></>
-                                    )}
-
-                                    {summary[0].CashAmount ? (
-                                        <TableRow
-                                            key={"Service"}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    {
-                                                        border: 0,
-                                                    },
-                                            }}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
                                             >
-                                                {Lang == "MN"
-                                                    ? "Бэлнээр : "
-                                                    : "Cash : "}
+                                                Нэгж үнэ
                                             </TableCell>
                                             <TableCell
-                                                component="th"
-                                                scope="row"
                                                 style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
+                                                    fontWeight: "bold",
+                                                    padding: "6px",
+                                                    fontSize: "10px",
+                                                    lineHeight: "14px",
+                                                    backgroundColor: "white",
+                                                    color: "black",
+                                                    width: "100px",
                                                 }}
-                                                align="right"
-                                            ></TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
                                             >
-                                                {formatPrice(
-                                                    summary[0].CashAmount
-                                                )}
+                                                Т/Ш
+                                            </TableCell>
+                                            <TableCell
+                                                style={{
+                                                    fontWeight: "bold",
+                                                    padding: "6px",
+                                                    fontSize: "10px",
+                                                    lineHeight: "14px",
+                                                    backgroundColor: "white",
+                                                    color: "black",
+                                                    width: "100px",
+                                                }}
+                                            >
+                                                Нийт
                                             </TableCell>
                                         </TableRow>
-                                    ) : (
-                                        <></>
-                                    )}
-
-                                    {summary[0].BankAmount ? (
-                                        <TableRow
-                                            key={"Service"}
-                                            sx={{
-                                                "&:last-child td, &:last-child th":
-                                                    {
-                                                        border: 0,
-                                                    },
-                                            }}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {Lang == "MN"
-                                                    ? "Банкаар : "
-                                                    : "Bank : "}
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            ></TableCell>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    fontSize: "9px",
-                                                    padding: "2px",
-                                                }}
-                                                align="right"
-                                            >
-                                                {formatPrice(
-                                                    summary[0].BankAmount
-                                                )}
-                                            </TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        <></>
-                                    )}
-
-                                    <TableRow
-                                        key={"Service"}
-                                        sx={{
-                                            "&:last-child td, &:last-child th":
-                                                {
-                                                    border: 0,
-                                                },
+                                    </TableHead>
+                                    <TableBody>
+                                        {eBarimtData &&
+                                            eBarimtData.map(
+                                                (
+                                                    entity: any,
+                                                    index: number
+                                                ) => (
+                                                    <TableRow
+                                                        key={index}
+                                                        sx={{
+                                                            "&:last-child td, &:last-child th":
+                                                                {
+                                                                    border: 0,
+                                                                },
+                                                        }}
+                                                    >
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                fontSize:
+                                                                    "12px",
+                                                                padding: "2px",
+                                                            }}
+                                                        >
+                                                            {entity.CurrDate &&
+                                                                entity.CurrDate.replace(
+                                                                    "T",
+                                                                    " "
+                                                                )}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                fontSize:
+                                                                    "12px",
+                                                                padding: "2px",
+                                                            }}
+                                                        >
+                                                            {entity.ItemName &&
+                                                                entity.ItemName}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                fontSize:
+                                                                    "12px",
+                                                                padding: "2px",
+                                                            }}
+                                                        >
+                                                            {entity.Amount1 &&
+                                                                entity.Amount1.toLocaleString(
+                                                                    "en-US",
+                                                                    {
+                                                                        minimumFractionDigits: 2,
+                                                                        maximumFractionDigits: 2,
+                                                                    }
+                                                                )}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                fontSize:
+                                                                    "12px",
+                                                                padding: "2px",
+                                                            }}
+                                                        >
+                                                            {entity.Qty &&
+                                                                entity.Qty.toLocaleString(
+                                                                    "en-US",
+                                                                    {
+                                                                        minimumFractionDigits: 2,
+                                                                        maximumFractionDigits: 2,
+                                                                    }
+                                                                )}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            component="th"
+                                                            scope="row"
+                                                            style={{
+                                                                fontSize:
+                                                                    "12px",
+                                                                padding: "2px",
+                                                            }}
+                                                        >
+                                                            {entity.Amount2 &&
+                                                                entity.Amount2.toLocaleString(
+                                                                    "en-US",
+                                                                    {
+                                                                        minimumFractionDigits: 2,
+                                                                        maximumFractionDigits: 2,
+                                                                    }
+                                                                )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                )
+                                            )}
+                                    </TableBody>
+                                </Table>
+                            </Box>
+                            <Grid item xs={6}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        justifyContent: "space-between",
+                                    }}
+                                    className="mt-3 mb-1 mx-1"
+                                >
+                                    <div
+                                        style={{
+                                            textAlign: "left",
+                                            marginRight: "9px",
+                                            fontWeight: "bold",
                                         }}
                                     >
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontSize: "9px",
-                                                fontWeight: "bold",
-                                                padding: "2px",
-                                            }}
-                                            align="right"
-                                        >
-                                            {Lang == "MN"
-                                                ? "Нийт төлбөр : "
-                                                : "Total Payment : "}
-                                        </TableCell>
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontSize: "9px",
-                                                padding: "2px",
-                                            }}
-                                            align="right"
-                                        ></TableCell>
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontSize: "9px",
-                                                fontWeight: "bold",
-                                                padding: "2px",
-                                            }}
-                                            align="right"
-                                        >
-                                            {formatPrice(
-                                                summary[0].TotalPayAmount
-                                            )}
-                                        </TableCell>
-                                    </TableRow>
-
-                                    <TableRow
-                                        key={"Service"}
-                                        sx={{
-                                            "&:last-child td, &:last-child th":
-                                                {
-                                                    border: 0,
-                                                },
+                                        {Lang == "MN"
+                                            ? "Нийт дүн : "
+                                            : "Нийт дүн : "}
+                                    </div>
+                                    <div
+                                        style={{
+                                            fontWeight: "bold",
+                                            textAlign: "right",
                                         }}
                                     >
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontSize: "9px",
-                                                fontWeight: "bold",
-                                                padding: "2px",
-                                            }}
-                                            align="right"
-                                        >
-                                            {Lang == "MN"
-                                                ? "Үлдэгдэл : "
-                                                : "Balance : "}
-                                        </TableCell>
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontSize: "9px",
-                                                padding: "2px",
-                                            }}
-                                            align="right"
-                                        ></TableCell>
-                                        <TableCell
-                                            component="th"
-                                            scope="row"
-                                            style={{
-                                                fontSize: "9px",
-                                                fontWeight: "bold",
-                                                padding: "2px",
-                                            }}
-                                            align="right"
-                                        >
-                                            {formatPrice(
-                                                summary[0].TotalAmount -
-                                                    summary[0].TotalPayAmount
+                                        {eBarimtData &&
+                                            eBarimtData[0] &&
+                                            eBarimtData[0].TotalAmount.toLocaleString(
+                                                "en-US",
+                                                {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                }
                                             )}
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </Grid>
-
-                        <Grid item xs={6}>
-                            {Lang == "MN"
-                                ? "Зочны гарын үсэг : "
-                                : "Guest Signature : "}
-                            ......................
-                        </Grid>
-                        <Grid item xs={6}>
-                            {Lang == "MN" ? "Гарын үсэг : " : "Signature : "} :
-                            ......................
-                        </Grid>
-
-                        {summary[0] &&
-                        summary[0].FormFooterUse &&
-                        summary[0].FormFooterUse == true ? (
-                            <>
-                                {" "}
-                                <img
-                                    src={
-                                        summary[0].FormFooterPictureFile &&
-                                        summary[0].FormFooterPictureFile
-                                    }
-                                    alt="login"
-                                    style={{
-                                        width: "100%",
-                                        objectFit: "cover",
+                                    </div>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        justifyContent: "space-between",
                                     }}
-                                />
-                            </>
-                        ) : (
-                            <></>
-                        )}
-                    </Grid>
+                                    className="mb-1 mx-1"
+                                >
+                                    <div
+                                        style={{
+                                            textAlign: "left",
+                                            marginRight: "9px",
+                                        }}
+                                    >
+                                        {Lang == "MN" ? "НӨАТ : " : "НӨАТ : "}
+                                    </div>
+                                    <div
+                                        style={{
+                                            textAlign: "right",
+                                        }}
+                                    >
+                                        {eBarimtData &&
+                                            eBarimtData[0] &&
+                                            eBarimtData[0].Vat.toLocaleString(
+                                                "en-US",
+                                                {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                }
+                                            )}
+                                    </div>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        justifyContent: "space-between",
+                                    }}
+                                    className="mb-3 mx-1"
+                                >
+                                    <div
+                                        style={{
+                                            textAlign: "left",
+                                            marginRight: "9px",
+                                        }}
+                                    >
+                                        {Lang == "MN" ? "НХАТ : " : "НХАТ : "}
+                                    </div>
+                                    <div
+                                        style={{
+                                            textAlign: "right",
+                                        }}
+                                    >
+                                        {eBarimtData &&
+                                            eBarimtData[0] &&
+                                            eBarimtData[0].CityTax.toLocaleString(
+                                                "en-US",
+                                                {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                }
+                                            )}
+                                    </div>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        justifyContent: "space-between",
+                                    }}
+                                    className="mb-1 mx-1"
+                                >
+                                    <div
+                                        style={{
+                                            textAlign: "left",
+                                            marginRight: "9px",
+                                        }}
+                                    >
+                                        {Lang == "MN"
+                                            ? "Бэлнээр төлсөн : "
+                                            : "Бэлнээр төлсөн : "}
+                                    </div>
+                                    <div
+                                        style={{
+                                            textAlign: "right",
+                                        }}
+                                    >
+                                        {eBarimtData &&
+                                            eBarimtData[0] &&
+                                            eBarimtData[0].CashAmount.toLocaleString(
+                                                "en-US",
+                                                {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                }
+                                            )}
+                                    </div>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        justifyContent: "space-between",
+                                    }}
+                                    className="mb-3 mx-1"
+                                >
+                                    <div
+                                        style={{
+                                            textAlign: "left",
+                                            marginRight: "9px",
+                                        }}
+                                    >
+                                        {Lang == "MN"
+                                            ? "Бэлэн бус : "
+                                            : "Бэлэн бус : "}
+                                    </div>
+                                    <div
+                                        style={{
+                                            textAlign: "right",
+                                        }}
+                                    >
+                                        {eBarimtData &&
+                                            eBarimtData[0] &&
+                                            eBarimtData[0].NonCashAmount.toLocaleString(
+                                                "en-US",
+                                                {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                }
+                                            )}
+                                    </div>
+                                </Box>
+
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        fontWeight: "bold",
+                                        justifyContent: "space-between",
+                                    }}
+                                    className="mb-3 mx-1 "
+                                >
+                                    <div
+                                        style={{
+                                            textAlign: "left",
+                                            marginRight: "9px",
+                                        }}
+                                    >
+                                        {Lang == "MN"
+                                            ? "Сугалаа : "
+                                            : "Сугалаа : "}
+                                    </div>
+                                    <div
+                                        style={{
+                                            textAlign: "right",
+                                        }}
+                                    >
+                                        {eBarimtData &&
+                                            eBarimtData[0] &&
+                                            eBarimtData[0].Lottery}
+                                    </div>
+                                </Box>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div className="pt-1">
+                                    {imgUrl ? (
+                                        <img
+                                            src={imgUrl}
+                                            alt="QR Code"
+                                            style={{ height: "160px" }}
+                                        />
+                                    ) : (
+                                        <p>Loading...</p>
+                                    )}
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </div>
                 </div>
             )}
         </>

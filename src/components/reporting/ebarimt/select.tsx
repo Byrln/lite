@@ -4,7 +4,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { ModalContext } from "lib/context/modal";
 import Receipt from "./index";
-import ReceiptSummary from "./summary";
+import Ebarimt from "./summary";
 import { PosApiAPI } from "lib/api/pos-api";
 
 const EbarimtSelect = ({ FolioID }: any) => {
@@ -47,10 +47,19 @@ const EbarimtSelect = ({ FolioID }: any) => {
             };
 
             const response = await PosApiAPI.print(values);
+            // console.log("response", JSON.parse(response.JsonData));
 
-            // if (response) {
-            //     window.open("google.com", "_blank");
-            // }
+            if (response && response.JsonData && response.JsonData.length > 0) {
+                handleModal(
+                    true,
+                    "И-Баримт",
+                    <Ebarimt eBarimtData={response.JsonData} Lang="MN" />,
+                    null,
+                    "large"
+                );
+                // window.open("google.com", "_blank");
+            } else {
+            }
             setLoading(false);
         } finally {
         }

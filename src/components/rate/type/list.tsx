@@ -23,13 +23,11 @@ const columns = [
         excelRenderPass: true,
         renderCell: (element: any) => {
             return (
-                element.row.BreakfastIncluded && (
-                    <ToggleChecked
-                        id={element.id}
-                        checked={element.row.BreakfastIncluded}
-                        disabled={true}
-                    />
-                )
+                <ToggleChecked
+                    id={element.id}
+                    checked={element.row.BreakfastIncluded}
+                    disabled={true}
+                />
             );
         },
     },
@@ -92,13 +90,11 @@ const RateTypeList = ({ title, setHasData = null }: any) => {
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
-                    element.row.BreakfastIncluded && (
-                        <ToggleChecked
-                            id={element.id}
-                            checked={element.row.BreakfastIncluded}
-                            disabled={true}
-                        />
-                    )
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.BreakfastIncluded}
+                        disabled={true}
+                    />
                 );
             },
         },
@@ -114,15 +110,13 @@ const RateTypeList = ({ title, setHasData = null }: any) => {
             excelRenderPass: true,
             renderCell: (element: any) => {
                 return (
-                    element.row.Status && (
-                        <ToggleChecked
-                            id={element.id}
-                            checked={element.row.Status}
-                            api={RateTypeAPI}
-                            apiUrl="UpdateStatus"
-                            mutateUrl={`${listUrl}`}
-                        />
-                    )
+                    <ToggleChecked
+                        id={element.id}
+                        checked={element.row.Status}
+                        api={RateTypeAPI}
+                        apiUrl="UpdateStatus"
+                        mutateUrl={`${listUrl}`}
+                    />
                 );
             },
         },
