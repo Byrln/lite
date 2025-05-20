@@ -225,6 +225,67 @@ const ReceiptSummary = ({ eBarimtData, Lang }: any) => {
                                         eBarimtData[0].UserName}
                                 </div>
                             </Box>
+                            {eBarimtData &&
+                            eBarimtData[0] &&
+                            eBarimtData[0].CompanyID &&
+                            eBarimtData[0].CompanyID != "" ? (
+                                <>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            width: "100%",
+                                            flexWrap: "wrap",
+                                        }}
+                                        className="mb-1"
+                                    >
+                                        <div
+                                            style={{
+                                                width: " 100px",
+                                                textAlign: "left",
+                                                marginRight: "9px",
+                                            }}
+                                        >
+                                            {Lang == "MN"
+                                                ? "Компаний регистр : "
+                                                : "Компаний регистр : "}
+                                        </div>
+                                        <div>
+                                            {eBarimtData &&
+                                                eBarimtData[0] &&
+                                                eBarimtData[0].CompanyID}
+                                        </div>
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            width: "100%",
+                                            flexWrap: "wrap",
+                                        }}
+                                        className="mb-1"
+                                    >
+                                        <div
+                                            style={{
+                                                width: " 100px",
+                                                textAlign: "left",
+                                                marginRight: "9px",
+                                            }}
+                                        >
+                                            {Lang == "MN"
+                                                ? "Компаний нэр : "
+                                                : "Компаний нэр : "}
+                                        </div>
+                                        <div>
+                                            {eBarimtData &&
+                                                eBarimtData[0] &&
+                                                eBarimtData[0].CompanyName &&
+                                                eBarimtData[0].CompanyName}
+                                        </div>
+                                    </Box>
+                                </>
+                            ) : (
+                                <></>
+                            )}
+
                             <Box
                                 sx={{
                                     display: "flex",
