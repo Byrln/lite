@@ -6,6 +6,7 @@ import { ModalContext } from "lib/context/modal";
 import Receipt from "./index";
 import Ebarimt from "./summary";
 import { PosApiAPI } from "lib/api/pos-api";
+import { toast } from "react-toastify";
 
 const EbarimtSelect = ({ FolioID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
@@ -49,7 +50,12 @@ const EbarimtSelect = ({ FolioID }: any) => {
             const response = await PosApiAPI.print(values);
             // console.log("response", JSON.parse(response.JsonData));
 
-            if (response && response.JsonData && response.JsonData.length > 0) {
+            if (
+                response &&
+                response.JsonData &&
+                response.JsonData.length > 0 &&
+                response.JsonData[0].status == true
+            ) {
                 handleModal(
                     true,
                     "И-Баримт",
@@ -59,6 +65,9 @@ const EbarimtSelect = ({ FolioID }: any) => {
                 );
                 // window.open("google.com", "_blank");
             } else {
+                if (response.JsonData[0].Message) {
+                    toast(response.JsonData[0].Message);
+                }
             }
             setLoading(false);
         } finally {
