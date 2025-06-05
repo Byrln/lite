@@ -43,10 +43,14 @@ const Index = () => {
                     </Box>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <RevervationList
-                                title={title}
-                                workingDate={workingDate}
-                            />
+                            {workingDate ? (
+                                <RevervationList
+                                    title={title}
+                                    workingDate={workingDate}
+                                />
+                            ) : (
+                                <></>
+                            )}
                         </Grid>
                     </Grid>
                 </Container>

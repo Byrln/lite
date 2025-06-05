@@ -15,12 +15,13 @@ const ChargeTypeGroupSelect = ({
     IsDiscount,
     onChange,
 }: any) => {
+    console.log("IsMiniBar", IsMiniBar);
     const intl = useIntl();
     const { data, error } = ChargeTypeGroupSWR({
-        IsRoomCharge: IsRoomCharge,
-        IsExtraCharge: IsExtraCharge,
-        IsMiniBar: IsMiniBar,
-        IsDiscount: IsDiscount,
+        IsRoomCharge: IsRoomCharge ? IsRoomCharge : false,
+        IsExtraCharge: IsExtraCharge ? IsExtraCharge : false,
+        IsMiniBar: IsMiniBar ? IsMiniBar : false,
+        IsDiscount: IsDiscount ? IsDiscount : false,
     });
 
     if (error) return <Alert severity="error">{error.message}</Alert>;

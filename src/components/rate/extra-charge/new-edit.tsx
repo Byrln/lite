@@ -21,7 +21,6 @@ const validationSchema = yup.object().shape({
         .typeError("Бөглөнө үү"),
     SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     IsEditable: yup.boolean(),
-    IsInclusion: yup.boolean(),
 });
 
 const NewEdit = () => {
@@ -41,6 +40,7 @@ const NewEdit = () => {
             listUrl={listUrl}
             additionalValues={{
                 RoomChargeTypeID: state.editId,
+                IsInclusion: false,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
@@ -117,7 +117,7 @@ const NewEdit = () => {
                         label="Үнийн дүнг засах боломжтой эсэх"
                     />
                 </Grid>
-                <Grid item xs={6}>
+                {/* <Grid item xs={6}>
                     <FormControlLabel
                         control={
                             <Controller
@@ -138,7 +138,7 @@ const NewEdit = () => {
                         }
                         label="Is Inclusion"
                     />
-                </Grid>
+                </Grid> */}
             </Grid>
         </NewEditForm>
     );

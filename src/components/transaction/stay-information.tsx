@@ -54,10 +54,11 @@ const StayInformation = ({
                     :{" "}
                 </div>
                 <div style={{ fontWeight: "600" }}>
-                    {format(
-                        new Date(arrivalDate.replace(/ /g, "T")),
-                        "MM/dd/yyyy"
-                    )}
+                    {arrivalDate &&
+                        format(
+                            new Date(arrivalDate.replace(/ /g, "T")),
+                            "MM/dd/yyyy"
+                        )}
                 </div>
             </Box>
 

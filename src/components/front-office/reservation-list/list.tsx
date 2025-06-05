@@ -163,10 +163,11 @@ const DeparturedListList = ({ title, workingDate }: any) => {
         GuestEmail: yup.string(),
         CustomerID: yup.string(),
     });
+    console.log("workingdate", StartDate ? StartDate : workingDate);
     const formOptions = {
         defaultValues: {
             StatusGroup: StatusGroup ? StatusGroup : "1",
-            StartDate: StartDate ? StartDate : null,
+            StartDate: StartDate ? StartDate : workingDate,
             EndDate: EndDate ? EndDate : null,
             ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
         },
@@ -182,10 +183,19 @@ const DeparturedListList = ({ title, workingDate }: any) => {
 
     const [search, setSearch] = useState({
         StatusGroup: StatusGroup ? StatusGroup : "1",
-        StartDate: StartDate ? StartDate : null,
+        StartDate: StartDate ? StartDate : workingDate.split("T")[0],
         EndDate: EndDate ? EndDate : null,
-        ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
+        ReservationTypeID: ReservationTypeID ? ReservationTypeID : 1,
     });
+
+    // useEffect(() => {
+    //     setSearch({
+    //         StatusGroup: StatusGroup ? StatusGroup : "1",
+    //         StartDate: StartDate ? StartDate : workingDate.split("T")[0],
+    //         EndDate: EndDate ? EndDate : null,
+    //         ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
+    //     });
+    // }, [workingDate]);
 
     const { data, error } = ReservationSWR(search);
 
@@ -213,6 +223,16 @@ const DeparturedListList = ({ title, workingDate }: any) => {
                             setSearch={setSearch}
                             handleSubmit={handleSubmit}
                             reset={reset}
+                            searchInitialState={{
+                                StatusGroup: StatusGroup ? StatusGroup : "1",
+                                StartDate: StartDate
+                                    ? StartDate
+                                    : workingDate.split("T")[0],
+                                EndDate: EndDate ? EndDate : null,
+                                ReservationTypeID: ReservationTypeID
+                                    ? ReservationTypeID
+                                    : 1,
+                            }}
                         >
                             <Search
                                 register={register}

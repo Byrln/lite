@@ -871,7 +871,7 @@ const NewEdit = () => {
                                         />
                                     }
                                     label={intl.formatMessage({
-                                        id: "WhetherToDisplayOnLineOrders",
+                                        id: "MsgInventoryOnBE",
                                     })}
                                 />
                                 {/* <FormGroup>

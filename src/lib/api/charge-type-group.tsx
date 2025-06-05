@@ -7,20 +7,21 @@ const urlPrefix = "/api/ChargeTypeGroup";
 export const listUrl = `${urlPrefix}/List`;
 
 export const ChargeTypeGroupSWR = (search: any) => {
+    console.log("search", search);
     if (!search.RoomChargeTypeGroupID) {
         search.RoomChargeTypeGroupID = 0;
     }
     if (!search.IsRoomCharge) {
-        search.IsRoomCharge = null;
+        search.IsRoomCharge = false;
     }
     if (!search.IsExtraCharge) {
         search.IsExtraCharge = true;
     }
     if (!search.IsMiniBar) {
-        search.IsMiniBar = null;
+        search.IsMiniBar = false;
     }
     if (!search.IsDiscount) {
-        search.IsDiscount = null;
+        search.IsDiscount = false;
     }
     if (!search.Status) {
         search.Status = null;
