@@ -14,8 +14,13 @@ const Search = ({ register, errors, control, reset }: any) => {
     const intl = useIntl();
     const { data, error } = RateTypeSWR({});
     const [rateType, setRateType] = useState(null);
+    const [selectedChannelID, setSelectedChannelID] = useState(null);
 
     const [customerVisibility, setCustomerVisibility] = useState(false);
+
+    const onChannelChange = (evt: any) => {
+        setSelectedChannelID(evt.target.value);
+    };
 
     const onRateTypeChange = (evt: any) => {
         setRateType(evt.target.value);
@@ -41,6 +46,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     register={register}
                     errors={errors}
                     customRegisterName="ChannelID"
+                    onChange={onChannelChange}
                 />
             </Grid>
             <Grid item xs={3}>
@@ -52,6 +58,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     errors={errors}
                     onChange={onRateTypeChange}
                     value={rateType}
+                    channelID={selectedChannelID}
                 />
             </Grid>
 

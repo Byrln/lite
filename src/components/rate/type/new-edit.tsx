@@ -20,7 +20,7 @@ import ChannelSelect from "components/select/reference";
 import CurrencySelect from "components/select/currency";
 import SubmitButton from "components/common/submit-button";
 import BaseRateList from "./base-rate-list";
-import { TaxSWR } from "lib/api/tax";
+import { TaxSWR, listUrl as taxListUrl } from "lib/api/tax";
 
 const validationSchema = yup.object().shape({
     RateTypeCode: yup.string().required("Бөглөнө үү"),
@@ -80,6 +80,10 @@ const NewEdit = () => {
         fetchDatas();
     }, [state.editId]);
 
+    useEffect(() => {
+        mutate(taxListUrl);
+    }, []);
+
     const onSubmit = async (values: any) => {
         setLoading(true);
         try {
@@ -112,6 +116,7 @@ const NewEdit = () => {
             RateTypeAPI.BaseRateInsertWUList(tempBaseRates);
 
             await mutate(listUrl);
+            await mutate(taxListUrl);
             toast("Амжилттай.");
             setLoading(false);
             handleModal();
@@ -218,11 +223,12 @@ const NewEdit = () => {
                     "Өрөөний тариф нь" +
                     " " +
                     (data &&
-                        data.map((item: any) => {
+                        data.filter((item: any) => item.Status === true)
+                        .map((item: any) => {
                             return `${item.TaxID != 1 ? "+" : ""}${
                                 item.TaxAmount
                             }%`;
-                        })) +
+                        }).join(",")) +
                     " " +
                     "татвар агуулсан болно."
                 }

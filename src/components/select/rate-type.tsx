@@ -8,7 +8,13 @@ import { useEffect } from "react";
 import { RateTypeSWR } from "lib/api/rate-type";
 import { elementAcceptingRef } from "@mui/utils";
 
-const RateTypeSelect = ({ register, errors, onChange, value }: any) => {
+const RateTypeSelect = ({
+    register,
+    errors,
+    onChange,
+    value,
+    channelID,
+}: any) => {
     const { data, error } = RateTypeSWR({});
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -38,16 +44,23 @@ const RateTypeSelect = ({ register, errors, onChange, value }: any) => {
                 shrink: value ? value : null,
             }}
         >
-            {data.map((element: any) => {
-                return (
-                    <MenuItem
-                        key={element.RateTypeID}
-                        value={element.RateTypeID}
-                    >
-                        {`${element.RateTypeName}`}
-                    </MenuItem>
-                );
-            })}
+            {data
+                .filter((element: any) => {
+                    if (channelID) {
+                        return element.ChannelID === channelID;
+                    }
+                    return true;
+                })
+                .map((element: any) => {
+                    return (
+                        <MenuItem
+                            key={element.RateTypeID}
+                            value={element.RateTypeID}
+                        >
+                            {`${element.RateTypeName}`}
+                        </MenuItem>
+                    );
+                })}
         </TextField>
     );
 };

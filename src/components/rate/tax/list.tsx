@@ -4,6 +4,7 @@ import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { useIntl } from "react-intl";
 import { TaxSWR, TaxAPI, listUrl } from "lib/api/tax";
+import { mutate } from "swr";
 import NewEdit from "./new-edit";
 
 const TaxList = ({ title, setHasData = null }: any) => {
@@ -33,6 +34,9 @@ const TaxList = ({ title, setHasData = null }: any) => {
                         api={TaxAPI}
                         apiUrl="UpdateStatus"
                         mutateUrl={`${listUrl}`}
+                        onSuccess={() => {
+                            mutate(listUrl);
+                        }}
                     />
                 );
             },

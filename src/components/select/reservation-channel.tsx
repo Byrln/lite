@@ -13,6 +13,7 @@ const ReservationChannelSelect = ({
     customRegisterName,
     entity,
     setEntity,
+    onChange,
 }: any) => {
     const { data, error } = ReservationChannelSWR();
 
@@ -66,6 +67,7 @@ const ReservationChannelSelect = ({
                         ...entity,
                         ChannelID: evt.target.value,
                     });
+                onChange && onChange(evt);
             }}
         >
             {data.map((element: any) => {
