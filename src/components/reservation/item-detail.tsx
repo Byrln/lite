@@ -68,20 +68,20 @@ const ItemDetail = ({
                     <Grid container spacing={2} sx={{ mb: 2 }}>
                         <Grid item xs={6}>
                             <div style={{ display: "flex" }}>
-                                {extendedProps.GroupID &&
-                                extendedProps.GroupID != "" ? (
+                                {extendedProps?.GroupID &&
+                                extendedProps?.GroupID != "" ? (
                                     <span
                                         style={{
                                             marginRight: "5px",
                                             marginTop: "2px",
                                             color:
-                                                extendedProps.groupColor &&
+                                                extendedProps?.groupColor &&
                                                 extendedProps.groupColor != ""
                                                     ? extendedProps.groupColor
                                                     : "black",
                                         }}
                                     >
-                                        {extendedProps.IsGroupOwner ==
+                                        {extendedProps?.IsGroupOwner ==
                                         "true" ? (
                                             <Iconify
                                                 icon="solar:crown-outline"
@@ -303,14 +303,14 @@ const ItemDetail = ({
                                                             "Edit",
                                                             <RoomGroupEdit
                                                                 GroupID={
-                                                                    extendedProps.GroupID &&
+                                                                    extendedProps?.GroupID &&
                                                                     extendedProps.GroupID >
                                                                         0
                                                                         ? extendedProps.GroupID
                                                                         : null
                                                                 }
                                                                 TransactionID={
-                                                                    extendedProps.GroupID
+                                                                    extendedProps?.GroupID
                                                                         ? null
                                                                         : reservation.TransactionID
                                                                 }

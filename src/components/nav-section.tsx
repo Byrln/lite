@@ -76,15 +76,16 @@ function NavItem({ item, active }: any) {
         return (
             <>
                 <ListItemStyle
+                    onClick={handleOpen}
                     sx={{
                         ...(isActiveRoot && activeRootStyle),
+                        cursor: 'pointer',
                     }}
                 >
                     <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
                     <ListItemText
                         disableTypography
                         primary={locale == "en" ? titleEn : title}
-                        onClick={handleOpen}
                     />
                     {info && info}
                     <Box
@@ -104,9 +105,15 @@ function NavItem({ item, active }: any) {
                                 localStorage.getItem("hotelId") == "1" && (
                                     <Link key={title} href={path} passHref>
                                         <ListItemStyle
+                                            component="a"
                                             sx={{
                                                 ...(isActiveSub &&
                                                     activeSubStyle),
+                                                cursor: 'pointer',
+                                                textDecoration: 'none',
+                                                '&:hover': {
+                                                    textDecoration: 'none',
+                                                },
                                             }}
                                         >
                                             <ListItemIconStyle>
@@ -149,8 +156,14 @@ function NavItem({ item, active }: any) {
                             ) : (
                                 <Link key={title} href={path} passHref>
                                     <ListItemStyle
+                                        component="a"
                                         sx={{
                                             ...(isActiveSub && activeSubStyle),
+                                            cursor: 'pointer',
+                                            textDecoration: 'none',
+                                            '&:hover': {
+                                                textDecoration: 'none',
+                                            },
                                         }}
                                     >
                                         <ListItemIconStyle>
@@ -194,8 +207,14 @@ function NavItem({ item, active }: any) {
     return (
         <Link href={path} passHref>
             <ListItemStyle
+                component="a"
                 sx={{
                     ...(isActiveRoot && activeRootStyle),
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    '&:hover': {
+                        textDecoration: 'none',
+                    },
                 }}
             >
                 <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
