@@ -383,7 +383,7 @@ const ItemDetail = ({
                                             FolioID={reservation.FolioID}
                                         ></ReceiptSelect>,
                                         null,
-                                        "large"
+                                        "small"
                                     );
                                 }}
                             >
@@ -403,7 +403,7 @@ const ItemDetail = ({
                                             FolioID={reservation.FolioID}
                                         ></InvoiceSelect>,
                                         null,
-                                        "large"
+                                        "small"
                                     );
                                 }}
                             >
@@ -421,7 +421,7 @@ const ItemDetail = ({
                                             FolioID={reservation.FolioID}
                                         ></EbarimtSelect>,
                                         null,
-                                        "large"
+                                        "small"
                                     );
                                 }}
                             >

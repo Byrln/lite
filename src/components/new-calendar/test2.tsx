@@ -244,7 +244,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 GroupCode: `${obj.GroupCode}`,
                                 IsGroupOwner: `${obj.IsGroupOwner}`,
                                 statusColor: `#${obj.StatusColor}`,
-                                editable: obj.StatusCode !== "StatusCheckedOut",
+                                editable: !obj.StatusCode,
                                 color: getContrastYIQ(`#${obj.StatusColor}`),
                                 textColor: getContrastYIQ(
                                     `#${obj.StatusColor}`
@@ -270,7 +270,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 startDate: obj.StartDate,
                                 endDate: obj.EndDate,
                                 statusColor: `#${obj.StatusColor}`,
-                                editable: obj.StatusCode !== "StatusCheckedOut",
+                                editable: !obj.StatusCode,
                                 color: getContrastYIQ(`#${obj.StatusColor}`),
                                 textColor: getContrastYIQ(
                                     `#${obj.StatusColor}`
