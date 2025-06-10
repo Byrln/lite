@@ -25,7 +25,13 @@ export const GetPrivilegesSWR = () => {
         await axios
             .get(`${urlPrefix}/GetPrivileges`)
             .then((res: any) => res.data.JsonData);
-    return useSWR(`${urlPrefix}/GetPrivileges`, fetcher);
+    return useSWR(`${urlPrefix}/GetPrivileges`, fetcher, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        dedupingInterval: 60000,
+        errorRetryCount: 1,
+        refreshInterval: 0
+    });
 };
 
 export const GetPrivilegesByUserSWR = (value: any) => {

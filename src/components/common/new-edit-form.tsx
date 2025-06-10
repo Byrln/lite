@@ -108,7 +108,11 @@ const NewEditForm = ({
             }
             toast("Амжилттай.");
         } finally {
-            listUrl && (await mutate(listUrl));
+            // Only invalidate the specific list cache, not all user-related caches
+            // This prevents sidebar data loss when closing modals
+            if (listUrl) {
+                await mutate(listUrl);
+            }
 
             setLoading(false);
         }

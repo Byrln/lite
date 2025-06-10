@@ -33,6 +33,7 @@ export default function DashboardLayout({ children }: any) {
     const [open, setOpen] = useState(false);
     const { data, error } = GetPrivilegesSWR();
     const [sideBarData, setSideBarData] = useState(null);
+    const [lastValidSideBarData, setLastValidSideBarData] = useState(null);
     const [state, dispatch]: any = useAppState();
 
     function filterMenu(menu: any, uniqueMenuLinks: any) {
@@ -61,8 +62,8 @@ export default function DashboardLayout({ children }: any) {
             return filteredMenu;
         }, []);
     }
-    useEffect(() => {
-        if (data) {
+        useEffect(() => {
+        if (data && data.length > 0) {
             // Extracting MenuLink values
             dispatch({
                 type: "userRole",
@@ -79,9 +80,20 @@ export default function DashboardLayout({ children }: any) {
             let uniqueMenuLinks = [...new Set(menuLinks)];
 
             const filteredMenu = filterMenu(sidebarConfig, uniqueMenuLinks);
-            setSideBarData(filteredMenu);
+            
+            // Only update sidebar if we have valid filtered menu items
+            // This prevents sidebar from being cleared when modal operations
+            // temporarily affect the privilege data
+            if (filteredMenu && filteredMenu.length > 0) {
+                setSideBarData(filteredMenu);
+                setLastValidSideBarData(filteredMenu); // Store as backup
+            }
+        } else if (!data && lastValidSideBarData) {
+            // If data becomes unavailable but we have a backup, use it
+            // This prevents sidebar from disappearing during modal operations
+            setSideBarData(lastValidSideBarData);
         }
-    }, [data]);
+    }, [data, lastValidSideBarData]);
 
     return (
         <RootStyle>
