@@ -235,14 +235,16 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
             </LoadingButton>
             Өрөөний тариф нь{" "}
             {taxData &&
-                taxData.map((item: any) => {
-                    return (
-                        <span key={item.TaxID}>
-                            {item.TaxID != 1 && "+"}
-                            {item.TaxAmount}%
-                        </span>
-                    );
-                })}{" "}
+                taxData
+                    .filter((item: any) => item.Status === true)
+                    .map((item: any) => {
+                        return (
+                            <span key={item.TaxID}>
+                                {item.TaxID != 1 && "+"}
+                                {item.TaxAmount}%
+                            </span>
+                        );
+                    })}{" "}
             татвар агуулсан болно.
             <br />
             <CustomTable

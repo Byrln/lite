@@ -73,7 +73,7 @@ const NewEdit = ({ entity }: any) => {
                 error={errors.BeginDate?.message}
                 helperText={errors.BeginDate?.message}
             />
-
+    
             <TextField
                 type="date"
                 fullWidth
