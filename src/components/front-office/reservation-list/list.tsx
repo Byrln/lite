@@ -21,6 +21,17 @@ const DeparturedListList = ({ title, workingDate }: any) => {
     const { StatusGroup, StartDate, EndDate, ReservationTypeID } = router.query;
     const [rerenderKey, setRerenderKey] = useState(0);
 
+    console.log("workingDate", workingDate);
+
+    // Create a Date object
+    const date = new Date(workingDate);
+
+    // Add 15 days
+    date.setDate(date.getDate() + 15);
+
+    // Format to YYYY-MM-DD
+    const result = date.toISOString().split("T")[0];
+
     useEffect(() => {
         setRerenderKey((prevKey) => prevKey + 1);
     }, [StatusGroup, StartDate, EndDate, ReservationTypeID]);
@@ -168,7 +179,7 @@ const DeparturedListList = ({ title, workingDate }: any) => {
         defaultValues: {
             StatusGroup: StatusGroup ? StatusGroup : "1",
             StartDate: StartDate ? StartDate : workingDate,
-            EndDate: EndDate ? EndDate : null,
+            EndDate: EndDate ? EndDate : result,
             ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
         },
         resolver: yupResolver(validationSchema),
@@ -184,7 +195,7 @@ const DeparturedListList = ({ title, workingDate }: any) => {
     const [search, setSearch] = useState({
         StatusGroup: StatusGroup ? StatusGroup : "1",
         StartDate: StartDate ? StartDate : workingDate.split("T")[0],
-        EndDate: EndDate ? EndDate : null,
+        EndDate: EndDate ? EndDate : result,
         ReservationTypeID: ReservationTypeID ? ReservationTypeID : 1,
     });
 
@@ -228,7 +239,7 @@ const DeparturedListList = ({ title, workingDate }: any) => {
                                 StartDate: StartDate
                                     ? StartDate
                                     : workingDate.split("T")[0],
-                                EndDate: EndDate ? EndDate : null,
+                                EndDate: EndDate ? EndDate : result,
                                 ReservationTypeID: ReservationTypeID
                                     ? ReservationTypeID
                                     : 1,

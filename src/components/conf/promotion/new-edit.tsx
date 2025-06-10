@@ -431,98 +431,118 @@ const NewEdit = () => {
                 //@ts-ignore
                 dateAdapter={AdapterDateFns}
             >
-                <TextField
-                    size="small"
-                    fullWidth
-                    id="PromotionCode"
-                    label={intl.formatMessage({ id: "TextPromotionCode" })}
-                    {...register("PromotionCode")}
-                    margin="dense"
-                    error={errors.PromotionCode?.message}
-                    helperText={errors.PromotionCode?.message}
-                />
+                <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            id="PromotionCode"
+                            label={intl.formatMessage({
+                                id: "TextPromotionCode",
+                            })}
+                            {...register("PromotionCode")}
+                            margin="dense"
+                            error={errors.PromotionCode?.message}
+                            helperText={errors.PromotionCode?.message}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <PromotionTypeSelect
+                            register={register}
+                            errors={errors}
+                        />
+                    </Grid>
 
-                <PromotionTypeSelect register={register} errors={errors} />
-
-                <TextField
-                    size="small"
-                    fullWidth
-                    multiline
-                    rows={3}
-                    id="Description"
-                    label={intl.formatMessage({ id: "TextDescription" })}
-                    {...register("Description")}
-                    margin="dense"
-                    error={errors.Description?.message}
-                    helperText={errors.Description?.message}
-                />
-
-                <TextField
-                    type="date"
-                    fullWidth
-                    id="BeginDate"
-                    label={intl.formatMessage({ id: "RowHeaderBeginDate" })}
-                    {...register("BeginDate")}
-                    margin="dense"
-                    error={errors.BeginDate?.message}
-                    helperText={errors.BeginDate?.message}
-                    size="small"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
-
-                <TextField
-                    type="date"
-                    fullWidth
-                    id="EndDate"
-                    label={intl.formatMessage({ id: "RowHeaderEndDate" })}
-                    {...register("EndDate")}
-                    margin="dense"
-                    error={errors.EndDate?.message}
-                    helperText={errors.EndDate?.message}
-                    size="small"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
-
-                <CustomSelect
-                    register={register}
-                    errors={errors}
-                    field="AvailableOn"
-                    label="Available On"
-                    options={[
-                        { key: 1, value: "Өдөр бүр" },
-                        { key: 2, value: "Эхний өдөр" },
-                        { key: 3, value: "Сүүлийн өдөр" },
-                    ]}
-                    optionValue="key"
-                    optionLabel="value"
-                />
-
-                <div style={{ width: "100%" }}>
-                    <ReservationSourceSelect
-                        register={register}
-                        errors={errors}
-                        title="Booking Source"
-                        resetField={resetField}
-                        setAllCheck={setSourceAllCheck}
-                        allCheck={sourceAllCheck}
-                        initialChecks={initialCheckedSources}
-                    />
-                </div>
-                <div style={{ width: "100%" }}>
-                    <RoomTypeSelect
-                        register={register}
-                        errors={errors}
-                        title="Room Type"
-                        resetField={resetField}
-                        setAllCheck={setRoomAllCheck}
-                        allCheck={roomAllCheck}
-                        initialChecks={initialCheckedRooms}
-                    />
-                </div>
+                    <Grid item xs={12}>
+                        <TextField
+                            size="small"
+                            fullWidth
+                            multiline
+                            rows={3}
+                            id="Description"
+                            label={intl.formatMessage({
+                                id: "TextDescription",
+                            })}
+                            {...register("Description")}
+                            margin="dense"
+                            error={errors.Description?.message}
+                            helperText={errors.Description?.message}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            type="date"
+                            fullWidth
+                            id="BeginDate"
+                            label={intl.formatMessage({
+                                id: "RowHeaderBeginDate",
+                            })}
+                            {...register("BeginDate")}
+                            margin="dense"
+                            error={errors.BeginDate?.message}
+                            helperText={errors.BeginDate?.message}
+                            size="small"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            type="date"
+                            fullWidth
+                            id="EndDate"
+                            label={intl.formatMessage({
+                                id: "RowHeaderEndDate",
+                            })}
+                            {...register("EndDate")}
+                            margin="dense"
+                            error={errors.EndDate?.message}
+                            helperText={errors.EndDate?.message}
+                            size="small"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <CustomSelect
+                            register={register}
+                            errors={errors}
+                            field="AvailableOn"
+                            label="Available On"
+                            options={[
+                                { key: 1, value: "Өдөр бүр" },
+                                { key: 2, value: "Эхний өдөр" },
+                                { key: 3, value: "Сүүлийн өдөр" },
+                            ]}
+                            optionValue="key"
+                            optionLabel="value"
+                        />
+                        <div style={{ width: "100%" }}>
+                            <ReservationSourceSelect
+                                register={register}
+                                errors={errors}
+                                title="Booking Source"
+                                resetField={resetField}
+                                setAllCheck={setSourceAllCheck}
+                                allCheck={sourceAllCheck}
+                                initialChecks={initialCheckedSources}
+                            />
+                        </div>
+                        <div style={{ width: "100%" }}>
+                            <RoomTypeSelect
+                                register={register}
+                                errors={errors}
+                                title="Room Type"
+                                resetField={resetField}
+                                setAllCheck={setRoomAllCheck}
+                                allCheck={roomAllCheck}
+                                initialChecks={initialCheckedRooms}
+                            />
+                        </div>
+                    </Grid>
+                </Grid>
             </LocalizationProvider>
             <br />
             <FormLabel component="legend">Rate</FormLabel>
