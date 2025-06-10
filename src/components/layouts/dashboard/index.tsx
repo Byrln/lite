@@ -62,7 +62,7 @@ export default function DashboardLayout({ children }: any) {
             return filteredMenu;
         }, []);
     }
-        useEffect(() => {
+    useEffect(() => {
         if (data && data.length > 0) {
             // Extracting MenuLink values
             dispatch({
@@ -80,7 +80,7 @@ export default function DashboardLayout({ children }: any) {
             let uniqueMenuLinks = [...new Set(menuLinks)];
 
             const filteredMenu = filterMenu(sidebarConfig, uniqueMenuLinks);
-            
+
             // Only update sidebar if we have valid filtered menu items
             // This prevents sidebar from being cleared when modal operations
             // temporarily affect the privilege data
@@ -93,7 +93,7 @@ export default function DashboardLayout({ children }: any) {
             // This prevents sidebar from disappearing during modal operations
             setSideBarData(lastValidSideBarData);
         }
-    }, [data, lastValidSideBarData]);
+    }, [data]);
 
     return (
         <RootStyle>
