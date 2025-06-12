@@ -1139,8 +1139,18 @@
     "TextNoShowFee": "Ирээгүйн төлбөр",
     "TextNoShowReason": "Ирээгүйн шалтгаан",
     "TextNote": "Тэмдэглэгээ",
-    "TextNotificationDetail": "Notification Detail",
-    "TextNotificationType": "Notification Type",
+    "TextNotificationDetail": "Мэдэгдлийн дэлгэрэнгүй",
+    "TextNotificationType": "Мэдэгдлийн төрөл",
+    "TextNotifications": "Мэдэгдэл",
+    "TextNoNotifications": "Мэдэгдэл байхгүй",
+    "TextMarkAllAsRead": "Бүгдийг уншсан",
+    "TextHigh": "Хамгийн Чухал",
+    "TextMedium": "Чухал",
+    "TextLow": "Хэрэгтэй",
+    "TextSuccess": "Амжилттай",
+    "TextError": "Алдаа",
+    "TextWarning": "Анхааруулга",
+    "TextInfo": "Мэдээлэл",
     "TextOldPassword": "Хуучин нууц үг",
     "TextOrderDetail": "Захиалгын мэдээлэл",
     "TextOther": "Бусад",
@@ -1351,5 +1361,6 @@
     "RoomTypeName": "Нэр",
     "TextSourceName": "Зах.эх сурвалж",
     "BaseRate": "Тариф",
-    "Guide": "Заавар"
+    "Guide": "Заавар",
+    "DuplicateLoginName": "Хэрэглэгчийн нэр давхацсан байна"
 }

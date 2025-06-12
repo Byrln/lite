@@ -974,5 +974,18 @@
     "TitleEmailConfiguration": "E-mail Configuration",
     "TextApplytoWholeStay": "Apply to Whole Stay",
     "TextApplytoSelectedDate": "Apply to Selected Date",
-    "Guide": "Guide"
+    "Guide": "Guide",
+    "TextNotificationDetail": "Notification Detail",
+    "TextNotificationType": "Notification Type",
+    "TextNotifications": "Notifications",
+    "TextNoNotifications": "No Notifications",
+    "TextMarkAllAsRead": "Mark All as Read",
+    "TextHigh": "High Priority",
+    "TextMedium": "Medium Priority",
+    "TextLow": "Low Priority",
+    "TextSuccess": "Success",
+    "TextError": "Error",
+    "TextWarning": "Warning",
+    "TextInfo": "Information",
+    "DuplicateLoginName": "Username already exists"
 }

@@ -9,9 +9,7 @@ const catchAxiosError = (error: any) => {
     const response = error.response;
 
     if (response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-
+    
         message = response.data.detail
             ? response.data.detail
             : response.data.message
@@ -52,14 +50,13 @@ const catchAxiosError = (error: any) => {
     console.log("Message", message);
 
     if (typeof window !== "undefined") {
-        toast(message);
+        if (message && message.includes("IX_Users_1") && message.includes("duplicate key")) {
+            toast.error(window.localStorage.getItem("language") === "en" ? "Duplicate login name exists" : "Хэрэглэгчийн нэр давхацсан байна");
+        } else {
+            toast(message);
+        }
     }
-    if (
-        message != "Өрөөг амжилттай болиуллаа" &&
-        message != "Room unassign completed."
-    ) {
-        throw new Error(message);
-    }
+    throw new Error(message);
 };
 
 export default catchAxiosError;
