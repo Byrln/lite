@@ -210,12 +210,13 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
                 if (items) {
                     newItemDta = items.map((obj: any) => {
+                        console.log("obj", obj);
                         return obj.RoomID
                             ? {
                                   id: obj.TransactionID,
                                   title: obj.GuestName,
                                   start: obj.StartDate,
-                                  end: obj.EndDate,
+                                  end: obj.DepartureDate,
                                   resourceId: obj.RoomID
                                       ? obj.RoomID
                                       : `${obj.RoomTypeName}-${obj.RoomTypeID}`,
@@ -512,6 +513,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     }, [window.innerHeight]);
 
     const handleEventClick = (info: any) => {
+        console.log("info", info.event);
         if (info.event._def.title != "Blocked") {
             if (info.event._def.extendedProps.entities) {
                 handleModal(
