@@ -4,17 +4,17 @@
 @import "timeline/timeline.module";
 
 .root {
-  isolation: isolate;
+    isolation: isolate;
 }
 
 /* Hide default scrollbar */
 body {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
 }
 
 body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .MuiLoadingButton-loadingIndicator {
@@ -1718,10 +1718,6 @@ body::-webkit-scrollbar {
 
 .MuiInputBase-input {
     font-size: 12px;
-}
-
-.MuiFormControl-root {
-    background: #f5f4f4;
 }
 
 .MuiInputAdornment-positionEnd {
