@@ -799,6 +799,7 @@
     "Calendar": "Calendar",
     "RowHeaderUserName": "Username",
     "TextMain": "Main",
+    "TextFull": "Full",
     "ButtonReplace": "Replace",
     "TextPassword": "Password",
     "TextChangePassword": "Change Password",
@@ -924,6 +925,7 @@
     "TextOtherInformation": "Other Information",
     "TextReservationNo": "Reservation No",
     "TextCompany": "Company",
+    "TextRoomTypeAvailablity": "Room Type Availablity",
     "TextGeneralInformation": "General Information",
     "TextFolioSummary": "Folio Summary",
     "TextFolioDetails": "Folio Details",
@@ -997,5 +999,12 @@
     "Text15Days": "15 days",
     "Text30Days": "30 days",
     "Text7Days": "7 days",
-    "DuplicateLoginName": "Username already exists"
+    "DuplicateLoginName": "Username already exists",
+    "TextArrivals": "Arrivals",
+    "TextDepartures": "Departures",
+    "TextGuestsArriving": "Guests Arriving",
+    "TextGuestsDeparting": "Guests Departing",
+    "TextRoomsArriving": "Rooms Arriving",
+    "TextRoomsDeparting": "Rooms Departing",
+    "TextTodaysActivity": "Today's Activity"
 }

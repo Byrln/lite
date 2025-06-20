@@ -122,7 +122,7 @@ td.color-FF66FF {
 .fc *,
 .fc ::after,
 .fc ::before {
-    font-size: 11px;
+    font-size: 10px;
 }
 .fc-license-message {
     display: none;
@@ -170,8 +170,8 @@ td.color-FF66FF {
 /* Header styling */
 .fc-datagrid-cell-main {
     color: #4a6cf7;
-    font-weight: 600;
-    font-size: 13px;
+    font-weight: 800;
+    font-size: 15px;
 }
 
 /* Timeline slots */

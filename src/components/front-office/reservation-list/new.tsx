@@ -385,83 +385,6 @@ const NewEdit = ({
                 />
                 )}
             </div>
-            <div>
-                <Button 
-                    variant="outlined" 
-                    color="inherit" 
-                    size="medium"
-                    startIcon={<InfoIcon />}
-                    onClick={(e) => handleHelpDialogToggle(e)}
-                    sx={{ 
-                        borderRadius: '8px', 
-                        textTransform: 'none',
-                        fontWeight: 500,
-                        color: 'white',
-                        borderColor: 'rgba(255, 255, 255, 0.5)',
-                        '&:hover': {
-                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                            borderColor: 'white'
-                        }
-                    }}
-                >
-                    {intl.formatMessage({
-                        id: "TextHelp",
-                    }) || "Help"}
-                </Button>
-
-                <DraggableDialog
-                    open={helpDialogOpen}
-                    onClose={handleHelpDialogClose}
-                    positionX={dialogPosition.x}
-                    positionY={dialogPosition.y}
-                    title={intl.formatMessage({
-                        id: "TextReservationHelp",
-                    }) || "Reservation Help"}
-                    hideBackdrop={false}
-                >
-                    <Box sx={{ p: 3 }}>
-                        <Typography variant="h6" gutterBottom>
-                            {intl.formatMessage({
-                                id: "TextReservationInstructions",
-                            }) || "Reservation Instructions"}
-                        </Typography>
-                        <Typography variant="body1" paragraph>
-                            {intl.formatMessage({
-                                id: "TextReservationHelpContent1",
-                            }) || "Fill in the arrival and departure dates to see available room types."}
-                        </Typography>
-                        <Typography variant="body1" paragraph>
-                            {intl.formatMessage({
-                                id: "TextReservationHelpContent2",
-                            }) || "Select a room type and quantity to add rooms to your reservation."}
-                        </Typography>
-                        <Typography variant="body1" paragraph>
-                            {intl.formatMessage({
-                                id: "TextReservationHelpContent3",
-                            }) || "Fill in guest details for each room and complete the reservation form."}
-                        </Typography>
-                        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                            <Button 
-                                variant="contained" 
-                                onClick={handleHelpDialogClose}
-                                sx={{ 
-                                    borderRadius: '8px',
-                                    textTransform: 'none',
-                                    fontWeight: 500,
-                                    backgroundColor: '#7856DE',
-                                    '&:hover': {
-                                        backgroundColor: '#6745c5'
-                                    }
-                                }}
-                            >
-                                {intl.formatMessage({
-                                    id: "TextClose",
-                                }) || "Close"}
-                            </Button>
-                        </Box>
-                    </Box>
-                </DraggableDialog>
-            </div>
         </div>
     );
 
@@ -614,7 +537,6 @@ const NewEdit = ({
                                         fontWeight: 600
                                     }}
                                 >
-                                    +{" "}
                                     {intl.formatMessage({
                                         id: "ButtonAddRoom",
                                     })}

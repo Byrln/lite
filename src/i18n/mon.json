@@ -290,6 +290,7 @@
     "MenuRateType": "Өр.үнэ төрөл",
     "MenuReasons": "Шалтгаан",
     "MenuReportAvailableRooms": "Боломжит өрөө",
+    "TextFull": "Дүүрэн",
     "MenuReportBalance": "Үлдэгдэл",
     "MenuReportBreakfast": "Өглөөний цайны тайлан",
     "TextBreakfast": "Өглөөний цай",
@@ -1045,6 +1046,7 @@
     "TextGroupName": "Бүлгийн нэр",
     "TextGroupOwnerInformation": "Группын ахлагчийн мэдээлэл",
     "TextGroupReservation": "Груп захиалга",
+    "TextRoomTypeAvailablity": "Өрөөний төрөл бэлэн эсэх",
     "TextGuest": "Зочин",
     "TextGuestandPax": "Том хүн/Хүүхэд",
     "TextGuestDetail": "Зочны мэдээлэл",
@@ -1369,5 +1371,12 @@
     "TextSourceName": "Зах.эх сурвалж",
     "BaseRate": "Тариф",
     "Guide": "Заавар",
-    "DuplicateLoginName": "Хэрэглэгчийн нэр давхацсан байна"
+    "DuplicateLoginName": "Хэрэглэгчийн нэр давхацсан байна",
+    "TextArrivals": "Ирэлт",
+    "TextDepartures": "Явалт",
+    "TextGuestsArriving": "Ирж буй зочид",
+    "TextGuestsDeparting": "Явж буй зочид",
+    "TextRoomsArriving": "Ирэх өрөө",
+    "TextRoomsDeparting": "Явах өрөө",
+    "TextTodaysActivity": "Өнөөдрийн үйл ажиллагаа"
 }
