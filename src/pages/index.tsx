@@ -38,9 +38,6 @@ const DashboardApp = () => {
 
             <Page>
                 <Container maxWidth="xl">
-                    <Box sx={{ pb: 1 }}>
-                        <Typography variant="h6">Тавтай морил</Typography>
-                    </Box>
                     {workingDate && haveDashboard ? (
                         <Dashboard workingDate={workingDate} />
                     ) : (

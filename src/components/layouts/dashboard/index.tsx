@@ -9,48 +9,62 @@ import { useAppState } from "lib/context/app";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
+const DRAWER_WIDTH = 280;
+const DRAWER_WIDTH_MINIMIZED = 80;
 
-const RootStyle = styled("div")({
-    display: "flex",
-    minHeight: "100%",
-    overflow: "hidden",
+const RootStyle = styled("div")({ 
+    display: "flex", 
+    minHeight: "100%", 
+    overflow: "hidden", 
+    width: "100%", 
+    position: "relative",
 });
 
-const MainStyle = styled("div")(({ theme }) => ({
-    flexGrow: 1,
-    overflow: "auto",
-    minHeight: "100%",
-    paddingTop: APP_BAR_MOBILE + 24,
-    paddingBottom: theme.spacing(10),
-    [theme.breakpoints.up("lg")]: {
-        paddingTop: APP_BAR_DESKTOP + 24,
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-    },
-}));
+const MainStyle = styled("div", {
+    shouldForwardProp: (prop) => prop !== "isMinimized",
+})<{ isMinimized?: boolean }>((props) => {
+    const { theme, isMinimized } = props;
+    return {
+        flexGrow: 1,
+        overflow: "auto",
+        minHeight: "100%",
+        paddingTop: APP_BAR_MOBILE + 24,
+        paddingBottom: theme.spacing(10),
+        transition: theme.transitions.create(["margin", "padding"], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        [theme.breakpoints.up("lg")]: {
+            paddingTop: isMinimized ? theme.spacing(2) : APP_BAR_DESKTOP + 24,
+            paddingLeft: theme.spacing(2),
+            paddingRight: theme.spacing(2),
+            marginLeft: isMinimized ? DRAWER_WIDTH_MINIMIZED : DRAWER_WIDTH,
+        },
+    };
+});
 
 export default function DashboardLayout({ children }: any) {
     const [open, setOpen] = useState(false);
+    const [isMinimized, setIsMinimized] = useState(false);
     const { data, error } = GetPrivilegesSWR();
     const [sideBarData, setSideBarData] = useState(null);
     const [lastValidSideBarData, setLastValidSideBarData] = useState(null);
     const [state, dispatch]: any = useAppState();
+    
+    const handleSidebarMinimize = (minimized: boolean) => {
+        setIsMinimized(minimized);
+    };
 
     function filterMenu(menu: any, uniqueMenuLinks: any) {
         return menu.reduce((filteredMenu: any, item: any) => {
-            // Check if the 'path' property exists and if it's included in the uniqueMenuLinks array
             if (item.path && uniqueMenuLinks.includes(item.path)) {
-                // If the item passes the filter, add it to the filteredMenu
                 filteredMenu.push(item);
             }
-
-            // If the item has children, filter the children recursively
             if (item.children) {
                 const filteredChildren = filterMenu(
                     item.children,
                     uniqueMenuLinks
                 );
-                // If there are filtered children, add them to the item
                 if (filteredChildren.length > 0) {
                     filteredMenu.push({
                         ...item,
@@ -64,7 +78,6 @@ export default function DashboardLayout({ children }: any) {
     }
     useEffect(() => {
         if (data && data.length > 0) {
-            // Extracting MenuLink values
             dispatch({
                 type: "userRole",
                 userRole: data,
@@ -80,30 +93,27 @@ export default function DashboardLayout({ children }: any) {
             let uniqueMenuLinks = [...new Set(menuLinks)];
 
             const filteredMenu = filterMenu(sidebarConfig, uniqueMenuLinks);
-
-            // Only update sidebar if we have valid filtered menu items
-            // This prevents sidebar from being cleared when modal operations
-            // temporarily affect the privilege data
             if (filteredMenu && filteredMenu.length > 0) {
                 setSideBarData(filteredMenu);
                 setLastValidSideBarData(filteredMenu); // Store as backup
             }
         } else if (!data && lastValidSideBarData) {
-            // If data becomes unavailable but we have a backup, use it
-            // This prevents sidebar from disappearing during modal operations
             setSideBarData(lastValidSideBarData);
         }
     }, [data]);
 
     return (
         <RootStyle>
-            <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
+            <DashboardNavbar onOpenSidebar={() => setOpen(true)} isMinimized={isMinimized} />
             <DashboardSidebar
                 isOpenSidebar={open}
                 onCloseSidebar={() => setOpen(false)}
                 sideBarData={sideBarData}
+                onToggleMinimize={handleSidebarMinimize}
             />
-            <MainStyle>{children}</MainStyle>
+            <MainStyle isMinimized={isMinimized}>
+                <div className="root" style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, height: '100%' }}>{children}</div>
+            </MainStyle>
         </RootStyle>
     );
 }

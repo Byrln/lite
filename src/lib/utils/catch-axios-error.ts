@@ -52,6 +52,14 @@ const catchAxiosError = (error: any) => {
     if (typeof window !== "undefined") {
         if (message && message.includes("IX_Users_1") && message.includes("duplicate key")) {
             toast.error(window.localStorage.getItem("language") === "en" ? "Duplicate login name exists" : "Хэрэглэгчийн нэр давхацсан байна");
+        } else if (message && message.includes("Could not allocate a new page for database 'tempdb'" ) && message.includes("insufficient disk space")) {
+            // Handle SQL Server disk space error
+            const friendlyMessage = window.localStorage.getItem("language") === "en" 
+                ? "Database server is experiencing disk space issues. Please contact your system administrator." 
+                : "Өгөгдлийн сангийн сервер диск зайн асуудалтай байна. Системийн админтай холбогдоно уу.";
+            toast.error(friendlyMessage);
+            // Still throw the error but with a more user-friendly message
+            throw new Error(friendlyMessage);
         } else {
             toast(message);
         }

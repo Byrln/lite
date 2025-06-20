@@ -26,6 +26,7 @@ const NewEditForm = ({
     customModificationBeforeSubmit,
     additionalButtons,
     customSubmit,
+    appBar,
 }: any) => {
     const [state]: any = useAppState();
     const { handleModal }: any = useContext(ModalContext);
@@ -130,6 +131,11 @@ const NewEditForm = ({
         </Grid>
     ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
+            {appBar && (
+                <div className="sticky top-0 left-0 right-0 z-[1001] w-full">
+                    {appBar}
+                </div>
+            )}
             {children}
 
             {state.isShow && !isShowNotAffected ? null : (

@@ -4,9 +4,11 @@ export default function Logo({ size, sx }: any) {
     return (
         <Box
             component="img"
-            src={size ? "/images/logo_sm.png" : "/images/logo.png"}
+            src="/images/logo.png"
             sx={{
-                width: size ? 80 : "80%",
+                width: size ? 40 : "80%",
+                height: size ? 40 : "auto",
+                objectFit: "contain",
                 ...sx,
             }}
         />

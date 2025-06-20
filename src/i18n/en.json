@@ -893,6 +893,13 @@
     "TextTaxIncluded": "Tax Included",
     "TextDate": "Date",
     "TextNights": "Nights",
+    "TextMonday": "Monday",
+    "TextTuesday": "Tuesday",
+    "TextWednesday": "Wednesday",
+    "TextThursday": "Thursday",
+    "TextFriday": "Friday",
+    "TextSaturday": "Saturday",
+    "TextSunday": "Sunday",
     "TextPaymentMethod": "Payment Method",
     "TextBillingInformation": "Billing Information",
     "TextSetMessage": "Set Message",
@@ -987,5 +994,8 @@
     "TextError": "Error",
     "TextWarning": "Warning",
     "TextInfo": "Information",
+    "Text15Days": "15 days",
+    "Text30Days": "30 days",
+    "Text7Days": "7 days",
     "DuplicateLoginName": "Username already exists"
 }

@@ -1,0 +1,370 @@
+import { useState } from "react";
+import { Icon } from "@iconify/react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { useState } from "react";
+import arrowIosForwardFill from "@iconify/icons-eva/arrow-ios-forward-fill";
+import arrowIosDownwardFill from "@iconify/icons-eva/arrow-ios-downward-fill";
+import { alpha, useTheme, styled } from "@mui/material/styles";
+import {
+    Box,
+    List,
+    Collapse,
+    ListItemText,
+    ListItemIcon,
+    ListItemButton,
+} from "@mui/material";
+
+const ListItemStyle: any = styled((props) => (
+    <ListItemButton disableGutters {...props} />
+))(({ theme, isMinimized }) => ({
+    ...theme.typography.body2,
+    height: 48,
+    position: "relative",
+    textTransform: "capitalize",
+    paddingLeft: isMinimized ? theme.spacing(2) : theme.spacing(5),
+    paddingRight: isMinimized ? theme.spacing(1) : theme.spacing(2.5),
+    color: theme.palette.text.secondary,
+    justifyContent: isMinimized ? 'center' : 'flex-start',
+    "&:before": {
+        top: 0,
+        right: 0,
+        width: 3,
+        bottom: 0,
+        content: "''",
+        display: "none",
+        position: "absolute",
+        borderTopLeftRadius: 4,
+        borderBottomLeftRadius: 4,
+        backgroundColor: theme.palette.primary.main,
+    },
+    "&:hover": {
+        backgroundColor: alpha(theme.palette.primary.main, 0.08),
+        color: theme.palette.primary.main,
+        "& .MuiListItemIcon-root": {
+            color: theme.palette.primary.main,
+        },
+    },
+}));
+
+const ListItemIconStyle = styled(ListItemIcon)({
+    width: 22,
+    height: 22,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+});
+
+function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }: any) {
+    const { locale }: any = useRouter();
+    const theme = useTheme();
+    const isActiveRoot = active(item.path);
+    const { title, titleEn, path, icon, info, children } = item;
+    
+    const handleOpen = () => {
+        if (onToggle) {
+            onToggle();
+        }
+    };
+
+    const activeRootStyle = {
+        color: "primary.main",
+        fontWeight: "fontWeightMedium",
+        bgcolor: alpha(
+            theme.palette.primary.main,
+            theme.palette.action.selectedOpacity
+        ),
+        "&:before": { display: "block" },
+    };
+
+    const activeSubStyle = {
+        color: "text.primary",
+        fontWeight: "fontWeightMedium",
+    };
+
+    if (children) {
+        return (
+            <>
+                <ListItemStyle
+                    onClick={handleOpen}
+                    className={`nav-item ${isOpen ? 'open' : ''}`}
+                    sx={{
+                        ...(isActiveRoot && activeRootStyle),
+                        ...(isOpen && {
+                            bgcolor: '#804FE6',
+                            color: 'white',
+                            '& .MuiListItemIcon-root': {
+                                color: 'white',
+                            },
+                        }),
+                        cursor: 'pointer',
+                    }}
+                    isMinimized={isMinimized}
+                >
+                    <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
+                    {!isMinimized && (
+                        <ListItemText
+                            disableTypography
+                            primary={locale == "en" ? titleEn : title}
+                        />
+                    )}
+                    {info && !isMinimized && info}
+                    {!isMinimized && (
+                        <Box
+                            component={Icon}
+                            icon={isOpen ? arrowIosDownwardFill : arrowIosForwardFill}
+                            sx={{ width: 16, height: 16, ml: 1 }}
+                        />
+                    )}
+                </ListItemStyle>
+
+                <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                    <List 
+                        component="div" 
+                        disablePadding 
+                        sx={{
+                            maxHeight: '300px',
+                            overflowY: 'auto',
+                            position: 'relative',
+                            '&::-webkit-scrollbar': {
+                                width: '4px',
+                            },
+                            '&::-webkit-scrollbar-track': {
+                                background: '#f1f1f1',
+                            },
+                            '&::-webkit-scrollbar-thumb': {
+                                background: '#888',
+                                borderRadius: '4px',
+                            },
+                            '&::-webkit-scrollbar-thumb:hover': {
+                                background: '#555',
+                            },
+                        }}>
+                        
+                        {children.map((item: any) => {
+                            const { title, titleEn, path } = item;
+                            const isActiveSub = active(path);
+
+                            return item.path == "/conf/hotel-setting" ? (
+                                localStorage.getItem("hotelId") == "1" && path && (
+                                    <Link key={title} href={path} passHref>
+                                        <ListItemStyle
+                                            component="a"
+                                            sx={{
+                                                ...(isActiveSub &&
+                                                    activeSubStyle),
+                                                cursor: 'pointer',
+                                                textDecoration: 'none',
+                                                '&:hover': {
+                                                    textDecoration: 'none',
+                                                },
+                                            }}
+                                            isMinimized={isMinimized}
+                                        >
+                                            <ListItemIconStyle>
+                                                <Box
+                                                    component="span"
+                                                    sx={{
+                                                        width: 4,
+                                                        height: 4,
+                                                        display: "flex",
+                                                        borderRadius: "50%",
+                                                        alignItems: "center",
+                                                        justifyContent:
+                                                            "center",
+                                                        bgcolor:
+                                                            "text.disabled",
+                                                        transition: (theme) =>
+                                                            theme.transitions.create(
+                                                                "transform"
+                                                            ),
+                                                        ...(isActiveSub && {
+                                                            transform:
+                                                                "scale(2)",
+                                                            bgcolor:
+                                                                "primary.main",
+                                                        }),
+                                                    }}
+                                                />
+                                            </ListItemIconStyle>
+                                            {!isMinimized && (
+                                                <ListItemText
+                                                    disableTypography
+                                                    primary={
+                                                        locale == "en"
+                                                            ? titleEn
+                                                            : title
+                                                    }
+                                                />
+                                            )}
+                                        </ListItemStyle>
+                                    </Link>
+                                )
+                            ) : path ? (
+                                <Link key={title} href={path} passHref>
+                                    <ListItemStyle
+                                        component="a"
+                                        sx={{
+                                            ...(isActiveSub && activeSubStyle),
+                                            cursor: 'pointer',
+                                            textDecoration: 'none',
+                                            '&:hover': {
+                                                textDecoration: 'none',
+                                            },
+                                        }}
+                                        isMinimized={isMinimized}
+                                    >
+                                        <ListItemIconStyle>
+                                            <Box
+                                                component="span"
+                                                sx={{
+                                                    width: 4,
+                                                    height: 4,
+                                                    display: "flex",
+                                                    borderRadius: "50%",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    bgcolor: "text.disabled",
+                                                    transition: (theme) =>
+                                                        theme.transitions.create(
+                                                            "transform"
+                                                        ),
+                                                    ...(isActiveSub && {
+                                                        transform: "scale(2)",
+                                                        bgcolor: "primary.main",
+                                                    }),
+                                                }}
+                                            />
+                                        </ListItemIconStyle>
+                                        <ListItemText
+                                            disableTypography
+                                            primary={
+                                                locale == "en" ? titleEn : title
+                                            }
+                                        />
+                                    </ListItemStyle>
+                                </Link>
+                            ) : (
+                                <ListItemStyle
+                                    component="div"
+                                    sx={{
+                                        ...(isActiveSub && activeSubStyle),
+                                        cursor: 'default',
+                                        textDecoration: 'none',
+                                    }}
+                                    isMinimized={isMinimized}
+                                >
+                                    <ListItemIconStyle>
+                                        <Box
+                                            component="span"
+                                            sx={{
+                                                width: 4,
+                                                height: 4,
+                                                display: "flex",
+                                                borderRadius: "50%",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                bgcolor: "text.disabled",
+                                                transition: (theme) =>
+                                                    theme.transitions.create("transform"),
+                                                ...(isActiveSub && {
+                                                    transform: "scale(2)",
+                                                    bgcolor: "primary.main",
+                                                }),
+                                            }}
+                                        />
+                                    </ListItemIconStyle>
+                                    {!isMinimized && (
+                                        <ListItemText
+                                            disableTypography
+                                            primary={
+                                                locale == "en" ? titleEn : title
+                                            }
+                                        />
+                                    )}
+                            );
+                        })}
+                    </List>
+                </Collapse>
+            </>
+        );
+    }
+
+    return (
+        path ? (
+            <Link href={path} passHref>
+                <ListItemStyle
+                    component="a"
+                    sx={{
+                        ...(isActiveRoot && activeRootStyle),
+                        cursor: 'pointer',
+                        textDecoration: 'none',
+                        '&:hover': {
+                            textDecoration: 'none',
+                        },
+                    }}
+                    isMinimized={isMinimized}
+                >
+                <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
+                {!isMinimized && (
+                    <ListItemText disableTypography primary={locale == "en" ? titleEn : title} />
+                )}
+                {info && !isMinimized && info}
+                </ListItemStyle>
+            </Link>
+        ) : (
+            <ListItemStyle
+                component="div"
+                sx={{
+                    ...(isActiveRoot && activeRootStyle),
+                    cursor: 'default',
+                    textDecoration: 'none',
+                }}
+                isMinimized={isMinimized}
+            >
+                <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
+                {!isMinimized && (
+                    <ListItemText disableTypography primary={locale == "en" ? titleEn : title} />
+                )}
+                {info && !isMinimized && info}
+            </ListItemStyle>
+        )
+    );
+}
+
+export default function NavSection({ navConfig, isMinimized = false, ...other }: any) {
+    const router = useRouter();
+    const match = (path: any) => (path ? path === router.pathname : false);
+    const { locale }: any = useRouter();
+    const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+    
+    // Function to close all other menus when one is opened
+    const handleToggleMenu = (menuKey: string) => {
+        setOpenMenus(prev => {
+            // Close all other menus and toggle the clicked one
+            const newState: Record<string, boolean> = {};
+            newState[menuKey] = !prev[menuKey];
+            return newState;
+        });
+    };
+    
+    return (
+        <Box {...other}>
+            <List disablePadding>
+                {navConfig.map((item: any) => {
+                    const itemKey = locale == "mon" ? item.title : item.titleEn;
+                    return (
+                        <NavItem
+                            key={itemKey}
+                            item={item}
+                            active={match}
+                            isMinimized={isMinimized}
+                            isOpen={openMenus[itemKey] || false}
+                            onToggle={() => handleToggleMenu(itemKey)}
+                        />
+                    );
+                })}
+            </List>
+        </Box>
+    );
+}

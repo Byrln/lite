@@ -166,6 +166,31 @@ const sidebarConfig = [
         icon: getIcon(creditCardFill),
         children: [
             {
+                title: "Санхүүгийн тохиргоо",
+                titleEn: "Financial Settings",
+                icon: getIcon(settings2Fill),
+                children: [
+                    {
+                        title: "валютын ханш",
+                        titleEn: "Exchange Rate",
+                        path: "/payment/exchange-rate",
+                        oldPath: "FrontOffice/CurrencyRate.aspx",
+                    },
+                    {
+                        title: "татвар",
+                        titleEn: "tax",
+                        path: "/rate/tax",
+                        oldPath: "Configuration/Taxes.aspx",
+                    },
+                    {
+                        title: "төлбөрийн хэлбэр",
+                        titleEn: "Payment Method",
+                        path: "/rate/payment-method",
+                        oldPath: "Configuration/PaymentMethod.aspx",
+                    },
+                ],
+            },
+            {
                 title: "Байгууллага",
                 titleEn: "Company Database",
                 path: "/payment/company-database",
@@ -176,24 +201,6 @@ const sidebarConfig = [
                 titleEn: "Cashier",
                 path: "/payment/cashier",
                 oldPath: "FrontOffice/Cashier.aspx",
-            },
-            {
-                title: "валютын ханш",
-                titleEn: "Exchange Rate",
-                path: "/payment/exchange-rate",
-                oldPath: "FrontOffice/CurrencyRate.aspx",
-            },
-            {
-                title: "татвар",
-                titleEn: "tax",
-                path: "/rate/tax",
-                oldPath: "Configuration/Taxes.aspx",
-            },
-            {
-                title: "төлбөрийн хэлбэр",
-                titleEn: "Payment Method",
-                path: "/rate/payment-method",
-                oldPath: "Configuration/PaymentMethod.aspx",
             },
         ],
     },

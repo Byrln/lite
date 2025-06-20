@@ -9,6 +9,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { IntlProvider } from "react-intl";
 
+import "styles/tailwind.css";
 import "styles/globals.scss";
 import "assets/styles.css";
 import "styles/custom.css";
@@ -19,13 +20,16 @@ import AppProvider from "lib/context/app";
 import fetcher from "lib/utils/axios";
 import en from "i18n/en.json";
 import mon from "i18n/mon.json";
+import enDashboard from "i18n/en-dashboard.json";
+import monDashboard from "i18n/mon-dashboard.json";
 import { useAppState } from "lib/context/app";
+import GlobalStyles from "@mui/material/GlobalStyles";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
     const { locale }: any = useRouter();
     const messages: any = {
-        en,
-        mon,
+        en: { ...en, ...enDashboard },
+        mon: { ...mon, ...monDashboard }
     };
 
     Router.events.on("routeChangeStart", () => NProgress.start());
@@ -37,7 +41,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     return (
         // const MyApp = ({ Component, pageProps }: AppProps) => (
         <>
-            <IntlProvider locale={locale} messages={messages[locale]}>
+            <IntlProvider locale={locale} messages={messages[locale] || messages.en}>
                 <Head>
                     <meta
                         name="viewport"
@@ -45,7 +49,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     />
                     <meta
                         name="description"
-                        content="Зочид буудал, Амралтын бааз, Сувилал, үйлчилгээний орон сууцад зориулсан цогц програм хангамжыг бид танд санал болгож байна."
+                        content="Зочид буудал, Амралтын бааз, Сувилал, үйлчилгээний орон сууцад зориулсан цогц програм хангамжыг бид танд санал болгож байна."
                     />
                     <meta
                         name="keywords"
@@ -70,6 +74,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                                     <LocalizationProvider // @ts-ignore
                                         dateAdapter={AdapterDateFns}
                                     >
+                                        <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
                                         <Page>
                                             <Component {...pageProps} />
                                             <ToastContainer

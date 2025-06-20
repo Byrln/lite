@@ -41,7 +41,7 @@ const Index = () => {
 
                     {/* {workingDate && <HandsOnTable workingDate={workingDate} />} */}
 
-                    <Grid container direction="row" className="mt-2">
+                    {/* <Grid container direction="row" className="mt-2">
                         <Grid
                             item
                             xs={12}
@@ -94,7 +94,7 @@ const Index = () => {
                                     </div>
                                 ))}
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                 </Container>
             </Page>
         </>

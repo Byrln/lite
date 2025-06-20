@@ -5,7 +5,7 @@ import { useIntl } from "react-intl";
 import moment from "moment";
 import { RoomSWR, RoomAPI } from "lib/api/room";
 
-const RoomSelect = ({
+const   RoomSelect = ({
     register,
     errors,
     baseStay,

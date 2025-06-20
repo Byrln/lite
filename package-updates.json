@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@9ui/react": "latest",
+    "lucide-react": "latest"
+  }
+}

@@ -1,3 +1,4 @@
+import React from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useIntl } from "react-intl";
@@ -11,8 +12,10 @@ import {
     Divider,
     Checkbox,
     FormControlLabel,
+    Box,
 } from "@mui/material";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
+import InfoIcon from "@mui/icons-material/Info";
 import moment from "moment";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -38,6 +41,7 @@ import NewForm from "./new-form";
 import CustomerSelect from "components/select/customer";
 import AvailableRoomTypes from "./available-room-types";
 import { RateTypeSWR } from "lib/api/rate-type";
+import DraggableDialog from "components/ui/DraggableDialog";
 
 const validationSchema = yup.object().shape({
     ArrivalDate: yup.string().required("Ирэх огноо сонгоно уу!"),
@@ -104,6 +108,8 @@ const NewEdit = ({
     const [isGuide, setIsGuide]: any = useState<any>(false);
     const [groupColor, setGroupColor]: any = useState("#0033ff");
     const [Currency, setCurrency]: any = useState("");
+    const [helpDialogOpen, setHelpDialogOpen]: any = useState(false);
+    const [dialogPosition, setDialogPosition] = useState<{ x: number | null, y: number | null }>({ x: null, y: null });
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -163,37 +169,31 @@ const NewEdit = ({
                       .add(1, "days")
                       .format("YYYY-MM-DD"),
             TransactionDetail: [
-                dateStart && dateEnd && roomType && room
-                    ? {
-                          ArrivalDate: dateStart,
-                          DepartureDate: dateEnd,
-                          RoomTypeID: roomType,
-                          RoomID: room,
-                          ReservationTypeID: 1,
-                          GuestDetail: {
-                              Name: null,
-                              Email: null,
-                              Mobile: null,
-                          },
-                      }
-                    : {
-                          ArrivalDate: dateStart ? dateStart : workingDate,
-                          DepartureDate: dateEnd
-                              ? dateEnd
-                              : moment(
-                                    dateStringToObj(
-                                        moment(workingDate).format("YYYY-MM-DD")
-                                    ),
-                                    "YYYY-MM-DD"
-                                )
-                                    .add(1, "days")
-                                    .format("YYYY-MM-DD"),
-                          GuestDetail: {
-                              Name: null,
-                              Email: null,
-                              Mobile: null,
-                          },
-                      },
+                {
+                    ArrivalDate: dateStart ? dateStart : workingDate,
+                    DepartureDate: dateEnd
+                        ? dateEnd
+                        : moment(
+                              dateStringToObj(
+                                  moment(workingDate).format("YYYY-MM-DD")
+                              ),
+                              "YYYY-MM-DD"
+                          )
+                              .add(1, "days")
+                              .format("YYYY-MM-DD"),
+                    RoomTypeID: roomType || "",
+                    RoomID: room || "",
+                    ReservationTypeID: 1,
+                    GuestDetail: {
+                        Name: null,
+                        Email: null,
+                        Mobile: null,
+                        CountryID: "",
+                        VipStatusID: ""
+                    },
+                    Adult: 1,
+                    Child: 0
+                }
             ],
         },
         resolver: yupResolver(validationSchema),
@@ -203,6 +203,33 @@ const NewEdit = ({
         control,
         name: "TransactionDetail",
     });
+
+    // Initialize fields if empty
+    useEffect(() => {
+        if (fields.length === 0 && roomType) {
+            append({
+                ArrivalDate: dateStart ? dateStart : workingDate,
+                DepartureDate: dateEnd
+                    ? dateEnd
+                    : moment(
+                          dateStringToObj(
+                              moment(workingDate).format("YYYY-MM-DD")
+                          ),
+                          "YYYY-MM-DD"
+                      )
+                          .add(1, "days")
+                          .format("YYYY-MM-DD"),
+                RoomTypeID: roomType,
+                RoomID: room,
+                ReservationTypeID: 1,
+                GuestDetail: {
+                    Name: null,
+                    Email: null,
+                    Mobile: null,
+                },
+            });
+        }
+    }, [fields.length, append, dateStart, dateEnd, workingDate, roomType, room]);
 
     useEffect(() => {
         if (getValues() && getValues().TransactionDetail) {
@@ -319,6 +346,125 @@ const NewEdit = ({
         setGroupColor(color);
     };
 
+    const handleHelpDialogToggle = (event?: React.MouseEvent) => {
+        if (event) {
+            const buttonRect = event.currentTarget.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const dialogWidth = 600; // Width of the dialog
+            const dialogHeight = 400; // Approximate height of the dialog
+            let xPos = buttonRect.left;
+            let yPos = buttonRect.bottom + 10;
+            if (xPos + dialogWidth > viewportWidth) {
+                xPos = Math.max(0, viewportWidth - dialogWidth - 20);
+            }
+            if (yPos + dialogHeight > viewportHeight) {
+                yPos = Math.max(0, buttonRect.top - dialogHeight - 10);
+            }
+            
+            setDialogPosition({
+                x: xPos,
+                y: yPos
+            });
+        }
+        setHelpDialogOpen(!helpDialogOpen);
+    };
+
+    const handleHelpDialogClose = () => {
+        setHelpDialogOpen(false);
+    };
+
+
+    const appBarComponent = (
+        <div className="bg-purple-600 shadow-md flex items-center justify-between px-4">
+            <div className="flex items-center">
+                {ArrivalDate && DepartureDate && (
+                <AvailableRoomTypes
+                    ArrivalDate={ArrivalDate}
+                    DepartureDate={DepartureDate}
+                />
+                )}
+            </div>
+            <div>
+                <Button 
+                    variant="outlined" 
+                    color="inherit" 
+                    size="medium"
+                    startIcon={<InfoIcon />}
+                    onClick={(e) => handleHelpDialogToggle(e)}
+                    sx={{ 
+                        borderRadius: '8px', 
+                        textTransform: 'none',
+                        fontWeight: 500,
+                        color: 'white',
+                        borderColor: 'rgba(255, 255, 255, 0.5)',
+                        '&:hover': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            borderColor: 'white'
+                        }
+                    }}
+                >
+                    {intl.formatMessage({
+                        id: "TextHelp",
+                    }) || "Help"}
+                </Button>
+
+                <DraggableDialog
+                    open={helpDialogOpen}
+                    onClose={handleHelpDialogClose}
+                    positionX={dialogPosition.x}
+                    positionY={dialogPosition.y}
+                    title={intl.formatMessage({
+                        id: "TextReservationHelp",
+                    }) || "Reservation Help"}
+                    hideBackdrop={false}
+                >
+                    <Box sx={{ p: 3 }}>
+                        <Typography variant="h6" gutterBottom>
+                            {intl.formatMessage({
+                                id: "TextReservationInstructions",
+                            }) || "Reservation Instructions"}
+                        </Typography>
+                        <Typography variant="body1" paragraph>
+                            {intl.formatMessage({
+                                id: "TextReservationHelpContent1",
+                            }) || "Fill in the arrival and departure dates to see available room types."}
+                        </Typography>
+                        <Typography variant="body1" paragraph>
+                            {intl.formatMessage({
+                                id: "TextReservationHelpContent2",
+                            }) || "Select a room type and quantity to add rooms to your reservation."}
+                        </Typography>
+                        <Typography variant="body1" paragraph>
+                            {intl.formatMessage({
+                                id: "TextReservationHelpContent3",
+                            }) || "Fill in guest details for each room and complete the reservation form."}
+                        </Typography>
+                        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                            <Button 
+                                variant="contained" 
+                                onClick={handleHelpDialogClose}
+                                sx={{ 
+                                    borderRadius: '8px',
+                                    textTransform: 'none',
+                                    fontWeight: 500,
+                                    backgroundColor: '#7856DE',
+                                    '&:hover': {
+                                        backgroundColor: '#6745c5'
+                                    }
+                                }}
+                            >
+                                {intl.formatMessage({
+                                    id: "TextClose",
+                                }) || "Close"}
+                            </Button>
+                        </Box>
+                    </Box>
+                </DraggableDialog>
+            </div>
+        </div>
+    );
+
     return (
         <NewEditForm
             api={ReservationAPI}
@@ -330,28 +476,204 @@ const NewEdit = ({
                 id: "TextReservation",
             })}
             customSubmit={customSubmit}
+            appBar={appBarComponent}
         >
-            {ArrivalDate && DepartureDate && (
-                <AvailableRoomTypes
-                    ArrivalDate={ArrivalDate}
-                    DepartureDate={DepartureDate}
-                />
-            )}
 
             <LocalizationProvider // @ts-ignore
                 dateAdapter={AdapterDateFns}
             >
-                <Card className="mb-3">
-                    <CardContent>
-                        <Grid key="General" container spacing={1}>
+                <Card className="my-4" key={"Room"} elevation={0} sx={{ borderRadius: "16px", boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.08)" }}>
+                    <CardContent sx={{ padding: "24px" }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                flexWrap: "wrap",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        width: "48px",
+                                        height: "48px",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        background:
+                                            "linear-gradient(135.79deg, rgba(128, 40, 210, 0.08) 4.62%, rgba(92, 33, 228, 0.08) 95.64%)",
+                                        borderRadius: "14px",
+                                        color: "#7856DE",
+                                        boxShadow: "0px 4px 8px rgba(120, 86, 222, 0.15)"
+                                    }}
+                                >
+                                    <CheckroomIcon
+                                        sx={{ fontSize: "24px" }}
+                                    />
+                                </div>
+                                <Typography
+                                    variant="h6"
+                                    style={{ marginLeft: "16px", fontWeight: 600, color: "#333" }}
+                                >
+                                    {intl.formatMessage({
+                                        id: "TextRoomInformation",
+                                    })}
+                                </Typography>
+                            </div>
+
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "flex-end",
+                                    flexWrap: "wrap",
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        width: "150px",
+                                        marginRight: "10px",
+                                    }}
+                                >
+                                    <RoomTypeSelect
+                                        register={register}
+                                        errors={errors}
+                                        onRoomTypeChange={setNewRoomTypeID}
+                                        RoomTypeID={
+                                            newRoomTypeID &&
+                                            newRoomTypeID.RoomTypeID
+                                                ? newRoomTypeID.RoomTypeID
+                                                : null
+                                        }
+                                    />
+                                </div>
+                                <TextField
+                                    label={intl.formatMessage({
+                                        id: "TextQuantity",
+                                    })}
+                                    type="number"
+                                    margin="dense"
+                                    size="small"
+                                    style={{
+                                        width: "100px",
+                                        marginRight: "10px",
+                                    }}
+                                    value={newGroupCount}
+                                    onChange={(e: any) => {
+                                        setNewGroupCount(e.target.value);
+                                    }}
+                                />
+                                <ColorPicker onColorChange={onColorChange} />
+
+                                <Button
+                                    variant="contained"
+                                    onClick={() =>
+                                        //@ts-ignore
+                                        {
+                                            let tempValue = {
+                                                ...getValues(
+                                                    //@ts-ignore
+                                                    `TransactionDetail[0]`
+                                                ),
+                                            };
+                                            if (newRoomTypeID) {
+                                                tempValue.RoomTypeID =
+                                                    newRoomTypeID.RoomTypeID;
+                                                tempValue.Adult =
+                                                    newRoomTypeID.BaseAdult;
+                                                tempValue.Child =
+                                                    newRoomTypeID.BaseChild;
+                                            }
+                                            tempValue.RoomID = null;
+                                            for (
+                                                let i = 0;
+                                                i < newGroupCount;
+                                                i++
+                                            ) {
+                                                append(tempValue);
+                                            }
+                                            setNewGroupCount(1);
+                                        }
+                                    }
+                                    size="medium"
+                                    sx={{
+                                        height: "44px",
+                                        width: "160px",
+                                        marginBottom: "4px",
+                                        boxShadow: "0px 4px 8px rgba(120, 86, 222, 0.2)",
+                                        backgroundColor: "#7856DE",
+                                        '&:hover': {
+                                            backgroundColor: "#6745c5"
+                                        },
+                                        borderRadius: "10px",
+                                        textTransform: "none",
+                                        fontWeight: 600
+                                    }}
+                                >
+                                    +{" "}
+                                    {intl.formatMessage({
+                                        id: "ButtonAddRoom",
+                                    })}
+                                </Button>
+                            </div>
+                        </div>
+
+                        {fields.map((field, index) => (
+                            <>
+                                <Divider className="mt-3 mb-3" />
+                                <NewForm
+                                    id={index}
+                                    register={register}
+                                    control={control}
+                                    errors={errors}
+                                    getValues={getValues}
+                                    resetField={resetField}
+                                    reset={reset}
+                                    field={field}
+                                    BaseAdult={BaseAdult}
+                                    BaseChild={BaseChild}
+                                    MaxAdult={MaxAdult}
+                                    MaxChild={MaxChild}
+                                    workingDate={workingDate}
+                                    remove={remove}
+                                    append={append}
+                                    BreakfastIncluded={BreakfastIncluded}
+                                    TaxIncluded={TaxIncluded}
+                                    setBreakfastIncluded={setBreakfastIncluded}
+                                    setTaxIncluded={setTaxIncluded}
+                                    ArrivalDate={ArrivalDate}
+                                    setArrivalDate={setArrivalDate}
+                                    DepartureDate={DepartureDate}
+                                    setDepartureDate={setDepartureDate}
+                                    CustomerID={CustomerID}
+                                    rateTypeData={rateTypeData}
+                                    setCurrency={setCurrency}
+                                    Currency={Currency}
+                                />
+                            </>
+                        ))}
+                    </CardContent>
+                </Card>
+                <Card className="mb-4" elevation={0}>
+                    <CardContent sx={{ padding: "24px" }}>
+                        <Typography variant="h6" sx={{ mb: 4, fontWeight: 600, color: "#333" }}>
+                            {intl.formatMessage({ id: "TextGeneral" })}
+                        </Typography>
+                        <Grid key="General" container spacing={3}>
                             <Grid
                                 item
                                 sm={6}
                                 xs={12}
                                 style={{
-                                    padding: "10px",
+                                    padding: "20px",
                                     borderRadius: "16px",
                                     border: "1px solid #E6E8EE",
+                                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+                                    transition: "all 0.3s ease",
                                 }}
                             >
                                 <Grid key="dates" container spacing={1}>
@@ -639,9 +961,12 @@ const NewEdit = ({
                                 sm={6}
                                 xs={12}
                                 style={{
-                                    padding: "10px",
+                                    padding: "20px",
                                     borderRadius: "16px",
                                     border: "1px solid #E6E8EE",
+                                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+                                    height: "100%",
+                                    transition: "all 0.3s ease"
                                 }}
                             >
                                 <Grid key="otherSettings" container spacing={1}>
@@ -771,210 +1096,61 @@ const NewEdit = ({
                         </Grid>
                     </CardContent>
                 </Card>
-                <Card className="mb-3" key={"Room"}>
-                    <CardContent>
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                flexWrap: "wrap",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        width: "32px",
-                                        height: "32px",
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        background:
-                                            "linear-gradient(135.79deg, rgba(128, 40, 210, 0.05) 4.62%, rgba(92, 33, 228, 0.05) 95.64%)",
-                                        borderRadius: "8px",
-                                        color: "#7856DE",
-                                    }}
-                                >
-                                    <CheckroomIcon
-                                        sx={{ fontSize: "16 !important" }}
-                                    />
-                                </div>
-                                <Typography
-                                    variant="subtitle1"
-                                    style={{ marginLeft: "16px" }}
-                                >
-                                    {intl.formatMessage({
-                                        id: "TextRoomInformation",
-                                    })}
-                                </Typography>
-                            </div>
+                
 
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "flex-end",
-                                    flexWrap: "wrap",
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        width: "150px",
-                                        marginRight: "10px",
-                                    }}
-                                >
-                                    <RoomTypeSelect
-                                        register={register}
-                                        errors={errors}
-                                        onRoomTypeChange={setNewRoomTypeID}
-                                        RoomTypeID={
-                                            newRoomTypeID &&
-                                            newRoomTypeID.RoomTypeID
-                                                ? newRoomTypeID.RoomTypeID
-                                                : null
-                                        }
-                                    />
-                                </div>
-                                <TextField
-                                    label={intl.formatMessage({
-                                        id: "TextQuantity",
-                                    })}
-                                    type="number"
-                                    margin="dense"
-                                    size="small"
-                                    style={{
-                                        width: "100px",
-                                        marginRight: "10px",
-                                    }}
-                                    value={newGroupCount}
-                                    onChange={(e: any) => {
-                                        setNewGroupCount(e.target.value);
-                                    }}
-                                />
-                                <ColorPicker onColorChange={onColorChange} />
-
-                                <Button
-                                    variant="outlined"
-                                    onClick={() =>
-                                        //@ts-ignore
-                                        {
-                                            let tempValue = {
-                                                ...getValues(
-                                                    //@ts-ignore
-                                                    `TransactionDetail[0]`
-                                                ),
-                                            };
-                                            // let tempValue = getValues(
-                                            //     //@ts-ignore
-                                            //     `TransactionDetail[0]`
-                                            // );
-                                            if (newRoomTypeID) {
-                                                tempValue.RoomTypeID =
-                                                    newRoomTypeID.RoomTypeID;
-                                                tempValue.Adult =
-                                                    newRoomTypeID.BaseAdult;
-                                                tempValue.Child =
-                                                    newRoomTypeID.BaseChild;
-                                            }
-                                            tempValue.RoomID = null;
-                                            for (
-                                                let i = 0;
-                                                i < newGroupCount;
-                                                i++
-                                            ) {
-                                                append(tempValue);
-                                            }
-                                            setNewGroupCount(1);
-                                        }
-                                    }
-                                    size="small"
-                                    style={{
-                                        height: "34.25px",
-                                        width: "120px",
-                                        marginBottom: "4px",
-                                    }}
-                                >
-                                    +{" "}
-                                    {intl.formatMessage({
-                                        id: "ButtonAddRoom",
-                                    })}
-                                </Button>
-                            </div>
-                        </div>
-
-                        {fields.map((field, index) => (
-                            <>
-                                <Divider className="mt-3 mb-3" />
-                                <NewForm
-                                    id={index}
-                                    register={register}
-                                    control={control}
-                                    errors={errors}
-                                    getValues={getValues}
-                                    resetField={resetField}
-                                    reset={reset}
-                                    field={field}
-                                    BaseAdult={BaseAdult}
-                                    BaseChild={BaseChild}
-                                    MaxAdult={MaxAdult}
-                                    MaxChild={MaxChild}
-                                    workingDate={workingDate}
-                                    remove={remove}
-                                    append={append}
-                                    BreakfastIncluded={BreakfastIncluded}
-                                    TaxIncluded={TaxIncluded}
-                                    setBreakfastIncluded={setBreakfastIncluded}
-                                    setTaxIncluded={setTaxIncluded}
-                                    ArrivalDate={ArrivalDate}
-                                    setArrivalDate={setArrivalDate}
-                                    DepartureDate={DepartureDate}
-                                    setDepartureDate={setDepartureDate}
-                                    CustomerID={CustomerID}
-                                    rateTypeData={rateTypeData}
-                                    setCurrency={setCurrency}
-                                    Currency={Currency}
-                                />
-                            </>
-                        ))}
+                <Card className="mb-4" elevation={0} sx={{ borderRadius: "16px", background: "linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%)", boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)" }}>
+                    <CardContent sx={{ padding: "20px" }}>
+                        <Grid container spacing={3}>
+                            <Grid item sm={12} md={4}>
+                                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
+                                    <Typography variant="body2" sx={{ fontWeight: 500, color: "#666", mb: 1 }}>
+                                        {intl.formatMessage({
+                                            id: "TextNights",
+                                        })}
+                                    </Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 700, color: "#333" }}>
+                                        {nights}
+                                    </Typography>
+                                </Box>
+                            </Grid>
+                            <Grid item sm={12} md={4}>
+                                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid #e0e0e0" }, borderRight: { md: "1px solid #e0e0e0" } }}>
+                                    <Typography variant="body2" sx={{ fontWeight: 500, color: "#666", mb: 1 }}>
+                                        {intl.formatMessage({
+                                            id: "ReportTotalRooms",
+                                        })}
+                                    </Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 700, color: "#333" }}>
+                                        {fields.length}
+                                    </Typography>
+                                </Box>
+                            </Grid>
+                            <Grid item sm={12} md={4}>
+                                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
+                                    <Typography variant="body2" sx={{ fontWeight: 500, color: "#666", mb: 1 }}>
+                                        {intl.formatMessage({
+                                            id: "ReportTotalCharge",
+                                        })}
+                                    </Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: 700, color: "#333" }}>
+                                        {formatPrice(totalAmount)}₮
+                                    </Typography>
+                                </Box>
+                            </Grid>
+                        </Grid>
                     </CardContent>
                 </Card>
-
-                <Grid container spacing={1}>
-                    <Grid item sm={12} md={4}>
-                        <Typography variant="caption" gutterBottom>
-                            {intl.formatMessage({
-                                id: "TextNights",
-                            })}
-                            : {nights}
-                        </Typography>
-                    </Grid>
-                    <Grid item sm={12} md={4}>
-                        <Typography variant="caption" gutterBottom>
-                            {intl.formatMessage({
-                                id: "ReportTotalRooms",
-                            })}
-                            : {fields.length}
-                        </Typography>
-                    </Grid>
-                    <Grid item sm={12} md={4}>
-                        <Typography variant="caption" gutterBottom>
-                            {intl.formatMessage({
-                                id: "ReportTotalCharge",
-                            })}
-                            : {formatPrice(totalAmount)}
-                        </Typography>
-                    </Grid>
-                </Grid>
                 <Card
-                    className="mb-3"
+                    className="mb-4"
                     key={"Payment"}
-                    style={{ display: "none" }}
+                    elevation={0}
+                    sx={{ 
+                        display: "none", 
+                        borderRadius: "16px", 
+                        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.08)" 
+                    }}
                 >
-                    <CardContent>
+                    <CardContent sx={{ padding: "24px" }}>
                         <div
                             style={{
                                 display: "flex",
@@ -990,24 +1166,25 @@ const NewEdit = ({
                             >
                                 <div
                                     style={{
-                                        width: "32px",
-                                        height: "32px",
+                                        width: "48px",
+                                        height: "48px",
                                         display: "flex",
                                         justifyContent: "center",
                                         alignItems: "center",
                                         background:
-                                            "linear-gradient(135.79deg, rgba(128, 40, 210, 0.05) 4.62%, rgba(92, 33, 228, 0.05) 95.64%)",
-                                        borderRadius: "8px",
+                                            "linear-gradient(135.79deg, rgba(128, 40, 210, 0.08) 4.62%, rgba(92, 33, 228, 0.08) 95.64%)",
+                                        borderRadius: "14px",
                                         color: "#7856DE",
+                                        boxShadow: "0px 4px 8px rgba(120, 86, 222, 0.15)"
                                     }}
                                 >
                                     <ReceiptIcon
-                                        sx={{ fontSize: "16 !important" }}
+                                        sx={{ fontSize: "24px" }}
                                     />
                                 </div>
                                 <Typography
-                                    variant="subtitle1"
-                                    style={{ marginLeft: "16px" }}
+                                    variant="h6"
+                                    style={{ marginLeft: "16px", fontWeight: 600, color: "#333" }}
                                 >
                                     {intl.formatMessage({
                                         id: "TextPayment",
@@ -1020,10 +1197,13 @@ const NewEdit = ({
                             <Grid item xs={12} sm={6}>
                                 <div
                                     style={{
-                                        padding: "30px",
+                                        padding: "28px",
                                         borderRadius: "16px",
                                         gap: "50px",
                                         border: "1px solid #E6E8EE",
+                                        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+                                        height: "100%",
+                                        transition: "all 0.3s ease"
                                     }}
                                 >
                                     <Grid container spacing={1}>
@@ -1191,10 +1371,12 @@ const NewEdit = ({
                             <Grid item xs={12} sm={6}>
                                 <div
                                     style={{
-                                        padding: "30px",
+                                        padding: "24px",
                                         borderRadius: "16px",
                                         gap: "50px",
                                         border: "1px solid #E6E8EE",
+                                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.05)",
+                                        height: "100%"
                                     }}
                                 >
                                     <Grid container spacing={1}>

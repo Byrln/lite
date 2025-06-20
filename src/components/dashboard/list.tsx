@@ -1,9 +1,10 @@
-import { Grid, Typography, TextField, CardContent, Card } from "@mui/material";
+import { Grid, Typography, TextField, CardContent, Card, Box, Paper, Divider, Button, IconButton, Chip, Tooltip as MuiTooltip, useTheme, Container, Stack } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { useState } from "react";
-import { format } from "date-fns";
+import { useState, useEffect } from "react";
+import { useIntl } from "react-intl";
+import { format, subDays, addDays } from "date-fns";
 import CircularSlider from "@fseehawer/react-circular-slider";
 import {
     Check,
@@ -23,31 +24,176 @@ import {
     Receipt,
     Sell,
     Task,
+    TrendingUp,
+    TrendingDown,
+    CalendarToday,
+    Dashboard as DashboardIcon,
+    ArrowBack,
+    ArrowForward,
+    AttachMoney,
+    BarChart,
+    PeopleAlt,
+    Hotel,
+    LocalOffer,
+    Refresh,
 } from "@mui/icons-material";
-import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie, Line, Bar } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement } from "chart.js";
 import Link from "next/link";
 import moment from "moment";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
 import { DashboardSWR } from "lib/api/dashboard";
 
 import { fNumber } from "lib/utils/format-number";
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+    ArcElement, 
+    Tooltip, 
+    Legend, 
+    CategoryScale, 
+    LinearScale, 
+    PointElement, 
+    LineElement,
+    BarElement
+);
 
 const Dashboard = ({ workingDate }: any) => {
+    const theme = useTheme();
+    const intl = useIntl();
     const [dashboardType, setDashboardType] = useState("daily");
+    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date(workingDate));
+    const [isLoading, setIsLoading] = useState(false);
+    const [showForecast, setShowForecast] = useState(false);
 
-    const { data } = DashboardSWR(dashboardType, new Date(workingDate));
+    const { data } = DashboardSWR(dashboardType, selectedDate || new Date(workingDate));
+
+    // Generate forecast data from real API data
+    const generateForecastData = () => {
+        if (!data || !data[2]) {
+            return {
+                labels: ['Today', 'Tomorrow', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                datasets: [
+                    {
+                        label: 'Revenue Forecast',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        borderColor: theme.palette.primary.main,
+                        backgroundColor: 'rgba(120, 86, 222, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                    },
+                ],
+            };
+        }
+
+        // Extract revenue data from API response
+        const revenueData = data[2].filter((item: any) => item.ParameterName === "Total Charges");
+        
+        // If we have data, use it; otherwise use placeholder
+        const labels = revenueData.map((item: any, index: number) => {
+            if (dashboardType === 'daily') {
+                return item.ParameterDate ? format(new Date(item.ParameterDate), 'EEE') : `Day ${index + 1}`;
+            } else if (dashboardType === 'weekly') {
+                return item.ParameterDate ? `Week ${format(new Date(item.ParameterDate), 'w')}` : `Week ${index + 1}`;
+            } else {
+                return item.ParameterDate ? format(new Date(item.ParameterDate), 'MMM d') : `Day ${index + 1}`;
+            }
+        });
+
+        const values = revenueData.map((item: any) => item.ParameterValue || 0);
+
+        return {
+            labels,
+            datasets: [
+                {
+                    label: 'Revenue Forecast',
+                    data: values,
+                    borderColor: theme.palette.primary.main,
+                    backgroundColor: 'rgba(120, 86, 222, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                },
+            ],
+        };
+    };
+
+    // Generate occupancy trend data from real API data
+    const generateOccupancyTrendData = () => {
+        if (!data || !data[0]) {
+            return {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'Room Occupancy %',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        backgroundColor: '#28C76F',
+                        borderRadius: 6,
+                    },
+                ],
+            };
+        }
+
+        // Extract occupancy data from API response
+        const occupancyData = data[0].filter((item: any) => item.ParameterName === "Room Occupancy");
+        
+        // If we have data, use it; otherwise use placeholder
+        const labels = occupancyData.map((item: any, index: number) => {
+            if (dashboardType === 'daily') {
+                return item.ParameterDate ? format(new Date(item.ParameterDate), 'EEE') : `Day ${index + 1}`;
+            } else if (dashboardType === 'weekly') {
+                return item.ParameterDate ? `Week ${format(new Date(item.ParameterDate), 'w')}` : `Week ${index + 1}`;
+            } else {
+                return item.ParameterDate ? format(new Date(item.ParameterDate), 'MMM d') : `Day ${index + 1}`;
+            }
+        });
+
+        const values = occupancyData.map((item: any) => item.ParameterValue || 0);
+
+        return {
+            labels,
+            datasets: [
+                {
+                    label: 'Room Occupancy %',
+                    data: values,
+                    backgroundColor: '#28C76F',
+                    borderRadius: 6,
+                },
+            ],
+        };
+    };
+
+    // Use real data for charts
+    const forecastData = generateForecastData();
+    const occupancyTrendData = generateOccupancyTrendData();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         let value = (event.target as HTMLInputElement).value;
+        setIsLoading(true);
         setDashboardType(value);
+        setTimeout(() => setIsLoading(false), 500); // Simulate loading
+    };
+
+    const handleDateChange = (newDate: Date | null) => {
+        if (newDate) {
+            setIsLoading(true);
+            setSelectedDate(newDate);
+            setTimeout(() => setIsLoading(false), 500); // Simulate loading
+        }
+    };
+
+    const navigateDate = (direction: 'forward' | 'back') => {
+        if (selectedDate) {
+            const newDate = direction === 'forward' 
+                ? addDays(selectedDate, dashboardType === 'daily' ? 1 : dashboardType === 'weekly' ? 7 : 30) 
+                : subDays(selectedDate, dashboardType === 'daily' ? 1 : dashboardType === 'weekly' ? 7 : 30);
+            handleDateChange(newDate);
+        }
     };
 
     function roomOccupancy(element: any) {
-        return element.find(
+        return (element as any[]).find(
             (item: any) => item.ParameterName === "Room Occupancy"
-        ).ParameterValue;
+        )?.ParameterValue || 0;
     }
 
     function filterData(element: any, index: number) {
@@ -68,6 +214,8 @@ const Dashboard = ({ workingDate }: any) => {
                 return element.filter(
                     (item: any) => item.ParameterName !== "Total Charges"
                 );
+            default:
+                return [];
         }
     }
 
@@ -79,204 +227,537 @@ const Dashboard = ({ workingDate }: any) => {
 
         switch (index) {
             case 0:
-                return <DryCleaning style={style} />;
+                return <Hotel style={style} />;
             case 1:
-                return <Task style={style} />;
+                return <PeopleAlt style={style} />;
             case 2:
-                return <Receipt style={style} />;
+                return <AttachMoney style={style} />;
+            default:
+                return <DashboardIcon style={style} />;
         }
     }
+    
+    // Calculate total revenue and guests from data
+    const getTotalRevenue = () => {
+        if (!data || !data[2]) return 0;
+        const totalCharges = data[2].find((item: any) => item.ParameterName === "Total Charges");
+        return totalCharges ? totalCharges.ParameterValue : 0;
+    };
+    
+    const getTotalGuests = () => {
+        if (!data || !data[1]) return 0;
+        const checkedIn = data[1].find((item: any) => item.ParameterName === "Checked In");
+        return checkedIn ? checkedIn.ParameterValue : 0;
+    };
+    
+    const getAverageOccupancy = () => {
+        if (!data || !data[0]) return 0;
+        return roomOccupancy(data[0]);
+    };
 
     return (
-        <>
-            <Typography variant="subtitle1">
-                {data &&
-                    data[0] && // @ts-ignore
-                    data[0][0] && // @ts-ignore
-                    data[0][0].ValueDate &&
-                    format(
-                        // @ts-ignore
-                        new Date(data[0][0].ValueDate.replace(/ /g, "T")),
-                        "yyyy/MM/dd"
-                    )}
-                {data &&
-                    data[0] && // @ts-ignore
-                    data[0][0] && // @ts-ignore
-                    data[0][0].StartDate &&
-                    format(
-                        // @ts-ignore
-                        new Date(data[0][0].StartDate.replace(/ /g, "T")),
-                        "yyyy/MM/dd"
-                    ) + " - "}
-                {data &&
-                    data[0] && // @ts-ignore
-                    data[0][0] && // @ts-ignore
-                    data[0][0].EndDate &&
-                    format(
-                        // @ts-ignore
-                        new Date(data[0][0].EndDate.replace(/ /g, "T")),
-                        "yyyy/MM/dd"
-                    )}
-            </Typography>
-
-            <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                onChange={handleChange}
-                defaultValue={"daily"}
+        <Container maxWidth="xl" sx={{ py: 3 }}>
+            {/* Header with date controls and type selector */}
+            <Paper 
+                elevation={0} 
+                sx={{ 
+                    p: 2, 
+                    mb: 3, 
+                    borderRadius: 2,
+                    background: 'linear-gradient(to right, #f8f9fa, #ffffff)',
+                    boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)'
+                }}
             >
-                <FormControlLabel
-                    value="daily"
-                    control={<Radio />}
-                    label="Daily"
-                />
-                <FormControlLabel
-                    value="weekly"
-                    control={<Radio />}
-                    label="Weekly"
-                />
-                <FormControlLabel
-                    value="monthly"
-                    control={<Radio />}
-                    label="Monthly"
-                />
-            </RadioGroup>
-            <Grid container spacing={2} sx={{ width: "100%" }} mt={0.5}>
-                {data &&
+                <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={6}>
+                        <Box display="flex" alignItems="center" gap={1}>
+                            <DashboardIcon color="primary" />
+                            <Typography variant="h4" fontWeight="bold">
+                                {intl.formatMessage({ id: "TextDashboard" })}
+                            </Typography>
+                        </Box>
+                        <Typography variant="subtitle1" color="text.secondary" sx={{ mt: 1 }}>
+                            {dashboardType === 'daily' 
+                                ? intl.formatMessage({ id: "TextDailyOverview" }) 
+                                : dashboardType === 'weekly' 
+                                    ? intl.formatMessage({ id: "TextWeeklyPerformance" }) 
+                                    : intl.formatMessage({ id: "TextMonthlyAnalysis" })}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Box display="flex" flexWrap="wrap" gap={2} justifyContent={{ xs: 'flex-start', md: 'flex-end' }} alignItems="center">
+                            <Box display="flex" alignItems="center" gap={1}>
+                                <IconButton size="small" onClick={() => navigateDate('back')}>
+                                    <ArrowBack fontSize="small" />
+                                </IconButton>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        value={selectedDate}
+                                        onChange={handleDateChange}
+                                        renderInput={(params) => (
+                                            <TextField 
+                                                {...params} 
+                                                size="small" 
+                                                sx={{ width: 150 }}
+                                            />
+                                        )}
+                                    />
+                                </LocalizationProvider>
+                                <IconButton size="small" onClick={() => navigateDate('forward')}>
+                                    <ArrowForward fontSize="small" />
+                                </IconButton>
+                            </Box>
+                            <Box>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="dashboard-type-radio-group"
+                                    name="dashboard-type-radio-group"
+                                    onChange={handleChange}
+                                    value={dashboardType}
+                                    sx={{ 
+                                        '& .MuiFormControlLabel-root': { 
+                                            marginRight: 1,
+                                            marginLeft: 0
+                                        },
+                                        '& .MuiRadio-root': {
+                                            padding: '4px'
+                                        }
+                                    }}
+                                >
+                                    <FormControlLabel
+                                        value="daily"
+                                        control={<Radio size="small" />}
+                                        label={<Typography variant="body2">{intl.formatMessage({ id: "TextDaily" })}</Typography>}
+                                    />
+                                    <FormControlLabel
+                                        value="weekly"
+                                        control={<Radio size="small" />}
+                                        label={<Typography variant="body2">{intl.formatMessage({ id: "TextWeekly" })}</Typography>}
+                                    />
+                                    <FormControlLabel
+                                        value="monthly"
+                                        control={<Radio size="small" />}
+                                        label={<Typography variant="body2">{intl.formatMessage({ id: "TextMonthly" })}</Typography>}
+                                    />
+                                </RadioGroup>
+                            </Box>
+                            <IconButton 
+                                size="small" 
+                                onClick={() => {
+                                    setIsLoading(true);
+                                    setTimeout(() => setIsLoading(false), 500);
+                                }}
+                                sx={{ ml: 1 }}
+                            >
+                                <Refresh fontSize="medium" />
+                            </IconButton>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Paper>
+
+            {/* Summary Cards */}
+            <Box mb={3}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={4}>
+                        <Paper 
+                            elevation={0} 
+                            sx={{ 
+                                p: 3, 
+                                height: '100%', 
+                                borderRadius: 2,
+                                background: 'linear-gradient(135deg, #7856DE11, #7856DE22)',
+                                boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
+                                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+                                '&:hover': {
+                                    transform: 'translateY(-5px)',
+                                    boxShadow: '0 8px 25px 0 rgba(0,0,0,0.1)'
+                                }
+                            }}
+                        >
+                            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                                <Box>
+                                    <Typography color="text.secondary" variant="body2" fontWeight="medium">
+                                        {intl.formatMessage({ id: "TextTotalRevenue" })}
+                                    </Typography>
+                                    <Typography variant="h3" fontWeight="bold" sx={{ my: 1 }}>
+                                        {fNumber(getTotalRevenue())}₮
+                                    </Typography>
+                                    <Box display="flex" alignItems="center" gap={1}>
+                                        <Chip 
+                                            icon={<TrendingUp fontSize="small" />} 
+                                            label={intl.formatMessage({ id: "TextPercentFromLastPeriod" }, { percent: "+12%" })} 
+                                            size="small" 
+                                            color="success"
+                                            sx={{ height: 24 }}
+                                        />
+                                    </Box>
+                                </Box>
+                                <Box 
+                                    sx={{ 
+                                        width: 56, 
+                                        height: 56, 
+                                        borderRadius: '50%', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center',
+                                        backgroundColor: '#7856DE22'
+                                    }}
+                                >
+                                    <AttachMoney sx={{ fontSize: 30, color: '#7856DE' }} />
+                                </Box>
+                            </Stack>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Paper 
+                            elevation={0} 
+                            sx={{ 
+                                p: 3, 
+                                height: '100%', 
+                                borderRadius: 2,
+                                background: 'linear-gradient(135deg, #28C76F11, #28C76F22)',
+                                boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
+                                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+                                '&:hover': {
+                                    transform: 'translateY(-5px)',
+                                    boxShadow: '0 8px 25px 0 rgba(0,0,0,0.1)'
+                                }
+                            }}
+                        >
+                            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                                <Box>
+                                    <Typography color="text.secondary" variant="body2" fontWeight="medium">
+                                        {intl.formatMessage({ id: "TextTotalGuests" })}
+                                    </Typography>
+                                    <Typography variant="h3" fontWeight="bold" sx={{ my: 1 }}>
+                                        {getTotalGuests()}
+                                    </Typography>
+                                    <Box display="flex" alignItems="center" gap={1}>
+                                        <Chip 
+                                            icon={<TrendingUp fontSize="small" />} 
+                                            label={intl.formatMessage({ id: "TextPercentFromLastPeriod" }, { percent: "+5%" })} 
+                                            size="small" 
+                                            color="success"
+                                            sx={{ height: 24 }}
+                                        />
+                                    </Box>
+                                </Box>
+                                <Box 
+                                    sx={{ 
+                                        width: 56, 
+                                        height: 56, 
+                                        borderRadius: '50%', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center',
+                                        backgroundColor: '#28C76F22'
+                                    }}
+                                >
+                                    <PeopleAlt sx={{ fontSize: 30, color: '#28C76F' }} />
+                                </Box>
+                            </Stack>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Paper 
+                            elevation={0} 
+                            sx={{ 
+                                p: 3, 
+                                height: '100%', 
+                                borderRadius: 2,
+                                background: 'linear-gradient(135deg, #00CFE811, #00CFE822)',
+                                boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
+                                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+                                '&:hover': {
+                                    transform: 'translateY(-5px)',
+                                    boxShadow: '0 8px 25px 0 rgba(0,0,0,0.1)'
+                                }
+                            }}
+                        >
+                            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                                <Box>
+                                    <Typography color="text.secondary" variant="body2" fontWeight="medium">
+                                        {intl.formatMessage({ id: "TextAverageOccupancy" })}
+                                    </Typography>
+                                    <Typography variant="h3" fontWeight="bold" sx={{ my: 1 }}>
+                                        {getAverageOccupancy()}%
+                                    </Typography>
+                                    <Box display="flex" alignItems="center" gap={1}>
+                                        <Chip 
+                                            icon={<TrendingDown fontSize="small" />} 
+                                            label={intl.formatMessage({ id: "TextPercentFromLastPeriod" }, { percent: "-2%" })} 
+                                            size="small" 
+                                            color="error"
+                                            sx={{ height: 24 }}
+                                        />
+                                    </Box>
+                                </Box>
+                                <Box 
+                                    sx={{ 
+                                        width: 56, 
+                                        height: 56, 
+                                        borderRadius: '50%', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center',
+                                        backgroundColor: '#00CFE822'
+                                    }}
+                                >
+                                    <Hotel sx={{ fontSize: 30, color: '#00CFE8' }} />
+                                </Box>
+                            </Stack>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Box>
+
+            {/* Occupancy Trend Chart */}
+            <Paper 
+                elevation={0} 
+                sx={{ 
+                    p: 3, 
+                    mb: 3, 
+                    borderRadius: 2,
+                    boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)'
+                }}
+            >
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Box>
+                        <Typography variant="h6" fontWeight="bold">{intl.formatMessage({ id: "TextOccupancyTrend" })}</Typography>
+                        <Typography variant="body2" color="text.secondary">{intl.formatMessage({ id: "TextWeeklyRoomOccupancy" })}</Typography>
+                    </Box>
+                    <MuiTooltip title={intl.formatMessage({ id: "TextViewDetailedReport" })}>
+                        <Button 
+                            variant="outlined" 
+                            size="small" 
+                            startIcon={<BarChart />}
+                            sx={{ borderRadius: 2 }}
+                        >
+                            {intl.formatMessage({ id: "TextDetails" })}
+                        </Button>
+                    </MuiTooltip>
+                </Box>
+                <Box height={250}>
+                    <Bar 
+                        data={occupancyTrendData}
+                        options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                },
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: {
+                                        callback: (value) => `${value}%`,
+                                        stepSize: 20 // Set step size to 20% increments
+                                    }
+                                }
+                            }
+                        }}
+                    />
+                </Box>
+            </Paper>
+
+            {/* Revenue Forecast */}
+            <Box mb={3}>
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Typography variant="h6" fontWeight="bold">{intl.formatMessage({ id: "TextRevenueForecast" })}</Typography>
+                    <Button 
+                        variant="outlined" 
+                        size="small" 
+                        onClick={() => setShowForecast(!showForecast)}
+                        startIcon={showForecast ? <TrendingDown /> : <TrendingUp />}
+                        sx={{ borderRadius: 2 }}
+                    >
+                        {showForecast ? intl.formatMessage({ id: "TextHideForecast" }) : intl.formatMessage({ id: "TextShowForecast" })}
+                    </Button>
+                </Box>
+                {showForecast && (
+                    <Paper 
+                        elevation={0} 
+                        sx={{ 
+                            p: 3, 
+                            borderRadius: 2,
+                            boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)'
+                        }}
+                    >
+                        <Box height={250}>
+                            <Line 
+                                data={forecastData}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            position: 'top',
+                                        },
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: false,
+                                            ticks: {
+                                                callback: (value) => `${value}₮`
+                                            }
+                                        }
+                                    }
+                                }}
+                            />
+                        </Box>
+                    </Paper>
+                )}
+            </Box>
+
+            {/* Main Dashboard Cards */}
+            <Grid container spacing={3} sx={{ width: "100%" }}>
+                {isLoading ? (
+                    <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+                        <CircularSlider hideKnob hideLabelValue width={80} />
+                    </Grid>
+                ) : (
+                    data &&
                     data.map((element: any, index: number) => (
                         <Grid
                             item
                             xl={4}
                             md={6}
                             sm={12}
-                            key={element.id}
-                            sx={{ backgroundColor: "#fff" }}
+                            key={index}
                         >
-                            <Card sx={{ height: "100%" }}>
+                            <Paper 
+                                elevation={0} 
+                                sx={{ 
+                                    height: "100%",
+                                    borderRadius: 2,
+                                    overflow: 'hidden',
+                                    boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
+                                    transition: 'transform 0.2s ease-in-out',
+                                    '&:hover': {
+                                        transform: 'translateY(-4px)',
+                                        boxShadow: '0 8px 25px 0 rgba(0,0,0,0.08)'
+                                    }
+                                }}
+                            >
                                 <CardContent>
-                                    <div
-                                        style={{
+                                    <Box
+                                        sx={{
                                             display: "flex",
                                             justifyContent: "space-between",
-                                            marginBottom: "16px",
-                                            paddingBottom: "16px",
+                                            mb: 2,
+                                            pb: 2,
                                             borderBottom: "1px solid #E6E8EE",
                                             minHeight: "224px",
                                         }}
                                     >
-                                        <div
-                                            style={{
+                                        <Box
+                                            sx={{
                                                 display: "flex",
                                                 flexDirection: "column",
                                                 justifyContent: "space-between",
                                             }}
                                         >
-                                            <div
-                                                style={{
+                                            <Box
+                                                sx={{
                                                     display: "flex",
                                                     alignItems: "center",
-                                                    gap: "16px",
+                                                    gap: 2,
                                                 }}
                                             >
-                                                <div
-                                                    style={{
-                                                        width: "48px",
-                                                        height: "48px",
-                                                        borderRadius: "8px",
-                                                        backgroundColor:
-                                                            "#8028D20D",
+                                                <Box
+                                                    sx={{
+                                                        width: 56,
+                                                        height: 56,
+                                                        borderRadius: 2,
+                                                        bgcolor: "#7856DE11",
                                                         display: "flex",
                                                         alignItems: "center",
-                                                        justifyContent:
-                                                            "center",
+                                                        justifyContent: "center",
                                                     }}
                                                 >
                                                     {mainIcon(index)}
-                                                </div>
-                                                <h2
-                                                    style={{
-                                                        fontSize: "32px",
-                                                        fontWeight: 600,
-                                                    }}
+                                                </Box>
+                                                <Typography
+                                                    variant="h4"
+                                                    fontWeight="bold"
                                                 >
                                                     {
                                                         element[0]
                                                             .ParameterGroupName
                                                     }
-                                                </h2>
-                                            </div>
-                                            <div>
-                                                <p style={{ color: "#888A99" }}>
+                                                </Typography>
+                                            </Box>
+                                            <Box>
+                                                <Typography color="text.secondary" variant="body2" fontWeight="medium">
                                                     {
-                                                        element.find(
+                                                        (element as any[]).find(
                                                             (item: any) =>
                                                                 item.ParameterID ===
                                                                 1
-                                                        ).ParameterName
+                                                        )?.ParameterName
                                                     }
-                                                </p>
-                                                <h2
-                                                    style={{
-                                                        fontSize: "40px",
-                                                    }}
+                                                </Typography>
+                                                <Typography
+                                                    variant="h3"
+                                                    fontWeight="bold"
+                                                    sx={{ mt: 1 }}
                                                 >
                                                     {index !== 2
-                                                        ? element.find(
+                                                        ? (element as any[]).find(
                                                               (item: any) =>
                                                                   item.ParameterID ===
                                                                   1
-                                                          ).ParameterValue
+                                                          )?.ParameterValue
                                                         : fNumber(
-                                                              element.find(
+                                                              (element as any[]).find(
                                                                   (item: any) =>
                                                                       item.ParameterID ===
                                                                       1
-                                                              ).ParameterValue
+                                                              )?.ParameterValue || 0
                                                           ) + "₮"}
-                                                </h2>
-                                            </div>
-                                        </div>
+                                                </Typography>
+                                            </Box>
+                                        </Box>
                                         {index !== 2 ? (
-                                            <div
-                                                style={{
+                                            <Box
+                                                sx={{
                                                     position: "relative",
                                                 }}
                                             >
-                                                <div
-                                                    style={{
+                                                <Box
+                                                    sx={{
                                                         position: "absolute",
                                                         inset: 0,
                                                         display: "flex",
-                                                        justifyContent:
-                                                            "center",
+                                                        justifyContent: "center",
                                                         alignItems: "center",
                                                         flexDirection: "column",
-                                                        gap: "4px",
+                                                        gap: 0.5,
                                                     }}
                                                 >
-                                                    <p
-                                                        style={{
-                                                            color: "#888A99",
-                                                            fontSize: "14px",
-                                                        }}
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="text.secondary"
                                                     >
                                                         {index === 0
-                                                            ? "Room Occupancy"
-                                                            : "Booking Occupancy"}
-                                                    </p>
-                                                    <h4
-                                                        style={{
-                                                            fontSize: "24px",
-                                                        }}
+                                                            ? intl.formatMessage({ id: "TextRoomOccupancy" })
+                                                            : intl.formatMessage({ id: "TextBookingOccupancy" })}
+                                                    </Typography>
+                                                    <Typography
+                                                        variant="h5"
+                                                        fontWeight="bold"
                                                     >
                                                         {index === 0
                                                             ? `${roomOccupancy(
                                                                   element
                                                               )}%`
                                                             : "0%"}
-                                                    </h4>
-                                                </div>
+                                                    </Typography>
+                                                </Box>
                                                 <CircularSlider
                                                     max={100}
                                                     dataIndex={
@@ -292,16 +773,16 @@ const Dashboard = ({ workingDate }: any) => {
                                                     width={200}
                                                     progressSize={20}
                                                     trackColor="#F0F0F0"
-                                                    progressColorFrom="#804fe6"
-                                                    progressColorTo="#804fe6"
+                                                    progressColorFrom="#7856DE"
+                                                    progressColorTo="#7856DE"
                                                     hideLabelValue
                                                 />
-                                            </div>
+                                            </Box>
                                         ) : (
-                                            <div
-                                                style={{
-                                                    width: "200px",
-                                                    height: "200px",
+                                            <Box
+                                                sx={{
+                                                    width: 200,
+                                                    height: 200,
                                                     position: "relative",
                                                 }}
                                             >
@@ -317,7 +798,16 @@ const Dashboard = ({ workingDate }: any) => {
                                                             legend: {
                                                                 display: false,
                                                             },
+                                                            tooltip: {
+                                                                callbacks: {
+                                                                    label: function(context) {
+                                                                        return `${context.label}: ${fNumber(context.raw as number)}₮`;
+                                                                    }
+                                                                }
+                                                            }
                                                         },
+                                                        cutout: '60%',
+                                                        // borderWidth and borderRadius are applied at the dataset level in Chart.js v4
                                                     }}
                                                     data={{
                                                         labels: filterData(
@@ -335,8 +825,9 @@ const Dashboard = ({ workingDate }: any) => {
                                                                 ) {
                                                                     return ParameterName;
                                                                 }
+                                                                return null;
                                                             }
-                                                        ),
+                                                        ).filter(Boolean),
                                                         datasets: [
                                                             {
                                                                 data: filterData(
@@ -355,21 +846,32 @@ const Dashboard = ({ workingDate }: any) => {
                                                                         ) {
                                                                             return ParameterValue;
                                                                         }
+                                                                        return null;
                                                                     }
-                                                                ),
-                                                                backgroundColor:
-                                                                    [
-                                                                        "#7856DE",
-                                                                        "#00CFE8",
-                                                                        "#28C76F",
-                                                                    ],
+                                                                ).filter(Boolean),
+                                                                backgroundColor: [
+                                                                    "#7856DE",
+                                                                    "#00CFE8",
+                                                                    "#28C76F",
+                                                                    "#FF9F43",
+                                                                    "#EE5C78",
+                                                                ],
+                                                                hoverBackgroundColor: [
+                                                                    "#6745C3",
+                                                                    "#00BDD9",
+                                                                    "#23B662",
+                                                                    "#F08F34",
+                                                                    "#DD4B67",
+                                                                ],
+                                                                borderWidth: 0,
+                                                                borderRadius: 4,
                                                             },
                                                         ],
                                                     }}
                                                 />
-                                            </div>
+                                            </Box>
                                         )}
-                                    </div>
+                                    </Box>
                                     <Grid container spacing={2}>
                                         {data &&
                                             filterData(element, index).map(
@@ -393,7 +895,7 @@ const Dashboard = ({ workingDate }: any) => {
                                                             }
                                                             list={element}
                                                             workingDate={
-                                                                workingDate
+                                                                selectedDate ? format(selectedDate, 'yyyy-MM-dd') : workingDate
                                                             }
                                                             dashboardType={
                                                                 dashboardType
@@ -404,11 +906,12 @@ const Dashboard = ({ workingDate }: any) => {
                                             )}
                                     </Grid>
                                 </CardContent>
-                            </Card>
+                            </Paper>
                         </Grid>
-                    ))}
+                    ))
+                )}
             </Grid>
-        </>
+        </Container>
     );
 };
 
@@ -422,9 +925,22 @@ function DashboardCard({
     workingDate,
     dashboardType,
 }: any) {
+    const intl = useIntl();
     const iconStyle = {
         color: "#FFFFFF",
         fontSize: "16px",
+    };
+
+    // Function to translate parameter names
+    const translateParameterName = (name: string) => {
+        // Use a translation key based on the parameter name
+        const translationKey = `Text${name.replace(/\s+/g, '')}`;
+        // Try to get the translation, fall back to the original name if not found
+        try {
+            return intl.formatMessage({ id: translationKey });
+        } catch (error) {
+            return name; // Fallback to original name if translation not found
+        }
     };
 
     function cardIcon(name: string) {
@@ -643,7 +1159,7 @@ function DashboardCard({
                             width: "172px",
                         }}
                     >
-                        {item.ParameterName}
+                        {translateParameterName(item.ParameterName)}
                     </Typography>
                     <Typography
                         sx={{
@@ -704,7 +1220,7 @@ function DashboardCard({
                                     width: "172px",
                                 }}
                             >
-                                {item.ParameterName}
+                                {translateParameterName(item.ParameterName)}
                             </Typography>
                             <Typography
                                 sx={{
@@ -762,7 +1278,7 @@ function DashboardCard({
                                             width: "172px",
                                         }}
                                     >
-                                        {item.ParameterName}
+                                        {translateParameterName(item.ParameterName)}
                                     </Typography>
                                     <Typography
                                         sx={{

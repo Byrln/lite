@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
-import interactionPlugin from "@fullcalendar/interaction"; // Import the interaction plugin
+import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,6 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
-
 import { RoomTypeAPI } from "lib/api/room-type";
 import { RoomAPI } from "lib/api/room";
 import { ReservationAPI } from "lib/api/reservation";
@@ -32,8 +31,6 @@ import { ModalContext } from "lib/context/modal";
 import { RoomBlockAPI } from "lib/api/room-block";
 import { dateToCustomFormat } from "lib/utils/format-time";
 import { useAppState } from "lib/context/app";
-import Search from "./search";
-import CustomSearch from "components/common/custom-search";
 import ReservationEdit from "components/front-office/reservation-list/edit";
 import RoomMoveForm from "components/reservation/room-move";
 import AmendStayForm from "components/reservation/amend-stay";
@@ -41,6 +38,9 @@ import RoomAssignGroup from "components/reservation/room-assign-group";
 import Iconify from "components/iconify/iconify";
 import { getContrastYIQ } from "lib/utils/helpers";
 import { useIntl } from "react-intl";
+import RoomTypeCustomSelect from "components/select/room-type-custom";
+import DatePickerCustom from "../ui/date-picker-custom";
+import { da } from "date-fns/locale";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const intl = useIntl();
@@ -55,6 +55,15 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [searchCurrDate, setSearchCurrDate] = useState(workingDate);
     const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
     const [isHoverEnabled, setIsHoverEnabled] = useState(false);
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+
+    const handleTooltipClose = () => {
+        setTooltipOpen(false);
+    };
+
+    const handleTooltipOpen = () => {
+        setTooltipOpen(true);
+    };
 
     useEffect(() => {
         const hoverSetting = localStorage.getItem("isHover");
@@ -83,11 +92,72 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     }
 
     const customHeader = (info: any) => {
-        const dateText = info.currentRange.start.toISOString().slice(0, 10);
+        const dateText =
+            info.currentRange.end.toISOString().slice(0, 10) +
+            " " +
+            info.currentRange.end.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+            });
+        const day = info.currentRange.start.getDay();
+        const isWeekend = day === 0 || day === 6; // 0 is Sunday, 6 is Saturday
+
+        // Get month name from the date
+        const monthNames = [
+            intl.formatMessage({ id: "January" }) || "January",
+            intl.formatMessage({ id: "February" }) || "February",
+            intl.formatMessage({ id: "March" }) || "March",
+            intl.formatMessage({ id: "April" }) || "April",
+            intl.formatMessage({ id: "May" }) || "May",
+            intl.formatMessage({ id: "June" }) || "June",
+            intl.formatMessage({ id: "July" }) || "July",
+            intl.formatMessage({ id: "August" }) || "August",
+            intl.formatMessage({ id: "September" }) || "September",
+            intl.formatMessage({ id: "October" }) || "October",
+            intl.formatMessage({ id: "November" }) || "November",
+            intl.formatMessage({ id: "December" }) || "December",
+        ];
+        const monthName = monthNames[info.currentRange.start.getMonth()];
+
         return (
-            <div>
-                <div>{info.dayHeader.text}</div>
-                <div>{dateText}</div>
+            <div
+                style={{
+                    padding: "6px 8px",
+                    backgroundColor: isWeekend ? "#fff9c4" : "#f8f9fa", // Yellow for weekends
+                    borderRadius: "6px",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                }}
+            >
+                <div
+                    style={{
+                        fontSize: "12px",
+                        fontWeight: "500",
+                        color: isWeekend ? "#ff9800" : "#4a6cf7",
+                        marginBottom: "4px",
+                        textTransform: "uppercase",
+                    }}
+                >
+                    {info.dayHeader.text}
+                </div>
+                <div
+                    style={{
+                        fontSize: "13px",
+                        fontWeight: "600",
+                        color: "#212529",
+                    }}
+                >
+                    {dateText}
+                </div>
+                <div
+                    style={{
+                        fontSize: "11px",
+                        fontWeight: "500",
+                        color: "#666",
+                        marginTop: "2px",
+                    }}
+                >
+                    {monthName}
+                </div>
             </div>
         );
     };
@@ -112,7 +182,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [availableRooms, setAvailableRooms] = useState<any>(null);
 
     useEffect(() => {
-        if (searchCurrDate == "Invalid date") {
+        if (searchCurrDate == "Огноо алдаатай байна!") {
             setSearchCurrDate(new Date(workingDate));
 
             setTimeStart(new Date(workingDate));
@@ -141,7 +211,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     NumberOfDays: dayCount,
                     RoomTypeID: searchRoomTypeID,
                 });
-
+ 
                 const roomTypes: any = await RoomTypeAPI?.list({
                     RoomTypeID: searchRoomTypeID,
                 });
@@ -210,18 +280,20 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
                 if (items) {
                     newItemDta = items.map((obj: any) => {
+                        console.log("obj", obj);
                         return obj.RoomID
                             ? {
                                   id: obj.TransactionID,
                                   title: obj.GuestName,
                                   start: obj.StartDate,
-                                  end: obj.EndDate,
+                                  end: obj.DepartureDate,
                                   resourceId: obj.RoomID
                                       ? obj.RoomID
                                       : `${obj.RoomTypeName}-${obj.RoomTypeID}`,
                                   roomTypeID: obj.RoomTypeID,
                                   transactionID: obj.TransactionID,
                                   startDate: obj.StartDate,
+                                  departureDate: obj.DepartureDate,
                                   GroupID: obj.GroupID,
                                   Balance: obj.Balance,
                                   Adult: obj.Adult,
@@ -325,7 +397,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             itemDataConcated.concat(newRoomBlockDta);
                     }
 
-                    // Handle StatusCheckedOut events
                     if (items) {
                         const statusCheckedOutItems = items.filter(
                             (obj: any) => obj.StatusCode === "StatusCheckedOut"
@@ -508,10 +579,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     };
 
     useEffect(() => {
-        setHeight(window.innerHeight - 200);
+        setHeight(window.innerHeight - 30);
     }, [window.innerHeight]);
 
     const handleEventClick = (info: any) => {
+        console.log("info", info.event);
         if (info.event._def.title != "Blocked") {
             if (info.event._def.extendedProps.entities) {
                 handleModal(
@@ -800,46 +872,221 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 title={
                     arg.event._def.extendedProps.statusColor ==
                     "rgba(255, 220, 40, 0.15)" ? (
-                        <div>Unassigned Rooms : {arg.event.title}</div>
+                        <div
+                            style={{
+                                padding: "8px",
+                                fontWeight: 500,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "4px",
+                            }}
+                            className="sm:flex-row sm:items-center"
+                        >
+                            <span
+                                style={{
+                                    color: "#4a6cf7",
+                                    marginRight: "4px",
+                                    whiteSpace: "nowrap",
+                                }}
+                            >
+                                Unassigned Rooms:
+                            </span>
+                            <span
+                                style={{
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                }}
+                            >
+                                {arg.event.title}
+                            </span>
+                        </div>
                     ) : arg.event.title == "Blocked" ? (
-                        <div>Blocked</div>
+                        <div
+                            style={{
+                                padding: "8px",
+                                fontWeight: 500,
+                                color: "#ff4842",
+                            }}
+                        >
+                            <Iconify
+                                icon="mdi:block-helper"
+                                width="16px"
+                                style={{
+                                    marginRight: "6px",
+                                    verticalAlign: "text-bottom",
+                                }}
+                            />
+                            Blocked
+                        </div>
                     ) : (
-                        <div>
-                            {arg.event._def.extendedProps.GroupCode &&
-                            arg.event._def.extendedProps.GroupCode != "" ? (
-                                <div>
-                                    Group Code :{" "}
-                                    {arg.event._def.extendedProps.GroupCode}
-                                </div>
-                            ) : (
-                                ""
-                            )}
-                            <div> Name : {arg.event.title}</div>
-                            <div>
-                                A/C : {arg.event._def.extendedProps.Adult}/
-                                {arg.event._def.extendedProps.Child}
-                            </div>{" "}
-                            {arg.event._def.extendedProps.pax ? (
-                                <div>
-                                    Group A/C :{" "}
-                                    {arg.event._def.extendedProps.pax}
-                                </div>
-                            ) : (
-                                ""
-                            )}
-                            <div>
-                                Balance : {arg.event._def.extendedProps.Balance}
+                        <div
+                            style={{
+                                padding: "12px",
+                                minWidth: "220px",
+                                borderRadius: "8px",
+                                fontSize: "13px",
+                                lineHeight: "1.6",
+                            }}
+                        >
+                            {/* Header with name */}
+                            <div
+                                title={arg.event.title}
+                                style={{
+                                    display: "inline-block",
+                                    fontWeight: "600",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    width: "100%",
+                                }}
+                            >
+                                {arg.event.title}
                             </div>
-                            <div>
-                                Breakfast :{" "}
-                                {arg.event._def.extendedProps.Breakfast &&
-                                arg.event._def.extendedProps.Breakfast == true
-                                    ? "Yes"
-                                    : "No"}
+
+                            {/* Info grid */}
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "auto 1fr",
+                                    gap: "6px 12px",
+                                }}
+                            >
+                                {arg.event._def.extendedProps.GroupCode &&
+                                    arg.event._def.extendedProps.GroupCode !=
+                                        "" && (
+                                        <>
+                                            <span
+                                                style={{
+                                                    color: "rgba(255,255,255,0.7)",
+                                                }}
+                                            >
+                                                <Iconify
+                                                    icon="clarity:group-line"
+                                                    width="14px"
+                                                    style={{
+                                                        marginRight: "4px",
+                                                        verticalAlign:
+                                                            "text-bottom",
+                                                    }}
+                                                />
+                                                Group Code:
+                                            </span>
+                                            <span style={{ fontWeight: 500 }}>
+                                                {
+                                                    arg.event._def.extendedProps
+                                                        .GroupCode
+                                                }
+                                            </span>
+                                        </>
+                                    )}
+
+                                <span
+                                    style={{ color: "rgba(255,255,255,0.7)" }}
+                                >
+                                    <Iconify
+                                        icon="mdi:account-outline"
+                                        width="14px"
+                                        style={{
+                                            marginRight: "4px",
+                                            verticalAlign: "text-bottom",
+                                        }}
+                                    />
+                                    A/C:
+                                </span>
+                                <span style={{ fontWeight: 500 }}>
+                                    {arg.event._def.extendedProps.Adult}/
+                                    {arg.event._def.extendedProps.Child}
+                                </span>
+
+                                {arg.event._def.extendedProps.pax && (
+                                    <>
+                                        <span
+                                            style={{
+                                                color: "rgba(255,255,255,0.7)",
+                                            }}
+                                        >
+                                            <Iconify
+                                                icon="mdi:account-group-outline"
+                                                width="14px"
+                                                style={{
+                                                    marginRight: "4px",
+                                                    verticalAlign:
+                                                        "text-bottom",
+                                                }}
+                                            />
+                                            Group A/C:
+                                        </span>
+                                        <span style={{ fontWeight: 500 }}>
+                                            {arg.event._def.extendedProps.pax}
+                                        </span>
+                                    </>
+                                )}
+
+                                <span
+                                    style={{ color: "rgba(255,255,255,0.7)" }}
+                                >
+                                    <Iconify
+                                        icon="vaadin:cash"
+                                        width="14px"
+                                        style={{
+                                            marginRight: "4px",
+                                            verticalAlign: "text-bottom",
+                                        }}
+                                    />
+                                    Balance:
+                                </span>
+                                <span style={{ fontWeight: 500 }}>
+                                    {Number(
+                                        arg.event._def.extendedProps.Balance
+                                    ).toLocaleString()}
+                                    ₮
+                                </span>
+
+                                <span
+                                    style={{ color: "rgba(255,255,255,0.7)" }}
+                                >
+                                    <Iconify
+                                        icon="fluent:food-16-regular"
+                                        width="14px"
+                                        style={{
+                                            marginRight: "4px",
+                                            verticalAlign: "text-bottom",
+                                        }}
+                                    />
+                                    Breakfast:
+                                </span>
+                                <span
+                                    style={{
+                                        fontWeight: 500,
+                                        color: arg.event._def.extendedProps
+                                            .Breakfast
+                                            ? "#4caf50"
+                                            : "#ff9800",
+                                    }}
+                                >
+                                    {arg.event._def.extendedProps.Breakfast
+                                        ? "Yes"
+                                        : "No"}
+                                </span>
                             </div>
                         </div>
                     )
                 }
+                arrow
+                placement="top"
+                componentsProps={{
+                    tooltip: {
+                        sx: {
+                            bgcolor: "#212B36",
+                            "& .MuiTooltip-arrow": {
+                                color: "#212B36",
+                            },
+                            boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
+                            borderRadius: "8px",
+                            p: 0,
+                        },
+                    },
+                }}
             >
                 <div
                     className={`event-custom ${
@@ -855,10 +1102,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         borderRadius:
                             arg.event._def.extendedProps.statusColor !=
                             "rgba(255, 220, 40, 0.15)"
-                                ? "5px"
+                                ? "6px"
                                 : "0px",
                         background: "none",
-                        padding: "4px 4px 0px 4px",
+                        padding: "6px 8px 2px 8px",
                         overflow: "",
                         margin: "-2px -3px -2px -1px",
                         height: "100%",
@@ -870,7 +1117,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 : "center",
                         backgroundColor:
                             arg.event.title == "Blocked"
-                                ? "black"
+                                ? "#212529"
                                 : arg.event._def.extendedProps.statusColor,
                         color: arg.event._def.extendedProps.statusColor
                             ? arg.event._def.extendedProps.statusColor !=
@@ -878,22 +1125,25 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 ? getContrastYIQ(
                                       arg.event._def.extendedProps.statusColor
                                   )
-                                : "#3699ff"
+                                : "#4a6cf7"
                             : "white",
-
                         border:
                             arg.event._def.extendedProps.statusColor ==
                             "rgba(255, 220, 40, 0.15)"
-                                ? `1px solid rgba(255, 220, 40, 0.15)`
+                                ? `1px solid rgba(74, 108, 247, 0.3)`
                                 : "null",
+                        fontSize: "13px",
+                        fontWeight: "500",
+                        alignItems: "center",
+                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
                     }}
                 >
                     {arg.event._def.extendedProps.statusColor !=
                     "rgba(255, 220, 40, 0.15)" ? (
                         <Iconify
                             icon="lsicon:drag-filled"
-                            width="12px"
-                            style={{ marginRight: "5px", marginTop: "2px" }}
+                            width="14px"
+                            style={{ marginRight: "8px", marginTop: "2px" }}
                         />
                     ) : (
                         ""
@@ -903,7 +1153,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     arg.event._def.extendedProps.GroupID != "" ? (
                         <span
                             style={{
-                                marginRight: "5px",
+                                marginRight: "8px",
                                 marginTop: "2px",
                                 color:
                                     arg.event._def.extendedProps.groupColor &&
@@ -911,19 +1161,19 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                         ""
                                         ? arg.event._def.extendedProps
                                               .groupColor
-                                        : "black",
+                                        : "#495057",
                             }}
                         >
                             {arg.event._def.extendedProps.IsGroupOwner ==
                             "true" ? (
                                 <Iconify
                                     icon="solar:crown-outline"
-                                    width="12px"
+                                    width="14px"
                                 />
                             ) : (
                                 <Iconify
                                     icon="clarity:group-line"
-                                    width="12px"
+                                    width="14px"
                                 />
                             )}
                         </span>
@@ -933,9 +1183,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
                     {arg.event._def.extendedProps.Balance &&
                     Number(arg.event._def.extendedProps.Balance) > 0 ? (
-                        <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                        <span style={{ marginRight: "8px", marginTop: "2px" }}>
                             {" "}
-                            <Iconify icon="vaadin:cash" width="12px" />
+                            <Iconify icon="vaadin:cash" width="14px" />
                         </span>
                     ) : (
                         <></>
@@ -943,24 +1193,95 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
                     {arg.event._def.extendedProps.Breakfast &&
                     arg.event._def.extendedProps.Breakfast == true ? (
-                        <span style={{ marginRight: "5px", marginTop: "2px" }}>
+                        <span style={{ marginRight: "8px", marginTop: "2px" }}>
                             {" "}
                             <Iconify
                                 icon="fluent:food-16-regular"
-                                width="12px"
+                                width="14px"
                             />
                         </span>
                     ) : (
                         <></>
                     )}
-                    {arg.event.title}
+                    <p
+                        title={arg.event.title}
+                        style={{
+                            display: "inline-block",
+                            fontWeight: "600",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                            width: "fit-content",
+                        }}
+                    >
+                        {arg.event.title}
+                    </p>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "right",
+                            width: "100%",
+                            alignItems: "center",
+                            overflow: "hidden",
+                            marginLeft: "35px",
+                        }}
+                        className={
+                            isHoverEnabled ? "time-balance-container" : ""
+                        }
+                    >
+                        <div className="flex gap-3 mb-1">
+                            <div
+                                className="whitespace-nowrap time-info"
+                                style={{
+                                    backgroundColor: "#fff",
+                                    color: "#000",
+                                    padding: "2px 6px",
+                                    borderRadius: "4px",
+                                    fontWeight: "500",
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Iconify
+                                    icon="mdi:clock-outline"
+                                    width="12px"
+                                    style={{ marginRight: "4px" }}
+                                />
+                                <span>
+                                    {new Date(
+                                        arg.event._def.extendedProps.departureDate
+                                    ).toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    })}
+                                </span>
+                            </div>
+                            {arg.event._def.extendedProps.Balance &&
+                            Number(arg.event._def.extendedProps.Balance) > 0 ? (
+                                <div
+                                    className="balance-info"
+                                    style={{
+                                        backgroundColor: "#fff",
+                                        color: "#000",
+                                        padding: "2px 6px",
+                                        borderRadius: "4px",
+                                        fontWeight: "500",
+                                    }}
+                                >
+                                    {Number(
+                                        arg.event._def.extendedProps.Balance
+                                    ).toLocaleString()}
+                                    ₮
+                                </div>
+                            ) : null}
+                        </div>
+                    </div>
 
                     {arg.event._def.extendedProps.statusColor !=
                     "rgba(255, 220, 40, 0.15)" ? (
                         <Iconify
                             icon="lsicon:drag-filled"
-                            width="12px"
-                            style={{ marginLeft: "5px", marginTop: "2px" }}
+                            width="14px"
+                            style={{ marginLeft: "auto", marginTop: "2px" }}
                         />
                     ) : (
                         ""
@@ -973,63 +1294,542 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     return (
         timeStart && (
             <>
-                <Box sx={{ display: "flex" }}>
-                    <Button
-                        variant="contained"
-                        className="mr-3"
-                        onClick={() => {
-                            dispatch({
-                                type: "editId",
-                                editId: null,
-                            });
-                            handleModal(
-                                true,
-                                `Захиалга нэмэх`,
-                                <NewReservation workingDate={workingDate} />,
-                                null,
-                                "medium"
-                            );
+                <Box
+                    className="mb-8 overflow-hidden gap-2"
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexDirection: { xs: "column", md: "row" },
+                        gap: { xs: "10px", md: "0" },
+                        "@media (max-width: 900px)": {
+                            flexDirection: "column",
+                            gap: "10px",
+                            width: "100%",
+                            padding: "0 8px",
+                        },
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexWrap: { xs: "wrap", md: "nowrap" },
+                            gap: "8px",
+                            width: { xs: "100%", md: "auto" },
+                            justifyContent: {
+                                xs: "space-between",
+                                sm: "flex-start",
+                            },
                         }}
-                        startIcon={<Icon icon={plusFill} />}
                     >
-                        {intl.formatMessage({
-                            id: "FrontNewReservation",
-                        })}
-                    </Button>
-                    <div className="mr-3">
-                        <Checkbox
-                            checked={isHoverEnabled}
-                            onChange={handleHoverChange}
-                        />
-                        Hover
-                    </div>
-                    <FormControl>
-                        <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
-                            value={dayCount}
-                            onChange={handleChange}
-                            defaultValue={15}
+                        <Button
+                            style={{ borderRadius: "20px", height: "35px" }}
+                            variant="contained"
+                            className="whitespace-nowrap px-8"
+                            onClick={() => {
+                                dispatch({
+                                    type: "editId",
+                                    editId: null,
+                                });
+                                handleModal(
+                                    true,
+                                    `Захиалга нэмэх`,
+                                    <NewReservation
+                                        workingDate={workingDate}
+                                    />,
+                                    null,
+                                    "medium"
+                                );
+                            }}
+                            startIcon={
+                                <Icon
+                                    style={{ color: "white" }}
+                                    icon={plusFill}
+                                />
+                            }
+                            sx={{
+                                fontSize: { xs: "10px", md: "12px" },
+                                padding: { xs: "6px 10px", md: "6px 16px" },
+                                width: "auto",
+                            }}
                         >
-                            <FormControlLabel
-                                value={7}
-                                control={<Radio />}
-                                label="7 хоног"
+                            {intl.formatMessage({
+                                id: "FrontNewReservation",
+                            })}
+                        </Button>
+                        <Box
+                            className="flex px-2 items-center justify-center"
+                            sx={{
+                                borderRadius: "20px",
+                                border: "1px solid #000000",
+                                height: "35px",
+                                minWidth: { xs: "80px", md: "auto" },
+                                width: "auto",
+                            }}
+                        >
+                            <Checkbox
+                                checked={isHoverEnabled}
+                                onChange={handleHoverChange}
+                                sx={{
+                                    padding: "0px",
+                                    paddingX: "3px",
+                                    color: "#000000",
+                                    "&.Mui-checked": {
+                                        color: "#333333",
+                                    },
+                                    "& .MuiSvgIcon-root": { fontSize: 18 },
+                                }}
                             />
-                            <FormControlLabel
-                                value={15}
-                                control={<Radio />}
-                                label="15 хоног"
-                            />
-                            <FormControlLabel
-                                value={30}
-                                control={<Radio />}
-                                label="30 хоног"
-                            />
-                        </RadioGroup>
-                    </FormControl>
-                    <CustomSearch
+                            <Typography
+                                className="text-black font-bold"
+                                sx={{
+                                    fontSize: { xs: "14px", md: "16px" },
+                                    "@media (min-width: 600px) and (max-width: 1024px)":
+                                        {
+                                            fontSize: "14px",
+                                        },
+                                }}
+                            >
+                                Hover
+                            </Typography>
+                        </Box>
+                        <div className="flex gap-3">
+                            <Box
+                                className="flex px-2 items-center justify-center"
+                                sx={{
+                                    borderRadius: "20px",
+                                    border: "1px solid #000000",
+                                    height: "35px",
+                                    flexGrow: { xs: 1, sm: 1, md: 0 },
+                                    minWidth: { xs: "80px", md: "auto" },
+                                    width: "auto",
+                                }}
+                            >
+                                <RoomTypeCustomSelect
+                                    searchRoomTypeID={searchRoomTypeID}
+                                    setSearchRoomTypeID={setSearchRoomTypeID}
+                                />
+                            </Box>
+                            <Box
+                                className="flex px-2 items-center justify-center"
+                                sx={{
+                                    borderRadius: "20px",
+                                    border: "1px solid #000000",
+                                    height: "35px",
+                                    flexGrow: { xs: 1, sm: 1, md: 0 },
+                                    minWidth: { xs: "80px", md: "auto" },
+                                    width: "auto",
+                                }}
+                            >
+                                <DatePickerCustom
+                                    name="CurrDate"
+                                    control={control}
+                                    defaultValue={searchCurrDate || workingDate}
+                                    label={intl.formatMessage({
+                                        id: "RowHeaderStarDate",
+                                    })}
+                                    error={errors.CurrDate}
+                                    register={register}
+                                    onFilterChange={(value) => {
+                                        setSearchCurrDate(value);
+                                    }}
+                                />
+                            </Box>
+                        </div>
+                    </Box>
+                    <Box
+                        className="flex gap-2 items-center"
+                        sx={{
+                            width: { xs: "100%", md: "auto" },
+                            justifyContent: { xs: "center", md: "flex-start" },
+                            marginTop: { xs: "10px", md: 0 },
+                            "@media (min-width: 600px) and (max-width: 900px)":
+                                {
+                                    justifyContent: "center",
+                                    marginTop: "10px",
+                                },
+                        }}
+                    >
+                        {/* Add state to control tooltip visibility */}
+                        {(() => {
+                            return (
+                                <Tooltip
+                                    open={tooltipOpen}
+                                    onClose={handleTooltipClose}
+                                    onOpen={handleTooltipOpen}
+                                    title={
+                                        <div
+                                            style={{
+                                                padding: "12px",
+                                                width: "fit-content",
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    fontWeight: 600,
+                                                    fontSize: "14px",
+                                                    marginBottom: "8px",
+                                                    borderBottom:
+                                                        "1px solid rgba(255,255,255,0.1)",
+                                                    paddingBottom: "6px",
+                                                }}
+                                            >
+                                                Статусын төрлүүд
+                                            </div>
+                                            <div
+                                                style={{
+                                                    display: "grid",
+                                                    gridTemplateColumns:
+                                                        "auto 1fr",
+                                                    gap: "6px 12px",
+                                                }}
+                                            >
+                                                <span
+                                                    style={{
+                                                        fontWeight: 500,
+                                                        backgroundColor:
+                                                            "#1281b0",
+                                                        borderRadius: "12px",
+                                                    }}
+                                                />
+                                                <span
+                                                    style={{
+                                                        color: "rgba(255,255,255,0.7)",
+                                                    }}
+                                                >
+                                                    Ирсэн
+                                                </span>
+                                                <span
+                                                    style={{
+                                                        fontWeight: 500,
+                                                        backgroundColor:
+                                                            "#b0531e",
+                                                        borderRadius: "12px",
+                                                    }}
+                                                />
+                                                <span
+                                                    style={{
+                                                        color: "rgba(255,255,255,0.7)",
+                                                    }}
+                                                >
+                                                    Гарсан
+                                                </span>
+
+                                                <span
+                                                    style={{
+                                                        fontWeight: 500,
+                                                        backgroundColor:
+                                                            "#94d8f6",
+                                                        borderRadius: "12px",
+                                                    }}
+                                                />
+                                                <span
+                                                    style={{
+                                                        color: "rgba(255,255,255,0.7)",
+                                                    }}
+                                                >
+                                                    Гарах
+                                                </span>
+                                                <span
+                                                    style={{
+                                                        fontWeight: 500,
+                                                        backgroundColor:
+                                                            "#57fa71",
+                                                        borderRadius: "12px",
+                                                    }}
+                                                />
+                                                <span
+                                                    style={{
+                                                        color: "rgba(255,255,255,0.7)",
+                                                    }}
+                                                >
+                                                    Баталгаажсан
+                                                </span>
+
+                                                <span
+                                                    style={{
+                                                        fontWeight: 500,
+                                                        backgroundColor:
+                                                            "black",
+                                                        borderRadius: "12px",
+                                                    }}
+                                                />
+                                                <span
+                                                    style={{
+                                                        color: "rgba(255,255,255,0.7)",
+                                                    }}
+                                                >
+                                                    Блок
+                                                </span>
+
+                                                <span
+                                                    style={{
+                                                        fontWeight: 500,
+                                                        backgroundColor:
+                                                            "#0033ff",
+                                                        borderRadius: "12px",
+                                                    }}
+                                                />
+                                                <span
+                                                    style={{
+                                                        color: "rgba(255,255,255,0.7)",
+                                                    }}
+                                                >
+                                                    Дахин хонох
+                                                </span>
+
+                                                <span
+                                                    style={{
+                                                        fontWeight: 500,
+                                                        backgroundColor:
+                                                            "#009933",
+                                                        borderRadius: "12px",
+                                                    }}
+                                                />
+                                                <span
+                                                    style={{
+                                                        color: "rgba(255,255,255,0.7)",
+                                                    }}
+                                                >
+                                                    Өдрөөр захиалга
+                                                </span>
+                                                <span
+                                                    style={{
+                                                        backgroundColor:
+                                                            "#212b36",
+                                                        width: "20px",
+                                                        height: "0px",
+                                                        borderRadius: "12px",
+                                                    }}
+                                                >
+                                                    <span
+                                                        style={{
+                                                            color: "#212b36",
+                                                        }}
+                                                    >
+                                                        g
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    }
+                                    arrow
+                                    placement="left-end"
+                                    componentsProps={{
+                                        tooltip: {
+                                            sx: {
+                                                bgcolor: "#212B36",
+                                                "& .MuiTooltip-arrow": {
+                                                    color: "#212B36",
+                                                },
+                                                boxShadow:
+                                                    "0 8px 16px 0 rgba(0,0,0,0.2)",
+                                                borderRadius: "8px",
+                                                p: 0,
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            cursor: "pointer",
+                                            backgroundColor: "#804FE6",
+                                            borderRadius: "50%",
+                                            width: "32px",
+                                            height: "32px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            zIndex: 1000,
+                                        }}
+                                        onClick={(e) => {
+                                            // Toggle tooltip visibility on click
+                                            e.stopPropagation();
+                                            setTooltipOpen(!tooltipOpen);
+                                        }}
+                                    >
+                                        <Iconify
+                                            icon="eva:info-outline"
+                                            width={20}
+                                            height={20}
+                                            color="white"
+                                        />
+                                    </Box>
+                                </Tooltip>
+                            );
+                        })()}
+                        <FormControl
+                            sx={{
+                                backgroundColor: "#804FE6",
+                                borderRadius: "20px",
+                                height: "35px",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                alignSelf: { xs: "center", md: "flex-start" },
+                                width: { xs: "100%", md: "auto" },
+                                maxWidth: { xs: "500px", md: "auto" },
+                                position: "relative",
+                                "@media (min-width: 600px) and (max-width: 1024px)":
+                                    {
+                                        width: "100%",
+                                        margin: "0",
+                                        minWidth: "unset",
+                                    },
+                            }}
+                        >
+                            <RadioGroup
+                                row
+                                aria-labelledby="radio-group-plan"
+                                value={dayCount}
+                                onChange={handleChange}
+                                defaultValue={window.innerWidth < 950 ? 7 : 15}
+                                sx={{
+                                    "& .MuiFormControlLabel-root": {
+                                        margin: 0,
+                                        "@media (min-width: 600px) and (max-width: 900px)":
+                                            {
+                                                margin: "0 2px",
+                                            },
+                                    },
+                                    justifyContent: "center",
+                                    "@media (min-width: 600px) and (max-width: 1024px)":
+                                        {
+                                            flexWrap: "nowrap",
+                                            width: "100%",
+                                            justifyContent: "space-between",
+                                        },
+                                }}
+                            >
+                                <FormControlLabel
+                                    value={7}
+                                    control={
+                                        <Radio
+                                            sx={{
+                                                color: "white",
+                                                "&.Mui-checked": {
+                                                    color: "white",
+                                                },
+                                                padding: {
+                                                    xs: "4px",
+                                                    sm: "8px",
+                                                },
+                                                "@media (min-width: 600px) and (max-width: 1024px)":
+                                                    {
+                                                        padding: "4px",
+                                                    },
+                                            }}
+                                        />
+                                    }
+                                    label="7 хоног"
+                                    sx={{
+                                        padding: { xs: "4px", sm: "8px 4px" },
+                                        transition: "all 0.2s",
+                                        color: "white",
+                                        "@media (min-width: 600px) and (max-width: 1024px)":
+                                            {
+                                                padding: "4px 2px",
+                                            },
+                                        "& .MuiTypography-root": {
+                                            fontSize: {
+                                                xs: "0.75rem",
+                                                sm: "0.875rem",
+                                            },
+                                            fontWeight: 500,
+                                            "@media (min-width: 600px) and (max-width: 1024px)":
+                                                {
+                                                    fontSize: "0.75rem",
+                                                },
+                                        },
+                                    }}
+                                />
+                                <FormControlLabel
+                                    value={15}
+                                    control={
+                                        <Radio
+                                            sx={{
+                                                color: "white",
+                                                "&.Mui-checked": {
+                                                    color: "white",
+                                                },
+                                                padding: {
+                                                    xs: "4px",
+                                                    sm: "8px",
+                                                },
+                                                "@media (min-width: 600px) and (max-width: 1024px)":
+                                                    {
+                                                        padding: "4px",
+                                                    },
+                                            }}
+                                        />
+                                    }
+                                    label="15 хоног"
+                                    sx={{
+                                        padding: { xs: "4px", sm: "8px 12px" },
+                                        transition: "all 0.2s",
+                                        color: "white",
+                                        "@media (min-width: 600px) and (max-width: 1024px)":
+                                            {
+                                                padding: "4px 2px",
+                                            },
+                                        "& .MuiTypography-root": {
+                                            fontSize: {
+                                                xs: "0.75rem",
+                                                sm: "0.875rem",
+                                            },
+                                            fontWeight: 500,
+                                            "@media (min-width: 600px) and (max-width: 1024px)":
+                                                {
+                                                    fontSize: "0.75rem",
+                                                },
+                                        },
+                                    }}
+                                />
+                                <FormControlLabel
+                                    value={30}
+                                    control={
+                                        <Radio
+                                            sx={{
+                                                color: "white",
+                                                "&.Mui-checked": {
+                                                    color: "white",
+                                                },
+                                                padding: {
+                                                    xs: "4px",
+                                                    sm: "8px",
+                                                },
+                                                "@media (min-width: 600px) and (max-width: 1024px)":
+                                                    {
+                                                        padding: "4px",
+                                                    },
+                                            }}
+                                        />
+                                    }
+                                    label="30 хоног"
+                                    sx={{
+                                        padding: { xs: "4px", sm: "8px 12px" },
+                                        transition: "all 0.2s",
+                                        color: "white",
+                                        "@media (min-width: 600px) and (max-width: 1024px)":
+                                            {
+                                                padding: "4px 2px",
+                                            },
+                                        "& .MuiTypography-root": {
+                                            fontSize: {
+                                                xs: "0.75rem",
+                                                sm: "0.875rem",
+                                            },
+                                            fontWeight: 500,
+                                            "@media (min-width: 600px) and (max-width: 1024px)":
+                                                {
+                                                    fontSize: "0.75rem",
+                                                },
+                                        },
+                                    }}
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </Box>
+                </Box>
+                {/* <CustomSearch
                         listUrl={listUrl}
                         search={search}
                         setSearch={setSearch}
@@ -1051,15 +1851,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                             setSearchCurrDate={setSearchCurrDate}
                             setSearchRoomTypeID={setSearchRoomTypeID}
                         />
-                    </CustomSearch>
-                </Box>
-                <Typography variant="subtitle2" className="mt-2">
+                    </CustomSearch> */}
+                {/* <Typography variant="subtitle2" className="mt-2">
                     {format(timeStart, "yyyy/MM/dd ") + " - "}
                     {format(
                         moment(timeStart).add(dayCount, "days").toDate(),
                         "yyyy/MM/dd "
                     )}
-                </Typography>
+                </Typography> */}
                 <div
                     style={{
                         borderRadius: "10px",
@@ -1082,7 +1881,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 resourceOrder="SortOrder"
                                 headerToolbar={{
                                     left: "",
-                                    center: "",
+                                    center: "title",
                                     right: "",
                                 }}
                                 resources={resources}
@@ -1106,9 +1905,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 }}
                                 slotDuration="24:00:00"
                                 slotLabelInterval={{ hours: 24 }}
-                                resourceAreaWidth={150}
-                                slotMinWidth={15}
-                                // Pass the custom class names
+                                resourceAreaWidth={180}
+                                slotMinWidth={20}
+                                eventBackgroundColor="transparent"
+                                eventBorderColor="transparent"
                                 eventAllow={function (
                                     dropInfo: any,
                                     draggedEvent: any
@@ -1130,7 +1930,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                         type: "resourceTimeline",
                                         duration: { days: dayCount },
                                         dayHeaderContent: customHeader,
-
                                         slotLabelContent: (arg: any) => {
                                             arg.date.setHours(8);
                                             var Difference_In_Time =
@@ -1140,6 +1939,40 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                 Difference_In_Time /
                                                     (1000 * 3600 * 24)
                                             );
+                                            const day = arg.date.getDay();
+                                            const isWeekend =
+                                                day === 0 || day === 6;
+                                            // Get available rooms data
+                                            const availableRoomsKey = `D${
+                                                Difference_In_Days + 1
+                                            }`;
+                                            const availableRoomsData =
+                                                availableRooms &&
+                                                availableRooms[0] &&
+                                                availableRooms[0][
+                                                    availableRoomsKey
+                                                ]
+                                                    ? availableRooms[0][
+                                                          availableRoomsKey
+                                                      ].split("/")
+                                                    : ["0", "0"];
+
+                                            // Calculate occupancy percentage
+                                            const availableCount =
+                                                parseInt(
+                                                    availableRoomsData[0]
+                                                ) || 0;
+                                            const totalCount =
+                                                parseInt(
+                                                    availableRoomsData[1]
+                                                ) || 1; // Prevent division by zero
+                                            const occupancyPercentage =
+                                                Math.round(
+                                                    ((totalCount -
+                                                        availableCount) /
+                                                        totalCount) *
+                                                        100
+                                                );
 
                                             return arg.level == 1 ? (
                                                 <div
@@ -1147,50 +1980,183 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                         textAlign: "center",
                                                         fontWeight: "normal",
                                                         fontSize: "12px",
+                                                        color: "#495057",
                                                     }}
                                                 >
-                                                    {availableRooms &&
-                                                        availableRooms[0] &&
-                                                        availableRooms[0][
-                                                            `D` +
-                                                                (Difference_In_Days +
-                                                                    1)
-                                                        ] &&
-                                                        availableRooms[0][
-                                                            `D` +
-                                                                (Difference_In_Days +
-                                                                    1)
-                                                        ].split("/")[0]}
+                                                    <div>{availableCount} {" "}/{" "} {totalCount}</div>
                                                 </div>
                                             ) : (
-                                                <div
-                                                    style={{
-                                                        fontSize: "12px",
-                                                    }}
+                                                <Tooltip
+                                                    title={
+                                                        <div
+                                                            style={{
+                                                                display: "flex",
+                                                                justifyContent:
+                                                                    "center",
+                                                                alignItems:
+                                                                    "center",
+                                                            }}
+                                                        >
+                                                            <div
+                                                                style={{
+                                                                    display:
+                                                                        "flex",
+                                                                    fontSize:
+                                                                        "12px",
+                                                                    fontWeight:
+                                                                        "bold",
+                                                                    color:
+                                                                        occupancyPercentage >
+                                                                        80
+                                                                            ? "#d32f2f"
+                                                                            : occupancyPercentage >
+                                                                              50
+                                                                            ? "#ff9800"
+                                                                            : "#4caf50",
+                                                                    backgroundColor:
+                                                                        "rgba(0,0,0,0.05)",
+                                                                    padding:
+                                                                        "2px 4px",
+                                                                    borderRadius:
+                                                                        "4px",
+                                                                    whiteSpace:
+                                                                        "nowrap",
+                                                                    overflow:
+                                                                        "hidden",
+                                                                    textOverflow:
+                                                                        "ellipsis",
+                                                                    maxWidth:
+                                                                        "auto",
+                                                                }}
+                                                            >
+                                                                {
+                                                                    occupancyPercentage
+                                                                }
+                                                                %
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 >
                                                     <div
                                                         style={{
-                                                            fontWeight:
-                                                                "normal",
-                                                            textAlign: "left",
-                                                            marginBottom: "5px",
+                                                            fontSize:
+                                                                dayCount > 7
+                                                                    ? "11px"
+                                                                    : "13px",
+                                                            padding:
+                                                                dayCount > 7
+                                                                    ? "2px"
+                                                                    : "4px",
+                                                            backgroundColor:
+                                                                isWeekend
+                                                                    ? "#fff9c4"
+                                                                    : "#f8f9fa",
+                                                            borderRadius: "4px",
+                                                            height: "100%",
                                                         }}
                                                     >
-                                                        {
-                                                            arg.date
-                                                                .toString()
-                                                                .split(" ")[0]
-                                                        }
+                                                        <div
+                                                            className="flex gap-5"
+                                                            style={{
+                                                                flexDirection:
+                                                                    dayCount > 7
+                                                                        ? "column"
+                                                                        : "row",
+                                                                justifyContent:
+                                                                    dayCount ===
+                                                                    7
+                                                                        ? "space-between"
+                                                                        : "",
+                                                                alignContent:
+                                                                    "center",
+                                                                alignItems:
+                                                                    dayCount ===
+                                                                    7
+                                                                        ? "center"
+                                                                        : "",
+                                                                gap:
+                                                                    dayCount > 7
+                                                                        ? "2px"
+                                                                        : "5px",
+                                                            }}
+                                                        >
+                                                            <div
+                                                                style={{
+                                                                    fontWeight:
+                                                                        "500",
+                                                                    textAlign:
+                                                                        "center",
+                                                                    color: isWeekend
+                                                                        ? "#ff9800"
+                                                                        : "#4a6cf7", // Different color for weekends
+                                                                    textTransform:
+                                                                        "uppercase",
+                                                                    fontSize:
+                                                                        dayCount >
+                                                                        7
+                                                                            ? dayCount >
+                                                                              15
+                                                                                ? "10px"
+                                                                                : "12px"
+                                                                            : "15px",
+                                                                    whiteSpace:
+                                                                        "nowrap",
+                                                                    overflow:
+                                                                        "hidden",
+                                                                    textOverflow:
+                                                                        "ellipsis",
+                                                                    maxWidth:
+                                                                        dayCount >
+                                                                        7
+                                                                            ? "100%"
+                                                                            : "auto",
+                                                                    minWidth:
+                                                                        dayCount >
+                                                                        7
+                                                                            ? "100%"
+                                                                            : "auto",
+                                                                    width: "100%",
+                                                                    display:
+                                                                        "flex",
+                                                                    justifyContent:
+                                                                        dayCount ===
+                                                                            30 ||
+                                                                        dayCount ===
+                                                                            15
+                                                                            ? "center"
+                                                                            : "",
+                                                                    alignItems:
+                                                                        "center",
+                                                                }}
+                                                            >
+                                                                {
+                                                                    arg.date
+                                                                        .toString()
+                                                                        .split(
+                                                                            " "
+                                                                        )[0]
+                                                                }
+                                                            </div>
+
+                                                            <div
+                                                                style={{
+                                                                    fontWeight:
+                                                                        "bold",
+                                                                    textAlign:
+                                                                        "center",
+                                                                    fontSize:
+                                                                        dayCount >
+                                                                        7
+                                                                            ?  "12px"
+                                                                            : "18px",
+                                                                    color: "#212529",
+                                                                }}
+                                                            >
+                                                                {arg.date.getDate()}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                            textAlign: "left",
-                                                        }}
-                                                    >
-                                                        {arg.date.getDate()}
-                                                    </div>
-                                                </div>
+                                                </Tooltip>
                                             );
                                         },
                                     },

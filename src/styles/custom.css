@@ -110,7 +110,10 @@ td.color-FF66FF {
 .css-1byr0tz {
     padding-bottom: 20px !important;
 }
-
+.fc { /* the calendar root */
+  max-width: 100%;
+  margin: 0 auto;
+}
 .fc .fc-toolbar.fc-header-toolbar {
     margin-bottom: 0px !important;
 }
@@ -121,7 +124,6 @@ td.color-FF66FF {
 .fc ::before {
     font-size: 11px;
 }
-
 .fc-license-message {
     display: none;
 }
@@ -160,28 +162,96 @@ td.color-FF66FF {
 }
 
 .fc .fc-view-harness-active > .fc-view {
-    border-left: 5px solid #f7ca18 !important;
+    border-left: 5px solid #4a6cf7 !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Header styling */
+.fc-datagrid-cell-main {
+    color: #4a6cf7;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Timeline slots */
+.fc .fc-timeline-slot-frame {
+    height: fit-content !important;
+    padding: 2px 0;
 }
 
 .fc .fc-timeline-slot-cushion {
     width: 100%;
+    padding: 6px 4px;
+    font-weight: 500;
 }
 
+/* Event styling */
 .fc-event {
     height: 100%;
     border: none;
     margin: 0px;
     z-index: 2;
+    transition: all 0.2s ease;
 }
 
 .fc-event:hover {
     z-index: 9;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Event container */
+.event-custom {
+    overflow: hidden;
+    border: 0.5px #e9e9e9 solid;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.hover-enabled:hover {
+    width: auto;
+    min-width: fit-content;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Time and balance visibility control */
+.hover-enabled .time-info,
+.hover-enabled .balance-info {
+    display: none; 
+}
+
+.hover-enabled:hover .time-info,
+.hover-enabled:hover .balance-info {
+    display: flex;
+}
+
+.time-balance-container:not(.hover-enabled) .time-info,
+.time-balance-container:not(.hover-enabled) .balance-info {
+    display: flex;
+}
+
+/* Timeline lanes */
 .fc-timeline-lane {
-    height: 25px !important;
+    height: 30px !important;
+    transition: background-color 0.2s ease;
 }
 
+.fc-timeline-lane:hover {
+    background-color: rgba(74, 108, 247, 0.05);
+}
+
+.fc-datagrid-cell-frame {
+    height: 30px !important;
+}
+
+.fc .fc-timeline-lane-frame {
+    height: 30px !important;
+    overflow: hidden;
+}
+
+/* Event appearance */
 .fc-h-event {
     background-color: unset !important;
 }
@@ -191,27 +261,52 @@ td.color-FF66FF {
 }
 
 a.fc-event {
-    height: 29px;
+    height: 34px;
 }
 
-.fc-datagrid-cell-frame {
-    height: 25px !important;
+/* Selection highlight */
+.fc .fc-highlight {
+    background: rgba(74, 108, 247, 0.2);
+    border-radius: 6px;
 }
 
-.fc .fc-timeline-lane-frame {
-    height: 25px !important;
-    overflow: hidden;
+/* Remove focus outlines */
+.fc-event-selected::after,
+.fc-event:focus::after {
+    margin: 1px;
 }
 
-.css-ojnl9a-MuiToolbar-root {
-    height: 50px !important;
-    min-height: 50px !important;
+.fc-event-selected::before,
+.fc-event:focus::before {
+    height: 30px;
+}
+
+.fc-event-selected,
+.fc-event:focus {
+    box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.4);
+    height: 30px;
+}
+
+/* Cell padding */
+.fc-datagrid-cell-cushion {
+    padding: 4px 10px !important;
+}
+
+/* Grid lines */
+.fc-theme-standard td,
+.fc-theme-standard th {
+    border-bottom: 0 !important;
+}
+
+.fc .fc-timeline-slot-minor {
+    border-style: none;
 }
 
 .css-1byr0tz {
     padding-top: 70px;
 }
 .custom-parent-resource {
+
     background-color: lightblue;
 }
 
@@ -239,19 +334,25 @@ a.fc-event {
     padding: 0px 8px !important;
 }
 
+.fc-resource-custom[id]:not([id^="\d"]) {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+}
+
+[class^="fc-resource-custom"][id*="[A-Za-z]"]:not([id^="\d"]) {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+}
 .fc-resource-custom[id]:not([id^="\\d"]) {
-    /* Your custom styles here */
-    /* For example: */
     background-color: lightblue;
     color: white;
 }
 [class^="fc-resource-custom"][id*="[A-Za-z]"]:not([id^="\\d"]) {
-    /* Your custom styles here */
-    /* For example: */
     background-color: lightblue;
     color: white;
 }
-
 .css-1mwgd72 {
     height: 50px !important;
     min-height: 50px !important;
@@ -302,6 +403,16 @@ a.fc-event {
 .fc-event-selected::after,
 .fc-event:focus::after {
     background: none !important;
+}
+
+.fc-timeGrid-view .fc-day-sat, 
+.fc-timeGrid-view .fc-day-sun {
+  background-color: #f8f9fa !important;
+}
+
+.fc-dayGrid-view .fc-day-sat,
+.fc-dayGrid-view .fc-day-sun {
+  background-color: #f8f9fa !important;
 }
 
 .css-1rxj8va-MuiTableCell-root {

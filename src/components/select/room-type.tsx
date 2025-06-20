@@ -59,7 +59,7 @@ const RoomTypeSelect = ({
             size="small"
             fullWidth
             id="RoomTypeID"
-            label={intl.formatMessage({
+            label={isSearch ? "Room Type" : intl.formatMessage({
                 id: "ConfigRoomType",
             })}
             {...register(
@@ -85,12 +85,36 @@ const RoomTypeSelect = ({
                     ? baseStay?.roomType?.RoomTypeID
                     : baseStay?.RoomTypeID)
             }
+            sx={isSearch ? {
+                '& .MuiOutlinedInput-root': {
+                    borderRadius: '25px',
+                    border: 'none',
+                    '& fieldset': {
+                        border: 'none',
+                    },
+                    '&:hover fieldset': {
+                        border: 'none',
+                    },
+                    '&.Mui-focused fieldset': {
+                        border: 'none',
+                    },
+                },
+                '& .MuiInputLabel-root': {
+                    color: '#000000',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                },
+                '& .MuiSelect-select': {
+                    color: '#000000',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    padding: '8px 12px',
+                },
+            } : {}}
         >
             {isSearch && (
                 <MenuItem key={"all"} value={0}>
-                    {intl.formatMessage({
-                        id: "ReportGrandTotal",
-                    })}
+                    All Room Types
                 </MenuItem>
             )}
             {data.map((element: any) => (
