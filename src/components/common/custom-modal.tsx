@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -9,61 +8,66 @@ import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import { useAppState } from "lib/context/app";
 import { useIntl } from "react-intl";
+import { useEffect } from "react";
 
 import { ModalContext } from "lib/context/modal";
 
-const styles = {
+const modalStyles = {
+    overlay: {
+        position: 'fixed' as const,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1300,
+        padding: '20px',
+    },
+    modal: {
+        backgroundColor: 'white',
+        borderRadius: '10px',
+        boxShadow: '0px 11px 15px -7px rgba(0,0,0,0.2), 0px 24px 38px 3px rgba(0,0,0,0.14), 0px 9px 46px 8px rgba(0,0,0,0.12)',
+        maxHeight: '90vh',
+        outline: 'none',
+        position: 'relative' as const,
+        display: 'flex',
+        flexDirection: 'column' as const,
+        overflow: 'hidden',
+    },
+    modalHeader: {
+        flexShrink: 0,
+        borderTopLeftRadius: '10px',
+        borderTopRightRadius: '10px',
+    },
+    modalBody: {
+        flex: 1,
+        overflow: 'auto',
+        borderBottomLeftRadius: '10px',
+        borderBottomRightRadius: '10px',
+    },
     small: {
-        position: "absolute" as "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        bgcolor: "background.paper",
-        boxShadow: 24,
-
-        maxHeight: "90%",
-        width: "90%",
-        overflow: "auto",
-        borderRadius: "10px",
-        "@media (min-width: 768px)": {
-            width: "30%", // Width for tablet or larger devices
-        },
+        width: '90%',
+        maxWidth: '400px',
     },
     medium: {
-        position: "absolute" as "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        bgcolor: "background.paper",
-        boxShadow: 24,
-        maxHeight: "90%",
-        width: "90%",
-        overflow: "auto",
-        borderRadius: "10px",
-        "@media (min-width: 768px)": {
-            width: "60%", // Width for tablet or larger devices
-        },
+        width: '90%',
+        maxWidth: '800px',
     },
     large: {
-        position: "absolute" as "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        bgcolor: "background.paper",
-        boxShadow: 24,
-        maxHeight: "90%",
-        width: "90%",
-        overflow: "auto",
-        borderRadius: "10px",
+        width: '90%',
+        maxWidth: '1200px',
     },
+};
+
+const styles = {
     boxContainer: {
-        // py: 1,
         px: 4,
-        // pb: ,
         backgroundColor: "#804fe6e6",
         color: "white",
     },
-
     bodyContainer: {
         py: 1,
         px: 4,
@@ -71,7 +75,12 @@ const styles = {
     },
 };
 
-const CustomModal = () => {
+interface CustomModalProps {
+    ArrivalDate?: string;
+    DepartureDate?: string;
+}
+
+const CustomModal = ({ ArrivalDate, DepartureDate }: CustomModalProps = {}) => {
     const intl = useIntl();
     const [state, dispatch]: any = useAppState();
 
@@ -85,72 +94,93 @@ const CustomModal = () => {
         isWithSubmit,
     }: any = useContext(ModalContext);
 
-    const getStyle = () => {
-        let result: any = null;
+    const getModalSize = () => {
         if (modalType === "large") {
-            result = styles.large;
+            return modalStyles.large;
         } else if (modalType === "medium") {
-            result = styles.medium;
+            return modalStyles.medium;
         } else if (modalType === "small") {
-            result = styles.small;
+            return modalStyles.small;
         }
-        return result;
+        return modalStyles.medium;
     };
 
-    return (
-        <Modal
-            open={visible}
-            onClose={() => (
-                handleModal(),
-                dispatch({
-                    type: "isShow",
-                    isShow: null,
-                })
-            )}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <Box sx={getStyle()}>
-                {!emptyModal && (
-                    <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        sx={styles.boxContainer}
-                    >
-                        <Typography
-                            id="modal-modal-title"
-                            variant="h6"
-                            gutterBottom
-                            className="mt-3 "
-                        >
-                            {modalTitle}
-                        </Typography>
+    const handleClose = () => {
+        handleModal();
+        dispatch({
+            type: "isShow",
+            isShow: null,
+        });
+    };
 
-                        <IconButton
-                            aria-label="close"
-                            style={{ color: "white" }}
-                            onClick={() => (
-                                handleModal(),
-                                dispatch({
-                                    type: "isShow",
-                                    isShow: null,
-                                })
-                            )}
+    const handleOverlayClick = (e: React.MouseEvent) => {
+        if (e.target === e.currentTarget) {
+            handleClose();
+        }
+    };
+
+    // Handle escape key
+    useEffect(() => {
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && visible) {
+                handleClose();
+            }
+        };
+
+        if (visible) {
+            document.addEventListener('keydown', handleEscape);
+            document.body.style.overflow = 'hidden';
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscape);
+            document.body.style.overflow = 'unset';
+        };
+    }, [visible]);
+
+    if (!visible) return null;
+
+    return (
+        <div style={modalStyles.overlay} onClick={handleOverlayClick}>
+            <Box sx={{...modalStyles.modal, ...getModalSize()}}>
+                {!emptyModal && (
+                    <div style={modalStyles.modalHeader}>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            sx={styles.boxContainer}
                         >
-                            <CloseIcon />
-                        </IconButton>
-                    </Grid>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <Typography
+                                    id="modal-modal-title"
+                                    variant="h6"
+                                    gutterBottom
+                                    className="mt-3 "
+                                >
+                                    {modalTitle}
+                                </Typography>
+                            </Box>
+
+                            <IconButton
+                                aria-label="close"
+                                style={{ color: "white" }}
+                                onClick={handleClose}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </Grid>
+                        <Divider />
+                    </div>
                 )}
 
-                <Divider />
-
-                <Typography
-                    id="modal-modal-description"
-                    sx={styles.bodyContainer}
-                >
-                    {modalContent}
+                <div style={modalStyles.modalBody}>
+                    <Typography
+                        id="modal-modal-description"
+                        sx={styles.bodyContainer}
+                    >
+                        {modalContent}
 
                     {!emptyModal && (
                         <>
@@ -169,17 +199,13 @@ const CustomModal = () => {
                                         size="small"
                                         variant="outlined"
                                         key="back"
-                                        onClick={() => (
-                                            handleModal(),
-                                            dispatch({
-                                                type: "isShow",
-                                                isShow: null,
-                                            }),
+                                        onClick={() => {
+                                            handleClose();
                                             dispatch({
                                                 type: "editId",
                                                 editId: "",
-                                            })
-                                        )}
+                                            });
+                                        }}
                                     >
                                         {intl.formatMessage({
                                             id: "ButtonClose",
@@ -200,17 +226,13 @@ const CustomModal = () => {
                                             size="small"
                                             variant="outlined"
                                             key="back"
-                                            onClick={() => (
-                                                handleModal(),
-                                                dispatch({
-                                                    type: "isShow",
-                                                    isShow: null,
-                                                }),
+                                            onClick={() => {
+                                                handleClose();
                                                 dispatch({
                                                     type: "editId",
                                                     editId: "",
-                                                })
-                                            )}
+                                                });
+                                            }}
                                         >
                                             {intl.formatMessage({
                                                 id: "ButtonClose",
@@ -221,9 +243,10 @@ const CustomModal = () => {
                             )}
                         </>
                     )}
-                </Typography>
+                    </Typography>
+                </div>
             </Box>
-        </Modal>
+        </div>
     );
 };
 

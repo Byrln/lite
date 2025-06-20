@@ -7,6 +7,8 @@ const useModal = () => {
     const [emptyModal, setEmptyModal] = useState(false);
     const [modalType, setModalType] = useState("medium");
     const [isWithSubmit, setIsWithSubmit] = useState(false);
+    const [arrivalDate, setArrivalDate] = useState<string | undefined>(undefined);
+    const [departureDate, setDepartureDate] = useState<string | undefined>(undefined);
 
     const handleModal = (
         visible: boolean = false,
@@ -14,7 +16,9 @@ const useModal = () => {
         content: any = "",
         empty: boolean = false,
         modalKind: string = "medium",
-        withSubmit: boolean = false
+        withSubmit: boolean = false,
+        arrival?: string,
+        departure?: string
     ) => {
         setVisible(visible);
         setModalTitle(title);
@@ -22,6 +26,8 @@ const useModal = () => {
         setEmptyModal(empty);
         setModalType(modalKind);
         setIsWithSubmit(withSubmit);
+        setArrivalDate(arrival);
+        setDepartureDate(departure);
     };
 
     return {
@@ -31,6 +37,8 @@ const useModal = () => {
         emptyModal,
         modalType,
         isWithSubmit,
+        arrivalDate,
+        departureDate,
         handleModal,
     };
 };

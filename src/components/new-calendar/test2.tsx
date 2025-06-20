@@ -20,8 +20,6 @@ import {
     Checkbox,
     IconButton,
 } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import { format } from "date-fns";
 import { toast } from "react-toastify";
 import { RoomTypeAPI } from "lib/api/room-type";
 import { RoomAPI } from "lib/api/room";
@@ -43,6 +41,7 @@ import { useIntl } from "react-intl";
 import RoomTypeCustomSelect from "components/select/room-type-custom";
 import DatePickerCustom from "../ui/date-picker-custom";
 import { da } from "date-fns/locale";
+import Image from "next/image";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
     const intl = useIntl();
@@ -180,6 +179,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     const [itemData, setItemData] = useState<any>(null);
     const [rerenderKey, setRerenderKey] = useState(0);
     const [customMutate, setCustomMutate] = useState(0);
+    const [isCalendarLoading, setIsCalendarLoading] = useState(false);
     const [height, setHeight] = useState<any>(null);
     const [availableRooms, setAvailableRooms] = useState<any>(null);
     const [reservationItems, setReservationItems] = useState<any>(null);
@@ -353,6 +353,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                       `#${obj.StatusColor}`
                                   ),
                                   border: "none",
+                                  unassignedRoom: "true",
                               }
                             : {};
                     });
@@ -1372,20 +1373,26 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 id: "FrontNewReservation",
                             })}
                         </Button>
-                        <Button
+                        <IconButton
                             style={{ height: "35px" }}
                             className="whitespace-nowrap"
                             onClick={() => {
-                                window.location.reload();
+                                setIsCalendarLoading(true);
+                                setRerenderKey((prevKey) => prevKey + 1);
+                                // Reset loading state after a short delay to allow calendar to render
+                                setTimeout(() => {
+                                    setIsCalendarLoading(false);
+                                }, 1000);
                             }}
-                            startIcon={
-                                <img
-                                    src="/images/logo_sm.png"
-                                    alt="Refresh"
-                                    style={{ width: "24px", height: "16px" }}
-                                />
-                            }
-                        ></Button>
+                            disabled={isCalendarLoading}
+                        >
+                            <Image
+                                src="/images/logo_sm.png"
+                                alt="Refresh"
+                                width={24}
+                                height={16}
+                            />
+                        </IconButton>
                         <Box
                             className="flex px-2 items-center justify-center"
                             sx={{
@@ -1912,7 +1919,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 headerToolbar={{
                                     left: "",
                                     center: "title",
-                                    right: "",
+                                    right: "today",
                                 }}
                                 resources={resources}
                                 initialDate={timeStart}
@@ -2286,6 +2293,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                                                             {
                                                                                                 roomType.name
                                                                                             }
+
                                                                                             :
                                                                                         </span>
                                                                                         <span
@@ -2329,6 +2337,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                                                             {
                                                                                                 roomType.available
                                                                                             }
+
                                                                                             /
                                                                                             {
                                                                                                 roomType.total
@@ -2441,6 +2450,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                                                                 id: "TextGuestsArriving",
                                                                                             }
                                                                                         )}
+
                                                                                         :
                                                                                     </span>
                                                                                     <span
@@ -2472,6 +2482,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                                                                 id: "TextGuestsDeparting",
                                                                                             }
                                                                                         )}
+
                                                                                         :
                                                                                     </span>
                                                                                     <span
@@ -2503,6 +2514,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                                                                 id: "TextRoomsArriving",
                                                                                             }
                                                                                         )}
+
                                                                                         :
                                                                                     </span>
                                                                                     <span
@@ -2532,6 +2544,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                                                                 id: "TextRoomsDeparting",
                                                                                             }
                                                                                         )}
+
                                                                                         :
                                                                                     </span>
                                                                                     <span

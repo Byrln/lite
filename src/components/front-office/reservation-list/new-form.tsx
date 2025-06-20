@@ -5,6 +5,9 @@ import {
     Tooltip,
     IconButton,
     Typography,
+    Tabs,
+    Tab,
+    Box,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -22,7 +25,34 @@ import CountrySelect from "components/select/country";
 import VipStatusSelect from "components/select/vip-status";
 
 import { countNights } from "lib/utils/format-time";
-import { Tab, TabContent, Tabs, TabsList } from "@/components/ui";
+
+// TabPanel component for MUI Tabs
+function TabPanel(props: any) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    {children}
+                </Box>
+            )}
+        </div>
+    );
+}
+
+function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 const NewEdit = ({
     id,
@@ -65,7 +95,12 @@ const NewEdit = ({
     const [selectedChild, setSelectedChild]: any = useState(0);
     const [country, setCountry]: any = useState(null);
     const [vip, setVip]: any = useState(null);
+    const [tabValue, setTabValue] = useState(0);
     const intl = useIntl();
+
+    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+        setTabValue(newValue);
+    };
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights: number;
@@ -277,12 +312,12 @@ const NewEdit = ({
         });
     };
     return (
-        <Tabs className="w-full max-w-96" defaultValue="citizien">
-            <TabsList>
-                <Tab value="citizien">Иргэн</Tab>
-                <Tab value="foreign">Гадаад иргэн</Tab>
-            </TabsList>
-            <TabContent value="citizien" className="space-y-4">
+        <Box sx={{ width: '100%', maxWidth: 384 }}>
+                                <Tabs value={tabValue} onChange={handleTabChange} aria-label="guest type tabs">
+                                    <Tab label="Иргэн" {...a11yProps(0)} />
+                                    <Tab label="Гадаад иргэн" {...a11yProps(1)} />
+                                </Tabs>
+                                <TabPanel value={tabValue} index={0}>
                 <Grid key={id} container spacing={1}>
                     <div>
                         <input
@@ -426,38 +461,6 @@ const NewEdit = ({
                                 errors.TransactionDetail[id].Name &&
                                 errors.TransactionDetail[id].Name.message
                             }
-                            sx={{
-                                '& .MuiInputBase-input': {
-                                    fontSize: '1.2rem',
-                                    padding: '12px 14px',
-                                },
-                                '& .MuiInputLabel-root': {
-                                    fontSize: '1.1rem',
-                                    transform: 'translate(14px, 14px) scale(1)',
-                                    '&.MuiInputLabel-shrink': {
-                                        transform: 'translate(14px, -6px) scale(0.75)',
-                                    },
-                                },
-                                '& .MuiOutlinedInput-root': {
-                                    borderRadius: '8px',
-                                    transition: 'all 0.2s ease-in-out',
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
-                                    '&:hover': {
-                                        boxShadow: '0 4px 8px rgba(0,0,0,0.12)',
-                                    },
-                                    '&.Mui-focused': {
-                                        boxShadow: '0 4px 12px rgba(63, 81, 181, 0.2)',
-                                    },
-                                },
-                                '& .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: '#3f51b5',
-                                    borderWidth: '1.5px',
-                                },
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: '#303f9f',
-                                },
-                                backgroundColor: '#f8faff',
-                            }}
                         />
                     </Grid>
                     {RoomTypeID && (
@@ -821,8 +824,8 @@ const NewEdit = ({
                         </>
                     )}
                 </Grid>
-            </TabContent>
-            <TabContent value="foreign" className="space-y-4">
+                            </TabPanel>
+                            <TabPanel value={tabValue} index={1}>
                 <Grid key={id} container spacing={1}>
                     <div>
                         <input
@@ -1331,8 +1334,8 @@ const NewEdit = ({
                         </>
                     )}
                 </Grid>
-            </TabContent>
-        </Tabs>
+            </TabPanel>
+        </Box>
     );
 };
 

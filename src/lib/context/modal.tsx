@@ -13,6 +13,8 @@ const ModalProvider = ({ children }: any) => {
         modalContent,
         emptyModal,
         modalType,
+        arrivalDate,
+        departureDate,
         handleModal,
     } = useModal();
 
@@ -24,10 +26,12 @@ const ModalProvider = ({ children }: any) => {
                 modalContent,
                 emptyModal,
                 modalType,
+                arrivalDate,
+                departureDate,
                 handleModal,
             }}
         >
-            <CustomModal />
+            <CustomModal ArrivalDate={arrivalDate} DepartureDate={departureDate} />
             {children}
         </Provider>
     );

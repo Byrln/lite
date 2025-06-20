@@ -89,16 +89,12 @@ const DatePickerCustom: React.FC<DatePickerCustomProps> = ({
                 size="small"
                 id={name}
                 {...(register && register(name))}
-                margin="dense"
-                fullWidth
                 {...params}
                 error={!!error}
                 helperText={helperText || ''}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: '9999px',
-                    paddingRight: '14px',
-                    paddingLeft: '14px',
                   },
                   '& .MuiInputBase-input': {
                     fontSize: '0.875rem',
@@ -108,7 +104,6 @@ const DatePickerCustom: React.FC<DatePickerCustomProps> = ({
                   '& .MuiOutlinedInput-notchedOutline': {
                     border: 'none',
                   },
-                  minWidth: '9rem',
                   backgroundColor: 'transparent',
                 }}
               />

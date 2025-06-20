@@ -132,7 +132,7 @@ const NewEditForm = ({
     ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
             {appBar && (
-                <div className="sticky top-0 left-0 right-0 z-[1001] w-full">
+                <div className="fixed left-0 right-0 z-[1001] w-full">
                     {appBar}
                 </div>
             )}

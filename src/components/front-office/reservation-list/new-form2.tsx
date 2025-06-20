@@ -6,14 +6,10 @@ import {
     FormControlLabel,
     Typography,
 } from "@mui/material";
-import * as yup from "yup";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
-
 import { useEffect, useState } from "react";
 import NumberSelect from "components/select/number-select";
-
-import { useAppState } from "lib/context/app";
 import { dateStringToObj } from "lib/utils/helpers";
 import RoomTypeSelect from "components/select/room-type";
 import RoomSelect from "components/select/room-select";

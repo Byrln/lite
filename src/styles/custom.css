@@ -185,6 +185,9 @@ td.color-FF66FF {
     padding: 6px 4px;
     font-weight: 500;
 }
+.fc-resource-timeline-divider{
+    width: 3px !important;
+}
 
 /* Event styling */
 .fc-event {
@@ -422,4 +425,33 @@ a.fc-event {
 .css-1b9g8m6-MuiTableRow-root:last-child td,
 .css-1b9g8m6-MuiTableRow-root:last-child th {
     border: 1px solid rgba(241, 243, 244, 1);
+}
+
+/* Override FullCalendar resource group expand/collapse icon */
+.fc .fc-icon-minus-square::before {
+    content: "\25BC" !important; /* Unicode for down-pointing triangle (chevron-down) */
+    font-size: 12px !important;
+}
+
+.fc .fc-icon-plus-square::before {
+    content: "\25B6" !important; /* Unicode for right-pointing triangle (chevron-right) */
+    font-size: 12px !important;
+}
+
+/* Position the expand/collapse icon at the end of the resource header */
+.fc .fc-datagrid-cell-frame {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.fc .fc-resource-group .fc-datagrid-expander {
+    order: 2 !important;
+    margin-left: auto !important;
+    margin-right: 8px !important;
+}
+
+.fc .fc-resource-group .fc-datagrid-cell-main {
+    order: 1 !important;
+    flex: 1 !important;
 }
