@@ -1,4 +1,20 @@
-import { Grid, Typography, TextField, CardContent, Card, Box, Paper, Divider, Button, IconButton, Chip, Tooltip as MuiTooltip, useTheme, Container, Stack } from "@mui/material";
+import {
+    Grid,
+    Typography,
+    TextField,
+    CardContent,
+    Card,
+    Box,
+    Paper,
+    Divider,
+    Button,
+    IconButton,
+    Chip,
+    Tooltip as MuiTooltip,
+    useTheme,
+    Container,
+    Stack,
+} from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -38,23 +54,39 @@ import {
     Refresh,
 } from "@mui/icons-material";
 import { Pie, Line, Bar } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement } from "chart.js";
+import {
+    Chart as ChartJS,
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+} from "chart.js";
 import Link from "next/link";
 import moment from "moment";
-import AdapterDateFns from '@date-io/date-fns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import AdapterDateFns from "@date-io/date-fns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import { DashboardSWR } from "lib/api/dashboard";
+import {
+    DashboardSWR,
+    dailyUrl,
+    weeklyUrl,
+    monthlyUrl,
+} from "lib/api/dashboard";
+import { mutate } from "swr";
 
 import { fNumber } from "lib/utils/format-number";
 ChartJS.register(
-    ArcElement, 
-    Tooltip, 
-    Legend, 
-    CategoryScale, 
-    LinearScale, 
-    PointElement, 
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    PointElement,
     LineElement,
     BarElement
 );
@@ -63,23 +95,36 @@ const Dashboard = ({ workingDate }: any) => {
     const theme = useTheme();
     const intl = useIntl();
     const [dashboardType, setDashboardType] = useState("daily");
-    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date(workingDate));
+    const [selectedDate, setSelectedDate] = useState<Date | null>(
+        new Date(workingDate)
+    );
     const [isLoading, setIsLoading] = useState(false);
     const [showForecast, setShowForecast] = useState(false);
 
-    const { data } = DashboardSWR(dashboardType, selectedDate || new Date(workingDate));
+    const { data } = DashboardSWR(
+        dashboardType,
+        selectedDate || new Date(workingDate)
+    );
 
     // Generate forecast data from real API data
     const generateForecastData = () => {
         if (!data || !data[2]) {
             return {
-                labels: ['Today', 'Tomorrow', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                labels: [
+                    "Today",
+                    "Tomorrow",
+                    "Day 3",
+                    "Day 4",
+                    "Day 5",
+                    "Day 6",
+                    "Day 7",
+                ],
                 datasets: [
                     {
-                        label: 'Revenue Forecast',
+                        label: "Revenue Forecast",
                         data: [0, 0, 0, 0, 0, 0, 0],
                         borderColor: theme.palette.primary.main,
-                        backgroundColor: 'rgba(120, 86, 222, 0.1)',
+                        backgroundColor: "rgba(120, 86, 222, 0.1)",
                         fill: true,
                         tension: 0.4,
                     },
@@ -88,16 +133,27 @@ const Dashboard = ({ workingDate }: any) => {
         }
 
         // Extract revenue data from API response
-        const revenueData = (data && data[2] && Array.isArray(data[2])) ? data[2].filter((item: any) => item.ParameterName === "Total Charges") : [];
-        
+        const revenueData =
+            data && data[2] && Array.isArray(data[2])
+                ? data[2].filter(
+                      (item: any) => item.ParameterName === "Total Charges"
+                  )
+                : [];
+
         // If we have data, use it; otherwise use placeholder
         const labels = revenueData.map((item: any, index: number) => {
-            if (dashboardType === 'daily') {
-                return item.ParameterDate ? format(new Date(item.ParameterDate), 'EEE') : `Day ${index + 1}`;
-            } else if (dashboardType === 'weekly') {
-                return item.ParameterDate ? `Week ${format(new Date(item.ParameterDate), 'w')}` : `Week ${index + 1}`;
+            if (dashboardType === "daily") {
+                return item.ParameterDate
+                    ? format(new Date(item.ParameterDate), "EEE")
+                    : `Day ${index + 1}`;
+            } else if (dashboardType === "weekly") {
+                return item.ParameterDate
+                    ? `Week ${format(new Date(item.ParameterDate), "w")}`
+                    : `Week ${index + 1}`;
             } else {
-                return item.ParameterDate ? format(new Date(item.ParameterDate), 'MMM d') : `Day ${index + 1}`;
+                return item.ParameterDate
+                    ? format(new Date(item.ParameterDate), "MMM d")
+                    : `Day ${index + 1}`;
             }
         });
 
@@ -107,10 +163,10 @@ const Dashboard = ({ workingDate }: any) => {
             labels,
             datasets: [
                 {
-                    label: 'Revenue Forecast',
+                    label: "Revenue Forecast",
                     data: values,
                     borderColor: theme.palette.primary.main,
-                    backgroundColor: 'rgba(120, 86, 222, 0.1)',
+                    backgroundColor: "rgba(120, 86, 222, 0.1)",
                     fill: true,
                     tension: 0.4,
                 },
@@ -122,12 +178,12 @@ const Dashboard = ({ workingDate }: any) => {
     const generateOccupancyTrendData = () => {
         if (!data || !data[0]) {
             return {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
                 datasets: [
                     {
-                        label: 'Room Occupancy %',
+                        label: "Room Occupancy %",
                         data: [0, 0, 0, 0, 0, 0, 0],
-                        backgroundColor: '#28C76F',
+                        backgroundColor: "#28C76F",
                         borderRadius: 6,
                     },
                 ],
@@ -135,28 +191,41 @@ const Dashboard = ({ workingDate }: any) => {
         }
 
         // Extract occupancy data from API response
-        const occupancyData = (data && data[0] && Array.isArray(data[0])) ? data[0].filter((item: any) => item.ParameterName === "Room Occupancy") : [];
-        
+        const occupancyData =
+            data && data[0] && Array.isArray(data[0])
+                ? data[0].filter(
+                      (item: any) => item.ParameterName === "Room Occupancy"
+                  )
+                : [];
+
         // If we have data, use it; otherwise use placeholder
         const labels = occupancyData.map((item: any, index: number) => {
-            if (dashboardType === 'daily') {
-                return item.ParameterDate ? format(new Date(item.ParameterDate), 'EEE') : `Day ${index + 1}`;
-            } else if (dashboardType === 'weekly') {
-                return item.ParameterDate ? `Week ${format(new Date(item.ParameterDate), 'w')}` : `Week ${index + 1}`;
+            if (dashboardType === "daily") {
+                return item.ParameterDate
+                    ? format(new Date(item.ParameterDate), "EEE")
+                    : `Day ${index + 1}`;
+            } else if (dashboardType === "weekly") {
+                return item.ParameterDate
+                    ? `Week ${format(new Date(item.ParameterDate), "w")}`
+                    : `Week ${index + 1}`;
             } else {
-                return item.ParameterDate ? format(new Date(item.ParameterDate), 'MMM d') : `Day ${index + 1}`;
+                return item.ParameterDate
+                    ? format(new Date(item.ParameterDate), "MMM d")
+                    : `Day ${index + 1}`;
             }
         });
 
-        const values = occupancyData.map((item: any) => item.ParameterValue || 0);
+        const values = occupancyData.map(
+            (item: any) => item.ParameterValue || 0
+        );
 
         return {
             labels,
             datasets: [
                 {
-                    label: 'Room Occupancy %',
+                    label: "Room Occupancy %",
                     data: values,
-                    backgroundColor: '#28C76F',
+                    backgroundColor: "#28C76F",
                     borderRadius: 6,
                 },
             ],
@@ -174,29 +243,58 @@ const Dashboard = ({ workingDate }: any) => {
         setTimeout(() => setIsLoading(false), 500); // Simulate loading
     };
 
-    const handleDateChange = (value: unknown, keyboardInputValue?: string) => {
+    const handleDateChange = async (
+        value: unknown,
+        keyboardInputValue?: string
+    ) => {
+        console.log("testestes", value);
         const newDate = value as Date | null;
         if (newDate) {
+            console.log("testestes2222", value);
+
             setIsLoading(true);
-            setSelectedDate(newDate);
+            setSelectedDate(value as Date | null);
+            await mutate(
+                dashboardType == "daily"
+                    ? dailyUrl
+                    : dashboardType == "weekly"
+                    ? weeklyUrl
+                    : monthlyUrl
+            );
             setTimeout(() => setIsLoading(false), 500); // Simulate loading
         }
     };
 
-    const navigateDate = (direction: 'forward' | 'back') => {
+    const navigateDate = (direction: "forward" | "back") => {
         if (selectedDate) {
-            const newDate = direction === 'forward' 
-                ? addDays(selectedDate, dashboardType === 'daily' ? 1 : dashboardType === 'weekly' ? 7 : 30) 
-                : subDays(selectedDate, dashboardType === 'daily' ? 1 : dashboardType === 'weekly' ? 7 : 30);
+            const newDate =
+                direction === "forward"
+                    ? addDays(
+                          selectedDate,
+                          dashboardType === "daily"
+                              ? 1
+                              : dashboardType === "weekly"
+                              ? 7
+                              : 30
+                      )
+                    : subDays(
+                          selectedDate,
+                          dashboardType === "daily"
+                              ? 1
+                              : dashboardType === "weekly"
+                              ? 7
+                              : 30
+                      );
             handleDateChange(newDate);
         }
     };
 
     function roomOccupancy(element: any) {
         if (!Array.isArray(element)) return 0;
-        return element.find(
-            (item: any) => item.ParameterName === "Room Occupancy"
-        )?.ParameterValue || 0;
+        return (
+            element.find((item: any) => item.ParameterName === "Room Occupancy")
+                ?.ParameterValue || 0
+        );
     }
 
     function filterData(element: any, index: number) {
@@ -240,20 +338,30 @@ const Dashboard = ({ workingDate }: any) => {
                 return <DashboardIcon style={style} />;
         }
     }
-    
+
     // Calculate total revenue and guests from data
     const getTotalRevenue = () => {
         if (!data || !data[2]) return 0;
-        const totalCharges = (data && data[2] && Array.isArray(data[2])) ? data[2].find((item: any) => item.ParameterName === "Total Charges") : null;
+        const totalCharges =
+            data && data[2] && Array.isArray(data[2])
+                ? data[2].find(
+                      (item: any) => item.ParameterName === "Total Charges"
+                  )
+                : null;
         return totalCharges ? totalCharges.ParameterValue : 0;
     };
-    
+
     const getTotalGuests = () => {
         if (!data || !data[1]) return 0;
-        const checkedIn = (data && data[1] && Array.isArray(data[1])) ? data[1].find((item: any) => item.ParameterName === "Checked In") : null;
+        const checkedIn =
+            data && data[1] && Array.isArray(data[1])
+                ? data[1].find(
+                      (item: any) => item.ParameterName === "Checked In"
+                  )
+                : null;
         return checkedIn ? checkedIn.ParameterValue : 0;
     };
-    
+
     const getAverageOccupancy = () => {
         if (!data || !data[0] || !Array.isArray(data[0])) return 0;
         return roomOccupancy(data[0]);
@@ -262,14 +370,14 @@ const Dashboard = ({ workingDate }: any) => {
     return (
         <Container maxWidth="xl" sx={{ py: 3 }}>
             {/* Header with date controls and type selector */}
-            <Paper 
-                elevation={0} 
-                sx={{ 
-                    p: 2, 
-                    mb: 3, 
+            <Paper
+                elevation={0}
+                sx={{
+                    p: 2,
+                    mb: 3,
                     borderRadius: 2,
-                    background: 'linear-gradient(to right, #f8f9fa, #ffffff)',
-                    boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)'
+                    background: "linear-gradient(to right, #f8f9fa, #ffffff)",
+                    boxShadow: "0 4px 20px 0 rgba(0,0,0,0.05)",
                 }}
             >
                 <Grid container spacing={2} alignItems="center">
@@ -280,22 +388,44 @@ const Dashboard = ({ workingDate }: any) => {
                                 {intl.formatMessage({ id: "TextDashboard" })}
                             </Typography>
                         </Box>
-                        <Typography variant="subtitle1" color="text.secondary" sx={{ mt: 1 }}>
-                            {dashboardType === 'daily' 
-                                ? intl.formatMessage({ id: "TextDailyOverview" }) 
-                                : dashboardType === 'weekly' 
-                                    ? intl.formatMessage({ id: "TextWeeklyPerformance" }) 
-                                    : intl.formatMessage({ id: "TextMonthlyAnalysis" })}
+                        <Typography
+                            variant="subtitle1"
+                            color="text.secondary"
+                            sx={{ mt: 1 }}
+                        >
+                            {dashboardType === "daily"
+                                ? intl.formatMessage({
+                                      id: "TextDailyOverview",
+                                  })
+                                : dashboardType === "weekly"
+                                ? intl.formatMessage({
+                                      id: "TextWeeklyPerformance",
+                                  })
+                                : intl.formatMessage({
+                                      id: "TextMonthlyAnalysis",
+                                  })}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <Box display="flex" flexWrap="wrap" gap={2} justifyContent={{ xs: 'flex-start', md: 'flex-end' }} alignItems="center">
+                        <Box
+                            display="flex"
+                            flexWrap="wrap"
+                            gap={2}
+                            justifyContent={{
+                                xs: "flex-start",
+                                md: "flex-end",
+                            }}
+                            alignItems="center"
+                        >
                             <Box display="flex" alignItems="center" gap={1}>
-                                <IconButton size="small" onClick={() => navigateDate('back')}>
+                                <IconButton
+                                    size="small"
+                                    onClick={() => navigateDate("back")}
+                                >
                                     <ArrowBack fontSize="small" />
                                 </IconButton>
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
+                                {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
+                                <DatePicker
                                     value={selectedDate}
                                     onChange={handleDateChange}
                                     renderInput={(params) => (
@@ -306,8 +436,11 @@ const Dashboard = ({ workingDate }: any) => {
                                         />
                                     )}
                                 />
-                                </LocalizationProvider>
-                                <IconButton size="small" onClick={() => navigateDate('forward')}>
+                                {/* </LocalizationProvider> */}
+                                <IconButton
+                                    size="small"
+                                    onClick={() => navigateDate("forward")}
+                                >
                                     <ArrowForward fontSize="small" />
                                 </IconButton>
                             </Box>
@@ -318,35 +451,53 @@ const Dashboard = ({ workingDate }: any) => {
                                     name="dashboard-type-radio-group"
                                     onChange={handleChange}
                                     value={dashboardType}
-                                    sx={{ 
-                                        '& .MuiFormControlLabel-root': { 
+                                    sx={{
+                                        "& .MuiFormControlLabel-root": {
                                             marginRight: 1,
-                                            marginLeft: 0
+                                            marginLeft: 0,
                                         },
-                                        '& .MuiRadio-root': {
-                                            padding: '4px'
-                                        }
+                                        "& .MuiRadio-root": {
+                                            padding: "4px",
+                                        },
                                     }}
                                 >
                                     <FormControlLabel
                                         value="daily"
                                         control={<Radio size="small" />}
-                                        label={<Typography variant="body2">{intl.formatMessage({ id: "TextDaily" })}</Typography>}
+                                        label={
+                                            <Typography variant="body2">
+                                                {intl.formatMessage({
+                                                    id: "TextDaily",
+                                                })}
+                                            </Typography>
+                                        }
                                     />
                                     <FormControlLabel
                                         value="weekly"
                                         control={<Radio size="small" />}
-                                        label={<Typography variant="body2">{intl.formatMessage({ id: "TextWeekly" })}</Typography>}
+                                        label={
+                                            <Typography variant="body2">
+                                                {intl.formatMessage({
+                                                    id: "TextWeekly",
+                                                })}
+                                            </Typography>
+                                        }
                                     />
                                     <FormControlLabel
                                         value="monthly"
                                         control={<Radio size="small" />}
-                                        label={<Typography variant="body2">{intl.formatMessage({ id: "TextMonthly" })}</Typography>}
+                                        label={
+                                            <Typography variant="body2">
+                                                {intl.formatMessage({
+                                                    id: "TextMonthly",
+                                                })}
+                                            </Typography>
+                                        }
                                     />
                                 </RadioGroup>
                             </Box>
-                            <IconButton 
-                                size="small" 
+                            <IconButton
+                                size="small"
                                 onClick={() => {
                                     setIsLoading(true);
                                     setTimeout(() => setIsLoading(false), 500);
@@ -364,151 +515,238 @@ const Dashboard = ({ workingDate }: any) => {
             <Box mb={3}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
-                        <Paper 
-                            elevation={0} 
-                            sx={{ 
-                                p: 3, 
-                                height: '100%', 
+                        <Paper
+                            elevation={0}
+                            sx={{
+                                p: 3,
+                                height: "100%",
                                 borderRadius: 2,
-                                background: 'linear-gradient(135deg, #7856DE11, #7856DE22)',
-                                boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
-                                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-                                '&:hover': {
-                                    transform: 'translateY(-5px)',
-                                    boxShadow: '0 8px 25px 0 rgba(0,0,0,0.1)'
-                                }
+                                background:
+                                    "linear-gradient(135deg, #7856DE11, #7856DE22)",
+                                boxShadow: "0 4px 20px 0 rgba(0,0,0,0.05)",
+                                transition:
+                                    "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                                "&:hover": {
+                                    transform: "translateY(-5px)",
+                                    boxShadow: "0 8px 25px 0 rgba(0,0,0,0.1)",
+                                },
                             }}
                         >
-                            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
                                 <Box>
-                                    <Typography color="text.secondary" variant="body2" fontWeight="medium">
-                                        {intl.formatMessage({ id: "TextTotalRevenue" })}
+                                    <Typography
+                                        color="text.secondary"
+                                        variant="body2"
+                                        fontWeight="medium"
+                                    >
+                                        {intl.formatMessage({
+                                            id: "TextTotalRevenue",
+                                        })}
                                     </Typography>
-                                    <Typography variant="h3" fontWeight="bold" sx={{ my: 1 }}>
+                                    <Typography
+                                        variant="h3"
+                                        fontWeight="bold"
+                                        sx={{ my: 1 }}
+                                    >
                                         {fNumber(getTotalRevenue())}₮
                                     </Typography>
-                                    <Box display="flex" alignItems="center" gap={1}>
-                                        <Chip 
-                                            icon={<TrendingUp fontSize="small" />} 
-                                            label={intl.formatMessage({ id: "TextPercentFromLastPeriod" }, { percent: "+12%" })} 
-                                            size="small" 
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        gap={1}
+                                    >
+                                        <Chip
+                                            icon={
+                                                <TrendingUp fontSize="small" />
+                                            }
+                                            label={intl.formatMessage(
+                                                {
+                                                    id: "TextPercentFromLastPeriod",
+                                                },
+                                                { percent: "+12%" }
+                                            )}
+                                            size="small"
                                             color="success"
                                             sx={{ height: 24 }}
                                         />
                                     </Box>
                                 </Box>
-                                <Box 
-                                    sx={{ 
-                                        width: 56, 
-                                        height: 56, 
-                                        borderRadius: '50%', 
-                                        display: 'flex', 
-                                        alignItems: 'center', 
-                                        justifyContent: 'center',
-                                        backgroundColor: '#7856DE22'
+                                <Box
+                                    sx={{
+                                        width: 56,
+                                        height: 56,
+                                        borderRadius: "50%",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        backgroundColor: "#7856DE22",
                                     }}
                                 >
-                                    <AttachMoney sx={{ fontSize: 30, color: '#7856DE' }} />
+                                    <AttachMoney
+                                        sx={{ fontSize: 30, color: "#7856DE" }}
+                                    />
                                 </Box>
                             </Stack>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Paper 
-                            elevation={0} 
-                            sx={{ 
-                                p: 3, 
-                                height: '100%', 
+                        <Paper
+                            elevation={0}
+                            sx={{
+                                p: 3,
+                                height: "100%",
                                 borderRadius: 2,
-                                background: 'linear-gradient(135deg, #28C76F11, #28C76F22)',
-                                boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
-                                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-                                '&:hover': {
-                                    transform: 'translateY(-5px)',
-                                    boxShadow: '0 8px 25px 0 rgba(0,0,0,0.1)'
-                                }
+                                background:
+                                    "linear-gradient(135deg, #28C76F11, #28C76F22)",
+                                boxShadow: "0 4px 20px 0 rgba(0,0,0,0.05)",
+                                transition:
+                                    "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                                "&:hover": {
+                                    transform: "translateY(-5px)",
+                                    boxShadow: "0 8px 25px 0 rgba(0,0,0,0.1)",
+                                },
                             }}
                         >
-                            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
                                 <Box>
-                                    <Typography color="text.secondary" variant="body2" fontWeight="medium">
-                                        {intl.formatMessage({ id: "TextTotalGuests" })}
+                                    <Typography
+                                        color="text.secondary"
+                                        variant="body2"
+                                        fontWeight="medium"
+                                    >
+                                        {intl.formatMessage({
+                                            id: "TextTotalGuests",
+                                        })}
                                     </Typography>
-                                    <Typography variant="h3" fontWeight="bold" sx={{ my: 1 }}>
+                                    <Typography
+                                        variant="h3"
+                                        fontWeight="bold"
+                                        sx={{ my: 1 }}
+                                    >
                                         {getTotalGuests()}
                                     </Typography>
-                                    <Box display="flex" alignItems="center" gap={1}>
-                                        <Chip 
-                                            icon={<TrendingUp fontSize="small" />} 
-                                            label={intl.formatMessage({ id: "TextPercentFromLastPeriod" }, { percent: "+5%" })} 
-                                            size="small" 
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        gap={1}
+                                    >
+                                        <Chip
+                                            icon={
+                                                <TrendingUp fontSize="small" />
+                                            }
+                                            label={intl.formatMessage(
+                                                {
+                                                    id: "TextPercentFromLastPeriod",
+                                                },
+                                                { percent: "+5%" }
+                                            )}
+                                            size="small"
                                             color="success"
                                             sx={{ height: 24 }}
                                         />
                                     </Box>
                                 </Box>
-                                <Box 
-                                    sx={{ 
-                                        width: 56, 
-                                        height: 56, 
-                                        borderRadius: '50%', 
-                                        display: 'flex', 
-                                        alignItems: 'center', 
-                                        justifyContent: 'center',
-                                        backgroundColor: '#28C76F22'
+                                <Box
+                                    sx={{
+                                        width: 56,
+                                        height: 56,
+                                        borderRadius: "50%",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        backgroundColor: "#28C76F22",
                                     }}
                                 >
-                                    <PeopleAlt sx={{ fontSize: 30, color: '#28C76F' }} />
+                                    <PeopleAlt
+                                        sx={{ fontSize: 30, color: "#28C76F" }}
+                                    />
                                 </Box>
                             </Stack>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Paper 
-                            elevation={0} 
-                            sx={{ 
-                                p: 3, 
-                                height: '100%', 
+                        <Paper
+                            elevation={0}
+                            sx={{
+                                p: 3,
+                                height: "100%",
                                 borderRadius: 2,
-                                background: 'linear-gradient(135deg, #00CFE811, #00CFE822)',
-                                boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
-                                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-                                '&:hover': {
-                                    transform: 'translateY(-5px)',
-                                    boxShadow: '0 8px 25px 0 rgba(0,0,0,0.1)'
-                                }
+                                background:
+                                    "linear-gradient(135deg, #00CFE811, #00CFE822)",
+                                boxShadow: "0 4px 20px 0 rgba(0,0,0,0.05)",
+                                transition:
+                                    "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                                "&:hover": {
+                                    transform: "translateY(-5px)",
+                                    boxShadow: "0 8px 25px 0 rgba(0,0,0,0.1)",
+                                },
                             }}
                         >
-                            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
                                 <Box>
-                                    <Typography color="text.secondary" variant="body2" fontWeight="medium">
-                                        {intl.formatMessage({ id: "TextAverageOccupancy" })}
+                                    <Typography
+                                        color="text.secondary"
+                                        variant="body2"
+                                        fontWeight="medium"
+                                    >
+                                        {intl.formatMessage({
+                                            id: "TextAverageOccupancy",
+                                        })}
                                     </Typography>
-                                    <Typography variant="h3" fontWeight="bold" sx={{ my: 1 }}>
+                                    <Typography
+                                        variant="h3"
+                                        fontWeight="bold"
+                                        sx={{ my: 1 }}
+                                    >
                                         {getAverageOccupancy()}%
                                     </Typography>
-                                    <Box display="flex" alignItems="center" gap={1}>
-                                        <Chip 
-                                            icon={<TrendingDown fontSize="small" />} 
-                                            label={intl.formatMessage({ id: "TextPercentFromLastPeriod" }, { percent: "-2%" })} 
-                                            size="small" 
+                                    <Box
+                                        display="flex"
+                                        alignItems="center"
+                                        gap={1}
+                                    >
+                                        <Chip
+                                            icon={
+                                                <TrendingDown fontSize="small" />
+                                            }
+                                            label={intl.formatMessage(
+                                                {
+                                                    id: "TextPercentFromLastPeriod",
+                                                },
+                                                { percent: "-2%" }
+                                            )}
+                                            size="small"
                                             color="error"
                                             sx={{ height: 24 }}
                                         />
                                     </Box>
                                 </Box>
-                                <Box 
-                                    sx={{ 
-                                        width: 56, 
-                                        height: 56, 
-                                        borderRadius: '50%', 
-                                        display: 'flex', 
-                                        alignItems: 'center', 
-                                        justifyContent: 'center',
-                                        backgroundColor: '#00CFE822'
+                                <Box
+                                    sx={{
+                                        width: 56,
+                                        height: 56,
+                                        borderRadius: "50%",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        backgroundColor: "#00CFE822",
                                     }}
                                 >
-                                    <Hotel sx={{ fontSize: 30, color: '#00CFE8' }} />
+                                    <Hotel
+                                        sx={{ fontSize: 30, color: "#00CFE8" }}
+                                    />
                                 </Box>
                             </Stack>
                         </Paper>
@@ -517,24 +755,39 @@ const Dashboard = ({ workingDate }: any) => {
             </Box>
 
             {/* Occupancy Trend Chart */}
-            <Paper 
-                elevation={0} 
-                sx={{ 
-                    p: 3, 
-                    mb: 3, 
+            <Paper
+                elevation={0}
+                sx={{
+                    p: 3,
+                    mb: 3,
                     borderRadius: 2,
-                    boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)'
+                    boxShadow: "0 4px 20px 0 rgba(0,0,0,0.05)",
                 }}
             >
-                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb={2}
+                >
                     <Box>
-                        <Typography variant="h6" fontWeight="bold">{intl.formatMessage({ id: "TextOccupancyTrend" })}</Typography>
-                        <Typography variant="body2" color="text.secondary">{intl.formatMessage({ id: "TextWeeklyRoomOccupancy" })}</Typography>
+                        <Typography variant="h6" fontWeight="bold">
+                            {intl.formatMessage({ id: "TextOccupancyTrend" })}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {intl.formatMessage({
+                                id: "TextWeeklyRoomOccupancy",
+                            })}
+                        </Typography>
                     </Box>
-                    <MuiTooltip title={intl.formatMessage({ id: "TextViewDetailedReport" })}>
-                        <Button 
-                            variant="outlined" 
-                            size="small" 
+                    <MuiTooltip
+                        title={intl.formatMessage({
+                            id: "TextViewDetailedReport",
+                        })}
+                    >
+                        <Button
+                            variant="outlined"
+                            size="small"
                             startIcon={<BarChart />}
                             sx={{ borderRadius: 2 }}
                         >
@@ -543,7 +796,7 @@ const Dashboard = ({ workingDate }: any) => {
                     </MuiTooltip>
                 </Box>
                 <Box height={250}>
-                    <Bar 
+                    <Bar
                         data={occupancyTrendData}
                         options={{
                             responsive: true,
@@ -559,10 +812,10 @@ const Dashboard = ({ workingDate }: any) => {
                                     max: 100,
                                     ticks: {
                                         callback: (value) => `${value}%`,
-                                        stepSize: 20 // Set step size to 20% increments
-                                    }
-                                }
-                            }
+                                        stepSize: 20, // Set step size to 20% increments
+                                    },
+                                },
+                            },
                         }}
                     />
                 </Box>
@@ -570,46 +823,58 @@ const Dashboard = ({ workingDate }: any) => {
 
             {/* Revenue Forecast */}
             <Box mb={3}>
-                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography variant="h6" fontWeight="bold">{intl.formatMessage({ id: "TextRevenueForecast" })}</Typography>
-                    <Button 
-                        variant="outlined" 
-                        size="small" 
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb={2}
+                >
+                    <Typography variant="h6" fontWeight="bold">
+                        {intl.formatMessage({ id: "TextRevenueForecast" })}
+                    </Typography>
+                    <Button
+                        variant="outlined"
+                        size="small"
                         onClick={() => setShowForecast(!showForecast)}
-                        startIcon={showForecast ? <TrendingDown /> : <TrendingUp />}
+                        startIcon={
+                            showForecast ? <TrendingDown /> : <TrendingUp />
+                        }
                         sx={{ borderRadius: 2 }}
                     >
-                        {showForecast ? intl.formatMessage({ id: "TextHideForecast" }) : intl.formatMessage({ id: "TextShowForecast" })}
+                        {showForecast
+                            ? intl.formatMessage({ id: "TextHideForecast" })
+                            : intl.formatMessage({ id: "TextShowForecast" })}
                     </Button>
                 </Box>
                 {showForecast && (
-                    <Paper 
-                        elevation={0} 
-                        sx={{ 
-                            p: 3, 
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            p: 3,
                             borderRadius: 2,
-                            boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)'
+                            boxShadow: "0 4px 20px 0 rgba(0,0,0,0.05)",
                         }}
                     >
                         <Box height={250}>
-                            <Line 
+                            <Line
                                 data={forecastData}
                                 options={{
                                     responsive: true,
                                     maintainAspectRatio: false,
                                     plugins: {
                                         legend: {
-                                            position: 'top',
+                                            position: "top",
                                         },
                                     },
                                     scales: {
                                         y: {
                                             beginAtZero: false,
                                             ticks: {
-                                                callback: (value) => `${value}₮`
-                                            }
-                                        }
-                                    }
+                                                callback: (value) =>
+                                                    `${value}₮`,
+                                            },
+                                        },
+                                    },
                                 }}
                             />
                         </Box>
@@ -620,31 +885,34 @@ const Dashboard = ({ workingDate }: any) => {
             {/* Main Dashboard Cards */}
             <Grid container spacing={3} sx={{ width: "100%" }}>
                 {isLoading ? (
-                    <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+                    <Grid
+                        item
+                        xs={12}
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            py: 8,
+                        }}
+                    >
                         <CircularSlider hideKnob hideLabelValue width={80} />
                     </Grid>
                 ) : (
                     data &&
                     data.map((element: any, index: number) => (
-                        <Grid
-                            item
-                            xl={4}
-                            md={6}
-                            sm={12}
-                            key={index}
-                        >
-                            <Paper 
-                                elevation={0} 
-                                sx={{ 
+                        <Grid item xl={4} md={6} sm={12} key={index}>
+                            <Paper
+                                elevation={0}
+                                sx={{
                                     height: "100%",
                                     borderRadius: 2,
-                                    overflow: 'hidden',
-                                    boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
-                                    transition: 'transform 0.2s ease-in-out',
-                                    '&:hover': {
-                                        transform: 'translateY(-4px)',
-                                        boxShadow: '0 8px 25px 0 rgba(0,0,0,0.08)'
-                                    }
+                                    overflow: "hidden",
+                                    boxShadow: "0 4px 20px 0 rgba(0,0,0,0.05)",
+                                    transition: "transform 0.2s ease-in-out",
+                                    "&:hover": {
+                                        transform: "translateY(-4px)",
+                                        boxShadow:
+                                            "0 8px 25px 0 rgba(0,0,0,0.08)",
+                                    },
                                 }}
                             >
                                 <CardContent>
@@ -680,7 +948,8 @@ const Dashboard = ({ workingDate }: any) => {
                                                         bgcolor: "#7856DE11",
                                                         display: "flex",
                                                         alignItems: "center",
-                                                        justifyContent: "center",
+                                                        justifyContent:
+                                                            "center",
                                                     }}
                                                 >
                                                     {mainIcon(index)}
@@ -696,14 +965,18 @@ const Dashboard = ({ workingDate }: any) => {
                                                 </Typography>
                                             </Box>
                                             <Box>
-                                                <Typography color="text.secondary" variant="body2" fontWeight="medium">
-                                                    {
-                                        (Array.isArray(element) ? element.find(
-                                            (item: any) =>
-                                                item.ParameterID ===
-                                                1
-                                        )?.ParameterName : null)
-                                    }
+                                                <Typography
+                                                    color="text.secondary"
+                                                    variant="body2"
+                                                    fontWeight="medium"
+                                                >
+                                                    {Array.isArray(element)
+                                                        ? element.find(
+                                                              (item: any) =>
+                                                                  item.ParameterID ===
+                                                                  1
+                                                          )?.ParameterName
+                                                        : null}
                                                 </Typography>
                                                 <Typography
                                                     variant="h3"
@@ -711,18 +984,27 @@ const Dashboard = ({ workingDate }: any) => {
                                                     sx={{ mt: 1 }}
                                                 >
                                                     {index !== 2
-                                                         ? (Array.isArray(element) ? element.find(
-                                                               (item: any) =>
-                                                                   item.ParameterID ===
-                                                                   1
-                                                           )?.ParameterValue : 0)
-                                                         : fNumber(
-                                                               (Array.isArray(element) ? element.find(
-                                                                   (item: any) =>
-                                                                       item.ParameterID ===
-                                                                       1
-                                                               )?.ParameterValue : 0)
-                                                           ) + "₮"}
+                                                        ? Array.isArray(element)
+                                                            ? element.find(
+                                                                  (item: any) =>
+                                                                      item.ParameterID ===
+                                                                      1
+                                                              )?.ParameterValue
+                                                            : 0
+                                                        : fNumber(
+                                                              Array.isArray(
+                                                                  element
+                                                              )
+                                                                  ? element.find(
+                                                                        (
+                                                                            item: any
+                                                                        ) =>
+                                                                            item.ParameterID ===
+                                                                            1
+                                                                    )
+                                                                        ?.ParameterValue
+                                                                  : 0
+                                                          ) + "₮"}
                                                 </Typography>
                                             </Box>
                                         </Box>
@@ -737,7 +1019,8 @@ const Dashboard = ({ workingDate }: any) => {
                                                         position: "absolute",
                                                         inset: 0,
                                                         display: "flex",
-                                                        justifyContent: "center",
+                                                        justifyContent:
+                                                            "center",
                                                         alignItems: "center",
                                                         flexDirection: "column",
                                                         gap: 0.5,
@@ -748,8 +1031,16 @@ const Dashboard = ({ workingDate }: any) => {
                                                         color="text.secondary"
                                                     >
                                                         {index === 0
-                                                            ? intl.formatMessage({ id: "TextRoomOccupancy" })
-                                                            : intl.formatMessage({ id: "TextBookingOccupancy" })}
+                                                            ? intl.formatMessage(
+                                                                  {
+                                                                      id: "TextRoomOccupancy",
+                                                                  }
+                                                              )
+                                                            : intl.formatMessage(
+                                                                  {
+                                                                      id: "TextBookingOccupancy",
+                                                                  }
+                                                              )}
                                                     </Typography>
                                                     <Typography
                                                         variant="h5"
@@ -804,69 +1095,83 @@ const Dashboard = ({ workingDate }: any) => {
                                                             },
                                                             tooltip: {
                                                                 callbacks: {
-                                                                    label: function(context) {
-                                                                        return `${context.label}: ${fNumber(context.raw as number)}₮`;
-                                                                    }
-                                                                }
-                                                            }
+                                                                    label: function (
+                                                                        context
+                                                                    ) {
+                                                                        return `${
+                                                                            context.label
+                                                                        }: ${fNumber(
+                                                                            context.raw as number
+                                                                        )}₮`;
+                                                                    },
+                                                                },
+                                                            },
                                                         },
-                                                        cutout: '60%',
+                                                        cutout: "60%",
                                                         // borderWidth and borderRadius are applied at the dataset level in Chart.js v4
                                                     }}
                                                     data={{
                                                         labels: filterData(
                                                             element,
                                                             index
-                                                        ).map(
-                                                            ({
-                                                                ParameterName,
-                                                            }: any) => {
-                                                                if (
-                                                                    ParameterName !==
-                                                                        "Mini Bar" &&
-                                                                    ParameterName !==
-                                                                        "Restaurant"
-                                                                ) {
-                                                                    return ParameterName;
+                                                        )
+                                                            .map(
+                                                                ({
+                                                                    ParameterName,
+                                                                }: any) => {
+                                                                    if (
+                                                                        ParameterName !==
+                                                                            "Mini Bar" &&
+                                                                        ParameterName !==
+                                                                            "Restaurant"
+                                                                    ) {
+                                                                        return ParameterName;
+                                                                    }
+                                                                    return null;
                                                                 }
-                                                                return null;
-                                                            }
-                                                        ).filter(Boolean),
+                                                            )
+                                                            .filter(Boolean),
                                                         datasets: [
                                                             {
                                                                 data: filterData(
                                                                     element,
                                                                     index
-                                                                ).map(
-                                                                    ({
-                                                                        ParameterValue,
-                                                                        ParameterName,
-                                                                    }: any) => {
-                                                                        if (
-                                                                            ParameterName !==
-                                                                                "Mini Bar" &&
-                                                                            ParameterName !==
-                                                                                "Restaurant"
-                                                                        ) {
-                                                                            return ParameterValue;
+                                                                )
+                                                                    .map(
+                                                                        ({
+                                                                            ParameterValue,
+                                                                            ParameterName,
+                                                                        }: any) => {
+                                                                            if (
+                                                                                ParameterName !==
+                                                                                    "Mini Bar" &&
+                                                                                ParameterName !==
+                                                                                    "Restaurant"
+                                                                            ) {
+                                                                                return ParameterValue;
+                                                                            }
+                                                                            return null;
                                                                         }
-                                                                        return null;
-                                                                    }
-                                                                ).filter(Boolean),
-                                                                backgroundColor: [
-                                                                    "#7856DE",
-                                                                    "#00CFE8",
-                                                                    "#28C76F",
-                                                                    "#FF9F43",
-                                                                    "#EE5C78",
-                                                                ],
-                                                                hoverBackgroundColor: [
-                                                                    "#6745C3",
-                                                                    "#00BDD9",
-                                                                    "#23B662",
-                                                                    "#F08F34",
-                                                                    "#DD4B67",
-                                                                ],
+                                                                    )
+                                                                    .filter(
+                                                                        Boolean
+                                                                    ),
+                                                                backgroundColor:
+                                                                    [
+                                                                        "#7856DE",
+                                                                        "#00CFE8",
+                                                                        "#28C76F",
+                                                                        "#FF9F43",
+                                                                        "#EE5C78",
+                                                                    ],
+                                                                hoverBackgroundColor:
+                                                                    [
+                                                                        "#6745C3",
+                                                                        "#00BDD9",
+                                                                        "#23B662",
+                                                                        "#F08F34",
+                                                                        "#DD4B67",
+                                                                    ],
                                                                 borderWidth: 0,
                                                                 borderRadius: 4,
                                                             },
@@ -899,7 +1204,12 @@ const Dashboard = ({ workingDate }: any) => {
                                                             }
                                                             list={element}
                                                             workingDate={
-                                                                selectedDate ? format(selectedDate, 'yyyy-MM-dd') : workingDate
+                                                                selectedDate
+                                                                    ? format(
+                                                                          selectedDate,
+                                                                          "yyyy-MM-dd"
+                                                                      )
+                                                                    : workingDate
                                                             }
                                                             dashboardType={
                                                                 dashboardType
@@ -938,7 +1248,7 @@ function DashboardCard({
     // Function to translate parameter names
     const translateParameterName = (name: string) => {
         // Use a translation key based on the parameter name
-        const translationKey = `Text${name.replace(/\s+/g, '')}`;
+        const translationKey = `Text${name.replace(/\s+/g, "")}`;
         // Try to get the translation, fall back to the original name if not found
         try {
             return intl.formatMessage({ id: translationKey });
@@ -1282,7 +1592,9 @@ function DashboardCard({
                                             width: "172px",
                                         }}
                                     >
-                                        {translateParameterName(item.ParameterName)}
+                                        {translateParameterName(
+                                            item.ParameterName
+                                        )}
                                     </Typography>
                                     <Typography
                                         sx={{
