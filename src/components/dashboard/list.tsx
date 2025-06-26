@@ -41,8 +41,9 @@ import { Pie, Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement } from "chart.js";
 import Link from "next/link";
 import moment from "moment";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import AdapterDateFns from '@date-io/date-fns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { DashboardSWR } from "lib/api/dashboard";
 
@@ -87,7 +88,7 @@ const Dashboard = ({ workingDate }: any) => {
         }
 
         // Extract revenue data from API response
-        const revenueData = data[2].filter((item: any) => item.ParameterName === "Total Charges");
+        const revenueData = (data && data[2] && Array.isArray(data[2])) ? data[2].filter((item: any) => item.ParameterName === "Total Charges") : [];
         
         // If we have data, use it; otherwise use placeholder
         const labels = revenueData.map((item: any, index: number) => {
@@ -134,7 +135,7 @@ const Dashboard = ({ workingDate }: any) => {
         }
 
         // Extract occupancy data from API response
-        const occupancyData = data[0].filter((item: any) => item.ParameterName === "Room Occupancy");
+        const occupancyData = (data && data[0] && Array.isArray(data[0])) ? data[0].filter((item: any) => item.ParameterName === "Room Occupancy") : [];
         
         // If we have data, use it; otherwise use placeholder
         const labels = occupancyData.map((item: any, index: number) => {
@@ -173,7 +174,8 @@ const Dashboard = ({ workingDate }: any) => {
         setTimeout(() => setIsLoading(false), 500); // Simulate loading
     };
 
-    const handleDateChange = (newDate: Date | null) => {
+    const handleDateChange = (value: unknown, keyboardInputValue?: string) => {
+        const newDate = value as Date | null;
         if (newDate) {
             setIsLoading(true);
             setSelectedDate(newDate);
@@ -191,12 +193,14 @@ const Dashboard = ({ workingDate }: any) => {
     };
 
     function roomOccupancy(element: any) {
-        return (element as any[]).find(
+        if (!Array.isArray(element)) return 0;
+        return element.find(
             (item: any) => item.ParameterName === "Room Occupancy"
         )?.ParameterValue || 0;
     }
 
     function filterData(element: any, index: number) {
+        if (!Array.isArray(element)) return [];
         switch (index) {
             case 0:
                 return element.filter(
@@ -240,18 +244,18 @@ const Dashboard = ({ workingDate }: any) => {
     // Calculate total revenue and guests from data
     const getTotalRevenue = () => {
         if (!data || !data[2]) return 0;
-        const totalCharges = data[2].find((item: any) => item.ParameterName === "Total Charges");
+        const totalCharges = (data && data[2] && Array.isArray(data[2])) ? data[2].find((item: any) => item.ParameterName === "Total Charges") : null;
         return totalCharges ? totalCharges.ParameterValue : 0;
     };
     
     const getTotalGuests = () => {
         if (!data || !data[1]) return 0;
-        const checkedIn = data[1].find((item: any) => item.ParameterName === "Checked In");
+        const checkedIn = (data && data[1] && Array.isArray(data[1])) ? data[1].find((item: any) => item.ParameterName === "Checked In") : null;
         return checkedIn ? checkedIn.ParameterValue : 0;
     };
     
     const getAverageOccupancy = () => {
-        if (!data || !data[0]) return 0;
+        if (!data || !data[0] || !Array.isArray(data[0])) return 0;
         return roomOccupancy(data[0]);
     };
 
@@ -292,16 +296,16 @@ const Dashboard = ({ workingDate }: any) => {
                                 </IconButton>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
-                                        value={selectedDate}
-                                        onChange={handleDateChange}
-                                        renderInput={(params) => (
-                                            <TextField 
-                                                {...params} 
-                                                size="small" 
-                                                sx={{ width: 150 }}
-                                            />
-                                        )}
-                                    />
+                                    value={selectedDate}
+                                    onChange={handleDateChange}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            size="small"
+                                            sx={{ width: 150 }}
+                                        />
+                                    )}
+                                />
                                 </LocalizationProvider>
                                 <IconButton size="small" onClick={() => navigateDate('forward')}>
                                     <ArrowForward fontSize="small" />
@@ -694,12 +698,12 @@ const Dashboard = ({ workingDate }: any) => {
                                             <Box>
                                                 <Typography color="text.secondary" variant="body2" fontWeight="medium">
                                                     {
-                                                        (element as any[]).find(
-                                                            (item: any) =>
-                                                                item.ParameterID ===
-                                                                1
-                                                        )?.ParameterName
-                                                    }
+                                        (Array.isArray(element) ? element.find(
+                                            (item: any) =>
+                                                item.ParameterID ===
+                                                1
+                                        )?.ParameterName : null)
+                                    }
                                                 </Typography>
                                                 <Typography
                                                     variant="h3"
@@ -707,18 +711,18 @@ const Dashboard = ({ workingDate }: any) => {
                                                     sx={{ mt: 1 }}
                                                 >
                                                     {index !== 2
-                                                        ? (element as any[]).find(
-                                                              (item: any) =>
-                                                                  item.ParameterID ===
-                                                                  1
-                                                          )?.ParameterValue
-                                                        : fNumber(
-                                                              (element as any[]).find(
-                                                                  (item: any) =>
-                                                                      item.ParameterID ===
-                                                                      1
-                                                              )?.ParameterValue || 0
-                                                          ) + "₮"}
+                                                         ? (Array.isArray(element) ? element.find(
+                                                               (item: any) =>
+                                                                   item.ParameterID ===
+                                                                   1
+                                                           )?.ParameterValue : 0)
+                                                         : fNumber(
+                                                               (Array.isArray(element) ? element.find(
+                                                                   (item: any) =>
+                                                                       item.ParameterID ===
+                                                                       1
+                                                               )?.ParameterValue : 0)
+                                                           ) + "₮"}
                                                 </Typography>
                                             </Box>
                                         </Box>

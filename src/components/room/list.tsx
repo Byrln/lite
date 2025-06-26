@@ -86,6 +86,7 @@ const RoomList = ({ title, setHasData = null }: any) => {
                 hasNew={true}
                 hasUpdate={true}
                 hasDelete={true}
+                hasAddFloors={true}
                 id="RoomID"
                 listUrl={listUrl}
                 modalTitle={title}

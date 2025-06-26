@@ -92,8 +92,8 @@ const AmenityList = ({ title, setHasData = null }: any) => {
                         }}
                     >
                         <Icon
-                            icon="material-symbols:help-outline"
-                            color="#1877F2"
+                            icon="mdi:youtube"
+                            color="#FF0000"
                             height={24}
                         />
                     </a>

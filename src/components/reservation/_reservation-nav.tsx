@@ -311,11 +311,6 @@ const ReservationNav = ({
                                 }}
                             >
                                 <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%"}} />
-                                {/* <Icon
-                                    icon="material-symbols:help-outline"
-                                    color="#1877F2"
-                                    height={16}
-                                /> */}
                             </a>
                         </Link>
                     </Tooltip>
@@ -361,11 +356,6 @@ const ReservationNav = ({
                                 }}
                             >
                                 <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%"}} />
-                                {/* <Icon
-                                    icon="material-symbols:help-outline"
-                                    color="#1877F2"
-                                    height={16}
-                                /> */}
                             </a>
                         </Link>
                     </Tooltip>
@@ -411,11 +401,6 @@ const ReservationNav = ({
                                 }}
                             >
                                 <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%"}} />
-                                {/* <Icon
-                                    icon="material-symbols:help-outline"
-                                    color="#1877F2"
-                                    height={16}
-                                /> */}
                             </a>
                         </Link>
                     </Tooltip>

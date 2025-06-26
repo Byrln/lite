@@ -24,13 +24,19 @@ const FloorSelect = ({
             </Box>
         );
 
+    const sortedData = data ? [...data].sort((b, a) => {
+        const aFloorNo = parseInt(a.FloorNo) || 0;
+        const bFloorNo = parseInt(b.FloorNo) || 0;
+        return aFloorNo - bFloorNo;
+    }) : [];
+
     return (
         <CustomSelect
             register={register}
             errors={errors}
             field={customField ? customField : "FloorID"}
             label="Давхар"
-            options={data}
+            options={sortedData}
             optionValue={isFloorIdIsValue ? "FloorID" : "FloorNo"}
             optionLabel="FloorNo"
             multiple={multiple}

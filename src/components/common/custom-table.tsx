@@ -18,11 +18,15 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import EditIcon from "@mui/icons-material/Edit";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import Slider from "@mui/material/Slider";
 import { Icon } from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataGrid } from "@mui/x-data-grid";
 import { useIntl } from "react-intl";
+import { toast } from "react-toastify";
 
 import { getCurrentDate } from "lib/utils/helpers";
 import EmptyAlert from "./empty-alert";
@@ -43,6 +47,7 @@ const CustomTable = ({
     hasPrint = true,
     hasExcel = true,
     hasShow = true,
+    hasAddFloors = false,
     id,
     listUrl,
     modalTitle,
@@ -63,10 +68,51 @@ const CustomTable = ({
     // const [excelColumns, setExcelColumns]: any = useState(null);
     const { handleModal }: any = useContext(ModalContext);
     const componentRef: any = useRef<HTMLDivElement>(null);
+    
+    // Add Floors Modal state
+    const [openFloorsModal, setOpenFloorsModal] = useState(false);
+    const [floorRange, setFloorRange] = useState<number[]>([1, 5]);
 
     useEffect(() => {
         setHeight(window.innerHeight - 240);
     }, [window.innerHeight]);
+
+    // Handler functions for Add Floors modal
+    const handleFloorsModalOpen = () => {
+        setOpenFloorsModal(true);
+    };
+
+    const handleFloorsModalClose = () => {
+        setOpenFloorsModal(false);
+    };
+
+    const handleFloorRangeChange = (event: Event, newValue: number | number[]) => {
+        setFloorRange(newValue as number[]);
+    };
+
+    const valuetext = (value: number) => {
+        return `${value}`;
+    };
+
+    const handleAddFloors = async () => {
+        try {
+            await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const success = Math.random() > 0.3;
+                    if (success) {
+                        resolve('success');
+                    } else {
+                        reject(new Error('Failed to add floors'));
+                    }
+                }, 1000);
+            });
+            
+            toast(intl.formatMessage({ id: "TextSuccess" }) || "Амжилттай.");
+            handleFloorsModalClose();
+        } catch (error) {
+            toast("Алдаа гарлаа. Дахин оролдоно уу.");
+        }
+    };
 
     const tempcolumns: any = columns
         .map((obj: any) => ({
@@ -218,6 +264,54 @@ const CustomTable = ({
 
     return (
         <>
+            {/* Add Floors Modal */}
+            <Modal
+                open={openFloorsModal}
+                onClose={handleFloorsModalClose}
+                aria-labelledby="add-floors-modal-title"
+                aria-describedby="add-floors-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 400,
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: 1,
+                }}>
+                    <Typography id="add-floors-modal-title" variant="h6" component="h2" gutterBottom>
+                        {intl.formatMessage({
+                            id: "ButtonAddFloors",
+                        })}
+                    </Typography>
+                    <Box sx={{ mt: 2, mb: 4 }}>
+                        <Slider
+                            getAriaLabel={() => 'Floor range'}
+                            value={floorRange}
+                            onChange={handleFloorRangeChange}
+                            valueLabelDisplay="auto"
+                            getAriaValueText={valuetext}
+                            min={1}
+                            max={20}
+                        />
+                        <Typography id="add-floors-modal-description" sx={{ mt: 2 }}>
+                            {intl.formatMessage({ id: 'TextNumber' })}: {floorRange[0]} - {floorRange[1]}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+                        <Button onClick={handleFloorsModalClose} variant="outlined">
+                            {intl.formatMessage({ id: 'ButtonCancel' })}
+                        </Button>
+                        <Button onClick={handleAddFloors} variant="contained" color="primary">
+                            {intl.formatMessage({ id: 'ButtonSave' })}
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
+
             {(hasNew || hasPrint || hasExcel) && (
                 <>
                     <Box sx={{ display: "flex" }}>
@@ -248,6 +342,18 @@ const CustomTable = ({
                             >
                                 {intl.formatMessage({
                                     id: "ButtonAddNew",
+                                })}
+                            </Button>
+                        )}
+                        {hasAddFloors && (
+                            <Button
+                                variant="outlined"
+                                className="mr-3"
+                                onClick={handleFloorsModalOpen}
+                                startIcon={<Icon icon={plusFill} />}
+                            >
+                                {intl.formatMessage({
+                                    id: "ButtonAddFloors",
                                 })}
                             </Button>
                         )}

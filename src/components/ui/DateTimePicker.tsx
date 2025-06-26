@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField, InputAdornment } from '@mui/material';
 import { DateTimePicker as MuiDateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import AdapterDateFns from '@date-io/date-fns';
 import { CalendarIcon, ClockIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

@@ -48,7 +48,6 @@ const ListItemStyle = styled((props: {
     paddingRight: isMinimized ? theme.spacing(1) : theme.spacing(2.5),
     color: theme.palette.text.secondary,
     justifyContent: isMinimized ? 'center' : 'flex-start',
-    position: 'relative',
     "&:before": {
         top: 0,
         right: 0,
@@ -101,7 +100,7 @@ interface SubMenuItemProps {
 function SubMenuItem({ item, active, isMinimized = false, isSubMenu = false }: SubMenuItemProps) {
     const { locale }: any = useRouter();
     const theme = useTheme();
-    const isActiveSub = active(item.path);
+    const isActiveSub = active(item.path || '');
     const { title, titleEn, path, icon, children } = item;
 
     const activeSubStyle = {
@@ -194,7 +193,7 @@ interface NavItemProps {
 function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }: NavItemProps) {
     const { locale }: any = useRouter();
     const theme = useTheme();
-    const isActiveRoot = active(item.path);
+    const isActiveRoot = active(item.path || '');
     const { title, titleEn, path, icon, info, children } = item;
     const [openSubMenu, setOpenSubMenu] = useState(false);
     const [openSubList, setOpenSubList] = useState(false);
@@ -311,7 +310,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
                         
                         {children.map((item) => {
                             const { title, titleEn, path, children: subChildren } = item;
-                            const isActiveSub = active(path);
+                            const isActiveSub = active(path || '');
                             const itemKey = locale === "mon" ? title : titleEn;
                             
                             if (subChildren) {
@@ -427,7 +426,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
                             // Regular menu items without sub-dropdown
                             return item.path === "/conf/hotel-setting" ? (
                                 localStorage.getItem("hotelId") === "1" && (
-                                    <Link key={title} href={path} passHref>
+                                    <Link key={title} href={path || '#'} passHref>
                                         <ListItemStyle
                                             component="a"
                                             sx={{
@@ -474,7 +473,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
                                     </Link>
                                 )
                             ) : (
-                                <Link key={title} href={path} passHref>
+                                <Link key={title} href={path || '#'} passHref>
                                     <ListItemStyle
                                         component="a"
                                         sx={{
@@ -524,7 +523,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
     }
 
     return (
-        <Link href={path} passHref>
+        <Link href={path || '#'} passHref>
             <ListItemStyle
                 component="a"
                 sx={{

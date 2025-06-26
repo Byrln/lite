@@ -226,6 +226,8 @@ const NewEdit = ({
                     Name: null,
                     Email: null,
                     Mobile: null,
+                    CountryID: "",
+                    VipStatusID: ""
                 },
             });
         }
