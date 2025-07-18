@@ -12,9 +12,9 @@ const ArrowStyle = styled("span")(({ theme }: any) => ({
         position: "absolute",
         borderRadius: "0 0 4px 0",
         transform: "rotate(-135deg)",
-        background: theme.palette.background.paper,
-        borderRight: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`,
-        borderBottom: `solid 1px ${alpha(theme.palette.grey[500], 0.12)}`,
+        background: "#2a304d",
+        borderRight: `solid 1px ${alpha(theme.palette.grey[300], 0.2)}`,
+        borderBottom: `solid 1px ${alpha(theme.palette.grey[300], 0.2)}`,
     },
 }));
 
@@ -30,8 +30,13 @@ export default function MenuPopover({ children, sx, ...other }: any) {
                     overflow: "inherit",
                     boxShadow: (theme: any) => theme.customShadows.z20,
                     border: (theme: any) =>
-                        `solid 1px ${theme.palette.grey[500_8]}`,
+                        `solid 1px ${alpha(theme.palette.grey[300], 0.2)}`,
                     width: 200,
+                    bgcolor: "#2a304d",
+                    color: "#ffffff",
+                    '& .MuiMenuItem-root:hover': {
+                        bgcolor: alpha("#ffffff", 0.1)
+                    },
                     ...sx,
                 },
             }}

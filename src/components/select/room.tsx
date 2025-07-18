@@ -34,7 +34,7 @@ const RoomSelect = ({
             if (
                 typeof baseStay == "undefined" ||
                 baseStay.room?.RoomID != room?.RoomID ||
-                typeof baseStay.room.RoomName != "string"
+                typeof baseStay.room?.RoomName != "string"
             ) {
                 onRoomChange(
                     room,
@@ -56,7 +56,7 @@ const RoomSelect = ({
             return;
         }
         var values = {
-            TransactionID: baseStay.TransactionID,
+            TransactionID: baseStay?.TransactionID,
             RoomTypeID: roomType
                 ? roomType.RoomTypeID
                 : baseStay.roomType?.RoomTypeID == "all"
@@ -81,7 +81,7 @@ const RoomSelect = ({
     };
     useEffect(() => {
         if (data && data.length > 0) {
-            if (baseStay.room) {
+            if (baseStay?.room) {
                 eventRoomChange(baseStay.room?.RoomID);
             } else {
                 eventRoomChange(data[0].RoomID);
@@ -93,7 +93,7 @@ const RoomSelect = ({
     useEffect(() => {
         fetchRooms();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);
+    }, [baseStay?.roomType, baseStay?.dateStart, baseStay?.dateEnd]);
 
     useEffect(() => {
         if (roomAutoAssign && data.length > 0 && data) {
@@ -133,7 +133,7 @@ const RoomSelect = ({
                 </MenuItem>
             )}
             {data.map((room: any) => {
-                return baseStay.roomType != "all" ? (
+                return baseStay?.roomType != "all" ? (
                     roomType && roomType?.RoomTypeID === room.RoomTypeID ? (
                         <MenuItem key={room.RoomID} value={room.RoomID}>
                             {`${room.RoomFullName}`}

@@ -52,6 +52,7 @@ export default function LanguagePopover() {
                     padding: 0,
                     width: 44,
                     height: 44,
+                    color: '#ffffff',
                     ...(open && {
                         bgcolor: (theme) =>
                             alpha(

@@ -1,57 +1,25 @@
-import React from 'react';
-import { TextField, TextFieldProps, InputAdornment } from '@mui/material';
+import * as React from "react"
 
-interface InputProps extends Omit<TextFieldProps, 'variant'> {
-  variant?: 'outlined' | 'filled' | 'standard';
-  startIcon?: React.ReactNode;
-  endIcon?: React.ReactNode;
-  error?: boolean;
-  helperText?: React.ReactNode;
-  fullWidth?: boolean;
-}
+import { cn } from "@/lib/utils"
 
-const Input: React.FC<InputProps> = ({
-  variant = 'outlined',
-  startIcon,
-  endIcon,
-  error = false,
-  helperText,
-  fullWidth = false,
-  className = '',
-  ...props
-}) => {
-  const baseClasses = 'rounded-md';
-  
-  const variantClasses = {
-    outlined: 'border border-gray-300 focus-within:border-primary-main focus-within:ring-1 focus-within:ring-primary-light',
-    filled: 'bg-gray-100 border-b-2 border-gray-300 focus-within:border-primary-main',
-    standard: 'border-b border-gray-300 focus-within:border-primary-main',
-  };
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-  const errorClasses = error ? 'border-red-500 focus-within:border-red-500 focus-within:ring-red-200' : '';
-  const widthClass = fullWidth ? 'w-full' : '';
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Input.displayName = "Input"
 
-  const tailwindClasses = `${baseClasses} ${variantClasses[variant]} ${errorClasses} ${widthClass} ${className}`;
-
-  return (
-    <TextField
-      variant={variant}
-      error={error}
-      helperText={helperText}
-      fullWidth={fullWidth}
-      className={tailwindClasses}
-      InputProps={{
-        startAdornment: startIcon ? (
-          <InputAdornment position="start">{startIcon}</InputAdornment>
-        ) : undefined,
-        endAdornment: endIcon ? (
-          <InputAdornment position="end">{endIcon}</InputAdornment>
-        ) : undefined,
-        className: 'rounded-md',
-      }}
-      {...props}
-    />
-  );
-};
-
-export default Input;
+export { Input }

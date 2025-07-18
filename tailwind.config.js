@@ -80,6 +80,16 @@ module.exports = {
   				DEFAULT: 'oklch(from var(--success) l c h / <alpha-value>)',
   				border: 'oklch(from var(--success-border) l c h / <alpha-value>)',
   				foreground: 'oklch(from var(--success-foreground) l c h / <alpha-value>)'
+  			},
+  			sidebar: {
+  				DEFAULT: 'hsl(var(--sidebar-background))',
+  				foreground: 'hsl(var(--sidebar-foreground))',
+  				primary: 'hsl(var(--sidebar-primary))',
+  				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+  				accent: 'hsl(var(--sidebar-accent))',
+  				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				border: 'hsl(var(--sidebar-border))',
+  				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
   		fontFamily: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import DatePickerCustom from './date-picker-custom';
+import DatePickerCustom from './MuiDatePickerCustom';
 import { useIntl } from 'react-intl';
 
 interface DatePickerDemoProps {

@@ -72,7 +72,7 @@ const Calendar = ({
 				<button
 					{...props}
 					className={cn(
-						buttonVariants({ variant: "ghost", size: "icon-sm" }),
+						buttonVariants({ variant: "ghost", size: "icon" }),
 						"absolute right-3",
 						classNames?.button_next
 					)}
@@ -84,7 +84,7 @@ const Calendar = ({
 				<button
 					{...props}
 					className={cn(
-						buttonVariants({ variant: "ghost", size: "icon-sm" }),
+						buttonVariants({ variant: "ghost", size: "icon" }),
 						"absolute left-3",
 						classNames?.button_previous
 					)}

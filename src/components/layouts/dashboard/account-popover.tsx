@@ -65,6 +65,7 @@ export default function AccountPopover() {
                     padding: 0,
                     width: 44,
                     height: 44,
+                    color: '#ffffff',
                     ...(open && {
                         "&:before": {
                             zIndex: 1,
@@ -149,6 +150,7 @@ export default function AccountPopover() {
                             });
                         }}
                         className="mb-3"
+                        sx={{ borderColor: 'rgba(255, 255, 255, 0.23)', color: '#ffffff' }}
                     >
                         {intl.formatMessage({
                             id: "MenuChangePassword",
@@ -164,6 +166,7 @@ export default function AccountPopover() {
                                 callbackUrl: "http://pms2.horecasoft.mn",
                             })
                         }
+                        sx={{ borderColor: 'rgba(255, 255, 255, 0.23)', color: '#ffffff' }}
                     >
                         {intl.formatMessage({
                             id: "MenuLogOut",

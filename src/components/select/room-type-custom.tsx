@@ -29,8 +29,6 @@ const RoomTypeCustomSelect: React.FC<RoomTypeCustomSelectProps> = ({
       };
       const response = await RoomTypeAPI.list(values);
       setRoomTypes(response);
-      
-      // Convert to RoomTypeSelectItem format
       const items: RoomTypeSelectItem[] = [
         { value: "0", label: "Бүх өрөө" },
         ...response.map((roomType: any) => ({
@@ -53,7 +51,6 @@ const RoomTypeCustomSelect: React.FC<RoomTypeCustomSelectProps> = ({
     setSearchRoomTypeID(roomTypeId);
   };
 
-  // Find the current selected item
   const currentValue = searchRoomTypeID.toString();
   const selectedItem = selectItems.find(item => item.value === currentValue);
 

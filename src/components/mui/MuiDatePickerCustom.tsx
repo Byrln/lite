@@ -30,16 +30,14 @@ const DatePickerCustom: React.FC<DatePickerCustomProps> = ({
   onFilterChange,
 }) => {
   const intl = useIntl();
-    let displayLabel = label ? 
-    (label.startsWith('id:') ? intl.formatMessage({id: label.substring(3)}) : label) : 
+  let displayLabel = label ?
+    (label.startsWith('id:') ? intl.formatMessage({ id: label.substring(3) }) : label) :
     '';
-  
-  // Remove "огноо" text if present
   displayLabel = displayLabel.replace(/огноо/gi, '').trim();
   displayLabel = displayLabel.replace(/RowHeaderStarDate/gi, '').trim();
 
   return (
-    <div className="flex min-w-[150px] items-center justify-center">
+    <div className="flex items-center justify-center">
       <Controller
         name={name}
         control={control}
@@ -50,20 +48,18 @@ const DatePickerCustom: React.FC<DatePickerCustomProps> = ({
             value={value}
             onChange={(date) => {
               try {
-                // Format the date for react-hook-form
                 if (date) {
-                  // Use the same pattern as in search.tsx
                   const formattedDate = moment(
                     dateStringToObj(moment(date).format('YYYY-MM-DD')),
                     'YYYY-MM-DD'
                   );
-                  
+
                   fieldOnChange(formattedDate);
-                  
+
                   if (onChange) {
                     onChange(formattedDate);
                   }
-                  
+
                   if (onFilterChange) {
                     onFilterChange(moment(date).format('YYYY-MM-DD'));
                   }
