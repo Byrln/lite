@@ -12,8 +12,7 @@ import {
   ListItemText,
   ListItemIcon,
   ListItemButton,
-  Tooltip,
-  Typography
+  Tooltip
 } from "@mui/material";
 
 interface ListItemStyleProps {
@@ -32,6 +31,7 @@ const ListItemStyle = styled((props: {
   const { isMinimized, hasSubMenu, isSubMenu, ...otherProps } = props;
   return <ListItemButton disableGutters {...otherProps} />;
 })(({
+
   theme,
   isMinimized,
   hasSubMenu,
@@ -116,24 +116,23 @@ function SubMenuItem({ item, active, isMinimized = false, isSubMenu = false }: S
   const displayTitle = locale === "en" ? titleEn : title;
 
   return (
-    <Tooltip title={displayTitle} placement="right" arrow enterDelay={200} enterNextDelay={200}>
+    <Tooltip title={displayTitle} placement="right" arrow>
       <Link href={path || '#'} passHref>
         <ListItemStyle
-            component="a"
-            sx={{
-              ...(isActiveSub && activeSubStyle),
-              cursor: path ? 'pointer' : 'default',
+          component="a"
+          sx={{
+            ...(isActiveSub && activeSubStyle),
+            cursor: path ? 'pointer' : 'default',
+            textDecoration: 'none',
+            pl: isSubMenu ? 4 : 3,
+            height: isSubMenu ? 40 : 48,
+            '&:hover': {
               textDecoration: 'none',
-              pl: isMinimized ? theme.spacing(2) : isSubMenu ? 4 : 3,
-              height: isSubMenu ? 40 : 48,
-              justifyContent: isMinimized ? 'center' : 'flex-start',
-              '&:hover': {
-                textDecoration: 'none',
-                bgcolor: isSubMenu
-                  ? alpha('#ff4d76', 0.08)
-                  : alpha(theme.palette.primary.main, 0.08),
-              }
-            }}
+              bgcolor: isSubMenu
+                ? alpha('#ff4d76', 0.08)
+                : alpha(theme.palette.primary.main, 0.08),
+            }
+          }}
           isMinimized={isMinimized}
           isSubMenu={isSubMenu}
         >
@@ -240,11 +239,12 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
   };
 
   if (children) {
+    // Check if any child has subchildren
     const hasSubMenu = children.some(child => child.children);
 
     return (
-      <React.Fragment>
-        <Tooltip title={displayTitle} placement="right" arrow enterDelay={200} enterNextDelay={200}>
+      <>
+        <Tooltip title={isMinimized ? displayTitle : ""} placement="right" arrow>
           <ListItemStyle
             className={`nav-item ${isOpen ? 'open' : ''}`}
             sx={{
@@ -261,7 +261,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
             isMinimized={isMinimized}
             ref={anchorRef}
             hasSubMenu={hasSubMenu}
-            onClick={(e: React.MouseEvent<HTMLElement>) => {
+            onClick={(e) => {
               handleOpen();
               if (isMinimized) {
                 e.preventDefault();
@@ -273,7 +273,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
             {!isMinimized && (
               <ListItemText
                 disableTypography
-                primary={displayTitle}
+                primary={locale == "en" ? titleEn : title}
               />
             )}
             {info && !isMinimized && info}
@@ -317,6 +317,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
               const itemKey = locale === "mon" ? title : titleEn;
 
               if (subChildren) {
+                // This is a menu item with sub-dropdown
                 return (
                   <div key={itemKey}>
                     <Tooltip title={locale === "en" ? titleEn : title} placement="right" arrow>
@@ -393,21 +394,12 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
                         component="div"
                         disablePadding
                         sx={{
-                          pl: isMinimized ? 1 : 4,
+                          pl: 4,
                           maxHeight: '300px',
                           overflowY: 'auto',
-                          overflowX: 'hidden',
                           bgcolor: '#232845',
                           position: 'relative',
                           zIndex: 999,
-                          ...(isMinimized && {
-                            width: '180px',
-                            position: 'absolute',
-                            left: '100%',
-                            top: 0,
-                            boxShadow: '0 0 10px rgba(0,0,0,0.2)',
-                            borderRadius: '0 4px 4px 0',
-                          }),
                           '&::-webkit-scrollbar': {
                             width: '4px',
                           },
@@ -428,7 +420,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
                             key={subItem.title}
                             item={subItem}
                             active={active}
-                            isMinimized={isMinimized}
+                            isMinimized={false}
                             isSubMenu={true}
                           />
                         ))}
@@ -437,10 +429,12 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
                   </div>
                 );
               }
+
+              // Regular menu items without sub-dropdown
               return item.path === "/conf/hotel-setting" ? (
                 localStorage.getItem("hotelId") === "1" && (
                   <Link key={title} href={path || '#'} passHref>
-                    <Tooltip title={(locale === "en" ? titleEn : title)} placement="right" arrow enterDelay={200} enterNextDelay={200}>
+                    <Tooltip title={isMinimized ? (locale === "en" ? titleEn : title) : ""} placement="right" arrow>
                       <ListItemStyle
                         component="a"
                         sx={{
@@ -489,7 +483,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
                 )
               ) : (
                 <Link key={title} href={path || '#'} passHref>
-                  <Tooltip title={(locale === "en" ? titleEn : title)} placement="right" arrow enterDelay={200} enterNextDelay={200}>
+                  <Tooltip title={isMinimized ? (locale === "en" ? titleEn : title) : ""} placement="right" arrow>
                     <ListItemStyle
                       component="a"
                       sx={{
@@ -535,14 +529,14 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
             })}
           </List>
         </Collapse>
-      </React.Fragment>
+      </>
     );
   }
 
   return (
     <>
       <Link href={path || '#'} passHref>
-        <Tooltip title={displayTitle} placement="right" arrow enterDelay={200} enterNextDelay={200}>
+        <Tooltip title={isMinimized ? displayTitle : ""} placement="right" arrow>
           <ListItemStyle
             component="a"
             sx={{

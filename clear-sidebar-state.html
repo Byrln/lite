@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Clear Sidebar State</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #status {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #dff0d8;
+      color: #3c763d;
+    }
+    .info {
+      background-color: #d9edf7;
+      color: #31708f;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sidebar State Manager</h1>
+  
+  <div>
+    <p>Current sidebar state: <span id="currentState">Loading...</span></p>
+  </div>
+  
+  <div>
+    <button onclick="setSidebarState(false)">Expand Sidebar</button>
+    <button onclick="setSidebarState(true)">Minimize Sidebar</button>
+    <button onclick="clearSidebarState()">Clear Sidebar State</button>
+  </div>
+  
+  <div id="status"></div>
+  
+  <script>
+    // Display current state
+    function updateCurrentState() {
+      const currentState = localStorage.getItem('sidebarMinimized');
+      document.getElementById('currentState').textContent = 
+        currentState === null ? 'Not set' : 
+        currentState === 'true' ? 'Minimized' : 'Expanded';
+    }
+    
+    // Set sidebar state
+    function setSidebarState(minimized) {
+      localStorage.setItem('sidebarMinimized', minimized.toString());
+      updateCurrentState();
+      
+      const statusEl = document.getElementById('status');
+      statusEl.className = 'success';
+      statusEl.textContent = `Sidebar state set to ${minimized ? 'minimized' : 'expanded'}. Refresh your application to see changes.`;
+    }
+    
+    // Clear sidebar state
+    function clearSidebarState() {
+      localStorage.removeItem('sidebarMinimized');
+      updateCurrentState();
+      
+      const statusEl = document.getElementById('status');
+      statusEl.className = 'info';
+      statusEl.textContent = 'Sidebar state cleared. Refresh your application to see changes.';
+    }
+    
+    // Initialize
+    updateCurrentState();
+  </script>
+</body>
+</html>

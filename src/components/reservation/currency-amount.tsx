@@ -213,11 +213,11 @@ const CurrencyAmount = ({
           error={errors.CurrencyAmount?.message}
           helperText={errors.CurrencyAmount?.message}
           InputLabelProps={{
-            shrink: currencyAmount,
+            shrink: true,
           }}
           InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
+            endAdornment: (
+              <InputAdornment position="end">
                 {Currency && Currency.CurrencySymbol
                   ? Currency.CurrencySymbol
                   : "₮"}

@@ -587,6 +587,12 @@ const NewEdit = ({
                           value.target.value
                         )
                       }
+                      onKeyDown={(e) => {
+                        // Prevent the Delete key from clearing the time picker
+                        if (e.key === "Delete") {
+                          e.preventDefault();
+                        }
+                      }}
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -751,6 +757,12 @@ const NewEdit = ({
                               value.target.value
                             )
                         }
+                        onKeyDown={(e) => {
+                          // Prevent the Delete key from clearing the time picker
+                          if (e.key === "Delete") {
+                            e.preventDefault();
+                          }
+                        }}
                       />
                     </Grid>
                   )}

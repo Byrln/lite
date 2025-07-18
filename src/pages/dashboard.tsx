@@ -5,7 +5,14 @@ import sidebarConfig from "@/components/layouts/dashboard/sidebar-config";
 
 export default function Page() {
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(() => {
+    // Initialize from localStorage if available, otherwise default to false
+    if (typeof window !== 'undefined') {
+      const savedState = localStorage.getItem('sidebarMinimized');
+      return savedState === 'true';
+    }
+    return false;
+  });
 
   const handleCloseSidebar = () => {
     setIsOpenSidebar(false);
@@ -13,6 +20,10 @@ export default function Page() {
 
   const handleToggleMinimize = (minimized: boolean) => {
     setIsMinimized(minimized);
+    // Update localStorage when minimized state changes
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sidebarMinimized', minimized.toString());
+    }
   };
 
   return (

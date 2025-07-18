@@ -1749,7 +1749,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   },
                 }}
               >
-                <FormControlLabel
+                {/* <FormControlLabel
                   value="day"
                   control={
                     <Radio
@@ -1791,7 +1791,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                       },
                     },
                   }}
-                />
+                /> */}
                 <FormControlLabel
                   value={7}
                   control={

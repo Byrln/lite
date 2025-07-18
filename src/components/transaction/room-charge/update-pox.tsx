@@ -17,15 +17,14 @@ import SubmitButton from "components/common/submit-button";
 import NumberSelect from "components/select/number-select";
 
 const validationSchema = yup.object().shape({
-    RateTypeID: yup.string().required("Бөглөнө үү"),
+    Adult: yup.number().required("Бөглөнө үү").min(0, "Хамгийн багадаа 0"),
+    Child: yup.number().required("Бөглөнө үү").min(0, "Хамгийн багадаа 0"),
 });
 
-const UpdateRate = ({ element, RoomTypeID }: any) => {
+const UpdatePox = ({ element, RoomTypeID }: any) => {
     const { handleModal }: any = useContext(ModalContext);
     const [loading, setLoading] = useState(false);
-    const [Rate, setRate] = useState<any>({
-        RateTypeID: element ? element.RateTypeID : null,
-    });
+    // No need for Rate state in this component
 
     const {
         register,
@@ -46,10 +45,10 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
                 Adult: values.Adult,
                 Child: values.Child,
                 Override: values.Override,
-                ApplytoAll: values.ApplytoAll == true ? 2 : 1,
+                ApplytoAll: values.ApplytoAll === true ? 2 : 1,
             };
-            if (values.ApplytoAll == true) {
-                delete values.StayDate;
+            if (values.ApplytoAll === true) {
+                delete tempValues.StayDate;
             }
             await ChargeAPI?.UpdatePax(tempValues);
 
@@ -60,14 +59,13 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
         } finally {
             setLoading(false);
             handleModal();
-            mutate("/api/Charge/RoomCharge");
+            mutate("/api/Charge/RoomCharge", undefined, { revalidate: true });
         }
     };
 
     useEffect(() => {
         if (element) {
             reset(element);
-            setRate({ RateTypeID: element.RateTypeID });
         }
     }, [element]);
 
@@ -97,7 +95,7 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
             <NumberSelect
                 numberMin={0}
                 numberMax={element?.MaxChild ? element?.MaxChild : 0}
-                defaultValue={element?.Child ? element?.Child : "0"}
+                defaultValue={element?.Child ? element?.Child : 0}
                 nameKey={`Child`}
                 register={register}
                 errors={errors}
@@ -154,4 +152,4 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
     );
 };
 
-export default UpdateRate;
+export default UpdatePox;

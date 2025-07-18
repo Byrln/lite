@@ -26,7 +26,7 @@ export default function AuthLayout({ children }: any) {
     <HeaderStyle>
       <Link href="/auth/login" passHref>
         <a>
-          <Logo />
+          <Logo showText={true} />
         </a>
       </Link>
 

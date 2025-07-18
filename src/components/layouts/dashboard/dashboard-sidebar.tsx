@@ -19,7 +19,7 @@ import LanguagePopover from "./language-popover";
 import AccountPopover from "./account-popover";
 
 const DRAWER_WIDTH = 280;
-const DRAWER_WIDTH_MINIMIZED = 80;
+const DRAWER_WIDTH_MINIMIZED = 60;
 
 const RootStyle = styled("div")(({ theme }) => ({
   // [theme.breakpoints.up("xl")]: {
@@ -51,7 +51,14 @@ export default function DashboardSidebar({
   onToggleMinimize,
 }: any) {
   const router = useRouter();
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(() => {
+    // Initialize from localStorage if available, otherwise default to false
+    if (typeof window !== 'undefined') {
+      const savedState = localStorage.getItem('sidebarMinimized');
+      return savedState === 'true';
+    }
+    return false;
+  });
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -59,6 +66,13 @@ export default function DashboardSidebar({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname]);
+  
+  // Update localStorage when minimized state changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('sidebarMinimized', isMinimized.toString());
+    }
+  }, [isMinimized]);
 
   const handleToggleMinimize = () => {
     const newMinimizedState = !isMinimized;
@@ -87,7 +101,7 @@ export default function DashboardSidebar({
               <Link href="/" passHref>
                 <a>
                   <Box sx={{ display: "flex" }}>
-                    <Logo />
+                    <Logo sx={{ color: "#ffffff" }} />
                   </Box>
                 </a>
               </Link>
@@ -100,11 +114,11 @@ export default function DashboardSidebar({
           </div>
         ) : (
           <div className="flex sticky top-0">
-            <Box sx={{ display: "none", alignItems: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <Link href="/" passHref>
                 <a>
                   <Box sx={{ display: "flex" }}>
-                    <Logo size="sm" />
+                    <Logo size="sm" showText={false} sx={{ color: "#ffffff" }} />
                   </Box>
                 </a>
               </Link>
