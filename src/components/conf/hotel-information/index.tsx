@@ -68,7 +68,8 @@ const HotelInformation = ({ setHasData = null }: any) => {
                         paddingLeft: "6px",
                         paddingRight: "6px",
                         paddingTop: "3px",
-                    }}>
+                    }}
+                    legacyBehavior>
 
                     <Icon
                         icon="mdi:youtube"

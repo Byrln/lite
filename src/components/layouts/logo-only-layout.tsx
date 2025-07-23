@@ -19,7 +19,7 @@ export default function LogoOnlyLayout({ children }: any) {
     return (
         <>
             <HeaderStyle>
-                <Link href="/" passHref>
+                <Link href="/" passHref legacyBehavior>
 
                     <Logo showText={true} />
 

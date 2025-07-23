@@ -99,11 +99,11 @@ export default function DashboardSidebar({
           <div className="flex sticky top-0">
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Link href="/" passHref>
-                <a>
-                  <Box sx={{ display: "flex" }}>
-                    <Logo sx={{ color: "#ffffff" }} />
-                  </Box>
-                </a>
+
+                <Box sx={{ display: "flex" }}>
+                  <Logo sx={{ color: "#ffffff" }} />
+                </Box>
+
               </Link>
             </Box>
             <Tooltip title="Хаах" placement="right">
@@ -116,11 +116,11 @@ export default function DashboardSidebar({
           <div className="flex sticky top-0">
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Link href="/" passHref>
-                <a>
-                  <Box sx={{ display: "flex" }}>
-                    <Logo size="sm" showText={false} sx={{ color: "#ffffff" }} />
-                  </Box>
-                </a>
+
+                <Box sx={{ display: "flex" }}>
+                  <Logo size="sm" showText={false} sx={{ color: "#ffffff" }} />
+                </Box>
+
               </Link>
             </Box>
             <Tooltip title="Нээх" placement="right">

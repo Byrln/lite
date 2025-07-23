@@ -24,7 +24,7 @@ const HeaderStyle = styled("header")(({ theme }) => ({
 export default function AuthLayout({ children }: any) {
   return (
     <HeaderStyle>
-      <Link href="/auth/login" passHref>
+      <Link href="/auth/login" passHref legacyBehavior>
 
         <Logo showText={true} />
 

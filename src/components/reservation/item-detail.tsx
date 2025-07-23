@@ -324,7 +324,8 @@ const ItemDetail = ({
                             null,
                             "medium"
                           );
-                        }}>
+                        }}
+                        legacyBehavior>
 
                         <EditIcon />
 

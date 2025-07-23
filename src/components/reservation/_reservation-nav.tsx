@@ -279,7 +279,8 @@ const ReservationNav = ({
                 paddingLeft: "6px",
                 paddingRight: "6px",
                 paddingTop: "3px",
-              }}>
+              }}
+              legacyBehavior>
 
               <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
               {/* <Icon
@@ -327,7 +328,8 @@ const ReservationNav = ({
                 paddingLeft: "6px",
                 paddingRight: "6px",
                 paddingTop: "3px",
-              }}>
+              }}
+              legacyBehavior>
 
               <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
 
@@ -370,7 +372,8 @@ const ReservationNav = ({
                 paddingLeft: "6px",
                 paddingRight: "6px",
                 paddingTop: "3px",
-              }}>
+              }}
+              legacyBehavior>
 
               <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
 
@@ -413,7 +416,8 @@ const ReservationNav = ({
                 paddingLeft: "6px",
                 paddingRight: "6px",
                 paddingTop: "3px",
-              }}>
+              }}
+              legacyBehavior>
 
               <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
 

@@ -1782,7 +1782,8 @@ function DashboardCard({
         Link
           href={currentItem && currentItem.link ? currentItem.link : "/"}
           passHref
-          style={{ textDecoration: "unset", color: theme.palette.text.primary }}>
+          style={{ textDecoration: "unset", color: theme.palette.text.primary }}
+          legacyBehavior>
 
           <div
             style={{
