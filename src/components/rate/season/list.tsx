@@ -48,13 +48,10 @@ const columns = [
         dataIndex: "BeginDate",
         excelRenderPass: true,
         renderCell: (element: any) => {
-            return (
-                element.row.BeginDate &&
-                format(
-                    new Date(element.row.BeginDate.replace(/ /g, "T")),
-                    "MM/dd/yyyy"
-                )
-            );
+            return (element.row.BeginDate && format(
+                new Date(element.row.BeginDate.replace(/ /g, "T")),
+                "MM/dd/yyyy"
+            ));
         },
     },
     {
@@ -63,13 +60,10 @@ const columns = [
         dataIndex: "EndDate",
         excelRenderPass: true,
         renderCell: (element: any) => {
-            return (
-                element.row.EndDate &&
-                format(
-                    new Date(element.row.EndDate.replace(/ /g, "T")),
-                    "MM/dd/yyyy"
-                )
-            );
+            return (element.row.EndDate && format(
+                new Date(element.row.EndDate.replace(/ /g, "T")),
+                "MM/dd/yyyy"
+            ));
         },
     },
     {   title: intl.formatMessage({id:"TextPriority"}), 

@@ -63,21 +63,19 @@ const HotelInformation = ({ setHasData = null }: any) => {
                 <Link
                     href="https://youtu.be/Z8x-TXO4cM0?si=i_qfV0cAlALJ0LSy"
                     passHref
-                >
-                    <a
-                        target="_blank"
-                        style={{
-                            paddingLeft: "6px",
-                            paddingRight: "6px",
-                            paddingTop: "3px",
-                        }}
-                    >
-                        <Icon
-                            icon="mdi:youtube"
-                            color="#FF0000"
-                            height={24}
-                        />
-                    </a>
+                    target="_blank"
+                    style={{
+                        paddingLeft: "6px",
+                        paddingRight: "6px",
+                        paddingTop: "3px",
+                    }}>
+
+                    <Icon
+                        icon="mdi:youtube"
+                        color="#FF0000"
+                        height={24}
+                    />
+
                 </Link>
             </div>
             <Box sx={{ width: "100%" }}>

@@ -82,21 +82,19 @@ const AmenityList = ({ title, setHasData = null }: any) => {
                 <Link
                     href="https://youtu.be/9Wma76JvzHE?si=_WaQU6ExCdgA9CNO"
                     passHref
-                >
-                    <a
-                        target="_blank"
-                        style={{
-                            paddingLeft: "6px",
-                            paddingRight: "6px",
-                            paddingTop: "3px",
-                        }}
-                    >
-                        <Icon
-                            icon="mdi:youtube"
-                            color="#FF0000"
-                            height={24}
-                        />
-                    </a>
+                    target="_blank"
+                    style={{
+                        paddingLeft: "6px",
+                        paddingRight: "6px",
+                        paddingTop: "3px",
+                    }}>
+
+                    <Icon
+                        icon="mdi:youtube"
+                        color="#FF0000"
+                        height={24}
+                    />
+
                 </Link>
             </div>
             <CustomTable

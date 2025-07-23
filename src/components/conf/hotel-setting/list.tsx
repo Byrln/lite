@@ -36,13 +36,10 @@ const HotelSettingList = ({ title }: any) => {
             dataIndex: "PMSStart",
             excelRenderPass: true,
             renderCell: (element: any) => {
-                return (
-                    element.row.PMSStart &&
-                    format(
-                        new Date(element.row.PMSStart.replace(/ /g, "T")),
-                        "MM/dd/yyyy"
-                    )
-                );
+                return (element.row.PMSStart && format(
+                    new Date(element.row.PMSStart.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                ));
             },
         },
         {
@@ -51,13 +48,10 @@ const HotelSettingList = ({ title }: any) => {
             dataIndex: "PMSEnd",
             excelRenderPass: true,
             renderCell: (element: any) => {
-                return (
-                    element.row.PMSEnd &&
-                    format(
-                        new Date(element.row.PMSEnd.replace(/ /g, "T")),
-                        "MM/dd/yyyy"
-                    )
-                );
+                return (element.row.PMSEnd && format(
+                    new Date(element.row.PMSEnd.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                ));
             },
         },
         {

@@ -60,7 +60,6 @@ const NightAuditList = ({ workingDate }: any) => {
                 Өдөр өндөрлөгөө хийгдсэнээр засвар орох боломжгүй болохыг
                 анхаарна уу.
             </Alert>
-
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Controller
                     name="WorkingDate"

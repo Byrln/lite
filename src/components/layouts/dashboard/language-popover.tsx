@@ -79,7 +79,6 @@ export default function LanguagePopover() {
                     }
                 />
             </IconButton>
-
             <MenuPopover
                 open={open}
                 onClose={handleClose}
@@ -87,11 +86,7 @@ export default function LanguagePopover() {
             >
                 <Box sx={{ py: 1 }}>
                     {LANGS.map((option) => (
-                        <Link
-                            key={option.value}
-                            href={asPath}
-                            locale={option.value}
-                        >
+                        <Link key={option.value} href={asPath} locale={option.value} legacyBehavior>
                             <MenuItem
                                 key={option.value}
                                 selected={option.value === locale}

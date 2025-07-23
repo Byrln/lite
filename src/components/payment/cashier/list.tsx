@@ -44,13 +44,10 @@ const CashierList = ({ title }: any) => {
             key: "StartDate",
             dataIndex: "StartDate",
             render: function render(id: any, value: any) {
-                return (
-                    value &&
-                    format(
-                        new Date(value.replace(/ /g, "T")),
-                        "MM/dd/yyyy HH:mm:ss"
-                    )
-                );
+                return (value && format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy HH:mm:ss"
+                ));
             },
         },
         {
@@ -58,13 +55,10 @@ const CashierList = ({ title }: any) => {
             key: "EndDate",
             dataIndex: "EndDate",
             render: function render(id: any, value: any) {
-                return (
-                    value &&
-                    format(
-                        new Date(value.replace(/ /g, "T")),
-                        "MM/dd/yyyy HH:mm:ss"
-                    )
-                );
+                return (value && format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy HH:mm:ss"
+                ));
             },
         },
     ];
@@ -108,13 +102,10 @@ const CashierList = ({ title }: any) => {
             key: "CurrDateTime",
             dataIndex: "CurrDateTime",
             render: function render(id: any, value: any) {
-                return (
-                    value &&
-                    format(
-                        new Date(value.replace(/ /g, "T")),
-                        "MM/dd/yyyy HH:mm:ss"
-                    )
-                );
+                return (value && format(
+                    new Date(value.replace(/ /g, "T")),
+                    "MM/dd/yyyy HH:mm:ss"
+                ));
             },
         },
         {

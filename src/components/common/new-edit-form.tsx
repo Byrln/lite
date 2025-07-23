@@ -141,7 +141,7 @@ const NewEditForm = ({
             {state.isShow && !isShowNotAffected ? null : (
                 // <Box sx={{ width: "15%" }}>
 
-                <Box
+                (<Box
                     sx={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -157,7 +157,7 @@ const NewEditForm = ({
                         fullWidth={false}
                     />
                     {additionalButtons}
-                </Box>
+                </Box>)
 
                 // </Box>
             )}

@@ -25,11 +25,10 @@ export default function AuthLayout({ children }: any) {
   return (
     <HeaderStyle>
       <Link href="/auth/login" passHref>
-        <a>
-          <Logo showText={true} />
-        </a>
-      </Link>
 
+        <Logo showText={true} />
+
+      </Link>
       <MHidden width="smDown">
         <Typography
           variant="body2"

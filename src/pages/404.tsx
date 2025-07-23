@@ -49,7 +49,7 @@ export default function Custom404() {
                             />
                         </motion.div>
 
-                        <Link href="/" passHref>
+                        <Link href="/" passHref legacyBehavior>
                             <Button size="small" variant="contained">
                                 Go to Home
                             </Button>

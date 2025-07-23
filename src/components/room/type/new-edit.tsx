@@ -509,6 +509,7 @@ const NewEdit = () => {
         //             reset={reset}
         //             handleSubmit={handleSubmit}
         //         >
+        // </NewEditForm>
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box sx={{ width: "100%" }}>
                 {/* <CustomTab tabs={tabs} /> */}
@@ -914,7 +915,6 @@ const NewEdit = () => {
                 </Button>
             </Box>
         </form>
-        // </NewEditForm>
     );
 };
 

@@ -25,13 +25,10 @@ const PromotionList = ({ title }: any) => {
             dataIndex: "BeginDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
-                return (
-                    element.row.BeginDate &&
-                    format(
-                        new Date(element.row.BeginDate.replace(/ /g, "T")),
-                        "MM/dd/yyyy"
-                    )
-                );
+                return (element.row.BeginDate && format(
+                    new Date(element.row.BeginDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                ));
             },
         },
         {
@@ -40,13 +37,10 @@ const PromotionList = ({ title }: any) => {
             dataIndex: "EndDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
-                return (
-                    element.row.EndDate &&
-                    format(
-                        new Date(element.row.EndDate.replace(/ /g, "T")),
-                        "MM/dd/yyyy"
-                    )
-                );
+                return (element.row.EndDate && format(
+                    new Date(element.row.EndDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy"
+                ));
             },
         },
         {

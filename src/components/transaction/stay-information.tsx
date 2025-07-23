@@ -61,7 +61,6 @@ const StayInformation = ({
                         )}
                 </div>
             </Box>
-
             <Box
                 sx={{
                     display: "flex",
@@ -85,7 +84,6 @@ const StayInformation = ({
                         )}
                 </div>
             </Box>
-
             <Box
                 sx={{
                     display: "flex",

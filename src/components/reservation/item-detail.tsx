@@ -286,47 +286,48 @@ const ItemDetail = ({
                           summary.RoomCharges
                         )}
                       </div>
-                      <Link href="#" passHref>
-                        <a
-                          className="ml-2"
-                          style={{
-                            paddingTop: "3px",
-                            color: "rgb(24, 119, 242)",
-                          }}
-                          onClick={() => {
-                            handleModal(
-                              true,
-                              "Edit",
-                              <RoomGroupEdit
-                                GroupID={
-                                  extendedProps?.GroupID &&
-                                    extendedProps.GroupID >
-                                    0
-                                    ? extendedProps.GroupID
-                                    : null
-                                }
-                                TransactionID={
-                                  extendedProps?.GroupID
-                                    ? null
-                                    : reservation.TransactionID
-                                }
-                                additionalMutateUrl={
-                                  additionalMutateUrl
-                                }
-                                RoomID={
-                                  reservation.RoomID
-                                }
-                                customRerender={
-                                  customRerender
-                                }
-                              />,
-                              null,
-                              "medium"
-                            );
-                          }}
-                        >
-                          <EditIcon />
-                        </a>
+                      <Link
+                        href="#"
+                        passHref
+                        className="ml-2"
+                        style={{
+                          paddingTop: "3px",
+                          color: "rgb(24, 119, 242)",
+                        }}
+                        onClick={() => {
+                          handleModal(
+                            true,
+                            "Edit",
+                            <RoomGroupEdit
+                              GroupID={
+                                extendedProps?.GroupID &&
+                                  extendedProps.GroupID >
+                                  0
+                                  ? extendedProps.GroupID
+                                  : null
+                              }
+                              TransactionID={
+                                extendedProps?.GroupID
+                                  ? null
+                                  : reservation.TransactionID
+                              }
+                              additionalMutateUrl={
+                                additionalMutateUrl
+                              }
+                              RoomID={
+                                reservation.RoomID
+                              }
+                              customRerender={
+                                customRerender
+                              }
+                            />,
+                            null,
+                            "medium"
+                          );
+                        }}>
+
+                        <EditIcon />
+
                       </Link>
                     </TableCell>
                   </TableRow>

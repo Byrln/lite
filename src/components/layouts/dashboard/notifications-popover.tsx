@@ -135,7 +135,7 @@ function NotificationItem({ notification }: any) {
     const { avatar, title } = renderContent(notification);
 
     return (
-        <Link href="#" passHref>
+        <Link href="#" passHref legacyBehavior>
             <ListItemButton
                 disableGutters
                 sx={{
@@ -226,7 +226,6 @@ export default function NotificationsPopover() {
                     <Icon icon={bellFill} width={20} height={20} />
                 </Badge>
             </IconButton>
-
             <MenuPopover
                 open={open}
                 onClose={handleClose}
@@ -314,7 +313,7 @@ export default function NotificationsPopover() {
                 <Divider />
 
                 <Box sx={{ p: 1 }}>
-                    <Link href="#" passHref>
+                    <Link href="#" passHref legacyBehavior>
                         <Button fullWidth disableRipple>
                             View All
                         </Button>

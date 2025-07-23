@@ -27,13 +27,10 @@ const History = ({ CurrencyID }: any) => {
             key: "BeginDate",
             dataIndex: "BeginDate",
             renderCell: (element: any) => {
-                return (
-                    element.row.BeginDate &&
-                    format(
-                        new Date(element.row.BeginDate.replace(/ /g, "T")),
-                        "MM-dd-yyyy HH:MM:SS"
-                    )
-                );
+                return (element.row.BeginDate && format(
+                    new Date(element.row.BeginDate.replace(/ /g, "T")),
+                    "MM-dd-yyyy HH:MM:SS"
+                ));
             },
         },
         {
@@ -41,13 +38,10 @@ const History = ({ CurrencyID }: any) => {
             key: "EndDate",
             dataIndex: "EndDate",
             renderCell: (element: any) => {
-                return (
-                    element.row.EndDate &&
-                    format(
-                        new Date(element.row.EndDate.replace(/ /g, "T")),
-                        "MM-dd-yyyy HH:MM:SS"
-                    )
-                );
+                return (element.row.EndDate && format(
+                    new Date(element.row.EndDate.replace(/ /g, "T")),
+                    "MM-dd-yyyy HH:MM:SS"
+                ));
             },
         },
         {

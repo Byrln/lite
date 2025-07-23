@@ -608,7 +608,6 @@ const Dashboard = ({ workingDate }: any) => {
           </Grid>
         )}
       </Paper>
-
       {/* Summary Cards */}
       <Box mb={3}>
         {isLoading ? (
@@ -875,7 +874,6 @@ const Dashboard = ({ workingDate }: any) => {
           </Grid>
         )}
       </Box>
-
       {/* Occupancy Trend Chart */}
       <Paper
         elevation={0}
@@ -920,7 +918,7 @@ const Dashboard = ({ workingDate }: any) => {
               id: "TextViewDetailedReport",
             })}
           >
-            <Link href="/report/charge" passHref>
+            <Link href="/report/charge" passHref legacyBehavior>
               <Button
                 variant="outlined"
                 size="small"
@@ -958,7 +956,6 @@ const Dashboard = ({ workingDate }: any) => {
           />
         </Box>
       </Paper>
-
       {/* Revenue Forecast */}
       <Box mb={3}>
         <Box
@@ -1054,7 +1051,6 @@ const Dashboard = ({ workingDate }: any) => {
           </Paper>
         )}
       </Box>
-
       {/* Main Dashboard Cards */}
       <Box mb={3}>
         <Typography variant={isMobile ? "subtitle1" : "h6"} fontWeight="bold" mb={2}>
@@ -1415,8 +1411,8 @@ const Dashboard = ({ workingDate }: any) => {
           )}
         </Grid>
       </Box>
-      </Container>
-    );
+    </Container>
+  );
 };
 
 export default Dashboard;
@@ -1782,138 +1778,139 @@ function DashboardCard({
           )}
         </>
       ) : (
-        <Link //@ts-ignore
+        <//@ts-ignore
+        Link
           href={currentItem && currentItem.link ? currentItem.link : "/"}
           passHref
-        >
-          <a style={{ textDecoration: "unset", color: theme.palette.text.primary }}>
+          style={{ textDecoration: "unset", color: theme.palette.text.primary }}>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: isMobile ? "12px" : "16px",
+            }}
+          >
+            <div
+              style={{
+                width: isMobile ? "36px" : "40px",
+                height: isMobile ? "36px" : "40px",
+                borderRadius: "100%",
+                backgroundColor: currentItem?.color,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                boxShadow: `0px 4px 10px ${alpha(currentItem?.color || '#7856DE', 0.3)}`,
+              }}
+            >
+              {currentItem?.icon}
+            </div>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: isMobile ? "12px" : "16px",
+                gap: isMobile ? "0.75rem" : "1rem",
+                flex: 1,
               }}
             >
-              <div
-                style={{
-                  width: isMobile ? "36px" : "40px",
-                  height: isMobile ? "36px" : "40px",
-                  borderRadius: "100%",
-                  backgroundColor: currentItem?.color,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                  boxShadow: `0px 4px 10px ${alpha(currentItem?.color || '#7856DE', 0.3)}`,
+              <Typography
+                sx={{
+                  fontSize: isMobile ? "14px" : "16px",
+                  fontWeight: 600,
+                  width: isMobile ? "120px" : "172px",
+                  color: theme.palette.text.primary,
                 }}
               >
-                {currentItem?.icon}
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: isMobile ? "0.75rem" : "1rem",
-                  flex: 1,
+                {translateParameterName(item.ParameterName)}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: isMobile ? "18px" : "20px",
+                  fontWeight: 600,
+                  color: theme.palette.text.primary,
                 }}
               >
-                <Typography
-                  sx={{
-                    fontSize: isMobile ? "14px" : "16px",
-                    fontWeight: 600,
-                    width: isMobile ? "120px" : "172px",
-                    color: theme.palette.text.primary,
-                  }}
-                >
-                  {translateParameterName(item.ParameterName)}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: isMobile ? "18px" : "20px",
-                    fontWeight: 600,
-                    color: theme.palette.text.primary,
-                  }}
-                >
-                  {isCharges
-                    ? fNumber(item.ParameterValue) + "₮"
-                    : item.ParameterValue}
-                </Typography>
-              </div>
-              <div
-                style={{
-                  width: isMobile ? "32px" : "40px",
-                  height: isMobile ? "32px" : "40px",
-                  borderRadius: "100%",
-                  backgroundColor: alpha(theme.palette.grey[100], 0.8),
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                  transition: "all 0.3s ease",
-                }}
-              >
-                <ChevronRight sx={{ fontSize: isMobile ? "14px" : "16px", color: theme.palette.text.secondary }} />
-              </div>
-              {isCharges && item.ParameterName === "Extra Charges" && (
-                <div
-                  style={{
-                    marginTop: isMobile ? "12px" : "16px",
-                    borderTop: `1px solid ${alpha(theme.palette.divider, 0.8)}`,
-                    paddingTop: isMobile ? "12px" : "16px",
-                    paddingLeft: isMobile ? "48px" : "56px",
-                    flexDirection: "column",
-                    display: "flex",
-                    gap: isMobile ? "12px" : "16px",
-                    background: alpha(theme.palette.background.default, 0.4),
-                    borderRadius: "0 0 8px 8px",
-                  }}
-                >
-                  {extraCharges.map((item: any) => (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: isMobile ? "0.75rem" : "1rem",
-                        flex: 1,
-                        color: theme.palette.text.secondary,
-                        transition: "all 0.2s ease",
-                        padding: isMobile ? "4px 8px" : "6px 10px",
-                        borderRadius: "8px",
-                        '&:hover': {
-                          backgroundColor: alpha(theme.palette.background.default, 0.8),
-                        },
-                      }}
-                      key={item.ParameterID}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: isMobile ? "14px" : "16px",
-                          fontWeight: 600,
-                          width: isMobile ? "120px" : "172px",
-                          color: theme.palette.text.secondary,
-                        }}
-                      >
-                        {translateParameterName(
-                          item.ParameterName
-                        )}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: isMobile ? "16px" : "18px",
-                          fontWeight: 600,
-                          color: theme.palette.text.secondary,
-                        }}
-                      >
-                        {isCharges
-                          ? fNumber(item.ParameterValue) + "₮"
-                          : item.ParameterValue}
-                      </Typography>
-                    </Box>
-                  ))}
-                </div>
-              )}
+                {isCharges
+                  ? fNumber(item.ParameterValue) + "₮"
+                  : item.ParameterValue}
+              </Typography>
             </div>
-          </a>
+            <div
+              style={{
+                width: isMobile ? "32px" : "40px",
+                height: isMobile ? "32px" : "40px",
+                borderRadius: "100%",
+                backgroundColor: alpha(theme.palette.grey[100], 0.8),
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                transition: "all 0.3s ease",
+              }}
+            >
+              <ChevronRight sx={{ fontSize: isMobile ? "14px" : "16px", color: theme.palette.text.secondary }} />
+            </div>
+            {isCharges && item.ParameterName === "Extra Charges" && (
+              <div
+                style={{
+                  marginTop: isMobile ? "12px" : "16px",
+                  borderTop: `1px solid ${alpha(theme.palette.divider, 0.8)}`,
+                  paddingTop: isMobile ? "12px" : "16px",
+                  paddingLeft: isMobile ? "48px" : "56px",
+                  flexDirection: "column",
+                  display: "flex",
+                  gap: isMobile ? "12px" : "16px",
+                  background: alpha(theme.palette.background.default, 0.4),
+                  borderRadius: "0 0 8px 8px",
+                }}
+              >
+                {extraCharges.map((item: any) => (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: isMobile ? "0.75rem" : "1rem",
+                      flex: 1,
+                      color: theme.palette.text.secondary,
+                      transition: "all 0.2s ease",
+                      padding: isMobile ? "4px 8px" : "6px 10px",
+                      borderRadius: "8px",
+                      '&:hover': {
+                        backgroundColor: alpha(theme.palette.background.default, 0.8),
+                      },
+                    }}
+                    key={item.ParameterID}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: isMobile ? "14px" : "16px",
+                        fontWeight: 600,
+                        width: isMobile ? "120px" : "172px",
+                        color: theme.palette.text.secondary,
+                      }}
+                    >
+                      {translateParameterName(
+                        item.ParameterName
+                      )}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: isMobile ? "16px" : "18px",
+                        fontWeight: 600,
+                        color: theme.palette.text.secondary,
+                      }}
+                    >
+                      {isCharges
+                        ? fNumber(item.ParameterValue) + "₮"
+                        : item.ParameterValue}
+                    </Typography>
+                  </Box>
+                ))}
+              </div>
+            )}
+          </div>
+
         </Link>
       )}
     </Card>

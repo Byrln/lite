@@ -36,13 +36,10 @@ const ReasonList = ({ title, setHasData = null }: any) => {
             key: "CreatedDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
-                return (
-                    element.row.CreatedDate &&
-                    format(
-                        new Date(element.row.CreatedDate.replace(/ /g, "T")),
-                        "MM/dd/yyyy hh:mm:ss a"
-                    )
-                );
+                return (element.row.CreatedDate && format(
+                    new Date(element.row.CreatedDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                ));
             },
         },
         {

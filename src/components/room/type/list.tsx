@@ -66,7 +66,7 @@ const RoomTypeList = ({ title, setHasData = null }: any) => {
                         <Link
                             key={element.id}
                             href={`/room/type/picture/${element.row.RoomTypeID}`}
-                        >
+                            legacyBehavior>
                             <Button key={element.id}>
                                 {intl.formatMessage({
                                     id: "TextPicture",
@@ -107,21 +107,19 @@ const RoomTypeList = ({ title, setHasData = null }: any) => {
                 <Link
                     href="https://youtu.be/AvMN7J9Tp24?si=DuLdUN7HRzm_ktNW"
                     passHref
-                >
-                    <a
-                        target="_blank"
-                        style={{
-                            paddingLeft: "6px",
-                            paddingRight: "6px",
-                            paddingTop: "3px",
-                        }}
-                    >
-                        <Icon
-                            icon="mdi:youtube"
-                            color="#FF0000"
-                            height={24}
-                        />
-                    </a>
+                    target="_blank"
+                    style={{
+                        paddingLeft: "6px",
+                        paddingRight: "6px",
+                        paddingTop: "3px",
+                    }}>
+
+                    <Icon
+                        icon="mdi:youtube"
+                        color="#FF0000"
+                        height={24}
+                    />
+
                 </Link>
             </div>
             <CustomTable

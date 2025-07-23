@@ -20,12 +20,11 @@ export default function LogoOnlyLayout({ children }: any) {
         <>
             <HeaderStyle>
                 <Link href="/" passHref>
-                    <a>
-                        <Logo showText={true} />
-                    </a>
+
+                    <Logo showText={true} />
+
                 </Link>
             </HeaderStyle>
-
             {children}
         </>
     );

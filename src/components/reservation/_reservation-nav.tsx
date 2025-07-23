@@ -165,7 +165,6 @@ const ReservationNav = ({
           customRerender={customRerender}
         />
       )}
-
       {reservation.CheckIn && (
         <Button
           variant={"text"}
@@ -179,7 +178,6 @@ const ReservationNav = ({
           })}
         </Button>
       )}
-
       {reservation.NoShow && (
         <Button
           variant={"text"}
@@ -208,7 +206,6 @@ const ReservationNav = ({
           })}
         </Button>
       )}
-
       <a
         href={
           locale == "mon"
@@ -247,7 +244,6 @@ const ReservationNav = ({
           id: "ButtonExtraCharge",
         })}
       </Button>
-
       {reservation.MoveRoom && (
         <div style={{ width: "100%", display: "flex" }}>
           <Button
@@ -275,22 +271,23 @@ const ReservationNav = ({
             })}
           </Button>
           <Tooltip title="Заавар">
-            <Link href="https://youtu.be/Sy-JD06vChY" passHref>
-              <a
-                target="_blank"
-                style={{
-                  paddingLeft: "6px",
-                  paddingRight: "6px",
-                  paddingTop: "3px",
-                }}
-              >
-                <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
-                {/* <Icon
-                                    icon="material-symbols:youtube"
-                                    color="#1877F2"
-                                    height={16}
-                                /> */}
-              </a>
+            <Link
+              href="https://youtu.be/Sy-JD06vChY"
+              passHref
+              target="_blank"
+              style={{
+                paddingLeft: "6px",
+                paddingRight: "6px",
+                paddingTop: "3px",
+              }}>
+
+              <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
+              {/* <Icon
+                                  icon="material-symbols:youtube"
+                                  color="#1877F2"
+                                  height={16}
+                              /> */}
+
             </Link>
           </Tooltip>
         </div>
@@ -322,22 +319,22 @@ const ReservationNav = ({
             })}
           </Button>
           <Tooltip title="Заавар">
-            <Link href="https://youtu.be/rvXMlvBKgfI" passHref>
-              <a
-                target="_blank"
-                style={{
-                  paddingLeft: "6px",
-                  paddingRight: "6px",
-                  paddingTop: "3px",
-                }}
-              >
-                <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
-              </a>
+            <Link
+              href="https://youtu.be/rvXMlvBKgfI"
+              passHref
+              target="_blank"
+              style={{
+                paddingLeft: "6px",
+                paddingRight: "6px",
+                paddingTop: "3px",
+              }}>
+
+              <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
+
             </Link>
           </Tooltip>
         </div>
       )}
-
       {reservation.Void && (
         <div style={{ width: "100%", display: "flex" }}>
           <Button
@@ -368,22 +365,19 @@ const ReservationNav = ({
             <Link
               href="https://youtu.be/0Qa_qgWXlvM?si=lMb9Qyq4m9IwFyRX"
               passHref
-            >
-              <a
-                target="_blank"
-                style={{
-                  paddingLeft: "6px",
-                  paddingRight: "6px",
-                  paddingTop: "3px",
-                }}
-              >
-                <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
-              </a>
+              target="_blank"
+              style={{
+                paddingLeft: "6px",
+                paddingRight: "6px",
+                paddingTop: "3px",
+              }}>
+
+              <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
+
             </Link>
           </Tooltip>
         </div>
       )}
-
       {reservation.Cancel && (
         <div style={{ width: "100%", display: "flex" }}>
           <Button
@@ -414,17 +408,15 @@ const ReservationNav = ({
             <Link
               href="https://youtu.be/-BIFndvkXRo?si=RmQ_k9OzLk3YQamM"
               passHref
-            >
-              <a
-                target="_blank"
-                style={{
-                  paddingLeft: "6px",
-                  paddingRight: "6px",
-                  paddingTop: "3px",
-                }}
-              >
-                <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
-              </a>
+              target="_blank"
+              style={{
+                paddingLeft: "6px",
+                paddingRight: "6px",
+                paddingTop: "3px",
+              }}>
+
+              <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
+
             </Link>
           </Tooltip>
         </div>

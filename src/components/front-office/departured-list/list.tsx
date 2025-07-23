@@ -15,13 +15,10 @@ const columns = [
         key: "ArrivalDate",
         dataIndex: "ArrivalDate",
         render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy hh:mm:ss a"
-                )
-            );
+            return (value && format(
+                new Date(value.replace(/ /g, "T")),
+                "MM/dd/yyyy hh:mm:ss a"
+            ));
         },
     },
     {
@@ -29,13 +26,10 @@ const columns = [
         key: "DepartureDate",
         dataIndex: "DepartureDate",
         render: function render(id: any, value: any) {
-            return (
-                value &&
-                format(
-                    new Date(value.replace(/ /g, "T")),
-                    "MM/dd/yyyy hh:mm:ss a"
-                )
-            );
+            return (value && format(
+                new Date(value.replace(/ /g, "T")),
+                "MM/dd/yyyy hh:mm:ss a"
+            ));
         },
     },
     {

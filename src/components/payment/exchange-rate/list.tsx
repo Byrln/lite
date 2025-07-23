@@ -25,13 +25,10 @@ const ExchangeRateList = ({ title }: any) => {
             dataIndex: "BeginDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
-                return (
-                    element.row.BeginDate &&
-                    format(
-                        new Date(element.row.BeginDate.replace(/ /g, "T")),
-                        "MM/dd/yyyy hh:mm:ss a"
-                    )
-                );
+                return (element.row.BeginDate && format(
+                    new Date(element.row.BeginDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                ));
             },
         },
         {

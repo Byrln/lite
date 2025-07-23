@@ -37,13 +37,10 @@ const PackageList = ({ title }: any) => {
             dataIndex: "BeginDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
-                return (
-                    element.row.BeginDate &&
-                    format(
-                        new Date(element.row.BeginDate.replace(/ /g, "T")),
-                        "MM/dd/yyyy hh:mm:ss a"
-                    )
-                );
+                return (element.row.BeginDate && format(
+                    new Date(element.row.BeginDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                ));
             },
         },
         {
@@ -52,13 +49,10 @@ const PackageList = ({ title }: any) => {
             dataIndex: "EndDate",
             excelRenderPass: true,
             renderCell: (element: any) => {
-                return (
-                    element.row.EndDate &&
-                    format(
-                        new Date(element.row.EndDate.replace(/ /g, "T")),
-                        "MM/dd/yyyy hh:mm:ss a"
-                    )
-                );
+                return (element.row.EndDate && format(
+                    new Date(element.row.EndDate.replace(/ /g, "T")),
+                    "MM/dd/yyyy hh:mm:ss a"
+                ));
             },
         },
         {
@@ -111,14 +105,13 @@ const PackageList = ({ title }: any) => {
                         <Link
                             key={element.id}
                             href={`/conf/package/room-list/${element.row.PackageID}`}
-                        >
+                            legacyBehavior>
                             <Button key={element.id}>Room List</Button>
                         </Link>
-
                         <Link
                             key={element.id}
                             href={`/conf/package/extra-charge/${element.row.PackageID}`}
-                        >
+                            legacyBehavior>
                             <Button key={element.id}>Extra Charge</Button>
                         </Link>
                     </>

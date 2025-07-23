@@ -117,7 +117,7 @@ function SubMenuItem({ item, active, isMinimized = false, isSubMenu = false }: S
 
   return (
     <Tooltip title={displayTitle} placement="right" arrow enterDelay={200} enterNextDelay={200}>
-      <Link href={path || '#'} passHref>
+      <Link href={path || '#'} passHref legacyBehavior>
         <ListItemStyle
             component="a"
             sx={{
@@ -286,7 +286,6 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
             )}
           </ListItemStyle>
         </Tooltip>
-
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <List
             component="div"
@@ -439,7 +438,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
               }
               return item.path === "/conf/hotel-setting" ? (
                 localStorage.getItem("hotelId") === "1" && (
-                  <Link key={title} href={path || '#'} passHref>
+                  <Link key={title} href={path || '#'} passHref legacyBehavior>
                     <Tooltip title={(locale === "en" ? titleEn : title)} placement="right" arrow enterDelay={200} enterNextDelay={200}>
                       <ListItemStyle
                         component="a"
@@ -488,7 +487,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
                   </Link>
                 )
               ) : (
-                <Link key={title} href={path || '#'} passHref>
+                <Link key={title} href={path || '#'} passHref legacyBehavior>
                   <Tooltip title={(locale === "en" ? titleEn : title)} placement="right" arrow enterDelay={200} enterNextDelay={200}>
                     <ListItemStyle
                       component="a"
@@ -541,7 +540,7 @@ function NavItem({ item, active, isMinimized = false, isOpen = false, onToggle }
 
   return (
     <>
-      <Link href={path || '#'} passHref>
+      <Link href={path || '#'} passHref legacyBehavior>
         <Tooltip title={displayTitle} placement="right" arrow enterDelay={200} enterNextDelay={200}>
           <ListItemStyle
             component="a"
