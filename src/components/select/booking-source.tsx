@@ -43,7 +43,7 @@ const BookingSourceSelect = ({
             )}
             select
             margin="dense"
-            error={errors.ChannelSourceID?.message}
+            error={!!errors.ChannelSourceID?.message}
             helperText={errors.ChannelSourceID?.message}
             size="small"
             value={

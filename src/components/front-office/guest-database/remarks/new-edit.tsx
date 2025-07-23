@@ -46,7 +46,7 @@ const NewEdit = () => {
                     label={intl.formatMessage({ id: "TextHeaderRemarks" })}
                     {...register("Remarks")}
                     margin="dense"
-                    error={errors.Remarks?.message}
+                    error={!!errors.Remarks?.message}
                     helperText={errors.Remarks?.message}
                 />
             </NewEditForm>

@@ -83,7 +83,7 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
                 label="Өдөр"
                 {...register("StayDate")}
                 margin="dense"
-                error={errors.StayDate?.message}
+                error={!!errors.StayDate?.message}
                 helperText={errors.StayDate?.message}
             />
 
@@ -95,7 +95,7 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
                 label="Тариф"
                 {...register(`Amount`)}
                 margin="dense"
-                error={errors.Amount?.message}
+                error={!!errors.Amount?.message}
                 helperText={errors.Amount?.message}
                 InputLabelProps={{
                     shrink: element,

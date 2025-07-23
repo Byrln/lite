@@ -131,7 +131,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "TextCurrencyName" })}
                         {...register("CurrencyName")}
                         margin="dense"
-                        error={errors.CurrencyName?.message}
+                        error={!!errors.CurrencyName?.message}
                         helperText={errors.CurrencyName?.message}
                         InputLabelProps={{
                             shrink: true,
@@ -146,7 +146,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "TextCurrencyCode" })}
                         {...register("CurrencyCode")}
                         margin="dense"
-                        error={errors.CurrencyCode?.message}
+                        error={!!errors.CurrencyCode?.message}
                         helperText={errors.CurrencyCode?.message}
                         InputLabelProps={{
                             shrink: true,
@@ -163,7 +163,7 @@ const NewEdit = () => {
                         })}
                         {...register("CurrencySymbol")}
                         margin="dense"
-                        error={errors.CurrencySymbol?.message}
+                        error={!!errors.CurrencySymbol?.message}
                         helperText={errors.CurrencySymbol?.message}
                         InputLabelProps={{
                             shrink: true,
@@ -198,7 +198,7 @@ const NewEdit = () => {
                                 })}
                                 {...register("CurrencyRate1")}
                                 margin="dense"
-                                error={errors.CurrencyRate1?.message}
+                                error={!!errors.CurrencyRate1?.message}
                                 helperText={errors.CurrencyRate1?.message}
                                 InputLabelProps={{
                                     shrink: true,
@@ -225,7 +225,7 @@ const NewEdit = () => {
                                 })}
                                 {...register("TargetCurrencyRate1")}
                                 margin="dense"
-                                error={errors.TargetCurrencyRate1?.message}
+                                error={!!errors.TargetCurrencyRate1?.message}
                                 helperText={errors.TargetCurrencyRate1?.message}
                                 InputLabelProps={{
                                     shrink: true,
@@ -252,7 +252,7 @@ const NewEdit = () => {
                                 })}
                                 {...register("TargetCurrencyRate2")}
                                 margin="dense"
-                                error={errors.TargetCurrencyRate2?.message}
+                                error={!!errors.TargetCurrencyRate2?.message}
                                 helperText={errors.TargetCurrencyRate2?.message}
                                 InputLabelProps={{
                                     shrink: true,
@@ -280,7 +280,7 @@ const NewEdit = () => {
                                 })}
                                 {...register("CurrencyRate2")}
                                 margin="dense"
-                                error={errors.CurrencyRate2?.message}
+                                error={!!errors.CurrencyRate2?.message}
                                 helperText={errors.CurrencyRate2?.message}
                                 InputLabelProps={{
                                     shrink: true,

@@ -37,7 +37,7 @@ const NewEdit = ({ entity }: any) => {
                 label={intl.formatMessage({id:"RowHeaderCurrencyCode"}) }
                 {...register("TaxCode")}
                 margin="dense"
-                error={errors.TaxCode?.message}
+                error={!!errors.TaxCode?.message}
                 helperText={errors.TaxCode?.message}
             />
 
@@ -47,7 +47,7 @@ const NewEdit = ({ entity }: any) => {
                 label={intl.formatMessage({id:"RowHeaderFirstName"}) }
                 {...register("TaxName")}
                 margin="dense"
-                error={errors.TaxName?.message}
+                error={!!errors.TaxName?.message}
                 helperText={errors.TaxName?.message}
             />
 
@@ -59,7 +59,7 @@ const NewEdit = ({ entity }: any) => {
                 InputProps={{ inputProps: { min: 0, max: 99 } }}
                 {...register("TaxAmount")}
                 margin="dense"
-                error={errors.TaxAmount?.message}
+                error={!!errors.TaxAmount?.message}
                 helperText={errors.TaxAmount?.message}
             />
 
@@ -70,7 +70,7 @@ const NewEdit = ({ entity }: any) => {
                 label={intl.formatMessage({id:"RowHeaderBeginDate"}) }
                 {...register("BeginDate")}
                 margin="dense"
-                error={errors.BeginDate?.message}
+                error={!!errors.BeginDate?.message}
                 helperText={errors.BeginDate?.message}
             />
     
@@ -81,7 +81,7 @@ const NewEdit = ({ entity }: any) => {
                 label={intl.formatMessage({id:"RowHeaderEndDate"}) }
                 {...register("EndDate")}
                 margin="dense"
-                error={errors.EndDate?.message}
+                error={!!errors.EndDate?.message}
                 helperText={errors.EndDate?.message}
             />
         </NewEditForm>

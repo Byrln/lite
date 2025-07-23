@@ -49,7 +49,7 @@ const RateModeSelect = ({
                     id="RateModeID"
                     aria-label="Gender"
                     {...register("RateModeID")}
-                    error={errors.RateModeID?.message}
+                    error={!!errors.RateModeID?.message}
                     helperText={errors.RateModeID?.message}
                     value={entity && entity.RateModeID}
                     onChange={onChange}

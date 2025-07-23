@@ -188,7 +188,7 @@ const NewEdit = () => {
                                         (entity.RoomTypeShortName ||
                                             entity.RoomTypeShortName == 0),
                                 }}
-                                error={errors.RoomTypeShortName?.message}
+                                error={!!errors.RoomTypeShortName?.message}
                                 helperText={errors.RoomTypeShortName?.message}
                             />
                         </Grid>
@@ -215,7 +215,7 @@ const NewEdit = () => {
                                         (entity.RoomTypeName ||
                                             entity.RoomTypeName == 0),
                                 }}
-                                error={errors.RoomTypeName?.message}
+                                error={!!errors.RoomTypeName?.message}
                                 helperText={errors.RoomTypeName?.message}
                             />
                         </Grid>
@@ -247,7 +247,7 @@ const NewEdit = () => {
                                         (entity.BaseAdult ||
                                             entity.BaseAdult == 0),
                                 }}
-                                error={errors.BaseAdult?.message}
+                                error={!!errors.BaseAdult?.message}
                                 helperText={errors.BaseAdult?.message}
                             />
                         </Grid>
@@ -279,7 +279,7 @@ const NewEdit = () => {
                                         (entity.MaxAdult ||
                                             entity.MaxAdult == 0),
                                 }}
-                                error={errors.MaxAdult?.message}
+                                error={!!errors.MaxAdult?.message}
                                 helperText={errors.MaxAdult?.message}
                             />
                         </Grid>
@@ -311,7 +311,7 @@ const NewEdit = () => {
                                         (entity.BaseChild ||
                                             entity.BaseChild == 0),
                                 }}
-                                error={errors.BaseChild?.message}
+                                error={!!errors.BaseChild?.message}
                                 helperText={errors.BaseChild?.message}
                             />
                         </Grid>
@@ -342,7 +342,7 @@ const NewEdit = () => {
                                         (entity.MaxChild ||
                                             entity.MaxChild == 0),
                                 }}
-                                error={errors.MaxChild?.message}
+                                error={!!errors.MaxChild?.message}
                                 helperText={errors.MaxChild?.message}
                             />
                         </Grid>
@@ -373,7 +373,7 @@ const NewEdit = () => {
                                         (entity.SortOrder ||
                                             entity.SortOrder == 0),
                                 }}
-                                error={errors.SortOrder?.message}
+                                error={!!errors.SortOrder?.message}
                                 helperText={errors.SortOrder?.message}
                                 sx={{ mt: 2 }}
                             />
@@ -418,7 +418,7 @@ const NewEdit = () => {
                                         (entity.BookingDescription ||
                                             entity.BookingDescription == 0),
                                 }}
-                                error={errors.BookingDescription?.message}
+                                error={!!errors.BookingDescription?.message}
                                 helperText={errors.BookingDescription?.message}
                             />
                         </Grid>
@@ -441,7 +441,7 @@ const NewEdit = () => {
                                 InputLabelProps={{
                                     shrink: entity && entity.SortOrder,
                                 }}
-                                error={errors.SortOrder?.message}
+                                error={!!errors.SortOrder?.message}
                                 helperText={errors.SortOrder?.message}
                             />
                         </Grid> */}
@@ -589,7 +589,7 @@ const NewEdit = () => {
                                                         entity.RoomTypeName ==
                                                             0),
                                             }}
-                                            error={errors.RoomTypeName?.message}
+                                            error={!!errors.RoomTypeName?.message}
                                             helperText={
                                                 errors.RoomTypeName?.message
                                             }
@@ -623,7 +623,7 @@ const NewEdit = () => {
                                                     (entity.BaseAdult ||
                                                         entity.BaseAdult == 0),
                                             }}
-                                            error={errors.BaseAdult?.message}
+                                            error={!!errors.BaseAdult?.message}
                                             helperText={
                                                 errors.BaseAdult?.message
                                             }
@@ -657,7 +657,7 @@ const NewEdit = () => {
                                                     (entity.MaxAdult ||
                                                         entity.MaxAdult == 0),
                                             }}
-                                            error={errors.MaxAdult?.message}
+                                            error={!!errors.MaxAdult?.message}
                                             helperText={
                                                 errors.MaxAdult?.message
                                             }
@@ -686,7 +686,7 @@ const NewEdit = () => {
                                                     (entity.BaseChild ||
                                                         entity.BaseChild == 0),
                                             }}
-                                            error={errors.BaseChild?.message}
+                                            error={!!errors.BaseChild?.message}
                                             helperText={
                                                 errors.BaseChild?.message
                                             }
@@ -719,7 +719,7 @@ const NewEdit = () => {
                                                     (entity.MaxChild ||
                                                         entity.MaxChild == 0),
                                             }}
-                                            error={errors.MaxChild?.message}
+                                            error={!!errors.MaxChild?.message}
                                             helperText={
                                                 errors.MaxChild?.message
                                             }
@@ -751,7 +751,7 @@ const NewEdit = () => {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
-                                            error={errors.SortOrder?.message}
+                                            error={!!errors.SortOrder?.message}
                                             helperText={
                                                 errors.SortOrder?.message
                                             }
@@ -840,7 +840,7 @@ const NewEdit = () => {
                                                 shrink:
                                                     entity && entity.SortOrder,
                                             }}
-                                            error={errors.SortOrder?.message}
+                                            error={!!errors.SortOrder?.message}
                                             helperText={
                                                 errors.SortOrder?.message
                                             }

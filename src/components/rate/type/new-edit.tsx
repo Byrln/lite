@@ -147,7 +147,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "RowHeaderShortCode" })}
                         {...register("RateTypeCode")}
                         margin="dense"
-                        error={errors.RateTypeCode?.message}
+                        error={!!errors.RateTypeCode?.message}
                         helperText={errors.RateTypeCode?.message}
                     />
                 </Grid>
@@ -159,7 +159,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "TextFirstName" })}
                         {...register("RateTypeName")}
                         margin="dense"
-                        error={errors.RateTypeName?.message}
+                        error={!!errors.RateTypeName?.message}
                         helperText={errors.RateTypeName?.message}
                     />
                 </Grid>

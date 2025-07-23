@@ -59,7 +59,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "TextRoomNo" })}
                         {...register("RoomNo")}
                         margin="dense"
-                        error={errors.RoomNo?.message}
+                        error={!!errors.RoomNo?.message}
                         helperText={errors.RoomNo?.message}
                     />
                 </Grid>
@@ -82,7 +82,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "TextRoomPhone" })}
                         {...register("RoomPhone")}
                         margin="dense"
-                        error={errors.RoomPhone?.message}
+                        error={!!errors.RoomPhone?.message}
                         helperText={errors.RoomPhone?.message}
                     />
                 </Grid>
@@ -96,7 +96,7 @@ const NewEdit = () => {
                         })}
                         {...register("Description")}
                         margin="dense"
-                        error={errors.Description?.message}
+                        error={!!errors.Description?.message}
                         helperText={errors.Description?.message}
                     />
                 </Grid>
@@ -110,7 +110,7 @@ const NewEdit = () => {
                         {...register("SortOrder")}
                         defaultValue={1}
                         margin="dense"
-                        error={errors.SortOrder?.message}
+                        error={!!errors.SortOrder?.message}
                         helperText={errors.SortOrder?.message}
                     />
                 </Grid>

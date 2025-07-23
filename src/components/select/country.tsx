@@ -36,7 +36,7 @@ const CountrySelect = ({
             {...register(customRegisterName ? customRegisterName : "CountryID")}
             select
             margin="dense"
-            error={errors.CountryID?.message}
+            error={!!errors.CountryID?.message}
             helperText={errors.CountryID?.message}
             value={entity && entity.CountryID}
             InputLabelProps={{

@@ -39,7 +39,7 @@ const NewEdit = () => {
                 label="NightAuditName"
                 {...register("NightAuditName")}
                 margin="dense"
-                error={errors.NightAuditName?.message}
+                error={!!errors.NightAuditName?.message}
                 helperText={errors.NightAuditName?.message}
             />
         </NewEditForm>

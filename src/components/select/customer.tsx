@@ -56,7 +56,7 @@ const CustomerSelect = ({
             {...register("CustomerID")}
             select
             margin="dense"
-            error={errors.CustomerID?.message}
+            error={!!errors.CustomerID?.message}
             helperText={errors.CustomerID?.message}
             size="small"
         >

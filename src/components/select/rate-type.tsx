@@ -35,7 +35,7 @@ const RateTypeSelect = ({
             {...register("RateTypeID")}
             select
             margin="dense"
-            error={errors.RateTypeID?.message}
+            error={!!errors.RateTypeID?.message}
             helperText={errors.RateTypeID?.message}
             size="small"
             onChange={onChange}

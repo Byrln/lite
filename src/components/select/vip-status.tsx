@@ -39,7 +39,7 @@ const VipStatusSelect = ({
             )}
             select
             margin="dense"
-            error={errors.VipStatusID?.message}
+            error={!!errors.VipStatusID?.message}
             helperText={errors.VipStatusID?.message}
             size="small"
             value={entity && entity.VipStatusID}

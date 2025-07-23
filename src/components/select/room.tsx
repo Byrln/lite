@@ -113,7 +113,7 @@ const RoomSelect = ({
             {...register(customRegisterName ? customRegisterName : "RoomID")}
             select
             margin="dense"
-            error={errors.RoomID?.message}
+            error={!!errors.RoomID?.message}
             helperText={errors.RoomID?.message}
             onChange={(evt: any) => {
                 eventRoomChange(evt.target.value);

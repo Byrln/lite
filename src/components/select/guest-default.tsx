@@ -34,7 +34,7 @@ const GuestDefaultSelect = ({
             {...register("GuestID")}
             select
             margin="dense"
-            error={errors.GuestID?.message}
+            error={!!errors.GuestID?.message}
             helperText={errors.GuestID?.message}
             value={entity && entity.GuestID}
             InputLabelProps={{

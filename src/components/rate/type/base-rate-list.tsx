@@ -112,7 +112,7 @@ const BaseRateList = ({
                             label={intl.formatMessage({id:"BaseRate"}) }
                             {...register(`RoomTypes[${index}].BaseRate`)}
                             margin="dense"
-                            error={errors.BaseRate?.message}
+                            error={!!errors.BaseRate?.message}
                             helperText={errors.BaseRate?.message}
                         />
                     </Grid>
@@ -125,7 +125,7 @@ const BaseRateList = ({
                             label={intl.formatMessage({id:"RowHeaderExtraAdult"}) }
                             {...register(`RoomTypes[${index}].ExtraAdult`)}
                             margin="dense"
-                            error={errors.ExtraAdult?.message}
+                            error={!!errors.ExtraAdult?.message}
                             helperText={errors.ExtraAdult?.message}
                         />
                     </Grid>
@@ -138,7 +138,7 @@ const BaseRateList = ({
                             label={intl.formatMessage({id:"RowHeaderExtraChild"}) }
                             {...register(`RoomTypes[${index}].ExtraChild`)}
                             margin="dense"
-                            error={errors.ExtraChild?.message}
+                            error={!!errors.ExtraChild?.message}
                             helperText={errors.ExtraChild?.message}
                         />
                     </Grid>

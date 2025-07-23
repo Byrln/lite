@@ -158,7 +158,7 @@ const NewEdit = ({
                                             margin="dense"
                                             fullWidth
                                             {...params}
-                                            error={errors.CurrDate?.message}
+                                            error={!!errors.CurrDate?.message}
                                             helperText={
                                                 errors.CurrDate?.message
                                             }
@@ -211,7 +211,7 @@ const NewEdit = ({
                             {...register("Balance")}
                             margin="dense"
                             size="small"
-                            error={errors.Balance?.message}
+                            error={!!errors.Balance?.message}
                             helperText={errors.Balance?.message}
                         />
                     </Grid>
@@ -224,7 +224,7 @@ const NewEdit = ({
                             label="Description"
                             {...register("Description")}
                             margin="dense"
-                            error={errors.Description?.message}
+                            error={!!errors.Description?.message}
                             helperText={errors.Description?.message}
                         />
                     </Grid>

@@ -28,7 +28,7 @@ const PackageSelect = ({ register, errors, entity, setEntity }: any) => {
             {...register("PackageID")}
             select
             margin="dense"
-            error={errors.PackageID?.message}
+            error={!!errors.PackageID?.message}
             helperText={errors.PackageID?.message}
             value={entity && entity.PackageID}
             InputLabelProps={{

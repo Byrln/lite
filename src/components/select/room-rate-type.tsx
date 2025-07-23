@@ -77,7 +77,7 @@ const RoomRateTypeSelect = ({
             )}
             select
             margin="dense"
-            error={errors.RateTypeID?.message}
+            error={!!errors.RateTypeID?.message}
             helperText={errors.RateTypeID?.message}
             onChange={onChange}
             size="small"

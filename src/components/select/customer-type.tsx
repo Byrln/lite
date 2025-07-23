@@ -33,7 +33,7 @@ const CustomerTypeSelect = ({
             {...register("CustomerTypeID")}
             select
             margin="dense"
-            error={errors.CustomerTypeID?.message}
+            error={!!errors.CustomerTypeID?.message}
             helperText={errors.CustomerTypeID?.message}
             value={entity && entity.CustomerTypeID}
             disabled={disabled}

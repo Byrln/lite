@@ -1188,7 +1188,7 @@ const NewEdit = ({
                                                 label="Хаягийн мэдээлэл"
                                                 {...register("Address")}
                                                 margin="dense"
-                                                error={errors.Address?.message}
+                                                error={!!errors.Address?.message}
                                                 helperText={
                                                     errors.Address?.message
                                                 }
@@ -1512,7 +1512,7 @@ const NewEdit = ({
                                         type="number"
                                         {...register("PayAmount")}
                                         margin="dense"
-                                        error={errors.PayAmount?.message}
+                                        error={!!errors.PayAmount?.message}
                                         helperText={errors.PayAmount?.message}
                                         size="small"
                                         style={{ width: "100%" }}
@@ -1554,7 +1554,7 @@ const NewEdit = ({
                                 multiline
                                 maxRows={4}
                                 margin="dense"
-                                error={errors.setMessage?.message}
+                                error={!!errors.setMessage?.message}
                                 helperText={errors.setMessage?.message}
                                 size="small"
                                 style={{ width: "100%" }}

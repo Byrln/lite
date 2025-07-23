@@ -28,7 +28,7 @@ const Search = ({ register, errors, control }: any) => {
                                     margin="dense"
                                     fullWidth
                                     {...params}
-                                    error={errors.CurrDate?.message}
+                                    error={!!errors.CurrDate?.message}
                                     helperText={errors.CurrDate?.message}
                                 />
                             )}

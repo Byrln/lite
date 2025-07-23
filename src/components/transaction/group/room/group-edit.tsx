@@ -281,7 +281,7 @@ const NewEdit = ({
                                     label="Amount"
                                     {...register(`amount`)}
                                     margin="dense"
-                                    error={errors.amount?.message}
+                                    error={!!errors.amount?.message}
                                     helperText={errors.amount?.message}
                                 />
                             ) : (
@@ -422,7 +422,7 @@ const NewEdit = ({
                                                 margin="dense"
                                                 fullWidth
                                                 {...params}
-                                                error={errors.Date?.message}
+                                                error={!!errors.Date?.message}
                                                 helperText={
                                                     errors.Date?.message
                                                 }

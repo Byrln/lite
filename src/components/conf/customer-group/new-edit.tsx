@@ -8,41 +8,41 @@ import { CustomerGroupAPI, listUrl } from "lib/api/customer-group";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
-    CustomerGroupName: yup.string().required("Бөглөнө үү"),
+  CustomerGroupName: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
-    const intl = useIntl();
-    const [state]: any = useAppState();
-    const {
-        register,
-        reset,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({ resolver: yupResolver(validationSchema) });
+  const intl = useIntl();
+  const [state]: any = useAppState();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
-    return (
-        <NewEditForm
-            api={CustomerGroupAPI}
-            listUrl={listUrl}
-            additionalValues={{
-                CustomerGroupID: state.editId,
-            }}
-            reset={reset}
-            handleSubmit={handleSubmit}
-        >
-            <TextField
-                size="small"
-                fullWidth
-                id="CustomerGroupName"
-                label={intl.formatMessage({ id: "RowHeaderGroupName" })}
-                {...register("CustomerGroupName")}
-                margin="dense"
-                error={errors.CustomerGroupName?.message}
-                helperText={errors.CustomerGroupName?.message}
-            />
+  return (
+    <NewEditForm
+      api={CustomerGroupAPI}
+      listUrl={listUrl}
+      additionalValues={{
+        CustomerGroupID: state.editId,
+      }}
+      reset={reset}
+      handleSubmit={handleSubmit}
+    >
+      <TextField
+        size="small"
+        fullWidth
+        id="CustomerGroupName"
+        label={intl.formatMessage({ id: "RowHeaderGroupName" })}
+        {...register("CustomerGroupName")}
+        margin="dense"
+        error={errors.CustomerGroupName?.message}
+        helperText={errors.CustomerGroupName?.message}
+      />
 
-            {/* <TextField
+      {/* <TextField
                 size="small"
                 fullWidth
                 id="Description"
@@ -52,8 +52,8 @@ const NewEdit = () => {
                 error={errors.Description?.message}
                 helperText={errors.Description?.message}
             /> */}
-        </NewEditForm>
-    );
+    </NewEditForm>
+  );
 };
 
 export default NewEdit;

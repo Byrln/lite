@@ -21,7 +21,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                         label={intl.formatMessage({id:"RowHeaderEndDate"}) }
                         {...register("SearchStr")}
                     margin="dense"
-                    error={errors.SearchStr?.message}
+                    error={!!errors.SearchStr?.message}
                     helperText={errors.SearchStr?.message}
                 />
             </Grid>
@@ -53,7 +53,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                                     margin="dense"
                                     fullWidth
                                     {...params}
-                                    error={errors.BeginDate?.message}
+                                    error={!!errors.BeginDate?.message}
                                     helperText={errors.BeginDate?.message}
                                 />
                             )}
@@ -89,7 +89,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                                     margin="dense"
                                     fullWidth
                                     {...params}
-                                    error={errors.EndDate?.message}
+                                    error={!!errors.EndDate?.message}
                                     helperText={errors.EndDate?.message}
                                 />
                             )}

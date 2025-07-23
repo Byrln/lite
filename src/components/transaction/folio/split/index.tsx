@@ -180,7 +180,7 @@ const NewEdit = ({ TransactionID, FolioID, handleModal, entities }: any) => {
                                             margin="dense"
                                             fullWidth
                                             {...params}
-                                            error={errors.BeginDate?.message}
+                                            error={!!errors.BeginDate?.message}
                                             helperText={
                                                 errors.BeginDate?.message
                                             }
@@ -220,7 +220,7 @@ const NewEdit = ({ TransactionID, FolioID, handleModal, entities }: any) => {
                                             margin="dense"
                                             fullWidth
                                             {...params}
-                                            error={errors.EndDate?.message}
+                                            error={!!errors.EndDate?.message}
                                             helperText={errors.EndDate?.message}
                                         />
                                     )}

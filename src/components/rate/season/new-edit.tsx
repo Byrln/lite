@@ -68,7 +68,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({id:"TextSeasonCode"}) }
                             {...register("SeasonCode")}
                             margin="dense"
-                            error={errors.SeasonCode?.message}
+                            error={!!errors.SeasonCode?.message}
                             helperText={errors.SeasonCode?.message}
                         />
                     </Grid>
@@ -81,7 +81,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({id:"TextSeasonName"}) }
                             {...register("SeasonName")}
                             margin="dense"
-                            error={errors.SeasonName?.message}
+                            error={!!errors.SeasonName?.message}
                             helperText={errors.SeasonName?.message}
                         />
                     </Grid>
@@ -170,7 +170,7 @@ const NewEdit = () => {
                                             margin="dense"
                                             fullWidth
                                             {...params}
-                                            error={errors.BeginDate?.message}
+                                            error={!!errors.BeginDate?.message}
                                             helperText={
                                                 errors.BeginDate?.message
                                             }
@@ -210,7 +210,7 @@ const NewEdit = () => {
                                             margin="dense"
                                             fullWidth
                                             {...params}
-                                            error={errors.EndDate?.message}
+                                            error={!!errors.EndDate?.message}
                                             helperText={errors.EndDate?.message}
                                         />
                                     )}
@@ -228,7 +228,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({id:"TextPriority"}) }
                             {...register("Priority")}
                             margin="dense"
-                            error={errors.Priority?.message}
+                            error={!!errors.Priority?.message}
                             helperText={errors.Priority?.message}
                         />
                     </Grid>

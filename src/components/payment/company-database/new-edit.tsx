@@ -82,7 +82,7 @@ const NewEdit = () => {
                                 })}
                                 {...register("CustomerName")}
                                 margin="dense"
-                                error={errors.CustomerName?.message}
+                                error={!!errors.CustomerName?.message}
                                 helperText={errors.CustomerName?.message}
                             />
                         </Grid>
@@ -103,7 +103,7 @@ const NewEdit = () => {
                                 label={intl.formatMessage({ id: "TextCity" })}
                                 {...register("City")}
                                 margin="dense"
-                                error={errors.City?.message}
+                                error={!!errors.City?.message}
                                 helperText={errors.City?.message}
                             />
                         </Grid>
@@ -118,7 +118,7 @@ const NewEdit = () => {
                                 })}
                                 {...register("RegisterNo")}
                                 margin="dense"
-                                error={errors.RegisterNo?.message}
+                                error={!!errors.RegisterNo?.message}
                                 helperText={errors.RegisterNo?.message}
                             />
                         </Grid>
@@ -132,7 +132,7 @@ const NewEdit = () => {
                                 })}
                                 {...register("Phone")}
                                 margin="dense"
-                                error={errors.Phone?.message}
+                                error={!!errors.Phone?.message}
                                 helperText={errors.Phone?.message}
                             />
                         </Grid>
@@ -146,7 +146,7 @@ const NewEdit = () => {
                                 })}
                                 {...register("Email")}
                                 margin="dense"
-                                error={errors.Email?.message}
+                                error={!!errors.Email?.message}
                                 helperText={errors.Email?.message}
                             />
                         </Grid>
@@ -179,7 +179,7 @@ const NewEdit = () => {
                                 })}
                                 {...register("Address")}
                                 margin="dense"
-                                error={errors.Address?.message}
+                                error={!!errors.Address?.message}
                                 helperText={errors.Address?.message}
                             />
                         </Grid>

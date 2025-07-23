@@ -54,7 +54,7 @@ const NewEdit = ({ entity }: any) => {
                         label={intl.formatMessage({ id: "RowHeaderFirstName" })}
                         {...register("PaymentMethodName")}
                         margin="dense"
-                        error={errors.PaymentMethodName?.message}
+                        error={!!errors.PaymentMethodName?.message}
                         helperText={errors.PaymentMethodName?.message}
                     />
                 </Grid>
@@ -68,7 +68,7 @@ const NewEdit = ({ entity }: any) => {
                         {...register("SortOrder")}
                         defaultValue={1}
                         margin="dense"
-                        error={errors.SortOrder?.message}
+                        error={!!errors.SortOrder?.message}
                         helperText={errors.SortOrder?.message}
                     />
                 </Grid>

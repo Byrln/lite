@@ -133,7 +133,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "RowHeaderUserName" })}
                         {...register("UserName")}
                         margin="dense"
-                        error={errors.UserName?.message}
+                        error={!!errors.UserName?.message}
                         helperText={errors.UserName?.message}
                     />
                 </Grid>
@@ -145,7 +145,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "TextLoginName" })}
                         {...register("LoginName")}
                         margin="dense"
-                        error={errors.LoginName?.message}
+                        error={!!errors.LoginName?.message}
                         helperText={errors.LoginName?.message}
                     />
                 </Grid>
@@ -161,7 +161,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "TextEmail" })}
                         {...register("Email")}
                         margin="dense"
-                        error={errors.Email?.message}
+                        error={!!errors.Email?.message}
                         helperText={errors.Email?.message}
                     />
                 </Grid>
@@ -183,7 +183,7 @@ const NewEdit = () => {
                         label="Нууц үг"
                         {...register("Password")}
                         margin="dense"
-                        error={errors.Password?.message}
+                        error={!!errors.Password?.message}
                         helperText={errors.Password?.message}
                     />
                 </Grid> */}

@@ -41,7 +41,7 @@ const RoomChargeDurationSelect = ({
             )}
             select
             margin="dense"
-            error={errors.RoomChargeDurationID?.message}
+            error={!!errors.RoomChargeDurationID?.message}
             helperText={errors.RoomChargeDurationID?.message}
             size="small"
         >

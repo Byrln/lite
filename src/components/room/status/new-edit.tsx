@@ -67,7 +67,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({id:"RoomStatus"}) }
                         {...register("StatusCode")}
                         margin="dense"
-                        error={errors.RoomNo?.message}
+                        error={!!errors.RoomNo?.message}
                         helperText={errors.RoomNo?.message}
                     />
                 </Grid>
@@ -79,7 +79,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({id:"RowHeaderColor"}) }
                         {...register("StatusColor")}
                         margin="dense"
-                        error={errors.StatusColor?.message}
+                        error={!!errors.StatusColor?.message}
                         helperText={errors.StatusColor?.message}
                         value={value}
                         onChange={handleChange}
@@ -94,7 +94,7 @@ const NewEdit = () => {
                         label="Өнгө"
                         {...register("StatusColor")}
                         margin="dense"
-                        error={errors.StatusColor?.message}
+                        error={!!errors.StatusColor?.message}
                         helperText={errors.StatusColor?.message}
                     />
                 </Grid> */}
@@ -106,7 +106,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({id:"RowHeaderDescription"}) }
                         {...register("Description")}
                         margin="dense"
-                        error={errors.Description?.message}
+                        error={!!errors.Description?.message}
                         helperText={errors.Description?.message}
                     />
                 </Grid>

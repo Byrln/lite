@@ -30,7 +30,7 @@ const CustomerGroupSelect = ({ register, errors, entity, setEntity }: any) => {
             {...register("CustomerGroupID")}
             select
             margin="dense"
-            error={errors.CustomerGroupID?.message}
+            error={!!errors.CustomerGroupID?.message}
             helperText={errors.CustomerGroupID?.message}
             value={entity && entity.CustomerGroupID}
             onChange={(evt: any) => {

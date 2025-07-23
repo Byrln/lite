@@ -50,7 +50,7 @@ const ReservationTypeSelect = ({
             )}
             select
             margin="dense"
-            error={errors.ReservationTypeID?.message}
+            error={!!errors.ReservationTypeID?.message}
             helperText={errors.ReservationTypeID?.message}
             size="small"
             value={ReservationTypeID}

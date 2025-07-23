@@ -44,7 +44,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({id:"TextVipStatusName"}) }
                         {...register("VipStatusName")}
                         margin="dense"
-                        error={errors.VipStatusName?.message}
+                        error={!!errors.VipStatusName?.message}
                         helperText={errors.VipStatusName?.message}
                     />
                 </Grid>
@@ -56,7 +56,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({id:"VipStatusDescription"}) }
                         {...register("VipStatusDescription")}
                         margin="dense"
-                        error={errors.VipStatusDescription?.message}
+                        error={!!errors.VipStatusDescription?.message}
                         helperText={errors.VipStatusDescription?.message}
                     />
                 </Grid>

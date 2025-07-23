@@ -69,7 +69,7 @@ const RemarkNew = ({ TransactionID, setEditMode }: any) => {
                         })}
                         size="small"
                         {...register("Remarks")}
-                        error={errors.Remarks?.message}
+                        error={!!errors.Remarks?.message}
                         fullWidth
                     />
                 </div>

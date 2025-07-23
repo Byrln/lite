@@ -149,7 +149,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("Name")}
                                     margin="dense"
-                                    error={errors.Name?.message}
+                                    error={!!errors.Name?.message}
                                     helperText={errors.Name?.message}
                                 />
                             </Grid>
@@ -163,7 +163,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("Surname")}
                                     margin="dense"
-                                    error={errors.Surname?.message}
+                                    error={!!errors.Surname?.message}
                                     helperText={errors.Surname?.message}
                                 />
                             </Grid>
@@ -234,7 +234,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("Mobile")}
                                     margin="dense"
-                                    error={errors.Mobile?.message}
+                                    error={!!errors.Mobile?.message}
                                     helperText={errors.Mobile?.message}
                                 />
                             </Grid>
@@ -248,7 +248,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("Email")}
                                     margin="dense"
-                                    error={errors.Email?.message}
+                                    error={!!errors.Email?.message}
                                     helperText={errors.Email?.message}
                                 />
                             </Grid>
@@ -270,7 +270,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("Company")}
                                     margin="dense"
-                                    error={errors.Company?.message}
+                                    error={!!errors.Company?.message}
                                     helperText={errors.Company?.message}
                                 />
                             </Grid>
@@ -284,7 +284,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("Phone")}
                                     margin="dense"
-                                    error={errors.Phone?.message}
+                                    error={!!errors.Phone?.message}
                                     helperText={errors.Phone?.message}
                                 />
                             </Grid>
@@ -298,7 +298,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("RegistryNo")}
                                     margin="dense"
-                                    error={errors.RegistryNo?.message}
+                                    error={!!errors.RegistryNo?.message}
                                     helperText={errors.RegistryNo?.message}
                                 />
                             </Grid>
@@ -312,7 +312,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("DriverLicenseNo")}
                                     margin="dense"
-                                    error={errors.DriverLicenseNo?.message}
+                                    error={!!errors.DriverLicenseNo?.message}
                                     helperText={errors.DriverLicenseNo?.message}
                                 />
                             </Grid>
@@ -345,7 +345,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("Zip")}
                                     margin="dense"
-                                    error={errors.Zip?.message}
+                                    error={!!errors.Zip?.message}
                                     helperText={errors.Zip?.message}
                                 />
                             </Grid>
@@ -360,7 +360,7 @@ const NewEdit = () => {
                                     })}
                                     {...register("Address")}
                                     margin="dense"
-                                    error={errors.Address?.message}
+                                    error={!!errors.Address?.message}
                                     helperText={errors.Address?.message}
                                 />
                             </Grid>

@@ -171,7 +171,7 @@ const CurrencyAmount = ({
                   `TransactionDetail.${id}.TestCurrencyAmount`
                 )}
                 margin="dense"
-                error={errors.TestCurrencyAmount?.message}
+                error={!!errors.TestCurrencyAmount?.message}
                 helperText={errors.TestCurrencyAmount?.message}
                 InputLabelProps={{
                   shrink: currencyAmount,
@@ -210,7 +210,7 @@ const CurrencyAmount = ({
           disabled={isCurrencyAmountEditable ? false : true}
           {...register(`TransactionDetail.${id}.CurrencyAmount`)}
           margin="dense"
-          error={errors.CurrencyAmount?.message}
+          error={!!errors.CurrencyAmount?.message}
           helperText={errors.CurrencyAmount?.message}
           InputLabelProps={{
             shrink: true,

@@ -27,7 +27,7 @@ const SeasonSelect = ({ register, errors }: any) => {
             {...register("SeasonID")}
             select
             margin="dense"
-            error={errors.SeasonID?.message}
+            error={!!errors.SeasonID?.message}
             helperText={errors.SeasonID?.message}
             size="small"
         >

@@ -87,7 +87,7 @@ const MarkNoShowForm = ({
                     })}
                     {...register("Fee")}
                     margin="dense"
-                    error={errors.Fee?.message}
+                    error={!!errors.Fee?.message}
                     helperText={errors.Fee?.message}
                     InputLabelProps={{
                         shrink: true,

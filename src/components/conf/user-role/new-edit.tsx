@@ -49,7 +49,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({id:"RowHeaderShortCode"}) }
                         {...register("UserRoleShortName")}
                         margin="dense"
-                        error={errors.UserRoleShortName?.message}
+                        error={!!errors.UserRoleShortName?.message}
                         helperText={errors.UserRoleShortName?.message}
                     />
                 </Grid>
@@ -61,7 +61,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({id:"ConfigUserRole"}) }
                         {...register("UserRoleName")}
                         margin="dense"
-                        error={errors.UserRoleName?.message}
+                        error={!!errors.UserRoleName?.message}
                         helperText={errors.UserRoleName?.message}
                     />
                 </Grid>
@@ -75,7 +75,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({id:"RowHeaderDescription"}) }
                         {...register("Description")}
                         margin="dense"
-                        error={errors.Description?.message}
+                        error={!!errors.Description?.message}
                         helperText={errors.Description?.message}
                     />
                 </Grid>

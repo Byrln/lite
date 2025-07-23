@@ -49,7 +49,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "AmenityShortName" })}
                         {...register("AmenityShortName")}
                         margin="dense"
-                        error={errors.AmenityShortName?.message}
+                        error={!!errors.AmenityShortName?.message}
                         helperText={errors.AmenityShortName?.message}
                     />
                 </Grid>
@@ -61,7 +61,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "AmenityName" })}
                         {...register("AmenityName")}
                         margin="dense"
-                        error={errors.AmenityName?.message}
+                        error={!!errors.AmenityName?.message}
                         helperText={errors.AmenityName?.message}
                     />
                 </Grid>
@@ -75,7 +75,7 @@ const NewEdit = () => {
                         {...register("SortOrder")}
                         defaultValue={1}
                         margin="dense"
-                        error={errors.SortOrder?.message}
+                        error={!!errors.SortOrder?.message}
                         helperText={errors.SortOrder?.message}
                     />
                 </Grid>

@@ -79,7 +79,7 @@ const UpdatePox = ({ element, RoomTypeID }: any) => {
                 label="Өдөр"
                 {...register("StayDate")}
                 margin="dense"
-                error={errors.StayDate?.message}
+                error={!!errors.StayDate?.message}
                 helperText={errors.StayDate?.message}
             />
 

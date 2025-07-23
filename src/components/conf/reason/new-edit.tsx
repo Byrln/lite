@@ -53,7 +53,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "RowHeaderReason" })}
                         {...register("Description")}
                         margin="dense"
-                        error={errors.Description?.message}
+                        error={!!errors.Description?.message}
                         helperText={errors.Description?.message}
                     />
                 </Grid>

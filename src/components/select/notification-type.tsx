@@ -33,7 +33,7 @@ const NotificationTypeSelect = ({
             {...register("NotificationTypeID")}
             select
             margin="dense"
-            error={errors.NotificationTypeID?.message}
+            error={!!errors.NotificationTypeID?.message}
             helperText={errors.NotificationTypeID?.message}
             size="small"
             value={entity && entity.NotificationTypeID}

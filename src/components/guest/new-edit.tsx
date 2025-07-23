@@ -156,7 +156,7 @@ const NewEdit = ({
                             label="Овог"
                             {...register("Surname")}
                             margin="dense"
-                            error={errors.Surname?.message}
+                            error={!!errors.Surname?.message}
                             helperText={errors.Surname?.message}
                             value={entity && entity.Surname}
                             InputLabelProps={{
@@ -181,7 +181,7 @@ const NewEdit = ({
                             label="Нэр"
                             {...register("Name")}
                             margin="dense"
-                            error={errors.Name?.message}
+                            error={!!errors.Name?.message}
                             helperText={errors.Name?.message}
                             value={entity && entity.Name}
                             InputLabelProps={{
@@ -209,7 +209,7 @@ const NewEdit = ({
                             label="IdentityType"
                             select
                             margin="dense"
-                            error={errors.IdentityTypeID?.message}
+                            error={!!errors.IdentityTypeID?.message}
                             helperText={errors.IdentityTypeID?.message}
                             onChange={onIdentityTypeChange}
                             value={
@@ -231,7 +231,7 @@ const NewEdit = ({
                                 label="Регистерийн дугаар"
                                 {...register("RegistryNo")}
                                 margin="dense"
-                                error={errors.RegistryNo?.message}
+                                error={!!errors.RegistryNo?.message}
                                 helperText={errors.RegistryNo?.message}
                                 value={
                                     entity &&
@@ -270,7 +270,7 @@ const NewEdit = ({
                                 label="Жолооны үнэмлэхний дугаар"
                                 {...register("DriverLicenseNo")}
                                 margin="dense"
-                                error={errors.DriverLicenseNo?.message}
+                                error={!!errors.DriverLicenseNo?.message}
                                 helperText={errors.DriverLicenseNo?.message}
                                 value={
                                     entity &&
@@ -323,7 +323,7 @@ const NewEdit = ({
                             label="Емэйл"
                             {...register("Email")}
                             margin="dense"
-                            error={errors.Email?.message}
+                            error={!!errors.Email?.message}
                             helperText={errors.Email?.message}
                             value={entity && entity.Email}
                             InputLabelProps={{
@@ -345,7 +345,7 @@ const NewEdit = ({
                             label="Гар утас"
                             {...register("Mobile")}
                             margin="dense"
-                            error={errors.Mobile?.message}
+                            error={!!errors.Mobile?.message}
                             helperText={errors.Mobile?.message}
                             value={entity && entity.Mobile}
                             InputLabelProps={{
@@ -374,7 +374,7 @@ const NewEdit = ({
                     label="Хаягийн мэдээлэл"
                     {...register("Address")}
                     margin="dense"
-                    error={errors.Address?.message}
+                    error={!!errors.Address?.message}
                     helperText={errors.Address?.message}
                     value={entity && entity.Address}
                     InputLabelProps={{

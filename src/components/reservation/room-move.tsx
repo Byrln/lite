@@ -281,7 +281,7 @@ const RoomMoveForm = ({
                             })}
                             {...register("NewRate")}
                             margin="dense"
-                            error={errors.NewRate?.message}
+                            error={!!errors.NewRate?.message}
                             helperText={errors.NewRate?.message}
                             disabled={!isManualRate()}
                             InputLabelProps={{

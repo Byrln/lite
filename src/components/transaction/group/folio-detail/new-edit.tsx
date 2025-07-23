@@ -138,7 +138,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
                                             margin="dense"
                                             fullWidth
                                             {...params}
-                                            error={errors.CurrDate?.message}
+                                            error={!!errors.CurrDate?.message}
                                             helperText={
                                                 errors.CurrDate?.message
                                             }
@@ -156,7 +156,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
                             {...register("ItemName")}
                             margin="dense"
                             fullWidth
-                            error={errors.ItemName?.message}
+                            error={!!errors.ItemName?.message}
                             helperText={errors.ItemName?.message}
                             label={"Хэлбэр"}
                             disabled={true}
@@ -171,7 +171,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
                             label="Description"
                             {...register("Description")}
                             margin="dense"
-                            error={errors.Description?.message}
+                            error={!!errors.Description?.message}
                             helperText={errors.Description?.message}
                         />
                     </Grid>
@@ -196,7 +196,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
                             {...register("Amount1")}
                             margin="dense"
                             size="small"
-                            error={errors.Amount1?.message}
+                            error={!!errors.Amount1?.message}
                             helperText={errors.Amount1?.message}
                         />
                     </Grid>

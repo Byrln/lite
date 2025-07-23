@@ -64,7 +64,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "RowHeaderFirstName" })}
                         {...register("RoomChargeTypeName")}
                         margin="dense"
-                        error={errors.RoomChargeTypeName?.message}
+                        error={!!errors.RoomChargeTypeName?.message}
                         helperText={errors.RoomChargeTypeName?.message}
                     />
                 </Grid>
@@ -77,7 +77,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({ id: "RoomChargeTypeRate" })}
                         {...register("RoomChargeTypeRate")}
                         margin="dense"
-                        error={errors.RoomChargeTypeRate?.message}
+                        error={!!errors.RoomChargeTypeRate?.message}
                         helperText={errors.RoomChargeTypeRate?.message}
                     />
                 </Grid>
@@ -91,7 +91,7 @@ const NewEdit = () => {
                         {...register("SortOrder")}
                         defaultValue={1}
                         margin="dense"
-                        error={errors.SortOrder?.message}
+                        error={!!errors.SortOrder?.message}
                         helperText={errors.SortOrder?.message}
                     />
                 </Grid>

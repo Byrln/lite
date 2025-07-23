@@ -168,7 +168,7 @@ const NewEdit = () => {
                         label={intl.formatMessage({id:"TextWorkOrderNo"}) }
                         {...register("WorkOrderNo")}
                                 margin="dense"
-                                error={errors.WorkOrderNo?.message}
+                                error={!!errors.WorkOrderNo?.message}
                                 helperText={errors.WorkOrderNo?.message}
                                 disabled={true}
                             />
@@ -248,7 +248,7 @@ const NewEdit = () => {
                                             margin="dense"
                                             fullWidth
                                             {...params}
-                                            error={errors.Deadline?.message}
+                                            error={!!errors.Deadline?.message}
                                             helperText={
                                                 errors.Deadline?.message
                                             }
@@ -268,7 +268,7 @@ const NewEdit = () => {
                                             label={intl.formatMessage({id:"RowHeaderDescription"}) }
                                             {...register("Description")}
                             margin="dense"
-                            error={errors.Description?.message}
+                            error={!!errors.Description?.message}
                             helperText={errors.Description?.message}
                         />
                     </Grid>

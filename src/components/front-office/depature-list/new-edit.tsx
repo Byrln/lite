@@ -38,7 +38,7 @@ const NewEdit = () => {
                 label="DeparturedListName"
                 {...register("DeparturedListName")}
                 margin="dense"
-                error={errors.DeparturedListName?.message}
+                error={!!errors.DeparturedListName?.message}
                 helperText={errors.DeparturedListName?.message}
             />
         </NewEditForm>

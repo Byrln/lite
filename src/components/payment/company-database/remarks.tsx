@@ -59,7 +59,7 @@ const Remarks = ({ GuestID }: any) => {
                         label="Address"
                         {...register("Address")}
                         margin="dense"
-                        error={errors.Address?.message}
+                        error={!!errors.Address?.message}
                         helperText={errors.Address?.message}
                     />
                 </NewEditForm>

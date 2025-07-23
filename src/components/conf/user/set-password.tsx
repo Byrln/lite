@@ -48,7 +48,7 @@ const NewEdit = ({ UserID }: any) => {
                         label={intl.formatMessage({id:"TextPassword"}) }
                         {...register("Password")}
                 margin="dense"
-                error={errors.Password?.message}
+                error={!!errors.Password?.message}
                 helperText={errors.Password?.message}
             />
         </NewEditForm>

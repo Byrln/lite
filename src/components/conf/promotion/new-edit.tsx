@@ -442,7 +442,7 @@ const NewEdit = () => {
                             })}
                             {...register("PromotionCode")}
                             margin="dense"
-                            error={errors.PromotionCode?.message}
+                            error={!!errors.PromotionCode?.message}
                             helperText={errors.PromotionCode?.message}
                         />
                     </Grid>
@@ -465,7 +465,7 @@ const NewEdit = () => {
                             })}
                             {...register("Description")}
                             margin="dense"
-                            error={errors.Description?.message}
+                            error={!!errors.Description?.message}
                             helperText={errors.Description?.message}
                         />
                     </Grid>
@@ -479,7 +479,7 @@ const NewEdit = () => {
                             })}
                             {...register("BeginDate")}
                             margin="dense"
-                            error={errors.BeginDate?.message}
+                            error={!!errors.BeginDate?.message}
                             helperText={errors.BeginDate?.message}
                             size="small"
                             InputLabelProps={{
@@ -497,7 +497,7 @@ const NewEdit = () => {
                             })}
                             {...register("EndDate")}
                             margin="dense"
-                            error={errors.EndDate?.message}
+                            error={!!errors.EndDate?.message}
                             helperText={errors.EndDate?.message}
                             size="small"
                             InputLabelProps={{
@@ -580,7 +580,7 @@ const NewEdit = () => {
                     label={intl.formatMessage({ id: "Rate" })}
                     {...register("Rate")}
                     margin="dense"
-                    error={errors.Rate?.message}
+                    error={!!errors.Rate?.message}
                     helperText={errors.Rate?.message}
                 />
             ) : (
@@ -594,7 +594,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({ id: "Monday" })}
                             {...register("MondayRate")}
                             margin="dense"
-                            error={errors.MondayRate?.message}
+                            error={!!errors.MondayRate?.message}
                             helperText={errors.MondayRate?.message}
                         />
                     </Grid>
@@ -607,7 +607,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({ id: "Tuesday" })}
                             {...register("TuesdayRate")}
                             margin="dense"
-                            error={errors.TuesdayRate?.message}
+                            error={!!errors.TuesdayRate?.message}
                             helperText={errors.TuesdayRate?.message}
                         />
                     </Grid>
@@ -620,7 +620,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({ id: "Wednesday" })}
                             {...register("WednesdayRate")}
                             margin="dense"
-                            error={errors.WednesdayRate?.message}
+                            error={!!errors.WednesdayRate?.message}
                             helperText={errors.WednesdayRate?.message}
                         />
                     </Grid>
@@ -633,7 +633,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({ id: "Thursday" })}
                             {...register("ThursdayRate")}
                             margin="dense"
-                            error={errors.ThursdayRate?.message}
+                            error={!!errors.ThursdayRate?.message}
                             helperText={errors.ThursdayRate?.message}
                         />
                     </Grid>
@@ -646,7 +646,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({ id: "Friday" })}
                             {...register("FridayRate")}
                             margin="dense"
-                            error={errors.FridayRate?.message}
+                            error={!!errors.FridayRate?.message}
                             helperText={errors.FridayRate?.message}
                         />
                     </Grid>
@@ -659,7 +659,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({ id: "Saturday" })}
                             {...register("SaturdayRate")}
                             margin="dense"
-                            error={errors.SaturdayRate?.message}
+                            error={!!errors.SaturdayRate?.message}
                             helperText={errors.SaturdayRate?.message}
                         />
                     </Grid>
@@ -672,7 +672,7 @@ const NewEdit = () => {
                             label={intl.formatMessage({ id: "Sunday" })}
                             {...register("SundayRate")}
                             margin="dense"
-                            error={errors.SundayRate?.message}
+                            error={!!errors.SundayRate?.message}
                             helperText={errors.SundayRate?.message}
                         />
                     </Grid>

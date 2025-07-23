@@ -50,7 +50,7 @@ const NewEdit = () => {
                         })}
                         {...register("ReservationSourceName")}
                         margin="dense"
-                        error={errors.ReservationSourceName?.message}
+                        error={!!errors.ReservationSourceName?.message}
                         helperText={errors.ReservationSourceName?.message}
                     />
                 </Grid>

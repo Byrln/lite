@@ -120,7 +120,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                                             margin="dense"
                                             fullWidth
                                             {...params}
-                                            error={errors.CurrDate?.message}
+                                            error={!!errors.CurrDate?.message}
                                             helperText={
                                                 errors.CurrDate?.message
                                             }
@@ -171,7 +171,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                             {...register("Amount")}
                             margin="dense"
                             size="small"
-                            error={errors.Amount?.message}
+                            error={!!errors.Amount?.message}
                             helperText={errors.Amount?.message}
                         />
                     </Grid>
@@ -184,7 +184,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                             label="Description"
                             {...register("Description")}
                             margin="dense"
-                            error={errors.Description?.message}
+                            error={!!errors.Description?.message}
                             helperText={errors.Description?.message}
                         />
                     </Grid>

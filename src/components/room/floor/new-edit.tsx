@@ -37,7 +37,7 @@ const NewEdit = () => {
                         label="Давхар"
                         {...register("FloorNo")}
                         margin="dense"
-                        error={errors.SortOrder?.message}
+                        error={!!errors.SortOrder?.message}
                         helperText={errors.SortOrder?.message}
                     />
                 </Grid>
