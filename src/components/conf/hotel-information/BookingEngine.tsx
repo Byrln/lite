@@ -125,8 +125,8 @@ const GeneralForm = () => {
               label={intl.formatMessage({ id: "TextHotelDescription" })}
               {...register("DescriptionBooking")}
               margin="dense"
-              error={errors.DescriptionBooking?.message}
-              helperText={errors.DescriptionBooking?.message}
+              error={!!errors.DescriptionBooking?.message}
+              helperText={errors.DescriptionBooking?.message as string}
             />
 
             <TextField
@@ -138,8 +138,8 @@ const GeneralForm = () => {
               label={intl.formatMessage({ id: "TextHotelPolicy" })}
               {...register("HotelPolicyBooking")}
               margin="dense"
-              error={errors.HotelPolicyBooking?.message}
-              helperText={errors.HotelPolicyBooking?.message}
+              error={!!errors.HotelPolicyBooking?.message}
+              helperText={errors.HotelPolicyBooking?.message as string}
             />
             <TextField
               size="small"
@@ -150,8 +150,8 @@ const GeneralForm = () => {
               label={intl.formatMessage({ id: "TextCancelPolicy" })}
               {...register("CancelPolicyBooking")}
               margin="dense"
-              error={errors.CancelPolicyBooking?.message}
-              helperText={errors.CancelPolicyBooking?.message}
+              error={!!errors.CancelPolicyBooking?.message}
+              helperText={errors.CancelPolicyBooking?.message as string}
             />
           </Grid>
           <Grid item xs={6}>

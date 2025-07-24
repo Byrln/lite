@@ -55,8 +55,8 @@ const ChangePassword = ({ id }: any) => {
             label={intl.formatMessage({ id: "TextOldPassword" })}
             {...register("OldPassword")}
             margin="dense"
-            error={errors.OldPassword?.message}
-            helperText={errors.OldPassword?.message}
+            error={!!errors.OldPassword?.message}
+            helperText={errors.OldPassword?.message as string}
           />
         </Grid>
         <Grid item xs={6}>
@@ -68,8 +68,8 @@ const ChangePassword = ({ id }: any) => {
             label={intl.formatMessage({ id: "TextNewPassword" })}
             {...register("NewPassword")}
             margin="dense"
-            error={errors.NewPassword?.message}
-            helperText={errors.NewPassword?.message}
+            error={!!errors.NewPassword?.message}
+            helperText={errors.NewPassword?.message as string}
           />
         </Grid>
         <Grid item xs={6}>
@@ -81,8 +81,8 @@ const ChangePassword = ({ id }: any) => {
             label={intl.formatMessage({ id: "TextConfirmNewPassword" })}
             {...register("NewPasswordConfirmation")}
             margin="dense"
-            error={errors.NewPasswordConfirmation?.message}
-            helperText={errors.NewPasswordConfirmation?.message}
+            error={!!errors.NewPasswordConfirmation?.message}
+            helperText={errors.NewPasswordConfirmation?.message as string}
           />
         </Grid>
       </Grid>

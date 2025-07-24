@@ -286,15 +286,18 @@ const ItemDetail = ({
                           summary.RoomCharges
                         )}
                       </div>
-                      <Link
-                        href="#"
-                        passHref
+                      <span
                         className="ml-2"
                         style={{
                           paddingTop: "3px",
                           color: "rgb(24, 119, 242)",
+                          cursor: "pointer",
+                          display: "inline-flex",
+                          alignItems: "center"
                         }}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
                           handleModal(
                             true,
                             "Edit",
@@ -325,11 +328,9 @@ const ItemDetail = ({
                             "medium"
                           );
                         }}
-                        legacyBehavior>
-
+                      >
                         <EditIcon />
-
-                      </Link>
+                      </span>
                     </TableCell>
                   </TableRow>
 

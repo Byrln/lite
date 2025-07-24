@@ -94,7 +94,7 @@ const NightAuditList = ({ workingDate }: any) => {
                                     fullWidth
                                     {...params}
                                     error={!!errors.WorkingDate?.message}
-                                    helperText={errors.WorkingDate?.message}
+                                    helperText={errors.WorkingDate?.message as string}
                                 />
                             )}
                         />

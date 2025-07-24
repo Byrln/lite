@@ -19,7 +19,7 @@ export function withAuthServerSideProps(
 
         axios.defaults.headers.common[
             "Authorization"
-        ] = `Bearer ${session?.token}`;
+        ] = `Bearer ${(session as any)?.token}`;
 
         return await getServerSidePropsFunc(context);
     };

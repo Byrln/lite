@@ -8,8 +8,6 @@ export default function GlobalStyles() {
         <GlobalThemeStyles
             styles={{
                 "*": {
-                    margin: 0,
-                    padding: 0,
                     boxSizing: "border-box",
                 },
                 html: {

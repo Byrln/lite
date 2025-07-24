@@ -44,7 +44,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                                     fullWidth
                                     {...params}
                                     error={!!errors.StartDate?.message}
-                                    helperText={errors.StartDate?.message}
+                                    helperText={errors.StartDate?.message as string}
                                 />
                             )}
                         />
@@ -82,7 +82,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                                     fullWidth
                                     {...params}
                                     error={!!errors.EndDate?.message}
-                                    helperText={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message as string}
                                 />
                             )}
                         />
@@ -119,7 +119,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     {...register("GuestName")}
                     margin="dense"
                     error={!!errors.GuestName?.message}
-                    helperText={errors.GuestName?.message}
+                    helperText={errors.GuestName?.message as string}
                 />
             </Grid>
 
@@ -134,7 +134,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     {...register("GuestPhone")}
                     margin="dense"
                     error={!!errors.GuestPhone?.message}
-                    helperText={errors.GuestPhone?.message}
+                    helperText={errors.GuestPhone?.message as string}
                 />
             </Grid>
 
@@ -149,7 +149,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     {...register("GuestEmail")}
                     margin="dense"
                     error={!!errors.GuestEmail?.message}
-                    helperText={errors.GuestEmail?.message}
+                    helperText={errors.GuestEmail?.message as string}
                 />
             </Grid>
 
@@ -164,7 +164,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     select
                     margin="dense"
                     error={!!errors.StatusGroup?.message}
-                    helperText={errors.StatusGroup?.message}
+                    helperText={errors.StatusGroup?.message as string}
                     size="small"
                 >
                     <MenuItem key={1} value={1}>

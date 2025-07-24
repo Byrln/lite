@@ -23,7 +23,7 @@ import mon from "i18n/mon.json";
 import enDashboard from "i18n/en-dashboard.json";
 import monDashboard from "i18n/mon-dashboard.json";
 import { useAppState } from "lib/context/app";
-import GlobalStyles from "@mui/material/GlobalStyles";
+
 
 export default function MyApp({ Component, pageProps }: AppProps) {
     const { locale }: any = useRouter();
@@ -74,7 +74,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                                     <LocalizationProvider // @ts-ignore
                                         dateAdapter={AdapterDateFns}
                                     >
-                                        <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
+                
                                         <Page>
                                             <Component {...pageProps} />
                                             <ToastContainer

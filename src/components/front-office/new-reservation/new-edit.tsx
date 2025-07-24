@@ -39,7 +39,7 @@ const NewEdit = () => {
                 {...register("NewRevervationName")}
                 margin="dense"
                 error={!!errors.NewRevervationName?.message}
-                helperText={errors.NewRevervationName?.message}
+                helperText={errors.NewRevervationName?.message as string}
             />
         </NewEditForm>
     );

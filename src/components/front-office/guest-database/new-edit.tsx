@@ -150,7 +150,7 @@ const NewEdit = () => {
                                     {...register("Name")}
                                     margin="dense"
                                     error={!!errors.Name?.message}
-                                    helperText={errors.Name?.message}
+                                    helperText={errors.Name?.message as string}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
@@ -164,7 +164,7 @@ const NewEdit = () => {
                                     {...register("Surname")}
                                     margin="dense"
                                     error={!!errors.Surname?.message}
-                                    helperText={errors.Surname?.message}
+                                    helperText={errors.Surname?.message as string}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
@@ -208,14 +208,8 @@ const NewEdit = () => {
                                                         margin="dense"
                                                         fullWidth
                                                         {...params}
-                                                        error={
-                                                            errors.DateOfBirth
-                                                                ?.message
-                                                        }
-                                                        helperText={
-                                                            errors.DateOfBirth
-                                                                ?.message
-                                                        }
+                                                        error={!!errors.DateOfBirth?.message}
+                                                        helperText={errors.DateOfBirth?.message as string}
                                                     />
                                                 )}
                                             />
@@ -235,7 +229,7 @@ const NewEdit = () => {
                                     {...register("Mobile")}
                                     margin="dense"
                                     error={!!errors.Mobile?.message}
-                                    helperText={errors.Mobile?.message}
+                                    helperText={errors.Mobile?.message as string}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
@@ -249,7 +243,7 @@ const NewEdit = () => {
                                     {...register("Email")}
                                     margin="dense"
                                     error={!!errors.Email?.message}
-                                    helperText={errors.Email?.message}
+                                    helperText={errors.Email?.message as string}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
@@ -271,7 +265,7 @@ const NewEdit = () => {
                                     {...register("Company")}
                                     margin="dense"
                                     error={!!errors.Company?.message}
-                                    helperText={errors.Company?.message}
+                                    helperText={errors.Company?.message as string}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
@@ -285,7 +279,7 @@ const NewEdit = () => {
                                     {...register("Phone")}
                                     margin="dense"
                                     error={!!errors.Phone?.message}
-                                    helperText={errors.Phone?.message}
+                                    helperText={errors.Phone?.message as string}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
@@ -299,7 +293,7 @@ const NewEdit = () => {
                                     {...register("RegistryNo")}
                                     margin="dense"
                                     error={!!errors.RegistryNo?.message}
-                                    helperText={errors.RegistryNo?.message}
+                                    helperText={errors.RegistryNo?.message as string}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={3}>
@@ -313,7 +307,7 @@ const NewEdit = () => {
                                     {...register("DriverLicenseNo")}
                                     margin="dense"
                                     error={!!errors.DriverLicenseNo?.message}
-                                    helperText={errors.DriverLicenseNo?.message}
+                                    helperText={errors.DriverLicenseNo?.message as string}
                                 />
                             </Grid>
 
@@ -346,7 +340,7 @@ const NewEdit = () => {
                                     {...register("Zip")}
                                     margin="dense"
                                     error={!!errors.Zip?.message}
-                                    helperText={errors.Zip?.message}
+                                    helperText={errors.Zip?.message as string}
                                 />
                             </Grid>
 
@@ -361,7 +355,7 @@ const NewEdit = () => {
                                     {...register("Address")}
                                     margin="dense"
                                     error={!!errors.Address?.message}
-                                    helperText={errors.Address?.message}
+                                    helperText={errors.Address?.message as string}
                                 />
                             </Grid>
                         </Grid>

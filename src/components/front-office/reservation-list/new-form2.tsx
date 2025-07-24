@@ -267,7 +267,7 @@ const NewEdit = ({
                                     fullWidth
                                     {...params}
                                     error={!!errors.ArrivalDate?.message}
-                                    helperText={errors.ArrivalDate?.message}
+                                    helperText={errors.ArrivalDate?.message as string}
                                 />
                             )}
                         />
@@ -314,7 +314,7 @@ const NewEdit = ({
                                     fullWidth
                                     {...params}
                                     error={!!errors.DepartureDate?.message}
-                                    helperText={errors.DepartureDate?.message}
+                                    helperText={errors.DepartureDate?.message as string}
                                 />
                             )}
                         />

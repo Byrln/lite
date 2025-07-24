@@ -43,8 +43,8 @@ const NewEdit = () => {
             label={intl.formatMessage({ id: "TextCustomerName" })}
             {...register("CustomerName")}
             margin="dense"
-            error={errors.CustomerName?.message}
-            helperText={errors.CustomerName?.message}
+            error={!!errors.CustomerName?.message}
+            helperText={errors.CustomerName?.message as string}
             disabled
           />
         </Grid>
@@ -57,8 +57,8 @@ const NewEdit = () => {
             label={intl.formatMessage({ id: "TextCustomerCode" })}
             {...register("CustomerCode")}
             margin="dense"
-            error={errors.CustomerCode?.message}
-            helperText={errors.CustomerCode?.message}
+            error={!!errors.CustomerCode?.message}
+            helperText={errors.CustomerCode?.message as string}
           />
         </Grid>
       </Grid>

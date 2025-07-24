@@ -100,7 +100,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("HotelCode")}
               margin="dense"
               error={!!errors.HotelCode?.message}
-              helperText={errors.HotelCode?.message}
+              helperText={errors.HotelCode?.message as string}
             />
             <TextField
               size="small"
@@ -110,7 +110,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("HotelName")}
               margin="dense"
               error={!!errors.HotelName?.message}
-              helperText={errors.HotelName?.message}
+              helperText={errors.HotelName?.message as string}
             />
             <TextField
               size="small"
@@ -122,7 +122,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("CompanyName")}
               margin="dense"
               error={!!errors.CompanyName?.message}
-              helperText={errors.CompanyName?.message}
+              helperText={errors.CompanyName?.message as string}
             />
             <TextField
               size="small"
@@ -132,7 +132,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("RegistryNo")}
               margin="dense"
               error={!!errors.RegistryNo?.message}
-              helperText={errors.RegistryNo?.message}
+              helperText={errors.RegistryNo?.message as string}
             />
             <TextField
               size="small"
@@ -144,7 +144,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("ReceptionPhone")}
               margin="dense"
               error={!!errors.ReceptionPhone?.message}
-              helperText={errors.ReceptionPhone?.message}
+              helperText={errors.ReceptionPhone?.message as string}
             />
           </Grid>
           <Grid item xs={4}>
@@ -156,7 +156,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("Address1")}
               margin="dense"
               error={!!errors.Address1?.message}
-              helperText={errors.Address1?.message}
+              helperText={errors.Address1?.message as string}
             />
             <TextField
               size="small"
@@ -166,7 +166,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("Address2")}
               margin="dense"
               error={!!errors.Address2?.message}
-              helperText={errors.Address2?.message}
+              helperText={errors.Address2?.message as string}
             />
             <TextField
               size="small"
@@ -176,7 +176,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("City")}
               margin="dense"
               error={!!errors.City?.message}
-              helperText={errors.City?.message}
+              helperText={errors.City?.message as string}
             />
             <TextField
               size="small"
@@ -188,7 +188,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("State")}
               margin="dense"
               error={!!errors.State?.message}
-              helperText={errors.State?.message}
+              helperText={errors.State?.message as string}
             />
             <ReferenceSelect
               register={register}
@@ -209,7 +209,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("ReservePhone")}
               margin="dense"
               error={!!errors.ReservePhone?.message}
-              helperText={errors.ReservePhone?.message}
+              helperText={errors.ReservePhone?.message as string}
             />
             <TextField
               size="small"
@@ -219,7 +219,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("ReserveEmail")}
               margin="dense"
               error={!!errors.ReserveEmail?.message}
-              helperText={errors.ReserveEmail?.message}
+              helperText={errors.ReserveEmail?.message as string}
             />
             <TextField
               size="small"
@@ -229,7 +229,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("HotelType")}
               margin="dense"
               error={!!errors.HotelType?.message}
-              helperText={errors.HotelType?.message}
+              helperText={errors.HotelType?.message as string}
             />
             <TextField
               size="small"
@@ -239,7 +239,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("Website")}
               margin="dense"
               error={!!errors.Website?.message}
-              helperText={errors.Website?.message}
+              helperText={errors.Website?.message as string}
             />
             <TextField
               size="small"
@@ -249,7 +249,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("HotelRating")}
               margin="dense"
               error={!!errors.HotelRating?.message}
-              helperText={errors.HotelRating?.message}
+              helperText={errors.HotelRating?.message as string}
             />
             {/* HotelRatingID */}
           </Grid>
@@ -264,7 +264,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("HotelPolicy")}
               margin="dense"
               error={!!errors.HotelPolicy?.message}
-              helperText={errors.HotelPolicy?.message}
+              helperText={errors.HotelPolicy?.message as string}
             />
           </Grid>
           <Grid item xs={6}>
@@ -278,7 +278,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               {...register("CancelPolicy")}
               margin="dense"
               error={!!errors.CancelPolicy?.message}
-              helperText={errors.CancelPolicy?.message}
+              helperText={errors.CancelPolicy?.message as string}
             />
           </Grid>
           <Grid item xs={6}>

@@ -95,7 +95,7 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
                                 size="small"
                                 margin="dense"
                                 error={!!errors.Fee?.message}
-                                helperText={errors.Fee?.message}
+                                helperText={errors.Fee?.message as string}
                             />
                         </Grid>
                     </Grid>

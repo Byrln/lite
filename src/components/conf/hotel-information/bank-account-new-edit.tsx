@@ -45,8 +45,8 @@ const NewEdit = () => {
             label={intl.formatMessage({ id: "ReportBank" })}
             {...register("Bank")}
             margin="dense"
-            error={errors.Bank?.message}
-            helperText={errors.Bank?.message}
+            error={!!errors.Bank?.message}
+            helperText={errors.Bank?.message as string}
           />
         </Grid>
         <Grid item xs={6}>
@@ -57,8 +57,8 @@ const NewEdit = () => {
             label={intl.formatMessage({ id: "TextAccountNo" })}
             {...register("AccountNo")}
             margin="dense"
-            error={errors.AccountNo?.message}
-            helperText={errors.AccountNo?.message}
+            error={!!errors.AccountNo?.message}
+            helperText={errors.AccountNo?.message as string}
           />
         </Grid>
         <Grid item xs={6}>
@@ -69,8 +69,8 @@ const NewEdit = () => {
             label={intl.formatMessage({ id: "TextAccountName" })}
             {...register("AccountName")}
             margin="dense"
-            error={errors.AccountName?.message}
-            helperText={errors.AccountName?.message}
+            error={!!errors.AccountName?.message}
+            helperText={errors.AccountName?.message as string}
           />
         </Grid>
       </Grid>

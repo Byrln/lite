@@ -106,10 +106,10 @@ type MotionHighlightProps<T extends string> = React.ComponentProps<'div'> &
     | UncontrolledChildrenModeMotionHighlightProps<T>
   );
 
-function MotionHighlight<T extends string>({
-  ref,
-  ...props
-}: MotionHighlightProps<T>) {
+const MotionHighlight = React.forwardRef<HTMLDivElement, MotionHighlightProps<any>>(function MotionHighlight(
+  props: MotionHighlightProps<any>,
+  ref
+) {
   const {
     children,
     value,
@@ -126,9 +126,9 @@ function MotionHighlight<T extends string>({
   } = props;
 
   const localRef = React.useRef<HTMLDivElement>(null);
-  React.useImperativeHandle(ref, () => localRef.current as HTMLDivElement);
+  React.useImperativeHandle(ref, () => localRef.current!);
 
-  const [activeValue, setActiveValue] = React.useState<T | null>(
+  const [activeValue, setActiveValue] = React.useState<string | null>(
     value ?? defaultValue ?? null,
   );
   const [boundsState, setBoundsState] = React.useState<Bounds | null>(null);
@@ -136,9 +136,9 @@ function MotionHighlight<T extends string>({
     React.useState<string>('');
 
   const safeSetActiveValue = React.useCallback(
-    (id: T | null) => {
+    (id: string | null) => {
       setActiveValue((prev) => (prev === id ? prev : id));
-      if (id !== activeValue) onValueChange?.(id as T);
+      if (id !== activeValue) onValueChange?.(id as any);
     },
     [activeValue, onValueChange],
   );
@@ -308,7 +308,7 @@ function MotionHighlight<T extends string>({
         : children}
     </MotionHighlightContext.Provider>
   );
-}
+});
 
 function getNonOverridingDataAttributes(
   element: React.ReactElement,
@@ -348,8 +348,7 @@ type MotionHighlightItemProps = React.ComponentProps<'div'> & {
   forceUpdateBounds?: boolean;
 };
 
-function MotionHighlightItem({
-  ref,
+const MotionHighlightItem = React.forwardRef<HTMLDivElement, MotionHighlightItemProps>(function MotionHighlightItem({
   children,
   id,
   value,
@@ -361,7 +360,7 @@ function MotionHighlightItem({
   asChild = false,
   forceUpdateBounds,
   ...props
-}: MotionHighlightItemProps) {
+}, ref) {
   const itemId = React.useId();
   const {
     activeValue,
@@ -581,7 +580,7 @@ function MotionHighlightItem({
   ) : (
     children
   );
-}
+});
 
 export {
   MotionHighlight,

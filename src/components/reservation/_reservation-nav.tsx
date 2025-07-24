@@ -9,18 +9,18 @@ import { Icon } from "@iconify/react";
 import { mutate } from "swr";
 import { ModalContext } from "lib/context/modal";
 import { toast } from "react-toastify";
-import { 
-  YouTube, 
-  CheckCircle, 
-  Edit, 
-  AddCircle, 
-  SwapHoriz, 
-  Event, 
-  Cancel, 
-  Assignment, 
-  Room, 
-  History, 
-  MonetizationOn, 
+import {
+  YouTube,
+  CheckCircle,
+  Edit,
+  AddCircle,
+  SwapHoriz,
+  Event,
+  Cancel,
+  Assignment,
+  Room,
+  History,
+  MonetizationOn,
   HotelOutlined,
   NoMeetingRoom,
   PersonAdd
@@ -282,7 +282,7 @@ const ReservationNav = ({
               }}
               legacyBehavior>
 
-              <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
+              <YouTube height={24} className="text-[#FF0000] cursor-pointer mx-2 size-5" />
               {/* <Icon
                                   icon="material-symbols:youtube"
                                   color="#1877F2"
@@ -324,14 +324,9 @@ const ReservationNav = ({
               href="https://youtu.be/rvXMlvBKgfI"
               passHref
               target="_blank"
-              style={{
-                paddingLeft: "6px",
-                paddingRight: "6px",
-                paddingTop: "3px",
-              }}
               legacyBehavior>
 
-              <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
+              <YouTube height={24} className="text-[#FF0000] cursor-pointer mx-2 size-5" />
 
             </Link>
           </Tooltip>
@@ -375,7 +370,7 @@ const ReservationNav = ({
               }}
               legacyBehavior>
 
-              <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
+              <YouTube height={24} className="text-[#FF0000] cursor-pointer mx-2 size-5" />
 
             </Link>
           </Tooltip>
@@ -419,7 +414,7 @@ const ReservationNav = ({
               }}
               legacyBehavior>
 
-              <YouTube height={24} sx={{ color: "red", cursor: "pointer", display: "block", width: "100%", height: "100%" }} />
+              <YouTube height={24} className="text-[#FF0000] cursor-pointer mx-2 size-5" />
 
             </Link>
           </Tooltip>

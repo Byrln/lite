@@ -443,7 +443,7 @@ const NewEdit = () => {
                             {...register("PromotionCode")}
                             margin="dense"
                             error={!!errors.PromotionCode?.message}
-                            helperText={errors.PromotionCode?.message}
+                            helperText={errors.PromotionCode?.message as string}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -466,7 +466,7 @@ const NewEdit = () => {
                             {...register("Description")}
                             margin="dense"
                             error={!!errors.Description?.message}
-                            helperText={errors.Description?.message}
+                            helperText={errors.Description?.message as string}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -480,7 +480,7 @@ const NewEdit = () => {
                             {...register("BeginDate")}
                             margin="dense"
                             error={!!errors.BeginDate?.message}
-                            helperText={errors.BeginDate?.message}
+                            helperText={errors.BeginDate?.message as string}
                             size="small"
                             InputLabelProps={{
                                 shrink: true,
@@ -498,7 +498,7 @@ const NewEdit = () => {
                             {...register("EndDate")}
                             margin="dense"
                             error={!!errors.EndDate?.message}
-                            helperText={errors.EndDate?.message}
+                            helperText={errors.EndDate?.message as string}
                             size="small"
                             InputLabelProps={{
                                 shrink: true,
@@ -581,7 +581,7 @@ const NewEdit = () => {
                     {...register("Rate")}
                     margin="dense"
                     error={!!errors.Rate?.message}
-                    helperText={errors.Rate?.message}
+                    helperText={errors.Rate?.message as string}
                 />
             ) : (
                 <Grid container spacing={1}>
@@ -595,7 +595,7 @@ const NewEdit = () => {
                             {...register("MondayRate")}
                             margin="dense"
                             error={!!errors.MondayRate?.message}
-                            helperText={errors.MondayRate?.message}
+                            helperText={errors.MondayRate?.message as string}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -608,7 +608,7 @@ const NewEdit = () => {
                             {...register("TuesdayRate")}
                             margin="dense"
                             error={!!errors.TuesdayRate?.message}
-                            helperText={errors.TuesdayRate?.message}
+                            helperText={errors.TuesdayRate?.message as string}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -621,7 +621,7 @@ const NewEdit = () => {
                             {...register("WednesdayRate")}
                             margin="dense"
                             error={!!errors.WednesdayRate?.message}
-                            helperText={errors.WednesdayRate?.message}
+                            helperText={errors.WednesdayRate?.message as string}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -634,7 +634,7 @@ const NewEdit = () => {
                             {...register("ThursdayRate")}
                             margin="dense"
                             error={!!errors.ThursdayRate?.message}
-                            helperText={errors.ThursdayRate?.message}
+                            helperText={errors.ThursdayRate?.message as string}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -647,7 +647,7 @@ const NewEdit = () => {
                             {...register("FridayRate")}
                             margin="dense"
                             error={!!errors.FridayRate?.message}
-                            helperText={errors.FridayRate?.message}
+                            helperText={errors.FridayRate?.message as string}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -660,7 +660,7 @@ const NewEdit = () => {
                             {...register("SaturdayRate")}
                             margin="dense"
                             error={!!errors.SaturdayRate?.message}
-                            helperText={errors.SaturdayRate?.message}
+                            helperText={errors.SaturdayRate?.message as string}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -673,7 +673,7 @@ const NewEdit = () => {
                             {...register("SundayRate")}
                             margin="dense"
                             error={!!errors.SundayRate?.message}
-                            helperText={errors.SundayRate?.message}
+                            helperText={errors.SundayRate?.message as string}
                         />
                     </Grid>
                 </Grid>

@@ -49,7 +49,7 @@ const NewEdit = ({ UserID }: any) => {
                         {...register("Password")}
                 margin="dense"
                 error={!!errors.Password?.message}
-                helperText={errors.Password?.message}
+                helperText={errors.Password?.message as string}
             />
         </NewEditForm>
     );

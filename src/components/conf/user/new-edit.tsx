@@ -134,7 +134,7 @@ const NewEdit = () => {
                         {...register("UserName")}
                         margin="dense"
                         error={!!errors.UserName?.message}
-                        helperText={errors.UserName?.message}
+                        helperText={errors.UserName?.message as string}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -146,7 +146,7 @@ const NewEdit = () => {
                         {...register("LoginName")}
                         margin="dense"
                         error={!!errors.LoginName?.message}
-                        helperText={errors.LoginName?.message}
+                        helperText={errors.LoginName?.message as string}
                     />
                 </Grid>
 
@@ -162,7 +162,7 @@ const NewEdit = () => {
                         {...register("Email")}
                         margin="dense"
                         error={!!errors.Email?.message}
-                        helperText={errors.Email?.message}
+                        helperText={errors.Email?.message as string}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -184,7 +184,7 @@ const NewEdit = () => {
                         {...register("Password")}
                         margin="dense"
                         error={!!errors.Password?.message}
-                        helperText={errors.Password?.message}
+                        helperText={errors.Password?.message as string}
                     />
                 </Grid> */}
             </Grid>

@@ -63,7 +63,7 @@ const NewEdit = ({ data }: any) => {
         {...register("RegisterNo")}
         margin="dense"
         error={!!errors.RegisterNo?.message}
-        helperText={errors.RegisterNo?.message}
+        helperText={errors.RegisterNo?.message as string}
         disabled
       />
       <TextField
@@ -76,7 +76,7 @@ const NewEdit = ({ data }: any) => {
         {...register("CompanyName")}
         margin="dense"
         error={!!errors.CompanyName?.message}
-        helperText={errors.CompanyName?.message}
+        helperText={errors.CompanyName?.message as string}
         disabled
       />
       <TextField
@@ -89,7 +89,7 @@ const NewEdit = ({ data }: any) => {
         {...register("BranchNo")}
         margin="dense"
         error={!!errors.BranchNo?.message}
-        helperText={errors.BranchNo?.message}
+        helperText={errors.BranchNo?.message as string}
       />
       <DistrictSelect
         register={register}
@@ -107,7 +107,7 @@ const NewEdit = ({ data }: any) => {
         {...register("MerchantTin")}
         margin="dense"
         error={!!errors.MerchantTin?.message}
-        helperText={errors.MerchantTin?.message}
+        helperText={errors.MerchantTin?.message as string}
         disabled
       />
       <FormControlLabel

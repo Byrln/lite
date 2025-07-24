@@ -45,7 +45,7 @@ const NewEdit = () => {
                         {...register("VipStatusName")}
                         margin="dense"
                         error={!!errors.VipStatusName?.message}
-                        helperText={errors.VipStatusName?.message}
+                        helperText={errors.VipStatusName?.message as string}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -57,7 +57,7 @@ const NewEdit = () => {
                         {...register("VipStatusDescription")}
                         margin="dense"
                         error={!!errors.VipStatusDescription?.message}
-                        helperText={errors.VipStatusDescription?.message}
+                        helperText={errors.VipStatusDescription?.message as string}
                     />
                 </Grid>
             </Grid>

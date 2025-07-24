@@ -1,130 +1,106 @@
-import { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
-import { GetPrivilegesSWR } from "lib/api/user";
-import sidebarConfig from "components/layouts/dashboard/sidebar-config";
-
-import DashboardNavbar from "./dashboard-navbar";
-import DashboardSidebar from "./dashboard-sidebar";
-import { useAppState } from "lib/context/app";
-
-const APP_BAR_MOBILE = 64;
-const APP_BAR_DESKTOP = 92;
-const DRAWER_WIDTH = 280;
-const DRAWER_WIDTH_MINIMIZED = 80;
-
-const RootStyle = styled("div")({
-  display: "flex",
-  minHeight: "100%",
-  overflow: "hidden",
-  width: "100%",
-  position: "relative",
-});
-
-const MainStyle = styled("div", {
-  shouldForwardProp: (prop) => prop !== "isMinimized",
-})<{ isMinimized?: boolean }>((props) => {
-  const { theme, isMinimized } = props;
-  return {
-    flexGrow: 1,
-    overflow: "auto",
-    minHeight: "100%",
-    paddingTop: APP_BAR_MOBILE + 24,
-    paddingBottom: theme.spacing(2),
-    transition: theme.transitions.create(["margin", "padding"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    [theme.breakpoints.up("lg")]: {
-      paddingTop: theme.spacing(2),
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2),
-      marginLeft: isMinimized ? DRAWER_WIDTH_MINIMIZED : DRAWER_WIDTH,
-    },
-  };
-});
+import { useState, useEffect } from "react"
+import { GetPrivilegesSWR } from "lib/api/user"
+import sidebarConfig from "components/layouts/dashboard/sidebar-config"
+import { HotelSidebar } from "@/components/hotel-sidebar"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import { useAppState } from "lib/context/app"
 
 export default function DashboardLayout({ children }: any) {
-  const [open, setOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(() => {
-    // Initialize from localStorage if available, otherwise default to false
-    if (typeof window !== 'undefined') {
-      const savedState = localStorage.getItem('sidebarMinimized');
-      return savedState === 'true';
-    }
-    return false;
-  });
-  const { data, error } = GetPrivilegesSWR();
-  const [sideBarData, setSideBarData] = useState(null);
-  const [lastValidSideBarData, setLastValidSideBarData] = useState(null);
-  const [state, dispatch]: any = useAppState();
-
-  const handleSidebarMinimize = (minimized: boolean) => {
-    setIsMinimized(minimized);
-    // Update localStorage when minimized state changes
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('sidebarMinimized', minimized.toString());
-    }
-  };
+  const { data, error } = GetPrivilegesSWR()
+  const [sideBarData, setSideBarData] = useState<any[] | undefined>(undefined)
+  const [lastValidSideBarData, setLastValidSideBarData] = useState<any[] | undefined>(undefined)
+  const [state, dispatch]: any = useAppState()
 
   function filterMenu(menu: any, uniqueMenuLinks: any) {
     return menu.reduce((filteredMenu: any, item: any) => {
       if (item.path && uniqueMenuLinks.includes(item.path)) {
-        filteredMenu.push(item);
+        filteredMenu.push(item)
       }
       if (item.children) {
         const filteredChildren = filterMenu(
           item.children,
           uniqueMenuLinks
-        );
+        )
         if (filteredChildren.length > 0) {
           filteredMenu.push({
             ...item,
             children: filteredChildren,
-          });
+          })
         }
       }
 
-      return filteredMenu;
-    }, []);
+      return filteredMenu
+    }, [])
   }
+
   useEffect(() => {
     if (data && data.length > 0) {
       dispatch({
         type: "userRole",
         userRole: data,
-      });
+      })
       let menuLinks = data
         .map((action: any) =>
           action.Status == true ? action.MenuLink2 : null
         )
-        .filter((link: any) => link); // Filter out null or undefined values
+        .filter((link: any) => link) // Filter out null or undefined values
 
       // Removing duplicates
       //@ts-ignore
-      let uniqueMenuLinks = [...new Set(menuLinks)];
+      let uniqueMenuLinks = [...new Set(menuLinks)]
 
-      const filteredMenu = filterMenu(sidebarConfig, uniqueMenuLinks);
+      const filteredMenu = filterMenu(sidebarConfig, uniqueMenuLinks)
       if (filteredMenu && filteredMenu.length > 0) {
-        setSideBarData(filteredMenu);
-        setLastValidSideBarData(filteredMenu); // Store as backup
+        setSideBarData(filteredMenu)
+        setLastValidSideBarData(filteredMenu) // Store as backup
       }
-    } else if (!data && lastValidSideBarData) {
-      setSideBarData(lastValidSideBarData);
+    } else if (data === undefined && lastValidSideBarData) {
+      setSideBarData(lastValidSideBarData)
     }
-  }, [data]);
+  }, [data])
 
   return (
-    <RootStyle>
-      <DashboardNavbar onOpenSidebar={() => setOpen(true)} isMinimized={isMinimized} />
-      <DashboardSidebar
-        isOpenSidebar={open}
-        onCloseSidebar={() => setOpen(false)}
-        sideBarData={sideBarData}
-        onToggleMinimize={handleSidebarMinimize}
-      />
-      <MainStyle isMinimized={isMinimized}>
-        <div className="root" style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, height: '100%' }}>{children}</div>
-      </MainStyle>
-    </RootStyle>
-  );
+    <SidebarProvider>
+      <HotelSidebar sideBarData={sideBarData} />
+      <SidebarInset className="flex flex-col min-h-screen overflow-hidden">
+        <header className="flex h-14 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    PMS
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <div className="flex-1 overflow-auto p-4">
+          <div className="max-w-full">
+            {children}
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }

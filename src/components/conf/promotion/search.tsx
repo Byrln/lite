@@ -31,7 +31,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                                     fullWidth
                                     {...params}
                                     error={!!errors.BeginDate?.message}
-                                    helperText={errors.BeginDate?.message}
+                                    helperText={errors.BeginDate?.message as string}
                                 />
                             )}
                         />
@@ -62,7 +62,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                                     fullWidth
                                     {...params}
                                     error={!!errors.EndDate?.message}
-                                    helperText={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message as string}
                                 />
                             )}
                         />

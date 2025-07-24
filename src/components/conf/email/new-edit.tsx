@@ -46,8 +46,8 @@ const NewEdit = () => {
             label={intl.formatMessage({ id: "ReportEmail" })}
             {...register("Email")}
             margin="dense"
-            error={errors.Email?.message}
-            helperText={errors.Email?.message}
+            error={!!errors.Email?.message}
+            helperText={errors.Email?.message as string}
           />
         </Grid>
         <Grid item xs={12}>
@@ -60,8 +60,8 @@ const NewEdit = () => {
             })}
             {...register("EmailHost")}
             margin="dense"
-            error={errors.EmailHost?.message}
-            helperText={errors.EmailHost?.message}
+            error={!!errors.EmailHost?.message}
+            helperText={errors.EmailHost?.message as string}
             defaultValue={"smtp.gmail.com"}
           />
         </Grid>
@@ -74,8 +74,8 @@ const NewEdit = () => {
             label={intl.formatMessage({ id: "RowHeaderPort" })}
             {...register("Port")}
             margin="dense"
-            error={errors.Port?.message}
-            helperText={errors.Port?.message}
+            error={!!errors.Port?.message}
+            helperText={errors.Port?.message as string}
             defaultValue={"587"}
           />
         </Grid>
@@ -87,8 +87,8 @@ const NewEdit = () => {
             label={intl.formatMessage({ id: "RowHeaderUserName" })}
             {...register("UserName")}
             margin="dense"
-            error={errors.UserName?.message}
-            helperText={errors.UserName?.message}
+            error={!!errors.UserName?.message}
+            helperText={errors.UserName?.message as string}
           />
         </Grid>
         <Grid item xs={12}>
@@ -101,8 +101,8 @@ const NewEdit = () => {
               {...register("Password")}
               type="password"
               margin="dense"
-              error={errors.Password?.message}
-              helperText={errors.Password?.message}
+              error={!!errors.Password?.message}
+              helperText={errors.Password?.message as string}
             />
           )}
         </Grid>

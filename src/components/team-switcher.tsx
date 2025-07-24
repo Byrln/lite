@@ -16,6 +16,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import Image from "next/image"
 
 export function TeamSwitcher({
   teams,
@@ -42,14 +43,30 @@ export function TeamSwitcher({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <activeTeam.logo className="size-4" />
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-gray-200 text-sidebar-primary-foreground">
+                {/* <activeTeam.logo className="size-4" /> */}
+                <Image
+                  src="/images/logo_sm.png"
+                  alt="logo"
+                  width={16}
+                  height={16}
+                  className="w-6 h-4"
+                />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
-                  {activeTeam.name}
+                <div className="flex text-lg"><span className="truncate font-semibold">
+                  Ho
                 </span>
-                <span className="truncate text-xs">{activeTeam.plan}</span>
+                  <span className="truncate font-semibold">
+                    Re
+                  </span>
+                  <span className="truncate font-semibold">
+                    Ca
+                  </span>
+                  <span className="truncate font-semibold">
+                    Soft
+                  </span></div>
+                <span className="truncate text-[8px]">Hotel, Resort, Camp Software</span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -61,7 +78,7 @@ export function TeamSwitcher({
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-xs text-muted-foreground">
-              Teams
+              test
             </DropdownMenuLabel>
             {teams.map((team, index) => (
               <DropdownMenuItem
@@ -81,7 +98,7 @@ export function TeamSwitcher({
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                 <Plus className="size-4" />
               </div>
-              <div className="font-medium text-muted-foreground">Add team</div>
+              <div className="font-medium text-muted-foreground">Add test</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

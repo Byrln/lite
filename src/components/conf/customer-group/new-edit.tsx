@@ -38,8 +38,8 @@ const NewEdit = () => {
         label={intl.formatMessage({ id: "RowHeaderGroupName" })}
         {...register("CustomerGroupName")}
         margin="dense"
-        error={errors.CustomerGroupName?.message}
-        helperText={errors.CustomerGroupName?.message}
+        error={!!errors.CustomerGroupName?.message}
+        helperText={errors.CustomerGroupName?.message as string}
       />
 
       {/* <TextField

@@ -50,7 +50,7 @@ const NewEdit = () => {
 
             margin="dense"
             error={!!errors.PackageName?.message}
-            helperText={errors.PackageName?.message}
+            helperText={errors.PackageName?.message as string}
           />
         </Grid>
 
@@ -63,7 +63,7 @@ const NewEdit = () => {
             {...register("Description")}
             margin="dense"
             error={!!errors.Description?.message}
-            helperText={errors.Description?.message}
+            helperText={errors.Description?.message as string}
           />
         </Grid>
 
@@ -77,7 +77,7 @@ const NewEdit = () => {
             {...register("Nights")}
             margin="dense"
             error={!!errors.Nights?.message}
-            helperText={errors.Nights?.message}
+            helperText={errors.Nights?.message as string}
           />
         </Grid>
 
@@ -156,7 +156,7 @@ const NewEdit = () => {
                       {...params}
                       error={!!errors.BeginDate?.message}
                       helperText={
-                        errors.BeginDate?.message
+                        errors.BeginDate?.message as string
                       }
                     />
                   )}
@@ -195,7 +195,7 @@ const NewEdit = () => {
                       fullWidth
                       {...params}
                       error={!!errors.EndDate?.message}
-                      helperText={errors.EndDate?.message}
+                      helperText={errors.EndDate?.message as string}
                     />
                   )}
                 />

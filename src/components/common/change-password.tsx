@@ -97,8 +97,8 @@ const NewEdit = ({ handleModal }: any) => {
               </InputAdornment>
             ),
           }}
-          error={errors?.OldPassword?.message}
-          helperText={errors?.OldPassword?.message}
+          error={!!errors?.OldPassword?.message}
+          helperText={errors?.OldPassword?.message as string}
         />
         <TextField
           fullWidth
@@ -128,8 +128,8 @@ const NewEdit = ({ handleModal }: any) => {
               </InputAdornment>
             ),
           }}
-          error={errors?.Password?.message}
-          helperText={errors?.Password?.message}
+          error={!!errors?.Password?.message}
+          helperText={errors?.Password?.message as string}
         />
       </NewEditForm>
     </>

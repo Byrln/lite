@@ -124,7 +124,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
       <div
         style={{
           padding: "6px 8px",
-          backgroundColor: isWeekend ? "#fff9c4" : "#f8f9fa", // Yellow for weekends
+          backgroundColor: isWeekend ? "#ffd700" : "#f8f9fa", // Solid yellow for weekends
           borderRadius: "6px",
           boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
         }}
@@ -1316,615 +1316,215 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   return (
     timeStart && (
       <>
-        <Box
-          className="mb-8 overflow-hidden gap-2"
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: { xs: "column", md: "row" },
-            gap: { xs: "10px", md: "0" },
-            "@media (max-width: 900px)": {
-              flexDirection: "column",
-              gap: "10px",
-              width: "100%",
-              padding: "0 8px",
-            },
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: { xs: "wrap", md: "nowrap" },
-              gap: "8px",
-              width: { xs: "100%", md: "auto" },
-              justifyContent: {
-                xs: "space-between",
-                sm: "flex-start",
-              },
-            }}
-          >
-            <Button
-              style={{ borderRadius: "20px", height: "35px" }}
-              variant="contained"
-              className="whitespace-nowrap px-8"
-              onClick={() => {
-                dispatch({
-                  type: "editId",
-                  editId: null,
-                });
-                handleModal(
-                  true,
-                  `Захиалга нэмэх`,
-                  <NewReservation
-                    workingDate={workingDate}
-                  />,
-                  null,
-                  "medium"
-                );
-              }}
-              startIcon={
+        {/* Calendar Controls Section - Improved UX/UI */}
+        <div className="mb-8 space-y-4">
+          {/* Main Actions Row */}
+          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+            {/* Primary Actions Group */}
+            <div className="flex flex-wrap gap-3 items-center">
+              {/* New Reservation Button */}
+              <Button
+                onClick={() => {
+                  dispatch({
+                    type: "editId",
+                    editId: null,
+                  });
+                  handleModal(
+                    true,
+                    `Захиалга нэмэх`,
+                    <NewReservation workingDate={workingDate} />,
+                    null,
+                    "medium"
+                  );
+                }}
+                className="bg-[#804FE6] hover:bg-[#6B3BC0] text-white font-medium px-6 py-2 rounded-full transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+              >
                 <Icon
-                  style={{ color: "white" }}
+                  style={{ color: "white", marginRight: "8px" }}
                   icon={plusFill}
+                  width={16}
+                  height={16}
                 />
-              }
-              sx={{
-                fontSize: { xs: "10px", md: "12px" },
-                padding: { xs: "6px 10px", md: "6px 16px" },
-                width: "auto",
-              }}
-            >
-              {intl.formatMessage({
-                id: "FrontNewReservation",
-              })}
-            </Button>
-            <IconButton
-              style={{ height: "35px" }}
-              className="whitespace-nowrap"
-              onClick={() => {
-                setIsCalendarLoading(true);
-                setRerenderKey((prevKey) => prevKey + 1);
-                // Reset loading state after a short delay to allow calendar to render
-                setTimeout(() => {
-                  setIsCalendarLoading(false);
-                }, 1000);
-              }}
-              disabled={isCalendarLoading}
-            >
-              <Image
-                src="/images/logo_sm.png"
-                alt="Refresh"
-                width={24}
-                height={16}
-              />
-            </IconButton>
-            <Box
-              className="flex px-2 items-center justify-center"
-              sx={{
-                borderRadius: "20px",
-                border: "1px solid #804fe6",
-                height: "35px",
-                minWidth: { xs: "80px", md: "auto" },
-                width: "auto",
-              }}
-            >
-              <Checkbox
-                checked={isHoverEnabled}
-                onChange={handleHoverChange}
-                sx={{
-                  padding: "0px",
-                  paddingX: "3px",
-                  color: "#804fe6",
-                  "&.Mui-checked": {
-                    color: "#804fe6",
-                  },
-                  "& .MuiSvgIcon-root": { fontSize: 18 },
-                }}
-              />
-              <Typography
-                className="text-black font-bold cursor-pointer"
-                sx={{
-                  fontSize: { xs: "14px", md: "16px" },
-                  "@media (min-width: 600px) and (max-width: 1024px)":
-                  {
-                    fontSize: "14px",
-                  },
-                }}
-              >
-                Hover
-              </Typography>
-            </Box>
-            <div className="flex gap-3">
-              <Box
-                className="flex px-2 items-center justify-center"
-                sx={{
-                  borderRadius: "20px",
-                  border: "1px solid #804fe6",
-                  height: "35px",
-                  flexGrow: { xs: 1, sm: 1, md: 0 },
-                  minWidth: { xs: "80px", md: "auto" },
-                  width: "auto",
-                }}
-              >
-                <RoomTypeCustomSelect
-                  searchRoomTypeID={searchRoomTypeID}
-                  setSearchRoomTypeID={setSearchRoomTypeID}
-                />
-              </Box>
-              <Box
-                className="flex px-2 items-center justify-center"
-                sx={{
-                  borderRadius: "20px",
-                  border: "1px solid #804fe6",
-                  height: "35px",
-                  flexGrow: { xs: 1, sm: 1, md: 0 },
+                {intl.formatMessage({ id: "FrontNewReservation" })}
+              </Button>
 
+              {/* Refresh Button */}
+              <Button
+                onClick={() => {
+                  setIsCalendarLoading(true);
+                  setRerenderKey((prevKey) => prevKey + 1);
+                  setTimeout(() => {
+                    setIsCalendarLoading(false);
+                  }, 1000);
                 }}
+                disabled={isCalendarLoading}
+                className="border-[#804FE6] text-[#804FE6] hover:bg-[#804FE6] hover:text-white font-medium py-2 rounded-full transition-all duration-200 transform hover:scale-105"
               >
-                <DatePickerCustom
-                  name="CurrDate"
-                  control={control}
-                  defaultValue={searchCurrDate || workingDate}
-                  label={intl.formatMessage({
-                    id: "RowHeaderStarDate",
-                  })}
-                  error={errors.CurrDate}
-                  register={register}
-                  onFilterChange={(value) => {
-                    setSearchCurrDate(value);
+                <Image
+                  src="/images/logo_sm.png"
+                  alt="Refresh"
+                  width={20}
+                  height={20}
+                  className="w-7 h-4"
+                />
+              </Button>
+
+              {/* Hover Toggle */}
+              <div className="flex items-center space-x-2 bg-white border border-[#804FE6] rounded-full px-4 py-2 shadow-sm">
+                <Checkbox
+                  checked={isHoverEnabled}
+                  onChange={handleHoverChange}
+                  sx={{
+                    padding: "0px",
+                    color: "#804fe6",
+                    "&.Mui-checked": {
+                      color: "#804fe6",
+                    },
+                    "& .MuiSvgIcon-root": { fontSize: 16 },
                   }}
                 />
-              </Box>
+                <span className="text-sm font-medium text-gray-700">Hover</span>
+              </div>
+              {/* Filters Group */}
+              <div className="flex flex-wrap gap-3 items-center">
+                {/* Room Type Filter */}
+                <div className="bg-white border border-[#804FE6] rounded-full shadow-sm py-[2px] min-w-[140px]">
+                  <RoomTypeCustomSelect
+                    searchRoomTypeID={searchRoomTypeID}
+                    setSearchRoomTypeID={setSearchRoomTypeID}
+                  />
+                </div>
+
+                {/* Date Picker */}
+                <div className="bg-white border border-[#804FE6] rounded-full shadow-sm min-w-[160px]">
+                  <DatePickerCustom
+                    name="CurrDate"
+                    control={control}
+                    defaultValue={searchCurrDate || workingDate}
+                    label={intl.formatMessage({
+                      id: "RowHeaderStarDate",
+                    })}
+                    error={!!errors.CurrDate}
+                    register={register}
+                    onFilterChange={(value) => {
+                      setSearchCurrDate(value);
+                    }}
+                  />
+                </div>
+              </div>
+
             </div>
-          </Box>
-          <Box
-            className="flex gap-2 items-center"
-            sx={{
-              width: { xs: "100%", md: "auto" },
-              justifyContent: { xs: "center", md: "flex-start" },
-              marginTop: { xs: "10px", md: 0 },
-              "@media (min-width: 600px) and (max-width: 900px)":
-              {
-                justifyContent: "center",
-                marginTop: "10px",
-              },
-            }}
-          >
-            {/* Add state to control tooltip visibility */}
-            {(() => {
-              return (
-                <Tooltip
-                  open={tooltipOpen}
-                  onClose={handleTooltipClose}
-                  onOpen={handleTooltipOpen}
-                  title={
-                    <div
-                      style={{
-                        padding: "12px",
-                        width: "fit-content",
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontWeight: 600,
-                          fontSize: "14px",
-                          marginBottom: "8px",
-                          borderBottom:
-                            "1px solid rgba(255,255,255,0.1)",
-                          paddingBottom: "6px",
-                        }}
-                      >
-                        Статусын төрлүүд
-                      </div>
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns:
-                            "auto 1fr",
-                          gap: "6px 12px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontWeight: 500,
-                            backgroundColor:
-                              "#1281b0",
-                            borderRadius: "12px",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "rgba(255,255,255,0.7)",
-                          }}
-                        >
-                          Ирсэн
-                        </span>
-                        <span
-                          style={{
-                            fontWeight: 500,
-                            backgroundColor:
-                              "#b0531e",
-                            borderRadius: "12px",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "rgba(255,255,255,0.7)",
-                          }}
-                        >
-                          Гарсан
-                        </span>
 
-                        <span
-                          style={{
-                            fontWeight: 500,
-                            backgroundColor:
-                              "#94d8f6",
-                            borderRadius: "12px",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "rgba(255,255,255,0.7)",
-                          }}
-                        >
-                          Гарах
-                        </span>
-                        <span
-                          style={{
-                            fontWeight: 500,
-                            backgroundColor:
-                              "#57fa71",
-                            borderRadius: "12px",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "rgba(255,255,255,0.7)",
-                          }}
-                        >
-                          Баталгаажсан
-                        </span>
-
-                        <span
-                          style={{
-                            fontWeight: 500,
-                            backgroundColor:
-                              "black",
-                            borderRadius: "12px",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "rgba(255,255,255,0.7)",
-                          }}
-                        >
-                          Блок
-                        </span>
-
-                        <span
-                          style={{
-                            fontWeight: 500,
-                            backgroundColor:
-                              "#0033ff",
-                            borderRadius: "12px",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "rgba(255,255,255,0.7)",
-                          }}
-                        >
-                          Дахин хонох
-                        </span>
-
-                        <span
-                          style={{
-                            fontWeight: 500,
-                            backgroundColor:
-                              "#009933",
-                            borderRadius: "12px",
-                          }}
-                        />
-                        <span
-                          style={{
-                            color: "rgba(255,255,255,0.7)",
-                          }}
-                        >
-                          Өдрөөр захиалга
-                        </span>
-                        <span
-                          style={{
-                            backgroundColor:
-                              "#212b36",
-                            width: "20px",
-                            height: "0px",
-                            borderRadius: "12px",
-                          }}
-                        >
-                          <span
-                            style={{
-                              color: "#212b36",
-                            }}
-                          >
-                          </span>
-                        </span>
-                      </div>
+            {/* Status Legend */}
+            <div className="flex items-center gap-2">
+              <Tooltip
+                open={tooltipOpen}
+                onClose={handleTooltipClose}
+                onOpen={handleTooltipOpen}
+                title={
+                  <div className="p-4 max-w-xs">
+                    <h4 className="font-semibold text-sm mb-3 pb-2 border-b border-gray-200">
+                      Статусын төрлүүд
+                    </h4>
+                    <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-xs">
+                      {[
+                        { color: "#1281b0", label: "Ирсэн" },
+                        { color: "#b0531e", label: "Гарсан" },
+                        { color: "#94d8f6", label: "Гарах" },
+                        { color: "#57fa71", label: "Баталгаажсан" },
+                        { color: "black", label: "Блок" },
+                        { color: "#0033ff", label: "Дахин хонох" },
+                        { color: "#009933", label: "Өдрөөр захиалга" },
+                      ].map((status, index) => (
+                        <React.Fragment key={index}>
+                          <div
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: status.color }}
+                          />
+                          <span className="text-gray-600">{status.label}</span>
+                        </React.Fragment>
+                      ))}
                     </div>
-                  }
-                  arrow
-                  placement="left-end"
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        bgcolor: "#212B36",
-                        "& .MuiTooltip-arrow": {
-                          color: "#212B36",
-                        },
-                        boxShadow:
-                          "0 8px 16px 0 rgba(0,0,0,0.2)",
-                        borderRadius: "8px",
-                        p: 0,
+                  </div>
+                }
+                arrow
+                placement="left-end"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: "white",
+                      color: "black",
+                      "& .MuiTooltip-arrow": {
+                        color: "white",
                       },
+                      boxShadow: "0 8px 16px 0 rgba(0,0,0,0.15)",
+                      borderRadius: "12px",
+                      border: "1px solid #e5e7eb",
                     },
+                  },
+                }}
+              >
+                <span
+                  className="bg-[#804FE6] hover:bg-[#6B3BC0] text-white border-[#804FE6] rounded-full px-2 py-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setTooltipOpen(!tooltipOpen);
                   }}
                 >
-                  <Box
-                    sx={{
-                      cursor: "pointer",
-                      backgroundColor: "#804FE6",
-                      borderRadius: "50%",
-                      width: "32px",
-                      height: "32px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      zIndex: 1000,
-                    }}
-                    onClick={(e) => {
-                      // Toggle tooltip visibility on click
-                      e.stopPropagation();
-                      setTooltipOpen(!tooltipOpen);
-                    }}
-                  >
-                    <Iconify
-                      icon="eva:info-outline"
-                      width={20}
-                      height={20}
-                      color="white"
-                    />
-                  </Box>
-                </Tooltip>
-              );
-            })()}
-            <FormControl
-              sx={{
-                backgroundColor: "#804FE6",
-                borderRadius: "20px",
-                height: "35px",
-                alignItems: "center",
-                justifyContent: "center",
-                alignSelf: { xs: "center", md: "flex-start" },
-                width: { xs: "100%", md: "auto" },
-                maxWidth: { xs: "600px", md: "auto" },
-                minWidth: { xs: "320px", md: "auto" },
-                position: "relative",
-                "@media (min-width: 600px) and (max-width: 1024px)":
-                {
-                  width: "100%",
-                  margin: "0",
-                  minWidth: "unset",
-                  maxWidth: "100%",
-                },
-              }}
-            >
-              <RadioGroup
-                row
-                aria-labelledby="radio-group-plan"
-                value={dayCount}
-                onChange={handleChange}
-                defaultValue={window.innerWidth < 950 ? 7 : 15}
-                sx={{
-                  "& .MuiFormControlLabel-root": {
-                    margin: 0,
-                    flex: "1 1 auto",
-                    "@media (max-width: 480px)": {
-                      margin: "0 1px",
-                    },
-                    "@media (min-width: 481px) and (max-width: 900px)":
-                    {
-                      margin: "0 2px",
-                    },
-                  },
-                  justifyContent: "center",
-                  width: "100%",
-                  "@media (max-width: 480px)": {
-                    gap: "2px",
-                  },
-                  "@media (min-width: 600px) and (max-width: 1024px)":
-                  {
-                    flexWrap: "nowrap",
-                    justifyContent: "space-between",
-                    gap: "4px",
-                  },
-                }}
-              >
-                {/* <FormControlLabel
-                  value="day"
-                  control={
-                    <Radio
+                  <Iconify
+                    icon="eva:info-outline"
+                    width={16}
+                    height={16}
+                  />
+                </span>
+              </Tooltip>
+              {/* View Period Controls */}
+              <div className="bg-[#804FE6] rounded-full outline outline-[#804FE6] outline-2 shadow-md">
+                <RadioGroup
+                  row
+                  value={dayCount}
+                  onChange={handleChange}
+                  defaultValue={window.innerWidth < 950 ? 7 : 15}
+                  className="flex gap-1"
+                >
+                  {[
+                    { value: 7, label: "7 хоног" },
+                    { value: 15, label: "15 хоног" },
+                    { value: 30, label: "30 хоног" },
+                  ].map((period) => (
+                    <FormControlLabel
+                      key={period.value}
+                      value={period.value}
+                      control={
+                        <Radio
+                          sx={{
+                            display: "none",
+                          }}
+                        />
+                      }
+                      label={period.label}
+                      className={`
+                      px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer
+                      ${dayCount === period.value
+                          ? "bg-white text-[#804FE6] shadow-sm"
+                          : "text-white hover:bg-white/10"
+                        }
+                    `}
                       sx={{
-                        color: "white",
-                        "&.Mui-checked": {
-                          color: "white",
-                        },
-                        padding: {
-                          xs: "2px",
-                          sm: "4px",
-                          md: "6px",
-                        },
-                        "@media (max-width: 480px)": {
-                          padding: "1px",
+                        margin: 0,
+                        "& .MuiTypography-root": {
+                          fontSize: "0.875rem",
+                          fontWeight: 500,
+                          whiteSpace: "nowrap",
                         },
                       }}
                     />
-                  }
-                  label="Өдөр"
-                  sx={{
-                    padding: { xs: "2px", sm: "4px 2px", md: "6px 4px" },
-                    transition: "all 0.2s",
-                    color: "white",
-                    minWidth: 0,
-                    "@media (max-width: 480px)": {
-                      padding: "2px 1px",
-                    },
-                    "& .MuiTypography-root": {
-                      fontSize: {
-                        xs: "0.65rem",
-                        sm: "0.75rem",
-                        md: "0.875rem",
-                      },
-                      fontWeight: 500,
-                      whiteSpace: "nowrap",
-                      "@media (max-width: 480px)": {
-                        fontSize: "0.6rem",
-                      },
-                    },
-                  }}
-                /> */}
-                <FormControlLabel
-                  value={7}
-                  control={
-                    <Radio
-                      sx={{
-                        color: "white",
-                        "&.Mui-checked": {
-                          color: "white",
-                        },
-                        padding: {
-                          xs: "2px",
-                          sm: "4px",
-                          md: "6px",
-                        },
-                        "@media (max-width: 480px)": {
-                          padding: "1px",
-                        },
-                      }}
-                    />
-                  }
-                  label="7 хоног"
-                  sx={{
-                    padding: { xs: "2px", sm: "4px 2px", md: "6px 4px" },
-                    transition: "all 0.2s",
-                    color: "white",
-                    minWidth: 0,
-                    "@media (max-width: 480px)": {
-                      padding: "2px 1px",
-                    },
-                    "& .MuiTypography-root": {
-                      fontSize: {
-                        xs: "0.65rem",
-                        sm: "0.75rem",
-                        md: "0.875rem",
-                      },
-                      fontWeight: 500,
-                      whiteSpace: "nowrap",
-                      "@media (max-width: 480px)": {
-                        fontSize: "0.6rem",
-                      },
-                    },
-                  }}
-                />
-                <FormControlLabel
-                  value={15}
-                  control={
-                    <Radio
-                      sx={{
-                        color: "white",
-                        "&.Mui-checked": {
-                          color: "white",
-                        },
-                        padding: {
-                          xs: "2px",
-                          sm: "4px",
-                          md: "6px",
-                        },
-                        "@media (max-width: 480px)": {
-                          padding: "1px",
-                        },
-                      }}
-                    />
-                  }
-                  label="15 хоног"
-                  sx={{
-                    padding: { xs: "2px", sm: "4px 2px", md: "6px 4px" },
-                    transition: "all 0.2s",
-                    color: "white",
-                    minWidth: 0,
-                    "@media (max-width: 480px)": {
-                      padding: "2px 1px",
-                    },
-                    "& .MuiTypography-root": {
-                      fontSize: {
-                        xs: "0.65rem",
-                        sm: "0.75rem",
-                        md: "0.875rem",
-                      },
-                      fontWeight: 500,
-                      whiteSpace: "nowrap",
-                      "@media (max-width: 480px)": {
-                        fontSize: "0.6rem",
-                      },
-                    },
-                  }}
-                />
-                <FormControlLabel
-                  value={30}
-                  control={
-                    <Radio
-                      sx={{
-                        color: "white",
-                        "&.Mui-checked": {
-                          color: "white",
-                        },
-                        padding: {
-                          xs: "2px",
-                          sm: "4px",
-                          md: "6px",
-                        },
-                        "@media (max-width: 480px)": {
-                          padding: "1px",
-                        },
-                      }}
-                    />
-                  }
-                  label="30 хоног"
-                  sx={{
-                    padding: { xs: "2px", sm: "4px 2px", md: "6px 4px" },
-                    transition: "all 0.2s",
-                    color: "white",
-                    minWidth: 0,
-                    "@media (max-width: 480px)": {
-                      padding: "2px 1px",
-                    },
-                    "& .MuiTypography-root": {
-                      fontSize: {
-                        xs: "0.65rem",
-                        sm: "0.75rem",
-                        md: "0.875rem",
-                      },
-                      fontWeight: 500,
-                      whiteSpace: "nowrap",
-                      "@media (max-width: 480px)": {
-                        fontSize: "0.6rem",
-                      },
-                    },
-                  }}
-                />
-              </RadioGroup>
-            </FormControl>
-          </Box>
-        </Box>
+                  ))}
+                </RadioGroup>
+              </div>
+            </div>
+          </div>
+        </div>
         {/* <CustomSearch
                         listUrl={listUrl}
                         search={search}
@@ -1978,8 +1578,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 resourceOrder="SortOrder"
                 headerToolbar={{
                   left: "",
-                  center: "title",
-                  right: "today",
+                  center: "",
+                  right: "",
                 }}
                 viewDidMount={(info) => {
                   setCurrentView(info.view.type);

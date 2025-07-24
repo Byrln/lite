@@ -51,7 +51,7 @@ const NewEdit = () => {
                         {...register("ReservationSourceName")}
                         margin="dense"
                         error={!!errors.ReservationSourceName?.message}
-                        helperText={errors.ReservationSourceName?.message}
+                        helperText={errors.ReservationSourceName?.message as string}
                     />
                 </Grid>
                 <Grid item xs={6}>

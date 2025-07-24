@@ -1,6 +1,8 @@
 // Shadcn UI Components
 export { Button, buttonVariants } from './button';
 export { Avatar, AvatarImage, AvatarFallback } from './avatar';
+export { Badge, badgeVariants } from './badge';
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './card';
 export {
   Breadcrumb,
   BreadcrumbList,
@@ -29,7 +31,7 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
 } from './dropdown-menu';
-export { Input } from './input';
+export { Input } from './Input';
 export { Popover, PopoverTrigger, PopoverContent } from './popover';
 export { RadioGroup, RadioGroupItem } from './radio-group';
 export { CustomRadio } from './radio';

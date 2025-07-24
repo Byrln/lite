@@ -19,7 +19,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     {...register("GuestName")}
                     margin="dense"
                     error={!!errors.GuestName?.message}
-                    helperText={errors.GuestName?.message}
+                    helperText={errors.GuestName?.message as string}
                 />
             </Grid>
 
@@ -38,7 +38,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     {...register("Phone")}
                     margin="dense"
                     error={!!errors.Phone?.message}
-                    helperText={errors.Phone?.message}
+                    helperText={errors.Phone?.message as string}
                 />
             </Grid>
 
@@ -53,7 +53,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     {...register("Email")}
                     margin="dense"
                     error={!!errors.Email?.message}
-                    helperText={errors.Email?.message}
+                    helperText={errors.Email?.message as string}
                     //todo
                 />
             </Grid>

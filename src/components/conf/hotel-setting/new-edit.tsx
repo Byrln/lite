@@ -60,7 +60,7 @@ const NewEdit = () => {
                   {...register("HotelCode")}
                   margin="dense"
                   error={!!errors.HotelCode?.message}
-                  helperText={errors.HotelCode?.message}
+                  helperText={errors.HotelCode?.message as string}
                   disabled
                 />
               </Grid>
@@ -73,7 +73,7 @@ const NewEdit = () => {
                   {...register("HotelName")}
                   margin="dense"
                   error={!!errors.HotelName?.message}
-                  helperText={errors.HotelName?.message}
+                  helperText={errors.HotelName?.message as string}
                   disabled
                 />
               </Grid>{" "}
@@ -110,7 +110,7 @@ const NewEdit = () => {
                       {...params}
                       error={!!errors.PMSStart?.message}
                       helperText={
-                        errors.PMSStart?.message
+                        errors.PMSStart?.message as string
                       }
                     />
                   )}
@@ -148,7 +148,7 @@ const NewEdit = () => {
                       fullWidth
                       {...params}
                       error={!!errors.PMSEnd?.message}
-                      helperText={errors.PMSEnd?.message}
+                      helperText={errors.PMSEnd?.message as string}
                     />
                   )}
                 />

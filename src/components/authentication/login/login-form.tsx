@@ -36,7 +36,7 @@ export default function LoginForm() {
       if (session) {
         axios.defaults.headers.common[
           "Authorization"
-        ] = `Bearer ${session.token}`;
+        ] = `Bearer ${(session as any).token}`;
         router.replace("/");
       } else {
         axios.defaults.headers.common["Authorization"] = "";
@@ -77,7 +77,7 @@ export default function LoginForm() {
         if (session) {
           axios.defaults.headers.common[
             "Authorization"
-          ] = `Bearer ${session.token}`;
+          ] = `Bearer ${(session as any).token}`;
           // console.log("session.expires", session);
           // console.log("session.expires", new Date());
 
@@ -144,8 +144,8 @@ export default function LoginForm() {
             label="Хэрэглэгчийн нэр"
             {...register("username")}
             margin="dense"
-            error={errors?.username?.message}
-            helperText={errors?.username?.message}
+            error={!!errors?.username?.message}
+            helperText={errors?.username?.message as string}
           />
 
           <TextField
@@ -173,8 +173,8 @@ export default function LoginForm() {
                 </InputAdornment>
               ),
             }}
-            error={errors?.password?.message}
-            helperText={errors?.password?.message}
+            error={!!errors?.password?.message}
+            helperText={errors?.password?.message as string}
           />
 
           <TextField
@@ -182,8 +182,8 @@ export default function LoginForm() {
             label="Зочид буудлын код"
             {...register("hotel")}
             margin="dense"
-            error={errors?.hotel?.message}
-            helperText={errors?.hotel?.message}
+            error={!!errors?.hotel?.message}
+            helperText={errors?.hotel?.message as string}
           />
         </Stack>
 

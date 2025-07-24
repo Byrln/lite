@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { MuiColorInput } from "mui-color-input";
+
 import { useState, useEffect } from "react";
 import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
@@ -72,7 +72,7 @@ const NewEdit = () => {
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    <MuiColorInput
+                    <TextField
                         size="small"
                         fullWidth
                         id="StatusColor"
@@ -82,8 +82,11 @@ const NewEdit = () => {
                         error={!!errors.StatusColor?.message}
                         helperText={errors.StatusColor?.message}
                         value={value}
-                        onChange={handleChange}
-                        format="hex"
+                        onChange={(e) => handleChange(e.target.value)}
+                        type="color"
+                        InputProps={{
+                            style: { height: '40px' }
+                        }}
                     />
                 </Grid>
                 {/* <Grid item xs={4}>

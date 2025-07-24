@@ -47,7 +47,7 @@ const NewEdit = () => {
                     {...register("Remarks")}
                     margin="dense"
                     error={!!errors.Remarks?.message}
-                    helperText={errors.Remarks?.message}
+                    helperText={errors.Remarks?.message as string}
                 />
             </NewEditForm>
         </>

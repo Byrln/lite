@@ -247,7 +247,7 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal, key }: any) => {
             {...register(`RoomRate`)}
             margin="dense"
             error={!!errors.RoomRate?.message}
-            helperText={errors.RoomRate?.message}
+            helperText={errors.RoomRate?.message as string}
             InputLabelProps={{
               shrink: getValues(`RoomRate`),
             }}
@@ -264,7 +264,7 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal, key }: any) => {
             {...register(`RoomRateExtraAdult`)}
             margin="dense"
             error={!!errors.RoomRateExtraAdult?.message}
-            helperText={errors.RoomRateExtraAdult?.message}
+            helperText={errors.RoomRateExtraAdult?.message as string}
             InputLabelProps={{
               shrink: getValues(`RoomRateExtraAdult`),
             }}
@@ -281,7 +281,7 @@ const NewEdit = ({ entity, setEntity, currentData, handleModal, key }: any) => {
             {...register(`RoomRateExtraChild`)}
             margin="dense"
             error={!!errors.RoomRateExtraChild?.message}
-            helperText={errors.RoomRateExtraChild?.message}
+            helperText={errors.RoomRateExtraChild?.message as string}
             InputLabelProps={{
               shrink: getValues(`RoomRateExtraChild`),
             }}
