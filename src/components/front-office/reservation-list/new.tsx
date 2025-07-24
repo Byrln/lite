@@ -421,22 +421,29 @@ const NewEdit = ({
         dateAdapter={AdapterDateFns}
       >
         <Card className="mb-4" elevation={0} sx={{
-          background: 'rgba(255, 255, 255, 0.15)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: "20px",
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)"
-        }}>
-          <CardContent sx={{ padding: "24px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                marginBottom: "20px"
-              }}
-            >
+          background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+          borderRadius: "24px",
+          border: '1px solid rgba(148, 163, 184, 0.1)',
+          boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:hover': {
+            boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
+            transform: 'translateY(-2px)'
+          }
+        }}
+        >
+          <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
+            <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  marginBottom: "20px",
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: { xs: 2, sm: 0 }
+                }}
+              >
               <div
                 style={{
                   display: "flex",
@@ -445,30 +452,37 @@ const NewEdit = ({
               >
                 <div
                   style={{
-                    width: "48px",
-                    height: "48px",
+                    width: "36px",
+                    height: "36px",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    background:
-                      "linear-gradient(135.79deg, rgba(128, 40, 210, 0.08) 4.62%, rgba(92, 33, 228, 0.08) 95.64%)",
-                    borderRadius: "14px",
-                    color: "#7856DE",
-                    boxShadow: "0px 4px 8px rgba(120, 86, 222, 0.15)"
+                    background: "#804fe6",
+                    borderRadius: "18px",
+                    color: "#ffffff",
+                    boxShadow: "0px 8px 24px rgba(102, 126, 234, 0.25), 0px 4px 12px rgba(118, 75, 162, 0.15)"
                   }}
                 >
                   <InfoIcon
-                    sx={{ fontSize: "24px" }}
+                    sx={{ fontSize: "28px" }}
                   />
                 </div>
-                <Typography
-                  variant="h6"
-                  style={{ marginLeft: "16px", fontWeight: 600, color: "#333" }}
+                 <Typography
+                    variant="h5"
+                    sx={{
+                      marginLeft: { xs: "0px", sm: "20px" },
+                      marginTop: { xs: "8px", sm: "0px" },
+                      fontWeight: 700,
+                      color: "#1e293b",
+                      fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                      letterSpacing: "-0.025em",
+                      textAlign: { xs: "center", sm: "left" }
+                    }}
                 >
                   {intl.formatMessage({ id: "TextGeneral" })}
                 </Typography>
-              </div>
-            </div>
+               </div>
+             </Box>
             <Grid container spacing={0}>
               <Grid
                 item
@@ -477,8 +491,8 @@ const NewEdit = ({
                   transition: "all 0.3s ease",
                 }}
               >
-                <Grid key="dates" container spacing={1}>
-                  <Grid item xs={3}>
+                <Grid key="dates" container spacing={{ xs: 2, sm: 3 }}>
+                  <Grid item xs={12} sm={6} md={3}>
                     <Controller
                       name={`ArrivalDate`}
                       control={control}
@@ -560,13 +574,25 @@ const NewEdit = ({
                                   .ArrivalDate
                                   ?.message
                               }
+                              sx={{
+                                '& .MuiOutlinedInput-root': {
+                                  borderRadius: '12px',
+                                  transition: 'all 0.2s ease-in-out',
+                                  '&:hover': {
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                  },
+                                  '&.Mui-focused': {
+                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                                  }
+                                }
+                              }}
                             />
                           )}
                         />
                       )}
                     />
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={12} sm={6} md={3}>
                     {" "}
                     <TextField
                       id="ArrivalTime"
@@ -579,7 +605,19 @@ const NewEdit = ({
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      sx={{ width: "100%" }}
+                      sx={{
+                        width: "100%",
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '12px',
+                          transition: 'all 0.2s ease-in-out',
+                          '&:hover': {
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                          },
+                          '&.Mui-focused': {
+                            boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                          }
+                        }
+                      }}
                       size="small"
                       value={ArrivalTime}
                       onChange={(value) =>
@@ -595,7 +633,7 @@ const NewEdit = ({
                       }}
                     />
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={12} sm={6} md={3}>
                     {" "}
                     <Controller
                       name={`DepartureDate`}
@@ -692,6 +730,19 @@ const NewEdit = ({
                                   .DepartureDate
                                   ?.message
                               }
+                              sx={{
+                                width: "100%",
+                                '& .MuiOutlinedInput-root': {
+                                  borderRadius: '12px',
+                                  transition: 'all 0.2s ease-in-out',
+                                  '&:hover': {
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                  },
+                                  '&.Mui-focused': {
+                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                                  }
+                                }
+                              }}
                               helperText={
                                 errors
                                   .DepartureDate
@@ -704,7 +755,7 @@ const NewEdit = ({
                     />
                   </Grid>
                   {DepartureTime && (
-                    <Grid item xs={3}>
+                    <Grid item xs={12} sm={6} md={3}>
                       {" "}
                       <TextField
                         id="DepartureTime"
@@ -736,7 +787,6 @@ const NewEdit = ({
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        sx={{ width: "100%" }}
                         size="small"
                         value={DepartureTime}
                         onChange={(value) =>
@@ -757,6 +807,19 @@ const NewEdit = ({
                               value.target.value
                             )
                         }
+                        sx={{
+                          width: "100%",
+                          '& .MuiOutlinedInput-root': {
+                            borderRadius: '12px',
+                            transition: 'all 0.2s ease-in-out',
+                            '&:hover': {
+                              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                            },
+                            '&.Mui-focused': {
+                              boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                            }
+                          }
+                        }}
                         onKeyDown={(e) => {
                           // Prevent the Delete key from clearing the time picker
                           if (e.key === "Delete") {
@@ -777,8 +840,8 @@ const NewEdit = ({
                   transition: "all 0.3s ease"
                 }}
               >
-                <Grid key="otherSettings" container spacing={1}>
-                  <Grid item xs={16}>
+                <Grid key="otherSettings" container spacing={{ xs: 1, sm: 2 }}>
+                  <Grid item xs={12}>
                     <CustomerSelect
                       register={register}
                       errors={errors}
@@ -786,7 +849,7 @@ const NewEdit = ({
                       isCustomSelect={true}
                     />
                   </Grid>
-                  <Grid item xs={16}>
+                  <Grid item xs={12}>
                     <FormControlLabel
                       control={
                         <Controller
@@ -805,6 +868,16 @@ const NewEdit = ({
                                     .checked
                                 )
                               }
+                              sx={{
+                                color: '#667eea',
+                                '&.Mui-checked': {
+                                  color: '#667eea',
+                                },
+                                '&:hover': {
+                                  backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                },
+                                borderRadius: '8px',
+                              }}
                             />
                           )}
                         />
@@ -812,11 +885,17 @@ const NewEdit = ({
                       label={intl.formatMessage({
                         id: "TextBookerInformation",
                       })}
+                      sx={{
+                        '& .MuiFormControlLabel-label': {
+                          fontWeight: 500,
+                          color: '#374151',
+                        }
+                      }}
                     />
                   </Grid>
                   {isBooker ? (
                     <>
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <TextField
                           size="small"
                           fullWidth
@@ -827,9 +906,21 @@ const NewEdit = ({
                           {...register(`BookerName`)}
                           margin="dense"
                           autoFocus
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '12px',
+                              transition: 'all 0.2s ease-in-out',
+                              '&:hover': {
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                              },
+                              '&.Mui-focused': {
+                                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                              }
+                            }
+                          }}
                         />
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <TextField
                           size="small"
                           fullWidth
@@ -839,6 +930,18 @@ const NewEdit = ({
                           })}
                           {...register(`BookerPhone`)}
                           margin="dense"
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '12px',
+                              transition: 'all 0.2s ease-in-out',
+                              '&:hover': {
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                              },
+                              '&.Mui-focused': {
+                                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                              }
+                            }
+                          }}
                         />
                       </Grid>
                     </>
@@ -862,6 +965,16 @@ const NewEdit = ({
                                     .checked
                                 )
                               }
+                              sx={{
+                                color: '#667eea',
+                                '&.Mui-checked': {
+                                  color: '#667eea',
+                                },
+                                '&:hover': {
+                                  backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                },
+                                borderRadius: '8px',
+                              }}
                             />
                           )}
                         />
@@ -869,12 +982,18 @@ const NewEdit = ({
                       label={intl.formatMessage({
                         id: "TextGuideInformation",
                       })}
+                      sx={{
+                        '& .MuiFormControlLabel-label': {
+                          fontWeight: 500,
+                          color: '#374151',
+                        }
+                      }}
                     />
                   </Grid>
 
                   {isGuide ? (
                     <>
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <TextField
                           size="small"
                           fullWidth
@@ -884,9 +1003,21 @@ const NewEdit = ({
                           })}
                           {...register(`GuideName`)}
                           margin="dense"
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '12px',
+                              transition: 'all 0.2s ease-in-out',
+                              '&:hover': {
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                              },
+                              '&.Mui-focused': {
+                                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                              }
+                            }
+                          }}
                         />
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <TextField
                           size="small"
                           fullWidth
@@ -896,6 +1027,18 @@ const NewEdit = ({
                           })}
                           {...register(`GuidePhone`)}
                           margin="dense"
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '12px',
+                              transition: 'all 0.2s ease-in-out',
+                              '&:hover': {
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                              },
+                              '&.Mui-focused': {
+                                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                              }
+                            }
+                          }}
                         />
                       </Grid>
                     </>
@@ -906,22 +1049,29 @@ const NewEdit = ({
           </CardContent>
         </Card>
       </LocalizationProvider>
-      <Grid item xs={12} md={6}>
-        <Card className="mb-4" elevation={0} sx={{
-          background: 'rgba(255, 255, 255, 0.15)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: "20px",
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)"
-        }}>
-          <CardContent sx={{ padding: "24px" }}>
-            <div
-              style={{
+      <Grid container spacing={{ xs: 2, sm: 3 }}>
+        <Grid item xs={12}>
+          <Card className="mb-4" elevation={0} sx={{
+            background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+            borderRadius: "24px",
+            border: '1px solid rgba(148, 163, 184, 0.1)',
+            boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            '&:hover': {
+              boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
+              transform: 'translateY(-2px)'
+            }
+          }}>
+          <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
+            <Box
+              sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
                 flexWrap: "wrap",
-                marginBottom: "20px"
+                marginBottom: "20px",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: { xs: 2, sm: 0 }
               }}
             >
               <div
@@ -932,32 +1082,39 @@ const NewEdit = ({
               >
                 <div
                   style={{
-                    width: "48px",
-                    height: "48px",
+                    width: "36px",
+                    height: "36px",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    background:
-                      "linear-gradient(135.79deg, rgba(128, 40, 210, 0.08) 4.62%, rgba(92, 33, 228, 0.08) 95.64%)",
-                    borderRadius: "14px",
-                    color: "#7856DE",
-                    boxShadow: "0px 4px 8px rgba(120, 86, 222, 0.15)"
+                    background: "#804fe6",
+                    borderRadius: "18px",
+                    color: "#ffffff",
+                    boxShadow: "0px 8px 24px rgba(240, 147, 251, 0.25), 0px 4px 12px rgba(245, 87, 108, 0.15)"
                   }}
                 >
                   <CheckroomIcon
-                    sx={{ fontSize: "24px" }}
+                    sx={{ fontSize: "28px" }}
                   />
                 </div>
                 <Typography
-                  variant="h6"
-                  style={{ marginLeft: "16px", fontWeight: 600, color: "#333" }}
+                    variant="h5"
+                    sx={{
+                      marginLeft: { xs: "0px", sm: "20px" },
+                      marginTop: { xs: "8px", sm: "0px" },
+                      fontWeight: 700,
+                      color: "#1e293b",
+                      fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                      letterSpacing: "-0.025em",
+                      textAlign: { xs: "center", sm: "left" }
+                    }}
                 >
                   {intl.formatMessage({
                     id: "TextRoomInformation",
                   })}
                 </Typography>
-              </div>
-            </div>
+               </div>
+             </Box>
             {/* 
             <div
               style={{
@@ -1088,44 +1245,54 @@ const NewEdit = ({
             })}
           </CardContent>
         </Card>
-
-
-        <Card className="mb-4" elevation={0} sx={{ borderRadius: "16px", background: "linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%)", boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)" }}>
+        </Grid>
+        
+        <Grid item xs={12}>
+        <Card className="mb-4" elevation={0} sx={{
+          borderRadius: "24px",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          boxShadow: "0px 20px 40px rgba(102, 126, 234, 0.15), 0px 8px 16px rgba(118, 75, 162, 0.1)",
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:hover': {
+            boxShadow: "0px 24px 48px rgba(102, 126, 234, 0.2), 0px 12px 24px rgba(118, 75, 162, 0.15)",
+            transform: 'translateY(-2px)'
+          }
+        }}>
           {/* <Card className="fixed right-4 top-6 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"> */}
-          <CardContent sx={{}}>
-            <Grid container spacing={3}>
-              <Grid item sm={12} md={4}>
+          <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
+            <Grid container spacing={{ xs: 2, sm: 3 }}>
+              <Grid item xs={12} sm={4} md={4}>
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 500, color: "#666", mb: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
                     {intl.formatMessage({
                       id: "TextNights",
                     })}
                   </Typography>
-                  <Typography variant="h5" sx={{ fontWeight: 700, color: "#333" }}>
+                  <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
                     {nights}
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item sm={12} md={4}>
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid #e0e0e0" }, borderRight: { md: "1px solid #e0e0e0" } }}>
-                  <Typography variant="body2" sx={{ fontWeight: 500, color: "#666", mb: 1 }}>
+              <Grid item xs={12} sm={4} md={4}>
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid rgba(255, 255, 255, 0.2)" }, borderRight: { md: "1px solid rgba(255, 255, 255, 0.2)" } }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
                     {intl.formatMessage({
                       id: "ReportTotalRooms",
                     })}
                   </Typography>
-                  <Typography variant="h5" sx={{ fontWeight: 700, color: "#333" }}>
+                  <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
                     {fields.length}
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item sm={12} md={4}>
+              <Grid item xs={12} sm={4} md={4}>
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 500, color: "#666", mb: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
                     {intl.formatMessage({
                       id: "ReportTotalCharge",
                     })}
                   </Typography>
-                  <Typography variant="h5" sx={{ fontWeight: 700, color: "#333" }}>
+                  <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
                     {formatPrice(totalAmount)}₮
                   </Typography>
                 </Box>
@@ -1133,17 +1300,27 @@ const NewEdit = ({
             </Grid>
           </CardContent>
         </Card>
+        </Grid>
+        
+        <Grid item xs={12}>
         <Card
           className="mb-4"
           key={"Payment"}
           elevation={0}
           sx={{
             display: "none",
-            borderRadius: "16px",
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.08)"
+            borderRadius: "24px",
+            background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+            border: '1px solid rgba(148, 163, 184, 0.1)',
+            boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            '&:hover': {
+              boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
+              transform: 'translateY(-2px)'
+            }
           }}
         >
-          <CardContent sx={{ padding: "24px" }}>
+          <CardContent sx={{ padding: "32px" }}>
             <div
               style={{
                 display: "flex",
@@ -1159,25 +1336,32 @@ const NewEdit = ({
               >
                 <div
                   style={{
-                    width: "48px",
-                    height: "48px",
+                    width: "56px",
+                    height: "56px",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    background:
-                      "linear-gradient(135.79deg, rgba(128, 40, 210, 0.08) 4.62%, rgba(92, 33, 228, 0.08) 95.64%)",
-                    borderRadius: "14px",
-                    color: "#7856DE",
-                    boxShadow: "0px 4px 8px rgba(120, 86, 222, 0.15)"
+                    background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                    borderRadius: "18px",
+                    color: "#ffffff",
+                    boxShadow: "0px 8px 24px rgba(79, 172, 254, 0.25), 0px 4px 12px rgba(0, 242, 254, 0.15)"
                   }}
                 >
                   <ReceiptIcon
-                    sx={{ fontSize: "24px" }}
+                    sx={{ fontSize: "28px" }}
                   />
                 </div>
                 <Typography
-                  variant="h6"
-                  style={{ marginLeft: "16px", fontWeight: 600, color: "#333" }}
+                    variant="h5"
+                    sx={{
+                      marginLeft: { xs: "0px", sm: "20px" },
+                      marginTop: { xs: "8px", sm: "0px" },
+                      fontWeight: 700,
+                      color: "#1e293b",
+                      fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                      letterSpacing: "-0.025em",
+                      textAlign: { xs: "center", sm: "left" }
+                    }}
                 >
                   {intl.formatMessage({
                     id: "TextPayment",
@@ -1186,20 +1370,21 @@ const NewEdit = ({
               </div>
             </div>
             <br />
-            <Grid key="Payment" container spacing={1}>
+            <Grid key="Payment" container spacing={{ xs: 1, sm: 2 }}>
               <Grid item xs={12} sm={6}>
                 <div
                   style={{
-                    padding: "28px",
-                    borderRadius: "16px",
+                    padding: "32px",
+                    borderRadius: "20px",
                     gap: "50px",
-                    border: "1px solid #E6E8EE",
-                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+                    border: "1px solid rgba(148, 163, 184, 0.15)",
+                    boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.08), 0px 4px 8px rgba(0, 0, 0, 0.04)",
                     height: "100%",
-                    transition: "all 0.3s ease"
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    background: "linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)"
                   }}
                 >
-                  <Grid container spacing={1}>
+                  <Grid container spacing={{ xs: 1, sm: 2 }}>
                     <Grid item xs={12}>
                       <ReservationTypeSelect
                         register={register}
@@ -1239,6 +1424,16 @@ const NewEdit = ({
                                       .checked
                                   )
                                 }
+                                sx={{
+                                  color: '#667eea',
+                                  '&.Mui-checked': {
+                                    color: '#667eea',
+                                  },
+                                  '&:hover': {
+                                    backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                  },
+                                  borderRadius: '8px',
+                                }}
                               />
                             )}
                           />
@@ -1246,6 +1441,12 @@ const NewEdit = ({
                         label={intl.formatMessage({
                           id: "RowHeaderBreakfastIncluded",
                         })}
+                        sx={{
+                          '& .MuiFormControlLabel-label': {
+                            fontWeight: 500,
+                            color: '#374151',
+                          }
+                        }}
                       />
                       <FormControlLabel
                         control={
@@ -1271,6 +1472,16 @@ const NewEdit = ({
                                       .checked
                                   )
                                 }
+                                sx={{
+                                  color: '#667eea',
+                                  '&.Mui-checked': {
+                                    color: '#667eea',
+                                  },
+                                  '&:hover': {
+                                    backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                  },
+                                  borderRadius: '8px',
+                                }}
                               />
                             )}
                           />
@@ -1278,6 +1489,12 @@ const NewEdit = ({
                         label={intl.formatMessage({
                           id: "TextTaxIncluded",
                         })}
+                        sx={{
+                          '& .MuiFormControlLabel-label': {
+                            fontWeight: 500,
+                            color: '#374151',
+                          }
+                        }}
                       />
                     </Grid>
 
@@ -1314,7 +1531,7 @@ const NewEdit = ({
                     </Grid>
 
                     {ReservationSourceChecked ? (
-                      <Grid item sm={12}>
+                      <Grid item xs={12}>
                         <ReservationSourceSelect
                           register={register}
                           errors={errors}
@@ -1325,7 +1542,7 @@ const NewEdit = ({
                       <></>
                     )}
 
-                    <Grid item sm={12} md={4}>
+                    <Grid item xs={12} sm={4} md={4}>
                       <Typography
                         variant="caption"
                         gutterBottom
@@ -1336,7 +1553,7 @@ const NewEdit = ({
                         : {nights}
                       </Typography>
                     </Grid>
-                    <Grid item sm={12} md={4}>
+                    <Grid item xs={12} sm={4} md={4}>
                       <Typography
                         variant="caption"
                         gutterBottom
@@ -1347,7 +1564,7 @@ const NewEdit = ({
                         : {fields.length}
                       </Typography>
                     </Grid>
-                    <Grid item sm={12} md={4}>
+                    <Grid item xs={12} sm={4} md={4}>
                       <Typography
                         variant="caption"
                         gutterBottom
@@ -1362,7 +1579,7 @@ const NewEdit = ({
                 </div>
               </Grid>
               <Grid item xs={12}>
-                <Grid container spacing={1}>
+                <Grid container spacing={{ xs: 1, sm: 2 }}>
                   <Grid item xs={12} sm={6}>
                     <PaymentMethodSelect
                       register={register}
@@ -1434,8 +1651,9 @@ const NewEdit = ({
             </Grid>
           </CardContent>
         </Card>
+        </Grid>
       </Grid>
-    </NewEditForm >
+    </NewEditForm>
   );
 };
 

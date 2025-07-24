@@ -26,7 +26,7 @@ import { RoomTypeAPI } from "lib/api/room-type";
 import { RoomAPI } from "lib/api/room";
 import { ReservationAPI } from "lib/api/reservation";
 import { StayView2API } from "lib/api/stay-view2";
-import { FrontOfficeAPI, listUrl } from "lib/api/front-office";
+import { FrontOfficeAPI } from "lib/api/front-office";
 import NewReservation from "components/front-office/reservation-list/new";
 import { ModalContext } from "lib/context/modal";
 import { RoomBlockAPI } from "lib/api/room-block";
@@ -41,7 +41,6 @@ import { getContrastYIQ } from "lib/utils/helpers";
 import { useIntl } from "react-intl";
 import RoomTypeCustomSelect from "components/select/room-type-custom";
 import DatePickerCustom from "../mui/MuiDatePickerCustom";
-import { da } from "date-fns/locale";
 import Image from "next/image";
 
 const MyCalendar: React.FC = ({ workingDate }: any) => {
@@ -1316,7 +1315,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   return (
     timeStart && (
       <>
-        {/* Calendar Controls Section - Improved UX/UI */}
+        {/* Calendar Controls Section */}
         <div className="mb-8 space-y-4">
           {/* Main Actions Row */}
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
@@ -1370,7 +1369,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               </Button>
 
               {/* Hover Toggle */}
-              <div className="flex items-center space-x-2 bg-white border border-[#804FE6] rounded-full px-4 py-2 shadow-sm">
+              <div className="flex items-center space-x-2 bg-white border border-[#804FE6] rounded-full px-3 py-2 shadow-sm cursor-pointer" onClick={() => setIsHoverEnabled(!isHoverEnabled)}>
                 <Checkbox
                   checked={isHoverEnabled}
                   onChange={handleHoverChange}
@@ -1383,7 +1382,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     "& .MuiSvgIcon-root": { fontSize: 16 },
                   }}
                 />
-                <span className="text-sm font-medium text-gray-700">Hover</span>
+                <span className="text-sm font-semibold text-black">Hover</span>
               </div>
               {/* Filters Group */}
               <div className="flex flex-wrap gap-3 items-center">

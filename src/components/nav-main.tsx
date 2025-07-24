@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { Icon } from "@iconify/react"
+import { IconifyProps } from "@/components/iconify/types"
 
 import {
   Collapsible,
@@ -25,7 +26,7 @@ export function NavMain({
   items: {
     title: string
     url: string
-    icon?: LucideIcon
+    icon?: IconifyProps
     isActive?: boolean
     items?: {
       title: string
@@ -47,15 +48,15 @@ export function NavMain({
               {item.items ? (
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton tooltip={item.title} className="hover:bg-sidebar-accent/80">
-                    {item.icon && <item.icon className="transition-all duration-300 group-hover:scale-110" />}
+                    {item.icon && <Icon icon={item.icon} className="transition-all duration-300 group-hover:scale-110" width={16} height={16} />}
                     <span className="transition-all duration-300">{item.title}</span>
-                    <ChevronRight className="ml-auto transition-all duration-300 ease-in-out group-data-[state=open]/collapsible:rotate-90 group-hover:scale-110" />
+                    <Icon icon="lucide:chevron-right" className="ml-auto transition-all duration-300 ease-in-out group-data-[state=open]/collapsible:rotate-90 group-hover:scale-110" width={16} height={16} />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
               ) : (
                 <SidebarMenuButton asChild tooltip={item.title} className="hover:bg-sidebar-accent/80">
                   <Link href={item.url}>
-                    {item.icon && <item.icon className="transition-all duration-300 group-hover:scale-110" />}
+                    {item.icon && <Icon icon={item.icon} className="transition-all duration-300 group-hover:scale-110" width={16} height={16} />}
                     <span className="transition-all duration-300">{item.title}</span>
                   </Link>
                 </SidebarMenuButton>

@@ -23,6 +23,13 @@ const sidebarConfig = [
         icon: getIcon(pieChart2Fill),
         oldPath: "FrontOffice/StayView.aspx",
     },
+    {
+        title: "асуулт хариулт",
+        titleEn: "FAQ",
+        path: "/faq",
+        icon: getIcon(bookOpenFill),
+        oldPath: "",
+    },
     // {
     //     title: "захиалга",
     //     titleEn: "reservation",

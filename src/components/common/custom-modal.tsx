@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import { useAppState } from "lib/context/app";
@@ -163,13 +164,23 @@ const CustomModal = ({ ArrivalDate, DepartureDate }: CustomModalProps = {}) => {
                 </Typography>
               </Box>
 
-              <IconButton
-                aria-label="close"
-                style={{ color: "white" }}
-                onClick={handleClose}
-              >
-                <CloseIcon />
-              </IconButton>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <IconButton
+                  aria-label="save"
+                  style={{ color: "white" }}
+                  type="submit"
+                  form="modal-form"
+                >
+                  <SaveIcon />
+                </IconButton>
+                <IconButton
+                  aria-label="close"
+                  style={{ color: "white" }}
+                  onClick={handleClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Box>
             </Grid>
             <Divider />
           </div>

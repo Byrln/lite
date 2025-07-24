@@ -17,12 +17,15 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { useAppState } from "lib/context/app"
+import { useBreadcrumbs } from "@/hooks/use-breadcrumbs"
+import Link from "next/link"
 
 export default function DashboardLayout({ children }: any) {
   const { data, error } = GetPrivilegesSWR()
   const [sideBarData, setSideBarData] = useState<any[] | undefined>(undefined)
   const [lastValidSideBarData, setLastValidSideBarData] = useState<any[] | undefined>(undefined)
   const [state, dispatch]: any = useAppState()
+  const breadcrumbs = useBreadcrumbs(sideBarData)
 
   function filterMenu(menu: any, uniqueMenuLinks: any) {
     return menu.reduce((filteredMenu: any, item: any) => {
@@ -82,15 +85,22 @@ export default function DashboardLayout({ children }: any) {
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    PMS
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                </BreadcrumbItem>
+                {breadcrumbs.map((breadcrumb, index) => (
+                  <div key={index} className="flex items-center capitalize">
+                    {index > 0 && <BreadcrumbSeparator className="hidden md:block" />}
+                    <BreadcrumbItem className={index === 0 ? "hidden md:block" : ""}>
+                      {breadcrumb.isCurrentPage ? (
+                        <BreadcrumbPage>{breadcrumb.title}</BreadcrumbPage>
+                      ) : breadcrumb.href ? (
+                        <BreadcrumbLink asChild>
+                          <Link href={breadcrumb.href}>{breadcrumb.title}</Link>
+                        </BreadcrumbLink>
+                      ) : (
+                        <span className="text-muted-foreground">{breadcrumb.title}</span>
+                      )}
+                    </BreadcrumbItem>
+                  </div>
+                ))}
               </BreadcrumbList>
             </Breadcrumb>
           </div>

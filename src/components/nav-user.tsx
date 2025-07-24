@@ -7,6 +7,7 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  Languages,
 } from "lucide-react"
 
 import {
@@ -21,6 +22,9 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -30,6 +34,37 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { QuestionMark, QuestionMarkOutlined, QuestionMarkRounded } from "@mui/icons-material"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import Image from "next/image"
+
+// Language menu item component
+function LanguageMenuItem({ value, label, icon }: { value: string; label: string; icon: string }) {
+  const router = useRouter()
+  const { locale, asPath } = router
+  const isSelected = locale === value
+
+  const handleLanguageChange = () => {
+    router.push(asPath, asPath, { locale: value })
+  }
+
+  return (
+    <DropdownMenuItem
+      onClick={handleLanguageChange}
+      className={`flex items-center gap-2 ${isSelected ? 'bg-accent' : ''}`}
+    >
+      <Image
+        src={icon}
+        alt={label}
+        width={20}
+        height={20}
+        className="rounded-sm"
+      />
+      <span>{label}</span>
+      {isSelected && <span className="ml-auto text-xs">✓</span>}
+    </DropdownMenuItem>
+  )
+}
 
 export function NavUser({
   user,
@@ -83,24 +118,26 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
-              <DropdownMenuItem>
                 <CreditCard />
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <QuestionMarkOutlined />
-                FAQ
+              <DropdownMenuItem className="flex items-center cursor-pointer">
+                <Link href="/faq" className="gap-2">
+                  <QuestionMarkOutlined />
+                  <span className="pl-2">FAQ</span>
+                </Link>
               </DropdownMenuItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Languages className="h-4 w-4" />
+                  <span>Language</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <LanguageMenuItem value="en" label="English" icon="/static/icons/ic_flag_en.svg" />
+                  <DropdownMenuSeparator />
+                  <LanguageMenuItem value="mon" label="Монгол" icon="/static/icons/ic_flag_mgl.svg" />
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>

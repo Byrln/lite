@@ -10,6 +10,7 @@ const NumberSelect = ({
     numberMin,
     numberMax,
     defaultValue,
+    value,
     onChange,
     customError,
     customHelperText,
@@ -37,7 +38,7 @@ const NumberSelect = ({
                 customHelperText ? customHelperText : errors[nameKey]?.message
             }
             size="small"
-            defaultValue={defaultValue ? defaultValue : 0}
+            value={value !== undefined ? value : (defaultValue ? defaultValue : 0)}
             onChange={onChange}
         >
             {data.map((num: any) => {

@@ -688,6 +688,10 @@ const NewEdit = ({
                 initialValues={getValues(
                   `TransactionDetail[${id}]`
                 )}
+                onRateTypeChange={(rate: any) => {
+                  // Currency amount will automatically recalculate due to RateTypeID change in useEffect
+                  console.log('Rate type changed:', rate);
+                }}
               />
             </Grid>
 
@@ -727,6 +731,7 @@ const NewEdit = ({
                     : 0
                 }
                 defaultValue={RoomType?.BaseAdult}
+                value={selectedAdult}
                 nameKey={`TransactionDetail.${id}.Adult`}
                 register={register}
                 errors={errors}
@@ -762,6 +767,7 @@ const NewEdit = ({
                     : 0
                 }
                 defaultValue={0}
+                value={selectedChild}
                 nameKey={`TransactionDetail.${id}.Child`}
                 register={register}
                 errors={errors}

@@ -130,7 +130,7 @@ const NewEditForm = ({
             <CircularProgress color="info" />
         </Grid>
     ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
             {appBar && (
                 <div className="fixed left-0 right-0 z-[1001] w-full">
                     {appBar}
@@ -139,9 +139,7 @@ const NewEditForm = ({
             {children}
 
             {state.isShow && !isShowNotAffected ? null : (
-                // <Box sx={{ width: "15%" }}>
-
-                (<Box
+                <Box
                     sx={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -157,9 +155,7 @@ const NewEditForm = ({
                         fullWidth={false}
                     />
                     {additionalButtons}
-                </Box>)
-
-                // </Box>
+                </Box>
             )}
         </form>
     );

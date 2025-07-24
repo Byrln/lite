@@ -19,6 +19,7 @@ const RoomRateTypeSelect = ({
     id,
     resetField,
     initialValues,
+    onRateTypeChange,
 }: any) => {
     const intl = useIntl();
     const { data, error } = RateTypeSWR({});
@@ -61,6 +62,11 @@ const RoomRateTypeSelect = ({
             }
             if (rate.TaxIncluded && setTaxIncluded) {
                 setTaxIncluded(rate.TaxIncluded);
+            }
+            
+            // Trigger currency amount recalculation
+            if (onRateTypeChange) {
+                onRateTypeChange(rate);
             }
         }
     };

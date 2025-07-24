@@ -52,7 +52,7 @@
     "dayjs": "^1.11.9",
     "dhtmlx-scheduler": "^6.0.5",
     "faker": "^6.6.6",
-    "framer-motion": "^6.3.11",
+    "framer-motion": "^6.5.1",
     "handsontable": "^13.0.0",
     "interactjs": "^1.10.14",
     "jquery": "^3.7.1",

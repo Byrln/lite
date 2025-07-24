@@ -5,25 +5,8 @@ import { useRouter } from "next/router"
 import { useIntl } from "react-intl"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Calendar,
-  Command,
-  CreditCard,
-  FileText,
-  Frame,
-  GalleryVerticalEnd,
-  Home,
-  Map,
-  PieChart,
-  Settings2,
-  ShoppingCart,
-  SquareTerminal,
-  Users,
-  Tag,
-} from "lucide-react"
+import { Icon } from "@iconify/react"
+import type { IconifyProps } from "@/components/iconify/types"
 
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -37,26 +20,24 @@ import {
 } from "@/components/ui/sidebar"
 import sidebarConfig from "@/components/layouts/dashboard/sidebar-config"
 
-// Icon mapping for sidebar config
-const iconMap: { [key: string]: any } = {
-  "pie-chart-2-fill": PieChart,
-  "shopping-cart-fill": ShoppingCart,
-  "people-fill": Users,
-  "calendar-fill": Calendar,
-  "pricetags-fill": Tag,
-  "home-fill": Home,
-  "credit-card-fill": CreditCard,
-  "book-open-fill": BookOpen,
-  "settings-2-fill": Settings2,
-  "award-fill": FileText,
-  "options-2-fill": Settings2,
+const iconMap: { [key: string]: string } = {
+  "pie-chart-2-fill": "eva:pie-chart-2-fill",
+  "shopping-cart-fill": "eva:shopping-cart-fill",
+  "people-fill": "eva:people-fill",
+  "calendar-fill": "eva:calendar-fill",
+  "pricetags-fill": "eva:pricetags-fill",
+  "home-fill": "eva:home-fill",
+  "credit-card-fill": "eva:credit-card-fill",
+  "book-open-fill": "eva:book-open-fill",
+  "settings-2-fill": "eva:settings-2-fill",
+  "award-fill": "eva:award-fill",
+  "options-2-fill": "eva:options-2-fill",
 }
 
-// Transform sidebar config to match shadcn format
 function transformSidebarConfig(config: any[], intl: any) {
   return config.map((item) => {
     const iconName = getIconNameFromConfig(item.icon)
-    const IconComponent = iconMap[iconName] || SquareTerminal
+    const iconString = iconMap[iconName] || "lucide:square-terminal"
 
     return {
       title: intl.formatMessage({
@@ -64,7 +45,7 @@ function transformSidebarConfig(config: any[], intl: any) {
         defaultMessage: item.title
       }),
       url: item.path || "#",
-      icon: IconComponent,
+      icon: iconString,
       isActive: false,
       items: item.children ? item.children.map((child: any) => ({
         title: intl.formatMessage({
@@ -77,11 +58,17 @@ function transformSidebarConfig(config: any[], intl: any) {
   })
 }
 
-// Extract icon name from iconify component
 function getIconNameFromConfig(iconComponent: any) {
   if (!iconComponent || !iconComponent.props) return "square-terminal"
   const iconName = iconComponent.props.icon?.name || iconComponent.props.icon
-  return iconName || "square-terminal"
+  if (typeof iconName === 'string') {
+    return iconName
+  }
+  // Handle Eva icons object structure
+  if (iconName && iconName.name) {
+    return iconName.name
+  }
+  return "square-terminal"
 }
 
 interface HotelSidebarProps extends React.ComponentProps<typeof Sidebar> {
@@ -96,7 +83,6 @@ export function HotelSidebar({ sideBarData, ...props }: HotelSidebarProps) {
   const configToUse = sideBarData || sidebarConfig
   const navItems = transformSidebarConfig(configToUse, intl)
 
-  // Get real user data from localStorage and session
   const username = React.useMemo(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('username') || 'Admin'
@@ -120,7 +106,7 @@ export function HotelSidebar({ sideBarData, ...props }: HotelSidebarProps) {
     teams: [
       {
         name: "Hotel PMS",
-        logo: GalleryVerticalEnd,
+        logo: "lucide:gallery-vertical-end",
         plan: "Enterprise",
       },
     ],
