@@ -18,6 +18,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { useAppState } from "lib/context/app"
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs"
+import NotificationBell from "./notification-bell"
 import Link from "next/link"
 
 export default function DashboardLayout({ children }: any) {
@@ -80,7 +81,7 @@ export default function DashboardLayout({ children }: any) {
       <HotelSidebar sideBarData={sideBarData} />
       <SidebarInset className="flex flex-col min-h-screen overflow-hidden">
         <header className="flex h-14 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="flex items-center gap-2 px-4">
+          <div className="flex items-center gap-2 px-4 flex-1">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
@@ -103,6 +104,9 @@ export default function DashboardLayout({ children }: any) {
                 ))}
               </BreadcrumbList>
             </Breadcrumb>
+          </div>
+          <div className="flex items-center gap-2 px-4">
+            <NotificationBell />
           </div>
         </header>
         <div className="flex-1 overflow-auto p-4">

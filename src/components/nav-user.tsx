@@ -37,6 +37,7 @@ import { QuestionMark, QuestionMarkOutlined, QuestionMarkRounded } from "@mui/ic
 import Link from "next/link"
 import { useRouter } from "next/router"
 import Image from "next/image"
+import { signOut } from "next-auth/react"
 
 // Language menu item component
 function LanguageMenuItem({ value, label, icon }: { value: string; label: string; icon: string }) {
@@ -140,7 +141,7 @@ export function NavUser({
               </DropdownMenuSub>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/auth/login" })}>
               <LogOut />
               Log out
             </DropdownMenuItem>

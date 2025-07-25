@@ -589,7 +589,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   };
 
   useEffect(() => {
-    setHeight(window.innerHeight - 30);
+    setHeight(window.innerHeight - 75);
   }, [window.innerHeight]);
 
   const handleEventClick = (info: any) => {

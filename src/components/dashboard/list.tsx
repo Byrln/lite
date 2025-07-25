@@ -26,7 +26,7 @@ import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
 import { Separator } from "../ui/separator";
 import { Calendar } from "../ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/radix-popover";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { cn } from "@/lib/utils";
@@ -271,6 +271,7 @@ const Dashboard = ({ workingDate }: any) => {
     if (date) {
       setSelectedDate(date);
       setIsCalendarOpen(false);
+      refreshData();
     }
   };
 
@@ -369,34 +370,22 @@ const Dashboard = ({ workingDate }: any) => {
                 <div className="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-4">
                   <div className="flex items-center space-x-2">
                     <Popover>
-                      <PopoverTrigger>
-                        <Button
-                          variant="outline"
-                          className="w-[240px] justify-start text-left font-normal bg-indigo-100 border-indigo-300 text-indigo-700 hover:bg-indigo-200"
-                        >
+                      <PopoverTrigger asChild>
+                        <button className="w-[240px] justify-start text-left font-normal bg-indigo-100 border-indigo-300 text-indigo-700 hover:bg-indigo-200 flex h-9 items-center border px-3 text-sm rounded-lg">
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
-                        </Button>
+                        </button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
+                      <PopoverContent className="w-auto p-0">
                         <Calendar
                           mode="single"
-                          selected={selectedDate}
+                          selected={selectedDate || undefined}
                           onSelect={handleDateChange}
                           initialFocus
                         />
                       </PopoverContent>
                     </Popover>
                   </div>
-                  <Button
-                    onClick={refreshData}
-                    variant="outline"
-                    size="sm"
-                    className="bg-indigo-100 border-indigo-300 text-indigo-700 hover:bg-indigo-200"
-                  >
-                    <RefreshCw className="h-4 w-4 mr-2" />
-                    {intl.formatMessage({ id: "TextRefresh" })}
-                  </Button>
                 </div>
               </div>
             </CardContent>

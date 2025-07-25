@@ -1,6 +1,9 @@
 import ToggleChecked from "components/common/custom-switch";
 import CustomTable from "components/common/custom-table";
 import { useIntl } from "react-intl";
+import { Box, Button } from "@mui/material";
+import { useRouter } from "next/router";
+import AddIcon from "@mui/icons-material/Add";
 import {
     NotificationSWR,
     NotificationAPI,
@@ -11,7 +14,12 @@ import NewEdit from "./new-edit";
 
 const NotificationList = ({ title }: any) => {
     const intl = useIntl();
+    const router = useRouter();
     const { data, error } = NotificationSWR();
+
+    const handleCreateNotification = () => {
+        router.push('/notification/create');
+    };
 
     const columns = [
         {
@@ -52,19 +60,31 @@ const NotificationList = ({ title }: any) => {
         },
     ];
     return (
-        <CustomTable
-            columns={columns}
-            data={data}
-            error={error}
-            api={NotificationAPI}
-            hasNew={true}
-            id="NotificationID"
-            listUrl={listUrl}
-            modalTitle={title}
-            modalContent={<NewEdit />}
-            excelName={title}
-            datagrid={false}
-        />
+        <Box>
+            <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={handleCreateNotification}
+                    sx={{ mb: 1 }}
+                >
+                    Create New Notification
+                </Button>
+            </Box>
+            <CustomTable
+                columns={columns}
+                data={data}
+                error={error}
+                api={NotificationAPI}
+                hasNew={true}
+                id="NotificationID"
+                listUrl={listUrl}
+                modalTitle={title}
+                modalContent={<NewEdit />}
+                excelName={title}
+                datagrid={false}
+            />
+        </Box>
     );
 };
 
