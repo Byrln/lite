@@ -14,6 +14,7 @@ import {
   FormControlLabel,
   Box,
 } from "@mui/material";
+import { Switch } from "@/components/ui/switch";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import InfoIcon from "@mui/icons-material/Info";
 import moment from "moment";
@@ -110,6 +111,13 @@ const NewEdit = ({
   const [Currency, setCurrency]: any = useState("");
   const [helpDialogOpen, setHelpDialogOpen]: any = useState(false);
   const [dialogPosition, setDialogPosition] = useState<{ x: number | null, y: number | null }>({ x: null, y: null });
+  const [useDefaultValues, setUseDefaultValues]: any = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('useDefaultValues');
+      return saved !== null ? JSON.parse(saved) : true;
+    }
+    return true;
+  });
 
   const setRange = (dateStart: Date, dateEnd: Date) => {
     var nights: number;
@@ -122,6 +130,13 @@ const NewEdit = ({
       setRange(ArrivalDate, DepartureDate);
     }
   }, [ArrivalDate, DepartureDate]);
+
+  // Save useDefaultValues to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('useDefaultValues', JSON.stringify(useDefaultValues));
+    }
+  }, [useDefaultValues]);
 
   // Add event listener for COLOR_CHANGE message from new-form.tsx
   useEffect(() => {
@@ -434,16 +449,16 @@ const NewEdit = ({
         >
           <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
             <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  marginBottom: "20px",
-                  flexDirection: { xs: "column", sm: "row" },
-                  gap: { xs: 2, sm: 0 }
-                }}
-              >
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                marginBottom: "20px",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: { xs: 2, sm: 0 }
+              }}
+            >
               <div
                 style={{
                   display: "flex",
@@ -467,22 +482,22 @@ const NewEdit = ({
                     sx={{ fontSize: "28px" }}
                   />
                 </div>
-                 <Typography
-                    variant="h5"
-                    sx={{
-                      marginLeft: { xs: "0px", sm: "20px" },
-                      marginTop: { xs: "8px", sm: "0px" },
-                      fontWeight: 700,
-                      color: "#1e293b",
-                      fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                      letterSpacing: "-0.025em",
-                      textAlign: { xs: "center", sm: "left" }
-                    }}
+                <Typography
+                  variant="h5"
+                  sx={{
+                    marginLeft: { xs: "0px", sm: "20px" },
+                    marginTop: { xs: "8px", sm: "0px" },
+                    fontWeight: 700,
+                    color: "#1e293b",
+                    fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                    letterSpacing: "-0.025em",
+                    textAlign: { xs: "center", sm: "left" }
+                  }}
                 >
                   {intl.formatMessage({ id: "TextGeneral" })}
                 </Typography>
-               </div>
-             </Box>
+              </div>
+            </Box>
             <Grid container spacing={0}>
               <Grid
                 item
@@ -1062,42 +1077,42 @@ const NewEdit = ({
               transform: 'translateY(-2px)'
             }
           }}>
-          <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                marginBottom: "20px",
-                flexDirection: { xs: "column", sm: "row" },
-                gap: { xs: 2, sm: 0 }
-              }}
-            >
-              <div
-                style={{
+            <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
+              <Box
+                sx={{
                   display: "flex",
                   alignItems: "center",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  marginBottom: "20px",
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: { xs: 2, sm: 0 }
                 }}
               >
                 <div
                   style={{
-                    width: "36px",
-                    height: "36px",
                     display: "flex",
-                    justifyContent: "center",
                     alignItems: "center",
-                    background: "#804fe6",
-                    borderRadius: "18px",
-                    color: "#ffffff",
-                    boxShadow: "0px 8px 24px rgba(240, 147, 251, 0.25), 0px 4px 12px rgba(245, 87, 108, 0.15)"
                   }}
                 >
-                  <CheckroomIcon
-                    sx={{ fontSize: "28px" }}
-                  />
-                </div>
-                <Typography
+                  <div
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      background: "#804fe6",
+                      borderRadius: "18px",
+                      color: "#ffffff",
+                      boxShadow: "0px 8px 24px rgba(240, 147, 251, 0.25), 0px 4px 12px rgba(245, 87, 108, 0.15)"
+                    }}
+                  >
+                    <CheckroomIcon
+                      sx={{ fontSize: "28px" }}
+                    />
+                  </div>
+                  <Typography
                     variant="h5"
                     sx={{
                       marginLeft: { xs: "0px", sm: "20px" },
@@ -1108,14 +1123,26 @@ const NewEdit = ({
                       letterSpacing: "-0.025em",
                       textAlign: { xs: "center", sm: "left" }
                     }}
-                >
-                  {intl.formatMessage({
-                    id: "TextRoomInformation",
-                  })}
-                </Typography>
-               </div>
-             </Box>
-            {/* 
+                  >
+                    {intl.formatMessage({
+                      id: "TextRoomInformation",
+                    })}
+                  </Typography>
+                </div>
+                {/* Default Values Switcher */}
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-slate-600">
+                    Auto Fill
+                  </p>
+                  <Switch
+                    id="default-values-switch"
+                    checked={useDefaultValues}
+                    onCheckedChange={setUseDefaultValues}
+                    className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:#804fe6 data-[state=checked]:#804fe6 data-[state=unchecked]:bg-slate-200 h-7 w-12"
+                  />
+                </div>
+              </Box>
+              {/* 
             <div
               style={{
                 display: "flex",
@@ -1152,7 +1179,7 @@ const NewEdit = ({
                 }}
               />
               {/* ColorPicker moved to new-form.tsx */}
-            {/*<Button
+              {/*<Button
                 variant="contained"
                 onClick={() =>
                 //@ts-ignore
@@ -1202,156 +1229,157 @@ const NewEdit = ({
               </Button>
             </div> */}
 
-            {fields.map((field, index) => {
-              // console.log('In new.tsx - resetField type:', typeof resetField);
-              // console.log('In new.tsx - resetField value:', resetField);
-              // console.log('In new.tsx - resetField properties:', Object.keys(resetField || {}));
-              // console.log('In new.tsx - useForm methods:', { register, reset, handleSubmit, control, getValues, setValue, resetField });
-              return (
-                <div key={index}>
-                  <Divider sx={{ my: 2 }} />
-                  <NewForm
-                    id={index}
-                    register={register}
-                    control={control}
-                    errors={errors}
-                    getValues={getValues}
-                    resetField={resetField}
-                    setValue={setValue}
-                    reset={reset}
-                    field={field}
-                    BaseAdult={BaseAdult}
-                    BaseChild={BaseChild}
-                    MaxAdult={MaxAdult}
-                    MaxChild={MaxChild}
-                    workingDate={workingDate}
-                    remove={remove}
-                    append={append}
-                    BreakfastIncluded={BreakfastIncluded}
-                    TaxIncluded={TaxIncluded}
-                    setBreakfastIncluded={setBreakfastIncluded}
-                    setTaxIncluded={setTaxIncluded}
-                    ArrivalDate={ArrivalDate}
-                    setArrivalDate={setArrivalDate}
-                    DepartureDate={DepartureDate}
-                    setDepartureDate={setDepartureDate}
-                    CustomerID={CustomerID}
-                    rateTypeData={rateTypeData}
-                    setCurrency={setCurrency}
-                    Currency={Currency}
-                  />
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>
+              {fields.map((field, index) => {
+                // console.log('In new.tsx - resetField type:', typeof resetField);
+                // console.log('In new.tsx - resetField value:', resetField);
+                // console.log('In new.tsx - resetField properties:', Object.keys(resetField || {}));
+                // console.log('In new.tsx - useForm methods:', { register, reset, handleSubmit, control, getValues, setValue, resetField });
+                return (
+                  <div key={index}>
+                    <Divider sx={{ my: 2 }} />
+                    <NewForm
+                      id={index}
+                      register={register}
+                      control={control}
+                      errors={errors}
+                      getValues={getValues}
+                      resetField={resetField}
+                      setValue={setValue}
+                      reset={reset}
+                      field={field}
+                      BaseAdult={BaseAdult}
+                      BaseChild={BaseChild}
+                      MaxAdult={MaxAdult}
+                      MaxChild={MaxChild}
+                      workingDate={workingDate}
+                      remove={remove}
+                      append={append}
+                      BreakfastIncluded={BreakfastIncluded}
+                      TaxIncluded={TaxIncluded}
+                      setBreakfastIncluded={setBreakfastIncluded}
+                      setTaxIncluded={setTaxIncluded}
+                      ArrivalDate={ArrivalDate}
+                      setArrivalDate={setArrivalDate}
+                      DepartureDate={DepartureDate}
+                      setDepartureDate={setDepartureDate}
+                      CustomerID={CustomerID}
+                      rateTypeData={rateTypeData}
+                      setCurrency={setCurrency}
+                      Currency={Currency}
+                      useDefaultValues={useDefaultValues}
+                    />
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
         </Grid>
-        
+
         <Grid item xs={12}>
-        <Card className="mb-4" elevation={0} sx={{
-          borderRadius: "24px",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          boxShadow: "0px 20px 40px rgba(102, 126, 234, 0.15), 0px 8px 16px rgba(118, 75, 162, 0.1)",
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          '&:hover': {
-            boxShadow: "0px 24px 48px rgba(102, 126, 234, 0.2), 0px 12px 24px rgba(118, 75, 162, 0.15)",
-            transform: 'translateY(-2px)'
-          }
-        }}>
-          {/* <Card className="fixed right-4 top-6 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"> */}
-          <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
-            <Grid container spacing={{ xs: 2, sm: 3 }}>
-              <Grid item xs={12} sm={4} md={4}>
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
-                    {intl.formatMessage({
-                      id: "TextNights",
-                    })}
-                  </Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
-                    {nights}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={4} md={4}>
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid rgba(255, 255, 255, 0.2)" }, borderRight: { md: "1px solid rgba(255, 255, 255, 0.2)" } }}>
-                  <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
-                    {intl.formatMessage({
-                      id: "ReportTotalRooms",
-                    })}
-                  </Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
-                    {fields.length}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={4} md={4}>
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
-                    {intl.formatMessage({
-                      id: "ReportTotalCharge",
-                    })}
-                  </Typography>
-                  <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
-                    {formatPrice(totalAmount)}₮
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-        </Grid>
-        
-        <Grid item xs={12}>
-        <Card
-          className="mb-4"
-          key={"Payment"}
-          elevation={0}
-          sx={{
-            display: "none",
+          <Card className="mb-4" elevation={0} sx={{
             borderRadius: "24px",
-            background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
-            border: '1px solid rgba(148, 163, 184, 0.1)',
-            boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            boxShadow: "0px 20px 40px rgba(102, 126, 234, 0.15), 0px 8px 16px rgba(118, 75, 162, 0.1)",
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             '&:hover': {
-              boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
+              boxShadow: "0px 24px 48px rgba(102, 126, 234, 0.2), 0px 12px 24px rgba(118, 75, 162, 0.15)",
               transform: 'translateY(-2px)'
             }
-          }}
-        >
-          <CardContent sx={{ padding: "32px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
+          }}>
+            {/* <Card className="fixed right-4 top-6 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"> */}
+            <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
+              <Grid container spacing={{ xs: 2, sm: 3 }}>
+                <Grid item xs={12} sm={4} md={4}>
+                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
+                      {intl.formatMessage({
+                        id: "TextNights",
+                      })}
+                    </Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
+                      {nights}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={4} md={4}>
+                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid rgba(255, 255, 255, 0.2)" }, borderRight: { md: "1px solid rgba(255, 255, 255, 0.2)" } }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
+                      {intl.formatMessage({
+                        id: "ReportTotalRooms",
+                      })}
+                    </Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
+                      {fields.length}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={4} md={4}>
+                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
+                      {intl.formatMessage({
+                        id: "ReportTotalCharge",
+                      })}
+                    </Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
+                      {formatPrice(totalAmount)}₮
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Card
+            className="mb-4"
+            key={"Payment"}
+            elevation={0}
+            sx={{
+              display: "none",
+              borderRadius: "24px",
+              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+              border: '1px solid rgba(148, 163, 184, 0.1)',
+              boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              '&:hover': {
+                boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
+                transform: 'translateY(-2px)'
+              }
+            }}
+          >
+            <CardContent sx={{ padding: "32px" }}>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
+                  justifyContent: "space-between",
                 }}
               >
                 <div
                   style={{
-                    width: "56px",
-                    height: "56px",
                     display: "flex",
-                    justifyContent: "center",
                     alignItems: "center",
-                    background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-                    borderRadius: "18px",
-                    color: "#ffffff",
-                    boxShadow: "0px 8px 24px rgba(79, 172, 254, 0.25), 0px 4px 12px rgba(0, 242, 254, 0.15)"
                   }}
                 >
-                  <ReceiptIcon
-                    sx={{ fontSize: "28px" }}
-                  />
-                </div>
-                <Typography
+                  <div
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                      borderRadius: "18px",
+                      color: "#ffffff",
+                      boxShadow: "0px 8px 24px rgba(79, 172, 254, 0.25), 0px 4px 12px rgba(0, 242, 254, 0.15)"
+                    }}
+                  >
+                    <ReceiptIcon
+                      sx={{ fontSize: "28px" }}
+                    />
+                  </div>
+                  <Typography
                     variant="h5"
                     sx={{
                       marginLeft: { xs: "0px", sm: "20px" },
@@ -1362,295 +1390,295 @@ const NewEdit = ({
                       letterSpacing: "-0.025em",
                       textAlign: { xs: "center", sm: "left" }
                     }}
-                >
-                  {intl.formatMessage({
-                    id: "TextPayment",
-                  })}
-                </Typography>
+                  >
+                    {intl.formatMessage({
+                      id: "TextPayment",
+                    })}
+                  </Typography>
+                </div>
               </div>
-            </div>
-            <br />
-            <Grid key="Payment" container spacing={{ xs: 1, sm: 2 }}>
-              <Grid item xs={12} sm={6}>
-                <div
-                  style={{
-                    padding: "32px",
-                    borderRadius: "20px",
-                    gap: "50px",
-                    border: "1px solid rgba(148, 163, 184, 0.15)",
-                    boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.08), 0px 4px 8px rgba(0, 0, 0, 0.04)",
-                    height: "100%",
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    background: "linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)"
-                  }}
-                >
-                  <Grid container spacing={{ xs: 1, sm: 2 }}>
-                    <Grid item xs={12}>
-                      <ReservationTypeSelect
-                        register={register}
-                        errors={errors}
-                        reset={reset}
-                        customRegisterName={`ReservationTypeID`}
-                        ReservationTypeID={
-                          ReservationTypeID
-                        }
-                        setReservationTypeID={
-                          setReservationTypeID
-                        }
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControlLabel
-                        control={
-                          <Controller
-                            name={`BreakfastIncluded`}
-                            control={control}
-                            render={(
-                              props: any
-                            ) => (
-                              <Checkbox
-                                {...register(
-                                  `BreakfastIncluded`
-                                )}
-                                checked={
-                                  BreakfastIncluded ==
-                                    true
-                                    ? true
-                                    : false
-                                }
-                                onChange={(e) =>
-                                  setBreakfastIncluded(
-                                    e.target
-                                      .checked
-                                  )
-                                }
-                                sx={{
-                                  color: '#667eea',
-                                  '&.Mui-checked': {
-                                    color: '#667eea',
-                                  },
-                                  '&:hover': {
-                                    backgroundColor: 'rgba(102, 126, 234, 0.04)',
-                                  },
-                                  borderRadius: '8px',
-                                }}
-                              />
-                            )}
-                          />
-                        }
-                        label={intl.formatMessage({
-                          id: "RowHeaderBreakfastIncluded",
-                        })}
-                        sx={{
-                          '& .MuiFormControlLabel-label': {
-                            fontWeight: 500,
-                            color: '#374151',
-                          }
-                        }}
-                      />
-                      <FormControlLabel
-                        control={
-                          <Controller
-                            name={`TaxIncluded`}
-                            control={control}
-                            render={(
-                              props: any
-                            ) => (
-                              <Checkbox
-                                {...register(
-                                  `TaxIncluded`
-                                )}
-                                checked={
-                                  TaxIncluded ==
-                                    true
-                                    ? true
-                                    : false
-                                }
-                                onChange={(e) =>
-                                  setTaxIncluded(
-                                    e.target
-                                      .checked
-                                  )
-                                }
-                                sx={{
-                                  color: '#667eea',
-                                  '&.Mui-checked': {
-                                    color: '#667eea',
-                                  },
-                                  '&:hover': {
-                                    backgroundColor: 'rgba(102, 126, 234, 0.04)',
-                                  },
-                                  borderRadius: '8px',
-                                }}
-                              />
-                            )}
-                          />
-                        }
-                        label={intl.formatMessage({
-                          id: "TextTaxIncluded",
-                        })}
-                        sx={{
-                          '& .MuiFormControlLabel-label': {
-                            fontWeight: 500,
-                            color: '#374151',
-                          }
-                        }}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <FormControlLabel
-                        control={
-                          <Controller
-                            name={`ReservationSourceChecked`}
-                            control={control}
-                            render={(
-                              props: any
-                            ) => (
-                              <Checkbox
-                                checked={
-                                  ReservationSourceChecked ==
-                                    true
-                                    ? true
-                                    : false
-                                }
-                                onChange={(e) =>
-                                  setReservationSourceChecked(
-                                    e.target
-                                      .checked
-                                  )
-                                }
-                              />
-                            )}
-                          />
-                        }
-                        label={intl.formatMessage({
-                          id: "TextReservationSource",
-                        })}
-                      />
-                    </Grid>
-
-                    {ReservationSourceChecked ? (
+              <br />
+              <Grid key="Payment" container spacing={{ xs: 1, sm: 2 }}>
+                <Grid item xs={12} sm={6}>
+                  <div
+                    style={{
+                      padding: "32px",
+                      borderRadius: "20px",
+                      gap: "50px",
+                      border: "1px solid rgba(148, 163, 184, 0.15)",
+                      boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.08), 0px 4px 8px rgba(0, 0, 0, 0.04)",
+                      height: "100%",
+                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      background: "linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)"
+                    }}
+                  >
+                    <Grid container spacing={{ xs: 1, sm: 2 }}>
                       <Grid item xs={12}>
-                        <ReservationSourceSelect
+                        <ReservationTypeSelect
                           register={register}
                           errors={errors}
-                          ChannelID={2}
+                          reset={reset}
+                          customRegisterName={`ReservationTypeID`}
+                          ReservationTypeID={
+                            ReservationTypeID
+                          }
+                          setReservationTypeID={
+                            setReservationTypeID
+                          }
                         />
                       </Grid>
-                    ) : (
-                      <></>
-                    )}
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          control={
+                            <Controller
+                              name={`BreakfastIncluded`}
+                              control={control}
+                              render={(
+                                props: any
+                              ) => (
+                                <Checkbox
+                                  {...register(
+                                    `BreakfastIncluded`
+                                  )}
+                                  checked={
+                                    BreakfastIncluded ==
+                                      true
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={(e) =>
+                                    setBreakfastIncluded(
+                                      e.target
+                                        .checked
+                                    )
+                                  }
+                                  sx={{
+                                    color: '#667eea',
+                                    '&.Mui-checked': {
+                                      color: '#667eea',
+                                    },
+                                    '&:hover': {
+                                      backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                    },
+                                    borderRadius: '8px',
+                                  }}
+                                />
+                              )}
+                            />
+                          }
+                          label={intl.formatMessage({
+                            id: "RowHeaderBreakfastIncluded",
+                          })}
+                          sx={{
+                            '& .MuiFormControlLabel-label': {
+                              fontWeight: 500,
+                              color: '#374151',
+                            }
+                          }}
+                        />
+                        <FormControlLabel
+                          control={
+                            <Controller
+                              name={`TaxIncluded`}
+                              control={control}
+                              render={(
+                                props: any
+                              ) => (
+                                <Checkbox
+                                  {...register(
+                                    `TaxIncluded`
+                                  )}
+                                  checked={
+                                    TaxIncluded ==
+                                      true
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={(e) =>
+                                    setTaxIncluded(
+                                      e.target
+                                        .checked
+                                    )
+                                  }
+                                  sx={{
+                                    color: '#667eea',
+                                    '&.Mui-checked': {
+                                      color: '#667eea',
+                                    },
+                                    '&:hover': {
+                                      backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                    },
+                                    borderRadius: '8px',
+                                  }}
+                                />
+                              )}
+                            />
+                          }
+                          label={intl.formatMessage({
+                            id: "TextTaxIncluded",
+                          })}
+                          sx={{
+                            '& .MuiFormControlLabel-label': {
+                              fontWeight: 500,
+                              color: '#374151',
+                            }
+                          }}
+                        />
+                      </Grid>
 
-                    <Grid item xs={12} sm={4} md={4}>
-                      <Typography
-                        variant="caption"
-                        gutterBottom
-                      >
-                        {intl.formatMessage({
-                          id: "TextNights",
-                        })}
-                        : {nights}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={4} md={4}>
-                      <Typography
-                        variant="caption"
-                        gutterBottom
-                      >
-                        {intl.formatMessage({
-                          id: "ReportTotalRooms",
-                        })}
-                        : {fields.length}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={4} md={4}>
-                      <Typography
-                        variant="caption"
-                        gutterBottom
-                      >
-                        {intl.formatMessage({
-                          id: "ReportTotalCharge",
-                        })}
-                        : {formatPrice(totalAmount)}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </div>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={{ xs: 1, sm: 2 }}>
-                  <Grid item xs={12} sm={6}>
-                    <PaymentMethodSelect
-                      register={register}
-                      errors={errors}
-                      customRegisterName={`PaymentMethodID`}
-                      PaymentMethodID={
-                        PaymentMethodID
-                      }
-                      setPaymentMethodID={
-                        setPaymentMethodID
-                      }
-                    />
-                  </Grid>
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          control={
+                            <Controller
+                              name={`ReservationSourceChecked`}
+                              control={control}
+                              render={(
+                                props: any
+                              ) => (
+                                <Checkbox
+                                  checked={
+                                    ReservationSourceChecked ==
+                                      true
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={(e) =>
+                                    setReservationSourceChecked(
+                                      e.target
+                                        .checked
+                                    )
+                                  }
+                                />
+                              )}
+                            />
+                          }
+                          label={intl.formatMessage({
+                            id: "TextReservationSource",
+                          })}
+                        />
+                      </Grid>
 
-                  <Grid item xs={12} sm={6}>
-                    <CurrencySelect
-                      register={register}
-                      errors={errors}
-                      nameKey={`PayCurrencyID`}
-                    />
-                  </Grid>
+                      {ReservationSourceChecked ? (
+                        <Grid item xs={12}>
+                          <ReservationSourceSelect
+                            register={register}
+                            errors={errors}
+                            ChannelID={2}
+                          />
+                        </Grid>
+                      ) : (
+                        <></>
+                      )}
 
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      id={`PayAmount`}
-                      label={intl.formatMessage({
-                        id: "TextAmount",
-                      })}
-                      type="number"
-                      {...register(`PayAmount`)}
-                      margin="dense"
-                      size="small"
-                      style={{
-                        width: "100%",
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <ReferenceSelect
-                      register={register}
-                      errors={errors}
-                      type="BillingInfo"
-                      label={intl.formatMessage({
-                        id: "TextBillingInformation",
-                      })}
-                      optionValue="BillingID"
-                      optionLabel="BillingName"
-                      customField="GroupBillTo"
-                      entity={billingInfo}
-                      setEntity={setBillingInfo}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      size="small"
-                      fullWidth
-                      id="Remarks"
-                      label={intl.formatMessage({
-                        id: "TextSetMessage",
-                      })}
-                      {...register(`Remarks`)}
-                      margin="dense"
-                      multiline
-                      maxRows={3}
-                    />
+                      <Grid item xs={12} sm={4} md={4}>
+                        <Typography
+                          variant="caption"
+                          gutterBottom
+                        >
+                          {intl.formatMessage({
+                            id: "TextNights",
+                          })}
+                          : {nights}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} sm={4} md={4}>
+                        <Typography
+                          variant="caption"
+                          gutterBottom
+                        >
+                          {intl.formatMessage({
+                            id: "ReportTotalRooms",
+                          })}
+                          : {fields.length}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} sm={4} md={4}>
+                        <Typography
+                          variant="caption"
+                          gutterBottom
+                        >
+                          {intl.formatMessage({
+                            id: "ReportTotalCharge",
+                          })}
+                          : {formatPrice(totalAmount)}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </div>
+                </Grid>
+                <Grid item xs={12}>
+                  <Grid container spacing={{ xs: 1, sm: 2 }}>
+                    <Grid item xs={12} sm={6}>
+                      <PaymentMethodSelect
+                        register={register}
+                        errors={errors}
+                        customRegisterName={`PaymentMethodID`}
+                        PaymentMethodID={
+                          PaymentMethodID
+                        }
+                        setPaymentMethodID={
+                          setPaymentMethodID
+                        }
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <CurrencySelect
+                        register={register}
+                        errors={errors}
+                        nameKey={`PayCurrencyID`}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        id={`PayAmount`}
+                        label={intl.formatMessage({
+                          id: "TextAmount",
+                        })}
+                        type="number"
+                        {...register(`PayAmount`)}
+                        margin="dense"
+                        size="small"
+                        style={{
+                          width: "100%",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <ReferenceSelect
+                        register={register}
+                        errors={errors}
+                        type="BillingInfo"
+                        label={intl.formatMessage({
+                          id: "TextBillingInformation",
+                        })}
+                        optionValue="BillingID"
+                        optionLabel="BillingName"
+                        customField="GroupBillTo"
+                        entity={billingInfo}
+                        setEntity={setBillingInfo}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        size="small"
+                        fullWidth
+                        id="Remarks"
+                        label={intl.formatMessage({
+                          id: "TextSetMessage",
+                        })}
+                        {...register(`Remarks`)}
+                        margin="dense"
+                        multiline
+                        maxRows={3}
+                      />
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </NewEditForm>

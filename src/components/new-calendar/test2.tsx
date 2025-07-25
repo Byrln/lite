@@ -854,7 +854,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
       } else {
         handleModal(
           true,
-          `New Reservation`,
+          intl.formatMessage({ id: "FrontNewReservation" }),
           <NewReservation
             dateStart={start}
             dateEnd={end}
@@ -1330,7 +1330,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   });
                   handleModal(
                     true,
-                    `Захиалга нэмэх`,
+                    intl.formatMessage({ id: "FrontNewReservation" }),
                     <NewReservation workingDate={workingDate} />,
                     null,
                     "medium"
@@ -1344,7 +1344,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   width={16}
                   height={16}
                 />
-                {intl.formatMessage({ id: "FrontNewReservation" })}
+                <span className="font-bold">{intl.formatMessage({ id: "FrontNewReservation" })}</span>
               </Button>
 
               {/* Refresh Button */}

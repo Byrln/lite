@@ -32,7 +32,7 @@ export {
   DropdownMenuRadioGroup,
 } from './dropdown-menu';
 export { Input } from './Input';
-export { Popover, PopoverTrigger, PopoverContent } from './popover';
+export { PopoverRoot, PopoverTrigger, PopoverContent } from './popover';
 export { RadioGroup, RadioGroupItem } from './radio-group';
 export { CustomRadio } from './radio';
 export {
@@ -46,6 +46,7 @@ export {
   SelectSeparator,
 } from './select';
 export { Separator } from './separator';
+export { Switch } from './switch';
 export {
   Sheet,
   SheetPortal,

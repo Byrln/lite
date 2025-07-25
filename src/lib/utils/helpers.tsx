@@ -159,6 +159,11 @@ export function dateStringToObj(date: any) {
     //         new Date(date.replace(/ /g, "T")).getTimezoneOffset() * 60 * 1000
     // );
 
+    // Check if date is null, undefined, or not a string
+    if (!date || typeof date !== 'string') {
+        return new Date(); // Return current date as fallback
+    }
+
     return new Date(date.replace(/ /g, "T"));
 }
 

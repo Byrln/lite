@@ -65,7 +65,7 @@ export const NotificationAPI = {
 
     update: async (values: any) => {
         const { data, status } = await axios.post(
-            `${urlPrefix}/Update`,
+            `${urlPrefix}/User/Update`,
             values
         );
 
@@ -76,7 +76,7 @@ export const NotificationAPI = {
     },
 
     delete: async (id: any) => {
-        const { data, status } = await axios.post(`${urlPrefix}/Delete`, {
+        const { data, status } = await axios.post(`${urlPrefix}/User/Delete`, {
             NotificationID: id,
         });
 

@@ -20,24 +20,12 @@ import {
 } from "@/components/ui/sidebar"
 import sidebarConfig from "@/components/layouts/dashboard/sidebar-config"
 
-const iconMap: { [key: string]: string } = {
-  "pie-chart-2-fill": "eva:pie-chart-2-fill",
-  "shopping-cart-fill": "eva:shopping-cart-fill",
-  "people-fill": "eva:people-fill",
-  "calendar-fill": "eva:calendar-fill",
-  "pricetags-fill": "eva:pricetags-fill",
-  "home-fill": "eva:home-fill",
-  "credit-card-fill": "eva:credit-card-fill",
-  "book-open-fill": "eva:book-open-fill",
-  "settings-2-fill": "eva:settings-2-fill",
-  "award-fill": "eva:award-fill",
-  "options-2-fill": "eva:options-2-fill",
-}
+// Icon map is no longer needed as we use Lucide icons directly
 
 function transformSidebarConfig(config: any[], intl: any) {
   return config.map((item) => {
-    const iconName = getIconNameFromConfig(item.icon)
-    const iconString = iconMap[iconName] || "lucide:square-terminal"
+    // item.icon is now an object with name and color from getIcon function
+    const iconData = item.icon || { name: "lucide:square-terminal", color: undefined }
 
     return {
       title: intl.formatMessage({
@@ -45,7 +33,7 @@ function transformSidebarConfig(config: any[], intl: any) {
         defaultMessage: item.title
       }),
       url: item.path || "#",
-      icon: iconString,
+      icon: iconData,
       isActive: false,
       items: item.children ? item.children.map((child: any) => ({
         title: intl.formatMessage({
@@ -53,23 +41,20 @@ function transformSidebarConfig(config: any[], intl: any) {
           defaultMessage: child.title
         }),
         url: child.path || "#",
+        icon: child.icon || undefined,
+        items: child.children ? child.children.map((nestedChild: any) => ({
+          title: intl.formatMessage({
+            id: nestedChild.titleEn || `menu.${nestedChild.title}`,
+            defaultMessage: nestedChild.title
+          }),
+          url: nestedChild.path || "#",
+        })) : undefined,
       })) : undefined,
     }
   })
 }
 
-function getIconNameFromConfig(iconComponent: any) {
-  if (!iconComponent || !iconComponent.props) return "square-terminal"
-  const iconName = iconComponent.props.icon?.name || iconComponent.props.icon
-  if (typeof iconName === 'string') {
-    return iconName
-  }
-  // Handle Eva icons object structure
-  if (iconName && iconName.name) {
-    return iconName.name
-  }
-  return "square-terminal"
-}
+// getIconNameFromConfig function is no longer needed as icons are now strings
 
 interface HotelSidebarProps extends React.ComponentProps<typeof Sidebar> {
   sideBarData?: any[]

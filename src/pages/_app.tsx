@@ -8,12 +8,13 @@ import { Slide, ToastContainer } from "react-toastify";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { IntlProvider } from "react-intl";
+import { useEffect, useContext } from "react";
 
 import "styles/tailwind.css";
 import "styles/globals.scss";
 import "assets/styles.css";
 import "styles/custom.css";
-import { ModalProvider } from "lib/context/modal";
+import { ModalProvider, ModalContext } from "lib/context/modal";
 import Page from "components/layouts/page";
 import WithAuth from "lib/hoc/with-auth";
 import AppProvider from "lib/context/app";
@@ -23,6 +24,40 @@ import mon from "i18n/mon.json";
 import enDashboard from "i18n/en-dashboard.json";
 import monDashboard from "i18n/mon-dashboard.json";
 import { useAppState } from "lib/context/app";
+import NewReservation from "components/front-office/reservation-list/new";
+
+// Global keyboard shortcuts component
+const GlobalKeyboardShortcuts = () => {
+    const { handleModal }: any = useContext(ModalContext);
+    const [state, dispatch]: any = useAppState();
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'F2') {
+                event.preventDefault();
+                dispatch({
+                    type: "editId",
+                    editId: null,
+                });
+                handleModal(
+                    true,
+                    "New Reservation",
+                    <NewReservation workingDate={new Date()} />,
+                    null,
+                    "medium"
+                );
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [handleModal, dispatch]);
+
+    return null;
+};
 
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -71,6 +106,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                         >
                             <AppProvider>
                                 <ModalProvider>
+                                    <GlobalKeyboardShortcuts />
                                     <LocalizationProvider // @ts-ignore
                                         dateAdapter={AdapterDateFns}
                                     >

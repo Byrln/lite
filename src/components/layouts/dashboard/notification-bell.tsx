@@ -23,11 +23,11 @@ interface Notification {
   NotificationTypeID: number
 }
 
-function NotificationItem({ 
-  notification, 
-  onMarkAsRead, 
-  onDismiss 
-}: { 
+function NotificationItem({
+  notification,
+  onMarkAsRead,
+  onDismiss
+}: {
   notification: Notification
   onMarkAsRead: (id: number) => void
   onDismiss: (id: number) => void
@@ -55,7 +55,7 @@ function NotificationItem({
   const handleMarkAsRead = async (e: React.MouseEvent) => {
     e.stopPropagation()
     if (isLoading || notification.IsRead) return
-    
+
     setIsLoading(true)
     try {
       await onMarkAsRead(notification.NotificationID)
@@ -67,7 +67,7 @@ function NotificationItem({
   const handleDismiss = async (e: React.MouseEvent) => {
     e.stopPropagation()
     if (isLoading) return
-    
+
     setIsLoading(true)
     try {
       await onDismiss(notification.NotificationID)
@@ -83,7 +83,7 @@ function NotificationItem({
   }
 
   return (
-    <div 
+    <div
       className={cn(
         "p-3 hover:bg-muted/50 transition-colors cursor-pointer border-l-2 group",
         !notification.IsRead ? "bg-muted/30 border-l-primary" : "border-l-transparent",
@@ -114,10 +114,10 @@ function NotificationItem({
             <span className="text-xs text-muted-foreground">
               {(() => {
                 const date = new Date(notification.CreatedDate)
-                return isNaN(date.getTime()) 
-                  ? 'Invalid date' 
+                return isNaN(date.getTime())
+                  ? 'Invalid date'
                   : formatDistanceToNow(date, { addSuffix: true })
-              })()} 
+              })()}
             </span>
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               {!notification.IsRead && (
@@ -133,15 +133,15 @@ function NotificationItem({
                 </Button>
               )}
               <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
-                onClick={handleDismiss}
-                disabled={isLoading}
-                title="Dismiss"
-              >
-                <X className="h-3 w-3" />
-              </Button>
+                 variant="ghost"
+                 size="sm"
+                 className="h-6 w-6 p-0 hover:bg-blue-100 hover:text-blue-600"
+                 onClick={handleDismiss}
+                 disabled={isLoading}
+                 title="Mark as read and dismiss"
+               >
+                 <Eye className="h-3 w-3" />
+               </Button>
             </div>
           </div>
         </div>
@@ -184,7 +184,7 @@ export default function NotificationBell() {
         NotificationID: notificationId,
         IsRead: true
       })
-      
+
       // Refresh the notifications data
       mutate()
     } catch (error) {
@@ -194,8 +194,12 @@ export default function NotificationBell() {
 
   const handleDismiss = async (notificationId: number) => {
     try {
-      // Delete the notification using the API
-      await NotificationAPI.delete(notificationId)
+      // Since delete endpoint doesn't exist, mark as read and hide from UI
+      // This is a workaround until the delete endpoint is implemented
+      await NotificationAPI.update({
+        NotificationID: notificationId,
+        IsRead: true
+      })
       
       // Refresh the notifications data
       mutate()
@@ -206,12 +210,12 @@ export default function NotificationBell() {
 
   const handleMarkAllAsRead = async () => {
     if (isMarkingAllRead || unreadCount === 0) return
-    
+
     setIsMarkingAllRead(true)
     try {
       // Mark all unread notifications as read
       const unreadNotifications = notifications?.filter((n: Notification) => !n.IsRead) || []
-      
+
       await Promise.all(
         unreadNotifications.map((notification: Notification) =>
           NotificationAPI.update({
@@ -220,7 +224,7 @@ export default function NotificationBell() {
           })
         )
       )
-      
+
       // Refresh the notifications data
       mutate()
     } catch (error) {

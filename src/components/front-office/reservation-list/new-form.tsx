@@ -55,6 +55,7 @@ const NewEdit = ({
   rateTypeData,
   Currency,
   setCurrency,
+  useDefaultValues,
 }: any) => {
   const [RoomTypeID, setRoomTypeID]: any = useState("");
   const [RoomType, setRoomType]: any = useState("");
@@ -114,6 +115,36 @@ const NewEdit = ({
       setRange(ArrivalDate, DepartureDate);
     }
   }, [ArrivalDate, DepartureDate]);
+
+  // Auto-fill all form fields when useDefaultValues changes
+  useEffect(() => {
+    if (useDefaultValues) {
+      // Set Adult and Child values
+      const adultValue = RoomType?.BaseAdult || BaseAdult || 1;
+      const childValue = RoomType?.BaseChild || BaseChild || 0;
+      
+      setSelectedAdult(adultValue);
+      setSelectedChild(childValue);
+      
+      // Update form values
+      if (typeof setValue === 'function') {
+        setValue(`TransactionDetail[${id}].Adult`, adultValue);
+        setValue(`TransactionDetail[${id}].Child`, childValue);
+        
+        // Auto-fill other default fields
+        setValue(`TransactionDetail[${id}].Name`, 'Guest ' + (id + 1));
+        setValue(`TransactionDetail[${id}].GuestDetail.Email`, '');
+        setValue(`TransactionDetail[${id}].GuestDetail.Mobile`, '');
+        setValue(`TransactionDetail[${id}].GuestDetail.Name`, 'Guest');
+        setValue(`TransactionDetail[${id}].GuestDetail.Surname`, (id + 1).toString());
+        setValue(`TransactionDetail[${id}].GuestDetail.CountryID`, 0);
+        setValue(`TransactionDetail[${id}].GuestDetail.VipStatusID`, 0);
+        setValue(`TransactionDetail[${id}].GuestDetail.GuestTitleID`, 0);
+        setValue(`TransactionDetail[${id}].GuestDetail.GenderID`, 0);
+        setValue(`TransactionDetail[${id}].GuestDetail.RegistryNo`, '');
+      }
+    }
+  }, [useDefaultValues, RoomType, BaseAdult, BaseChild, id, setValue]);
 
   useEffect(() => {
     // console.log('In RoomTypeID useEffect - id:', id);
@@ -730,7 +761,7 @@ const NewEdit = ({
                     ? RoomType?.MaxAdult
                     : 0
                 }
-                defaultValue={RoomType?.BaseAdult}
+                defaultValue={useDefaultValues ? (RoomType?.BaseAdult || BaseAdult) : RoomType?.BaseAdult}
                 value={selectedAdult}
                 nameKey={`TransactionDetail.${id}.Adult`}
                 register={register}
@@ -766,7 +797,7 @@ const NewEdit = ({
                     ? RoomType?.MaxChild
                     : 0
                 }
-                defaultValue={0}
+                defaultValue={useDefaultValues ? (RoomType?.BaseChild || BaseChild) : 0}
                 value={selectedChild}
                 nameKey={`TransactionDetail.${id}.Child`}
                 register={register}

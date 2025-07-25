@@ -65,8 +65,8 @@ export function useBreadcrumbs(sideBarData?: any[]): BreadcrumbItem[] {
   return useMemo(() => {
     const breadcrumbs: BreadcrumbItem[] = [
       {
-        title: 'PMS',
-        href: '/dashboard'
+        title: '',
+        href: '/'
       }
     ]
     

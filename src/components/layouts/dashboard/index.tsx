@@ -16,10 +16,21 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button"
 import { useAppState } from "lib/context/app"
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs"
 import NotificationBell from "./notification-bell"
+import { CommandPalette, useCommandPalette } from "./command-palette"
+import { Search, Command, Home } from "lucide-react"
 import Link from "next/link"
+
+// Utility function to get the appropriate modifier key based on OS
+const getModifierKey = () => {
+  if (typeof window !== 'undefined') {
+    return navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? '⌘' : 'Ctrl'
+  }
+  return 'Ctrl'
+}
 
 export default function DashboardLayout({ children }: any) {
   const { data, error } = GetPrivilegesSWR()
@@ -27,6 +38,12 @@ export default function DashboardLayout({ children }: any) {
   const [lastValidSideBarData, setLastValidSideBarData] = useState<any[] | undefined>(undefined)
   const [state, dispatch]: any = useAppState()
   const breadcrumbs = useBreadcrumbs(sideBarData)
+  const { open, setOpen } = useCommandPalette()
+  const [modifierKey, setModifierKey] = useState('Ctrl')
+
+  useEffect(() => {
+    setModifierKey(getModifierKey())
+  }, [])
 
   function filterMenu(menu: any, uniqueMenuLinks: any) {
     return menu.reduce((filteredMenu: any, item: any) => {
@@ -91,13 +108,31 @@ export default function DashboardLayout({ children }: any) {
                     {index > 0 && <BreadcrumbSeparator className="hidden md:block" />}
                     <BreadcrumbItem className={index === 0 ? "hidden md:block" : ""}>
                       {breadcrumb.isCurrentPage ? (
-                        <BreadcrumbPage>{breadcrumb.title}</BreadcrumbPage>
+                        <BreadcrumbPage>
+                          {index === 0 && !breadcrumb.title ? (
+                            <Home className="h-4 w-4" />
+                          ) : (
+                            breadcrumb.title
+                          )}
+                        </BreadcrumbPage>
                       ) : breadcrumb.href ? (
                         <BreadcrumbLink asChild>
-                          <Link href={breadcrumb.href}>{breadcrumb.title}</Link>
+                          <Link href={breadcrumb.href}>
+                            {index === 0 && !breadcrumb.title ? (
+                              <Home className="h-4 w-4" />
+                            ) : (
+                              breadcrumb.title
+                            )}
+                          </Link>
                         </BreadcrumbLink>
                       ) : (
-                        <span className="text-muted-foreground">{breadcrumb.title}</span>
+                        <span className="text-muted-foreground">
+                          {index === 0 && !breadcrumb.title ? (
+                            <Home className="h-4 w-4" />
+                          ) : (
+                            breadcrumb.title
+                          )}
+                        </span>
                       )}
                     </BreadcrumbItem>
                   </div>
@@ -106,6 +141,18 @@ export default function DashboardLayout({ children }: any) {
             </Breadcrumb>
           </div>
           <div className="flex items-center gap-2 px-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setOpen(true)}
+              className="relative h-8 w-8 p-0 xl:h-9 xl:w-60 xl:justify-start xl:px-3 xl:py-2"
+            >
+              <Search className="h-4 w-4 xl:mr-2" />
+              <span className="hidden xl:inline-flex">Search...</span>
+              <kbd className="pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex">
+                <span className="text-xs">{modifierKey}</span>K
+              </kbd>
+            </Button>
             <NotificationBell />
           </div>
         </header>
@@ -115,6 +162,7 @@ export default function DashboardLayout({ children }: any) {
           </div>
         </div>
       </SidebarInset>
+      <CommandPalette open={open} setOpen={setOpen} />
     </SidebarProvider>
   )
 }

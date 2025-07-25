@@ -1,651 +1,738 @@
-import { Icon } from "@iconify/react";
-import pieChart2Fill from "@iconify/icons-eva/pie-chart-2-fill";
-import peopleFill from "@iconify/icons-eva/people-fill";
-import BookOnlineIcon from "@mui/icons-material/BookOnline";
-import calendarFill from "@iconify/icons-eva/calendar-fill";
-import pricetagsFill from "@iconify/icons-eva/pricetags-fill";
-import homeFill from "@iconify/icons-eva/home-fill";
-import creditCardFill from "@iconify/icons-eva/credit-card-fill";
-import bookOpenFill from "@iconify/icons-eva/book-open-fill";
-import settings2Fill from "@iconify/icons-eva/settings-2-fill";
-import awardFill from "@iconify/icons-eva/award-fill";
-import options2Fill from "@iconify/icons-eva/options-2-fill";
-import shoppingCartFill from "@iconify/icons-eva/shopping-cart-fill";
 import { useIntl } from "react-intl";
 
-const getIcon = (name: any) => <Icon icon={name} width={22} height={22} />;
+const getIcon = (name: string, color?: string) => ({ name, color });
 
 const sidebarConfig = [
-    {
-        title: "дашбоард",
-        titleEn: "dashboard",
-        path: "/",
-        icon: getIcon(pieChart2Fill),
-        oldPath: "FrontOffice/StayView.aspx",
-    },
-    {
-        title: "асуулт хариулт",
-        titleEn: "FAQ",
-        path: "/faq",
-        icon: getIcon(bookOpenFill),
-        oldPath: "",
-    },
-    // {
-    //     title: "захиалга",
-    //     titleEn: "reservation",
-    //     icon: getIcon(shoppingCartFill),
-    //     children: [
-    //         {
-    //             title: "захиалгын жагсаалт",
-    //             titleEn: "Reservation List",
-    //             path: "/front-office/reservation-list",
-    //             oldPath: "FrontOffice/ReservationList.aspx",
-    //         },
-    //         {
-    //             title: "өдрийн өндөрлөгөө",
-    //             titleEn: "Night Audit",
-    //             path: "/front-office/night-audit",
-    //             oldPath: "FrontOffice/NightAudit.aspx",
-    //         },
-    //         {
-    //             title: "Зочдын бааз",
-    //             titleEn: "Guest Database",
-    //             path: "/front-office/guest-database",
-    //             oldPath: "FrontOffice/Guests.aspx",
-    //         },
-    //     ],
-    // },
-    {
-        title: "захиалгын жагсаалт",
-        titleEn: "Reservation List",
-        path: "/front-office/reservation-list",
-        oldPath: "FrontOffice/ReservationList.aspx",
-        icon: getIcon(shoppingCartFill),
-    },
-    {
-        title: "Бүлэг",
-        titleEn: "Groups",
-        icon: getIcon(peopleFill),
-        children: [
-            {
-                title: "Групп захиалгын жагсаалт",
-                titleEn: "Group Reservations List",
-                path: "/group-operation/group-reservations-list",
-                oldPath: "FrontOffice/GroupReservations.aspx",
-            },
-            {
-                title: "байрлаж буй групп",
-                titleEn: "In House Groups",
-                path: "/group-operation/in-house-group",
-                oldPath: "FrontOffice/GroupInHouse.aspx",
-            },
-            {
-                title: "гарсан групп",
-                titleEn: "Departed Groups",
-                path: "/group-operation/departed-group",
-                oldPath: "FrontOffice/GroupDeparted.aspx",
-            },
-        ],
-    },
-    {
-        title: "календар",
-        titleEn: "calendar",
-        path: "/handsontable",
-        icon: getIcon(calendarFill),
-        oldPath: "FrontOffice/StayView.aspx",
-    },
-    {
+  {
+    title: "дашбоард",
+    titleEn: "dashboard",
+    path: "/",
+    icon: getIcon("lucide:pie-chart"),
+    oldPath: "FrontOffice/StayView.aspx",
+  },
+  // {
+  //     title: "захиалга",
+  //     titleEn: "reservation",
+  //     icon: getIcon(shoppingCartFill),
+  //     children: [
+  //         {
+  //             title: "захиалгын жагсаалт",
+  //             titleEn: "Reservation List",
+  //             path: "/front-office/reservation-list",
+  //             oldPath: "FrontOffice/ReservationList.aspx",
+  //         },
+  //         {
+  //             title: "өдрийн өндөрлөгөө",
+  //             titleEn: "Night Audit",
+  //             path: "/front-office/night-audit",
+  //             oldPath: "FrontOffice/NightAudit.aspx",
+  //         },
+  //         {
+  //             title: "Зочдын бааз",
+  //             titleEn: "Guest Database",
+  //             path: "/front-office/guest-database",
+  //             oldPath: "FrontOffice/Guests.aspx",
+  //         },
+  //     ],
+  // },
+  {
+    title: "захиалгын жагсаалт",
+    titleEn: "Reservation List",
+    path: "/front-office/reservation-list",
+    oldPath: "FrontOffice/ReservationList.aspx",
+    icon: getIcon("lucide:shopping-cart"),
+  },
+  {
+    title: "Бүлэг",
+    titleEn: "Groups",
+    icon: getIcon("lucide:users"),
+    children: [
+      {
+        title: "Групп захиалгын жагсаалт",
+        titleEn: "Group Reservations List",
+        icon: getIcon("lucide:list", "#3b82f6"),
+        path: "/group-operation/group-reservations-list",
+        oldPath: "FrontOffice/GroupReservations.aspx",
+      },
+      {
+        title: "байрлаж буй групп",
+        titleEn: "In House Groups",
+        icon: getIcon("lucide:home", "#10b981"),
+        path: "/group-operation/in-house-group",
+        oldPath: "FrontOffice/GroupInHouse.aspx",
+      },
+      {
+        title: "гарсан групп",
+        titleEn: "Departed Groups",
+        icon: getIcon("lucide:log-out", "#ef4444"),
+        path: "/group-operation/departed-group",
+        oldPath: "FrontOffice/GroupDeparted.aspx",
+      },
+    ],
+  },
+  {
+    title: "календар",
+    titleEn: "calendar",
+    path: "/handsontable",
+    icon: getIcon("lucide:calendar"),
+    oldPath: "FrontOffice/StayView.aspx",
+  },
+  {
+    title: "тариф",
+    titleEn: "Rate",
+    icon: getIcon("lucide:tag"),
+    children: [
+      {
+        title: "улирал",
+        titleEn: "Season",
+        icon: getIcon("lucide:sun", "#f59e0b"),
+        path: "/rate/season",
+        oldPath: "Configuration/Seasons.aspx",
+      },
+      {
+        title: "тарифын төрөл",
+        titleEn: "Rate Type",
+        icon: getIcon("lucide:layers", "#3b82f6"),
+        path: "/rate/type",
+        oldPath: "Configuration/RateType.aspx",
+      },
+      {
         title: "тариф",
-        titleEn: "Rate",
-        icon: getIcon(pricetagsFill),
-        children: [
-            {
-                title: "улирал",
-                titleEn: "Season",
-                path: "/rate/season",
-                oldPath: "Configuration/Seasons.aspx",
-            },
-            {
-                title: "тарифын төрөл",
-                titleEn: "Rate Type",
-                path: "/rate/type",
-                oldPath: "Configuration/RateType.aspx",
-            },
-            {
-                title: "тариф",
-                titleEn: "rate",
-                path: "/rate",
-                oldPath: "Configuration/Rates.aspx",
-            },
-            {
-                title: "Нэм.Үйлчилгээ бүлэг",
-                titleEn: "Extra Charge Group",
-                path: "/rate/extra-charge-group",
-                oldPath: "Configuration/ExtraChargeGroup.aspx",
-            },
-            {
-                title: "нэмэлт үйлчилгээ",
-                titleEn: "Extra Charges",
-                path: "/rate/extra-charge",
-                oldPath: "Configuration/ExtraCharges.aspx",
-            },
-            // {
-            //     title: "inclusion",
-            //     path: "/rate/inclusion",
-            // },
-        ],
-    },
-    {
+        titleEn: "rate",
+        icon: getIcon("lucide:dollar-sign", "#10b981"),
+        path: "/rate",
+        oldPath: "Configuration/Rates.aspx",
+      },
+      {
+        title: "Нэм.Үйлчилгээ бүлэг",
+        titleEn: "Extra Charge Group",
+        icon: getIcon("lucide:package", "#8b5cf6"),
+        path: "/rate/extra-charge-group",
+        oldPath: "Configuration/ExtraChargeGroup.aspx",
+      },
+      {
+        title: "нэмэлт үйлчилгээ",
+        titleEn: "Extra Charges",
+        icon: getIcon("lucide:plus-square", "#ef4444"),
+        path: "/rate/extra-charge",
+        oldPath: "Configuration/ExtraCharges.aspx",
+      },
+      // {
+      //     title: "inclusion",
+      //     path: "/rate/inclusion",
+      // },
+    ],
+  },
+  {
+    title: "өрөө",
+    titleEn: "Rooms",
+    icon: getIcon("lucide:home"),
+    children: [
+      {
+        title: "өрөөний онцлог",
+        titleEn: "Room Amenities",
+        icon: getIcon("lucide:star", "#fbbf24"),
+        path: "/room/amenities",
+        oldPath: "Configuration/Amenities.aspx",
+      },
+      {
+        title: "өрөөний төлөв",
+        titleEn: "Room Status",
+        icon: getIcon("lucide:activity", "#06b6d4"),
+        path: "/room/status",
+        oldPath: "Configuration/RoomStatus.aspx",
+      },
+
+      {
+        title: "өрөөний төрөл",
+        titleEn: "Room Type",
+        icon: getIcon("lucide:grid-3x3", "#8b5cf6"),
+        path: "/room/type",
+        oldPath: "Configuration/RoomType.aspx",
+      },
+      {
         title: "өрөө",
-        titleEn: "Rooms",
-        icon: getIcon(homeFill),
+        titleEn: "room",
+        icon: getIcon("lucide:bed", "#10b981"),
+        path: "/room",
+        oldPath: "Configuration/Rooms.aspx",
+      },
+    ],
+  },
+  {
+    title: "Төлбөр, тооцоо",
+    titleEn: "Payment",
+    icon: getIcon("lucide:credit-card"),
+    children: [
+      {
+        title: "төлбөрийн хэлбэр",
+        titleEn: "Payment Method",
+        icon: getIcon("lucide:credit-card"),
         children: [
-            {
-                title: "өрөөний онцлог",
-                titleEn: "Room Amenities",
-                path: "/room/amenities",
-                oldPath: "Configuration/Amenities.aspx",
-            },
-            {
-                title: "өрөөний төлөв",
-                titleEn: "Room Status",
-                path: "/room/status",
-                oldPath: "Configuration/RoomStatus.aspx",
-            },
-
-            {
-                title: "өрөөний төрөл",
-                titleEn: "Room Type",
-                path: "/room/type",
-                oldPath: "Configuration/RoomType.aspx",
-            },
-            {
-                title: "өрөө",
-                titleEn: "room",
-                path: "/room",
-                oldPath: "Configuration/Rooms.aspx",
-            },
+          {
+            title: "бэлэн мөнгө",
+            titleEn: "Cash",
+            path: "/rate/payment-method/cash",
+            oldPath: "Configuration/PaymentMethod.aspx?type=cash",
+          },
+          {
+            title: "картаар",
+            titleEn: "Card",
+            path: "/rate/payment-method/card",
+            oldPath: "Configuration/PaymentMethod.aspx?type=card",
+          },
+          {
+            title: "шилжүүлэг",
+            titleEn: "Transfer",
+            path: "/rate/payment-method/transfer",
+            oldPath: "Configuration/PaymentMethod.aspx?type=transfer",
+          },
         ],
-    },
-    {
-        title: "Төлбөр, тооцоо",
-        titleEn: "Payment",
-        icon: getIcon(creditCardFill),
+      },
+      {
+        title: "валютын ханш",
+        titleEn: "Exchange Rate",
+        icon: getIcon("lucide:trending-up", "#10b981"),
+        path: "/payment/exchange-rate",
+        oldPath: "FrontOffice/CurrencyRate.aspx",
+      },
+      {
+        title: "татвар",
+        titleEn: "tax",
+        icon: getIcon("lucide:percent", "#ef4444"),
+        path: "/rate/tax",
+        oldPath: "Configuration/Taxes.aspx",
+      },
+      {
+        title: "Байгууллага",
+        titleEn: "Company Database",
+        icon: getIcon("lucide:building", "#3b82f6"),
+        path: "/payment/company-database",
+        oldPath: "FrontOffice/Customer.aspx",
+      },
+      {
+        title: "Касс (Бэлэн мөнгө)",
+        titleEn: "Cashier",
+        icon: getIcon("lucide:banknote", "#10b981"),
+        path: "/payment/cashier",
+        oldPath: "FrontOffice/Cashier.aspx",
+      },
+    ],
+  },
+  {
+    title: "тайлан",
+    titleEn: "report",
+    icon: getIcon("lucide:file-text"),
+    children: [
+      {
+        title: "Өдрийн тайлан",
+        titleEn: "Daily Reports",
+        icon: getIcon("lucide:calendar-days", "#3b82f6"),
         children: [
-            {
-                title: "Санхүүгийн тохиргоо",
-                titleEn: "Financial Settings",
-                icon: getIcon(settings2Fill),
-                children: [
-                    {
-                        title: "валютын ханш",
-                        titleEn: "Exchange Rate",
-                        path: "/payment/exchange-rate",
-                        oldPath: "FrontOffice/CurrencyRate.aspx",
-                    },
-                    {
-                        title: "татвар",
-                        titleEn: "tax",
-                        path: "/rate/tax",
-                        oldPath: "Configuration/Taxes.aspx",
-                    },
-                    {
-                        title: "төлбөрийн хэлбэр",
-                        titleEn: "Payment Method",
-                        path: "/rate/payment-method",
-                        oldPath: "Configuration/PaymentMethod.aspx",
-                    },
-                ],
-            },
-            {
-                title: "Байгууллага",
-                titleEn: "Company Database",
-                path: "/payment/company-database",
-                oldPath: "FrontOffice/Customer.aspx",
-            },
-            {
-                title: "Касс (Бэлэн мөнгө)",
-                titleEn: "Cashier",
-                path: "/payment/cashier",
-                oldPath: "FrontOffice/Cashier.aspx",
-            },
+          {
+            title: "өдрийн мэдээ",
+            titleEn: "Daily Report",
+            path: "/report/daily",
+            oldPath: "",
+          },
+          {
+            title: "Ирэх болон гарах зочдын мэдээ",
+            titleEn: "Arrival or Departure (Daily)",
+            path: "/report/arrival-departure",
+            oldPath: "",
+          },
+          {
+            title: "өдрийн өндөрлөгөө",
+            titleEn: "Night Audit",
+            path: "/report/night-audit",
+            oldPath: "",
+          },
+          {
+            title: "Ресепшний гарааны тайлан",
+            titleEn: "Day End Report (Reception)",
+            path: "/report/reception",
+            oldPath: "",
+          },
         ],
-    },
-    {
-        title: "тайлан",
-        titleEn: "report",
-        icon: getIcon(bookOpenFill),
+      },
+      {
+        title: "Сарын тайлан",
+        titleEn: "Monthly Reports",
+        icon: getIcon("lucide:calendar", "#8b5cf6"),
         children: [
-            {
-                title: "өглөөний цай",
-                titleEn: "өглөөний цай",
-                path: "/report/breakfast",
-                oldPath: "~/Report/ReportBreakfast.aspx",
-            },
-            {
-                title: "төлбөр",
-                titleEn: "төлбөр",
-                path: "/report/folio",
-                oldPath: "",
-            },
-            {
-                title: "өдрийн мэдээ",
-                titleEn: "өдрийн мэдээ",
-                path: "/report/daily",
-                oldPath: "",
-            },
-            {
-                title: "буудлын борлуулалт",
-                titleEn: "буудлын борлуулалт",
-                path: "/report/charge",
-                oldPath: "",
-            },
-            {
-                title: "сарын мэдээ",
-                titleEn: "сарын мэдээ",
-                path: "/report/month",
-                oldPath: "",
-            },
-            {
-                title: "Ирэх болон гарах зочдын мэдээ",
-                titleEn: "Arrival or Departure (Daily)",
-                path: "/report/arrival-departure",
-                oldPath: "",
-            },
-            // {
-            //     title: "бүртгэлийн хуудас",
-            //     titleEn: "бүртгэлийн хуудас",
-
-            //     path: "/report/transaction",
-            //     oldPath: "",
-            // },
-            {
-                title: "боломжит өрөө",
-                titleEn: "available rooms",
-                path: "/report/available-room",
-                oldPath: "~/Report/ReportAvailableRooms.aspx",
-            },
-            {
-                title: "баланс",
-                titleEn: "баланс",
-                path: "/report/balance",
-                oldPath: "~/Report/ReportBalance.aspx",
-            },
-            {
-                title: "өдрийн өндөрлөгөө",
-                titleEn: "night audit",
-                path: "/report/night-audit",
-                oldPath: "",
-            },
-            {
-                title: "Захиалга цуцлалтын тайлан",
-                titleEn: "cancel reservation",
-                path: "/report/cancel-reservation",
-                oldPath: "",
-            },
-            {
-                title: "Ирээгүй зочдын тайлан",
-                titleEn: "no show report",
-                path: "/report/no-show-reservation",
-                oldPath: "",
-            },
-            {
-                title: "MenuReportVoid",
-                titleEn: "void report",
-                path: "/report/void-reservation",
-                oldPath: "",
-            },
-            {
-                title: "Ор хоногийн тооцоо(Сараар)",
-                titleEn: "Nights report (Monthly)",
-                path: "/report/room-charge-monthly",
-                oldPath: "",
-            },
-            {
-                title: "Нэмэлт үйлчилгээ (Дэлгэрэнгүй)",
-                titleEn: "Extra Charges (Detailed)",
-                path: "/report/extra-charge/detailed",
-                oldPath: "",
-            },
-            {
-                title: "Нэмэлт үйлчилгээ (Хураангуй)",
-                titleEn: "Extra Charges (Summary)",
-                path: "/report/extra-charge/summary",
-                oldPath: "",
-            },
-            {
-                title: "Ресепшний гарааны тайлан",
-                titleEn: "Day End Report (Reception)",
-                path: "/report/reception",
-                oldPath: "",
-            },
-            {
-                title: "Нэмэлт үйлчилгээ ба Мини бар",
-                titleEn: "Extra Charges and Mini Bar",
-                path: "/report/extra-charge/reception",
-                oldPath: "",
-            },
-            {
-                title: "Гарсан",
-                titleEn: "Checked Out",
-                path: "/report/checked-out",
-                oldPath: "",
-            },
-            {
-                title: "Сарын тайлан (Орлогоор)",
-                titleEn: "Monthly Report (Revenue)",
-                path: "/report/monthly-revenue",
-                oldPath: "",
-            },
-            {
-                title: "Захиалгын тайлан",
-                titleEn: "Report Reservations",
-                path: "/report/reservations",
-                oldPath: "",
-            },
-            // {
-            //     title: "гарах зочид (өдөр тутам)",
-            //     titleEn: "гарах зочид (өдөр тутам)",
-
-            //     path: "/report/daily/checked-out",
-            //     oldPath: "~/Report/ReportCheckedOutDetailed.aspx",
-            // },
-            // {
-            //     title: "устгалын тайлбар (өдөр тутам)",
-            //     titleEn: "устгалын тайлбар (өдөр тутам)",
-
-            //     path: "/report/daily/deleted-reservations",
-            //     oldPath: "~/Report/ReportVoidReservation.aspx",
-            // },
-            // {
-            //     title: "нэмэлт төлбөр (өдөр тутам)",
-            //     titleEn: "нэмэлт төлбөр (өдөр тутам)",
-
-            //     path: "/report/daily/extra-charge",
-            //     oldPath: "~/Report/ReportExtraChargeDetail.aspx",
-            // },
-            // {
-            //     title: "Төлбөрийн тайлан (өдөр тутам)",
-            //     titleEn: "Төлбөрийн тайлан (өдөр тутам)",
-
-            //     path: "/report/daily/payment",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "өрөөний төлбөр (өдөр тутам)",
-            //     titleEn: "өрөөний төлбөр (өдөр тутам)",
-
-            //     path: "/report/daily/room-charge",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "устгалын тайлан",
-            //     titleEn: "устгалын тайлан",
-
-            //     path: "/report/deleted-reservations",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "нэмэлт төлбөрийн (дэлгэрэнгүй)",
-            //     titleEn: "нэмэлт төлбөрийн (дэлгэрэнгүй)",
-
-            //     path: "/report/extra-charge/detailed",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "нэмэлт төлбөр (хураангуй)",
-            //     titleEn: "нэмэлт төлбөр (хураангуй)",
-
-            //     path: "/report/extra-charge/summary",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "байгууллага хоорондын тооцоо",
-            //     titleEn: "байгууллага хоорондын тооцоо",
-
-            //     path: "/report/interagency",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "сарын тайлан",
-            //     titleEn: "сарын тайлан",
-
-            //     path: "/report/monthly",
-            //     oldPath: "",
-            // },
-
-            // {
-            //     title: "ресепшний буух зочдын тайлан",
-            //     titleEn: "ресепшний буух зочдын тайлан",
-
-            //     path: "/report/reception/checked-in",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "ресепшний гарах зочдын тайлан",
-            //     titleEn: "ресепшний гарах зочдын тайлан",
-
-            //     path: "/report/reception/checked-out",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "ресепшний устгалын тайлан",
-            //     titleEn: "ресепшний устгалын тайлан",
-
-            //     path: "/report/reception/deleted-reservations",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "ресепшний хугацаа дуусах, үлдэх тайлан",
-            //     titleEn: "ресепшний хугацаа дуусах, үлдэх тайлан",
-
-            //     path: "/report/reception/dueout-stayover",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "ресепшний нэмэлт төлбөрийн тайлан",
-            //     titleEn: "ресепшний нэмэлт төлбөрийн тайлан",
-
-            //     path: "/report/reception/extra-charge",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "ресепшний төлбөрийн тайлан",
-            //     titleEn: "ресепшний төлбөрийн тайлан",
-
-            //     path: "/report/reception/payment",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "ресепшний өрөөний төлбөр",
-            //     titleEn: "ресепшний өрөөний төлбөр",
-
-            //     path: "/report/reception/room-charge",
-            //     oldPath: "",
-            // },
-            // {
-            //     title: "захиалгын тайлан",
-            //     titleEn: "захиалгын тайлан",
-
-            //     path: "/report/reservations",
-            //     oldPath: "",
-            // },
-
-            // {
-            //     title: "stayview",
-            //     titleEn: "stayview",
-
-            //     path: "/report/stayview",
-            //     oldPath: "",
-            // },
+          {
+            title: "сарын мэдээ",
+            titleEn: "Monthly Report",
+            path: "/report/month",
+            oldPath: "",
+          },
+          {
+            title: "Сарын тайлан (Орлогоор)",
+            titleEn: "Monthly Report (Revenue)",
+            path: "/report/monthly-revenue",
+            oldPath: "",
+          },
+          {
+            title: "Ор хоногийн тооцоо(Сараар)",
+            titleEn: "Nights Report (Monthly)",
+            path: "/report/room-charge-monthly",
+            oldPath: "",
+          },
         ],
-    },
-    {
-        title: "холболт",
-        titleEn: "Connect",
-        icon: "",
+      },
+      {
+        title: "Захиалгын тайлан",
+        titleEn: "Reservation Reports",
+        icon: getIcon("lucide:calendar-check", "#10b981"),
         children: [
-            { title: "санхүү", titleEn: "Finance", path: "", oldPath: "" },
-            {
-                title: "төлбөр тооцоо өдрөөр",
-                titleEn: "",
-                path: "",
-                oldPath: "",
-            },
+          {
+            title: "Захиалгын тайлан",
+            titleEn: "Report Reservations",
+            path: "/report/reservations",
+            oldPath: "",
+          },
+          {
+            title: "Захиалга цуцлалтын тайлан",
+            titleEn: "Cancel Reservation",
+            path: "/report/cancel-reservation",
+            oldPath: "",
+          },
+          {
+            title: "Ирээгүй зочдын тайлан",
+            titleEn: "No Show Report",
+            path: "/report/no-show-reservation",
+            oldPath: "",
+          },
+          {
+            title: "MenuReportVoid",
+            titleEn: "Void Report",
+            path: "/report/void-reservation",
+            oldPath: "",
+          },
         ],
-    },
-    {
-        title: "тохиргоо",
-        titleEn: "Configuration",
-        icon: getIcon(settings2Fill),
+      },
+      {
+        title: "Санхүүгийн тайлан",
+        titleEn: "Financial Reports",
+        icon: getIcon("lucide:dollar-sign", "#ef4444"),
         children: [
-            {
-                title: "зочид буудлын мэдээлэл",
-                titleEn: "Hotel Information",
-                path: "/conf/hotel-information",
-                oldPath: "",
-            },
-            {
-                title: "э-шуудан тохиргоо",
-                titleEn: "Email Configuration",
-                path: "/conf/email",
-                oldPath: "",
-            },
-            {
-                title: "хэрэглэгчийн төрөл",
-                titleEn: "User Role",
-                path: "/conf/user-role",
-                oldPath: "",
-            },
-            {
-                title: "хэрэглэгч",
-                titleEn: "User",
-                path: "/conf/user",
-                oldPath: "",
-            },
-            {
-                title: "шалтгаан",
-                titleEn: "Reason",
-                path: "/conf/reason",
-                oldPath: "",
-            },
-            {
-                title: "захиалгын эх сурвалж",
-                titleEn: "Reservation Source",
-                path: "/conf/reservation-source",
-                oldPath: "",
-            },
-            // {
-            //     title: "pos api тохиргоо",
-            //     path: "/conf/pos-api",
-            // },
-            {
-                title: "вип төлөв",
-                titleEn: "Vip Status",
-                path: "/conf/vip-status",
-                oldPath: "",
-            },
-            {
-                title: "харилцагчийн бүлэг",
-                titleEn: "Customer Group",
-                path: "/conf/customer-group",
-                oldPath: "",
-            },
-            {
-                title: "зочид буудлын тохиргоо",
-                titleEn: "Hotel Settings",
-                path: "/conf/hotel-setting",
-                oldPath: "",
-            },
-            {
-                title: "notifications",
-                titleEn: "Notifications",
-                path: "/conf/notification",
-                oldPath: "",
-            },
-
-            {
-                title: "урамшуулал",
-                titleEn: "Promotions",
-                path: "/conf/promotion",
-                oldPath: "",
-            },
-            {
-                title: "багц",
-                titleEn: "Packages",
-                path: "/conf/package",
-                oldPath: "",
-            },
-            {
-                title: "мини бар бүлэг",
-                titleEn: "Mini Bar Groups",
-                path: "/mini-bar/group",
-                oldPath: "",
-            },
-            {
-                title: "мини бар бараа",
-                titleEn: "Mini Bar Items",
-                path: "/mini-bar/item",
-                oldPath: "",
-            },
-            {
-                title: "өрөө блоклох",
-                titleEn: "Room Block",
-                path: "/room-service/room-block",
-                oldPath: "",
-            },
-            {
-                title: "Санхүү",
-                titleEn: "Accounting",
-                path: "/conf/accounting",
-                oldPath: "",
-            },
-            {
-                title: "Pos Api тохиргоо",
-                titleEn: "Pos Api Config",
-                path: "/conf/pos-api",
-                oldPath: "",
-            },
+          {
+            title: "төлбөр",
+            titleEn: "Payment Report",
+            path: "/report/folio",
+            oldPath: "",
+          },
+          {
+            title: "баланс",
+            titleEn: "Balance Report",
+            path: "/report/balance",
+            oldPath: "~/Report/ReportBalance.aspx",
+          },
+          {
+            title: "буудлын борлуулалт",
+            titleEn: "Hotel Sales",
+            path: "/report/charge",
+            oldPath: "",
+          },
         ],
-    },
-    {
-        title: "өрөө үйлчилгээ",
+      },
+      {
+        title: "Нэмэлт үйлчилгээ",
+        titleEn: "Extra Services Reports",
+        icon: getIcon("lucide:plus-circle", "#f59e0b"),
+        children: [
+          {
+            title: "Үйлчилгээ (Дэлгэрэнгүй)",
+            titleEn: "Extra Charges (Detailed)",
+            path: "/report/extra-charge/detailed",
+            oldPath: "",
+          },
+          {
+            title: "Үйлчилгээ (Хураангуй)",
+            titleEn: "Extra Charges (Summary)",
+            path: "/report/extra-charge/summary",
+            oldPath: "",
+          },
+          {
+            title: "Нэм. үйлчилгээ, Мини бар",
+            titleEn: "Extra Charges and Mini Bar",
+            path: "/report/extra-charge/reception",
+            oldPath: "",
+          },
+          {
+            title: "өглөөний цай",
+            titleEn: "Breakfast Report",
+            path: "/report/breakfast",
+            oldPath: "~/Report/ReportBreakfast.aspx",
+          },
+        ],
+      },
+      {
+        title: "Өрөөний тайлан",
+        titleEn: "Room Reports",
+        icon: getIcon("lucide:bed", "#06b6d4"),
+        children: [
+          {
+            title: "боломжит өрөө",
+            titleEn: "Available Rooms",
+            path: "/report/available-room",
+            oldPath: "~/Report/ReportAvailableRooms.aspx",
+          },
+          {
+            title: "Гарсан",
+            titleEn: "Checked Out",
+            path: "/report/checked-out",
+            oldPath: "",
+          },
+        ],
+      },
+      // {
+      //     title: "гарах зочид (өдөр тутам)",
+      //     titleEn: "гарах зочид (өдөр тутам)",
+
+      //     path: "/report/daily/checked-out",
+      //     oldPath: "~/Report/ReportCheckedOutDetailed.aspx",
+      // },
+      // {
+      //     title: "устгалын тайлбар (өдөр тутам)",
+      //     titleEn: "устгалын тайлбар (өдөр тутам)",
+
+      //     path: "/report/daily/deleted-reservations",
+      //     oldPath: "~/Report/ReportVoidReservation.aspx",
+      // },
+      // {
+      //     title: "нэмэлт төлбөр (өдөр тутам)",
+      //     titleEn: "нэмэлт төлбөр (өдөр тутам)",
+
+      //     path: "/report/daily/extra-charge",
+      //     oldPath: "~/Report/ReportExtraChargeDetail.aspx",
+      // },
+      // {
+      //     title: "Төлбөрийн тайлан (өдөр тутам)",
+      //     titleEn: "Төлбөрийн тайлан (өдөр тутам)",
+
+      //     path: "/report/daily/payment",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "өрөөний төлбөр (өдөр тутам)",
+      //     titleEn: "өрөөний төлбөр (өдөр тутам)",
+
+      //     path: "/report/daily/room-charge",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "устгалын тайлан",
+      //     titleEn: "устгалын тайлан",
+
+      //     path: "/report/deleted-reservations",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "нэмэлт төлбөрийн (дэлгэрэнгүй)",
+      //     titleEn: "нэмэлт төлбөрийн (дэлгэрэнгүй)",
+
+      //     path: "/report/extra-charge/detailed",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "нэмэлт төлбөр (хураангуй)",
+      //     titleEn: "нэмэлт төлбөр (хураангуй)",
+
+      //     path: "/report/extra-charge/summary",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "байгууллага хоорондын тооцоо",
+      //     titleEn: "байгууллага хоорондын тооцоо",
+
+      //     path: "/report/interagency",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "сарын тайлан",
+      //     titleEn: "сарын тайлан",
+
+      //     path: "/report/monthly",
+      //     oldPath: "",
+      // },
+
+      // {
+      //     title: "ресепшний буух зочдын тайлан",
+      //     titleEn: "ресепшний буух зочдын тайлан",
+
+      //     path: "/report/reception/checked-in",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "ресепшний гарах зочдын тайлан",
+      //     titleEn: "ресепшний гарах зочдын тайлан",
+
+      //     path: "/report/reception/checked-out",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "ресепшний устгалын тайлан",
+      //     titleEn: "ресепшний устгалын тайлан",
+
+      //     path: "/report/reception/deleted-reservations",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "ресепшний хугацаа дуусах, үлдэх тайлан",
+      //     titleEn: "ресепшний хугацаа дуусах, үлдэх тайлан",
+
+      //     path: "/report/reception/dueout-stayover",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "ресепшний нэмэлт төлбөрийн тайлан",
+      //     titleEn: "ресепшний нэмэлт төлбөрийн тайлан",
+
+      //     path: "/report/reception/extra-charge",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "ресепшний төлбөрийн тайлан",
+      //     titleEn: "ресепшний төлбөрийн тайлан",
+
+      //     path: "/report/reception/payment",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "ресепшний өрөөний төлбөр",
+      //     titleEn: "ресепшний өрөөний төлбөр",
+
+      //     path: "/report/reception/room-charge",
+      //     oldPath: "",
+      // },
+      // {
+      //     title: "захиалгын тайлан",
+      //     titleEn: "захиалгын тайлан",
+
+      //     path: "/report/reservations",
+      //     oldPath: "",
+      // },
+
+      // {
+      //     title: "stayview",
+      //     titleEn: "stayview",
+
+      //     path: "/report/stayview",
+      //     oldPath: "",
+      // },
+    ],
+  },
+  {
+    title: "холболт",
+    titleEn: "Connect",
+    icon: getIcon("lucide:link"),
+    children: [
+      {
+        title: "санхүү",
+        titleEn: "Finance",
+        icon: getIcon("lucide:banknote", "#10b981"),
+        path: "",
+        oldPath: ""
+      },
+      {
+        title: "төлбөр тооцоо өдрөөр",
+        titleEn: "Daily Payment Calculation",
+        icon: getIcon("lucide:calculator", "#f59e0b"),
+        path: "",
+        oldPath: "",
+      },
+    ],
+  },
+  {
+    title: "тохиргоо",
+    titleEn: "Configuration",
+    icon: getIcon("lucide:settings"),
+    children: [
+      {
+        title: "Ерөнхий тохиргоо",
+        titleEn: "General Settings",
+        icon: getIcon("lucide:settings-2", "#3b82f6"),
+        children: [
+          {
+            title: "зочид буудлын мэдээлэл",
+            titleEn: "Hotel Information",
+            icon: getIcon("lucide:building-2", "#3b82f6"),
+            path: "/conf/hotel-information",
+            oldPath: "",
+          },
+          {
+            title: "зочид буудлын тохиргоо",
+            titleEn: "Hotel Settings",
+            icon: getIcon("lucide:settings", "#10b981"),
+            path: "/conf/hotel-setting",
+            oldPath: "",
+          },
+          {
+            title: "э-шуудан тохиргоо",
+            titleEn: "Email Configuration",
+            icon: getIcon("lucide:mail", "#f59e0b"),
+            path: "/conf/email",
+            oldPath: "",
+          },
+          {
+            title: "notifications",
+            titleEn: "Notifications",
+            icon: getIcon("lucide:bell", "#ef4444"),
+            path: "/conf/notification",
+            oldPath: "",
+          },
+        ],
+      },
+      {
+        title: "Хэрэглэгч удирдлага",
+        titleEn: "User Management",
+        icon: getIcon("lucide:users", "#10b981"),
+        children: [
+          {
+            title: "хэрэглэгчийн төрөл",
+            titleEn: "User Role",
+            icon: getIcon("lucide:shield", "#8b5cf6"),
+            path: "/conf/user-role",
+            oldPath: "",
+          },
+          {
+            title: "хэрэглэгч",
+            titleEn: "User",
+            icon: getIcon("lucide:user", "#06b6d4"),
+            path: "/conf/user",
+            oldPath: "",
+          },
+        ],
+      },
+      {
+        title: "Захиалгын тохиргоо",
+        titleEn: "Reservation Settings",
+        icon: getIcon("lucide:calendar-check", "#f59e0b"),
+        children: [
+          {
+            title: "шалтгаан",
+            titleEn: "Reason",
+            icon: getIcon("lucide:message-square", "#10b981"),
+            path: "/conf/reason",
+            oldPath: "",
+          },
+          {
+            title: "захиалгын эх сурвалж",
+            titleEn: "Reservation Source",
+            icon: getIcon("lucide:map-pin", "#3b82f6"),
+            path: "/conf/reservation-source",
+            oldPath: "",
+          },
+          {
+            title: "вип төлөв",
+            titleEn: "Vip Status",
+            icon: getIcon("lucide:crown", "#f59e0b"),
+            path: "/conf/vip-status",
+            oldPath: "",
+          },
+          {
+            title: "харилцагчийн бүлэг",
+            titleEn: "Customer Group",
+            icon: getIcon("lucide:users-2", "#8b5cf6"),
+            path: "/conf/customer-group",
+            oldPath: "",
+          },
+        ],
+      },
+      {
+        title: "Борлуулалт,үйлчилгээ",
+        titleEn: "Sales, Services",
+        icon: getIcon("lucide:shopping-cart", "#ef4444"),
+        children: [
+          {
+            title: "урамшуулал",
+            titleEn: "Promotions",
+            icon: getIcon("lucide:gift", "#ef4444"),
+            path: "/conf/promotion",
+            oldPath: "",
+          },
+          {
+            title: "багц",
+            titleEn: "Packages",
+            icon: getIcon("lucide:package-2", "#10b981"),
+            path: "/conf/package",
+            oldPath: "",
+          },
+          {
+            title: "мини бар бүлэг",
+            titleEn: "Mini Bar Groups",
+            icon: getIcon("lucide:folder", "#3b82f6"),
+            path: "/mini-bar/group",
+            oldPath: "",
+          },
+          {
+            title: "мини бар бараа",
+            titleEn: "Mini Bar Items",
+            icon: getIcon("lucide:wine", "#8b5cf6"),
+            path: "/mini-bar/item",
+            oldPath: "",
+          },
+        ],
+      },
+      {
+        title: "Системийн холболт",
+        titleEn: "System Integration",
+        icon: getIcon("lucide:plug-2", "#06b6d4"),
+        children: [
+          {
+            title: "Санхүү",
+            titleEn: "Accounting",
+            icon: getIcon("lucide:calculator", "#10b981"),
+            path: "/conf/accounting",
+            oldPath: "",
+          },
+          {
+            title: "Pos Api тохиргоо",
+            titleEn: "Pos Api Config",
+            icon: getIcon("lucide:api", "#06b6d4"),
+            path: "/conf/pos-api",
+            oldPath: "",
+          },
+        ],
+      },
+      {
+        title: "өрөө блоклох",
+        titleEn: "Room Block",
+        icon: getIcon("lucide:lock", "#ef4444"),
+        path: "/room-service/room-block",
+        oldPath: "",
+      },
+    ],
+  },
+  {
+    title: "өрөө үйлчилгээ",
+    titleEn: "House Keeping",
+    icon: getIcon("lucide:home"),
+    children: [
+      {
+        title: "house keeping",
         titleEn: "House Keeping",
-        icon: getIcon(awardFill),
-        children: [
-            {
-                title: "house keeping",
-                titleEn: "House Keeping",
-                path: "/room-service/house-keeping",
-                oldPath: "",
-            },
-            {
-                title: "өрөөний төлөв",
-                titleEn: "House Status",
-                path: "/room-service/house-status",
-                oldPath: "",
-            },
-            {
-                title: "ажлын даалгавар",
-                titleEn: "Work Order",
-                path: "/room-service/work-order",
-                oldPath: "",
-            },
-        ],
-    },
-
-    {
-        title: "Холболт",
-        titleEn: "Integration",
-        icon: getIcon(options2Fill),
-        children: [
-            {
-                title: "Санхүү",
-                titleEn: "Accounting",
-                path: "/integration/accounting",
-            },
-        ],
-    },
+        icon: getIcon("lucide:brush-cleaning", "#10b981"),
+        path: "/room-service/house-keeping",
+        oldPath: "",
+      },
+      {
+        title: "өрөөний төлөв",
+        titleEn: "House Status",
+        icon: getIcon("lucide:clipboard-check", "#3b82f6"),
+        path: "/room-service/house-status",
+        oldPath: "",
+      },
+      {
+        title: "ажлын даалгавар",
+        titleEn: "Work Order",
+        icon: getIcon("lucide:clipboard-list", "#f59e0b"),
+        path: "/room-service/work-order",
+        oldPath: "",
+      },
+    ],
+  },
 ];
 
 export default sidebarConfig;
