@@ -55,14 +55,14 @@ const NewEdit = ({ TransactionID }: any) => {
             }
             await SharerListAPI.new(sharerValues);
         } finally {
-            await mutate(listUrl);
+            await mutate(`${listUrl}/${TransactionID}`);
         }
     };
 
     return (
         <NewEditForm
             api={CustomerGroupAPI}
-            listUrl={listUrl}
+            listUrl={`${listUrl}/${TransactionID}`}
             additionalValues={{
                 CustomerGroupID: state.editId,
             }}

@@ -122,12 +122,12 @@ export function NavUser({
                 <CreditCard />
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center cursor-pointer">
-                <Link href="/faq" className="gap-2">
+              <Link href="/faq" className="gap-2">
+                <DropdownMenuItem className="flex items-center cursor-pointer">
                   <QuestionMarkOutlined />
                   <span className="pl-2">FAQ</span>
-                </Link>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
                   <Languages className="h-4 w-4" />
@@ -148,6 +148,6 @@ export function NavUser({
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
-    </SidebarMenu>
+    </SidebarMenu >
   )
 }

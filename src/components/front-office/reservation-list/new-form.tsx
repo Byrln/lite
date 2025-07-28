@@ -133,31 +133,60 @@ const NewEdit = ({
         setValue(`TransactionDetail[${id}].Child`, childValue);
 
         const generateUniqueGuestId = () => {
-          return generateIncrementedId(id + 1, 0, (proposedId) => {
-            const proposedName = `Зочин ${proposedId}`;
+          // For the first guest (id=0), return empty string to show just "Зочин"
+          // For subsequent guests, start numbering from 2
+          if (id === 0) {
+            // Check if "Зочин" (without number) already exists
             try {
               const allValues = getValues();
               if (allValues && allValues.TransactionDetail) {
                 for (let i = 0; i < allValues.TransactionDetail.length; i++) {
-                  if (i !== id && allValues.TransactionDetail[i]?.Name === proposedName) {
-                    return true;
+                  if (i !== id && allValues.TransactionDetail[i]?.Name === "Зочин") {
+                    // If "Зочин" exists, start numbering from 2
+                    return generateIncrementedId(2, 0, (proposedId) => {
+                      // Use the proposed ID directly without slicing
+                      const proposedName = `Зочин ${proposedId}`;
+                      for (let j = 0; j < allValues.TransactionDetail.length; j++) {
+                        if (j !== id && allValues.TransactionDetail[j]?.Name === proposedName) {
+                          return true;
+                        }
+                      }
+                      return false;
+                    });
                   }
                 }
               }
             } catch (error) {
-              return false;
+              return "";
             }
-            return false;
-          });
+            return ""; // Return empty string for first guest
+          } else {
+            // For subsequent guests, start from 2
+            return generateIncrementedId(2, 0, (proposedId) => {
+              // Use the proposed ID directly without slicing
+              const proposedName = `Зочин ${proposedId}`;
+              try {
+                const allValues = getValues();
+                if (allValues && allValues.TransactionDetail) {
+                  for (let i = 0; i < allValues.TransactionDetail.length; i++) {
+                    if (i !== id && allValues.TransactionDetail[i]?.Name === proposedName) {
+                      return true;
+                    }
+                  }
+                }
+              } catch (error) {
+                return false;
+              }
+              return false;
+            });
+          }
         };
-
         const uniqueGuestId = generateUniqueGuestId();
-
-        setValue(`TransactionDetail[${id}].Name`, `Зочин ${uniqueGuestId}`);
+        setValue(`TransactionDetail[${id}].Name`, uniqueGuestId === "" ? "Зочин" : `Зочин ${uniqueGuestId}`);
         setValue(`TransactionDetail[${id}].GuestDetail.Email`, '');
         setValue(`TransactionDetail[${id}].GuestDetail.Mobile`, '');
         setValue(`TransactionDetail[${id}].GuestDetail.Name`, 'Guest');
-        setValue(`TransactionDetail[${id}].GuestDetail.Surname`, uniqueGuestId.toString());
+        setValue(`TransactionDetail[${id}].GuestDetail.Surname`, '');
         setValue(`TransactionDetail[${id}].GuestDetail.CountryID`, 0);
         setValue(`TransactionDetail[${id}].GuestDetail.VipStatusID`, 0);
         setValue(`TransactionDetail[${id}].GuestDetail.GuestTitleID`, 0);

@@ -1,256 +1,405 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import {
-    Box,
-    Button,
-    TextField,
-    Typography,
-    Alert,
-    Card,
-    CardContent,
-    Grid,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Snackbar
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  CircularProgress,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+  Typography,
+  Alert,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
+import {
+  Notifications as NotificationsIcon,
+  Wifi as WifiIcon,
+  WifiOff as WifiOffIcon,
+  Refresh as RefreshIcon,
+} from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { NotificationAPI } from 'lib/api/notification';
-import NotificationTypeSelect from 'components/select/notification-type';
-import NotificationUserItemSelect from 'components/select/notification-user-item';
+import { NotificationAPI, type NotificationStatusRequest } from '@/lib/api/notification';
 
-// Validation schema for notification creation
+// Validation schema for notification status request
 const notificationSchema = yup.object().shape({
-    NotificationTypeID: yup.number().required('Notification type is required'),
-    Title: yup.string().required('Title is required').max(255, 'Title must be less than 255 characters'),
-    Message: yup.string().required('Message is required').max(1000, 'Message must be less than 1000 characters'),
-    UserID: yup.number().when('NotificationTypeID', {
-        is: 2, // Users type
-        then: (schema) => schema.required('User is required when notification type is Users'),
-        otherwise: (schema) => schema.nullable()
-    }),
-    Priority: yup.number().required('Priority is required'),
-    Status: yup.boolean().default(true)
+  NotificationID: yup.number().nullable(),
+  NotificationCode: yup.string().nullable(),
+  IsSent: yup.boolean().nullable(),
+  IsVisit: yup.boolean().nullable(),
 });
 
-interface CreateNotificationProps {
-    onSuccess?: () => void;
-    onCancel?: () => void;
-}
-
-const CreateNotification: React.FC<CreateNotificationProps> = ({ onSuccess, onCancel }) => {
-    const [loading, setLoading] = useState(false);
-    const [notificationTypeID, setNotificationTypeID] = useState<number>(0);
-    const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        setValue,
-        watch,
-        reset
-    } = useForm({
-        resolver: yupResolver(notificationSchema),
-        defaultValues: {
-            NotificationTypeID: 0,
-            Title: '',
-            Message: '',
-            UserID: null,
-            Priority: 1,
-            Status: true
-        }
-    });
-
-    const entity = watch();
-
-    const setEntity = (newEntity: any) => {
-        Object.keys(newEntity).forEach(key => {
-            setValue(key as any, newEntity[key]);
-        });
-    };
-
-    const onSubmit = async (data: any) => {
-        setLoading(true);
-        try {
-            // Prepare data according to HoracaSoft API specification
-            const notificationData = {
-                NotificationTypeID: data.NotificationTypeID,
-                Title: data.Title,
-                Message: data.Message,
-                UserID: data.NotificationTypeID === 2 ? data.UserID : null,
-                Priority: data.Priority,
-                Status: data.Status,
-                CreatedDate: new Date().toISOString(),
-                IsRead: false
-            };
-
-            const response = await NotificationAPI.new(notificationData);
-            
-            if (response.status === 200) {
-                setAlert({ type: 'success', message: 'Notification created successfully!' });
-                reset();
-                if (onSuccess) {
-                    setTimeout(() => onSuccess(), 1500);
-                }
-            } else {
-                setAlert({ type: 'error', message: 'Failed to create notification. Please try again.' });
-            }
-        } catch (error: any) {
-            console.error('Error creating notification:', error);
-            setAlert({ 
-                type: 'error', 
-                message: error.response?.data?.message || 'An error occurred while creating the notification.' 
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleCloseAlert = () => {
-        setAlert(null);
-    };
-
-    return (
-        <Card sx={{ maxWidth: 600, mx: 'auto', mt: 2 }}>
-            <CardContent>
-                <Typography variant="h5" component="h2" gutterBottom>
-                    Create New Notification
-                </Typography>
-                
-                <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
-                    <Grid container spacing={2}>
-                        {/* Notification Type Selection */}
-                        <Grid item xs={12}>
-                            <NotificationTypeSelect
-                                register={register}
-                                errors={errors}
-                                entity={entity}
-                                setEntity={setEntity}
-                                setNotificationTypeID={setNotificationTypeID}
-                            />
-                        </Grid>
-
-                        {/* Title Field */}
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Title"
-                                {...register('Title')}
-                                error={!!errors.Title}
-                                helperText={errors.Title?.message}
-                                size="small"
-                                margin="dense"
-                            />
-                        </Grid>
-
-                        {/* Message Field */}
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Message"
-                                {...register('Message')}
-                                error={!!errors.Message}
-                                helperText={errors.Message?.message}
-                                multiline
-                                rows={4}
-                                size="small"
-                                margin="dense"
-                            />
-                        </Grid>
-
-                        {/* User Selection (only when notification type is Users) */}
-                        {notificationTypeID === 2 && (
-                            <Grid item xs={12}>
-                                <NotificationUserItemSelect
-                                    register={register}
-                                    errors={errors}
-                                    field="UserID"
-                                    UserTypeID={notificationTypeID}
-                                />
-                            </Grid>
-                        )}
-
-                        {/* Priority Selection */}
-                        <Grid item xs={12} sm={6}>
-                            <FormControl fullWidth size="small" margin="dense">
-                                <InputLabel>Priority</InputLabel>
-                                <Select
-                                    {...register('Priority')}
-                                    label="Priority"
-                                    error={!!errors.Priority}
-                                    value={entity.Priority || 1}
-                                    onChange={(e) => setEntity({ ...entity, Priority: e.target.value })}
-                                >
-                                    <MenuItem value={1}>Low</MenuItem>
-                                    <MenuItem value={2}>Medium</MenuItem>
-                                    <MenuItem value={3}>High</MenuItem>
-                                    <MenuItem value={4}>Critical</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-
-                        {/* Status Toggle */}
-                        <Grid item xs={12} sm={6}>
-                            <FormControl fullWidth size="small" margin="dense">
-                                <InputLabel>Status</InputLabel>
-                                <Select
-                                    {...register('Status')}
-                                    label="Status"
-                                    value={entity.Status ? 1 : 0}
-                                    onChange={(e) => setEntity({ ...entity, Status: e.target.value === 1 })}
-                                >
-                                    <MenuItem value={1}>Active</MenuItem>
-                                    <MenuItem value={0}>Inactive</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-
-                        {/* Action Buttons */}
-                        <Grid item xs={12}>
-                            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 2 }}>
-                                {onCancel && (
-                                    <Button
-                                        variant="outlined"
-                                        onClick={onCancel}
-                                        disabled={loading}
-                                    >
-                                        Cancel
-                                    </Button>
-                                )}
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    disabled={loading}
-                                    sx={{ minWidth: 120 }}
-                                >
-                                    {loading ? 'Creating...' : 'Create Notification'}
-                                </Button>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                </Box>
-
-                {/* Success/Error Alert */}
-                <Snackbar
-                    open={!!alert}
-                    autoHideDuration={6000}
-                    onClose={handleCloseAlert}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                >
-                    <Alert
-                        onClose={handleCloseAlert}
-                        severity={alert?.type}
-                        sx={{ width: '100%' }}
-                    >
-                        {alert?.message}
-                    </Alert>
-                </Snackbar>
-            </CardContent>
-        </Card>
-    );
+type FormData = {
+  NotificationID?: number | null;
+  NotificationCode?: string | null;
+  IsSent?: boolean | null;
+  IsVisit?: boolean | null;
 };
 
-export default CreateNotification;
+type ApiStatus = 'checking' | 'connected' | 'error';
+type AlertType = { type: 'success' | 'error' | 'info'; message: string };
+
+export default function CreateNotification() {
+  const [apiStatus, setApiStatus] = useState<ApiStatus>('checking');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [previewMode, setPreviewMode] = useState(false);
+  const [previewData, setPreviewData] = useState<FormData | null>(null);
+  const [alert, setAlert] = useState<AlertType | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
+    setValue,
+  } = useForm<FormData>({
+    resolver: yupResolver(notificationSchema),
+    defaultValues: {
+      NotificationID: null,
+      NotificationCode: null,
+      IsSent: null,
+      IsVisit: null,
+    },
+  });
+
+  const watchedValues = watch();
+
+  // Test API connection on component mount
+  useEffect(() => {
+    testConnection();
+  }, []);
+
+  // Auto-hide alerts after 5 seconds
+  useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => setAlert(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
+  // Test API connection
+  const testConnection = async () => {
+    setApiStatus('checking');
+    try {
+      const result = await NotificationAPI.testConnection();
+      setApiStatus(result ? 'connected' : 'error');
+    } catch (error) {
+      console.error('API connection test failed:', error);
+      setApiStatus('error');
+    }
+  };
+
+  // Handle form submission
+  const onSubmit = async (data: FormData) => {
+    if (previewMode) {
+      setPreviewData(data);
+      setAlert({ type: 'success', message: 'Preview generated successfully!' });
+      return;
+    }
+
+    if (apiStatus !== 'connected') {
+      setAlert({ type: 'error', message: 'API is not connected. Please check connection or use preview mode.' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const notificationRequest: NotificationStatusRequest = {
+        NotificationID: data.NotificationID || undefined,
+        NotificationCode: data.NotificationCode || undefined,
+        IsSent: data.IsSent || undefined,
+        IsVisit: data.IsVisit || undefined,
+      };
+
+      const result = await NotificationAPI.getStatus(notificationRequest);
+      
+      if (result.Status) {
+        setAlert({ type: 'success', message: 'Notification status retrieved successfully!' });
+        reset();
+        setPreviewData(null);
+      } else {
+        setAlert({ type: 'error', message: 'Failed to get notification status. Please try again.' });
+      }
+    } catch (error: any) {
+      console.error('Error getting notification status:', error);
+      setAlert({ 
+        type: 'error', 
+        message: error.response?.data?.Message || 'An error occurred while getting the notification status.' 
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Status options
+  const statusOptions = [
+    { value: true, label: 'True', color: 'success' as const },
+    { value: false, label: 'False', color: 'error' as const },
+  ];
+
+  return (
+    <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
+      <Card elevation={3}>
+        <CardContent sx={{ p: 4 }}>
+          {/* Header */}
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 2 }}>
+              <NotificationsIcon color="primary" sx={{ fontSize: 32 }} />
+              <Typography variant="h4" component="h1" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                Query Notification Status
+              </Typography>
+            </Box>
+            <Typography variant="body1" color="text.secondary">
+              {previewMode
+                ? 'Preview mode: Test your notification query without sending'
+                : 'Query notification status through the API platform'}
+            </Typography>
+          </Box>
+
+          {/* API Status */}
+          <Box sx={{ mb: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                API Connection
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={testConnection}
+                disabled={apiStatus === 'checking'}
+                startIcon={apiStatus === 'checking' ? <CircularProgress size={16} /> : <RefreshIcon />}
+              >
+                Test Connection
+              </Button>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {apiStatus === 'checking' && (
+                <>
+                  <CircularProgress size={16} />
+                  <Typography variant="body2" color="text.secondary">
+                    Testing connection...
+                  </Typography>
+                </>
+              )}
+              {apiStatus === 'connected' && (
+                <>
+                  <WifiIcon color="success" />
+                  <Typography variant="body2" color="success.main">
+                    Connected to API
+                  </Typography>
+                </>
+              )}
+              {apiStatus === 'error' && (
+                <>
+                  <WifiOffIcon color="error" />
+                  <Typography variant="body2" color="error.main">
+                    Connection failed
+                  </Typography>
+                </>
+              )}
+            </Box>
+          </Box>
+
+          {/* Preview Mode Toggle */}
+          <Box sx={{ mb: 3 }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={previewMode}
+                  onChange={(e) => setPreviewMode(e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="Preview Mode (Test without API call)"
+            />
+          </Box>
+
+          {/* Alert */}
+          {alert && (
+            <Alert severity={alert.type} sx={{ mb: 3 }} onClose={() => setAlert(null)}>
+              {alert.message}
+            </Alert>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3}>
+              {/* Notification ID */}
+              <Grid item xs={12} md={6}>
+                <TextField
+                  {...register('NotificationID')}
+                  fullWidth
+                  label="Notification ID"
+                  type="number"
+                  error={!!errors.NotificationID}
+                  helperText={errors.NotificationID?.message || 'Optional - Leave empty to query all'}
+                  InputProps={{
+                    inputProps: { min: 1 },
+                  }}
+                />
+              </Grid>
+
+              {/* Notification Code */}
+              <Grid item xs={12} md={6}>
+                <TextField
+                  {...register('NotificationCode')}
+                  fullWidth
+                  label="Notification Code"
+                  error={!!errors.NotificationCode}
+                  helperText={errors.NotificationCode?.message || 'Optional - Leave empty to query all'}
+                />
+              </Grid>
+
+              {/* IsSent Status */}
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth error={!!errors.IsSent}>
+                  <InputLabel>Is Sent Status</InputLabel>
+                  <Select
+                    {...register('IsSent')}
+                    value={watchedValues.IsSent === null ? '' : watchedValues.IsSent}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setValue('IsSent', value === '' ? null : value === 'true');
+                    }}
+                    label="Is Sent Status"
+                  >
+                    <MenuItem value="">
+                      <Typography color="text.secondary">Any</Typography>
+                    </MenuItem>
+                    {statusOptions.map((option) => (
+                      <MenuItem key={option.value.toString()} value={option.value.toString()}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Chip
+                            label={option.label}
+                            color={option.color}
+                            size="small"
+                            variant="outlined"
+                          />
+                        </Box>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {errors.IsSent && (
+                    <Typography variant="caption" color="error" sx={{ mt: 0.5 }}>
+                      {errors.IsSent.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              </Grid>
+
+              {/* IsVisit Status */}
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth error={!!errors.IsVisit}>
+                  <InputLabel>Is Visit Status</InputLabel>
+                  <Select
+                    {...register('IsVisit')}
+                    value={watchedValues.IsVisit === null ? '' : watchedValues.IsVisit}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setValue('IsVisit', value === '' ? null : value === 'true');
+                    }}
+                    label="Is Visit Status"
+                  >
+                    <MenuItem value="">
+                      <Typography color="text.secondary">Any</Typography>
+                    </MenuItem>
+                    {statusOptions.map((option) => (
+                      <MenuItem key={option.value.toString()} value={option.value.toString()}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Chip
+                            label={option.label}
+                            color={option.color}
+                            size="small"
+                            variant="outlined"
+                          />
+                        </Box>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {errors.IsVisit && (
+                    <Typography variant="caption" color="error" sx={{ mt: 0.5 }}>
+                      {errors.IsVisit.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            {/* Submit Button */}
+            <Box sx={{ mt: 4, textAlign: 'center' }}>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                disabled={isSubmitting || (apiStatus !== 'connected' && !previewMode)}
+                startIcon={isSubmitting ? <CircularProgress size={20} /> : <NotificationsIcon />}
+                sx={{ minWidth: 200 }}
+              >
+                {isSubmitting
+                  ? 'Processing...'
+                  : previewMode
+                  ? 'Preview Query'
+                  : 'Query Status'}
+              </Button>
+            </Box>
+          </form>
+
+          {/* Preview */}
+          {previewData && (
+            <Box sx={{ mt: 4 }}>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                Preview
+              </Typography>
+              <Paper variant="outlined" sx={{ p: 2, bgcolor: 'grey.50' }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+                  Query Parameters Preview
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {previewData.NotificationID && (
+                    <Chip
+                      label={`Notification ID: ${previewData.NotificationID}`}
+                      size="small"
+                      variant="outlined"
+                    />
+                  )}
+                  {previewData.NotificationCode && (
+                    <Chip
+                      label={`Notification Code: ${previewData.NotificationCode}`}
+                      size="small"
+                      variant="outlined"
+                    />
+                  )}
+                  {previewData.IsSent !== null && (
+                    <Chip
+                      label={`Is Sent: ${previewData.IsSent}`}
+                      color={previewData.IsSent ? 'success' : 'error'}
+                      size="small"
+                    />
+                  )}
+                  {previewData.IsVisit !== null && (
+                    <Chip
+                      label={`Is Visit: ${previewData.IsVisit}`}
+                      color={previewData.IsVisit ? 'success' : 'error'}
+                      size="small"
+                    />
+                  )}
+                </Box>
+              </Paper>
+            </Box>
+          )}
+        </CardContent>
+      </Card>
+    </Box>
+  );
+}

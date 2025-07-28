@@ -19,7 +19,7 @@ import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { useAppState } from "lib/context/app"
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs"
-import NotificationBell from "./notification-bell"
+// import NotificationBell from "./notification-bell"
 import { CommandPalette, useCommandPalette } from "./command-palette"
 import { Search, Command, Home } from "lucide-react"
 import Link from "next/link"
@@ -149,9 +149,9 @@ export default function DashboardLayout({ children }: any) {
               variant="ghost"
               size="sm"
               onClick={() => setOpen(true)}
-              className="relative h-8 w-8 p-0 xl:h-9 xl:w-60 xl:justify-start xl:px-3 xl:py-2"
+              className="relative px-3 border border-gray-300 bg-input h-8 w-8 p-0 xl:h-9 xl:w-60 xl:justify-start xl:px-3 xl:py-2"
             >
-              <Search className="h-4 w-4 xl:mr-2" />
+              <Search className="h-4 w-4 xl:ml-2" />
               <span className="hidden xl:inline-flex">{intl.formatMessage({
                 id: "TextSearch",
               })}</span>
@@ -159,7 +159,7 @@ export default function DashboardLayout({ children }: any) {
                 <span className="text-xs">{modifierKey}</span>K
               </kbd>
             </Button>
-            <NotificationBell />
+            {/* <NotificationBell /> */}
           </div>
         </header>
         <div className="flex-1 overflow-auto p-4">

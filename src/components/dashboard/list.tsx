@@ -982,7 +982,7 @@ function DashboardCard({
         return {
           icon: <Block {...iconProps} />,
           color: "#ef4444",
-          link: "/front-office/reservation-list",
+          link: "/room-service/room-block",
         };
       case "Sold Rooms":
         return {

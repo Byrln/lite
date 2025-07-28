@@ -1,371 +1,359 @@
-import React, { useState } from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import {
-    Box,
-    Card,
-    CardContent,
-    Typography,
-    Button,
-    Grid,
-    Chip,
-    Alert,
-    Divider,
-    TextField,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  CircularProgress,
+  FormControlLabel,
+  Grid,
+  Switch,
+  Typography,
+  Alert,
 } from '@mui/material';
 import {
-    Notifications as NotificationsIcon,
-    Person as PersonIcon,
-    Group as GroupIcon,
-    Warning as WarningIcon,
-    Info as InfoIcon
+  Notifications as NotificationsIcon,
+  Send as SendIcon,
+  Wifi as WifiIcon,
+  WifiOff as WifiOffIcon,
+  Refresh as RefreshIcon,
 } from '@mui/icons-material';
-import { NotificationService } from 'lib/services/notification-service';
+import { NotificationAPI, type NotificationStatusRequest } from '@/lib/api/notification';
 
-/**
- * Example component demonstrating various notification creation patterns
- * using the HoracaSoft API
- */
-const NotificationExamples: React.FC = () => {
-    const [loading, setLoading] = useState<string | null>(null);
-    const [results, setResults] = useState<any[]>([]);
-    const [customTitle, setCustomTitle] = useState('');
-    const [customMessage, setCustomMessage] = useState('');
-    const [customUserId, setCustomUserId] = useState<number>(1);
-    const [customPriority, setCustomPriority] = useState<number>(2);
+// Example notification status queries
+const exampleQueries: NotificationStatusRequest[] = [
+  {
+    NotificationID: 1,
+    IsSent: true,
+    IsVisit: false,
+  },
+  {
+    NotificationCode: 'SYSTEM_MAINT_001',
+    IsSent: true,
+  },
+  {
+    IsVisit: false,
+    IsSent: true,
+  },
+  {
+    NotificationID: 5,
+  },
+];
 
-    const addResult = (type: string, result: any) => {
-        setResults(prev => [{
-            id: Date.now(),
-            type,
-            timestamp: new Date().toLocaleTimeString(),
-            ...result
-        }, ...prev.slice(0, 4)]); // Keep only last 5 results
-    };
+type ApiStatus = 'checking' | 'connected' | 'error';
+type AlertType = { type: 'success' | 'error' | 'info'; message: string };
 
-    // Example 1: System Notification
-    const createSystemNotification = async () => {
-        setLoading('system');
-        try {
-            const result = await NotificationService.createSystemNotification(
-                'System Maintenance',
-                'The system will undergo maintenance tonight from 2:00 AM to 4:00 AM. Please save your work.'
-            );
-            addResult('System Notification', result);
-        } catch (error) {
-            addResult('System Notification', { success: false, message: 'Error occurred' });
-        } finally {
-            setLoading(null);
+export default function NotificationExamples() {
+  const [apiStatus, setApiStatus] = useState<ApiStatus>('checking');
+  const [previewMode, setPreviewMode] = useState(false);
+  const [alert, setAlert] = useState<AlertType | null>(null);
+  const [creatingStates, setCreatingStates] = useState<Record<number, boolean>>({});
+  const [queryingAll, setQueryingAll] = useState(false);
+  const [queriedCount, setQueriedCount] = useState(0);
+
+  // Test API connection on component mount
+  useEffect(() => {
+    testConnection();
+  }, []);
+
+  // Auto-hide alerts after 5 seconds
+  useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => setAlert(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
+  // Test API connection
+  const testConnection = async () => {
+    setApiStatus('checking');
+    try {
+      const result = await NotificationAPI.testConnection();
+      setApiStatus(result ? 'connected' : 'error');
+    } catch (error) {
+      console.error('API connection test failed:', error);
+      setApiStatus('error');
+    }
+  };
+
+  // Query individual notification status
+  const queryNotificationStatus = async (query: NotificationStatusRequest, index: number) => {
+    if (previewMode) {
+      setAlert({ type: 'info', message: `Preview: Would query notification status with parameters: ${JSON.stringify(query)}` });
+      return;
+    }
+
+    if (apiStatus !== 'connected') {
+      setAlert({ type: 'error', message: 'API is not connected. Please use preview mode.' });
+      return;
+    }
+
+    setCreatingStates(prev => ({ ...prev, [index]: true }));
+    try {
+      const result = await NotificationAPI.getStatus(query);
+      if (result.Status) {
+        setAlert({ type: 'success', message: `Notification status queried successfully! Found ${result.Data?.length || 0} notifications.` });
+      } else {
+        setAlert({ type: 'error', message: `Failed to query notification status` });
+      }
+    } catch (error: any) {
+      console.error('Error querying notification status:', error);
+      setAlert({ 
+        type: 'error', 
+        message: `Error querying notification status: ${error.response?.data?.Message || error.message}` 
+      });
+    } finally {
+      setCreatingStates(prev => ({ ...prev, [index]: false }));
+    }
+  };
+
+  // Query all notification statuses
+  const queryAllNotificationStatuses = async () => {
+    if (previewMode) {
+      setAlert({ type: 'info', message: `Preview: Would query ${exampleQueries.length} notification statuses` });
+      return;
+    }
+
+    if (apiStatus !== 'connected') {
+      setAlert({ type: 'error', message: 'API is not connected. Please use preview mode.' });
+      return;
+    }
+
+    setQueryingAll(true);
+    setQueriedCount(0);
+    
+    for (let i = 0; i < exampleQueries.length; i++) {
+      try {
+        const result = await NotificationAPI.getStatus(exampleQueries[i]);
+        if (result.Status) {
+          setQueriedCount(prev => prev + 1);
         }
-    };
+      } catch (error) {
+        console.error(`Error querying notification status ${i + 1}:`, error);
+      }
+      // Small delay between requests
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+    
+    setQueryingAll(false);
+    setAlert({ 
+      type: 'success', 
+      message: `Batch query completed! Queried ${queriedCount} out of ${exampleQueries.length} notification statuses.` 
+    });
+  };
 
-    // Example 2: User-specific Notification
-    const createUserNotification = async () => {
-        setLoading('user');
-        try {
-            const result = await NotificationService.createUserNotification(
-                1, // User ID
-                'Welcome Message',
-                'Welcome to HorecaSoft! Your account has been successfully activated.',
-                2 // Medium priority
-            );
-            addResult('User Notification', result);
-        } catch (error) {
-            addResult('User Notification', { success: false, message: 'Error occurred' });
-        } finally {
-            setLoading(null);
-        }
-    };
+  // Get query type info
+  const getQueryTypeInfo = (query: NotificationStatusRequest) => {
+    if (query.NotificationID) {
+      return { label: 'By ID', color: 'primary' as const, icon: '🆔' };
+    }
+    if (query.NotificationCode) {
+      return { label: 'By Code', color: 'secondary' as const, icon: '📝' };
+    }
+    if (query.IsSent !== undefined || query.IsVisit !== undefined) {
+      return { label: 'By Status', color: 'info' as const, icon: '📊' };
+    }
+    return { label: 'General', color: 'default' as const, icon: '🔍' };
+  };
 
-    // Example 3: Bulk Notification
-    const createBulkNotification = async () => {
-        setLoading('bulk');
-        try {
-            const result = await NotificationService.createBulkNotification(
-                {
-                    NotificationTypeID: 2,
-                    Title: 'Important Update',
-                    Message: 'Please update your profile information by the end of this week.',
-                    Priority: 3,
-                    Status: true
-                },
-                [1, 2, 3] // Array of user IDs
-            );
-            addResult('Bulk Notification', result);
-        } catch (error) {
-            addResult('Bulk Notification', { success: false, message: 'Error occurred' });
-        } finally {
-            setLoading(null);
-        }
-    };
-
-    // Example 4: Custom Notification
-    const createCustomNotification = async () => {
-        if (!customTitle || !customMessage) {
-            addResult('Custom Notification', { success: false, message: 'Title and message are required' });
-            return;
-        }
-
-        setLoading('custom');
-        try {
-            const result = await NotificationService.createUserNotification(
-                customUserId,
-                customTitle,
-                customMessage,
-                customPriority
-            );
-            addResult('Custom Notification', result);
-            // Clear form on success
-            if (result.success) {
-                setCustomTitle('');
-                setCustomMessage('');
-            }
-        } catch (error) {
-            addResult('Custom Notification', { success: false, message: 'Error occurred' });
-        } finally {
-            setLoading(null);
-        }
-    };
-
-    // Example 5: Role-based Notification
-    const createRoleNotification = async () => {
-        setLoading('role');
-        try {
-            const result = await NotificationService.createNotification({
-                NotificationTypeID: 1, // User Roles
-                Title: 'Policy Update',
-                Message: 'New company policies have been updated. Please review them in the policy section.',
-                Priority: 3,
-                Status: true
-            });
-            addResult('Role-based Notification', result);
-        } catch (error) {
-            addResult('Role-based Notification', { success: false, message: 'Error occurred' });
-        } finally {
-            setLoading(null);
-        }
-    };
-
-    return (
-        <Box sx={{ p: 3 }}>
-            <Typography variant="h4" gutterBottom>
-                HoracaSoft Notification API Examples
+  return (
+    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3 }}>
+      <Card elevation={3}>
+        <CardContent sx={{ p: 4 }}>
+          {/* Header */}
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 2 }}>
+              <NotificationsIcon color="primary" sx={{ fontSize: 32 }} />
+              <Typography variant="h4" component="h1" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                Notification Query Examples
+              </Typography>
+            </Box>
+            <Typography variant="body1" color="text.secondary">
+              {previewMode
+                ? 'Preview mode: Test notification queries without sending'
+                : 'Query notification statuses through the API platform'}
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-                Demonstration of various notification creation patterns using the HoracaSoft API
-            </Typography>
+          </Box>
 
+          {/* API Status */}
+          <Box sx={{ mb: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                API Connection
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={testConnection}
+                disabled={apiStatus === 'checking'}
+                startIcon={apiStatus === 'checking' ? <CircularProgress size={16} /> : <RefreshIcon />}
+              >
+                Test Connection
+              </Button>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {apiStatus === 'checking' && (
+                <>
+                  <CircularProgress size={16} />
+                  <Typography variant="body2" color="text.secondary">
+                    Testing connection...
+                  </Typography>
+                </>
+              )}
+              {apiStatus === 'connected' && (
+                <>
+                  <WifiIcon color="success" />
+                  <Typography variant="body2" color="success.main">
+                    Connected to API
+                  </Typography>
+                </>
+              )}
+              {apiStatus === 'error' && (
+                <>
+                  <WifiOffIcon color="error" />
+                  <Typography variant="body2" color="error.main">
+                    Connection failed
+                  </Typography>
+                </>
+              )}
+            </Box>
+          </Box>
+
+          {/* Preview Mode Toggle */}
+          <Box sx={{ mb: 3 }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={previewMode}
+                  onChange={(e) => setPreviewMode(e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="Preview Mode (Test without API calls)"
+            />
+          </Box>
+
+          {/* Alert */}
+          {alert && (
+            <Alert severity={alert.type} sx={{ mb: 3 }} onClose={() => setAlert(null)}>
+              {alert.message}
+            </Alert>
+          )}
+
+          {/* Examples */}
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+              Example Notification Queries
+            </Typography>
+            
             <Grid container spacing={3}>
-                {/* Predefined Examples */}
-                <Grid item xs={12} md={8}>
-                    <Typography variant="h6" gutterBottom>
-                        Predefined Examples
-                    </Typography>
-                    
-                    <Grid container spacing={2}>
-                        {/* System Notification */}
-                        <Grid item xs={12} sm={6}>
-                            <Card>
-                                <CardContent>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                        <WarningIcon color="error" sx={{ mr: 1 }} />
-                                        <Typography variant="h6">System Notification</Typography>
-                                    </Box>
-                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                        High priority system-wide notification for all users
-                                    </Typography>
-                                    <Chip label="Critical Priority" color="error" size="small" sx={{ mb: 2 }} />
-                                    <Button
-                                        fullWidth
-                                        variant="contained"
-                                        onClick={createSystemNotification}
-                                        disabled={loading === 'system'}
-                                        color="error"
-                                    >
-                                        {loading === 'system' ? 'Creating...' : 'Create System Alert'}
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-
-                        {/* User Notification */}
-                        <Grid item xs={12} sm={6}>
-                            <Card>
-                                <CardContent>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                        <PersonIcon color="primary" sx={{ mr: 1 }} />
-                                        <Typography variant="h6">User Notification</Typography>
-                                    </Box>
-                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                        Targeted notification for a specific user
-                                    </Typography>
-                                    <Chip label="Medium Priority" color="info" size="small" sx={{ mb: 2 }} />
-                                    <Button
-                                        fullWidth
-                                        variant="contained"
-                                        onClick={createUserNotification}
-                                        disabled={loading === 'user'}
-                                    >
-                                        {loading === 'user' ? 'Creating...' : 'Create User Message'}
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-
-                        {/* Bulk Notification */}
-                        <Grid item xs={12} sm={6}>
-                            <Card>
-                                <CardContent>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                        <GroupIcon color="warning" sx={{ mr: 1 }} />
-                                        <Typography variant="h6">Bulk Notification</Typography>
-                                    </Box>
-                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                        Send notification to multiple users at once
-                                    </Typography>
-                                    <Chip label="High Priority" color="warning" size="small" sx={{ mb: 2 }} />
-                                    <Button
-                                        fullWidth
-                                        variant="contained"
-                                        onClick={createBulkNotification}
-                                        disabled={loading === 'bulk'}
-                                        color="warning"
-                                    >
-                                        {loading === 'bulk' ? 'Creating...' : 'Send to Multiple Users'}
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-
-                        {/* Role-based Notification */}
-                        <Grid item xs={12} sm={6}>
-                            <Card>
-                                <CardContent>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                        <InfoIcon color="success" sx={{ mr: 1 }} />
-                                        <Typography variant="h6">Role-based</Typography>
-                                    </Box>
-                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                        Notification sent to users based on their roles
-                                    </Typography>
-                                    <Chip label="High Priority" color="warning" size="small" sx={{ mb: 2 }} />
-                                    <Button
-                                        fullWidth
-                                        variant="contained"
-                                        onClick={createRoleNotification}
-                                        disabled={loading === 'role'}
-                                        color="success"
-                                    >
-                                        {loading === 'role' ? 'Creating...' : 'Send to Roles'}
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    </Grid>
-                </Grid>
-
-                {/* Custom Notification Form */}
-                <Grid item xs={12} md={4}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Custom Notification
+              {exampleQueries.map((query, index) => {
+                const queryInfo = getQueryTypeInfo(query);
+                const isQuerying = creatingStates[index];
+                
+                return (
+                  <Grid item xs={12} md={6} key={index}>
+                    <Card 
+                      variant="outlined" 
+                      sx={{ 
+                        height: '100%',
+                        transition: 'all 0.2s ease-in-out',
+                        '&:hover': {
+                          transform: 'translateY(-2px)',
+                          boxShadow: 2,
+                        },
+                      }}
+                    >
+                      <CardContent>
+                        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
+                          <Box sx={{ flex: 1 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                              Query {index + 1}: {queryInfo.label}
                             </Typography>
-                            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                Create a custom notification with your own content
+                            <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
+                              {JSON.stringify(query, null, 2)}
                             </Typography>
-                            
-                            <TextField
-                                fullWidth
-                                label="Title"
-                                value={customTitle}
-                                onChange={(e) => setCustomTitle(e.target.value)}
-                                margin="dense"
-                                size="small"
-                            />
-                            
-                            <TextField
-                                fullWidth
-                                label="Message"
-                                value={customMessage}
-                                onChange={(e) => setCustomMessage(e.target.value)}
-                                margin="dense"
-                                size="small"
-                                multiline
-                                rows={3}
-                            />
-                            
-                            <TextField
-                                fullWidth
-                                label="User ID"
-                                type="number"
-                                value={customUserId}
-                                onChange={(e) => setCustomUserId(Number(e.target.value))}
-                                margin="dense"
-                                size="small"
-                            />
-                            
-                            <FormControl fullWidth margin="dense" size="small">
-                                <InputLabel>Priority</InputLabel>
-                                <Select
-                                    value={customPriority}
-                                    label="Priority"
-                                    onChange={(e) => setCustomPriority(Number(e.target.value))}
-                                >
-                                    <MenuItem value={1}>Low</MenuItem>
-                                    <MenuItem value={2}>Medium</MenuItem>
-                                    <MenuItem value={3}>High</MenuItem>
-                                    <MenuItem value={4}>Critical</MenuItem>
-                                </Select>
-                            </FormControl>
-                            
-                            <Button
-                                fullWidth
-                                variant="contained"
-                                onClick={createCustomNotification}
-                                disabled={loading === 'custom' || !customTitle || !customMessage}
-                                sx={{ mt: 2 }}
-                            >
-                                {loading === 'custom' ? 'Creating...' : 'Send Custom Notification'}
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
-
-                {/* Results */}
-                <Grid item xs={12}>
-                    <Typography variant="h6" gutterBottom>
-                        Recent Results
-                    </Typography>
-                    {results.length === 0 ? (
-                        <Alert severity="info">No notifications created yet. Try the examples above!</Alert>
-                    ) : (
-                        <Box>
-                            {results.map((result) => (
-                                <Alert
-                                    key={result.id}
-                                    severity={result.success ? 'success' : 'error'}
-                                    sx={{ mb: 1 }}
-                                >
-                                    <Typography variant="subtitle2">
-                                        {result.type} - {result.timestamp}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        {result.message}
-                                        {result.totalSent && (
-                                            <span> (Sent: {result.totalSent}, Failed: {result.totalFailed})</span>
-                                        )}
-                                    </Typography>
-                                </Alert>
-                            ))}
+                          </Box>
+                          <Typography sx={{ fontSize: '1.5rem', ml: 1 }}>
+                            {queryInfo.icon}
+                          </Typography>
                         </Box>
-                    )}
-                </Grid>
+                        
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+                          <Chip
+                            label={queryInfo.label}
+                            color={queryInfo.color}
+                            size="small"
+                          />
+                          {query.NotificationID && (
+                            <Chip
+                              label={`ID: ${query.NotificationID}`}
+                              size="small"
+                              variant="outlined"
+                            />
+                          )}
+                          {query.NotificationCode && (
+                            <Chip
+                              label={`Code: ${query.NotificationCode}`}
+                              size="small"
+                              variant="outlined"
+                            />
+                          )}
+                          {query.IsSent !== undefined && (
+                            <Chip
+                              label={`Sent: ${query.IsSent}`}
+                              size="small"
+                              color={query.IsSent ? 'success' : 'error'}
+                            />
+                          )}
+                          {query.IsVisit !== undefined && (
+                            <Chip
+                              label={`Visit: ${query.IsVisit}`}
+                              size="small"
+                              color={query.IsVisit ? 'success' : 'error'}
+                            />
+                          )}
+                        </Box>
+                        
+                        <Button
+                          variant="contained"
+                          size="small"
+                          fullWidth
+                          disabled={isQuerying || (apiStatus !== 'connected' && !previewMode)}
+                          onClick={() => queryNotificationStatus(query, index)}
+                          startIcon={isQuerying ? <CircularProgress size={16} /> : <SendIcon />}
+                        >
+                          {isQuerying ? 'Querying...' : previewMode ? 'Preview' : 'Query'}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                );
+              })}
             </Grid>
-        </Box>
-    );
-};
 
-export default NotificationExamples;
+            <Box sx={{ mt: 4, textAlign: 'center' }}>
+              <Button
+                variant="outlined"
+                size="large"
+                disabled={queryingAll || (apiStatus !== 'connected' && !previewMode)}
+                onClick={queryAllNotificationStatuses}
+                startIcon={queryingAll ? <CircularProgress size={20} /> : <SendIcon />}
+                sx={{ minWidth: 200 }}
+              >
+                {queryingAll
+                  ? `Querying... (${queriedCount}/${exampleQueries.length})`
+                  : previewMode
+                  ? 'Preview All'
+                  : 'Query All Examples'}
+              </Button>
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+}

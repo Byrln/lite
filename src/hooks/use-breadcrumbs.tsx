@@ -88,6 +88,13 @@ export function useBreadcrumbs(sideBarData?: any[]): BreadcrumbItem[] {
       })
       return breadcrumbs
     }
+    if (currentPath === '/transaction/edit/[id]') {
+      breadcrumbs.push({
+        title: intl.formatMessage({ id: 'MenuEditTransaction', defaultMessage: 'Edit Transaction' }),
+        isCurrentPage: true
+      })
+      return breadcrumbs
+    }
 
     // Find the current page in the sidebar configuration
     const result = findMenuItemByPath(configToUse, currentPath, intl)

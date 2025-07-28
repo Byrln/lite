@@ -98,16 +98,19 @@ const ItemDetail = ({
                 ) : (
                   <></>
                 )}
-                <h4>{reservation?.GuestName}</h4>{" "}
-                <div>
-                  ({reservation?.Adult}/{reservation?.Child})
-                </div>{" "}
-                <div> {reservation?.GuestPhone}</div>
+                <div className="flex items-center gap-2">  <h4>{reservation?.GuestName}</h4>
+                  <div className="text-sm lowercase">{" "}( {reservation?.Adult} {intl.formatMessage({
+                    id: "TextAdult",
+                  })} / {reservation?.Child} {intl.formatMessage({
+                    id: "TextChild",
+                  })}){" "}</div>
+                </div>
               </div>
+              <div>{reservation?.GuestPhone}</div>
               <div>{reservation?.GuestEmail}</div>
             </Grid>
             <Grid item xs={6}>
-              <Box className="flex"
+              <Box className="flex justify-end"
               >
                 <div className="flex items-center space-x-2">
                   <p style={{ fontSize: "12px" }} className="text-center">
@@ -123,13 +126,14 @@ const ItemDetail = ({
                       backgroundColor:
                         "#" + reservation.StatusColor,
                       color: "white",
-                      mb: 1,
                     }}
                   >
-                    <Typography>
+                    <p className="text-sm font-bold">
                       {reservation &&
-                        reservation.StatusCode}
-                    </Typography>
+                        intl.formatMessage({
+                          id: reservation.StatusCode,
+                        })}
+                    </p>
                   </Paper>
                 </div>
               </Box>

@@ -100,6 +100,14 @@ body::-webkit-scrollbar {
   .print-hide-buttons {
     display: none;
   }
+  .hide-print {
+    display: none !important;
+  }
+  /* Hide DataGrid action columns during print */
+  .MuiDataGrid-root .MuiDataGrid-cell[data-field="actionButtons"],
+  .MuiDataGrid-root .MuiDataGrid-columnHeader[data-field="actionButtons"] {
+    display: none !important;
+  }
 }
 
 .m-0 {
