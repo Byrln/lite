@@ -24,6 +24,7 @@ import VipStatusSelect from "components/select/vip-status";
 
 import { countNights } from "lib/utils/format-time";
 import ColorPicker from "@/components/select/color";
+import { generateIncrementedId } from "../../new-calendar/test2";
 
 
 
@@ -122,21 +123,41 @@ const NewEdit = ({
       // Set Adult and Child values
       const adultValue = RoomType?.BaseAdult || BaseAdult || 1;
       const childValue = RoomType?.BaseChild || BaseChild || 0;
-      
+
       setSelectedAdult(adultValue);
       setSelectedChild(childValue);
-      
+
       // Update form values
       if (typeof setValue === 'function') {
         setValue(`TransactionDetail[${id}].Adult`, adultValue);
         setValue(`TransactionDetail[${id}].Child`, childValue);
-        
-        // Auto-fill other default fields
-        setValue(`TransactionDetail[${id}].Name`, 'Guest ' + (id + 1));
+
+        const generateUniqueGuestId = () => {
+          return generateIncrementedId(id + 1, 0, (proposedId) => {
+            const proposedName = `Зочин ${proposedId}`;
+            try {
+              const allValues = getValues();
+              if (allValues && allValues.TransactionDetail) {
+                for (let i = 0; i < allValues.TransactionDetail.length; i++) {
+                  if (i !== id && allValues.TransactionDetail[i]?.Name === proposedName) {
+                    return true;
+                  }
+                }
+              }
+            } catch (error) {
+              return false;
+            }
+            return false;
+          });
+        };
+
+        const uniqueGuestId = generateUniqueGuestId();
+
+        setValue(`TransactionDetail[${id}].Name`, `Зочин ${uniqueGuestId}`);
         setValue(`TransactionDetail[${id}].GuestDetail.Email`, '');
         setValue(`TransactionDetail[${id}].GuestDetail.Mobile`, '');
         setValue(`TransactionDetail[${id}].GuestDetail.Name`, 'Guest');
-        setValue(`TransactionDetail[${id}].GuestDetail.Surname`, (id + 1).toString());
+        setValue(`TransactionDetail[${id}].GuestDetail.Surname`, uniqueGuestId.toString());
         setValue(`TransactionDetail[${id}].GuestDetail.CountryID`, 0);
         setValue(`TransactionDetail[${id}].GuestDetail.VipStatusID`, 0);
         setValue(`TransactionDetail[${id}].GuestDetail.GuestTitleID`, 0);
@@ -144,35 +165,23 @@ const NewEdit = ({
         setValue(`TransactionDetail[${id}].GuestDetail.RegistryNo`, '');
       }
     }
-  }, [useDefaultValues, RoomType, BaseAdult, BaseChild, id, setValue]);
+  }, [useDefaultValues, RoomType, BaseAdult, BaseChild, id, setValue, getValues]);
 
   useEffect(() => {
-    // console.log('In RoomTypeID useEffect - id:', id);
-    // console.log('In RoomTypeID useEffect - resetField type:', typeof resetField);
-    // console.log('In RoomTypeID useEffect - setValue type:', typeof setValue);
-
     if (getValues(`TransactionDetail[${id}]`)) {
-      // console.log(`TransactionDetail[${id}] exists:`, getValues(`TransactionDetail[${id}]`));
-
       if (getValues(`TransactionDetail[${id}].RoomTypeID`)) {
-        // console.log(`TransactionDetail[${id}].RoomTypeID exists:`, getValues(`TransactionDetail[${id}].RoomTypeID`));
         setRoomTypeID(getValues(`TransactionDetail[${id}].RoomTypeID`));
       } else if (field && field.RoomTypeID) {
-        // console.log('Using field.RoomTypeID:', field.RoomTypeID);
         setRoomTypeID(field.RoomTypeID);
 
         try {
           if (typeof resetField === 'function') {
-            // console.log(`Attempting to call resetField with TransactionDetail.${id}.RoomTypeID`);
             resetField(`TransactionDetail.${id}.RoomTypeID`, {
               defaultValue: field.RoomTypeID,
             });
-            // console.log('resetField call for RoomTypeID completed successfully');
           }
           else if (typeof setValue === 'function') {
-            // console.log(`Falling back to setValue for TransactionDetail[${id}].RoomTypeID`);
             setValue(`TransactionDetail[${id}].RoomTypeID`, field.RoomTypeID);
-            // console.log('setValue call for RoomTypeID completed successfully');
           } else {
             console.error('Neither resetField nor setValue is a function in RoomTypeID useEffect');
           }
@@ -189,24 +198,18 @@ const NewEdit = ({
       }
 
       if (getValues(`TransactionDetail[${id}].RoomID`)) {
-        // console.log(`TransactionDetail[${id}].RoomID exists:`, getValues(`TransactionDetail[${id}].RoomID`));
         setRoomID(Number(getValues(`TransactionDetail[${id}].RoomID`)));
       } else if (field && field.RoomID) {
-        // console.log('Using field.RoomID:', field.RoomID);
         setRoomID(field.RoomID);
 
         try {
           if (typeof resetField === 'function') {
-            // console.log(`Attempting to call resetField with TransactionDetail.${id}.RoomID`);
             resetField(`TransactionDetail.${id}.RoomID`, {
               defaultValue: field.RoomID,
             });
-            // console.log('resetField call for RoomID completed successfully');
           }
           else if (typeof setValue === 'function') {
-            // console.log(`Falling back to setValue for TransactionDetail[${id}].RoomID`);
             setValue(`TransactionDetail[${id}].RoomID`, field.RoomID);
-            // console.log('setValue call for RoomID completed successfully');
           } else {
             console.error('Neither resetField nor setValue is a function in RoomID useEffect');
           }
@@ -235,21 +238,16 @@ const NewEdit = ({
             }
           }
           if (rate) {
-            // console.log('Using rate:', rate);
             setRate(rate);
 
             try {
               if (typeof resetField === 'function') {
-                // console.log(`Attempting to call resetField with TransactionDetail.${id}.RateTypeID`);
                 resetField(`TransactionDetail.${id}.RateTypeID`, {
                   defaultValue: rate.RateTypeID,
                 });
-                // console.log('resetField call for RateTypeID completed successfully');
               }
               else if (typeof setValue === 'function') {
-                // console.log(`Falling back to setValue for TransactionDetail[${id}].RateTypeID`);
                 setValue(`TransactionDetail[${id}].RateTypeID`, rate.RateTypeID);
-                // console.log('setValue call for RateTypeID completed successfully');
               } else {
                 console.error('Neither resetField nor setValue is a function in RateTypeID section');
               }
@@ -274,21 +272,16 @@ const NewEdit = ({
         }
       } else {
         if (rateTypeData) {
-          console.log('Using default rateTypeData[0]:', rateTypeData[0]);
           setRate(rateTypeData[0]);
 
           try {
             if (typeof resetField === 'function') {
-              // console.log(`Attempting to call resetField with TransactionDetail.${id}.RateTypeID for default`);
               resetField(`TransactionDetail.${id}.RateTypeID`, {
                 defaultValue: rateTypeData[0].RateTypeID,
               });
-              // console.log('resetField call for default RateTypeID completed successfully');
             }
             else if (typeof setValue === 'function') {
-              // console.log(`Falling back to setValue for TransactionDetail[${id}].RateTypeID for default`);
               setValue(`TransactionDetail[${id}].RateTypeID`, rateTypeData[0].RateTypeID);
-              // console.log('setValue call for default RateTypeID completed successfully');
             } else {
               console.error('Neither resetField nor setValue is a function in default RateTypeID section');
             }
@@ -321,20 +314,16 @@ const NewEdit = ({
 
         try {
           if (typeof resetField === 'function') {
-            // console.log(`Attempting to call resetField with TransactionDetail.${id}.CurrencyAmount`);
             resetField(`TransactionDetail.${id}.CurrencyAmount`, {
               defaultValue: getValues(
                 `TransactionDetail[${id}].CurrencyAmount`
               ),
             });
-            // console.log('resetField call for CurrencyAmount completed successfully');
           }
           else if (typeof setValue === 'function') {
-            // console.log(`Falling back to setValue for TransactionDetail[${id}].CurrencyAmount`);
             setValue(`TransactionDetail[${id}].CurrencyAmount`, getValues(
               `TransactionDetail[${id}].CurrencyAmount`
             ));
-            // console.log('setValue call for CurrencyAmount completed successfully');
           } else {
             console.error('Neither resetField nor setValue is a function in CurrencyAmount section');
           }
@@ -428,21 +417,16 @@ const NewEdit = ({
       }
     } else {
       if (rateTypeData) {
-        // console.log('Using default rateTypeData[0] in else block:', rateTypeData[0]);
         setRate(rateTypeData[0]);
 
         try {
           if (typeof resetField === 'function') {
-            // console.log(`Attempting to call resetField with TransactionDetail.${id}.RateTypeID in else block`);
             resetField(`TransactionDetail.${id}.RateTypeID`, {
               defaultValue: rateTypeData[0].RateTypeID,
             });
-            // console.log('resetField call for RateTypeID in else block completed successfully');
           }
           else if (typeof setValue === 'function') {
-            // console.log(`Falling back to setValue for TransactionDetail[${id}].RateTypeID in else block`);
             setValue(`TransactionDetail[${id}].RateTypeID`, rateTypeData[0].RateTypeID);
-            // console.log('setValue call for RateTypeID in else block completed successfully');
           } else {
             console.error('Neither resetField nor setValue is a function in else block RateTypeID section');
           }
@@ -491,9 +475,7 @@ const NewEdit = ({
         });
       }
       else if (typeof setValue === 'function') {
-        // console.log(`Falling back to setValue for TransactionDetail[${id}].Adult`);
         setValue(`TransactionDetail[${id}].Adult`, evt.target.value);
-        // console.log('setValue call for Adult completed successfully');
       } else {
         console.error('Neither resetField nor setValue is a function in onAdultChange');
       }
@@ -510,24 +492,18 @@ const NewEdit = ({
   };
 
   const onChildChange = (evt: any) => {
-    // console.log('In onChildChange - resetField type:', typeof resetField);
-    // console.log('In onChildChange - setValue type:', typeof setValue);
-    // console.log('In onChildChange - value:', evt.target.value);
 
     setSelectedChild(evt.target.value);
 
     try {
       if (typeof resetField === 'function') {
-        // console.log(`Attempting to call resetField with TransactionDetail.${id}.Child`);
         resetField(`TransactionDetail.${id}.Child`, {
           defaultValue: evt.target.value,
         });
         console.log('resetField call for Child completed successfully');
       }
       else if (typeof setValue === 'function') {
-        // console.log(`Falling back to setValue for TransactionDetail[${id}].Child`);
         setValue(`TransactionDetail[${id}].Child`, evt.target.value);
-        // console.log('setValue call for Child completed successfully');
       } else {
         console.error('Neither resetField nor setValue is a function in onChildChange');
       }
@@ -660,7 +636,7 @@ const NewEdit = ({
             {intl.formatMessage({
               id: "TextRoom",
             })}{" "}
-            {id + 1}
+            {generateIncrementedId(id, 1)}
           </Typography>
         </Grid>
         <Grid item xs={6} sm={6} md={4}>

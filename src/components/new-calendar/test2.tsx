@@ -20,6 +20,16 @@ import {
   Typography,
   Checkbox,
   IconButton,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  InputAdornment,
+  Card,
+  CardContent,
+  Chip,
+  Divider,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { RoomTypeAPI } from "lib/api/room-type";
@@ -43,6 +53,54 @@ import RoomTypeCustomSelect from "components/select/room-type-custom";
 import DatePickerCustom from "../mui/MuiDatePickerCustom";
 import Image from "next/image";
 
+// Utility function to generate incremented IDs
+export const generateIncrementedId = (baseId: string | number, increment: number = 1, conflictChecker?: (id: string | number) => boolean): string | number => {
+  if (conflictChecker) {
+    let currentId = typeof baseId === 'number' ? baseId + increment : baseId;
+    let attempts = 0;
+    const maxAttempts = 1000; // Prevent infinite loops
+
+    while (attempts < maxAttempts) {
+      if (typeof currentId === 'number') {
+        if (!conflictChecker(currentId)) {
+          return currentId;
+        }
+        currentId = currentId + 1;
+      } else {
+        const numMatch = currentId.toString().match(/(\d+)$/);
+        if (numMatch) {
+          const baseStr = currentId.toString().replace(/(\d+)$/, '');
+          const num = parseInt(numMatch[1]);
+          const testId = `${baseStr}${num}`;
+          if (!conflictChecker(testId)) {
+            return testId;
+          }
+          currentId = `${baseStr}${num + 1}`;
+        } else {
+          const testId = `${currentId}_${attempts + 1}`;
+          if (!conflictChecker(testId)) {
+            return testId;
+          }
+          currentId = testId;
+        }
+      }
+      attempts++;
+    }
+    return typeof baseId === 'number' ? baseId + increment + attempts : `${baseId}_${increment + attempts}`;
+  }
+
+  if (typeof baseId === 'number') {
+    return (baseId + increment).toString();
+  }
+  const numMatch = baseId.match(/(\d+)$/);
+  if (numMatch) {
+    const baseStr = baseId.replace(/(\d+)$/, '');
+    const num = parseInt(numMatch[1]) + increment;
+    return `${baseStr}${num}`;
+  }
+  return `${baseId}_${increment}`;
+};
+
 const MyCalendar: React.FC = ({ workingDate }: any) => {
   const intl = useIntl();
   const [state, dispatch]: any = useAppState();
@@ -57,6 +115,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
   const [isHoverEnabled, setIsHoverEnabled] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
+  // Search functionality moved to dashboard navbar
+  const [reservationItems, setReservationItems] = useState<any>(null);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -91,6 +151,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
       date1.getDate() === date2.getDate()
     );
   }
+
+  // Search functionality moved to dashboard navbar
+
+  // Search modal handlers moved to dashboard navbar
+
+  // Reservation click handler moved to dashboard navbar
 
   const customHeader = (info: any) => {
     const dateText =
@@ -181,7 +247,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   const [isCalendarLoading, setIsCalendarLoading] = useState(false);
   const [height, setHeight] = useState<any>(null);
   const [availableRooms, setAvailableRooms] = useState<any>(null);
-  const [reservationItems, setReservationItems] = useState<any>(null);
   const [currentView, setCurrentView] = useState("resourceTimeline");
 
   useEffect(() => {
@@ -266,6 +331,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         let roomTypesObj: any = [];
         let newItemDta: any = [];
 
+
+
         let doesCombinationExist = function (
           eventsArray: any,
           startDateToCheck: any,
@@ -284,7 +351,16 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
         if (items) {
           newItemDta = items.map((obj: any) => {
-            console.log("obj", obj);
+            // Debug Balance values
+            if (obj.Balance && obj.Balance.toString().includes('1')) {
+              console.log("Found Balance with '1':", {
+                TransactionID: obj.TransactionID,
+                GuestName: obj.GuestName,
+                Balance: obj.Balance,
+                BalanceType: typeof obj.Balance,
+                BalanceString: obj.Balance.toString()
+              });
+            }
             return obj.RoomID
               ? {
                 id: obj.TransactionID,
@@ -367,7 +443,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
           letNewEvents = groupedEvents.flatMap((dateGroup: any) => {
             return dateGroup.map((level2: any, index: any) => {
               return {
-                id: `${level2.resourceId}-${index}`,
+                id: generateIncrementedId(level2.resourceId, index),
                 title: level2.count,
                 start: `${level2.date} 00:00:00`,
                 end: `${level2.date} 23:59:59`,
@@ -410,7 +486,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               const newStatusCheckedOutDta =
                 statusCheckedOutItems.map((obj: any) => {
                   return {
-                    id: `${obj.TransactionID}_checkout`,
+                    id: generateIncrementedId(`${obj.TransactionID}_checkout`, 0),
                     title: "Checked Out",
                     start: obj.StartDate,
                     end: obj.EndDate,
@@ -920,6 +996,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
           ) : arg.event.title == "Blocked" ? (
             <div
               style={{
+                display: 'flex',
                 padding: "8px",
                 fontWeight: 500,
                 color: "#ff4842",
@@ -974,6 +1051,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     <>
                       <span
                         style={{
+                          display: "flex", alignItems: 'center',
                           color: "rgba(255,255,255,0.7)",
                         }}
                       >
@@ -998,7 +1076,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   )}
 
                 <span
-                  style={{ color: "rgba(255,255,255,0.7)" }}
+                  style={{ display: "flex", alignItems: 'center', color: "rgba(255,255,255,0.7)" }}
                 >
                   <Iconify
                     icon="mdi:account-outline"
@@ -1019,6 +1097,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   <>
                     <span
                       style={{
+                        display: "flex", alignItems: 'center',
                         color: "rgba(255,255,255,0.7)",
                       }}
                     >
@@ -1040,7 +1119,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 )}
 
                 <span
-                  style={{ color: "rgba(255,255,255,0.7)" }}
+                  style={{ display: "flex", alignItems: 'center', color: "rgba(255,255,255,0.7)" }}
                 >
                   <Iconify
                     icon="vaadin:cash"
@@ -1053,14 +1132,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   Balance:
                 </span>
                 <span style={{ fontWeight: 500 }}>
-                  {Number(
-                    arg.event._def.extendedProps.Balance
-                  ).toLocaleString()}
+                  {Number(arg.event._def.extendedProps.Balance).toLocaleString()}
                   ₮
                 </span>
 
                 <span
-                  style={{ color: "rgba(255,255,255,0.7)" }}
+                  style={{ display: "flex", alignItems: 'center', color: "rgba(255,255,255,0.7)" }}
                 >
                   <Iconify
                     icon="fluent:food-16-regular"
@@ -1367,6 +1444,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   className="w-7 h-4"
                 />
               </Button>
+
+              {/* Search Button moved to dashboard navbar */}
 
               {/* Hover Toggle */}
               <div className="flex items-center space-x-2 bg-white border border-[#804FE6] rounded-full px-3 py-2 shadow-sm cursor-pointer" onClick={() => setIsHoverEnabled(!isHoverEnabled)}>
@@ -2372,6 +2451,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               />
             )}
         </div>
+
+        {/* Search Modal moved to dashboard navbar */}
       </>
     )
   );

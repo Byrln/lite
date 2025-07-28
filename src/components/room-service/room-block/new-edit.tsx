@@ -23,6 +23,7 @@ const validationSchema = yup.object().shape({
     BeginDate: yup.string().required("Бөглөнө үү"),
     EndDate: yup.string().required("Бөглөнө үү"),
     ReasonID: yup.string().notRequired(),
+    RoomTypeID: yup.number().nullable().notRequired(),
 });
 
 const NewEdit = () => {
@@ -42,7 +43,9 @@ const NewEdit = () => {
 
     const [baseStay, setBaseStay]: any = useState({
         TransactionID: 0,
-        roomType: "all",
+        roomType: {
+            RoomTypeID: 0
+        },
         dateStart: new Date(),
         dateEnd: new Date(),
         nights: 1,
@@ -82,9 +85,9 @@ const NewEdit = () => {
         var values = {
             TransactionID: baseStay.TransactionID,
             RoomTypeID:
-                baseStay.roomType?.RoomTypeID == "all"
+                baseStay.roomType?.RoomTypeID === 0 || baseStay.roomType?.RoomTypeID === "all"
                     ? 0
-                    : baseStay.roomType?.RoomTypeID,
+                    : baseStay.roomType?.RoomTypeID || 0,
             StartDate: dateToSimpleFormat(baseStay.dateStart),
             EndDate: dateToSimpleFormat(baseStay.dateEnd),
         };
@@ -99,19 +102,21 @@ const NewEdit = () => {
 
     const customSubmit = async (values: any) => {
         try {
-            values.RoomID.forEach((room: any, index: any) => {
-                if (room == true) {
-                    const tempValues = {
-                        RoomID: index,
-                        BeginDate: values.BeginDate,
-                        EndDate: values.EndDate,
-                        ReasonID: values.ReasonID,
-                    };
-                    RoomBlockAPI.new(tempValues);
+            // Process room blocks sequentially to avoid database deadlocks
+            if (data && data.length > 0) {
+                for (const room of data) {
+                    const isChecked = values.RoomID && values.RoomID[room.RoomID];
+                    if (isChecked) {
+                        const tempValues = {
+                            RoomID: room.RoomID,
+                            BeginDate: values.BeginDate,
+                            EndDate: values.EndDate,
+                            ReasonID: values.ReasonID,
+                        };
+                        await RoomBlockAPI.new(tempValues);
+                    }
                 }
-            });
-
-            //
+            }
         } finally {
         }
     };
@@ -151,11 +156,14 @@ const NewEdit = () => {
                                         id: "RowHeaderBeginDate",
                                     })}
                                     value={value}
-                                    onChange={(value) =>
-                                        onChange(
-                                            moment(value).format("YYYY-MM-DD")
-                                        )
-                                    }
+                                    onChange={(value) => {
+                                        const formattedDate = moment(value).format("YYYY-MM-DD");
+                                        onChange(formattedDate);
+                                        setBaseStay({
+                                            ...baseStay,
+                                            dateStart: value
+                                        });
+                                    }}
                                     renderInput={(params) => (
                                         <TextField
                                             size="small"
@@ -189,11 +197,14 @@ const NewEdit = () => {
                                     })}
                                     {...register("EndDate")}
                                     value={value}
-                                    onChange={(value) =>
-                                        onChange(
-                                            moment(value).format("YYYY-MM-DD")
-                                        )
-                                    }
+                                    onChange={(value) => {
+                                        const formattedDate = moment(value).format("YYYY-MM-DD");
+                                        onChange(formattedDate);
+                                        setBaseStay({
+                                            ...baseStay,
+                                            dateEnd: value
+                                        });
+                                    }}
                                     renderInput={(params) => (
                                         <TextField
                                             size="small"
@@ -223,6 +234,7 @@ const NewEdit = () => {
                             register={register}
                             errors={errors}
                             onRoomTypeChange={onRoomTypeChange}
+                            baseStay={baseStay}
                         />
                     </Grid>
                     {data &&

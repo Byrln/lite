@@ -42,9 +42,9 @@ export function TeamSwitcher({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="items-center data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-gray-200 text-sidebar-primary-foreground">
+              <div className="flex mt-1 aspect-square size-8 items-center justify-center rounded-lg bg-gray-200 text-sidebar-primary-foreground">
                 {/* <activeTeam.logo className="size-4" /> */}
                 <Image
                   src="/images/logo_sm.png"
@@ -54,7 +54,7 @@ export function TeamSwitcher({
                   className="w-6 h-4"
                 />
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="flex flex-col text-left text-sm leading-tight">
                 <div className="flex text-lg"><span className="truncate font-semibold">
                   Ho
                 </span>

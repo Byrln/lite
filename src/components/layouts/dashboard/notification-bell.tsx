@@ -133,15 +133,15 @@ function NotificationItem({
                 </Button>
               )}
               <Button
-                 variant="ghost"
-                 size="sm"
-                 className="h-6 w-6 p-0 hover:bg-blue-100 hover:text-blue-600"
-                 onClick={handleDismiss}
-                 disabled={isLoading}
-                 title="Mark as read and dismiss"
-               >
-                 <Eye className="h-3 w-3" />
-               </Button>
+                variant="ghost"
+                size="sm"
+                className="h-6 w-6 p-0 hover:bg-blue-100 hover:text-blue-600"
+                onClick={handleDismiss}
+                disabled={isLoading}
+                title="Mark as read and dismiss"
+              >
+                <Eye className="h-3 w-3" />
+              </Button>
             </div>
           </div>
         </div>
@@ -200,7 +200,7 @@ export default function NotificationBell() {
         NotificationID: notificationId,
         IsRead: true
       })
-      
+
       // Refresh the notifications data
       mutate()
     } catch (error) {

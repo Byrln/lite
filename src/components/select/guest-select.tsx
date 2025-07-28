@@ -88,7 +88,7 @@ const GuestSelect = ({
 
             if (resetField) {
                 resetField(`TransactionDetail.${id}.GuestDetail.GuestName`, {
-                    defaultValue: newValue.label,
+                    defaultValue: "",
                 });
                 resetField(`TransactionDetail.${id}.GuestID`, {
                     defaultValue: null,

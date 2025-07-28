@@ -23,10 +23,10 @@ const NewEdit = ({ timelineCoord, defaultEntity }: any) => {
         roomType: {
             RoomTypeID: defaultEntity
                 ? defaultEntity.RoomTypeID
-                : timelineCoord.RoomTypeID,
+                : timelineCoord?.RoomTypeID || null,
         },
         room: {
-            RoomID: defaultEntity ? defaultEntity.RoomID : timelineCoord.RoomID,
+            RoomID: defaultEntity ? defaultEntity.RoomID : timelineCoord?.RoomID || null,
         },
         dateStart: defaultEntity ? defaultEntity.BeginDate : null,
         dateEnd: defaultEntity ? defaultEntity.EndDate : null,
@@ -49,7 +49,7 @@ const NewEdit = ({ timelineCoord, defaultEntity }: any) => {
     // }, [rowId]);
 
     const validationSchema = yup.object().shape({
-        RoomTypeID: yup.number().required("Бөглөнө үү"),
+        RoomTypeID: yup.number().nullable().required("Бөглөнө үү"),
         BeginDate: yup.date().required("Бөглөнө үү"),
         EndDate: yup.date().required("Бөглөнө үү"),
         ReasonID: yup.number().required("Бөглөнө үү"),

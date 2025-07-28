@@ -11,14 +11,13 @@ interface BreadcrumbItem {
 
 function findMenuItemByPath(config: any[], path: string, intl: any): { item: any; parents: any[] } | null {
   for (const item of config) {
-    // Check if current item matches
     if (item.path === path) {
       return {
         item,
         parents: []
       }
     }
-    
+
     // Check children
     if (item.children) {
       for (const child of item.children) {
@@ -28,7 +27,7 @@ function findMenuItemByPath(config: any[], path: string, intl: any): { item: any
             parents: [item]
           }
         }
-        
+
         // Check nested children
         if (child.children) {
           for (const grandChild of child.children) {
@@ -61,7 +60,7 @@ export function useBreadcrumbs(sideBarData?: any[]): BreadcrumbItem[] {
   const router = useRouter()
   const intl = useIntl()
   const currentPath = router.pathname
-  
+
   return useMemo(() => {
     const breadcrumbs: BreadcrumbItem[] = [
       {
@@ -69,10 +68,10 @@ export function useBreadcrumbs(sideBarData?: any[]): BreadcrumbItem[] {
         href: '/'
       }
     ]
-    
+
     // Use provided sideBarData or fallback to sidebarConfig
     const configToUse = sideBarData || sidebarConfig
-    
+
     // Handle special cases
     if (currentPath === '/' || currentPath === '/dashboard') {
       breadcrumbs.push({
@@ -81,7 +80,7 @@ export function useBreadcrumbs(sideBarData?: any[]): BreadcrumbItem[] {
       })
       return breadcrumbs
     }
-    
+
     if (currentPath === '/faq') {
       breadcrumbs.push({
         title: intl.formatMessage({ id: 'menu.faq', defaultMessage: 'FAQ' }),
@@ -89,13 +88,13 @@ export function useBreadcrumbs(sideBarData?: any[]): BreadcrumbItem[] {
       })
       return breadcrumbs
     }
-    
+
     // Find the current page in the sidebar configuration
     const result = findMenuItemByPath(configToUse, currentPath, intl)
-    
+
     if (result) {
       const { item, parents } = result
-      
+
       // Add parent breadcrumbs
       parents.forEach((parent, index) => {
         breadcrumbs.push({
@@ -103,7 +102,7 @@ export function useBreadcrumbs(sideBarData?: any[]): BreadcrumbItem[] {
           href: parents.length === 1 ? undefined : parent.path // Only link if it's a direct parent
         })
       })
-      
+
       // Add current page
       breadcrumbs.push({
         title: getDisplayTitle(item, intl),
@@ -112,7 +111,7 @@ export function useBreadcrumbs(sideBarData?: any[]): BreadcrumbItem[] {
     } else {
       // Fallback: try to generate breadcrumbs from path segments
       const segments = currentPath.split('/').filter(Boolean)
-      
+
       if (segments.length > 0) {
         // Add a generic current page breadcrumb
         const lastSegment = segments[segments.length - 1]
@@ -120,14 +119,14 @@ export function useBreadcrumbs(sideBarData?: any[]): BreadcrumbItem[] {
           .split('-')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ')
-        
+
         breadcrumbs.push({
           title,
           isCurrentPage: true
         })
       }
     }
-    
+
     return breadcrumbs
   }, [currentPath, intl, sideBarData])
 }

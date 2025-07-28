@@ -77,16 +77,16 @@ const RoomBlockList = ({ title, workingDate }: any) => {
         setLoading(true);
 
         try {
-            entity.forEach(async (room: any) => {
+            // Process room block updates sequentially to avoid database deadlocks
+            for (const room of entity) {
                 if (room.isChecked == true) {
-                    // TODO
                     const tempValues = {
                         RoomBlockID: room.RoomBlockID,
                         Status: false,
                     };
-                    RoomBlockAPI.updateStatus(tempValues);
+                    await RoomBlockAPI.updateStatus(tempValues);
                 }
-            });
+            }
 
             await mutate(listUrl);
 

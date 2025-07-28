@@ -23,6 +23,8 @@ import NotificationBell from "./notification-bell"
 import { CommandPalette, useCommandPalette } from "./command-palette"
 import { Search, Command, Home } from "lucide-react"
 import Link from "next/link"
+import { useIntl } from "react-intl";
+
 
 // Utility function to get the appropriate modifier key based on OS
 const getModifierKey = () => {
@@ -40,6 +42,8 @@ export default function DashboardLayout({ children }: any) {
   const breadcrumbs = useBreadcrumbs(sideBarData)
   const { open, setOpen } = useCommandPalette()
   const [modifierKey, setModifierKey] = useState('Ctrl')
+  const intl = useIntl();
+
 
   useEffect(() => {
     setModifierKey(getModifierKey())
@@ -148,7 +152,9 @@ export default function DashboardLayout({ children }: any) {
               className="relative h-8 w-8 p-0 xl:h-9 xl:w-60 xl:justify-start xl:px-3 xl:py-2"
             >
               <Search className="h-4 w-4 xl:mr-2" />
-              <span className="hidden xl:inline-flex">Search...</span>
+              <span className="hidden xl:inline-flex">{intl.formatMessage({
+                id: "TextSearch",
+              })}</span>
               <kbd className="pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex">
                 <span className="text-xs">{modifierKey}</span>K
               </kbd>

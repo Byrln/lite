@@ -23,6 +23,7 @@ import { ModalContext } from "lib/context/modal";
 import InvoiceSelect from "components/reporting/invoice/select";
 import ReceiptSelect from "components/reporting/receipt/select";
 import EbarimtSelect from "components/reporting/ebarimt/select";
+import GuestRegistrationSelect from "@/components/reporting/guest-registration/index";
 import { formatPrice } from "lib/utils/helpers";
 import EditIcon from "@mui/icons-material/Edit";
 import RoomGroupEdit from "components/transaction/group/room/group-edit";
@@ -251,6 +252,17 @@ const ItemDetail = ({
                 variant={"text"}
                 size="small"
                 style={{ color: "#804fe6" }}
+                onClick={() => {
+                  handleModal(
+                    true,
+                    "Guest Registration Card",
+                    <GuestRegistrationSelect
+                      TransactionID={reservation.TransactionID}
+                    />,
+                    null,
+                    "large"
+                  );
+                }}
               >
                 {intl.formatMessage({
                   id: "ButtonPrintRegistrationForm",

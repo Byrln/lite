@@ -373,38 +373,6 @@ const NewEdit = ({
     }
   };
 
-  // onColorChange function removed as ColorPicker is now in new-form.tsx
-  // The groupColor state is still used for storing the color value
-
-  const handleHelpDialogToggle = (event?: React.MouseEvent) => {
-    if (event) {
-      const buttonRect = event.currentTarget.getBoundingClientRect();
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-      const dialogWidth = 600; // Width of the dialog
-      const dialogHeight = 400; // Approximate height of the dialog
-      let xPos = buttonRect.left;
-      let yPos = buttonRect.bottom + 10;
-      if (xPos + dialogWidth > viewportWidth) {
-        xPos = Math.max(0, viewportWidth - dialogWidth - 20);
-      }
-      if (yPos + dialogHeight > viewportHeight) {
-        yPos = Math.max(0, buttonRect.top - dialogHeight - 10);
-      }
-
-      setDialogPosition({
-        x: xPos,
-        y: yPos
-      });
-    }
-    setHelpDialogOpen(!helpDialogOpen);
-  };
-
-  const handleHelpDialogClose = () => {
-    setHelpDialogOpen(false);
-  };
-
-
   const appBarComponent = (
     <div className="bg-purple-600 shadow-md flex items-center justify-between px-4">
       <div className="flex items-center">
@@ -836,8 +804,10 @@ const NewEdit = ({
                           }
                         }}
                         onKeyDown={(e) => {
-                          // Prevent the Delete key from clearing the time picker
                           if (e.key === "Delete") {
+                            e.preventDefault();
+                          }
+                          if (e.key === "Backspace") {
                             e.preventDefault();
                           }
                         }}
