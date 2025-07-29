@@ -73,21 +73,26 @@ const NewEdit = ({
   workingDate,
   groupID,
   customRerender,
+  ArrivalTime: propArrivalTime,
+  DepartureTime: propDepartureTime,
 }: any) => {
   const intl = useIntl();
   const [CustomerID, setCustomerID]: any = useState(0);
   const [ArrivalDate, setArrivalDate]: any = useState(
     dateStart ? dateStart : workingDate
   );
-  const [ArrivalTime, setArrivalTime]: any = useState("14:00");
+  const [ArrivalTime, setArrivalTime]: any = useState(
+    propArrivalTime || "14:00"
+  );
   const [DepartureTime, setDepartureTime]: any = useState(
-    dateStart &&
+    propDepartureTime ||
+    (dateStart &&
       dateEnd &&
       dateStart.getFullYear() === dateEnd.getFullYear() &&
       dateStart.getMonth() === dateEnd.getMonth() &&
       dateStart.getDate() === dateEnd.getDate()
       ? "18:00"
-      : "12:00"
+      : "12:00")
   );
   const { data: rateTypeData, error: rateTypeError } = RateTypeSWR({});
   const [DepartureDate, setDepartureDate]: any = useState(

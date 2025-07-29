@@ -11,25 +11,11 @@ import { Icon } from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
 import {
   Tooltip,
-  FormControl,
   FormControlLabel,
   RadioGroup,
   Radio,
-  Box,
   Button,
-  Typography,
   Checkbox,
-  IconButton,
-  TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  InputAdornment,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { RoomTypeAPI } from "lib/api/room-type";
@@ -53,12 +39,11 @@ import RoomTypeCustomSelect from "components/select/room-type-custom";
 import DatePickerCustom from "../mui/MuiDatePickerCustom";
 import Image from "next/image";
 
-// Utility function to generate incremented IDs
 export const generateIncrementedId = (baseId: string | number, increment: number = 1, conflictChecker?: (id: string | number) => boolean): string | number => {
   if (conflictChecker) {
     let currentId = typeof baseId === 'number' ? baseId + increment : baseId;
     let attempts = 0;
-    const maxAttempts = 1000; // Prevent infinite loops
+    const maxAttempts = 1000;
 
     while (attempts < maxAttempts) {
       if (typeof currentId === 'number') {
@@ -115,7 +100,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
   const [isHoverEnabled, setIsHoverEnabled] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  // Search functionality moved to dashboard navbar
   const [reservationItems, setReservationItems] = useState<any>(null);
 
   const handleTooltipClose = () => {
@@ -151,12 +135,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
       date1.getDate() === date2.getDate()
     );
   }
-
-  // Search functionality moved to dashboard navbar
-
-  // Search modal handlers moved to dashboard navbar
-
-  // Reservation click handler moved to dashboard navbar
 
   const customHeader = (info: any) => {
     const dateText =
@@ -330,9 +308,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         let letNewEvents: any = null;
         let roomTypesObj: any = [];
         let newItemDta: any = [];
-
-
-
         let doesCombinationExist = function (
           eventsArray: any,
           startDateToCheck: any,
@@ -619,8 +594,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
       const value = event.target.value;
       if (value === "day") {
         await setDayCount(1);
+      } else if (value === "hourly") {
+        await setDayCount(1);
+        setCurrentView("resourceTimelineDay");
       } else {
         await setDayCount(Number(value));
+        setCurrentView("resourceTimeline");
       }
     } finally {
     }
@@ -728,10 +707,22 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
           editId: "",
         });
       }
+      const hasTimeInfo = currentView === "resourceTimelineDay" || currentView === "timeGridDay";
+
+      let arrivalTime = "14:00";
+      let departureTime = "12:00";
+
+      if (hasTimeInfo) {
+        arrivalTime = moment(info.event._instance.range.start).format("HH:mm");
+        departureTime = moment(info.event._instance.range.end).format("HH:mm");
+      }
+
       const newEventObject = {
         title: "New Event",
         ArrivalDate: info.event._instance.range.start,
         DepartureDate: info.event._instance.range.end,
+        ArrivalTime: arrivalTime,
+        DepartureTime: departureTime,
         RoomTypeID: Number(info.event._def.extendedProps.roomTypeID),
         RoomID: Number(info.event._def.resourceIds[0]),
         TransactionID: info.event._def.extendedProps.transactionID,
@@ -778,10 +769,24 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
       }
       setRerenderKey((prevKey) => prevKey + 1);
     } else {
+      // Check if the selection includes time information
+      const hasTimeInfo = currentView === "resourceTimelineDay" || currentView === "timeGridDay";
+
+      // Set default times if no time information is available
+      let arrivalTime = "14:00"; // Default check-in time
+      let departureTime = "12:00"; // Default check-out time
+
+      if (hasTimeInfo) {
+        arrivalTime = moment(info.event._instance.range.start).format("HH:mm");
+        departureTime = moment(info.event._instance.range.end).format("HH:mm");
+      }
+
       const newEventObject = {
         title: "New Event",
         ArrivalDate: info.event._instance.range.start,
         DepartureDate: info.event._instance.range.end,
+        ArrivalTime: arrivalTime,
+        DepartureTime: departureTime,
         RoomTypeID: Number(
           info.newResource._resource.parentId.split("?")[1]
         ),
@@ -846,10 +851,24 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         editId: "",
       });
     }
+    // Check if the selection includes time information
+    const hasTimeInfo = currentView === "resourceTimelineDay" || currentView === "timeGridDay";
+
+    // Set default times if no time information is available
+    let arrivalTime = "14:00"; // Default check-in time
+    let departureTime = "12:00"; // Default check-out time
+
+    if (hasTimeInfo) {
+      arrivalTime = moment(info.event._instance.range.start).format("HH:mm");
+      departureTime = moment(info.event._instance.range.end).format("HH:mm");
+    }
+
     const newEventObject = {
       title: "New Event",
       ArrivalDate: info.event._instance.range.start,
       DepartureDate: info.event._instance.range.end,
+      ArrivalTime: arrivalTime,
+      DepartureTime: departureTime,
       RoomTypeID: Number(info.event._def.extendedProps.roomTypeID),
       RoomID: Number(info.event._def.resourceIds[0]),
       TransactionID: info.event._def.extendedProps.transactionID,
@@ -910,6 +929,19 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         new Date(start) <= new Date(event.end) &&
         new Date(event.end) <= new Date(end)
     );
+
+    // Check if the selection includes time information
+    const hasTimeInfo = currentView === "resourceTimelineDay" || currentView === "timeGridDay";
+
+    // Set default times if no time information is available
+    let arrivalTime = "14:00"; // Default check-in time
+    let departureTime = "12:00"; // Default check-out time
+
+    if (hasTimeInfo) {
+      arrivalTime = moment(start).format("HH:mm");
+      departureTime = moment(end).format("HH:mm");
+    }
+
     const newEventObject = {
       title: "New Event",
       start: start,
@@ -934,6 +966,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
           <NewReservation
             dateStart={start}
             dateEnd={end}
+            ArrivalTime={arrivalTime}
+            DepartureTime={departureTime}
             roomType={newEventObject.roomTypeID}
             room={newEventObject.roomID}
             BaseAdult={newEventObject.BaseAdult}
@@ -1327,6 +1361,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             }
           >
             <div className="flex gap-3 mb-1">
+              {/* Departure Time */}
               <div
                 className="whitespace-nowrap time-info"
                 style={{
@@ -1337,12 +1372,13 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   fontWeight: "500",
                   display: "flex",
                   alignItems: "center",
+                  fontSize: "11px",
                 }}
               >
                 <Iconify
-                  icon="mdi:clock-outline"
-                  width="12px"
-                  style={{ marginRight: "4px" }}
+                  icon="mdi:logout"
+                  width="10px"
+                  style={{ marginRight: "2px" }}
                 />
                 <span>
                   {new Date(
@@ -1566,6 +1602,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   className="flex gap-1"
                 >
                   {[
+                    { value: "hourly", label: <div className="flex items-center gap-1"><Iconify icon="mdi:clock-outline" className="w-4 h-4" /></div> },
                     { value: 7, label: "7 хоног" },
                     { value: 15, label: "15 хоног" },
                     { value: 30, label: "30 хоног" },
@@ -1583,7 +1620,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                       label={period.label}
                       className={`
                       px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer
-                      ${dayCount === period.value
+                      ${(dayCount === period.value) || (period.value === "hourly" && currentView === "resourceTimelineDay")
                           ? "bg-white text-[#804FE6] shadow-sm"
                           : "text-white hover:bg-white/10"
                         }
@@ -1681,8 +1718,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     .add(dayCount, "days")
                     .format("YYYY-MM-DD"),
                 }}
-                slotDuration="24:00:00"
-                slotLabelInterval={{ hours: 24 }}
+                slotDuration={currentView === "resourceTimelineDay" ? "01:00:00" : "24:00:00"}
+                slotLabelInterval={currentView === "resourceTimelineDay" ? { hours: 1 } : { hours: 24 }}
+                slotMinTime={currentView === "resourceTimelineDay" ? "00:00:00" : "00:00:00"}
+                slotMaxTime={currentView === "resourceTimelineDay" ? "24:00:00" : "24:00:00"}
+                selectConstraint={{
+                  start: "00:00:00",
+                  end: "24:00:00"
+                }}
                 resourceAreaWidth={180}
                 slotMinWidth={20}
                 eventBackgroundColor="transparent"
@@ -2446,6 +2489,101 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     slotLabelInterval: "01:00:00",
                     allDaySlot: false,
                     nowIndicator: true,
+                  },
+                  resourceTimelineDay: {
+                    type: "resourceTimeline",
+                    duration: { days: 1 },
+                    slotMinTime: "00:00:00",
+                    slotMaxTime: "24:00:00",
+                    slotDuration: "01:00:00",
+                    slotLabelInterval: "01:00:00",
+                    slotLabelFormat: {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false
+                    },
+                    resourceAreaWidth: 180,
+                    nowIndicator: true,
+                    slotLabelContent: (arg: any) => {
+                      return (
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            fontWeight: "500",
+                            color: "#666",
+                            textAlign: "center",
+                            padding: "4px 2px",
+                          }}
+                        >
+                          {arg.date.toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false
+                          })}
+                        </div>
+                      );
+                    },
+                    dayHeaderContent: (arg: any) => {
+                      const day = arg.date.getDay();
+                      const isWeekend = day === 0 || day === 6;
+                      const monthNames = [
+                        intl.formatMessage({ id: "January" }) || "January",
+                        intl.formatMessage({ id: "February" }) || "February",
+                        intl.formatMessage({ id: "March" }) || "March",
+                        intl.formatMessage({ id: "April" }) || "April",
+                        intl.formatMessage({ id: "May" }) || "May",
+                        intl.formatMessage({ id: "June" }) || "June",
+                        intl.formatMessage({ id: "July" }) || "July",
+                        intl.formatMessage({ id: "August" }) || "August",
+                        intl.formatMessage({ id: "September" }) || "September",
+                        intl.formatMessage({ id: "October" }) || "October",
+                        intl.formatMessage({ id: "November" }) || "November",
+                        intl.formatMessage({ id: "December" }) || "December",
+                      ];
+                      const monthName = monthNames[arg.date.getMonth()];
+
+                      return (
+                        <div
+                          style={{
+                            padding: "8px",
+                            backgroundColor: isWeekend ? "#ffd700" : "#f8f9fa",
+                            borderRadius: "6px",
+                            textAlign: "center",
+                            boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: "600",
+                              color: isWeekend ? "#ff9800" : "#4a6cf7",
+                              marginBottom: "4px",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            {arg.date.toLocaleDateString('en-US', { weekday: 'short' })}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: "16px",
+                              fontWeight: "bold",
+                              color: "#212529",
+                              marginBottom: "2px",
+                            }}
+                          >
+                            {arg.date.getDate()}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              color: "#666",
+                            }}
+                          >
+                            {monthName}
+                          </div>
+                        </div>
+                      );
+                    },
                   },
                 }}
               />

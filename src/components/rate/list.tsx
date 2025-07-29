@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { TextField, Grid, Switch } from "@mui/material";
+import { TextField, Grid, Switch, Box } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
@@ -226,6 +226,55 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
 
     return (
         <>
+            <style jsx>{`
+                @media print {
+                    .rate-table-container {
+                        width: 100% !important;
+                        overflow: visible !important;
+                        max-width: none !important;
+                    }
+                    
+                    .rate-table-container .MuiTableContainer-root {
+                        max-height: none !important;
+                        overflow: visible !important;
+                        width: 100% !important;
+                    }
+                    
+                    .rate-table-container .MuiTable-root {
+                        width: 100% !important;
+                        table-layout: auto !important;
+                        min-width: 100% !important;
+                    }
+                    
+                    .rate-table-container .MuiTableCell-root {
+                        white-space: nowrap !important;
+                        font-size: 10px !important;
+                        padding: 2px 4px !important;
+                        border: 1px solid #ddd !important;
+                    }
+                    
+                    .rate-table-container .MuiTextField-root {
+                        width: 80px !important;
+                        min-width: 80px !important;
+                    }
+                    
+                    .rate-table-container .MuiTextField-root input {
+                        font-size: 10px !important;
+                        padding: 2px !important;
+                    }
+                    
+                    .rate-table-container .indiana-scroll-container {
+                        overflow: visible !important;
+                        width: 100% !important;
+                        max-width: none !important;
+                    }
+                    
+                    @page {
+                        size: A4 landscape;
+                        margin: 0.5in;
+                    }
+                }
+            `}</style>
             <LoadingButton loading={loading}>
                 <Switch
                     checked={isChecked}
@@ -247,31 +296,33 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
                     })}{" "}
             татвар агуулсан болно.
             <br />
-            <CustomTable
-                columns={columns}
-                data={data}
-                error={error}
-                modalTitle={title}
-                excelName={title}
-                pagination={false}
-                datagrid={false}
-                search={
-                    <CustomSearch
-                        listUrl={listUrl}
-                        search={search}
-                        setSearch={setSearch}
-                        handleSubmit={handleSubmit}
-                        reset={reset}
-                    >
-                        <Search
-                            register={register}
-                            errors={errors}
-                            control={control}
+            <Box className="rate-table-container">
+                <CustomTable
+                    columns={columns}
+                    data={data}
+                    error={error}
+                    modalTitle={title}
+                    excelName={title}
+                    pagination={false}
+                    datagrid={false}
+                    search={
+                        <CustomSearch
+                            listUrl={listUrl}
+                            search={search}
+                            setSearch={setSearch}
+                            handleSubmit={handleSubmit}
                             reset={reset}
-                        />
-                    </CustomSearch>
-                }
-            />
+                        >
+                            <Search
+                                register={register}
+                                errors={errors}
+                                control={control}
+                                reset={reset}
+                            />
+                        </CustomSearch>
+                    }
+                />
+            </Box>
             <Grid container spacing={1}>
                 <Grid item xs={5}></Grid>
                 <Grid item xs={2}>

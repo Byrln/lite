@@ -8,41 +8,41 @@ import { NewRevervationAPI, listUrl } from "lib/api/new-revervation";
 import { useAppState } from "lib/context/app";
 
 const validationSchema = yup.object().shape({
-    NewRevervationName: yup.string().required("Бөглөнө үү"),
+  NewRevervationName: yup.string().required("Бөглөнө үү"),
 });
 
 const NewEdit = () => {
-    const [state]: any = useAppState();
-    const {
-        register,
-        reset,
-        handleSubmit,
-        control,
-        formState: { errors },
-    } = useForm({ resolver: yupResolver(validationSchema) });
+  const [state]: any = useAppState();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
-    return (
-        <NewEditForm
-            api={NewRevervationAPI}
-            listUrl={listUrl}
-            additionalValues={{
-                NewRevervationID: state.editId,
-            }}
-            reset={reset}
-            handleSubmit={handleSubmit}
-        >
-            <TextField
-                size="small"
-                fullWidth
-                id="NewRevervationName"
-                label="NewRevervationName"
-                {...register("NewRevervationName")}
-                margin="dense"
-                error={!!errors.NewRevervationName?.message}
-                helperText={errors.NewRevervationName?.message as string}
-            />
-        </NewEditForm>
-    );
+  return (
+    <NewEditForm
+      api={NewRevervationAPI}
+      listUrl={listUrl}
+      additionalValues={{
+        NewRevervationID: state.editId,
+      }}
+      reset={reset}
+      handleSubmit={handleSubmit}
+    >
+      <TextField
+        size="small"
+        fullWidth
+        id="NewRevervationName"
+        label="NewRevervationName"
+        {...register("NewRevervationName")}
+        margin="dense"
+        error={!!errors.NewRevervationName?.message}
+        helperText={errors.NewRevervationName?.message as string}
+      />
+    </NewEditForm>
+  );
 };
 
 export default NewEdit;
