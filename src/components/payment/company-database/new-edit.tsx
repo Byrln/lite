@@ -225,7 +225,7 @@ const NewEdit = () => {
                                             }
                                             helperText={
                                                 errors.ContactPersonFirstName1
-                                                    ?.message
+                                                    ?.message as string
                                             }
                                         />
                                     </Grid>
