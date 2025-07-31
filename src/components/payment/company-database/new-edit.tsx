@@ -241,14 +241,13 @@ const NewEdit = () => {
                                                 "ContactPersonLastName1"
                                             )}
                                             margin="dense"
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonLastName1
                                                     ?.message
                                             }
                                             helperText={
                                                 errors.ContactPersonLastName1
-                                                    ?.message
-                                            }
+                                                    ?.message as string}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -263,14 +262,13 @@ const NewEdit = () => {
                                                 "ContactPersonPosition1"
                                             )}
                                             margin="dense"
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonPosition1
                                                     ?.message
                                             }
                                             helperText={
                                                 errors.ContactPersonPosition1
-                                                    ?.message
-                                            }
+                                                    ?.message as string}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -282,14 +280,13 @@ const NewEdit = () => {
                                                 id: "ReportPhone",
                                             })}
                                             {...register("ContactPersonPhone1")}
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonPhone1
                                                     ?.message
                                             }
                                             helperText={
                                                 errors.ContactPersonPhone1
-                                                    ?.message
-                                            }
+                                                    ?.message as string}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -302,14 +299,13 @@ const NewEdit = () => {
                                             })}
                                             {...register("ContactPersonEmail1")}
                                             margin="dense"
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonEmail1
                                                     ?.message
                                             }
                                             helperText={
                                                 errors.ContactPersonEmail1
-                                                    ?.message
-                                            }
+                                                    ?.message as string}
                                         />
                                     </Grid>
                                 </Grid>
@@ -345,14 +341,13 @@ const NewEdit = () => {
                                                 "ContactPersonFirstName2"
                                             )}
                                             margin="dense"
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonFirstName2
                                                     ?.message
                                             }
                                             helperText={
                                                 errors.ContactPersonFirstName2
-                                                    ?.message
-                                            }
+                                                    ?.message as string}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -367,14 +362,13 @@ const NewEdit = () => {
                                                 "ContactPersonLastName2"
                                             )}
                                             margin="dense"
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonLastName2
                                                     ?.message
                                             }
                                             helperText={
                                                 errors.ContactPersonLastName2
-                                                    ?.message
-                                            }
+                                                    ?.message as string}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -389,14 +383,13 @@ const NewEdit = () => {
                                                 "ContactPersonPosition2"
                                             )}
                                             margin="dense"
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonPosition2
                                                     ?.message
                                             }
                                             helperText={
                                                 errors.ContactPersonPosition2
-                                                    ?.message
-                                            }
+                                                    ?.message as string}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -409,14 +402,13 @@ const NewEdit = () => {
                                             })}
                                             {...register("ContactPersonPhone2")}
                                             margin="dense"
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonPhone2
                                                     ?.message
                                             }
                                             helperText={
                                                 errors.ContactPersonPhone2
-                                                    ?.message
-                                            }
+                                                    ?.message as string}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -424,14 +416,13 @@ const NewEdit = () => {
                                             size="small"
                                             fullWidth
                                             margin="dense"
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonEmail2
                                                     ?.message
                                             }
                                             helperText={
                                                 errors.ContactPersonEmail2
-                                                    ?.message
-                                            }
+                                                    ?.message as string}
                                             label={intl.formatMessage({
                                                 id: "RowHeaderEmail",
                                             })}
