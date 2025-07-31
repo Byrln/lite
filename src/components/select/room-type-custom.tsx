@@ -64,7 +64,7 @@ const RoomTypeCustomSelect: React.FC<RoomTypeCustomSelectProps> = ({
   const eventRoomTypeChange = (val: number) => {
     if (onRoomTypeChange) {
       if (val === 0) {
-        onRoomTypeChange(null);
+        onRoomTypeChange({ RoomTypeID: 0 });
       } else {
         const roomType = roomTypes.find((rt) => rt.RoomTypeID === val);
         if (roomType) {

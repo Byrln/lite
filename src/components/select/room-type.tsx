@@ -73,7 +73,8 @@ const RoomTypeSelect: React.FC<RoomTypeSelectProps> = ({
 
     // Only call onRoomTypeChange if roomType is found or if val is 0 (AllRoomTypes)
     if (roomType || val === 0) {
-      onRoomTypeChange && onRoomTypeChange(roomType, groupIndex ?? 0);
+      const roomTypeToPass = roomType || { RoomTypeID: 0 };
+      onRoomTypeChange && onRoomTypeChange(roomTypeToPass, groupIndex ?? 0);
     }
   };
 

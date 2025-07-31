@@ -348,15 +348,15 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               ? {
                 id: obj.TransactionID,
                 title: obj.GuestName,
-                start: obj.StartDate,
-                end: obj.DepartureDate,
+                start: obj.ArrivalDate || obj.StartDate,
+                end: obj.DepartureDate || obj.EndDate,
                 resourceId: obj.RoomID
                   ? obj.RoomID
                   : `${obj.RoomTypeName}-${obj.RoomTypeID}`,
                 roomTypeID: obj.RoomTypeID,
                 transactionID: obj.TransactionID,
-                startDate: obj.StartDate,
-                departureDate: obj.DepartureDate,
+                startDate: obj.ArrivalDate || obj.StartDate,
+                departureDate: obj.DepartureDate || obj.EndDate,
                 GroupID: obj.GroupID,
                 Balance: obj.Balance,
                 Adult: obj.Adult,
@@ -374,7 +374,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     )[0].Pax
                     : null,
                 Breakfast: obj.Breakfast,
-                endDate: obj.EndDate,
+                endDate: obj.DepartureDate || obj.EndDate,
                 groupColor: `${obj.GroupColor}`,
                 GroupCode: `${obj.GroupCode}`,
                 IsGroupOwner: `${obj.IsGroupOwner}`,
@@ -398,14 +398,24 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               ? {
                 id: obj.TransactionID,
                 title: obj.GuestName,
-                start: obj.StartDate,
-                end: obj.EndDate,
+                start: obj.ArrivalDate || obj.StartDate,
+                end: obj.DepartureDate || obj.EndDate,
                 resourceId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
                 roomTypeID: obj.RoomTypeID,
                 transactionID: obj.TransactionID,
-                startDate: obj.StartDate,
-                endDate: obj.EndDate,
+                startDate: obj.ArrivalDate || obj.StartDate,
+                endDate: obj.DepartureDate || obj.EndDate,
+                Balance: obj.Balance,
+                GroupID: obj.GroupID,
+                Adult: obj.Adult,
+                Child: obj.Child,
+                Breakfast: obj.Breakfast,
+                departureDate: obj.DepartureDate || obj.EndDate,
+                groupColor: `${obj.GroupColor}`,
+                GroupCode: `${obj.GroupCode}`,
+                IsGroupOwner: `${obj.IsGroupOwner}`,
                 statusColor: `#${obj.StatusColor}`,
+                statusGroup: obj.StatusGroup,
                 editable: !obj.StatusCode,
                 color: getContrastYIQ(`#${obj.StatusColor}`),
                 textColor: getContrastYIQ(
@@ -430,8 +440,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 title: level2.count,
                 start: `${level2.date} 00:00:00`,
                 end: `${level2.date} 23:59:59`,
+                allDay: true,
                 resourceId: level2.resourceId,
                 startDate: `${level2.date} 00:00:00`,
+                departureDate: `${level2.date} 23:59:59`,
                 endDate: `${level2.date} 23:59:59`,
                 editable: true,
                 color: "red",
@@ -471,8 +483,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   return {
                     id: generateIncrementedId(`${obj.TransactionID}_checkout`, 0),
                     title: "Checked Out",
-                    start: obj.StartDate,
-                    end: obj.EndDate,
+                    start: obj.ArrivalDate || obj.StartDate,
+                    end: obj.DepartureDate || obj.EndDate,
                     resourceId: obj.RoomID,
                     roomTypeID: obj.RoomTypeID,
                     editable: false,
@@ -524,6 +536,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   end: `${moment(currentDate).format(
                     "YYYY-MM-DD"
                   )} 23:59:59`,
+                  allDay: true,
                   resourceId: `${obj.RoomTypeName}?${obj.RoomTypeID}`,
                   startDate: `${moment(currentDate).format(
                     "YYYY-MM-DD"
@@ -652,7 +665,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   };
 
   useEffect(() => {
-    setHeight(window.innerHeight - 75);
+    setHeight(window.innerHeight - 90);
   }, [window.innerHeight]);
 
   const handleEventClick = (info: any) => {
@@ -859,24 +872,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         editId: "",
       });
     }
-    // Check if the selection includes time information
-    const hasTimeInfo = currentView === "resourceTimelineDay" || currentView === "timeGridDay";
-
-    // Set default times if no time information is available
-    let arrivalTime = "14:00"; // Default check-in time
-    let departureTime = "12:00"; // Default check-out time
-
-    if (hasTimeInfo) {
-      arrivalTime = moment(info.event._instance.range.start).format("HH:mm");
-      departureTime = moment(info.event._instance.range.end).format("HH:mm");
-    }
-
     const newEventObject = {
       title: "New Event",
       ArrivalDate: info.event._instance.range.start,
       DepartureDate: info.event._instance.range.end,
-      ArrivalTime: arrivalTime,
-      DepartureTime: departureTime,
       RoomTypeID: Number(info.event._def.extendedProps.roomTypeID),
       RoomID: Number(info.event._def.resourceIds[0]),
       TransactionID: info.event._def.extendedProps.transactionID,
@@ -884,26 +883,42 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         ? info.event._def.extendedProps.GroupID
         : null,
     };
-    if (info.event.extendedProps.statusGroup != 3) {
-      handleModal(
-        true,
-        "Amend Stay",
-        <AmendStayForm
-          transactionInfo={newEventObject}
-          reservation={newEventObject}
-          additionalMutateUrl="/api/Reservation/List"
-          customRerender={() =>
-            setCustomMutate((prevKey) => prevKey + 1)
-          }
-        />,
-        false,
-        "small"
-      );
+    let filteredItemData = itemData.filter(
+      (event: any) =>
+        event.roomTypeID ===
+        Number(info.event._def.extendedProps.roomTypeID) &&
+        event.resourceId == Number(info.event._def.resourceIds[0]) &&
+        event.id != info.event._def.extendedProps.transactionID &&
+        new Date(event.start) <=
+        new Date(info.event._instance.range.end) &&
+        new Date(event.end) > new Date(info.event._instance.range.start)
+    );
+
+    if (filteredItemData.length > 0) {
+      toast("Захиалга давхцаж байна.");
     } else {
-      toast("Хугацаа өөрчлөх боломжгүй.");
+      if (info.event.extendedProps.statusGroup != 3) {
+        handleModal(
+          true,
+          "Amend Stay",
+          <AmendStayForm
+            transactionInfo={newEventObject}
+            reservation={newEventObject}
+            additionalMutateUrl="/api/Reservation/List"
+            customRerender={() =>
+              setCustomMutate((prevKey) => prevKey + 1)
+            }
+          />,
+          false,
+          "small"
+        );
+      } else {
+        toast("Хугацаа өөрчлөх боломжгүй.");
+      }
     }
     setRerenderKey((prevKey) => prevKey + 1);
   };
+
 
   const handleSelect = (info: any) => {
     const { start, end, resourceId } = info;
@@ -1437,7 +1452,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   handleModal(
                     true,
                     intl.formatMessage({ id: "FrontNewReservation" }),
-                    <NewReservation workingDate={workingDate} />,
+                    <NewReservation
+                      workingDate={workingDate}
+                      customRerender={() =>
+                        setCustomMutate((prevKey) => prevKey + 1)
+                      }
+                    />,
                     null,
                     "medium"
                   );
@@ -1492,17 +1512,17 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               {/* Filters Group */}
               <div className="flex flex-wrap gap-3 items-center">
                 {/* Room Type Filter */}
-                 <div className="bg-white border border-[#804FE6] rounded-full shadow-sm min-w-[160px]">
-                   <RoomTypeCustomSelect
-                     searchRoomTypeID={searchRoomTypeID}
-                     setSearchRoomTypeID={setSearchRoomTypeID}
-                     onRoomTypeChange={onRoomTypeChange}
-                     baseStay={{ RoomTypeID: searchRoomTypeID }}
-                     label={intl.formatMessage({
-                       id: "TextRoomType",
-                     })}
-                   />
-                 </div>
+                <div className="bg-white border border-[#804FE6] rounded-full shadow-sm min-w-[160px]">
+                  <RoomTypeCustomSelect
+                    searchRoomTypeID={searchRoomTypeID}
+                    setSearchRoomTypeID={setSearchRoomTypeID}
+                    onRoomTypeChange={onRoomTypeChange}
+                    baseStay={{ RoomTypeID: searchRoomTypeID }}
+                    label={intl.formatMessage({
+                      id: "TextRoomType",
+                    })}
+                  />
+                </div>
 
                 {/* Date Picker */}
                 <div className="bg-white border border-[#804FE6] rounded-full shadow-sm min-w-[160px]">
@@ -1705,6 +1725,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 now={new Date(workingDate)}
                 nowIndicator={true}
                 height={height}
+                allDaySlot={true}
                 eventContent={eventContent}
                 visibleRange={{
                   start: timeStart,
@@ -2481,7 +2502,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     slotMaxTime: "24:00:00",
                     slotDuration: "01:00:00",
                     slotLabelInterval: "01:00:00",
-                    allDaySlot: false,
+                    allDaySlot: true,
                     nowIndicator: true,
                   },
                   resourceTimelineDay: {

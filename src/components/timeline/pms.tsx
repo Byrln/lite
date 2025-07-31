@@ -68,7 +68,9 @@ const TimelinePms = ({ props, workingDate }: any) => {
     });
 
     useEffect(() => {
-        // createGroups();
+        if (roomTypes && rooms && items) {
+            createGroups();
+        }
     }, [roomTypes, rooms, items, roomBlocks]);
 
     const createGroups = () => {
@@ -114,9 +116,20 @@ const TimelinePms = ({ props, workingDate }: any) => {
                 continue;
             }
 
-            startTime = new Date(items[i].StartDate); // startTime.setHours(14); startTime.setMinutes(0); startTime.setSeconds(0);
-            endTime = new Date(items[i].EndDate);
-            endTime.setDate(endTime.getDate() + 1); // endTime.setHours(12); endTime.setMinutes(0); endTime.setSeconds(0);
+            // Use ArrivalDate and DepartureDate if available, otherwise fallback to StartDate/EndDate
+            const arrivalDate = items[i].ArrivalDate || items[i].StartDate;
+            const departureDate = items[i].DepartureDate || items[i].EndDate;
+            
+            startTime = new Date(arrivalDate);
+            endTime = new Date(departureDate);
+            
+            // If no time is specified in the date, set default check-in/check-out times
+            if (arrivalDate && !arrivalDate.includes('T') && !arrivalDate.includes(' ')) {
+                startTime.setHours(14, 0, 0, 0); // 2:00 PM check-in
+            }
+            if (departureDate && !departureDate.includes('T') && !departureDate.includes(' ')) {
+                endTime.setHours(12, 0, 0, 0); // 12:00 PM check-out
+            }
 
             groupKey = "" + items[i].RoomTypeID;
             if (items[i].RoomID != 0) {
