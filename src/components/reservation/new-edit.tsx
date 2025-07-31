@@ -928,7 +928,7 @@ const NewEdit = ({
                             helperText={
                               errors
                                 .IdentityTypeID
-                                ?.message
+                                ?.message as string
                             }
                             onChange={
                               onIdentityTypeChange
@@ -966,10 +966,10 @@ const NewEdit = ({
                                     ?.message
                                 }
                                 helperText={
-                                  errors
-                                    .RegistryNo
-                                    ?.message
-                                }
+                              errors
+                                .RegistryNo
+                                ?.message as string
+                            }
                                 value={
                                   entity &&
                                     entity.IdentityTypeID ===
@@ -1030,10 +1030,10 @@ const NewEdit = ({
                                     ?.message
                                 }
                                 helperText={
-                                  errors
-                                    .DriverLicenseNo
-                                    ?.message
-                                }
+                              errors
+                                .DriverLicenseNo
+                                ?.message as string
+                            }
                                 value={
                                   entity &&
                                     entity.IdentityTypeID ===
