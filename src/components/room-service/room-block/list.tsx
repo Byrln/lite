@@ -24,6 +24,10 @@ const RoomBlockList = ({ title, workingDate }: any) => {
   });
   const { data, error } = RoomBlockSWR(search);
 
+  // Default dates for the date range picker
+  const defaultStartDate = moment(workingDate).toDate();
+  const defaultEndDate = moment(workingDate).add(15, "days").toDate();
+
   useEffect(() => {
     if (data) {
       setEntity(data);
@@ -110,9 +114,7 @@ const RoomBlockList = ({ title, workingDate }: any) => {
 
   return (
     <>
-      {moment(workingDate).format("YYYY-MM-DD") +
-        " - " +
-        moment(workingDate).add(1, "days").format("YYYY-MM-DD")}
+      {/* {moment(workingDate).format("YYYY-MM-DD") + " - " + moment(workingDate).add(1, "days").format("YYYY-MM-DD")} */}
 
       <CustomTable
         columns={columns}
@@ -121,10 +123,15 @@ const RoomBlockList = ({ title, workingDate }: any) => {
         api={RoomBlockAPI}
         hasNew={true}
         hasDateRangePicker={true}
+        defaultStartDate={defaultStartDate}
+        defaultEndDate={defaultEndDate}
         onDateRangeChange={({ startDate, endDate }: { startDate?: Date; endDate?: Date }) => {
-          const formattedStartDate = startDate ? moment(startDate).format("YYYY-MM-DD") : "";
-          const formattedEndDate = endDate ? moment(endDate).format("YYYY-MM-DD") : "";
-          setSearch({ StartDate: formattedStartDate, EndDate: formattedEndDate });
+          const formattedStartDate = startDate ? moment(startDate).format("YYYY-MM-DD") : moment(workingDate).format("YYYY-MM-DD");
+          const formattedEndDate = endDate ? moment(endDate).format("YYYY-MM-DD") : moment(workingDate).add(15, "days").format("YYYY-MM-DD");
+          const newSearch = { StartDate: formattedStartDate, EndDate: formattedEndDate };
+          setSearch(newSearch);
+          // Explicitly mutate the data to ensure immediate refresh
+          mutate([listUrl, JSON.stringify(newSearch)]);
         }}
         //hasUpdate={true}
         //hasDelete={true}

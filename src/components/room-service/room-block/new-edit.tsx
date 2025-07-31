@@ -32,10 +32,10 @@ const NewEdit = ({ workingDate }: any) => {
 
   const [data, setData]: any = useState([]);
   const [state]: any = useAppState();
-  
+
   const defaultStartDate = workingDate ? new Date(workingDate) : new Date();
   const defaultEndDate = workingDate ? new Date(workingDate) : new Date();
-  
+
   const {
     register,
     reset,
@@ -43,7 +43,7 @@ const NewEdit = ({ workingDate }: any) => {
     control,
     formState: { errors },
     resetField,
-  } = useForm({ 
+  } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       BeginDate: moment(defaultStartDate).format("YYYY-MM-DD"),
@@ -229,50 +229,50 @@ const NewEdit = ({ workingDate }: any) => {
               )}
             />
           </Grid>
-          <Grid item xs={4}>
-            <ReasonSelect
-              register={register}
-              errors={errors}
-              ReasonTypeID={3}
-              nameKey={"ReasonID"}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <RoomTypeSelect
-              searchRoomTypeID={baseStay?.roomType?.RoomTypeID || 0}
-              setSearchRoomTypeID={(id) => {
-                const roomType = { RoomTypeID: id };
-                setBaseStay((prev: any) => ({
-                  ...prev,
-                  roomType
-                }));
-                onRoomTypeChange && onRoomTypeChange(roomType);
-              }}
-            />
-          </Grid>
-          {data &&
-            data.map((room: any, index: any) => {
-              return (
-                <Grid item xs={6} sm={3} key={room.RoomID}>
-                  <FormControlLabel
-                    control={
-                      <Controller
-                        name={`RoomID.${room.RoomID}` as any}
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                          <Checkbox
-                            key={`RoomID.${room.RoomID}`}
-                            checked={value || false}
-                            onChange={onChange}
-                          />
-                        )}
-                      />
-                    }
-                    label={room.RoomFullName}
-                  />
-                </Grid>
-              );
-            })}
+        <Grid item xs={4}>
+          <ReasonSelect
+            register={register}
+            errors={errors}
+            ReasonTypeID={3}
+            nameKey={"ReasonID"}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <RoomTypeSelect
+            searchRoomTypeID={baseStay?.roomType?.RoomTypeID || 0}
+            setSearchRoomTypeID={(id) => {
+              const roomType = { RoomTypeID: id };
+              setBaseStay((prev: any) => ({
+                ...prev,
+                roomType
+              }));
+              onRoomTypeChange && onRoomTypeChange(roomType);
+            }}
+          />
+        </Grid>
+        {data &&
+          data.map((room: any, index: any) => {
+            return (
+              <Grid item xs={6} sm={3} key={room.RoomID}>
+                <FormControlLabel
+                  control={
+                    <Controller
+                      name={`RoomID.${room.RoomID}` as any}
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <Checkbox
+                          key={`RoomID.${room.RoomID}`}
+                          checked={value || false}
+                          onChange={onChange}
+                        />
+                      )}
+                    />
+                  }
+                  label={room.RoomFullName}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </LocalizationProvider>
     </NewEditForm>

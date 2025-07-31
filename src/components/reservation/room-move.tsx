@@ -87,6 +87,7 @@ const RoomMoveForm = ({
     formState: { errors },
     reset,
     resetField,
+    setValue,
   } = useForm(formOptions);
 
   const onSubmit = async (values: any) => {
@@ -171,6 +172,7 @@ const RoomMoveForm = ({
 
   const onRoomTypeChange = (roomTypeId: number) => {
     setSearchRoomTypeID(roomTypeId);
+    setValue("RoomTypeID", roomTypeId);
     const rt = { RoomTypeID: roomTypeId };
     setBaseStay({
       ...baseStay,
@@ -187,8 +189,9 @@ const RoomMoveForm = ({
     if (transactionInfo && transactionInfo.RoomTypeID) {
       setRoomType({ RoomTypeID: transactionInfo.RoomTypeID });
       setSearchRoomTypeID(transactionInfo.RoomTypeID);
+      setValue("RoomTypeID", transactionInfo.RoomTypeID);
     }
-  }, [transactionInfo]);
+  }, [transactionInfo, setValue]);
 
   return (
     <>
@@ -197,6 +200,11 @@ const RoomMoveForm = ({
           type="hidden"
           {...register("TransactionID")}
           value={transactionInfo.TransactionID}
+        />
+        <input
+          type="hidden"
+          {...register("RoomTypeID")}
+          value={searchRoomTypeID || 0}
         />
 
         <Grid container spacing={2}>

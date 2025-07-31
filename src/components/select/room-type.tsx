@@ -66,6 +66,11 @@ const RoomTypeSelect: React.FC<RoomTypeSelectProps> = ({
       }
     }
 
+    // Handle search-specific props
+    if (setSearchRoomTypeID) {
+      setSearchRoomTypeID(val);
+    }
+
     // Only call onRoomTypeChange if roomType is found or if val is 0 (AllRoomTypes)
     if (roomType || val === 0) {
       onRoomTypeChange && onRoomTypeChange(roomType, groupIndex ?? 0);
@@ -77,17 +82,20 @@ const RoomTypeSelect: React.FC<RoomTypeSelectProps> = ({
   }, []);
 
   useEffect(() => {
-    if (data && data.length > 0 && RoomTypeID) {
-      eventRoomTypeChange(RoomTypeID);
+    if (data && data.length > 0) {
+      // If searchRoomTypeID is provided, use it; otherwise use RoomTypeID or default to 0 (All Room Types)
+      const valueToSet = searchRoomTypeID || RoomTypeID || 0;
+      eventRoomTypeChange(valueToSet);
     }
-  }, [data]);
+  }, [data, RoomTypeID, searchRoomTypeID]);
 
   const handleRoomTypeChange = (value: string) => {
-    const numValue = parseInt(value);
+    const numValue = parseInt(value) || 0;
     eventRoomTypeChange(numValue);
   };
 
-  const currentValue = (baseStay && baseStay.RoomTypeID) || RoomTypeID;
+  // Set default value to 0 (All Room Types) if no specific value is provided
+  const currentValue = searchRoomTypeID || (baseStay && baseStay.RoomTypeID) || RoomTypeID || 0;
   const displayError = error || customError || (errors && errors.RoomTypeID?.message);
   const displayHelperText = helperText || (errors && errors.RoomTypeID?.message);
 
@@ -100,10 +108,10 @@ const RoomTypeSelect: React.FC<RoomTypeSelectProps> = ({
       error={displayError}
     >
       <InputLabel variant="outlined" htmlFor="roomtype-select">
-        {isSearch ? "Room Type" : intl.formatMessage({ id: "ConfigRoomType" }) || "Өрөөний төрөл"}
+        {intl.formatMessage({ id: "ConfigRoomType" })}
       </InputLabel>
       <NativeSelect
-        input={<OutlinedInput label={isSearch ? "Room Type" : intl.formatMessage({ id: "ConfigRoomType" }) || "Өрөөний төрөл"} />}
+        input={<OutlinedInput label={intl.formatMessage({ id: "ConfigRoomType" })} />}
         inputProps={{
           name: customRegisterName || 'roomtype-select',
           id: 'roomtype-select',
@@ -112,11 +120,10 @@ const RoomTypeSelect: React.FC<RoomTypeSelectProps> = ({
         onChange={(event) => handleRoomTypeChange(event.target.value)}
         value={currentValue?.toString() || "0"}
       >
-        {isSearch && (
-          <option value="0">
-            {intl.formatMessage({ id: "AllRoomTypes" })}
-          </option>
-        )}
+        {/* Always show "All Room Types" as the first option */}
+        <option value="0">
+          {intl.formatMessage({ id: "AllRoomTypes" })}
+        </option>
         {data.map((element: any) => (
           <option key={element.RoomTypeID} value={element.RoomTypeID.toString()}>
             {element.RoomTypeName}
