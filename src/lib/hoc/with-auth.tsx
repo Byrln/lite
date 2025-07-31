@@ -26,7 +26,7 @@ const WithAuth = ({ children }: any) => {
             } else {
                 axios.defaults.headers.common[
                     "Authorization"
-                ] = `Bearer ${session.token}`;
+                ] = `Bearer ${(session as any).token}`;
 
                 setLoading(false);
             }
