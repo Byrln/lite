@@ -22,7 +22,7 @@ const DatePickerDemo: React.FC<DatePickerDemoProps> = ({ onDateChange }) => {
         control={control}
         defaultValue={null}
         label={intl.formatMessage({ id: "RowHeaderStarDate" })}
-        error={errors.CurrDate}
+        error={!!errors.CurrDate}
         register={register}
         onChange={(value) => {
           if (onDateChange) {
