@@ -219,7 +219,7 @@ const NewEdit = () => {
                                                 "ContactPersonFirstName1"
                                             )}
                                             margin="dense"
-                                            error={
+                                            error={!!
                                                 errors.ContactPersonFirstName1
                                                     ?.message
                                             }
