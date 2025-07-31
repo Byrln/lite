@@ -114,7 +114,7 @@ const RoomSelect = ({
             select
             margin="dense"
             error={!!errors.RoomID?.message}
-            helperText={errors.RoomID?.message}
+            helperText={errors.RoomID?.message as string}
             onChange={(evt: any) => {
                 eventRoomChange(evt.target.value);
             }}

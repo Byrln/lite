@@ -37,7 +37,7 @@ const CountrySelect = ({
             select
             margin="dense"
             error={!!errors.CountryID?.message}
-            helperText={errors.CountryID?.message}
+            helperText={errors.CountryID?.message as string}
             value={entity && entity.CountryID}
             InputLabelProps={{
                 shrink: entity && entity.CountryID,

@@ -57,7 +57,7 @@ const CustomerSelect = ({
       select
       margin="dense"
       error={!!errors.CustomerID?.message}
-      helperText={errors.CustomerID?.message}
+      helperText={errors.CustomerID?.message as string}
       size="small"
     >
       {isNA == true ? (

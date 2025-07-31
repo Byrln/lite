@@ -102,7 +102,7 @@ const CancelReservationForm = ({
                             {...register("Fee")}
                             margin="dense"
                             error={!!errors.Fee?.message}
-                            helperText={errors.Fee?.message}
+                            helperText={errors.Fee?.message as string}
                         />
                     </Grid>
                 </Grid>

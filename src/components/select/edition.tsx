@@ -29,7 +29,7 @@ const EditionSelect = ({ register, errors, entity, setEntity }: any) => {
             select
             margin="dense"
             error={!!errors.EditionID?.message}
-            helperText={errors.EditionID?.message}
+            helperText={errors.EditionID?.message as string}
             value={entity && entity.EditionID}
             InputLabelProps={{
                 shrink: entity && entity.EditionID,

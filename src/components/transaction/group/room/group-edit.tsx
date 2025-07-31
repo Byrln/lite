@@ -282,7 +282,7 @@ const NewEdit = ({
                                     {...register(`amount`)}
                                     margin="dense"
                                     error={!!errors.amount?.message}
-                                    helperText={errors.amount?.message}
+                                    helperText={errors.amount?.message as string}
                                 />
                             ) : (
                                 <></>

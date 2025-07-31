@@ -84,7 +84,7 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
                 {...register("StayDate")}
                 margin="dense"
                 error={!!errors.StayDate?.message}
-                helperText={errors.StayDate?.message}
+                helperText={errors.StayDate?.message as string}
             />
 
             <TextField
@@ -96,7 +96,7 @@ const UpdateRate = ({ element, RoomTypeID }: any) => {
                 {...register(`Amount`)}
                 margin="dense"
                 error={!!errors.Amount?.message}
-                helperText={errors.Amount?.message}
+                helperText={errors.Amount?.message as string}
                 InputLabelProps={{
                     shrink: element,
                 }}

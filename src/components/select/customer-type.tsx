@@ -34,7 +34,7 @@ const CustomerTypeSelect = ({
             select
             margin="dense"
             error={!!errors.CustomerTypeID?.message}
-            helperText={errors.CustomerTypeID?.message}
+            helperText={errors.CustomerTypeID?.message as string}
             value={entity && entity.CustomerTypeID}
             disabled={disabled}
             onChange={(evt: any) => {

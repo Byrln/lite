@@ -35,7 +35,7 @@ const GuestDefaultSelect = ({
             select
             margin="dense"
             error={!!errors.GuestID?.message}
-            helperText={errors.GuestID?.message}
+            helperText={errors.GuestID?.message as string}
             value={entity && entity.GuestID}
             InputLabelProps={{
                 shrink: entity && entity.GuestID,

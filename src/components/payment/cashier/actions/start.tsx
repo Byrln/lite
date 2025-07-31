@@ -138,7 +138,7 @@ const NewEdit = ({
                         margin="dense"
                         size="small"
                         error={!!errors.StartBalance?.message}
-                        helperText={errors.StartBalance?.message}
+                        helperText={errors.StartBalance?.message as string}
                     />
                 </Grid>
 
@@ -151,7 +151,7 @@ const NewEdit = ({
                         {...register("Description")}
                         margin="dense"
                         error={!!errors.Description?.message}
-                        helperText={errors.Description?.message}
+                        helperText={errors.Description?.message as string}
                     />
                 </Grid>
             </Grid>

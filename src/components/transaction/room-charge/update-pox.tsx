@@ -80,7 +80,7 @@ const UpdatePox = ({ element, RoomTypeID }: any) => {
                 {...register("StayDate")}
                 margin="dense"
                 error={!!errors.StayDate?.message}
-                helperText={errors.StayDate?.message}
+                helperText={errors.StayDate?.message as string}
             />
 
             <NumberSelect

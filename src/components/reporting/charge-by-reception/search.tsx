@@ -83,7 +83,7 @@ const Search = ({
                                     fullWidth
                                     {...params}
                                     error={!!errors.CurrDate?.message}
-                                    helperText={errors.CurrDate?.message}
+                                    helperText={errors.CurrDate?.message as string}
                                 />
                             )}
                         />

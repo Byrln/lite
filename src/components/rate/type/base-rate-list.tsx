@@ -113,7 +113,7 @@ const BaseRateList = ({
                             {...register(`RoomTypes[${index}].BaseRate`)}
                             margin="dense"
                             error={!!errors.BaseRate?.message}
-                            helperText={errors.BaseRate?.message}
+                            helperText={errors.BaseRate?.message as string}
                         />
                     </Grid>
                     <Grid item xs={3}>
@@ -126,7 +126,7 @@ const BaseRateList = ({
                             {...register(`RoomTypes[${index}].ExtraAdult`)}
                             margin="dense"
                             error={!!errors.ExtraAdult?.message}
-                            helperText={errors.ExtraAdult?.message}
+                            helperText={errors.ExtraAdult?.message as string}
                         />
                     </Grid>
                     <Grid item xs={3}>
@@ -139,7 +139,7 @@ const BaseRateList = ({
                             {...register(`RoomTypes[${index}].ExtraChild`)}
                             margin="dense"
                             error={!!errors.ExtraChild?.message}
-                            helperText={errors.ExtraChild?.message}
+                            helperText={errors.ExtraChild?.message as string}
                         />
                     </Grid>
                 </Grid>

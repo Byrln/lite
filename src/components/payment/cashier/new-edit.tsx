@@ -40,7 +40,7 @@ const NewEdit = () => {
                 {...register("NightAuditName")}
                 margin="dense"
                 error={!!errors.NightAuditName?.message}
-                helperText={errors.NightAuditName?.message}
+                helperText={errors.NightAuditName?.message as string}
             />
         </NewEditForm>
     );

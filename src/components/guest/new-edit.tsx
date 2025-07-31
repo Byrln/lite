@@ -157,7 +157,7 @@ const NewEdit = ({
                             {...register("Surname")}
                             margin="dense"
                             error={!!errors.Surname?.message}
-                            helperText={errors.Surname?.message}
+                            helperText={errors.Surname?.message as string}
                             value={entity && entity.Surname}
                             InputLabelProps={{
                                 shrink: entity && entity.Surname,
@@ -182,7 +182,7 @@ const NewEdit = ({
                             {...register("Name")}
                             margin="dense"
                             error={!!errors.Name?.message}
-                            helperText={errors.Name?.message}
+                            helperText={errors.Name?.message as string}
                             value={entity && entity.Name}
                             InputLabelProps={{
                                 shrink: entity && entity.Name,
@@ -210,7 +210,7 @@ const NewEdit = ({
                             select
                             margin="dense"
                             error={!!errors.IdentityTypeID?.message}
-                            helperText={errors.IdentityTypeID?.message}
+                            helperText={errors.IdentityTypeID?.message as string}
                             onChange={onIdentityTypeChange}
                             value={
                                 entity && entity.IdentityTypeID
@@ -232,7 +232,7 @@ const NewEdit = ({
                                 {...register("RegistryNo")}
                                 margin="dense"
                                 error={!!errors.RegistryNo?.message}
-                                helperText={errors.RegistryNo?.message}
+                                helperText={errors.RegistryNo?.message as string}
                                 value={
                                     entity &&
                                     entity.IdentityTypeID === 1 &&
@@ -271,7 +271,7 @@ const NewEdit = ({
                                 {...register("DriverLicenseNo")}
                                 margin="dense"
                                 error={!!errors.DriverLicenseNo?.message}
-                                helperText={errors.DriverLicenseNo?.message}
+                                helperText={errors.DriverLicenseNo?.message as string}
                                 value={
                                     entity &&
                                     entity.IdentityTypeID === 2 &&
@@ -324,7 +324,7 @@ const NewEdit = ({
                             {...register("Email")}
                             margin="dense"
                             error={!!errors.Email?.message}
-                            helperText={errors.Email?.message}
+                            helperText={errors.Email?.message as string}
                             value={entity && entity.Email}
                             InputLabelProps={{
                                 shrink: entity && entity.Email,
@@ -346,7 +346,7 @@ const NewEdit = ({
                             {...register("Mobile")}
                             margin="dense"
                             error={!!errors.Mobile?.message}
-                            helperText={errors.Mobile?.message}
+                            helperText={errors.Mobile?.message as string}
                             value={entity && entity.Mobile}
                             InputLabelProps={{
                                 shrink: entity && entity.Mobile,
@@ -375,7 +375,7 @@ const NewEdit = ({
                     {...register("Address")}
                     margin="dense"
                     error={!!errors.Address?.message}
-                    helperText={errors.Address?.message}
+                    helperText={errors.Address?.message as string}
                     value={entity && entity.Address}
                     InputLabelProps={{
                         shrink: entity && entity.Address,

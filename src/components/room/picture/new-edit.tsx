@@ -189,7 +189,7 @@ const NewEdit = () => {
                                             entity.RoomTypeShortName == 0),
                                 }}
                                 error={!!errors.RoomTypeShortName?.message}
-                                helperText={errors.RoomTypeShortName?.message}
+                                helperText={errors.RoomTypeShortName?.message as string}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -216,7 +216,7 @@ const NewEdit = () => {
                                             entity.RoomTypeName == 0),
                                 }}
                                 error={!!errors.RoomTypeName?.message}
-                                helperText={errors.RoomTypeName?.message}
+                                helperText={errors.RoomTypeName?.message as string}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -248,7 +248,7 @@ const NewEdit = () => {
                                             entity.BaseAdult == 0),
                                 }}
                                 error={!!errors.BaseAdult?.message}
-                                helperText={errors.BaseAdult?.message}
+                                helperText={errors.BaseAdult?.message as string}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -280,7 +280,7 @@ const NewEdit = () => {
                                             entity.MaxAdult == 0),
                                 }}
                                 error={!!errors.MaxAdult?.message}
-                                helperText={errors.MaxAdult?.message}
+                                helperText={errors.MaxAdult?.message as string}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -312,7 +312,7 @@ const NewEdit = () => {
                                             entity.BaseChild == 0),
                                 }}
                                 error={!!errors.BaseChild?.message}
-                                helperText={errors.BaseChild?.message}
+                                helperText={errors.BaseChild?.message as string}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -343,7 +343,7 @@ const NewEdit = () => {
                                             entity.MaxChild == 0),
                                 }}
                                 error={!!errors.MaxChild?.message}
-                                helperText={errors.MaxChild?.message}
+                                helperText={errors.MaxChild?.message as string}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -374,7 +374,7 @@ const NewEdit = () => {
                                             entity.SortOrder == 0),
                                 }}
                                 error={!!errors.SortOrder?.message}
-                                helperText={errors.SortOrder?.message}
+                                helperText={errors.SortOrder?.message as string}
                                 sx={{ mt: 2 }}
                             />
                         </Grid>
@@ -419,7 +419,7 @@ const NewEdit = () => {
                                             entity.BookingDescription == 0),
                                 }}
                                 error={!!errors.BookingDescription?.message}
-                                helperText={errors.BookingDescription?.message}
+                                helperText={errors.BookingDescription?.message as string}
                             />
                         </Grid>
                         {/* <Grid item xs={6}>
@@ -442,7 +442,7 @@ const NewEdit = () => {
                                     shrink: entity && entity.SortOrder,
                                 }}
                                 error={!!errors.SortOrder?.message}
-                                helperText={errors.SortOrder?.message}
+                                helperText={errors.SortOrder?.message as string}
                             />
                         </Grid> */}
                     </Grid>

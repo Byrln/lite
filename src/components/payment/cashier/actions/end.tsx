@@ -87,7 +87,7 @@ const NewEdit = ({ SessionID }: any) => {
                         margin="dense"
                         size="small"
                         error={!!errors.EndBalance?.message}
-                        helperText={errors.EndBalance?.message}
+                        helperText={errors.EndBalance?.message as string}
                     />
                 </Grid>
 
@@ -100,7 +100,7 @@ const NewEdit = ({ SessionID }: any) => {
                         {...register("Description")}
                         margin="dense"
                         error={!!errors.Description?.message}
-                        helperText={errors.Description?.message}
+                        helperText={errors.Description?.message as string}
                     />
                 </Grid>
             </Grid>

@@ -22,7 +22,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                         {...register("SearchStr")}
                     margin="dense"
                     error={!!errors.SearchStr?.message}
-                    helperText={errors.SearchStr?.message}
+                    helperText={errors.SearchStr?.message as string}
                 />
             </Grid>
 
@@ -54,7 +54,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                                     fullWidth
                                     {...params}
                                     error={!!errors.BeginDate?.message}
-                                    helperText={errors.BeginDate?.message}
+                                    helperText={errors.BeginDate?.message as string}
                                 />
                             )}
                         />
@@ -90,7 +90,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                                     fullWidth
                                     {...params}
                                     error={!!errors.EndDate?.message}
-                                    helperText={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message as string}
                                 />
                             )}
                         />

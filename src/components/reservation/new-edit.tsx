@@ -1513,7 +1513,7 @@ const NewEdit = ({
                     {...register("PayAmount")}
                     margin="dense"
                     error={!!errors.PayAmount?.message}
-                    helperText={errors.PayAmount?.message}
+                    helperText={errors.PayAmount?.message as string}
                     size="small"
                     style={{ width: "100%" }}
                   />
@@ -1555,7 +1555,7 @@ const NewEdit = ({
                 maxRows={4}
                 margin="dense"
                 error={!!errors.setMessage?.message}
-                helperText={errors.setMessage?.message}
+                helperText={errors.setMessage?.message as string}
                 size="small"
                 style={{ width: "100%" }}
               />

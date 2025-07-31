@@ -173,7 +173,7 @@ const NewEdit = ({ timelineCoord, defaultEntity }: any) => {
                 {...register("BeginDate")}
                 margin="dense"
                 error={!!errors.BeginDate?.message}
-                helperText={errors.BeginDate?.message}
+                helperText={errors.BeginDate?.message as string}
                 InputLabelProps={{ shrink: true }}
             />
 
@@ -185,7 +185,7 @@ const NewEdit = ({ timelineCoord, defaultEntity }: any) => {
                 {...register("EndDate")}
                 margin="dense"
                 error={!!errors.EndDate?.message}
-                helperText={errors.EndDate?.message}
+                helperText={errors.EndDate?.message as string}
                 InputLabelProps={{ shrink: true }}
             />
 

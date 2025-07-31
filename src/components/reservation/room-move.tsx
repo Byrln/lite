@@ -206,7 +206,7 @@ const RoomMoveForm = ({
                 searchRoomTypeID={searchRoomTypeID}
                 setSearchRoomTypeID={onRoomTypeChange}
                 error={!!errors.RoomTypeID?.message}
-                helperText={errors.RoomTypeID?.message}
+                helperText={errors.RoomTypeID?.message as string}
               />
             </Grid>
           )}
@@ -289,7 +289,7 @@ const RoomMoveForm = ({
               {...register("NewRate")}
               margin="dense"
               error={!!errors.NewRate?.message}
-              helperText={errors.NewRate?.message}
+              helperText={errors.NewRate?.message as string}
               disabled={!isManualRate()}
               InputLabelProps={{
                 shrink: true,

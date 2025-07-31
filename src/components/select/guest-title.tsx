@@ -31,7 +31,7 @@ const GuestTitleSelect = ({ register, errors, entity, setEntity }: any) => {
             select
             margin="dense"
             error={!!errors.GuestTitleID?.message}
-            helperText={errors.GuestTitleID?.message}
+            helperText={errors.GuestTitleID?.message as string}
             value={entity && entity.GuestTitleID}
             InputLabelProps={{
                 shrink: entity && entity.GuestTitleID,

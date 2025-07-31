@@ -172,7 +172,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                             margin="dense"
                             size="small"
                             error={!!errors.Amount?.message}
-                            helperText={errors.Amount?.message}
+                            helperText={errors.Amount?.message as string}
                         />
                     </Grid>
 
@@ -185,7 +185,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                             {...register("Description")}
                             margin="dense"
                             error={!!errors.Description?.message}
-                            helperText={errors.Description?.message}
+                            helperText={errors.Description?.message as string}
                         />
                     </Grid>
                 </Grid>

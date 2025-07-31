@@ -68,7 +68,7 @@ const NewEdit = () => {
                         {...register("StatusCode")}
                         margin="dense"
                         error={!!errors.RoomNo?.message}
-                        helperText={errors.RoomNo?.message}
+                        helperText={errors.RoomNo?.message as string}
                     />
                 </Grid>
                 <Grid item xs={4}>
@@ -80,7 +80,7 @@ const NewEdit = () => {
                         {...register("StatusColor")}
                         margin="dense"
                         error={!!errors.StatusColor?.message}
-                        helperText={errors.StatusColor?.message}
+                        helperText={errors.StatusColor?.message as string}
                         value={value}
                         onChange={(e) => handleChange(e.target.value)}
                         type="color"
@@ -98,7 +98,7 @@ const NewEdit = () => {
                         {...register("StatusColor")}
                         margin="dense"
                         error={!!errors.StatusColor?.message}
-                        helperText={errors.StatusColor?.message}
+                        helperText={errors.StatusColor?.message as string}
                     />
                 </Grid> */}
                 <Grid item xs={4}>
@@ -110,7 +110,7 @@ const NewEdit = () => {
                         {...register("Description")}
                         margin="dense"
                         error={!!errors.Description?.message}
-                        helperText={errors.Description?.message}
+                        helperText={errors.Description?.message as string}
                     />
                 </Grid>
             </Grid>

@@ -69,7 +69,7 @@ const NewEdit = () => {
                             {...register("SeasonCode")}
                             margin="dense"
                             error={!!errors.SeasonCode?.message}
-                            helperText={errors.SeasonCode?.message}
+                            helperText={errors.SeasonCode?.message as string}
                         />
                     </Grid>
 
@@ -82,7 +82,7 @@ const NewEdit = () => {
                             {...register("SeasonName")}
                             margin="dense"
                             error={!!errors.SeasonName?.message}
-                            helperText={errors.SeasonName?.message}
+                            helperText={errors.SeasonName?.message as string}
                         />
                     </Grid>
 
@@ -211,7 +211,7 @@ const NewEdit = () => {
                                             fullWidth
                                             {...params}
                                             error={!!errors.EndDate?.message}
-                                            helperText={errors.EndDate?.message}
+                                            helperText={errors.EndDate?.message as string}
                                         />
                                     )}
                                 />
@@ -229,7 +229,7 @@ const NewEdit = () => {
                             {...register("Priority")}
                             margin="dense"
                             error={!!errors.Priority?.message}
-                            helperText={errors.Priority?.message}
+                            helperText={errors.Priority?.message as string}
                         />
                     </Grid>
                 </Grid>

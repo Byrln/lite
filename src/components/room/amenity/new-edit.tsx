@@ -50,7 +50,7 @@ const NewEdit = () => {
                         {...register("AmenityShortName")}
                         margin="dense"
                         error={!!errors.AmenityShortName?.message}
-                        helperText={errors.AmenityShortName?.message}
+                        helperText={errors.AmenityShortName?.message as string}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -62,7 +62,7 @@ const NewEdit = () => {
                         {...register("AmenityName")}
                         margin="dense"
                         error={!!errors.AmenityName?.message}
-                        helperText={errors.AmenityName?.message}
+                        helperText={errors.AmenityName?.message as string}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -76,7 +76,7 @@ const NewEdit = () => {
                         defaultValue={1}
                         margin="dense"
                         error={!!errors.SortOrder?.message}
-                        helperText={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message as string}
                     />
                 </Grid>
             </Grid>

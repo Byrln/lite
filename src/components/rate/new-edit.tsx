@@ -38,7 +38,7 @@ const NewEdit = ({ entity }: any) => {
                 {...register("TaxCode")}
                 margin="dense"
                 error={!!errors.TaxCode?.message}
-                helperText={errors.TaxCode?.message}
+                helperText={errors.TaxCode?.message as string}
             />
 
             <TextField
@@ -48,7 +48,7 @@ const NewEdit = ({ entity }: any) => {
                 {...register("TaxName")}
                 margin="dense"
                 error={!!errors.TaxName?.message}
-                helperText={errors.TaxName?.message}
+                helperText={errors.TaxName?.message as string}
             />
 
             <TextField
@@ -60,7 +60,7 @@ const NewEdit = ({ entity }: any) => {
                 {...register("TaxAmount")}
                 margin="dense"
                 error={!!errors.TaxAmount?.message}
-                helperText={errors.TaxAmount?.message}
+                helperText={errors.TaxAmount?.message as string}
             />
 
             <TextField
@@ -71,7 +71,7 @@ const NewEdit = ({ entity }: any) => {
                 {...register("BeginDate")}
                 margin="dense"
                 error={!!errors.BeginDate?.message}
-                helperText={errors.BeginDate?.message}
+                helperText={errors.BeginDate?.message as string}
             />
     
             <TextField
@@ -82,7 +82,7 @@ const NewEdit = ({ entity }: any) => {
                 {...register("EndDate")}
                 margin="dense"
                 error={!!errors.EndDate?.message}
-                helperText={errors.EndDate?.message}
+                helperText={errors.EndDate?.message as string}
             />
         </NewEditForm>
     );

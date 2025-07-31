@@ -42,7 +42,7 @@ const RoomChargeDurationSelect = ({
             select
             margin="dense"
             error={!!errors.RoomChargeDurationID?.message}
-            helperText={errors.RoomChargeDurationID?.message}
+            helperText={errors.RoomChargeDurationID?.message as string}
             size="small"
         >
             {data.map((element: any) => {

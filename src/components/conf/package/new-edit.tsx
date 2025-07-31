@@ -111,7 +111,7 @@ const NewEdit = () => {
                                         fullWidth
                                         {...params}
                                         error={!!errors.BeginDate?.message}
-                                        helperText={errors.BeginDate?.message}
+                                        helperText={errors.BeginDate?.message as string}
                                     />
                                 )}
                             />

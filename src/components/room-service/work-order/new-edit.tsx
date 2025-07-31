@@ -169,7 +169,7 @@ const NewEdit = () => {
                         {...register("WorkOrderNo")}
                                 margin="dense"
                                 error={!!errors.WorkOrderNo?.message}
-                                helperText={errors.WorkOrderNo?.message}
+                                helperText={errors.WorkOrderNo?.message as string}
                                 disabled={true}
                             />
                         </Grid>
@@ -269,7 +269,7 @@ const NewEdit = () => {
                                             {...register("Description")}
                             margin="dense"
                             error={!!errors.Description?.message}
-                            helperText={errors.Description?.message}
+                            helperText={errors.Description?.message as string}
                         />
                     </Grid>
 

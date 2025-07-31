@@ -51,7 +51,7 @@ const ReservationTypeSelect = ({
             select
             margin="dense"
             error={!!errors.ReservationTypeID?.message}
-            helperText={errors.ReservationTypeID?.message}
+            helperText={errors.ReservationTypeID?.message as string}
             size="small"
             value={ReservationTypeID}
             onChange={onChange}

@@ -148,7 +148,7 @@ const NewEdit = () => {
                         {...register("RateTypeCode")}
                         margin="dense"
                         error={!!errors.RateTypeCode?.message}
-                        helperText={errors.RateTypeCode?.message}
+                        helperText={errors.RateTypeCode?.message as string}
                     />
                 </Grid>
                 <Grid item xs={3}>
@@ -160,7 +160,7 @@ const NewEdit = () => {
                         {...register("RateTypeName")}
                         margin="dense"
                         error={!!errors.RateTypeName?.message}
-                        helperText={errors.RateTypeName?.message}
+                        helperText={errors.RateTypeName?.message as string}
                     />
                 </Grid>
                 <Grid item xs={3}>

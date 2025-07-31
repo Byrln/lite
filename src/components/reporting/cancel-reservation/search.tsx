@@ -40,7 +40,7 @@ const Search = ({
                                     fullWidth
                                     {...params}
                                     error={!!errors.StartDate?.message}
-                                    helperText={errors.StartDate?.message}
+                                    helperText={errors.StartDate?.message as string}
                                 />
                             )}
                         />
@@ -69,7 +69,7 @@ const Search = ({
                                     fullWidth
                                     {...params}
                                     error={!!errors.EndDate?.message}
-                                    helperText={errors.EndDate?.message}
+                                    helperText={errors.EndDate?.message as string}
                                 />
                             )}
                         />

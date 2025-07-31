@@ -58,7 +58,7 @@ const Search = ({
                                     fullWidth
                                     {...params}
                                     error={!!errors.CurrDate?.message}
-                                    helperText={errors.CurrDate?.message}
+                                    helperText={errors.CurrDate?.message as string}
                                     onBlur={(e) => {
                                         const typedValue = new Date(
                                             e.target.value

@@ -55,7 +55,7 @@ const NewEdit = ({ entity }: any) => {
                         {...register("PaymentMethodName")}
                         margin="dense"
                         error={!!errors.PaymentMethodName?.message}
-                        helperText={errors.PaymentMethodName?.message}
+                        helperText={errors.PaymentMethodName?.message as string}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -69,7 +69,7 @@ const NewEdit = ({ entity }: any) => {
                         defaultValue={1}
                         margin="dense"
                         error={!!errors.SortOrder?.message}
-                        helperText={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message as string}
                     />
                 </Grid>
             </Grid>

@@ -60,7 +60,7 @@ const DistrictSelect = ({ register, errors, entity, setEntity }: any) => {
                     select
                     margin="dense"
                     error={!!errors.DistrictCode?.message}
-                    helperText={errors.DistrictCode?.message}
+                    helperText={errors.DistrictCode?.message as string}
                     value={entity && entity.DistrictCode}
                     InputLabelProps={{
                         shrink: entity && entity.DistrictCode,
@@ -93,7 +93,7 @@ const DistrictSelect = ({ register, errors, entity, setEntity }: any) => {
                     select
                     margin="dense"
                     error={!!errors.SubDistrictCode?.message}
-                    helperText={errors.SubDistrictCode?.message}
+                    helperText={errors.SubDistrictCode?.message as string}
                     value={entity && entity.SubDistrictCode}
                     InputLabelProps={{
                         shrink: entity && entity.SubDistrictCode,

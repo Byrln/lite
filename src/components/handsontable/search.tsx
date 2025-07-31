@@ -30,7 +30,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                                     fullWidth
                                     {...params}
                                     error={!!errors.CurrDate?.message}
-                                    helperText={errors.CurrDate?.message}
+                                    helperText={errors.CurrDate?.message as string}
                                 />
                             )}
                         />

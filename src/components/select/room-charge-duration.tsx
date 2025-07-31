@@ -52,7 +52,7 @@ const RoomChargeDurationSelect = ({
                     aria-label="Gender"
                     {...register("RoomChargeDurationID")}
                     error={!!errors.RoomChargeDurationID?.message}
-                    helperText={errors.RoomChargeDurationID?.message}
+                    helperText={errors.RoomChargeDurationID?.message as string}
                     value={entity && entity.RoomChargeDurationID}
                     onChange={onChange}
                 >

@@ -38,7 +38,7 @@ const NewEdit = () => {
                         {...register("FloorNo")}
                         margin="dense"
                         error={!!errors.SortOrder?.message}
-                        helperText={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message as string}
                     />
                 </Grid>
             </Grid>

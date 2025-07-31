@@ -40,7 +40,7 @@ const VipStatusSelect = ({
             select
             margin="dense"
             error={!!errors.VipStatusID?.message}
-            helperText={errors.VipStatusID?.message}
+            helperText={errors.VipStatusID?.message as string}
             size="small"
             value={entity && entity.VipStatusID}
             InputLabelProps={{

@@ -343,7 +343,7 @@ const AmendStayForm = ({
                             {...register("ArrivalDate")}
                             margin="dense"
                             error={!!errors.ArrivalDate?.message}
-                            helperText={errors.ArrivalDate?.message}
+                            helperText={errors.ArrivalDate?.message as string}
                             InputLabelProps={{ shrink: true }}
                             // value={entity?.ArrivalDate && entity.ArrivalDate}
                             onChange={(evt: any) => {
@@ -386,7 +386,7 @@ const AmendStayForm = ({
                             margin="dense"
                             size="small"
                             error={!!errors.DepartureDate?.message}
-                            helperText={errors.DepartureDate?.message}
+                            helperText={errors.DepartureDate?.message as string}
                             InputLabelProps={{ shrink: true }}
                             // value={entity?.DepartureDate && entity.DepartureDate}
                             onChange={(evt: any) => {

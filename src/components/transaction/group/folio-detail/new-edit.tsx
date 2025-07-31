@@ -161,7 +161,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
                             margin="dense"
                             fullWidth
                             error={!!errors.ItemName?.message}
-                            helperText={errors.ItemName?.message}
+                            helperText={errors.ItemName?.message as string}
                             label={"Хэлбэр"}
                             disabled={true}
                         />
@@ -176,7 +176,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
                             {...register("Description")}
                             margin="dense"
                             error={!!errors.Description?.message}
-                            helperText={errors.Description?.message}
+                            helperText={errors.Description?.message as string}
                         />
                     </Grid>
 
@@ -201,7 +201,7 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
                             margin="dense"
                             size="small"
                             error={!!errors.Amount1?.message}
-                            helperText={errors.Amount1?.message}
+                            helperText={errors.Amount1?.message as string}
                         />
                     </Grid>
                 </Grid>

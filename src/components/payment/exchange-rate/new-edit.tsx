@@ -132,7 +132,7 @@ const NewEdit = () => {
                         {...register("CurrencyName")}
                         margin="dense"
                         error={!!errors.CurrencyName?.message}
-                        helperText={errors.CurrencyName?.message}
+                        helperText={errors.CurrencyName?.message as string}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -147,7 +147,7 @@ const NewEdit = () => {
                         {...register("CurrencyCode")}
                         margin="dense"
                         error={!!errors.CurrencyCode?.message}
-                        helperText={errors.CurrencyCode?.message}
+                        helperText={errors.CurrencyCode?.message as string}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -164,7 +164,7 @@ const NewEdit = () => {
                         {...register("CurrencySymbol")}
                         margin="dense"
                         error={!!errors.CurrencySymbol?.message}
-                        helperText={errors.CurrencySymbol?.message}
+                        helperText={errors.CurrencySymbol?.message as string}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -199,7 +199,7 @@ const NewEdit = () => {
                                 {...register("CurrencyRate1")}
                                 margin="dense"
                                 error={!!errors.CurrencyRate1?.message}
-                                helperText={errors.CurrencyRate1?.message}
+                                helperText={errors.CurrencyRate1?.message as string}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -226,7 +226,7 @@ const NewEdit = () => {
                                 {...register("TargetCurrencyRate1")}
                                 margin="dense"
                                 error={!!errors.TargetCurrencyRate1?.message}
-                                helperText={errors.TargetCurrencyRate1?.message}
+                                helperText={errors.TargetCurrencyRate1?.message as string}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -253,7 +253,7 @@ const NewEdit = () => {
                                 {...register("TargetCurrencyRate2")}
                                 margin="dense"
                                 error={!!errors.TargetCurrencyRate2?.message}
-                                helperText={errors.TargetCurrencyRate2?.message}
+                                helperText={errors.TargetCurrencyRate2?.message as string}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -281,7 +281,7 @@ const NewEdit = () => {
                                 {...register("CurrencyRate2")}
                                 margin="dense"
                                 error={!!errors.CurrencyRate2?.message}
-                                helperText={errors.CurrencyRate2?.message}
+                                helperText={errors.CurrencyRate2?.message as string}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}

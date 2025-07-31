@@ -44,7 +44,7 @@ const BookingSourceSelect = ({
             select
             margin="dense"
             error={!!errors.ChannelSourceID?.message}
-            helperText={errors.ChannelSourceID?.message}
+            helperText={errors.ChannelSourceID?.message as string}
             size="small"
             value={
                 entity &&

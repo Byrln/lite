@@ -108,7 +108,7 @@ const NewEdit = ({ SessionID, isAdd, setDetailData, setSummary }: any) => {
                         margin="dense"
                         size="small"
                         error={!!errors.AmountPosted?.message}
-                        helperText={errors.AmountPosted?.message}
+                        helperText={errors.AmountPosted?.message as string}
                     />
                 </Grid>
 
@@ -121,7 +121,7 @@ const NewEdit = ({ SessionID, isAdd, setDetailData, setSummary }: any) => {
                         {...register("Description")}
                         margin="dense"
                         error={!!errors.Description?.message}
-                        helperText={errors.Description?.message}
+                        helperText={errors.Description?.message as string}
                     />
                 </Grid>
             </Grid>

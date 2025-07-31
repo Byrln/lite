@@ -48,7 +48,7 @@ const NewEdit = () => {
                         {...register("RoomChargeTypeGroupName")}
                         margin="dense"
                         error={!!errors.RoomChargeTypeGroupName?.message}
-                        helperText={errors.RoomChargeTypeGroupName?.message}
+                        helperText={errors.RoomChargeTypeGroupName?.message as string}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -62,7 +62,7 @@ const NewEdit = () => {
                         defaultValue={1}
                         margin="dense"
                         error={!!errors.SortOrder?.message}
-                        helperText={errors.SortOrder?.message}
+                        helperText={errors.SortOrder?.message as string}
                     />
                 </Grid>
             </Grid>

@@ -67,7 +67,7 @@ const NewEdit = () => {
                 {...register("RoomChargeTypeName")}
                 margin="dense"
                 error={!!errors.RoomChargeTypeName?.message}
-                helperText={errors.RoomChargeTypeName?.message}
+                helperText={errors.RoomChargeTypeName?.message as string}
             />
 
             <TextField
@@ -78,7 +78,7 @@ const NewEdit = () => {
                 {...register("RoomChargeTypeNameCustom")}
                 margin="dense"
                 error={!!errors.RoomChargeTypeNameCustom?.message}
-                helperText={errors.RoomChargeTypeNameCustom?.message}
+                helperText={errors.RoomChargeTypeNameCustom?.message as string}
             />
 
             <TextField
@@ -90,7 +90,7 @@ const NewEdit = () => {
                 {...register("RoomChargeTypeRate")}
                 margin="dense"
                 error={!!errors.RoomChargeTypeRate?.message}
-                helperText={errors.RoomChargeTypeRate?.message}
+                helperText={errors.RoomChargeTypeRate?.message as string}
             />
 
             <TextField
@@ -103,7 +103,7 @@ const NewEdit = () => {
                 defaultValue={1}
                 margin="dense"
                 error={!!errors.SortOrder?.message}
-                helperText={errors.SortOrder?.message}
+                helperText={errors.SortOrder?.message as string}
             />
         </NewEditForm>
     );

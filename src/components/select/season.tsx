@@ -28,7 +28,7 @@ const SeasonSelect = ({ register, errors }: any) => {
             select
             margin="dense"
             error={!!errors.SeasonID?.message}
-            helperText={errors.SeasonID?.message}
+            helperText={errors.SeasonID?.message as string}
             size="small"
         >
             {data.map((element: any) => {

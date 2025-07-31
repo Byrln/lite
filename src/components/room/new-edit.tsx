@@ -67,7 +67,7 @@ const NewEdit = () => {
             {...register("RoomNo")}
             margin="dense"
             error={!!errors.RoomNo?.message}
-            helperText={errors.RoomNo?.message}
+            helperText={errors.RoomNo?.message as string}
           />
         </Grid>
         <Grid item xs={4}>
@@ -75,7 +75,7 @@ const NewEdit = () => {
                         searchRoomTypeID={roomTypeID}
                         setSearchRoomTypeID={handleRoomTypeChange}
                         error={!!errors.RoomTypeID}
-                        helperText={errors.RoomTypeID?.message}
+                        helperText={errors.RoomTypeID?.message as string}
                     />
         </Grid>
         <Grid item xs={4}>
@@ -90,7 +90,7 @@ const NewEdit = () => {
             {...register("RoomPhone")}
             margin="dense"
             error={!!errors.RoomPhone?.message}
-            helperText={errors.RoomPhone?.message}
+            helperText={errors.RoomPhone?.message as string}
           />
         </Grid>
         <Grid item xs={4}>
@@ -104,7 +104,7 @@ const NewEdit = () => {
             {...register("Description")}
             margin="dense"
             error={!!errors.Description?.message}
-            helperText={errors.Description?.message}
+            helperText={errors.Description?.message as string}
           />
         </Grid>
         <Grid item xs={4}>
@@ -118,7 +118,7 @@ const NewEdit = () => {
             defaultValue={1}
             margin="dense"
             error={!!errors.SortOrder?.message}
-            helperText={errors.SortOrder?.message}
+            helperText={errors.SortOrder?.message as string}
           />
         </Grid>
       </Grid>

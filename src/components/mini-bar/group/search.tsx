@@ -18,7 +18,7 @@ const Search = ({ register, errors, control, reset }: any) => {
                     {...register("SearchStr")}
                     margin="dense"
                     error={!!errors.SearchStr?.message}
-                    helperText={errors.SearchStr?.message}
+                    helperText={errors.SearchStr?.message as string}
                 />
             </Grid>
         </Grid>
