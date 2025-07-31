@@ -424,8 +424,7 @@ const NewEdit = ({
                                                 {...params}
                                                 error={!!errors.Date?.message}
                                                 helperText={
-                                                    errors.Date?.message
-                                                }
+                                                    errors.Date?.message as string}
                                             />
                                         )}
                                     />

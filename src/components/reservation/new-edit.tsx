@@ -607,8 +607,7 @@ const NewEdit = ({
                             }
                             helperText={
                               errors.ArrivalDate
-                                ?.message
-                            }
+                                ?.message as string}
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -661,8 +660,7 @@ const NewEdit = ({
                             }
                             helperText={
                               errors.DepartureDate
-                                ?.message
-                            }
+                                ?.message as string}
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -783,8 +781,7 @@ const NewEdit = ({
                             }
                             helperText={
                               errors.Nights
-                                ?.message
-                            }
+                                ?.message as string}
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -846,8 +843,7 @@ const NewEdit = ({
                             }
                             helperText={
                               errors.Surname
-                                ?.message
-                            }
+                                ?.message as string}
                             value={
                               entity &&
                               entity.Surname
@@ -883,8 +879,7 @@ const NewEdit = ({
                               errors.Name?.message
                             }
                             helperText={
-                              errors.Name?.message
-                            }
+                              errors.Name?.message as string}
                             value={
                               entity &&
                               entity.Name
@@ -1108,8 +1103,7 @@ const NewEdit = ({
                             }
                             helperText={
                               errors.Email
-                                ?.message
-                            }
+                                ?.message as string}
                             value={
                               entity &&
                               entity.Email
@@ -1145,8 +1139,7 @@ const NewEdit = ({
                             }
                             helperText={
                               errors.Mobile
-                                ?.message
-                            }
+                                ?.message as string}
                             value={
                               entity &&
                               entity.Mobile
@@ -1190,8 +1183,7 @@ const NewEdit = ({
                         margin="dense"
                         error={!!errors.Address?.message}
                         helperText={
-                          errors.Address?.message
-                        }
+                          errors.Address?.message as string}
                         value={entity && entity.Address}
                         InputLabelProps={{
                           shrink:
@@ -1382,8 +1374,7 @@ const NewEdit = ({
                             }
                             helperText={
                               errors.PayAmount
-                                ?.message
-                            }
+                                ?.message as string}
                             size="small"
                             style={{
                               width: "100%",

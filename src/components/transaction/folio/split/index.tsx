@@ -182,8 +182,7 @@ const NewEdit = ({ TransactionID, FolioID, handleModal, entities }: any) => {
                                             {...params}
                                             error={!!errors.BeginDate?.message}
                                             helperText={
-                                                errors.BeginDate?.message
-                                            }
+                                                errors.BeginDate?.message as string}
                                         />
                                     )}
                                 />

@@ -250,8 +250,7 @@ const NewEdit = () => {
                                             {...params}
                                             error={!!errors.Deadline?.message}
                                             helperText={
-                                                errors.Deadline?.message
-                                            }
+                                                errors.Deadline?.message as string}
                                         />
                                     )}
                                 />
@@ -334,8 +333,7 @@ const NewEdit = () => {
                                                     }
                                                     helperText={
                                                         errors.BeginDate
-                                                            ?.message
-                                                    }
+                                                            ?.message as string}
                                                 />
                                             )}
                                         />
@@ -374,8 +372,7 @@ const NewEdit = () => {
                                                         errors.EndDate?.message
                                                     }
                                                     helperText={
-                                                        errors.EndDate?.message
-                                                    }
+                                                        errors.EndDate?.message as string}
                                                 />
                                             )}
                                         />

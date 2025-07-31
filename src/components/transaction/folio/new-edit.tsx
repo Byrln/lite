@@ -122,8 +122,7 @@ const NewEdit = ({ TransactionID, FolioID }: any) => {
                                             {...params}
                                             error={!!errors.CurrDate?.message}
                                             helperText={
-                                                errors.CurrDate?.message
-                                            }
+                                                errors.CurrDate?.message as string}
                                         />
                                     )}
                                 />

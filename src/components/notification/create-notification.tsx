@@ -243,7 +243,7 @@ export default function CreateNotification() {
                   label="Notification ID"
                   type="number"
                   error={!!errors.NotificationID}
-                  helperText={errors.NotificationID?.message || 'Optional - Leave empty to query all'}
+                  helperText={errors.NotificationID?.message as string}
                   InputProps={{
                     inputProps: { min: 1 },
                   }}
@@ -257,7 +257,7 @@ export default function CreateNotification() {
                   fullWidth
                   label="Notification Code"
                   error={!!errors.NotificationCode}
-                  helperText={errors.NotificationCode?.message || 'Optional - Leave empty to query all'}
+                  helperText={errors.NotificationCode?.message as string}
                 />
               </Grid>
 
