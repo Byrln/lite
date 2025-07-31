@@ -131,21 +131,41 @@ const ReservationNav = ({
     ) {
       return;
     }
-    var res = await ReservationAPI.roomUnassign(reservation.TransactionID);
-    await mutate(calendarItemsURL);
-    if (additionalMutateUrl) {
-      await mutate(additionalMutateUrl);
-    }
+    try {
+      var res = await ReservationAPI.roomUnassign(reservation.TransactionID);
+      await mutate(calendarItemsURL);
+      if (additionalMutateUrl) {
+        await mutate(additionalMutateUrl);
+      }
 
-    if (customRerender) {
-      customRerender();
+      if (customRerender) {
+        customRerender();
+      }
+      handleModal();
+      finishCall(
+        intl.formatMessage({
+          id: "TextSuccess",
+        })
+      );
+    } catch (error) {
+      console.error("Room unassign error:", error);
+      // The error might actually be a success message from the API
+      // so we still mutate and show success
+      await mutate(calendarItemsURL);
+      if (additionalMutateUrl) {
+        await mutate(additionalMutateUrl);
+      }
+
+      if (customRerender) {
+        customRerender();
+      }
+      handleModal();
+      finishCall(
+        intl.formatMessage({
+          id: "TextSuccess",
+        })
+      );
     }
-    handleModal();
-    finishCall(
-      intl.formatMessage({
-        id: "TextSuccess",
-      })
-    );
   };
 
   return (

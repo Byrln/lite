@@ -38,6 +38,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import Image from "next/image"
 import { signOut } from "next-auth/react"
+import { useIntl } from "react-intl"
 
 // Language menu item component
 function LanguageMenuItem({ value, label, icon }: { value: string; label: string; icon: string }) {
@@ -77,7 +78,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-
+  const intl = useIntl();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -118,10 +119,10 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <CreditCard />
                 Billing
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <Link href="/faq" className="gap-2">
                 <DropdownMenuItem className="flex items-center cursor-pointer">
                   <QuestionMarkOutlined />
@@ -129,9 +130,9 @@ export function NavUser({
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
+                <DropdownMenuSubTrigger className="flex items-center gap-3 cursor-pointer hover:bg-sidebar-accent">
                   <Languages className="h-4 w-4" />
-                  <span>Language</span>
+                  <span>{intl.formatMessage({ id: "TextLanguage" })}</span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
                   <LanguageMenuItem value="en" label="English" icon="/static/icons/ic_flag_en.svg" />
@@ -141,9 +142,11 @@ export function NavUser({
               </DropdownMenuSub>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/auth/login" })}>
-              <LogOut />
-              Log out
+            <DropdownMenuItem className="bg-red-200 border border-red-500 cursor-pointer hover:bg-red-300" onClick={() => signOut({ callbackUrl: "/auth/login" })}>
+              <div className="flex items-center gap-3 text-red-700">
+                <LogOut className="w-4 h-4" />
+                {intl.formatMessage({ id: "TextLogOut" })}
+              </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

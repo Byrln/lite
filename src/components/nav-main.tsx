@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { Icon } from "@iconify/react"
 import { IconifyProps } from "@/components/iconify/types"
 
@@ -25,20 +26,24 @@ export function NavMain({
 }: {
   items: {
     title: string
+    titleEn?: string
     url: string
     icon?: { name: string; color?: string } | IconifyProps
     isActive?: boolean
     items?: {
       title: string
+      titleEn?: string
       url: string
       icon?: { name: string; color?: string } | IconifyProps
       items?: {
         title: string
+        titleEn?: string
         url: string
       }[]
     }[]
   }[]
 }) {
+  const { locale } = useRouter()
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -49,20 +54,20 @@ export function NavMain({
             defaultOpen={item.isActive}
             className="group/collapsible"
           >
-            <SidebarMenuItem>
+            <SidebarMenuItem className="capitalize">
               {item.items ? (
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title} className="hover:bg-sidebar-accent/80">
+                  <SidebarMenuButton tooltip={locale === "en" ? item.titleEn || item.title : item.title} className="capitalize hover:bg-sidebar-accent/80">
                     {item.icon && <Icon icon={typeof item.icon === 'object' && 'name' in item.icon ? item.icon.name : item.icon} color={typeof item.icon === 'object' && 'color' in item.icon ? item.icon.color : undefined} className="transition-all duration-300 group-hover:scale-110" width={16} height={16} />}
-                    <span className="transition-all duration-300">{item.title}</span>
+                    <span className="transition-all duration-300">{locale === "en" ? item.titleEn || item.title : item.title}</span>
                     <Icon icon="lucide:chevron-right" className="ml-auto transition-all duration-300 ease-in-out group-data-[state=open]/collapsible:rotate-90 group-hover:scale-110" width={16} height={16} color="white" />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
               ) : (
-                <SidebarMenuButton asChild tooltip={item.title} className="hover:bg-sidebar-accent/80">
+                <SidebarMenuButton asChild tooltip={locale === "en" ? item.titleEn || item.title : item.title} className="hover:bg-sidebar-accent/80">
                   <Link href={item.url}>
                     {item.icon && <Icon icon={typeof item.icon === 'object' && 'name' in item.icon ? item.icon.name : item.icon} color={typeof item.icon === 'object' && 'color' in item.icon ? item.icon.color : undefined} className="transition-all duration-300 group-hover:scale-110" width={16} height={16} />}
-                    <span className="transition-all duration-300">{item.title}</span>
+                    <span className="transition-all duration-300">{locale === "en" ? item.titleEn || item.title : item.title}</span>
                   </Link>
                 </SidebarMenuButton>
               )}
@@ -80,7 +85,7 @@ export function NavMain({
                               <CollapsibleTrigger asChild>
                                 <SidebarMenuSubButton className="hover:bg-sidebar-accent/60">
                                   {subItem.icon && <Icon icon={typeof subItem.icon === 'object' && 'name' in subItem.icon ? subItem.icon.name : subItem.icon} color={typeof subItem.icon === 'object' && 'color' in subItem.icon ? subItem.icon.color : undefined} className="transition-all duration-300 group-hover:scale-110" width={14} height={14} />}
-                                  <span className="transition-all duration-300 text-white">{subItem.title}</span>
+                                  <span className="transition-all duration-300 text-white">{locale === "en" ? subItem.titleEn || subItem.title : subItem.title}</span>
                                   <Icon icon="lucide:chevron-right" className="ml-auto transition-all duration-300 ease-in-out group-data-[state=open]/sub-collapsible:rotate-90 group-hover:scale-110" width={14} height={14} color="white" />
                                 </SidebarMenuSubButton>
                               </CollapsibleTrigger>
@@ -89,7 +94,7 @@ export function NavMain({
                                   {subItem.items.map((nestedItem) => (
                                     <SidebarMenuSubButton key={nestedItem.title} asChild className="hover:bg-sidebar-accent/40 ml-2">
                                       <Link href={nestedItem.url}>
-                                        <span className="transition-all duration-300 text-white text-sm">{nestedItem.title}</span>
+                                        <span className="transition-all duration-300 text-white text-sm">{locale === "en" ? nestedItem.titleEn || nestedItem.title : nestedItem.title}</span>
                                       </Link>
                                     </SidebarMenuSubButton>
                                   ))}
@@ -101,7 +106,7 @@ export function NavMain({
                           <SidebarMenuSubButton asChild className="hover:bg-sidebar-accent/60">
                             <Link href={subItem.url}>
                               {subItem.icon && <Icon icon={typeof subItem.icon === 'object' && 'name' in subItem.icon ? subItem.icon.name : subItem.icon} color={typeof subItem.icon === 'object' && 'color' in subItem.icon ? subItem.icon.color : undefined} className="transition-all duration-300 group-hover:scale-110" width={14} height={14} />}
-                              <span className="transition-all duration-300 text-white">{subItem.title}</span>
+                              <span className="transition-all duration-300 text-white">{locale === "en" ? subItem.titleEn || subItem.title : subItem.title}</span>
                             </Link>
                           </SidebarMenuSubButton>
                         )}

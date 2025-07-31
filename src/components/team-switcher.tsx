@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Icon } from "@iconify/react"
 import { IconifyProps } from "@/components/iconify/types"
+import { useRouter } from "next/router"
 
 import {
   DropdownMenu,
@@ -29,7 +30,15 @@ export function TeamSwitcher({
   }[]
 }) {
   const { isMobile } = useSidebar()
+  const router = useRouter()
   const [activeTeam, setActiveTeam] = React.useState(teams[0])
+
+  const handleDemoCalendar = () => {
+    // Set demo mode in localStorage
+    localStorage.setItem('demoMode', 'true')
+    // Navigate to demo calendar
+    router.push('/new-calendar/demo')
+  }
 
   if (!activeTeam) {
     return null
@@ -95,6 +104,12 @@ export function TeamSwitcher({
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
+            <DropdownMenuItem className="gap-2 p-2" onClick={handleDemoCalendar}>
+              <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                <Icon icon="lucide:calendar" className="size-4" />
+              </div>
+              <div className="font-medium text-muted-foreground">Demo Calendar</div>
+            </DropdownMenuItem>
             <DropdownMenuItem className="gap-2 p-2">
               <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                 <Icon icon="lucide:plus" className="size-4" />

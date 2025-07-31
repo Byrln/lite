@@ -1,12 +1,17 @@
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
-
+import { useIntl } from "react-intl";
 import Page from "components/page";
 import ExtraChargeList from "components/rate/extra-charge/list";
 
-const title = "Нэмэлт үйлчилгээ";
-
-const Index = () => (
+const Index = () => {
+    const intl = useIntl();
+    
+    const title = intl.formatMessage({
+        id: "PageTitleExtraCharge",
+    });
+    
+    return (
     <>
         <Head>
             <title>{title}</title>
@@ -25,6 +30,7 @@ const Index = () => (
             </Container>
         </Page>
     </>
-);
+    );
+};
 
 export default Index;

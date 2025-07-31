@@ -127,6 +127,21 @@ const Search = ({ register, errors, control, reset }: any) => {
                 <TextField
                     size="small"
                     fullWidth
+                    id="GuestLastName"
+                    label={intl.formatMessage({
+                        id: "RowHeaderLastName",
+                    })}
+                    {...register("GuestLastName")}
+                    margin="dense"
+                    error={!!errors.GuestLastName?.message}
+                    helperText={errors.GuestLastName?.message as string}
+                />
+            </Grid>
+
+            <Grid item xs={3}>
+                <TextField
+                    size="small"
+                    fullWidth
                     id="GuestPhone"
                     label={intl.formatMessage({
                         id: "RowHeaderPhone",

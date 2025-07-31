@@ -95,7 +95,7 @@ export default function NotificationExamples() {
     try {
       const result = await NotificationAPI.getStatus(query);
       if (result.Status) {
-        setAlert({ type: 'success', message: `Notification status queried successfully! Found ${result.Data?.length || 0} notifications.` });
+        setAlert({ type: 'success', message: `Notification status queried successfully! Found ${result.JsonData?.length || 0} notifications.` });
       } else {
         setAlert({ type: 'error', message: `Failed to query notification status` });
       }

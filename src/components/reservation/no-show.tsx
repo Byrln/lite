@@ -14,102 +14,102 @@ import { listUrl } from "lib/api/front-office";
 import ReasonSelect from "components/select/reason";
 
 const MarkNoShowForm = ({
-    transactionInfo,
-    reservation,
-    additionalMutateUrl,
-    customRerender,
+  transactionInfo,
+  reservation,
+  customMutateUrl,
+  customRerender,
 }: any) => {
-    const intl = useIntl();
-    const { handleModal }: any = useContext(ModalContext);
-    const [loading, setLoading] = useState(false);
+  const { handleModal }: any = useContext(ModalContext);
+  const intl = useIntl();
+  const [loading, setLoading] = useState(false);
 
-    const validationSchema = yup.object().shape({
-        ReasonID: yup.number().required("Сонгоно уу"),
-        Fee: yup.number().required("Сонгоно уу"),
-    });
-    const formOptions = { resolver: yupResolver(validationSchema) };
+  const validationSchema = yup.object().shape({
+    ReasonID: yup.number().typeError(intl.formatMessage({ id: "ValidationSelectRequired" })).required(intl.formatMessage({ id: "ValidationSelectRequired" })),
+    Fee: yup.number().typeError(intl.formatMessage({ id: "ValidationRequired" })).required(intl.formatMessage({ id: "ValidationRequired" })),
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-        resetField,
-    } = useForm(formOptions);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    resetField,
+  } = useForm(formOptions);
 
-    const onSubmit = async (values: any) => {
-        setLoading(true);
-        try {
-            const res = await ReservationAPI.noShow(values);
+  const onSubmit = async (values: any) => {
+    setLoading(true);
+    try {
+      const res = await ReservationAPI.noShow(values);
 
-            await mutate(listUrl);
-            if (additionalMutateUrl) {
-                await mutate(additionalMutateUrl);
-            }
-            toast(
-                intl.formatMessage({
-                    id: "TextSuccess",
-                })
-            );
+      await mutate(listUrl);
+      if (customMutateUrl) {
+        await mutate(customMutateUrl);
+      }
+      toast(
+        intl.formatMessage({
+          id: "TextSuccess",
+        })
+      );
 
-            if (customRerender) {
-                customRerender();
-            }
-            setLoading(false);
-            handleModal();
-        } catch (error) {
-            setLoading(false);
-            handleModal();
-        }
-    };
+      if (customRerender) {
+        customRerender();
+      }
+      setLoading(false);
+      handleModal();
+    } catch (error) {
+      setLoading(false);
+      handleModal();
+    }
+  };
 
-    return (
-        <>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input
-                    type="hidden"
-                    {...register("TransactionID")}
-                    value={transactionInfo.TransactionID}
-                />
+  return (
+    <>
+      <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="hidden"
+          {...register("TransactionID")}
+          value={transactionInfo.TransactionID}
+        />
 
-                <ReasonSelect
-                    register={register}
-                    errors={errors}
-                    ReasonTypeID={2}
-                    nameKey={"ReasonID"}
-                />
+        <ReasonSelect
+          register={register}
+          errors={errors}
+          ReasonTypeID={2}
+          nameKey={"ReasonID"}
+        />
 
-                <TextField
-                    fullWidth
-                    id="Fee"
-                    label={intl.formatMessage({
-                        id: "TextCancellationFee",
-                    })}
-                    {...register("Fee")}
-                    margin="dense"
-                    error={!!errors.Fee?.message}
-                    helperText={errors.Fee?.message}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
+        <TextField
+          fullWidth
+          id="Fee"
+          label={intl.formatMessage({
+            id: "TextCancellationFee",
+          })}
+          {...register("Fee")}
+          margin="dense"
+          error={!!errors.Fee?.message}
+          helperText={errors.Fee?.message}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
 
-                <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-                    <LoadingButton
-                        size="small"
-                        type="submit"
-                        variant="contained"
-                        loading={loading}
-                        className="mt-3"
-                    >
-                        {intl.formatMessage({
-                            id: "ButtonMarkNoShow",
-                        })}
-                    </LoadingButton>
-                </div>
-            </form>
-        </>
-    );
+        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+          <LoadingButton
+            size="small"
+            type="submit"
+            variant="contained"
+            loading={loading}
+            className="mt-3"
+          >
+            {intl.formatMessage({
+              id: "ButtonMarkNoShow",
+            })}
+          </LoadingButton>
+        </div>
+      </form>
+    </>
+  );
 };
 
 export default MarkNoShowForm;

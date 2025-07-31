@@ -23,30 +23,26 @@ import sidebarConfig from "@/components/layouts/dashboard/sidebar-config"
 // Icon map is no longer needed as we use Lucide icons directly
 
 function transformSidebarConfig(config: any[], intl: any) {
+  const locale = intl.locale || 'mon'
+  
   return config.map((item) => {
     // item.icon is now an object with name and color from getIcon function
     const iconData = item.icon || { name: "lucide:square-terminal", color: undefined }
 
     return {
-      title: intl.formatMessage({
-        id: item.titleEn || `menu.${item.title}`,
-        defaultMessage: item.title
-      }),
+      title: locale === 'en' && item.titleEn ? item.titleEn : item.title,
+      titleEn: item.titleEn,
       url: item.path || "#",
       icon: iconData,
       isActive: false,
       items: item.children ? item.children.map((child: any) => ({
-        title: intl.formatMessage({
-          id: child.titleEn || `menu.${child.title}`,
-          defaultMessage: child.title
-        }),
+        title: locale === 'en' && child.titleEn ? child.titleEn : child.title,
+        titleEn: child.titleEn,
         url: child.path || "#",
         icon: child.icon || undefined,
         items: child.children ? child.children.map((nestedChild: any) => ({
-          title: intl.formatMessage({
-            id: nestedChild.titleEn || `menu.${nestedChild.title}`,
-            defaultMessage: nestedChild.title
-          }),
+          title: locale === 'en' && nestedChild.titleEn ? nestedChild.titleEn : nestedChild.title,
+          titleEn: nestedChild.titleEn,
           url: nestedChild.path || "#",
         })) : undefined,
       })) : undefined,

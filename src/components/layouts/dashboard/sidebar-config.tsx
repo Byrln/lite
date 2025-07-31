@@ -78,6 +78,13 @@ const sidebarConfig = [
     oldPath: "FrontOffice/StayView.aspx",
   },
   {
+    title: "өрөөний удирдлага",
+    titleEn: "Room Management",
+    icon: getIcon("lucide:home"),
+    path: "/room/management",
+    oldPath: "Configuration/Rooms.aspx",
+  },
+  {
     title: "тариф",
     titleEn: "Rate",
     icon: getIcon("lucide:tag"),
@@ -121,42 +128,6 @@ const sidebarConfig = [
       //     title: "inclusion",
       //     path: "/rate/inclusion",
       // },
-    ],
-  },
-  {
-    title: "өрөө",
-    titleEn: "Rooms",
-    icon: getIcon("lucide:home"),
-    children: [
-      {
-        title: "өрөөний онцлог",
-        titleEn: "Room Amenities",
-        icon: getIcon("lucide:star", "#fbbf24"),
-        path: "/room/amenities",
-        oldPath: "Configuration/Amenities.aspx",
-      },
-      {
-        title: "өрөөний төлөв",
-        titleEn: "Room Status",
-        icon: getIcon("lucide:activity", "#06b6d4"),
-        path: "/room/status",
-        oldPath: "Configuration/RoomStatus.aspx",
-      },
-
-      {
-        title: "өрөөний төрөл",
-        titleEn: "Room Type",
-        icon: getIcon("lucide:grid-3x3", "#8b5cf6"),
-        path: "/room/type",
-        oldPath: "Configuration/RoomType.aspx",
-      },
-      {
-        title: "өрөө",
-        titleEn: "room",
-        icon: getIcon("lucide:bed", "#10b981"),
-        path: "/room",
-        oldPath: "Configuration/Rooms.aspx",
-      },
     ],
   },
   {
@@ -247,12 +218,12 @@ const sidebarConfig = [
             path: "/report/night-audit",
             oldPath: "",
           },
-          {
-            title: "Ресепшний гарааны тайлан",
-            titleEn: "Day End Report (Reception)",
-            path: "/report/reception",
-            oldPath: "",
-          },
+          // {
+          //   title: "Ресепшний гарааны тайлан",
+          //   titleEn: "Day End Report (Reception)",
+          //   path: "/report/reception",
+          //   oldPath: "",
+          // },
         ],
       },
       {
@@ -575,13 +546,13 @@ const sidebarConfig = [
             path: "/conf/email",
             oldPath: "",
           },
-          {
-            title: "notifications",
-            titleEn: "Notifications",
-            icon: getIcon("lucide:bell", "#ef4444"),
-            path: "/conf/notification",
-            oldPath: "",
-          },
+          // {
+          //   title: "notifications",
+          //   titleEn: "Notifications",
+          //   icon: getIcon("lucide:bell", "#ef4444"),
+          //   path: "/conf/notification",
+          //   oldPath: "",
+          // },
         ],
       },
       {
@@ -695,13 +666,6 @@ const sidebarConfig = [
             oldPath: "",
           },
         ],
-      },
-      {
-        title: "өрөө блоклох",
-        titleEn: "Room Block",
-        icon: getIcon("lucide:lock", "#ef4444"),
-        path: "/room-service/room-block",
-        oldPath: "",
       },
     ],
   },

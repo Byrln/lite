@@ -35,12 +35,12 @@ const AmendStayForm = ({
     });
 
     const validationSchema = yup.object().shape({
-        ArrivalDate: yup.date().required("Сонгоно уу"),
-        ArrivalTime: yup.string().required("Сонгоно уу"),
-        DepartureDate: yup.date().required("Сонгоно уу"),
-        DepartureTime: yup.string().required("Сонгоно уу"),
+        ArrivalDate: yup.date().required(intl.formatMessage({ id: "ValidationRequired" })),
+        ArrivalTime: yup.string().required(intl.formatMessage({ id: "ValidationRequired" })),
+        DepartureDate: yup.date().required(intl.formatMessage({ id: "ValidationRequired" })),
+        DepartureTime: yup.string().required(intl.formatMessage({ id: "ValidationRequired" })),
         OverrideRate: yup.bool().notRequired(),
-        NewNights: yup.number().required(),
+        NewNights: yup.number().typeError(intl.formatMessage({ id: "ValidationRequired" })).required(intl.formatMessage({ id: "ValidationRequired" })),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -53,12 +53,17 @@ const AmendStayForm = ({
 
     const setRange = (dateStart: Date, dateEnd: Date) => {
         var nights = countNights(dateStart, dateEnd);
+        
+        // Extract time in HH:mm format directly to avoid timezone issues
+        const arrivalTime = dateStart.toTimeString().substring(0, 5);
+        const departureTime = dateEnd.toTimeString().substring(0, 5);
+        
         reset({
             TransactionID: transactionInfo.TransactionID,
             ArrivalDate: dateToSimpleFormat(dateStart),
             DepartureDate: dateToSimpleFormat(dateEnd),
-            ArrivalTime: fToCustom(dateStart, "kk:mm"),
-            DepartureTime: fToCustom(dateEnd, "kk:mm"),
+            ArrivalTime: arrivalTime,
+            DepartureTime: departureTime,
             NewNights: nights,
         });
         setBaseStay({
@@ -70,13 +75,32 @@ const AmendStayForm = ({
     };
 
     useEffect(() => {
-        reset({
-            TransactionID: transactionInfo.TransactionID,
-        });
-
         var dateStart = new Date(transactionInfo.ArrivalDate);
         var dateEnd = new Date(transactionInfo.DepartureDate);
-        setRange(dateStart, dateEnd);
+        
+        // Extract time components directly from ISO string to avoid timezone issues
+        const arrivalTimeMatch = typeof transactionInfo.ArrivalDate === 'string' ? transactionInfo.ArrivalDate.match(/T(\d{2}:\d{2})/) : null;
+        const departureTimeMatch = typeof transactionInfo.DepartureDate === 'string' ? transactionInfo.DepartureDate.match(/T(\d{2}:\d{2})/) : null;
+        
+        const arrivalTime = arrivalTimeMatch ? arrivalTimeMatch[1] : "14:00";
+        const departureTime = departureTimeMatch ? departureTimeMatch[1] : "12:00";
+        
+        // Preserve original times from transactionInfo
+        var nights = countNights(dateStart, dateEnd);
+        reset({
+            TransactionID: transactionInfo.TransactionID,
+            ArrivalDate: dateToSimpleFormat(dateStart),
+            DepartureDate: dateToSimpleFormat(dateEnd),
+            ArrivalTime: arrivalTime,
+            DepartureTime: departureTime,
+            NewNights: nights,
+        });
+        setBaseStay({
+            ...baseStay,
+            dateStart: dateStart,
+            dateEnd: dateEnd,
+            nights: nights,
+        });
     }, []);
 
     const onArrivalDateChange = (evt: any) => {
@@ -302,7 +326,7 @@ const AmendStayForm = ({
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
                 <input type="hidden" {...register("TransactionID")} />
                 <input type="hidden" {...register("NewNights")} />
 
@@ -387,7 +411,7 @@ const AmendStayForm = ({
                                 step: 600, // 5 min
                             }}
                             size="small"
-                            onChange={(evt: any) => {}}
+                            onChange={onDepartureTimeChange}
                         />
                     </Grid>
                 </Grid>

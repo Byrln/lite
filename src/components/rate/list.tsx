@@ -282,7 +282,7 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
                     onClick={onToggleChecked}
                 />
             </LoadingButton>
-            Өрөөний тариф нь{" "}
+            {intl.formatMessage({ id: "RateTaxIncluded" })}{" "}
             {taxData &&
                 taxData
                     .filter((item: any) => item.Status === true)
@@ -294,7 +294,7 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
                             </span>
                         );
                     })}{" "}
-            татвар агуулсан болно.
+            {intl.formatMessage({ id: "RateTaxSuffix" })}
             <br />
             <Box className="rate-table-container">
                 <CustomTable

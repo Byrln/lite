@@ -15,7 +15,7 @@ const Search = ({
     setSearchCurrDate,
     setSearchRoomTypeID,
 }: any) => {
-    const onRoomTypeChange = (rt: any, index: number) => {
+    const onRoomTypeChange = (rt: any, index?: number) => {
         setSearchRoomTypeID(rt.RoomTypeID);
     };
 

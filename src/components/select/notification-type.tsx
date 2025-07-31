@@ -2,11 +2,16 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
+import { ReferenceSWR } from "lib/api/reference";
 import CustomSelect from "components/common/custom-select";
-import { NotificationUserItemSWR } from "lib/api/notification";
 
-const UserRoleSelect = ({ register, errors, field, UserTypeID }: any) => {
-    const { data, error } = NotificationUserItemSWR({ NotificationID: UserTypeID });
+const NotificationTypeSelect = ({
+    register,
+    errors,
+    field,
+    label = "Notification Type",
+}: any) => {
+    const { data, error } = ReferenceSWR("NotificationType");
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
 
@@ -23,12 +28,12 @@ const UserRoleSelect = ({ register, errors, field, UserTypeID }: any) => {
             register={register}
             errors={errors}
             field={field}
-            label="Item"
+            label={label}
             options={data}
-            optionValue="ItemID"
-            optionLabel="ItemName"
+            optionValue="NotificationTypeID"
+            optionLabel="NotificationTypeName"
         />
     );
 };
 
-export default UserRoleSelect;
+export default NotificationTypeSelect;

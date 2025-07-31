@@ -20,296 +20,303 @@ import { dateToCustomFormat } from "lib/utils/format-time";
 import { RateAPI } from "../../lib/api/rate";
 
 const RoomMoveForm = ({
-    transactionInfo,
-    reservation,
-    additionalMutateUrl,
-    customRerender,
+  transactionInfo,
+  reservation,
+  additionalMutateUrl,
+  customRerender,
 }: any) => {
-    const intl = useIntl();
-    const { handleModal }: any = useContext(ModalContext);
-    const [loading, setLoading] = useState(false);
-    const [baseStay, setBaseStay]: any = useState({
-        roomType: {
-            RoomTypeID: transactionInfo.RoomTypeID
-                ? transactionInfo.RoomTypeID
-                : null,
-        },
-        room: {
-            RoomID: transactionInfo.RoomID ? transactionInfo.RoomID : null,
-        },
-        rate: null,
-        dateStart: new Date(transactionInfo.ArrivalDate),
-        dateEnd: new Date(transactionInfo.DepartureDate),
-        NewRate: 0,
-        // Nights: 1,
+  const intl = useIntl();
+  const { handleModal }: any = useContext(ModalContext);
+  const [loading, setLoading] = useState(false);
+  const [baseStay, setBaseStay]: any = useState({
+    roomType: {
+      RoomTypeID: transactionInfo.RoomTypeID
+        ? transactionInfo.RoomTypeID
+        : null,
+    },
+    room: {
+      RoomID: transactionInfo.RoomID ? transactionInfo.RoomID : null,
+    },
+    rate: null,
+    dateStart: new Date(transactionInfo.ArrivalDate),
+    dateEnd: new Date(transactionInfo.DepartureDate),
+    NewRate: 0,
+    // Nights: 1,
+  });
+  const [roomType, setRoomType]: any = useState(null);
+  const [searchRoomTypeID, setSearchRoomTypeID] = useState(
+    transactionInfo.RoomTypeID ? transactionInfo.RoomTypeID : 0
+  );
+
+  const [rateCondition, setRateCondition] = useState({
+    overrideRate: false,
+    newRateMode: "normal",
+  });
+
+  const isManualRate = () => {
+    return (rateCondition.overrideRate =
+      rateCondition.overrideRate && rateCondition.newRateMode === "manual");
+  };
+
+  const onRoomChange = (r: any) => {
+    setBaseStay({
+      ...baseStay,
+      room: r,
     });
-    const [roomType, setRoomType]: any = useState(null);
+    // if (!isManualRate()) {
+    //     calculateAmount();
+    // }
+  };
 
-    const [rateCondition, setRateCondition] = useState({
-        overrideRate: false,
-        newRateMode: "normal",
+  const validationSchema = yup.object().shape({
+    TransactionID: yup.number().required("Сонгоно уу"),
+    RoomTypeID: yup.number().required("Сонгоно уу"),
+    RoomID: yup.number().nullable().transform((value, originalValue) => {
+      return originalValue === "" || originalValue === null || originalValue === undefined ? null : value;
+    }),
+    OverrideRate: yup.boolean().notRequired(),
+    NewRate: yup.number().nullable().transform((value, originalValue) => {
+      return originalValue === "" || originalValue === null || originalValue === undefined ? null : value;
+    }),
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    resetField,
+  } = useForm(formOptions);
+
+  const onSubmit = async (values: any) => {
+    setLoading(true);
+    try {
+      values.NewRoomTypeID = searchRoomTypeID;
+      values.NewRoomID = values.RoomID;
+      delete values.RoomTypeID;
+      delete values.RoomID;
+
+      const res = await ReservationAPI.roomMove(values);
+
+      await mutate(listUrl);
+      if (additionalMutateUrl) {
+        await mutate(additionalMutateUrl);
+      }
+      toast(
+        intl.formatMessage({
+          id: "TextSuccess",
+        })
+      );
+
+      if (customRerender) {
+        customRerender();
+      }
+      setLoading(false);
+      handleModal();
+    } catch (error) {
+      setLoading(false);
+      handleModal();
+    }
+  };
+  const onOverrideRateChange = (evt: any) => {
+    setRateCondition({
+      ...rateCondition,
+      overrideRate: evt.target.checked,
     });
+  };
 
-    const isManualRate = () => {
-        return (rateCondition.overrideRate =
-            "on" && rateCondition.newRateMode === "manual");
-    };
-
-    const onRoomChange = (r: any) => {
-        setBaseStay({
-            ...baseStay,
-            room: r,
-        });
-        // if (!isManualRate()) {
-        //     calculateAmount();
-        // }
-    };
-
-    const validationSchema = yup.object().shape({
-        TransactionID: yup.number().required("Сонгоно уу"),
-        RoomTypeID: yup.number().required("Сонгоно уу"),
-        RoomID: yup.number().notRequired(),
-        OverrideRate: yup.boolean().notRequired(),
-        NewRate: yup.number().notRequired(),
+  const onNewRateModeChange = (evt: any) => {
+    setRateCondition({
+      ...rateCondition,
+      newRateMode: evt.target.value,
     });
-    const formOptions = { resolver: yupResolver(validationSchema) };
+  };
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-        resetField,
-    } = useForm(formOptions);
-
-    const onSubmit = async (values: any) => {
-        setLoading(true);
-        try {
-            values.NewRoomTypeID = roomType.RoomTypeID
-                ? roomType.RoomTypeID
-                : values.RoomTypeID;
-            values.NewRoomID = values.RoomID;
-            delete values.RoomTypeID;
-            delete values.RoomID;
-
-            const res = await ReservationAPI.roomMove(values);
-
-            await mutate(listUrl);
-            if (additionalMutateUrl) {
-                await mutate(additionalMutateUrl);
-            }
-            toast(
-                intl.formatMessage({
-                    id: "TextSuccess",
-                })
-            );
-
-            if (customRerender) {
-                customRerender();
-            }
-            setLoading(false);
-            handleModal();
-        } catch (error) {
-            setLoading(false);
-            handleModal();
-        }
-    };
-    const onOverrideRateChange = (evt: any) => {
-        setRateCondition({
-            ...rateCondition,
-            overrideRate: evt.target.checked,
-        });
+  const calculateAmount = async (rt: any) => {
+    var values = {
+      CurrDate: dateToCustomFormat(baseStay.dateStart, "yyyy-MM-dd"),
+      RoomTypeID: rt.RoomTypeID,
+      RateTypeID: transactionInfo.RateTypeID,
+      ChannelID: 0,
+      SourceID: 0,
+      CustomerID: 0,
+      // TaxIncluded: reservationModel.TaxIncluded,
+      TaxIncluded: true,
+      RoomChargeDuration: 1,
+      ContractRate: false,
+      EmptyRow: false,
     };
 
-    const onNewRateModeChange = (evt: any) => {
-        setRateCondition({
-            ...rateCondition,
-            newRateMode: evt.target.value,
-        });
-    };
+    try {
+      var rates = await RateAPI.listByDate(values);
 
-    const calculateAmount = async (rt: any) => {
-        var values = {
-            CurrDate: dateToCustomFormat(baseStay.dateStart, "yyyy-MM-dd"),
-            RoomTypeID: rt.RoomTypeID,
-            RateTypeID: transactionInfo.RateTypeID,
-            ChannelID: 0,
-            SourceID: 0,
-            CustomerID: 0,
-            // TaxIncluded: reservationModel.TaxIncluded,
-            TaxIncluded: true,
-            RoomChargeDuration: 1,
-            ContractRate: false,
-            EmptyRow: false,
-        };
+      var amount;
 
-        try {
-            var rates = await RateAPI.listByDate(values);
+      if (rates.length > 0) {
+        amount = rates[0].BaseRate;
+      } else {
+        return;
+      }
+      resetField(`NewRate`, {
+        defaultValue: amount,
+      });
 
-            var amount;
+      setBaseStay({
+        ...baseStay,
+        NewRate: amount,
+      });
+    } catch (exp) { }
+  };
 
-            if (rates.length > 0) {
-                amount = rates[0].BaseRate;
-            } else {
-                return;
-            }
-            resetField(`NewRate`, {
-                defaultValue: amount,
-            });
+  const onRoomTypeChange = (roomTypeId: number) => {
+    setSearchRoomTypeID(roomTypeId);
+    const rt = { RoomTypeID: roomTypeId };
+    setBaseStay({
+      ...baseStay,
+      roomType: rt,
+    });
+    setRoomType(rt);
 
-            setBaseStay({
-                ...baseStay,
-                NewRate: amount,
-            });
-        } catch (exp) {}
-    };
+    if (!isManualRate()) {
+      calculateAmount(rt);
+    }
+  };
 
-    const onRoomTypeChange = (rt: any) => {
-        setBaseStay({
-            ...baseStay,
-            roomType: rt,
-        });
-        setRoomType(rt);
+  useEffect(() => {
+    if (transactionInfo && transactionInfo.RoomTypeID) {
+      setRoomType({ RoomTypeID: transactionInfo.RoomTypeID });
+      setSearchRoomTypeID(transactionInfo.RoomTypeID);
+    }
+  }, [transactionInfo]);
 
-        if (!isManualRate()) {
-            calculateAmount(rt);
-        }
-    };
+  return (
+    <>
+      <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="hidden"
+          {...register("TransactionID")}
+          value={transactionInfo.TransactionID}
+        />
 
-    useEffect(() => {
-        if (transactionInfo && transactionInfo.RoomTypeID) {
-            setRoomType({ RoomTypeID: transactionInfo.RoomTypeID });
-        }
-    }, [transactionInfo]);
+        <Grid container spacing={2}>
+          {roomType && (
+            <Grid item xs={12}>
+              <RoomTypeSelect
+                searchRoomTypeID={searchRoomTypeID}
+                setSearchRoomTypeID={onRoomTypeChange}
+                error={!!errors.RoomTypeID?.message}
+                helperText={errors.RoomTypeID?.message}
+              />
+            </Grid>
+          )}
+          {roomType && (
+            <Grid item xs={12}>
+              <RoomSelect
+                register={register}
+                errors={errors}
+                baseStay={baseStay}
+                onRoomChange={onRoomChange}
+                roomType={roomType}
+                resetField={resetField}
+              />
+            </Grid>
+          )}
+        </Grid>
 
-    return (
-        <>
-            tews
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input
-                    type="hidden"
-                    {...register("TransactionID")}
-                    value={transactionInfo.TransactionID}
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            {rateCondition && (
+              <div>
+                <FormControlLabel
+                  sx={{ my: 2 }}
+                  control={
+                    <Checkbox
+                      id={"OverrideRate"}
+                      {...register("OverrideRate")}
+                      onChange={onOverrideRateChange}
+                    // checked={rateCondition.overrideRate}
+                    />
+                  }
+                  label={intl.formatMessage({
+                    id: "TextOverrideRoomRate",
+                  })}
                 />
+              </div>
+            )}
 
-                <Grid container spacing={2}>
-                    {roomType && (
-                        <Grid item xs={12}>
-                            <RoomTypeSelect
-                                register={register}
-                                errors={errors}
-                                onRoomTypeChange={onRoomTypeChange}
-                                baseStay={roomType}
-                            />
-                        </Grid>
-                    )}
-                    {roomType && (
-                        <Grid item xs={12}>
-                            <RoomSelect
-                                register={register}
-                                errors={errors}
-                                baseStay={baseStay}
-                                onRoomChange={onRoomChange}
-                                roomType={roomType}
-                                resetField={resetField}
-                            />
-                        </Grid>
-                    )}
-                </Grid>
+            <div>
+              <FormControl component="fieldset">
+                <RadioGroup
+                  row
+                  id="GenderID"
+                  onChange={onNewRateModeChange}
+                >
+                  <FormControlLabel
+                    value={"normal"}
+                    control={<Radio />}
+                    label={intl.formatMessage({
+                      id: "ReportNormalRate",
+                    })}
+                    checked={
+                      rateCondition.newRateMode ===
+                      "normal"
+                    }
+                  />
 
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        {rateCondition && (
-                            <div>
-                                <FormControlLabel
-                                    sx={{ my: 2 }}
-                                    control={
-                                        <Checkbox
-                                            id={"OverrideRate"}
-                                            {...register("OverrideRate")}
-                                            onChange={onOverrideRateChange}
-                                            // checked={rateCondition.overrideRate}
-                                        />
-                                    }
-                                    label={intl.formatMessage({
-                                        id: "TextOverrideRoomRate",
-                                    })}
-                                />
-                            </div>
-                        )}
+                  <FormControlLabel
+                    value={"manual"}
+                    control={<Radio />}
+                    label={intl.formatMessage({
+                      id: "TextManualRate",
+                    })}
+                    checked={
+                      rateCondition.newRateMode ===
+                      "manual"
+                    }
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
 
-                        <div>
-                            <FormControl component="fieldset">
-                                <RadioGroup
-                                    row
-                                    id="GenderID"
-                                    onChange={onNewRateModeChange}
-                                >
-                                    <FormControlLabel
-                                        value={"normal"}
-                                        control={<Radio />}
-                                        label={intl.formatMessage({
-                                            id: "ReportNormalRate",
-                                        })}
-                                        checked={
-                                            rateCondition.newRateMode ===
-                                            "normal"
-                                        }
-                                    />
-
-                                    <FormControlLabel
-                                        value={"manual"}
-                                        control={<Radio />}
-                                        label={intl.formatMessage({
-                                            id: "TextManualRate",
-                                        })}
-                                        checked={
-                                            rateCondition.newRateMode ===
-                                            "manual"
-                                        }
-                                    />
-                                </RadioGroup>
-                            </FormControl>
-                        </div>
-
-                        {/* {isManualRate() ? ( */}
-                        <TextField
-                            fullWidth
-                            id="NewRate"
-                            label={intl.formatMessage({
-                                id: "TextAmount",
-                            })}
-                            {...register("NewRate")}
-                            margin="dense"
-                            error={!!errors.NewRate?.message}
-                            helperText={errors.NewRate?.message}
-                            disabled={!isManualRate()}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                        {/* ) : (
+            {/* {isManualRate() ? ( */}
+            <TextField
+              fullWidth
+              id="NewRate"
+              label={intl.formatMessage({
+                id: "TextAmount",
+              })}
+              {...register("NewRate")}
+              margin="dense"
+              error={!!errors.NewRate?.message}
+              helperText={errors.NewRate?.message}
+              disabled={!isManualRate()}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            {/* ) : (
                             <></>
                         )} */}
-                    </Grid>
-                </Grid>
+          </Grid>
+        </Grid>
 
-                <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-                    <LoadingButton
-                        size="small"
-                        type="submit"
-                        variant="contained"
-                        loading={loading}
-                        className="mt-3"
-                    >
-                        {intl.formatMessage({
-                            id: "ButtonRoomMove",
-                        })}
-                    </LoadingButton>
-                </div>
-            </form>
-        </>
-    );
+        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+          <LoadingButton
+            size="small"
+            type="submit"
+            variant="contained"
+            loading={loading}
+            className="mt-3"
+          >
+            {intl.formatMessage({
+              id: "ButtonRoomMove",
+            })}
+          </LoadingButton>
+        </div>
+      </form>
+    </>
+  );
 };
 
 export default RoomMoveForm;

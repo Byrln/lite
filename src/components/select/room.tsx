@@ -75,15 +75,15 @@ const RoomSelect = ({
         // });
         // onRoomChange(d[0]);
 
-        if (!baseStay || !baseStay.room) {
-            eventRoomChange(d[0].RoomID);
-        }
+        // Only auto-select first room if explicitly requested via roomAutoAssign
+        // Don't auto-select when no room is initially assigned
     };
     useEffect(() => {
         if (data && data.length > 0) {
-            if (baseStay?.room) {
-                eventRoomChange(baseStay.room?.RoomID);
+            if (baseStay?.room?.RoomID) {
+                eventRoomChange(baseStay.room.RoomID);
             } else {
+                // Auto-select first available room as default
                 eventRoomChange(data[0].RoomID);
             }
         }
@@ -118,9 +118,9 @@ const RoomSelect = ({
             onChange={(evt: any) => {
                 eventRoomChange(evt.target.value);
             }}
-            value={baseStay?.room?.RoomID}
+            value={baseStay?.room?.RoomID || ""}
             InputLabelProps={{
-                shrink: baseStay?.room?.RoomID,
+                shrink: !!baseStay?.room?.RoomID,
             }}
             shrink
             size="small"

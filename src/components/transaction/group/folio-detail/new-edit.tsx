@@ -82,7 +82,11 @@ const NewEdit = ({ TransactionID, FolioID, TypeID, CurrID }: any) => {
                 TaxIncluded: entity.TaxIncluded,
                 CurrID: CurrID,
             };
-            FolioAPI.update(tempValues);
+            await FolioAPI.update(tempValues);
+            
+            // Invalidate cache to refresh UI
+            await mutate("/api/Folio/Items");
+            await mutate("/api/Folio/Group/Detail");
         } finally {
         }
     };

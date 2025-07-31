@@ -18,13 +18,13 @@ const VoidTransactionForm = ({
     customMutateUrl,
     customRerender,
 }: any) => {
-    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
+    const intl = useIntl();
     const [loading, setLoading] = useState(false);
 
     const validationSchema = yup.object().shape({
         TransactionID: yup.string().notRequired(),
-        ReasonID: yup.number().required("Сонгоно уу"),
+        ReasonID: yup.number().typeError(intl.formatMessage({ id: "ValidationSelectRequired" })).required(intl.formatMessage({ id: "ValidationSelectRequired" })),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -77,7 +77,7 @@ const VoidTransactionForm = ({
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
                 <input type="hidden" {...register("TransactionID")} />
 
                 <Grid container spacing={2}>

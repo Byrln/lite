@@ -1,128 +1,132 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
-import { TextField } from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
+import React, { useState, useEffect } from 'react';
+import {
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    NativeSelect,
+    OutlinedInput,
+} from "@mui/material";
 import { useIntl } from "react-intl";
+import { RoomTypeAPI } from 'lib/api/room-type';
 
-import { RoomTypeAPI } from "lib/api/room-type";
+interface RoomTypeSelectProps {
+  register?: any;
+  errors?: any;
+  onRoomTypeChange?: (roomType: any, index?: number) => void;
+  baseStay?: { RoomTypeID: any };
+  customRegisterName?: string;
+  RoomTypeID?: any;
+  customError?: any;
+  helperText?: string;
+  error?: boolean;
+  isSearch?: boolean;
+  searchRoomTypeID?: number;
+  setSearchRoomTypeID?: (id: number) => void;
+  groupIndex?: number;
+}
 
-const RoomTypeSelect = ({
-    register,
-    errors,
-    onRoomTypeChange,
-    baseStay,
-    customRegisterName,
-    RoomTypeID,
-    customError,
-    helperText,
-    isSearch,
-}: any) => {
-    const intl = useIntl();
-    const [data, setData]: any = useState([]);
+const RoomTypeSelect: React.FC<RoomTypeSelectProps> = ({
+  register,
+  errors,
+  onRoomTypeChange,
+  baseStay,
+  customRegisterName,
+  RoomTypeID,
+  customError,
+  helperText,
+  error = false,
+  isSearch,
+  searchRoomTypeID,
+  setSearchRoomTypeID,
+  groupIndex,
+}) => {
+  const intl = useIntl();
+  const [data, setData]: any = useState([]);
 
-    const fetchRoomTypes = async () => {
-        const values = {
-            RoomTypeID: 0,
-            SearchStr: "",
-            EmptyRow: 0,
-        };
-        const response = await RoomTypeAPI.list(values);
-
-        setData(response);
+  const fetchRoomTypes = async () => {
+    const values = {
+      RoomTypeID: 0,
+      SearchStr: "",
+      EmptyRow: 0,
     };
+    const response = await RoomTypeAPI.list(values);
 
-    const eventRoomTypeChange = (val: any) => {
-        let rt;
-        let roomType = null;
+    setData(response);
+  };
 
-        for (rt of data) {
-            if (rt.RoomTypeID === val) {
-                roomType = rt;
-            }
-        }
+  const eventRoomTypeChange = (val: any) => {
+    let rt;
+    let roomType = null;
 
-        onRoomTypeChange && onRoomTypeChange(roomType);
-    };
+    for (rt of data) {
+      if (rt.RoomTypeID === val) {
+        roomType = rt;
+        break;
+      }
+    }
 
-    useEffect(() => {
-        fetchRoomTypes();
-    }, []);
+    // Only call onRoomTypeChange if roomType is found or if val is 0 (AllRoomTypes)
+    if (roomType || val === 0) {
+      onRoomTypeChange && onRoomTypeChange(roomType, groupIndex ?? 0);
+    }
+  };
 
-    useEffect(() => {
-        if (data && data.length > 0 && RoomTypeID) {
-            eventRoomTypeChange(RoomTypeID);
-        }
-    }, [data]);
+  useEffect(() => {
+    fetchRoomTypes();
+  }, []);
 
-    return (
-        <TextField
-            size="small"
-            fullWidth
-            id="RoomTypeID"
-            label={isSearch ? "Room Type" : intl.formatMessage({
-                id: "ConfigRoomType",
-            })}
-            {...register(
-                customRegisterName ? customRegisterName : "RoomTypeID"
-            )}
-            select
-            margin="dense"
-            error={customError ? customError : errors.RoomTypeID?.message}
-            helperText={helperText ? helperText : errors.RoomTypeID?.message}
-            onChange={(evt: any) => {
-                eventRoomTypeChange(evt.target.value);
-            }}
-            InputLabelProps={{
-                shrink:
-                    baseStay &&
-                    (baseStay?.roomType
-                        ? baseStay?.roomType?.RoomTypeID
-                        : baseStay?.RoomTypeID),
-            }}
-            value={
-                baseStay &&
-                (baseStay?.roomType
-                    ? baseStay?.roomType?.RoomTypeID
-                    : baseStay?.RoomTypeID)
-            }
-            sx={isSearch ? {
-                '& .MuiOutlinedInput-root': {
-                    borderRadius: '25px',
-                    border: 'none',
-                    '& fieldset': {
-                        border: 'none',
-                    },
-                    '&:hover fieldset': {
-                        border: 'none',
-                    },
-                    '&.Mui-focused fieldset': {
-                        border: 'none',
-                    },
-                },
-                '& .MuiInputLabel-root': {
-                    color: '#000000',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                },
-                '& .MuiSelect-select': {
-                    color: '#000000',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    padding: '8px 12px',
-                },
-            } : {}}
-        >
-            {isSearch && (
-                <MenuItem key={"all"} value={0}>
-                    All Room Types
-                </MenuItem>
-            )}
-            {data.map((element: any) => (
-                <MenuItem key={element.RoomTypeID} value={element.RoomTypeID}>
-                    {element.RoomTypeName}
-                </MenuItem>
-            ))}
-        </TextField>
+  useEffect(() => {
+    if (data && data.length > 0 && RoomTypeID) {
+      eventRoomTypeChange(RoomTypeID);
+    }
+  }, [data]);
+
+  const handleRoomTypeChange = (value: string) => {
+    const numValue = parseInt(value);
+    eventRoomTypeChange(numValue);
+  };
+
+  const currentValue = (baseStay && baseStay.RoomTypeID) || RoomTypeID;
+  const displayError = error || customError || (errors && errors.RoomTypeID?.message);
+  const displayHelperText = helperText || (errors && errors.RoomTypeID?.message);
+
+  return (
+    <FormControl
+      fullWidth
+      variant="outlined"
+      size="small"
+      margin="dense"
+      error={displayError}
+    >
+      <InputLabel variant="outlined" htmlFor="roomtype-select">
+        {isSearch ? "Room Type" : intl.formatMessage({ id: "ConfigRoomType" }) || "Өрөөний төрөл"}
+      </InputLabel>
+      <NativeSelect
+        input={<OutlinedInput label={isSearch ? "Room Type" : intl.formatMessage({ id: "ConfigRoomType" }) || "Өрөөний төрөл"} />}
+        inputProps={{
+          name: customRegisterName || 'roomtype-select',
+          id: 'roomtype-select',
+          ...(register && customRegisterName ? register(customRegisterName) : {}),
+        }}
+        onChange={(event) => handleRoomTypeChange(event.target.value)}
+        value={currentValue?.toString() || "0"}
+      >
+        {isSearch && (
+          <option value="0">
+            {intl.formatMessage({ id: "AllRoomTypes" })}
+          </option>
+        )}
+        {data.map((element: any) => (
+          <option key={element.RoomTypeID} value={element.RoomTypeID.toString()}>
+            {element.RoomTypeName}
+          </option>
+        ))}
+      </NativeSelect>
+      {displayHelperText && (
+         <FormHelperText>{displayHelperText}</FormHelperText>
+       )}
+      </FormControl>
     );
 };
 

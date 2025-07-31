@@ -58,7 +58,7 @@ const VoidTransactionForm = ({
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
                 <input type="hidden" {...register("RoomID")} />
 
                 <Box

@@ -225,7 +225,6 @@ const CustomModal = ({ ArrivalDate, DepartureDate }: CustomModalProps = {}) => {
                   </Box>
                 ) : (
                   <>
-                    {/* <Divider className="mt-3 mb-3" /> */}
                     <Box
                       sx={{
                         mx: "auto",

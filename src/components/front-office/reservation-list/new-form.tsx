@@ -480,7 +480,7 @@ const NewEdit = ({
     }
   }, [id, rateTypeData, resetField, setValue]);
 
-  const onRoomTypeChange = (rt: any, index: number) => {
+  const onRoomTypeChange = (rt: any, index?: number) => {
     setRoomTypeID(rt.RoomTypeID);
     setRoomType(rt);
     // resetField(`TransactionDetail.${id}.Adult`, {

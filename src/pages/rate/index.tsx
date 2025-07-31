@@ -1,14 +1,18 @@
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Head from "next/head";
+import { useIntl } from "react-intl";
 
 import Page from "components/page";
 import RateList from "components/rate/list";
 import { TaxSWR } from "lib/api/tax";
 
-const title = "Тариф";
-
 const Index = () => {
+    const intl = useIntl();
     const { data, error } = TaxSWR();
+    
+    const title = intl.formatMessage({
+        id: "PageTitleRate",
+    });
 
     return (
         <>

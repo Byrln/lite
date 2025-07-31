@@ -178,6 +178,10 @@ export const NotificationAPI = {
   },
 };
 
+// API URL exports
+export const listUrl = `${API_BASE}`;
+
 // Legacy exports for backward compatibility
 export const NotificationSWR = useNotificationStatus;
 export const NotificationTypeSWR = useNotificationItems;
+export const NotificationUserItemSWR = useNotificationItems;

@@ -35,6 +35,7 @@ import { ModalContext } from "lib/context/modal";
 import { useAppState } from "lib/context/app";
 import { DataUsageTwoTone } from "@mui/icons-material";
 import { calculateColumnsWidth } from "lib/utils/dynamic-columns-helper";
+import DateRangePicker from "../ui/date-range-picker";
 
 const CustomTable = ({
     columns,
@@ -48,6 +49,8 @@ const CustomTable = ({
     hasExcel = true,
     hasShow = true,
     hasAddFloors = false,
+    hasDateRangePicker = false,
+    onDateRangeChange,
     id,
     listUrl,
     modalTitle,
@@ -72,6 +75,12 @@ const CustomTable = ({
     // Add Floors Modal state
     const [openFloorsModal, setOpenFloorsModal] = useState(false);
     const [floorRange, setFloorRange] = useState<number[]>([1, 5]);
+    
+    // Date Range Picker state
+    const [dateRange, setDateRange] = useState({
+        startDate: undefined as Date | undefined,
+        endDate: undefined as Date | undefined
+    });
 
     useEffect(() => {
         setHeight(window.innerHeight - 240);
@@ -111,6 +120,20 @@ const CustomTable = ({
             handleFloorsModalClose();
         } catch (error) {
             toast("Алдаа гарлаа. Дахин оролдоно уу.");
+        }
+    };
+
+    const handleStartDateChange = (date: Date | undefined) => {
+        setDateRange(prev => ({ ...prev, startDate: date }));
+        if (onDateRangeChange) {
+            onDateRangeChange({ startDate: date, endDate: dateRange.endDate });
+        }
+    };
+
+    const handleEndDateChange = (date: Date | undefined) => {
+        setDateRange(prev => ({ ...prev, endDate: date }));
+        if (onDateRangeChange) {
+            onDateRangeChange({ startDate: dateRange.startDate, endDate: date });
         }
     };
 
@@ -238,17 +261,55 @@ const CustomTable = ({
     });
 
     const downloadExcel = async () => {
-        const Excel = await import("antd-table-saveas-excel");
-        const excel = new Excel.Excel();
-        excel
-            .addSheet("Жагсаалт")
-            .addColumns(excelColumns)
-            .addDataSource(data)
-            .saveAs(
-                `${
-                    excelName ? excelName : "Жагсаалт"
-                } - ${getCurrentDate()}.xlsx`
-            );
+        // Validate data before processing
+        if (!data || !Array.isArray(data) || data.length === 0) {
+            toast.error("No data available for export");
+            return;
+        }
+
+        // Validate columns
+        if (!excelColumns || !Array.isArray(excelColumns) || excelColumns.length === 0) {
+            toast.error("No columns configured for export");
+            return;
+        }
+
+        try {
+            // Sanitize columns for Excel export
+            const sanitizedColumns = excelColumns.map((column: any) => {
+                const { render, renderCell, ...cleanColumn } = column;
+                return {
+                    title: cleanColumn.title || cleanColumn.headerName || cleanColumn.field,
+                    dataIndex: cleanColumn.dataIndex || cleanColumn.field,
+                    key: cleanColumn.key || cleanColumn.field,
+                    width: cleanColumn.width
+                };
+            }).filter((column: any) => column.dataIndex); // Only include columns with valid dataIndex
+
+            // Sanitize data for Excel export
+            const sanitizedData = data.map((row: any, index: number) => {
+                const cleanRow: any = { ...row };
+                // Ensure each row has an id for Excel processing
+                if (!cleanRow.id) {
+                    cleanRow.id = index + 1;
+                }
+                return cleanRow;
+            });
+
+            const Excel = await import("antd-table-saveas-excel");
+            const excel = new Excel.Excel();
+            excel
+                .addSheet("Жагсаалт")
+                .addColumns(sanitizedColumns)
+                .addDataSource(sanitizedData)
+                .saveAs(
+                    `${
+                        excelName ? excelName : "Жагсаалт"
+                    } - ${getCurrentDate()}.xlsx`
+                );
+        } catch (error) {
+            console.error("Excel export error:", error);
+            toast.error("Failed to export Excel file");
+        }
     };
 
     if (error) return <Alert severity="error">{error.message}</Alert>;
@@ -375,6 +436,7 @@ const CustomTable = ({
                                 onClick={downloadExcel}
                                 startIcon={<CloudDownloadIcon />}
                                 className="mr-3"
+                                disabled={!data || !Array.isArray(data) || data.length === 0}
                             >
                                 {intl.formatMessage({
                                     id: "ButtonExcel",
@@ -384,6 +446,19 @@ const CustomTable = ({
                          {additionalButtons && additionalButtons}
                         {search && search}
                     </Box>
+                    {hasDateRangePicker && (
+                        <Box sx={{ mt: 2, mb: 2 }}>
+                            <DateRangePicker
+                                startDate={dateRange.startDate}
+                                endDate={dateRange.endDate}
+                                onStartDateChange={handleStartDateChange}
+                                onEndDateChange={handleEndDateChange}
+                                startLabel="Start Date"
+                                endLabel="End Date"
+                                className="w-full"
+                            />
+                        </Box>
+                    )}
                     <Divider className="mt-3 mb-3" />
                 </>
             )}

@@ -1,26 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { RoomTypeAPI } from 'lib/api/room-type';
-
-// Define the item type for the select options
-export interface RoomTypeSelectItem {
-  value: string;
-  label: string;
-}
+import React, { useState, useEffect } from "react";
+import {
+  FormControl,
+  FormHelperText,
+  NativeSelect,
+  OutlinedInput,
+} from "@mui/material";
+import { RoomTypeAPI } from "lib/api/room-type";
+import { useIntl } from "react-intl";
 
 interface RoomTypeCustomSelectProps {
-  searchRoomTypeID: number;
-  setSearchRoomTypeID: (id: number) => void;
+  searchRoomTypeID?: number;
+  setSearchRoomTypeID?: (id: number) => void;
+  error?: boolean;
+  helperText?: string;
+  baseStay?: any;
+  onRoomTypeChange?: (roomType: any) => void;
+  label?: string;
 }
 
 const RoomTypeCustomSelect: React.FC<RoomTypeCustomSelectProps> = ({
-  searchRoomTypeID,
+  searchRoomTypeID = 0,
   setSearchRoomTypeID,
+  error = false,
+  helperText = "",
+  baseStay,
+  onRoomTypeChange,
+  label,
 }) => {
+  const intl = useIntl();
   const [roomTypes, setRoomTypes] = useState<any[]>([]);
-  const [selectItems, setSelectItems] = useState<RoomTypeSelectItem[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchRoomTypes = async () => {
+    setLoading(true);
     try {
       const values = {
         RoomTypeID: 0,
@@ -28,17 +40,12 @@ const RoomTypeCustomSelect: React.FC<RoomTypeCustomSelectProps> = ({
         EmptyRow: 0,
       };
       const response = await RoomTypeAPI.list(values);
-      setRoomTypes(response);
-      const items: RoomTypeSelectItem[] = [
-        { value: "0", label: "Бүх өрөө" },
-        ...response.map((roomType: any) => ({
-          value: roomType.RoomTypeID.toString(),
-          label: roomType.RoomTypeName,
-        }))
-      ];
-      setSelectItems(items);
+      setRoomTypes(response || []);
     } catch (error) {
-      console.error('Өрөөний төрөл авахад алдаа гарлаа:', error);
+      console.error("Error fetching room types:", error);
+      setRoomTypes([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,32 +53,106 @@ const RoomTypeCustomSelect: React.FC<RoomTypeCustomSelectProps> = ({
     fetchRoomTypes();
   }, []);
 
-  const handleRoomTypeChange = (value: string) => {
-    const roomTypeId = parseInt(value, 10);
-    setSearchRoomTypeID(roomTypeId);
+  const handleRoomTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = parseInt(event.target.value);
+    if (setSearchRoomTypeID) {
+      setSearchRoomTypeID(val);
+    }
+    eventRoomTypeChange(val);
   };
 
-  const currentValue = searchRoomTypeID.toString();
-  const selectedItem = selectItems.find(item => item.value === currentValue);
+  const eventRoomTypeChange = (val: number) => {
+    if (onRoomTypeChange) {
+      if (val === 0) {
+        onRoomTypeChange(null);
+      } else {
+        const roomType = roomTypes.find((rt) => rt.RoomTypeID === val);
+        if (roomType) {
+          onRoomTypeChange(roomType);
+        }
+      }
+    }
+  };
+
+  const currentValue = baseStay?.roomType?.RoomTypeID || baseStay?.RoomTypeID || searchRoomTypeID || 0;
+  
+  let displayLabel = label || intl.formatMessage({ id: "TextRoomType" });
+  displayLabel = displayLabel.replace(/өрөөний төрөл/gi, '').trim();
+  displayLabel = displayLabel.replace(/TextRoomType/gi, '').trim();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center">
+        <FormControl 
+          fullWidth 
+          size="small" 
+          error={error}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '9999px',
+            },
+            '& .MuiInputBase-input': {
+              fontSize: '0.875rem',
+              fontWeight: '500',
+              color: 'black',
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: 'none',
+            },
+            backgroundColor: 'transparent',
+          }}
+        >
+          <NativeSelect
+            input={<OutlinedInput />}
+            disabled
+          >
+            <option value={0}>
+              {intl.formatMessage({ id: "TextLoading" })}
+            </option>
+          </NativeSelect>
+          {helperText && <FormHelperText>{helperText}</FormHelperText>}
+        </FormControl>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-w-[150px]">
-      <Select value={currentValue} onValueChange={handleRoomTypeChange}>
-        <SelectTrigger className="flex h-8 min-w-36 items-center justify-between gap-3 rounded-full border-none pr-3 pl-3.5 text-sm text-black select-none hover:bg-gray-50 focus-visible:outline-none bg-transparent">
-          <SelectValue placeholder="Өрөөний төрөл" />
-        </SelectTrigger>
-        <SelectContent className="min-w-[var(--anchor-width)] overflow-y-auto rounded-lg bg-white py-2 shadow-xl border border-gray-200 z-50">
-          {selectItems.map((item) => (
-            <SelectItem
-              key={item.value}
-              value={item.value}
-              className="flex min-w-[var(--anchor-width)] cursor-pointer items-center px-3 py-2 text-sm text-gray-700 outline-none select-none hover:bg-gray-100 data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 transition-colors duration-150"
-            >
-              {item.label}
-            </SelectItem>
+    <div className="flex items-center justify-center">
+      <FormControl 
+        fullWidth 
+        size="small" 
+        error={error}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            borderRadius: '9999px',
+          },
+          '& .MuiInputBase-input': {
+            fontSize: '0.875rem',
+            fontWeight: '500',
+            color: 'black',
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            border: 'none',
+          },
+          backgroundColor: 'transparent',
+        }}
+      >
+        <NativeSelect
+          value={currentValue}
+          onChange={handleRoomTypeChange}
+          input={<OutlinedInput />}
+        >
+          <option value={0}>
+            {intl.formatMessage({ id: "TextAll" })}
+          </option>
+          {roomTypes.map((element) => (
+            <option key={element.RoomTypeID} value={element.RoomTypeID}>
+              {element.RoomTypeName}
+            </option>
           ))}
-        </SelectContent>
-      </Select>
+        </NativeSelect>
+        {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      </FormControl>
     </div>
   );
 };

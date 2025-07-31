@@ -51,7 +51,7 @@ export default function DashboardLayout({ children }: any) {
 
   function filterMenu(menu: any, uniqueMenuLinks: any) {
     return menu.reduce((filteredMenu: any, item: any) => {
-      if (item.path && uniqueMenuLinks.includes(item.path)) {
+      if (item.path && (uniqueMenuLinks.includes(item.path) || item.path === "/room/management")) {
         filteredMenu.push(item)
       }
       if (item.children) {
@@ -96,6 +96,7 @@ export default function DashboardLayout({ children }: any) {
       setSideBarData(lastValidSideBarData)
     }
   }, [data])
+
 
   return (
     <SidebarProvider>

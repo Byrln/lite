@@ -12,6 +12,7 @@ import ChargeType from "./charge-type";
 import PaymentMethod from "./payment-method";
 import FolioSelect from "components/select/folio";
 import { FolioAPI } from "lib/api/folio";
+import { mutate } from "swr";
 
 const ExtraCharge = ({
     transactionInfo,
@@ -35,12 +36,14 @@ const ExtraCharge = ({
         resetField,
     } = useForm(formOptions);
 
-    const onSubmit = (values: any) => {
+    const onSubmit = async (values: any) => {
         setLoading(true);
 
         try {
             let tempValue: any = {};
-            chargeTypes.forEach((element: any) => {
+            
+            // Process charge types
+            for (const element of chargeTypes || []) {
                 if (element.isChecked && element.isChecked == true) {
                     tempValue.TransactionID = values.TransactionID
                         ? values.TransactionID
@@ -65,12 +68,13 @@ const ExtraCharge = ({
                     tempValue.Description = element.ServiceDescription
                         ? element.ServiceDescription
                         : "";
-                    FolioAPI.new(tempValue);
+                    await FolioAPI.new(tempValue);
                     tempValue = {};
                 }
-            });
+            }
 
-            paymentMethods.forEach((element: any) => {
+            // Process payment methods
+            for (const element of paymentMethods || []) {
                 if (element.isChecked && element.isChecked == true) {
                     tempValue.TransactionID = values.TransactionID
                         ? values.TransactionID
@@ -97,10 +101,21 @@ const ExtraCharge = ({
                         ? element.PaymentMethodName
                         : "";
 
-                    FolioAPI.new(tempValue);
+                    await FolioAPI.new(tempValue);
                     tempValue = {};
                 }
-            });
+            }
+
+            // Invalidate cache to refresh UI
+            await mutate("/api/Folio/Items");
+            await mutate("/api/Folio/Details");
+            await mutate("/api/Folio/DetailsByStatus");
+            await mutate("/api/FrontOffice/TransactionInfo");
+            // Invalidate all SWR caches to ensure UI refresh
+            await mutate(() => true);
+            if (additionalMutateUrl) {
+                await mutate(additionalMutateUrl);
+            }
 
             toast(
                 intl.formatMessage({
@@ -124,7 +139,7 @@ const ExtraCharge = ({
     };
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
                 <div style={{ height: "60vh", overflow: "scroll" }}>
                     <input
                         type="hidden"

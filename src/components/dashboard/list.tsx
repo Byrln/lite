@@ -442,7 +442,7 @@ const Dashboard = ({ workingDate }: any) => {
                   <div className="mt-auto">
                     <Badge className="bg-emerald-200 text-emerald-800 hover:bg-emerald-300">
                       <TrendingUp className="h-3 w-3 mr-1" />
-                      Today's Revenue
+                      {intl.formatMessage({ id: "TextRevenue" })}
                     </Badge>
                   </div>
                 </CardContent>
@@ -462,7 +462,7 @@ const Dashboard = ({ workingDate }: any) => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex-1">
                       <p className="text-sm flex items-center gap-3 font-medium text-blue-700 mb-2">
-                        <span>Check-ins</span>
+                        <span>{intl.formatMessage({ id: "TextCheckIns" })}</span>
                         <motion.div
                           className="h-8 w-8 rounded-md bg-blue-500 flex items-center justify-center shadow-lg"
                           whileHover={{ rotate: 180 }}
@@ -480,7 +480,7 @@ const Dashboard = ({ workingDate }: any) => {
                   <div className="mt-auto">
                     <Badge className="bg-blue-200 text-blue-800 hover:bg-blue-300">
                       <Users className="h-3 w-3 mr-1" />
-                      Arrivals
+                      {intl.formatMessage({ id: "TextArrivals" })}
                     </Badge>
                   </div>
                 </CardContent>
@@ -500,7 +500,7 @@ const Dashboard = ({ workingDate }: any) => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex-1">
                       <p className="text-sm flex items-center gap-3 font-medium text-purple-700 mb-2">
-                        Check-outs
+                        <span>{intl.formatMessage({ id: "TextCheckOuts" })}</span>
                         <motion.div
                           className="h-8 w-8 rounded-md bg-purple-500 flex items-center justify-center shadow-lg"
                           whileHover={{ rotate: 180 }}
@@ -517,7 +517,7 @@ const Dashboard = ({ workingDate }: any) => {
                   <div className="mt-auto">
                     <Badge className="bg-purple-200 text-purple-800 hover:bg-purple-300">
                       <LogOut className="h-3 w-3 mr-1" />
-                      Departures
+                      {intl.formatMessage({ id: "TextDepartures" })}
                     </Badge>
                   </div>
                 </CardContent>
@@ -537,7 +537,7 @@ const Dashboard = ({ workingDate }: any) => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex-1">
                       <p className="text-sm flex items-center gap-3 font-medium text-orange-700 mb-2">
-                        No-shows
+                        <span>{intl.formatMessage({ id: "TextNoShows" })}</span>
                         <motion.div
                           className="h-8 w-8 rounded-md bg-orange-500 flex items-center justify-center shadow-lg"
                           whileHover={{ rotate: 180 }}
@@ -554,7 +554,7 @@ const Dashboard = ({ workingDate }: any) => {
                   <div className="mt-auto">
                     <Badge className="bg-orange-200 text-orange-800 hover:bg-orange-300">
                       <AlertCircle className="h-3 w-3 mr-1" />
-                      Missed
+                      {intl.formatMessage({ id: "TextMissed" })}
                     </Badge>
                   </div>
                 </CardContent>
@@ -574,7 +574,7 @@ const Dashboard = ({ workingDate }: any) => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex-1">
                       <p className="text-sm flex items-center gap-3 font-medium text-red-700 mb-2">
-                        Cancellations
+                        <span>{intl.formatMessage({ id: "TextCancellations" })}</span>
                         <motion.div
                           className="h-8 w-8 rounded-md bg-red-500 flex items-center justify-center shadow-lg"
                           whileHover={{ rotate: 180 }}
@@ -591,7 +591,7 @@ const Dashboard = ({ workingDate }: any) => {
                   <div className="mt-auto">
                     <Badge className="bg-red-200 text-red-800 hover:bg-red-300">
                       <X className="h-3 w-3 mr-1" />
-                      Cancelled
+                      {intl.formatMessage({ id: "TextCancelled" })}
                     </Badge>
                   </div>
                 </CardContent>
@@ -735,7 +735,14 @@ const DashboardMetricCard = ({
   roomOccupancy,
   fNumber,
 }: any) => {
-  // Define color schemes for each card type - matching Summary Cards
+  const translateParameterName = (name: string) => {
+    const translationKey = `Text${name.replace(/\s+/g, "")}`;
+    try {
+      return intl.formatMessage({ id: translationKey });
+    } catch (error) {
+      return name;
+    }
+  };
   const getCardColors = (index: number) => {
     const colorSchemes = [
       {
@@ -793,11 +800,11 @@ const DashboardMetricCard = ({
               </motion.div>
               <div>
                 <h4 className={`font-bold text-lg ${colors.titleColor}`}>
-                  {element[0]?.ParameterGroupName}
+                  {translateParameterName(element[0]?.ParameterGroupName || "")}
                 </h4>
                 <p className={`text-sm ${colors.textColor} font-medium`}>
                   {Array.isArray(element)
-                    ? element.find((item: any) => item.ParameterID === 1)?.ParameterName
+                    ? translateParameterName(element.find((item: any) => item.ParameterID === 1)?.ParameterName || "")
                     : null}
                 </p>
               </div>
@@ -822,7 +829,7 @@ const DashboardMetricCard = ({
             <div className="flex items-center justify-center">
               <div className="relative">
                 <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-                  <p className={`text-xs ${colors.textColor} font-semibold uppercase tracking-wider`}>
+                  <p className={`text-xs ${colors.textColor} font-semibold font-montserrat capitalize tracking-wider`}>
                     {index === 0
                       ? intl.formatMessage({ id: "TextRoomOccupancy" })
                       : intl.formatMessage({ id: "TextBookingOccupancy" })}

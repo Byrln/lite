@@ -57,7 +57,7 @@ const NewEdit = ({ handleModal, entity, listUrl }: any) => {
         }
     };
 
-    const onRoomTypeChange = (rt: any, index: number) => {
+    const onRoomTypeChange = (rt: any, index?: number) => {
         setRoomTypeID(rt.RoomTypeID);
     };
 

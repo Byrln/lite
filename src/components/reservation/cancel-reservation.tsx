@@ -19,14 +19,14 @@ const CancelReservationForm = ({
     customMutateUrl,
     customRerender,
 }: any) => {
-    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
+    const intl = useIntl();
     const [loading, setLoading] = useState(false);
 
     const validationSchema = yup.object().shape({
         TransactionID: yup.string().notRequired(),
-        ReasonID: yup.number().required("Сонгоно уу"),
-        Fee: yup.number().required(""),
+        ReasonID: yup.number().typeError(intl.formatMessage({ id: "ValidationSelectRequired" })).required(intl.formatMessage({ id: "ValidationSelectRequired" })),
+        Fee: yup.number().typeError(intl.formatMessage({ id: "ValidationRequired" })).required(intl.formatMessage({ id: "ValidationRequired" })),
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -81,7 +81,7 @@ const CancelReservationForm = ({
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
                 <input type="hidden" {...register("TransactionID")} />
 
                 <Grid container spacing={2}>

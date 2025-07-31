@@ -38,6 +38,7 @@ import { useIntl } from "react-intl";
 import RoomTypeCustomSelect from "components/select/room-type-custom";
 import DatePickerCustom from "../mui/MuiDatePickerCustom";
 import Image from "next/image";
+import { RoomStatusSWR } from "lib/api/room-status";
 
 export const generateIncrementedId = (baseId: string | number, increment: number = 1, conflictChecker?: (id: string | number) => boolean): string | number => {
   if (conflictChecker) {
@@ -98,9 +99,16 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   });
   const [searchCurrDate, setSearchCurrDate] = useState(workingDate);
   const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
+
+  const onRoomTypeChange = (rt: any) => {
+    setSearchRoomTypeID(rt ? rt.RoomTypeID : 0);
+  };
   const [isHoverEnabled, setIsHoverEnabled] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [reservationItems, setReservationItems] = useState<any>(null);
+
+  // Fetch room status data
+  const { data: roomStatusData } = RoomStatusSWR({ RoomTypeID: 0 });
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -876,38 +884,23 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         ? info.event._def.extendedProps.GroupID
         : null,
     };
-    let filteredItemData = itemData.filter(
-      (event: any) =>
-        event.roomTypeID ===
-        Number(info.event._def.extendedProps.roomTypeID) &&
-        event.resourceId == Number(info.event._def.resourceIds[0]) &&
-        event.id != info.event._def.extendedProps.transactionID &&
-        new Date(event.start) <=
-        new Date(info.event._instance.range.end) &&
-        new Date(event.end) > new Date(info.event._instance.range.start)
-    );
-
-    if (filteredItemData.length > 0) {
-      toast("Захиалга давхцаж байна.");
+    if (info.event.extendedProps.statusGroup != 3) {
+      handleModal(
+        true,
+        "Amend Stay",
+        <AmendStayForm
+          transactionInfo={newEventObject}
+          reservation={newEventObject}
+          additionalMutateUrl="/api/Reservation/List"
+          customRerender={() =>
+            setCustomMutate((prevKey) => prevKey + 1)
+          }
+        />,
+        false,
+        "small"
+      );
     } else {
-      if (info.event.extendedProps.statusGroup != 3) {
-        handleModal(
-          true,
-          "Amend Stay",
-          <AmendStayForm
-            transactionInfo={newEventObject}
-            reservation={newEventObject}
-            additionalMutateUrl="/api/Reservation/List"
-            customRerender={() =>
-              setCustomMutate((prevKey) => prevKey + 1)
-            }
-          />,
-          false,
-          "small"
-        );
-      } else {
-        toast("Хугацаа өөрчлөх боломжгүй.");
-      }
+      toast("Хугацаа өөрчлөх боломжгүй.");
     }
     setRerenderKey((prevKey) => prevKey + 1);
   };
@@ -1480,9 +1473,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   className="w-7 h-4"
                 />
               </Button>
-
-              {/* Search Button moved to dashboard navbar */}
-
               {/* Hover Toggle */}
               <div className="flex items-center space-x-2 bg-white border border-[#804FE6] rounded-full px-3 py-2 shadow-sm cursor-pointer" onClick={() => setIsHoverEnabled(!isHoverEnabled)}>
                 <Checkbox
@@ -1502,12 +1492,17 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               {/* Filters Group */}
               <div className="flex flex-wrap gap-3 items-center">
                 {/* Room Type Filter */}
-                <div className="bg-white border border-[#804FE6] rounded-full shadow-sm py-[2px] min-w-[140px]">
-                  <RoomTypeCustomSelect
-                    searchRoomTypeID={searchRoomTypeID}
-                    setSearchRoomTypeID={setSearchRoomTypeID}
-                  />
-                </div>
+                 <div className="bg-white border border-[#804FE6] rounded-full shadow-sm min-w-[160px]">
+                   <RoomTypeCustomSelect
+                     searchRoomTypeID={searchRoomTypeID}
+                     setSearchRoomTypeID={setSearchRoomTypeID}
+                     onRoomTypeChange={onRoomTypeChange}
+                     baseStay={{ RoomTypeID: searchRoomTypeID }}
+                     label={intl.formatMessage({
+                       id: "TextRoomType",
+                     })}
+                   />
+                 </div>
 
                 {/* Date Picker */}
                 <div className="bg-white border border-[#804FE6] rounded-full shadow-sm min-w-[160px]">
@@ -1538,24 +1533,23 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 title={
                   <div className="p-4 max-w-xs">
                     <h4 className="font-semibold text-sm mb-3 pb-2 border-b border-gray-200">
-                      Статусын төрлүүд
+                      {intl.formatMessage({ id: "TextRoomStatus" })}
                     </h4>
                     <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-xs">
-                      {[
-                        { color: "#1281b0", label: "Ирсэн" },
-                        { color: "#b0531e", label: "Гарсан" },
-                        { color: "#94d8f6", label: "Гарах" },
-                        { color: "#57fa71", label: "Баталгаажсан" },
-                        { color: "black", label: "Блок" },
-                        { color: "#0033ff", label: "Дахин хонох" },
-                        { color: "#009933", label: "Өдрөөр захиалга" },
-                      ].map((status, index) => (
+                      {(roomStatusData || []).filter((status: any) => {
+                        const hideStatuses = ['StatusCancel', 'StatusUnconfirmReservation', 'StatusNoShow', 'StatusVoid'];
+                        const statusCode = status.StatusCode || '';
+                        const description = status.Description || '';
+                        return statusCode.trim() !== '' && description.trim() !== '' && !hideStatuses.includes(statusCode);
+                      }).map((status: any, index: number) => (
                         <React.Fragment key={index}>
                           <div
                             className="w-3 h-3 rounded-full"
-                            style={{ backgroundColor: status.color }}
+                            style={{ backgroundColor: `#${status.StatusColor || 'cccccc'}` }}
                           />
-                          <span className="text-gray-600">{status.label}</span>
+                          <span className="text-gray-600">
+                            {status.StatusCode ? intl.formatMessage({ id: status.StatusCode }, { defaultMessage: status.Description || status.StatusCode }) : (status.Description || status.StatusCode)}
+                          </span>
                         </React.Fragment>
                       ))}
                     </div>
@@ -1587,8 +1581,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 >
                   <Iconify
                     icon="eva:info-outline"
-                    width={16}
-                    height={16}
+                    width={20}
+                    height={20}
                   />
                 </span>
               </Tooltip>
@@ -1602,7 +1596,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   className="flex gap-1"
                 >
                   {[
-                    { value: "hourly", label: <div className="flex items-center gap-1"><Iconify icon="mdi:clock-outline" className="w-4 h-4" /></div> },
+                    { value: "hourly", label: <div className=""><Iconify icon="mdi:clock-outline" className="w-4 h-4" /></div> },
                     { value: 7, label: "7 хоног" },
                     { value: 15, label: "15 хоног" },
                     { value: 30, label: "30 хоног" },

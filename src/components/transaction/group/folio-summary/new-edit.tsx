@@ -101,6 +101,10 @@ const NewEdit = ({
                 PaymentMethodID: values.PaymentMethodID,
             };
             await FolioAPI.new(tempValues);
+            
+            // Invalidate cache to refresh UI
+            await mutate("/api/Folio/Items");
+            await mutate("/api/Folio/Group/Summary");
         } finally {
         }
     };

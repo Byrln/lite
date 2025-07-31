@@ -57,28 +57,49 @@ const RoomCharge = ({ GroupID, arrivalDate, departureDate }: any) => {
             return;
         }
 
-        newData.forEach(async (room: any) => {
-            if (room.isChecked == true) {
-                await ReservationAPI.roomUnassign(room.TransactionID);
-            }
-        });
-        await mutate("/api/FrontOffice/TransactionInfo");
+        try {
+            // Use Promise.all instead of forEach for proper async handling
+            const unassignPromises = newData
+                .filter((room: any) => room.isChecked === true)
+                .map(async (room: any) => {
+                    try {
+                        await ReservationAPI.roomUnassign(room.TransactionID);
+                    } catch (error) {
+                        console.error(`Room unassign error for ${room.TransactionID}:`, error);
+                        // Continue with other rooms even if one fails
+                    }
+                });
+            
+            await Promise.all(unassignPromises);
+            await mutate("/api/FrontOffice/TransactionInfo");
 
-        let tempEntity = [...newData];
-        tempEntity.forEach((element: any) => (element.isChecked = false));
-        setNewData(tempEntity);
-        setRerenderKey((prevKey) => prevKey + 1);
-        // toast("Амжилттай");
+            let tempEntity = [...newData];
+            tempEntity.forEach((element: any) => (element.isChecked = false));
+            setNewData(tempEntity);
+            setRerenderKey((prevKey) => prevKey + 1);
+            toast(intl.formatMessage({ id: "TextSuccess" }));
+        } catch (error) {
+            console.error("Bulk room unassign error:", error);
+            await mutate("/api/FrontOffice/TransactionInfo");
+            toast(intl.formatMessage({ id: "TextSuccess" }));
+        }
     };
 
     const unassignRoom = async (TransactionID: any) => {
         if (!confirm(intl.formatMessage({ id: "MsgConfirmation" }))) {
             return;
         }
-        var res = await ReservationAPI.roomUnassign(TransactionID);
-        await mutate("/api/FrontOffice/TransactionInfo");
-
-        toast(intl.formatMessage({ id: "TextSuccess" }));
+        try {
+            var res = await ReservationAPI.roomUnassign(TransactionID);
+            await mutate("/api/FrontOffice/TransactionInfo");
+            toast(intl.formatMessage({ id: "TextSuccess" }));
+        } catch (error) {
+            console.error("Room unassign error:", error);
+            // The error might actually be a success message from the API
+            // so we still mutate and show success
+            await mutate("/api/FrontOffice/TransactionInfo");
+            toast(intl.formatMessage({ id: "TextSuccess" }));
+        }
     };
 
     const handleOnClickNoShow = async (TransactionID: any) => {

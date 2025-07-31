@@ -24,8 +24,11 @@ const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
     };
 
     useEffect(() => {
-        fetchDatas();
-    }, []);
+        // Only fetch data if entity is empty or undefined
+        if (!entity || entity.length === 0) {
+            fetchDatas();
+        }
+    }, [entity]);
 
     const onCheckboxChange = (e: any) => {
         let tempEntity = [...entity];

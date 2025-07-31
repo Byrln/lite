@@ -36,5 +36,12 @@
   "TextExtraCharges": "Нэмэлт төлбөр",
   "TextDiscount": "Хөнгөлөлт",
   "TextMiniBar": "Мини бар",
-  "TextRestaurant": "Ресторан"
+  "TextRestaurant": "Ресторан",
+  "TextRooms": "Өрөөнүүд",
+  "TextBookings": "Захиалгууд",
+  "TextCharges": "Төлбөрүүд",
+  "TextTotalRooms": "Нийт өрөөнүүд",
+  "TextCheckIn": "Бүртгүүлэх",
+  "TextCheckedIn": "Бүртгүүлсэн",
+  "TextTotalCharges": "Нийт төлбөр"
 }

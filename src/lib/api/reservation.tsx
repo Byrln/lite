@@ -140,12 +140,14 @@ export const ReservationAPI = {
             TransactionID: TransactionID,
         };
         const res = await axios.post(`${urlPrefix}/CheckIn`, values);
+        return res;
     },
     checkOut: async (TransactionID: any) => {
         const values = {
             TransactionID: TransactionID,
         };
         const res = await axios.post(`${urlPrefix}/CheckOut`, values);
+        return res;
     },
     amendStay: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/AmendStay`, values);
@@ -161,6 +163,7 @@ export const ReservationAPI = {
     },
     noShow: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/NoShow`, values);
+        return res;
     },
     void: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/Void`, values);
@@ -168,15 +171,18 @@ export const ReservationAPI = {
     },
     roomAssign: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/RoomAssign`, values);
+        return res;
     },
     roomUnassign: async (TransactionID: any) => {
         const values = {
             TransactionID: TransactionID,
         };
         const res = await axios.post(`${urlPrefix}/RoomUnassign`, values);
+        return res;
     },
     roomMove: async (values: any) => {
         const res = await axios.post(`${urlPrefix}/RoomMove`, values);
+        return res;
     },
     updateReservationType: async (TransactionID: any) => {
         const values = {

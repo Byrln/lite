@@ -14,8 +14,8 @@ import SubmitButton from "components/common/submit-button";
 import ReasonSelect from "components/select/reason";
 
 const validationSchema = yup.object().shape({
-    ReasonID: yup.string().required("Сонгоно үү"),
-    Fee: yup.number().required("Бөглөнө үү"),
+    ReasonID: yup.number().typeError("Сонгоно үү").required("Сонгоно үү"),
+    Fee: yup.number().typeError("Бөглөнө үү").required("Бөглөнө үү"),
 });
 
 const NewEdit = ({ handleModal, entity, listUrl }: any) => {

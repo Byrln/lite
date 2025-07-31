@@ -56,6 +56,7 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+  className?: string;
 }
 
 function TabPanel(props: TabPanelProps) {

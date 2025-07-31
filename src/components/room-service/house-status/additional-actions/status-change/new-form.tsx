@@ -58,7 +58,7 @@ const VoidTransactionForm = ({
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form id="modal-form" onSubmit={handleSubmit(onSubmit)}>
                 <input type="hidden" {...register("RoomID")} />
                 <Grid container spacing={1}>
                     <Grid item xs={12} style={{ fontSize: "12px" }}>

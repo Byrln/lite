@@ -4,6 +4,7 @@ import { Box, Container, Paper, CircularProgress, Typography } from "@mui/materi
 import { FrontOfficeAPI } from "lib/api/front-office";
 import { ChargeAPI } from "lib/api/charge";
 import ReservationDetail from "components/reservation/item-detail";
+import { useIntl } from "react-intl";
 
 const NewEdit = ({
   transactionID,
@@ -11,6 +12,7 @@ const NewEdit = ({
   extendedProps,
   customRerender,
 }: any) => {
+  const intl = useIntl();
   const [reservation, setReservation]: any = useState(null);
   const [summary, setSummary]: any = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,7 +50,7 @@ const NewEdit = ({
           <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "300px", flexDirection: "column" }}>
             <CircularProgress size={40} thickness={4} sx={{ mb: 2 }} />
             <Typography variant="body1" color="text.secondary">
-              Loading reservation details...
+              {intl.formatMessage({ id: "LoadingReservationDetails" })}
             </Typography>
           </Box>
         ) : reservation && summary ? (
@@ -65,7 +67,7 @@ const NewEdit = ({
         ) : (
           <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
             <Typography variant="body1" color="error">
-              Could not load reservation details. Please try again.
+              {intl.formatMessage({ id: "LoadingReservationDetailsFailed" })}
             </Typography>
           </Box>
         )}

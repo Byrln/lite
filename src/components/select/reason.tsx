@@ -7,43 +7,47 @@ import { ReasonSWR } from "lib/api/reason";
 import CustomSelect from "components/common/custom-select";
 
 const ReasonTypeSelect = ({
-    register,
-    errors,
-    label,
-    ReasonTypeID = 0,
-    nameKey,
+  register,
+  errors,
+  label,
+  ReasonTypeID = 0,
+  nameKey,
 }: any) => {
-    const intl = useIntl();
+  const intl = useIntl();
 
-    const { data, error } = ReasonSWR({ ReasonTypeID: ReasonTypeID });
+  const { data, error } = ReasonSWR({ ReasonTypeID: ReasonTypeID });
 
-    if (error) return <Alert severity="error">{error.message}</Alert>;
+  if (error) return <Alert severity="error">{error.message}</Alert>;
 
-    if (!error && !data)
-        return (
-            <Box sx={{ width: "100%" }}>
-                <Skeleton />
-                <Skeleton animation="wave" />
-            </Box>
-        );
-
+  if (!error && !data)
     return (
-        <CustomSelect
-            register={register}
-            errors={errors}
-            field={nameKey ? nameKey : "ReasonID"}
-            label={
-                label
-                    ? label
-                    : intl.formatMessage({
-                          id: "RowHeaderReason",
-                      })
-            }
-            options={data}
-            optionValue="ReasonID"
-            optionLabel="ReasonName"
-        />
+      <Box sx={{ width: "100%" }}>
+        <Skeleton />
+        <Skeleton animation="wave" />
+      </Box>
     );
+
+  return (
+    <CustomSelect
+      register={register}
+      errors={errors}
+      field={nameKey ? nameKey : "ReasonID"}
+      label={
+        label
+          ? label
+          : intl.formatMessage({
+            id: "RowHeaderReason",
+          })
+      }
+      options={data}
+      optionValue="ReasonID"
+      optionLabel="ReasonName"
+      errorMessage={
+        errors?.[nameKey ? nameKey : "ReasonID"]?.message ||
+        intl.formatMessage({ id: "PleaseSelectReason" })
+      }
+    />
+  );
 };
 
 export default ReasonTypeSelect;
