@@ -553,7 +553,7 @@ const NewEdit = () => {
                                                         entity.RoomTypeShortName ==
                                                             0),
                                             }}
-                                            error={
+                                            error={!!
                                                 errors.RoomTypeShortName
                                                     ?.message
                                             }
@@ -804,7 +804,7 @@ const NewEdit = () => {
                                                         entity.BookingDescription ==
                                                             0),
                                             }}
-                                            error={
+                                            error={!!
                                                 errors.BookingDescription
                                                     ?.message
                                             }

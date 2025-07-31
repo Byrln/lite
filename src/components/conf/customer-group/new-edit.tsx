@@ -49,7 +49,7 @@ const NewEdit = () => {
                 label={intl.formatMessage({ id: "Description" })}
                 {...register("Description")}
                 margin="dense"
-                error={errors.Description?.message}
+                error={!!errors.Description?.message}
                 helperText={errors.Description?.message as string}
             /> */}
     </NewEditForm>

@@ -601,7 +601,7 @@ const NewEdit = ({
                               "ArrivalDate"
                             )}
                             margin="dense"
-                            error={
+                            error={!!
                               errors.ArrivalDate
                                 ?.message
                             }
@@ -654,7 +654,7 @@ const NewEdit = ({
                               "DepartureDate"
                             )}
                             margin="dense"
-                            error={
+                            error={!!
                               errors.DepartureDate
                                 ?.message
                             }
@@ -775,7 +775,7 @@ const NewEdit = ({
                             type="number"
                             {...register("Nights")}
                             margin="dense"
-                            error={
+                            error={!!
                               errors.Nights
                                 ?.message
                             }
@@ -837,7 +837,7 @@ const NewEdit = ({
                             label="Овог"
                             {...register("Surname")}
                             margin="dense"
-                            error={
+                            error={!!
                               errors.Surname
                                 ?.message
                             }
@@ -875,7 +875,7 @@ const NewEdit = ({
                             label="Нэр"
                             {...register("Name")}
                             margin="dense"
-                            error={
+                            error={!!
                               errors.Name?.message
                             }
                             helperText={
@@ -1097,7 +1097,7 @@ const NewEdit = ({
                             label="Емэйл"
                             {...register("Email")}
                             margin="dense"
-                            error={
+                            error={!!
                               errors.Email
                                 ?.message
                             }
@@ -1133,7 +1133,7 @@ const NewEdit = ({
                             label="Гар утас"
                             {...register("Mobile")}
                             margin="dense"
-                            error={
+                            error={!!
                               errors.Mobile
                                 ?.message
                             }
@@ -1368,7 +1368,7 @@ const NewEdit = ({
                               "PayAmount"
                             )}
                             margin="dense"
-                            error={
+                            error={!!
                               errors.PayAmount
                                 ?.message
                             }

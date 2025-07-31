@@ -327,7 +327,7 @@ const NewEdit = () => {
                                                     margin="dense"
                                                     fullWidth
                                                     {...params}
-                                                    error={
+                                                    error={!!
                                                         errors.BeginDate
                                                             ?.message
                                                     }
@@ -368,7 +368,7 @@ const NewEdit = () => {
                                                     margin="dense"
                                                     fullWidth
                                                     {...params}
-                                                    error={
+                                                    error={!!
                                                         errors.EndDate?.message
                                                     }
                                                     helperText={
