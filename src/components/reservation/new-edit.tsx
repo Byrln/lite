@@ -920,7 +920,7 @@ const NewEdit = ({
                             label="IdentityType"
                             select
                             margin="dense"
-                            error={
+                            error={!!
                               errors
                                 .IdentityTypeID
                                 ?.message
@@ -960,7 +960,7 @@ const NewEdit = ({
                                   "RegistryNo"
                                 )}
                                 margin="dense"
-                                error={
+                                error={!!
                                   errors
                                     .RegistryNo
                                     ?.message
@@ -1024,7 +1024,7 @@ const NewEdit = ({
                                   "DriverLicenseNo"
                                 )}
                                 margin="dense"
-                                error={
+                                error={!!
                                   errors
                                     .DriverLicenseNo
                                     ?.message
