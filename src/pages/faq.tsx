@@ -3,7 +3,7 @@ import Head from "next/head"
 import { Icon } from "@iconify/react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useIntl } from "react-intl"
-import { PopoverRoot, PopoverTrigger, PopoverContent, PopoverHeader, PopoverBody, PopoverButton } from "@/components/ui/popover"
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { Separator } from "@/components/ui"
 import { Phone } from "lucide-react"
 
@@ -268,7 +268,7 @@ const FAQPage = () => {
                         {intl.formatMessage({ id: "FAQ.NeedHelp", defaultMessage: "Need more help?" })}
                       </p>
                     </div>
-                    <PopoverRoot>
+                    <Popover>
                       <PopoverTrigger className="flex items-center text-[#804fe6] hover:text-[#6d42c4] text-sm font-medium">
                         <div className="flex items-center gap-2">
                           <Phone className="w-4 h-4" />
@@ -277,11 +277,11 @@ const FAQPage = () => {
                         </div>
                       </PopoverTrigger>
                       <PopoverContent className="h-fit">
-                        <PopoverHeader className="bg-[#804fe6] text-white">
+                        <div className="bg-[#804fe6] text-white p-3 rounded-t">
                           Contact Information
-                        </PopoverHeader>
+                        </div>
                         <Separator />
-                        <PopoverBody>
+                        <div className="p-3">
                           <div className="space-y-3">
                             <div>
                               <h4 className="font-medium text-sm mb-1">Email</h4>
@@ -300,9 +300,9 @@ const FAQPage = () => {
                               <p className="text-sm text-muted-foreground">24/7 Emergency Line: +1 (555) 999-0000</p>
                             </div>
                           </div>
-                        </PopoverBody>
+                        </div>
                       </PopoverContent>
-                    </PopoverRoot>
+                    </Popover>
                   </div>
                 </div>
               </div>

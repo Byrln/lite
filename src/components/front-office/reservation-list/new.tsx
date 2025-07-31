@@ -263,6 +263,8 @@ const NewEdit = ({
           CountryID: "",
           VipStatusID: ""
         },
+        Adult: 1,
+        Child: 0
       });
     }
   }, [fields.length, append, dateStart, dateEnd, workingDate, roomType, room]);

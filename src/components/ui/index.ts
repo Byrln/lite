@@ -32,7 +32,7 @@ export {
   DropdownMenuRadioGroup,
 } from './dropdown-menu';
 export { Input } from './Input';
-export { PopoverRoot, PopoverTrigger, PopoverContent } from './popover';
+export { Popover, PopoverTrigger, PopoverContent } from './popover';
 export { RadioGroup, RadioGroupItem } from './radio-group';
 export { CustomRadio } from './radio';
 export {
