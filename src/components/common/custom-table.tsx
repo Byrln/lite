@@ -175,9 +175,9 @@ const CustomTable = ({
                 onClick={() => {
                   handleModal(
                     true,
-                    `${modalTitle} ${intl.formatMessage({
+                    `${modalTitle || ''} ${intl.formatMessage({
                       id: "ButtonEdit",
-                    })}`,
+                    })}`.trim(),
                     modalContent,
                     null,
                     modalsize
@@ -207,9 +207,9 @@ const CustomTable = ({
                 onClick={() => {
                   handleModal(
                     true,
-                    `${modalTitle} ${intl.formatMessage({
+                    `${modalTitle || ''} ${intl.formatMessage({
                       id: "ButtonView",
-                    })}`,
+                    })}`.trim(),
                     modalContent,
                     null,
                     modalsize
@@ -384,9 +384,9 @@ const CustomTable = ({
                 onClick={() => {
                   handleModal(
                     true,
-                    `${modalTitle} ${intl.formatMessage({
+                    `${modalTitle || ''} ${intl.formatMessage({
                       id: "ButtonAddNew",
-                    })}`,
+                    })}`.trim(),
                     modalContent,
                     null,
                     modalsize
@@ -631,7 +631,7 @@ const CustomTable = ({
                                         onClick={() => {
                                           handleModal(
                                             true,
-                                            `${modalTitle} засах`,
+                                            `${modalTitle || ''} засах`.trim(),
                                             modalContent,
                                             null,
 
@@ -668,7 +668,7 @@ const CustomTable = ({
                                         onClick={() => {
                                           handleModal(
                                             true,
-                                            `${modalTitle} харах`,
+                                            `${modalTitle || ''} харах`.trim(),
                                             modalContent,
                                             null,
 

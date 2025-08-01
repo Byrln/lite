@@ -628,7 +628,7 @@ const TransactionEdit = () => {
               <TabPanel className="bg-white rounded-b-xl shadow-md" value={value} index={0}>
                 <Box sx={{ minHeight: '400px' }}>
                   <Grid container spacing={3}>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} sm={8}>
                       <Card
                         sx={{
                           borderRadius: 3,
@@ -664,29 +664,6 @@ const TransactionEdit = () => {
                         }}
                       >
                         <CardContent sx={{ p: 3 }}>
-                          <RemarkList
-                            TransactionID={
-                              transaction.TransactionID
-                            }
-                          />
-                        </CardContent>
-                      </Card>
-                    </Grid>
-
-                    <Grid item xs={12} sm={4}>
-                      <Card
-                        sx={{
-                          borderRadius: 3,
-                          boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
-                          transition: 'all 0.3s ease',
-                          border: '1px solid rgba(0,0,0,0.05)',
-                          '&:hover': {
-                            boxShadow: '0 12px 32px rgba(0,0,0,0.15)',
-                            transform: 'translateY(-4px)'
-                          }
-                        }}
-                      >
-                        <CardContent sx={{ p: 3 }}>
                           <Summary
                             TransactionID={
                               transaction.TransactionID
@@ -695,6 +672,28 @@ const TransactionEdit = () => {
                         </CardContent>
                       </Card>
                     </Grid>
+                  </Grid>
+                  <Grid item sx={{ pt: 2 }} xs={12} sm={4}>
+                    <Card
+                      sx={{
+                        borderRadius: 3,
+                        boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
+                        transition: 'all 0.3s ease',
+                        border: '1px solid rgba(0,0,0,0.05)',
+                        '&:hover': {
+                          boxShadow: '0 12px 32px rgba(0,0,0,0.15)',
+                          transform: 'translateY(-4px)'
+                        }
+                      }}
+                    >
+                      <CardContent sx={{ p: 3 }}>
+                        <RemarkList
+                          TransactionID={
+                            transaction.TransactionID
+                          }
+                        />
+                      </CardContent>
+                    </Card>
                   </Grid>
                 </Box>
               </TabPanel>

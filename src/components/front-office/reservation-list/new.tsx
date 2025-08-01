@@ -291,6 +291,8 @@ const NewEdit = ({
   const customSubmit = async (values: any) => {
     try {
       let tempValues = { ...values };
+      // Explicitly set Balance to null for new reservations to prevent 0₮ display
+      tempValues.Balance = null;
       tempValues.TransactionDetail[0].PayAmount = values.PayAmount;
       tempValues.TransactionDetail[0].PayCurrencyID =
         values.PayCurrencyID;
@@ -349,6 +351,9 @@ const NewEdit = ({
           values.TransactionDetail[index].Name;
         tempValues.TransactionDetail[index].CurrencyID =
           Currency && Currency.CurrencyID ? Currency.CurrencyID : "";
+
+        // Explicitly set Balance to null for new reservations to prevent 0₮ display
+        tempValues.TransactionDetail[index].Balance = null;
 
         if (isBooker == true) {
           tempValues.TransactionDetail[index].BookerName =

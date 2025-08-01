@@ -229,8 +229,8 @@ const ReservationNav = ({
       <a
         href={
           locale == "mon"
-            ? `/mon/transaction/edit/${reservation.TransactionID}`
-            : `/transaction/edit/${reservation.TransactionID}`
+            ? `/transaction/edit/${reservation.TransactionID}`
+            : `/en/transaction/edit/${reservation.TransactionID}`
         }
       >
         <Button variant={"text"} size="small" sx={buttonStyle} startIcon={<Edit />}>
@@ -256,7 +256,7 @@ const ReservationNav = ({
               additionalMutateUrl={additionalMutateUrl}
             />,
             null,
-            "medium"
+            "largest"
           );
         }}
       >

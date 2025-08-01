@@ -115,92 +115,92 @@ const RoomManagementPage = () => {
         defaultMessage: 'Room Management'
       })}
     >
-      <Container>
-        <div className="space-y-6">
-          <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={activeTab} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
+      <div className="space-y-6">
+        <Box sx={{ width: '100%' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={activeTab} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
+              <Tab
+                label={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Settings style={{ fontSize: 16 }} />
+                    {intl.formatMessage({ id: 'Overview', defaultMessage: 'Overview' })}
+                  </Box>
+                }
+                value="overview"
+                {...a11yProps('overview')}
+              />
+              {roomFeatures.map((feature) => (
                 <Tab
+                  key={feature.id}
                   label={
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Settings style={{ fontSize: 16 }} />
-                      {intl.formatMessage({ id: 'Overview', defaultMessage: 'Overview' })}
+                      {React.cloneElement(feature.icon, { style: { fontSize: 16 } })}
+                      {feature.title}
                     </Box>
                   }
-                  value="overview"
-                  {...a11yProps('overview')}
+                  value={feature.id}
+                  {...a11yProps(feature.id)}
                 />
-                {roomFeatures.map((feature) => (
-                  <Tab
-                    key={feature.id}
-                    label={
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {React.cloneElement(feature.icon, { style: { fontSize: 16 } })}
-                        {feature.title}
-                      </Box>
-                    }
-                    value={feature.id}
-                    {...a11yProps(feature.id)}
-                  />
-                ))}
-              </Tabs>
-            </Box>
-
-            {/* Overview Tab */}
-            <TabPanel value={activeTab} index="overview">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {roomFeatures.map((feature) => (
-                  <Card
-                    key={feature.id}
-                    className="cursor-pointer hover:shadow-lg transition-shadow duration-200"
-                    onClick={() => setActiveTab(feature.id)}
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <div className={`p-3 rounded-lg ${feature.color} text-white`}>
-                          {feature.icon}
-                        </div>
-                      </div>
-                      <CardTitle className="text-xl">{feature.title}</CardTitle>
-                      <CardDescription className="text-sm">
-                        {feature.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Button
-                        variant="outline"
-                        className="w-full"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setActiveTab(feature.id);
-                        }}
-                      >
-                        {intl.formatMessage({ id: 'Manage', defaultMessage: 'Manage' })}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabPanel>
-
-            {/* Feature Tabs */}
-            {roomFeatures.map((feature) => (
-              <TabPanel key={feature.id} value={activeTab} index={feature.id}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className={`p-3 rounded-lg ${feature.color} text-white`}>
-                    {feature.icon}
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-semibold">{feature.title}</h2>
-                    <p className="text-muted-foreground">{feature.description}</p>
-                  </div>
-                </div>
-                {feature.component}
-              </TabPanel>
-            ))}
+              ))}
+            </Tabs>
           </Box>
-        </div>
-      </Container>
+
+          {/* Overview Tab */}
+          <TabPanel value={activeTab} index="overview">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {roomFeatures.map((feature) => (
+                <Card
+                  key={feature.id}
+                  className="cursor-pointer hover:shadow-lg transition-shadow duration-200"
+                  onClick={() => setActiveTab(feature.id)}
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <div className={`p-1.5 sm:p-2 rounded-lg ${feature.color} text-white flex-shrink-0`}>
+                        {feature.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h1 className="text-sm sm:text-base font-semibold break-words">{feature.title}</h1>
+                        <p className="text-xs text-muted-foreground break-words">
+                          {feature.description}
+                        </p>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <Button
+                      variant="outline"
+                      className="w-full bg-transparent border border-primary-main"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTab(feature.id);
+                      }}
+                    >
+                      {intl.formatMessage({ id: 'TextView' })}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabPanel>
+
+          {/* Feature Tabs */}
+          {roomFeatures.map((feature) => (
+            <TabPanel key={feature.id} value={activeTab} index={feature.id}>
+              <div className="flex items-center gap-2 mb-3 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-200 shadow-sm">
+                <div className={`p-1.5 rounded-lg ${feature.color} text-white shadow-md flex-shrink-0`}>
+                  {feature.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-sm sm:text-base font-semibold text-gray-800 mb-0.5 break-words">{feature.title}</h2>
+                  <p className="text-gray-600 text-xs break-words">{feature.description}</p>
+                </div>
+              </div>
+              {feature.component}
+            </TabPanel>
+          ))}
+        </Box>
+      </div>
     </Page>
   );
 };

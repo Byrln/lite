@@ -10,38 +10,38 @@ import { RoomStatus1SWR } from "lib/api/room-status";
 const title = "Календар";
 
 const Index = () => {
-    const { data, error } = RoomStatus1SWR({ CalendarShow: true });
+  const { data, error } = RoomStatus1SWR({ CalendarShow: true });
 
-    const [workingDate, setWorkingDate]: any = useState(null);
+  const [workingDate, setWorkingDate]: any = useState(null);
 
-    useEffect(() => {
-        fetchDatas();
-    }, []);
+  useEffect(() => {
+    fetchDatas();
+  }, []);
 
-    const fetchDatas = async () => {
-        let response = await FrontOfficeAPI.workingDate();
-        if (response.status == 200) {
-            setWorkingDate(response.workingDate[0].WorkingDate);
-        }
-    };
+  const fetchDatas = async () => {
+    let response = await FrontOfficeAPI.workingDate();
+    if (response.status == 200) {
+      setWorkingDate(response.workingDate[0].WorkingDate);
+    }
+  };
 
-    return (
-        <>
-            <Head>
-                <title>{title}</title>
-            </Head>
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
 
-            <Page>
-                <Container maxWidth="xl">
-                    {workingDate && (
-                        <MyCalendar //@ts-ignore
-                            workingDate={workingDate}
-                        />
-                    )}
+      <Page>
+        <Container maxWidth="xl">
+          {workingDate && (
+            <MyCalendar //@ts-ignore
+              workingDate={workingDate}
+            />
+          )}
 
-                    {/* {workingDate && <HandsOnTable workingDate={workingDate} />} */}
+          {/* {workingDate && <HandsOnTable workingDate={workingDate} />} */}
 
-                    {/* <Grid container direction="row" className="mt-2">
+          {/* <Grid container direction="row" className="mt-2">
                         <Grid
                             item
                             xs={12}
@@ -95,10 +95,10 @@ const Index = () => {
                                 ))}
                         </Grid>
                     </Grid> */}
-                </Container>
-            </Page>
-        </>
-    );
+        </Container>
+      </Page>
+    </>
+  );
 };
 
 export default Index;

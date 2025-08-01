@@ -96,7 +96,9 @@ const CustomModal = ({ ArrivalDate, DepartureDate }: CustomModalProps = {}) => {
   }: any = useContext(ModalContext);
 
   const getModalSize = () => {
-    if (modalType === "large") {
+    if (modalType === "largest") {
+      return { ...modalStyles.large, maxWidth: '1600px' };
+    } else if (modalType === "large") {
       return modalStyles.large;
     } else if (modalType === "medium") {
       return modalStyles.medium;

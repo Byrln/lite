@@ -106,6 +106,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   const [isHoverEnabled, setIsHoverEnabled] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [reservationItems, setReservationItems] = useState<any>(null);
+  const [roomBlocks, setRoomBlocks] = useState<any>(null);
 
   // Fetch room status data
   const { data: roomStatusData } = RoomStatusSWR({ RoomTypeID: 0 });
@@ -272,7 +273,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
         const rooms: any = await RoomAPI?.list({});
 
-        const roomBlocks: any = await RoomBlockAPI?.list({
+        const roomBlocksData: any = await RoomBlockAPI?.list({
           StartDate: dateToCustomFormat(
             new Date(searchCurrDate),
             "yyyy-MM-dd"
@@ -286,6 +287,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             "yyyy-MM-dd"
           ),
         });
+        setRoomBlocks(roomBlocksData);
 
         const availableRoomsData: any = await StayView2API?.list(
           searchCurrDate ? searchCurrDate : workingDate,
@@ -455,8 +457,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             });
           });
 
-          if (roomBlocks) {
-            const newRoomBlockDta = roomBlocks.map((obj: any) => {
+          if (roomBlocksData) {
+            const newRoomBlockDta = roomBlocksData.map((obj: any) => {
               return {
                 id: obj.RoomBlockID,
                 title: "Blocked",
@@ -1160,23 +1162,29 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   </>
                 )}
 
-                <span
-                  style={{ display: "flex", alignItems: 'center', color: "rgba(255,255,255,0.7)" }}
-                >
-                  <Iconify
-                    icon="vaadin:cash"
-                    width="14px"
-                    style={{
-                      marginRight: "4px",
-                      verticalAlign: "text-bottom",
-                    }}
-                  />
-                  Balance:
-                </span>
-                <span style={{ fontWeight: 500 }}>
-                  {Number(arg.event._def.extendedProps.Balance).toLocaleString()}
-                  ₮
-                </span>
+                {arg.event._def.extendedProps.Balance &&
+                  arg.event._def.extendedProps.Balance !== '0' &&
+                  Number(arg.event._def.extendedProps.Balance) > 0 ? (
+                  <>
+                    <span
+                      style={{ display: "flex", alignItems: 'center', color: "rgba(255,255,255,0.7)" }}
+                    >
+                      <Iconify
+                        icon="vaadin:cash"
+                        width="14px"
+                        style={{
+                          marginRight: "4px",
+                          verticalAlign: "text-bottom",
+                        }}
+                      />
+                      Balance:
+                    </span>
+                    <span style={{ fontWeight: 500 }}>
+                      {Number(arg.event._def.extendedProps.Balance).toLocaleString()}
+                      ₮
+                    </span>
+                  </>
+                ) : null}
 
                 <span
                   style={{ display: "flex", alignItems: 'center', color: "rgba(255,255,255,0.7)" }}
@@ -1322,6 +1330,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
           )}
 
           {arg.event._def.extendedProps.Balance &&
+            arg.event._def.extendedProps.Balance !== '0' &&
             Number(arg.event._def.extendedProps.Balance) > 0 ? (
             <span style={{ marginRight: "8px", marginTop: "2px" }}>
               {" "}
@@ -1398,6 +1407,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 </span>
               </div>
               {arg.event._def.extendedProps.Balance &&
+                arg.event._def.extendedProps.Balance !== '0' &&
                 Number(arg.event._def.extendedProps.Balance) > 0 ? (
                 <div
                   className="balance-info"
@@ -1480,7 +1490,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   setRerenderKey((prevKey) => prevKey + 1);
                   setTimeout(() => {
                     setIsCalendarLoading(false);
-                  }, 1000);
+                  });
                 }}
                 disabled={isCalendarLoading}
                 className="border-[#804FE6] text-[#804FE6] hover:bg-[#804FE6] hover:text-white font-medium py-2 rounded-full transition-all duration-200 transform hover:scale-105"
@@ -1545,7 +1555,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             </div>
 
             {/* Status Legend */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
               <Tooltip
                 open={tooltipOpen}
                 onClose={handleTooltipClose}
@@ -1607,13 +1617,13 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 </span>
               </Tooltip>
               {/* View Period Controls */}
-              <div className="bg-[#804FE6] rounded-full outline outline-[#804FE6] outline-2 shadow-md">
+              <div className="bg-[#804FE6] rounded-full outline outline-[#804FE6] outline-2 shadow-md w-full sm:w-auto overflow-hidden">
                 <RadioGroup
                   row
                   value={dayCount}
                   onChange={handleChange}
                   defaultValue={window.innerWidth < 950 ? 7 : 15}
-                  className="flex gap-1"
+                  className="flex gap-0.5 sm:gap-1 flex-nowrap"
                 >
                   {[
                     { value: "hourly", label: <div className=""><Iconify icon="mdi:clock-outline" className="w-4 h-4" /></div> },
@@ -1633,7 +1643,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                       }
                       label={period.label}
                       className={`
-                      px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer
+                      px-2 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap
                       ${(dayCount === period.value) || (period.value === "hourly" && currentView === "resourceTimelineDay")
                           ? "bg-white text-[#804FE6] shadow-sm"
                           : "text-white hover:bg-white/10"
@@ -1641,10 +1651,12 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     `}
                       sx={{
                         margin: 0,
+                        minWidth: 'auto',
                         "& .MuiTypography-root": {
-                          fontSize: "0.875rem",
+                          fontSize: { xs: "0.75rem", sm: "0.875rem" },
                           fontWeight: 500,
                           whiteSpace: "nowrap",
+                          padding: 0,
                         },
                       }}
                     />
@@ -1778,7 +1790,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                       const day = arg.date.getDay();
                       const isWeekend =
                         day === 0 || day === 6;
-                      // Get available rooms data
+                      // Get available rooms data from backend (fallback)
                       const availableRoomsKey = `D${Difference_In_Days + 1
                         }`;
                       const availableRoomsData =
@@ -1792,20 +1804,53 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           ].split("/")
                           : ["0", "0"];
 
-                      // Calculate occupancy percentage
-                      const availableCount =
-                        parseInt(
-                          availableRoomsData[0]
-                        ) || 0;
-                      const totalCount =
-                        parseInt(
-                          availableRoomsData[1]
-                        ) || 1; // Prevent division by zero
+                      // Calculate corrected occupancy using reservation data
+                      const currentDate = moment(arg.date).format("YYYY-MM-DD");
+                      let correctedAvailableCount = parseInt(availableRoomsData[0]) || 0;
+                      let correctedTotalCount = parseInt(availableRoomsData[1]) || 1;
+
+                      // If we have reservation data, calculate accurate occupancy
+                      if (reservationItems && resources) {
+                        // Get all individual rooms (not room types)
+                        const allRooms = resources.filter((resource: any) => resource.parentId);
+                        correctedTotalCount = allRooms.length;
+
+                        // Get occupied rooms for this date from reservations
+                        const occupiedRoomsForDate = reservationItems.filter((item: any) => {
+                          const startDate = moment(item.StartDate).format("YYYY-MM-DD");
+                          const endDate = moment(item.DepartureDate).format("YYYY-MM-DD");
+                          const isInDateRange = moment(currentDate).isBetween(startDate, endDate, "day", "[)");
+
+                          // For day reservations (same start and departure date)
+                          if (startDate === endDate && startDate === currentDate) {
+                            // Day reservations (same arrival and departure date) should not count as occupied
+                            return false;
+                          }
+
+                          return isInDateRange;
+                        });
+
+                        // Get blocked rooms for this date from room blocks
+                        const blockedRoomsForDate = roomBlocks ? roomBlocks.filter((block: any) => {
+                          const startDate = moment(block.BeginDate).format("YYYY-MM-DD");
+                          const endDate = moment(block.EndDate).format("YYYY-MM-DD");
+                          return moment(currentDate).isBetween(startDate, endDate, "day", "[)");
+                        }) : [];
+
+                        // Get unique occupied room IDs (reservations + room blocks)
+                        const uniqueOccupiedRoomIds = new Set([
+                          ...occupiedRoomsForDate.map((item: any) => item.RoomID),
+                          ...blockedRoomsForDate.map((block: any) => block.RoomID)
+                        ]);
+
+                        correctedAvailableCount = correctedTotalCount - uniqueOccupiedRoomIds.size;
+                      }
+
                       const occupancyPercentage =
                         Math.round(
-                          ((totalCount -
-                            availableCount) /
-                            totalCount) *
+                          ((correctedTotalCount -
+                            correctedAvailableCount) /
+                            correctedTotalCount) *
                           100
                         );
 
@@ -1818,8 +1863,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           }}
                         >
                           <div className="text-xs">
-                            {availableCount} /{" "}
-                            {totalCount}
+                            {correctedAvailableCount} / {correctedTotalCount}
                           </div>
                         </div>
                       ) : (
@@ -1915,14 +1959,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 <div
                                   style={{
                                     color:
-                                      availableCount >
+                                      correctedAvailableCount >
                                         0
                                         ? "#4caf50"
                                         : "#d32f2f",
                                   }}
                                 >
                                   {
-                                    availableCount
+                                    correctedAvailableCount
                                   }
                                 </div>
                                 <div
@@ -1997,7 +2041,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                 ).format(
                                                   "YYYY-MM-DD"
                                                 );
-                                              const isOccupied =
+                                              const isInDateRange =
                                                 moment(
                                                   currentDate
                                                 ).isBetween(
@@ -2006,6 +2050,15 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                                   "day",
                                                   "[)"
                                                 );
+
+                                              let isOccupied = isInDateRange;
+
+                                              // For day reservations (same start and departure date)
+                                              if (startDate === endDate && startDate === currentDate) {
+                                                // Day reservations (same arrival and departure date) should not count as occupied
+                                                isOccupied = false;
+                                              }
+
                                               return (
                                                 isOccupied &&
                                                 Number(
@@ -2020,11 +2073,53 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                             }
                                           );
 
+                                        // Get blocked rooms for this room type and date
+                                        const blockedRooms = roomBlocks ? roomBlocks.filter(
+                                          (block: any) => {
+                                            const startDate = moment(
+                                              block.BeginDate
+                                            ).format(
+                                              "YYYY-MM-DD"
+                                            );
+                                            const endDate = moment(
+                                              block.EndDate
+                                            ).format(
+                                              "YYYY-MM-DD"
+                                            );
+                                            const isBlocked =
+                                              moment(
+                                                currentDate
+                                              ).isBetween(
+                                                startDate,
+                                                endDate,
+                                                "day",
+                                                "[)"
+                                              );
+                                            return (
+                                              isBlocked &&
+                                              Number(
+                                                block.RoomTypeID
+                                              ) ===
+                                              Number(
+                                                roomType.id.split(
+                                                  "?"
+                                                )[1]
+                                              )
+                                            );
+                                          }
+                                        ) : [];
+
+                                        // Get unique room IDs to avoid counting the same room multiple times (reservations + blocks)
+                                        const uniqueOccupiedRoomIds = new Set([
+                                          ...occupiedRooms.map((item: any) => item.RoomID),
+                                          ...blockedRooms.map((block: any) => block.RoomID)
+                                        ]);
+
                                         const totalRooms =
                                           roomsForType.length;
                                         const availableRooms =
                                           totalRooms -
-                                          occupiedRooms.length;
+                                          uniqueOccupiedRoomIds.size;
 
                                         return {
                                           name: roomType.title,

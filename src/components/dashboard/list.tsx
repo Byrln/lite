@@ -254,7 +254,7 @@ const Dashboard = ({ workingDate }: any) => {
   };
 
   const mainIcon = (index: number) => {
-    const iconProps = { className: "h-6 w-6 text-primary" };
+    const iconProps = { className: "h-6 w-6 text-white" };
     switch (index) {
       case 0:
         return <Building {...iconProps} />;
@@ -373,7 +373,7 @@ const Dashboard = ({ workingDate }: any) => {
                       <PopoverTrigger asChild>
                         <button className="w-[240px] justify-start text-left font-normal bg-indigo-100 border-indigo-300 text-indigo-700 hover:bg-indigo-200 flex h-9 items-center border px-3 text-sm rounded-lg">
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
+                          {selectedDate ? format(selectedDate, "P") : <span>{intl.formatMessage({ id: "TextPickDate" })}</span>}
                         </button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
@@ -750,6 +750,7 @@ const DashboardMetricCard = ({
         border: "border-emerald-200",
         topAccent: "from-emerald-500 to-emerald-300",
         iconBg: "bg-emerald-500",
+        iconWhite: "text-white",
         textColor: "text-emerald-700",
         titleColor: "text-emerald-900",
         valueColor: "text-emerald-900",
@@ -760,6 +761,7 @@ const DashboardMetricCard = ({
         border: "border-blue-200",
         topAccent: "from-blue-500 to-blue-300",
         iconBg: "bg-blue-500",
+        iconWhite: "text-white",
         textColor: "text-blue-700",
         titleColor: "text-blue-900",
         valueColor: "text-blue-900",
@@ -770,6 +772,7 @@ const DashboardMetricCard = ({
         border: "border-purple-200",
         topAccent: "from-purple-500 to-purple-300",
         iconBg: "bg-purple-500",
+        iconWhite: "text-white",
         textColor: "text-purple-700",
         titleColor: "text-purple-900",
         valueColor: "text-purple-900",
@@ -794,7 +797,7 @@ const DashboardMetricCard = ({
               <motion.div
                 className={`h-12 w-12 rounded-md ${colors.iconBg} flex items-center justify-center shadow-lg`}
               >
-                <div className="text-white stroke-white">
+                <div className={`${colors.iconWhite}`}>
                   {mainIcon(index)}
                 </div>
               </motion.div>

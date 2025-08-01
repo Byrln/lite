@@ -724,10 +724,6 @@ const NewEdit = ({
                 initialValues={getValues(
                   `TransactionDetail[${id}]`
                 )}
-                onRateTypeChange={(rate: any) => {
-                  // Currency amount will automatically recalculate due to RateTypeID change in useEffect
-                  console.log('Rate type changed:', rate);
-                }}
               />
             </Grid>
 

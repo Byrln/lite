@@ -4,7 +4,7 @@
 
 @layer base {
   html {
-    font-family: 'Public Sans', system-ui, sans-serif;
+    font-family: 'Public Sans', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'Liberation Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
   }
   :root {
     --background: oklch(0.985 0 0);

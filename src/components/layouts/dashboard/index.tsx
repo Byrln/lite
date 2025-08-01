@@ -51,7 +51,7 @@ export default function DashboardLayout({ children }: any) {
 
   function filterMenu(menu: any, uniqueMenuLinks: any) {
     return menu.reduce((filteredMenu: any, item: any) => {
-      if (item.path && (uniqueMenuLinks.includes(item.path) || item.path === "/room/management")) {
+      if (item.path && (uniqueMenuLinks.includes(item.path) || item.path === "/room/management" || item.path === "/rate" || item.path === "/payment")) {
         filteredMenu.push(item)
       }
       if (item.children) {

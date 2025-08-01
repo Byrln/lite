@@ -28,111 +28,111 @@ import NewReservation from "components/front-office/reservation-list/new";
 
 // Global keyboard shortcuts component
 const GlobalKeyboardShortcuts = () => {
-    const { handleModal }: any = useContext(ModalContext);
-    const [state, dispatch]: any = useAppState();
+  const { handleModal }: any = useContext(ModalContext);
+  const [state, dispatch]: any = useAppState();
 
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'F2') {
-                event.preventDefault();
-                dispatch({
-                    type: "editId",
-                    editId: null,
-                });
-                handleModal(
-                    true,
-                    "New Reservation",
-                    <NewReservation workingDate={new Date()} />,
-                    null,
-                    "medium"
-                );
-            }
-        };
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'F2') {
+        event.preventDefault();
+        dispatch({
+          type: "editId",
+          editId: null,
+        });
+        handleModal(
+          true,
+          "New Reservation",
+          <NewReservation workingDate={new Date()} />,
+          null,
+          "medium"
+        );
+      }
+    };
 
-        document.addEventListener('keydown', handleKeyDown);
-        
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [handleModal, dispatch]);
+    document.addEventListener('keydown', handleKeyDown);
 
-    return null;
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleModal, dispatch]);
+
+  return null;
 };
 
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-    const { locale }: any = useRouter();
-    const messages: any = {
-        en: { ...en, ...enDashboard },
-        mon: { ...mon, ...monDashboard }
-    };
+  const { locale }: any = useRouter();
+  const messages: any = {
+    en: { ...en, ...enDashboard },
+    mon: { ...mon, ...monDashboard }
+  };
 
-    Router.events.on("routeChangeStart", () => NProgress.start());
-    Router.events.on("routeChangeComplete", () => {
-        NProgress.done();
-        window.scrollTo(0, 0);
-    });
-    Router.events.on("routeChangeError", () => NProgress.done());
-    return (
-        // const MyApp = ({ Component, pageProps }: AppProps) => (
-        <>
-            <IntlProvider locale={locale} messages={messages[locale] || messages.en}>
-                <Head>
-                    <meta
-                        name="viewport"
-                        content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width,height=device-height"
-                    />
-                    <meta
-                        name="description"
-                        content="Зочид буудал, Амралтын бааз, Сувилал, үйлчилгээний орон сууцад зориулсан цогц програм хангамжыг бид танд санал болгож байна."
-                    />
-                    <meta
-                        name="keywords"
-                        content="horecasoft, hotel, mongolia, Зочид буудал, Амралтын бааз, Сувилал"
-                    />
+  Router.events.on("routeChangeStart", () => NProgress.start());
+  Router.events.on("routeChangeComplete", () => {
+    NProgress.done();
+    window.scrollTo(0, 0);
+  });
+  Router.events.on("routeChangeError", () => NProgress.done());
+  return (
+    // const MyApp = ({ Component, pageProps }: AppProps) => (
+    <>
+      <IntlProvider locale={locale} messages={messages[locale] || messages.en}>
+        <Head>
+          <meta
+            name="viewport"
+            content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width,height=device-height"
+          />
+          <meta
+            name="description"
+            content="Зочид буудал, Амралтын бааз, Сувилал, үйлчилгээний орон сууцад зориулсан цогц програм хангамжыг бид танд санал болгож байна."
+          />
+          <meta
+            name="keywords"
+            content="horecasoft, hotel, mongolia, Зочид буудал, Амралтын бааз, Сувилал"
+          />
 
-                    <title>Horeca PMS</title>
-                </Head>
+          <title>Horeca PMS</title>
+        </Head>
 
-                <SessionProvider session={pageProps.session}>
-                    <WithAuth>
-                        <SWRConfig
-                            value={{
-                                refreshInterval: 0,
-                                revalidateOnFocus: false,
-                                shouldRetryOnError: false,
-                                fetcher,
-                            }}
-                        >
-                            <AppProvider>
-                                <ModalProvider>
-                                    <GlobalKeyboardShortcuts />
-                                    <LocalizationProvider // @ts-ignore
-                                        dateAdapter={AdapterDateFns}
-                                    >
-                
-                                        <Page>
-                                            <Component {...pageProps} />
-                                            <ToastContainer
-                                                transition={Slide}
-                                                newestOnTop={true}
-                                                position="top-right"
-                                                autoClose={5000}
-                                                hideProgressBar={false}
-                                                closeOnClick={true}
-                                                pauseOnHover={true}
-                                                draggable={true}
-                                            />
-                                        </Page>
-                                    </LocalizationProvider>
-                                </ModalProvider>
-                            </AppProvider>
-                        </SWRConfig>
-                    </WithAuth>
-                </SessionProvider>
-            </IntlProvider>
-        </>
-    );
+        <SessionProvider session={pageProps.session}>
+          <WithAuth>
+            <SWRConfig
+              value={{
+                refreshInterval: 0,
+                revalidateOnFocus: false,
+                shouldRetryOnError: false,
+                fetcher,
+              }}
+            >
+              <AppProvider>
+                <ModalProvider>
+                  <GlobalKeyboardShortcuts />
+                  <LocalizationProvider // @ts-ignore
+                    dateAdapter={AdapterDateFns}
+                  >
+
+                    <Page>
+                      <Component {...pageProps} />
+                      <ToastContainer
+                        transition={Slide}
+                        newestOnTop={true}
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        closeOnClick={true}
+                        pauseOnHover={true}
+                        draggable={true}
+                      />
+                    </Page>
+                  </LocalizationProvider>
+                </ModalProvider>
+              </AppProvider>
+            </SWRConfig>
+          </WithAuth>
+        </SessionProvider>
+      </IntlProvider>
+    </>
+  );
 }
 
 // export default MyApp;

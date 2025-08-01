@@ -95,6 +95,16 @@ module.exports = {
       fontFamily: {
         sans: [
           'Public Sans',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'Noto Sans',
+          'Liberation Sans',
+          'Apple Color Emoji',
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Noto Color Emoji',
           'sans-serif'
         ]
       },

@@ -139,6 +139,7 @@ const RoomBlockList = ({ title, workingDate }: any) => {
         listUrl={listUrl}
         modalTitle={title}
         modalContent={<NewEdit workingDate={workingDate} />}
+        modalsize="medium"
         excelName={title}
         datagrid={false}
       />

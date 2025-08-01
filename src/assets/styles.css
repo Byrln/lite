@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans&display=swap");
 
 body .liquidity-planner-app {
-  font-family: "DM Sans", sans-serif;
+  font-family: "DM Sans", "Public Sans", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Noto Sans", "Liberation Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
 }
 
 /* .liquidity-planner-app .reactgrid .rg-cell:not(.rg-cell-nonEditable):after {
