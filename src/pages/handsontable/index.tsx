@@ -32,16 +32,15 @@ const Index = () => {
       </Head>
 
       <Page>
-        <Container maxWidth="xl">
-          {workingDate && (
-            <MyCalendar //@ts-ignore
-              workingDate={workingDate}
-            />
-          )}
+        {workingDate && (
+          <MyCalendar //@ts-ignore
+            workingDate={workingDate}
+          />
+        )}
 
-          {/* {workingDate && <HandsOnTable workingDate={workingDate} />} */}
+        {/* {workingDate && <HandsOnTable workingDate={workingDate} />} */}
 
-          {/* <Grid container direction="row" className="mt-2">
+        {/* <Grid container direction="row" className="mt-2">
                         <Grid
                             item
                             xs={12}
@@ -95,7 +94,6 @@ const Index = () => {
                                 ))}
                         </Grid>
                     </Grid> */}
-        </Container>
       </Page>
     </>
   );
