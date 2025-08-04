@@ -8,50 +8,36 @@ import Typography from "@mui/material/Typography";
 import {
   Tabs,
   Tab,
-  Container,
-  Paper,
   Card,
   CardContent,
-  Divider,
   Button,
-  Menu,
-  MenuItem,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   Stack,
+  Fade,
 } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import ThreePanelLayout from "../../../components/transaction/edit/three-panel-layout";
+import TransactionHeader from "../../../components/transaction/edit/transaction-header";
 import InfoIcon from "@mui/icons-material/Info";
 import PersonIcon from "@mui/icons-material/Person";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import BusinessIcon from "@mui/icons-material/Business";
-
-import { ApiResponseModel } from "models/response/ApiResponseModel";
-import { TransactionSWR, TransactionAPI, listUrl } from "lib/api/transaction";
-import GuestInformation from "components/transaction/guest-information";
-import StayInformation from "components/transaction/stay-information";
-import OtherInformation from "components/transaction/other-information";
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import SummaryIcon from '@mui/icons-material/Assessment';
+import CommentIcon from '@mui/icons-material/Comment';
+import HotelIcon from '@mui/icons-material/Hotel';
+import { useIntl } from 'react-intl';
+import { TransactionSWR } from "lib/api/transaction";
 import SharerInformation from "components/transaction/general-information/sharer-information";
 import Summary from "components/transaction/general-information/summary";
 import RoomCharge from "components/transaction/room-charge";
 import Folio from "components/transaction/folio";
 import RemarkList from "components/reservation/remark/list";
-import GuestNewEdit from "components/front-office/guest-database/new-edit";
-import GuestDocuments from "components/common/custom-upload";
-import AmendStayForm from "components/reservation/amend-stay";
-import GuestReplace from "./guest-replace";
-import CustomerReplace from "./customer-replace";
-
 import { useAppState } from "lib/context/app";
 import { ModalContext } from "lib/context/modal";
 import {
-  CashierSessionActiveSWR,
   CashierSessionListSWR,
 } from "lib/api/cashier-session";
-import { useIntl } from "react-intl";
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -84,9 +70,6 @@ const TransactionEdit = () => {
   const router = useRouter();
 
   const { data, error } = TransactionSWR(router.query.id);
-  const { data: cashierActive, error: cashierActiveError } =
-    CashierSessionActiveSWR();
-
   const [transaction, setTransaction]: any = useState(null);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(0);
@@ -136,16 +119,9 @@ const TransactionEdit = () => {
 
   useEffect(() => {
     if (data) {
-      console.log('TransactionEdit - Setting transaction data:', data);
       setTransaction(data);
     }
   }, [data]);
-
-  // Debug transaction state
-  console.log('TransactionEdit - Current transaction:', transaction);
-  console.log('TransactionEdit - Current tab value:', value);
-  console.log('TransactionEdit - Loading state:', loading);
-
   const [cashierOpen, setCashierOpen] = useState(false);
 
   const fetchTest = async () => {
@@ -176,574 +152,388 @@ const TransactionEdit = () => {
 
   return (
     <>
-      <Container maxWidth="xl">
+      <Box>
         {loading ? (
           <Box sx={{ width: "100%" }}>
-            <Skeleton />
-            <Skeleton animation="wave" />
-            <Skeleton animation={false} />
+            <Skeleton height={60} />
+            <Skeleton animation="wave" height={40} />
+            <Skeleton animation={false} height={200} />
           </Box>
         ) : transaction ? (
-          <>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <Typography
-                variant="h6"
+          <Fade in={true} timeout={800}>
+            <Box>
+              {/* Transaction Header Card */}
+              <Card
                 sx={{
-                  width: "fit-content",
+                  borderRadius: '16px',
+                  boxShadow: '0 12px 40px rgba(0,0,0,0.08)',
+                  border: '1px solid rgba(0,0,0,0.04)',
+                  overflow: 'hidden'
                 }}
               >
-                Гүйлгээ засах
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  width: "fit-content",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: "fit-content",
-                  }}
-                >
-                  {transaction.RoomTypeName} -{" "}
-                  {transaction.RoomNo}
-                </Box>
-                <Paper
-                  elevation={2}
-                  sx={{
-                    px: 1,
-                    backgroundColor:
-                      "#" + transaction.StatusColor,
-                    color: "white",
-                    mb: 3,
-                    width: "fit-content",
-                  }}
-                >
-                  <Typography>
-                    {
-                      intl.formatMessage({
-                        id: transaction.StatusCode,
-                      })}
-                  </Typography>
-                </Paper>
-              </Box>
-            </Box>
-
-            <Divider className="mb-3" />
-
-            <Grid container spacing={2} className="mb-3">
-              <Grid item xs={12} sm={4}>
-                <Card
-                  sx={{
-                    borderRadius: 2,
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                      transform: 'translateY(-2px)'
-                    }
-                  }}
-                >
-                  <CardContent sx={{ p: 3 }}>
-                    <Box
-                      sx={{
-                        fontWeight: "bold",
-                        fontSize: '1.1rem',
-                        color: 'primary.main',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                      }}
-                      className="mb-3"
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <PersonIcon sx={{ color: 'primary.main' }} />
-                        Зочны мэдээлэл
-                      </Box>
-                      <Button
-                        key={2}
-                        variant={"outlined"}
-                        aria-controls={`guest`}
-                        size="small"
-                        onClick={handleGuestClick}
-                        sx={{
-                          minWidth: 'auto',
-                          borderRadius: '50%',
-                          width: 32,
-                          height: 32
-                        }}
-                      >
-                        <KeyboardArrowDownIcon
-                          fontSize={"small"}
-                        />
-                      </Button>
-                      <Menu
-                        id={`guest`}
-                        anchorEl={guestAnchorEl}
-                        open={Boolean(guestAnchorEl)}
-                        onClose={handleGuestClose}
-                      >
-                        <MenuItem
-                          key={`guestReplace`}
-                          onClick={() => {
-                            handleModal(
-                              true,
-                              "Зочин солих",
-                              <GuestReplace
-                                TransactionID={
-                                  router.query
-                                    .id
-                                }
-                              />
-                            );
-                          }}
-                        >
-                          Зочин солих
-                        </MenuItem>
-                        <MenuItem
-                          key={`guestDetails`}
-                          onClick={() => {
-                            handleModal(
-                              true,
-                              "Зочны мэдээлэл",
-                              <GuestNewEdit />
-                            );
-                            dispatch({
-                              type: "isShow",
-                              isShow: true,
-                            });
-                            dispatch({
-                              type: "editId",
-                              editId: transaction.GuestID,
-                            });
-                          }}
-                        >
-                          Зочны мэдээлэл харах
-                        </MenuItem>
-                        <MenuItem
-                          key={`guestEdit`}
-                          onClick={() => {
-                            handleModal(
-                              true,
-                              "Зочны мэдээлэл засах",
-                              <GuestNewEdit />
-                            );
-                            dispatch({
-                              type: "isShow",
-                              isShow: false,
-                            });
-                            dispatch({
-                              type: "editId",
-                              editId: transaction.GuestID,
-                            });
-                          }}
-                        >
-                          Зочны мэдээлэл засах
-                        </MenuItem>
-                        <MenuItem
-                          key={`guestPictureImport`}
-                          onClick={() => {
-                            handleModal(
-                              true,
-                              "Зочны мэдээлэл засах",
-                              <GuestDocuments
-                                GuestID={
-                                  transaction.GuestID
-                                }
-                              />
-                            );
-                          }}
-                        >
-                          Зураг оруулах
-                        </MenuItem>
-                        <MenuItem
-                          key={`guestDocumentImport`}
-                          onClick={() => {
-                            handleModal(
-                              true,
-                              "Зочны мэдээлэл засах",
-                              <GuestDocuments
-                                GuestID={
-                                  transaction.GuestID
-                                }
-                                IsDocument={
-                                  true
-                                }
-                              />
-                            );
-                          }}
-                        >
-                          Бичиг баримт хуулах
-                        </MenuItem>
-                      </Menu>
-                    </Box>
-
-                    <GuestInformation
-                      name={transaction.GuestName}
-                      phone={transaction.GuestPhone}
-                      email={transaction.GuestEmail}
-                      address={transaction.GuestAddress}
-                    />
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Card
-                  sx={{
-                    borderRadius: 2,
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                      transform: 'translateY(-2px)'
-                    }
-                  }}
-                >
-                  <CardContent sx={{ p: 3 }}>
-                    <Box
-                      sx={{
-                        fontWeight: "bold",
-                        fontSize: '1.1rem',
-                        color: 'primary.main',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                      }}
-                      className="mb-3"
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CalendarTodayIcon sx={{ color: 'primary.main' }} />
-                        Хоногийн мэдээлэл
-                      </Box>
-                      <Button
-                        key={2}
-                        variant={"outlined"}
-                        aria-controls={`stay`}
-                        size="small"
-                        onClick={handleStayClick}
-                        sx={{
-                          minWidth: 'auto',
-                          borderRadius: '50%',
-                          width: 32,
-                          height: 32
-                        }}
-                      >
-                        <KeyboardArrowDownIcon
-                          fontSize={"small"}
-                        />
-                      </Button>
-                      <Menu
-                        id={`stay`}
-                        anchorEl={stayAnchorEl}
-                        open={Boolean(stayAnchorEl)}
-                        onClose={handleStayClose}
-                      >
-                        <MenuItem
-                          key={`amendStay`}
-                          onClick={() => {
-                            handleModal(
-                              true,
-                              "Хоног засах",
-                              <AmendStayForm
-                                transactionInfo={{
-                                  TransactionID:
-                                    transaction.TransactionID,
-                                  ReservationID:
-                                    transaction.ReservationID,
-                                  RoomID:
-                                    transaction.RoomID,
-                                  RoomTypeID:
-                                    transaction.RoomTypeID,
-                                  RoomRateTypeID:
-                                    transaction.RoomRateTypeID,
-                                  CurrencyID:
-                                    transaction.CurrencyID,
-                                  Adult:
-                                    transaction.Adult,
-                                  Child:
-                                    transaction.Child,
-                                }}
-                              />
-                            );
-                          }}
-                        >
-                          Хоног засах
-                        </MenuItem>
-                      </Menu>
-                    </Box>
-
-                    <StayInformation
-                      reservationDate={
-                        transaction.ReservationDate
-                      }
-                      arrivalDate={
-                        transaction.ArrivalDate
-                      }
-                      departureDate={
-                        transaction.DepartureDate
-                      }
-                      pax={
-                        (transaction.Adult > 0
-                          ? transaction.Adult + " насанд хүрэгч "
-                          : "") +
-                        (transaction.Child > 0
-                          ? transaction.Child + " хүүхэд"
-                          : "")
-                      }
-                    />
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Card
-                  sx={{
-                    borderRadius: 2,
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                      transform: 'translateY(-2px)'
-                    }
-                  }}
-                >
-                  <CardContent sx={{ p: 3 }}>
-                    <Box
-                      sx={{
-                        fontWeight: "bold",
-                        fontSize: '1.1rem',
-                        color: 'primary.main',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                      }}
-                      className="mb-3"
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <BusinessIcon sx={{ color: 'primary.main' }} />
-                        Бусад мэдээлэл
-                      </Box>
-                      <Button
-                        key={2}
-                        variant={"outlined"}
-                        aria-controls={`other`}
-                        size="small"
-                        onClick={handleCustomerClick}
-                        sx={{
-                          minWidth: 'auto',
-                          borderRadius: '50%',
-                          width: 32,
-                          height: 32
-                        }}
-                      >
-                        <KeyboardArrowDownIcon
-                          fontSize={"small"}
-                        />
-                      </Button>
-                      <Menu
-                        id={`other`}
-                        anchorEl={customerAnchorEl}
-                        open={Boolean(customerAnchorEl)}
-                        onClose={handleCustomerClose}
-                      >
-                        <MenuItem
-                          key={`customerReplace`}
-                          onClick={() => {
-                            handleModal(
-                              true,
-                              "Бусад засвар",
-                              <CustomerReplace
-                                TransactionID={
-                                  router.query
-                                    .id
-                                }
-                              />
-                            );
-                          }}
-                        >
-                          Бусад засвар
-                        </MenuItem>
-                      </Menu>
-                    </Box>
-                    <OtherInformation
-                      reservationNo={
-                        transaction.ReservationNo
-                      }
-                      folioNo={transaction.FolioNo}
-                      checkInNo={transaction.CheckinNo}
-                      company={transaction.CustomerName}
-                    />
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-            <Box sx={{ width: "100%" }}>
-              <Box
-                sx={{
-                  borderBottom: 1,
-                  borderColor: "divider",
-                  backgroundColor: 'background.paper',
-                  borderRadius: '8px 8px 0 0',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-              >
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  aria-label="basic tabs example"
-                  sx={{
-                    '& .MuiTab-root': {
-                      fontWeight: 600,
-                      fontSize: '0.95rem',
-                      textTransform: 'none',
-                      minHeight: 56,
-                      '&.Mui-selected': {
-                        color: 'primary.main'
-                      }
-                    },
-                    '& .MuiTabs-indicator': {
-                      height: 3,
-                      borderRadius: '3px 3px 0 0'
-                    }
-                  }}
-                >
-                  <Tab
-                    label="Ерөнхий мэдээлэл"
-                    {...a11yProps(0)}
+                <CardContent sx={{ p: 0 }}>
+                  <TransactionHeader transaction={transaction} />
+                  {/* Enhanced Three-Panel Layout */}
+                  <ThreePanelLayout
+                    transaction={transaction}
+                    guestAnchorEl={guestAnchorEl}
+                    stayAnchorEl={stayAnchorEl}
+                    customerAnchorEl={customerAnchorEl}
+                    handleGuestClick={handleGuestClick}
+                    handleGuestClose={handleGuestClose}
+                    handleStayClick={handleStayClick}
+                    handleStayClose={handleStayClose}
+                    handleCustomerClick={handleCustomerClick}
+                    handleCustomerClose={handleCustomerClose}
+                    handleModal={handleModal}
+                    router={router}
+                    dispatch={dispatch}
                   />
-                  <Tab
-                    label="Өрөөний тооцоо"
-                    {...a11yProps(1)}
-                  />
-                  <Tab label="Тооцоо" {...a11yProps(2)} />
-                </Tabs>
-              </Box>
-
-              <TabPanel className="bg-white rounded-b-xl shadow-md" value={value} index={0}>
-                <Box sx={{ minHeight: '400px' }}>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12} sm={8}>
-                      <Card
-                        sx={{
-                          borderRadius: 3,
-                          boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
-                          transition: 'all 0.3s ease',
-                          border: '1px solid rgba(0,0,0,0.05)',
-                          '&:hover': {
-                            boxShadow: '0 12px 32px rgba(0,0,0,0.15)',
-                            transform: 'translateY(-4px)'
-                          }
-                        }}
-                      >
-                        <CardContent sx={{ p: 3 }}>
-                          <SharerInformation
-                            TransactionID={
-                              transaction.TransactionID
-                            }
-                          />
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                      <Card
-                        sx={{
-                          borderRadius: 3,
-                          boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
-                          transition: 'all 0.3s ease',
-                          border: '1px solid rgba(0,0,0,0.05)',
-                          '&:hover': {
-                            boxShadow: '0 12px 32px rgba(0,0,0,0.15)',
-                            transform: 'translateY(-4px)'
-                          }
-                        }}
-                      >
-                        <CardContent sx={{ p: 3 }}>
-                          <Summary
-                            TransactionID={
-                              transaction.TransactionID
-                            }
-                          />
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  </Grid>
-                  <Grid item sx={{ pt: 2 }} xs={12} sm={4}>
+                  <Box sx={{ width: "100%" }}>
                     <Card
                       sx={{
-                        borderRadius: 3,
-                        boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
-                        transition: 'all 0.3s ease',
-                        border: '1px solid rgba(0,0,0,0.05)',
-                        '&:hover': {
-                          boxShadow: '0 12px 32px rgba(0,0,0,0.15)',
-                          transform: 'translateY(-4px)'
-                        }
+                        borderRadius: '0 0 16px 16px',
+                        boxShadow: '0 12px 40px rgba(0,0,0,0.08)',
+                        border: '1px solid rgba(0,0,0,0.04)',
+                        overflow: 'hidden'
                       }}
                     >
-                      <CardContent sx={{ p: 3 }}>
-                        <RemarkList
-                          TransactionID={
-                            transaction.TransactionID
-                          }
-                        />
-                      </CardContent>
+                      <Box
+                        sx={{
+                          borderBottom: 1,
+                          borderColor: "divider",
+                        }}
+                      >
+                        <Tabs
+                          value={value}
+                          onChange={handleChange}
+                          aria-label="transaction tabs"
+                          sx={{
+                            px: 3,
+                            '& .MuiTab-root': {
+                              fontWeight: 600,
+                              fontSize: '1rem',
+                              textTransform: 'none',
+                              minHeight: 64,
+                              transition: 'all 0.3s ease',
+                              '&.Mui-selected': {
+                                color: 'primary.main',
+                                backgroundColor: 'rgba(102, 126, 234, 0.08)'
+                              },
+                              '&:hover': {
+                                backgroundColor: 'rgba(102, 126, 234, 0.04)'
+                              }
+                            },
+                            '& .MuiTabs-indicator': {
+                              height: 4,
+                              borderRadius: '4px 4px 0 0',
+                              background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)'
+                            }
+                          }}
+                        >
+                          <Tab
+                            label={intl.formatMessage({ id: 'TabGeneralInfo' })}
+                            icon={<PersonIcon />}
+                            iconPosition="start"
+                            {...a11yProps(0)}
+                          />
+                          <Tab
+                            label={intl.formatMessage({ id: 'TabRoomCharge' })}
+                            icon={<HotelIcon />}
+                            iconPosition="start"
+                            {...a11yProps(1)}
+                          />
+                          <Tab
+                            label={intl.formatMessage({ id: 'TabFolio' })}
+                            icon={<ReceiptIcon />}
+                            iconPosition="start"
+                            {...a11yProps(2)}
+                          />
+                        </Tabs>
+                      </Box>
+
+                      <TabPanel value={value} index={0}>
+                        <Box sx={{ minHeight: '500px' }}>
+                          <Grid container spacing={4}>
+                            <Grid item xs={12} lg={8}>
+                              <Fade in={value === 0} timeout={600}>
+                                <Card
+                                  sx={{
+                                    borderRadius: '0 0 16px 16px',
+                                    boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    border: '1px solid rgba(0,0,0,0.04)',
+                                    position: 'relative',
+                                    overflow: 'visible',
+                                    '&:hover': {
+                                      boxShadow: '0 20px 40px rgba(0,0,0,0.12)',
+                                    },
+                                    '&::before': {
+                                      content: '""',
+                                      position: 'absolute',
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      height: 4,
+                                      background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                                      borderRadius: '16px 16px 0 0'
+                                    }
+                                  }}
+                                >
+                                  <CardContent sx={{ p: 4 }}>
+                                    <SharerInformation
+                                      TransactionID={transaction.TransactionID}
+                                    />
+                                  </CardContent>
+                                </Card>
+                              </Fade>
+                            </Grid>
+                            <Grid item xs={12} lg={4}>
+                              <Stack spacing={3}>
+                                <Fade in={value === 0} timeout={800}>
+                                  <Card
+                                    sx={{
+                                      borderRadius: '0 0 16px 16px',
+                                      boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                      border: '1px solid rgba(0,0,0,0.04)',
+                                      background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+                                      position: 'relative',
+                                      overflow: 'visible',
+                                      '&:hover': {
+                                        boxShadow: '0 20px 40px rgba(0,0,0,0.12)',
+                                      },
+                                      '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        height: 4,
+                                        background: 'linear-gradient(90deg, #4facfe 0%, #00f2fe 100%)',
+                                        borderRadius: '16px 16px 0 0'
+                                      }
+                                    }}
+                                  >
+                                    <CardContent sx={{ p: 4 }}>
+                                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+                                        <Box
+                                          sx={{
+                                            p: 1.5,
+                                            borderRadius: 2,
+                                            background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                                            color: 'white',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                          }}
+                                        >
+                                          <SummaryIcon sx={{ fontSize: 20 }} />
+                                        </Box>
+                                        <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                                          {intl.formatMessage({ id: 'TextSummary' })}
+                                        </Typography>
+                                      </Box>
+                                      <Summary
+                                        TransactionID={transaction.TransactionID}
+                                      />
+                                    </CardContent>
+                                  </Card>
+                                </Fade>
+                                <Fade in={value === 0} timeout={1000}>
+                                  <Card
+                                    sx={{
+                                      borderRadius: '0 0 16px 16px',
+                                      boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                      border: '1px solid rgba(0,0,0,0.04)',
+                                      background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+                                      position: 'relative',
+                                      overflow: 'visible',
+                                      '&:hover': {
+                                        boxShadow: '0 20px 40px rgba(0,0,0,0.12)',
+                                      },
+                                      '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        height: 4,
+                                        background: 'linear-gradient(90deg, #fa709a 0%, #fee140 100%)',
+                                        borderRadius: '16px 16px 0 0'
+                                      }
+                                    }}
+                                  >
+                                    <CardContent sx={{ p: 4 }}>
+                                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+                                        <Box
+                                          sx={{
+                                            p: 1.5,
+                                            borderRadius: 2,
+                                            background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                                            color: 'white',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                          }}
+                                        >
+                                          <CommentIcon sx={{ fontSize: 20 }} />
+                                        </Box>
+                                        <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                                          {intl.formatMessage({ id: 'TextRemarks' })}
+                                        </Typography>
+                                      </Box>
+                                      <RemarkList
+                                        TransactionID={transaction.TransactionID}
+                                      />
+                                    </CardContent>
+                                  </Card>
+                                </Fade>
+                              </Stack>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </TabPanel>
+
+                      <TabPanel value={value} index={1}>
+                        <Box>
+                          <Fade in={value === 1} timeout={600}>
+                            <Card
+                              sx={{
+                                borderRadius: '0 0 16px 16px',
+                                boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                                border: '1px solid rgba(0,0,0,0.04)',
+                                position: 'relative',
+                                overflow: 'visible',
+                                '&::before': {
+                                  content: '""',
+                                  position: 'absolute',
+                                  top: 0,
+                                  left: 0,
+                                  right: 0,
+                                  height: 4,
+                                  background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                                  borderRadius: '16px 16px 0 0'
+                                }
+                              }}
+                            >
+                              <CardContent sx={{ p: 4 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+                                  <Box
+                                    sx={{
+                                      p: 1.5,
+                                      borderRadius: 2,
+                                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                      color: 'white',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center'
+                                    }}
+                                  >
+                                    <HotelIcon sx={{ fontSize: 20 }} />
+                                  </Box>
+                                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                                    {intl.formatMessage({ id: 'TextRoomChargeTitle' })}
+                                  </Typography>
+                                </Box>
+                                <RoomCharge
+                                  TransactionID={transaction.TransactionID}
+                                  RoomTypeID={transaction.RoomTypeID}
+                                />
+                              </CardContent>
+                            </Card>
+                          </Fade>
+                        </Box>
+                      </TabPanel>
+
+                      <TabPanel value={value} index={2}>
+                        <Box>
+                          <Fade in={value === 2} timeout={600}>
+                            <Card
+                              sx={{
+                                borderRadius: '0 0 16px 16px',
+                                boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
+                                border: '1px solid rgba(0,0,0,0.04)',
+                                position: 'relative',
+                                overflow: 'visible',
+                                '&::before': {
+                                  content: '""',
+                                  position: 'absolute',
+                                  top: 0,
+                                  left: 0,
+                                  right: 0,
+                                  height: 4,
+                                  background: 'linear-gradient(90deg, #4facfe 0%, #00f2fe 100%)',
+                                  borderRadius: '16px 16px 0 0'
+                                }
+                              }}
+                            >
+                              <CardContent sx={{ p: 4 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+                                  <Box
+                                    sx={{
+                                      p: 1.5,
+                                      borderRadius: 2,
+                                      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                                      color: 'white',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center'
+                                    }}
+                                  >
+                                    <ReceiptIcon sx={{ fontSize: 20 }} />
+                                  </Box>
+                                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                                    {intl.formatMessage({ id: 'TextFolioTitle' })}
+                                  </Typography>
+                                </Box>
+                                <Folio
+                                  TransactionID={transaction.TransactionID}
+                                />
+                              </CardContent>
+                            </Card>
+                          </Fade>
+                        </Box>
+                      </TabPanel>
                     </Card>
-                  </Grid>
-                </Box>
-              </TabPanel>
-
-              <TabPanel className="bg-white rounded-b-xl shadow-md" value={value} index={1}>
-                <RoomCharge
-                  TransactionID={transaction.TransactionID}
-                  RoomTypeID={transaction.RoomTypeID}
-                />
-              </TabPanel>
-
-              <TabPanel className="bg-white rounded-b-xl shadow-md" value={value} index={2}>
-                <Folio
-                  TransactionID={transaction.TransactionID}
-                />
-              </TabPanel>
+                  </Box>
+                </CardContent>
+              </Card>
             </Box>
-            <Dialog
-              open={cashierOpen}
-              onClose={handleCashierClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  <Stack direction="column" gap={1}>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      gap={1}
-                    >
-                      <InfoIcon />
-                      <Typography variant="h6">
-                        Ээлж эхлүүлнэ үү!
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCashierClose} autoFocus>
-                  ОК
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </>
+          </Fade>
         ) : (
           <div></div>
         )}
-      </Container>
+      </Box>
+      <Dialog
+        open={cashierOpen}
+        onClose={handleCashierClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <Stack direction="column" gap={1}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                gap={1}
+              >
+                <InfoIcon />
+                <Typography variant="h6">
+                  Ээлж эхлүүлнэ үү!
+                </Typography>
+              </Stack>
+            </Stack>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCashierClose} autoFocus>
+            ОК
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

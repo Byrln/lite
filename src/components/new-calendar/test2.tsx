@@ -11,12 +11,14 @@ import { Icon } from "@iconify/react";
 import plusFill from "@iconify/icons-eva/plus-fill";
 import {
   Tooltip,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-  Button,
-  Checkbox,
-} from "@mui/material";
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { toast } from "react-toastify";
 import { RoomTypeAPI } from "lib/api/room-type";
 import { RoomAPI } from "lib/api/room";
@@ -998,448 +1000,343 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
   const eventContent = (arg: any) => {
     return (
-      <Tooltip
-        title={
-          arg.event._def.extendedProps.statusColor ==
-            "rgba(255, 220, 40, 0.15)" ? (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
             <div
+              className={`event-custom ${isHoverEnabled
+                ? arg.event._def.extendedProps.statusColor ==
+                  "rgba(255, 220, 40, 0.15)"
+                  ? ""
+                  : "hover-enabled"
+                : ""
+                }`}
               style={{
-                padding: "8px",
-                fontWeight: 500,
-                display: "flex",
-                flexDirection: "row",
-                gap: "4px",
+                display:
+                  arg.event._def.extendedProps.statusColor !=
+                    "rgba(255, 220, 40, 0.15)" ||
+                    arg.event.title == "Blocked"
+                    ? "flex"
+                    : "",
+                borderRadius:
+                  arg.event._def.extendedProps.statusColor !=
+                    "rgba(255, 220, 40, 0.15)"
+                    ? "6px"
+                    : "0px",
+                background: "none",
+                padding: "6px 8px 2px 8px",
+                overflow: "",
+                margin: "-2px -3px -2px -1px",
+                height: "100%",
+                textAlign:
+                  arg.event._def.extendedProps.statusColor !=
+                    "rgba(255, 220, 40, 0.15)" ||
+                    arg.event.title == "Blocked"
+                    ? "left"
+                    : "center",
+                backgroundColor:
+                  arg.event.title == "Blocked"
+                    ? "#212529"
+                    : arg.event._def.extendedProps.statusColor,
+                color: arg.event._def.extendedProps.statusColor
+                  ? arg.event._def.extendedProps.statusColor !=
+                    "rgba(255, 220, 40, 0.15)"
+                    ? getContrastYIQ(
+                      arg.event._def.extendedProps.statusColor
+                    )
+                    : "#4a6cf7"
+                  : "white",
+                border:
+                  arg.event._def.extendedProps.GroupID &&
+                  arg.event._def.extendedProps.GroupID != "" &&
+                  arg.event._def.extendedProps.groupColor &&
+                  arg.event._def.extendedProps.groupColor != ""
+                    ? `2px solid ${arg.event._def.extendedProps.groupColor}`
+                    : arg.event._def.extendedProps.statusColor ==
+                      "rgba(255, 220, 40, 0.15)"
+                    ? `1px solid rgba(74, 108, 247, 0.3)`
+                    : "null",
+                fontSize: "13px",
+                fontWeight: "500",
+                alignItems: "center",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
               }}
-              className="sm:flex-row sm:items-center"
             >
-              <span
-                style={{
-                  color: "#4a6cf7",
-                  marginRight: "4px",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                <div
+              {arg.event._def.extendedProps.statusColor !=
+                "rgba(255, 220, 40, 0.15)" ? (
+                <Iconify
+                  icon="lsicon:drag-filled"
+                  width="14px"
+                  style={{ marginRight: "8px", marginTop: "2px" }}
+                />
+              ) : (
+                ""
+              )}
+
+              {arg.event._def.extendedProps.GroupID &&
+                arg.event._def.extendedProps.GroupID != "" ? (
+                <span
                   style={{
-                    fontWeight: "bold",
-                    marginBottom: "2px",
+                    marginRight: "8px",
+                    marginTop: "2px",
+                    color:
+                      arg.event._def.extendedProps.groupColor &&
+                        arg.event._def.extendedProps.groupColor !=
+                        ""
+                        ? arg.event._def.extendedProps
+                          .groupColor
+                        : "#495057",
                   }}
                 >
-                  Unassigned Room:{" "}
-                </div>
-              </span>
-              <span
-                style={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {arg.event.title}
-              </span>
-            </div>
-          ) : arg.event.title == "Blocked" ? (
-            <div
-              style={{
-                display: 'flex',
-                padding: "8px",
-                fontWeight: 500,
-                color: "#ff4842",
-              }}
-            >
-              <Iconify
-                icon="mdi:block-helper"
-                width="16px"
-                style={{
-                  marginRight: "6px",
-                  verticalAlign: "text-bottom",
-                }}
-              />
-              Blocked
-            </div>
-          ) : (
-            <div
-              style={{
-                padding: "12px",
-                minWidth: "220px",
-                borderRadius: "8px",
-                fontSize: "13px",
-                lineHeight: "1.6",
-              }}
-            >
-              {/* Header with name */}
-              <div
+                  {arg.event._def.extendedProps.IsGroupOwner ==
+                    "true" ? (
+                    <Iconify
+                      icon="solar:crown-outline"
+                      width="14px"
+                    />
+                  ) : (
+                    <Iconify
+                      icon="clarity:group-line"
+                      width="14px"
+                    />
+                  )}
+                </span>
+              ) : (
+                <></>
+              )}
+
+              {arg.event._def.extendedProps.Balance &&
+                arg.event._def.extendedProps.Balance !== '0' &&
+                Number(arg.event._def.extendedProps.Balance) > 0 ? (
+                <span style={{ marginRight: "8px", marginTop: "2px" }}>
+                  {" "}
+                  <Iconify icon="vaadin:cash" width="14px" />
+                </span>
+              ) : (
+                <></>
+              )}
+
+              {arg.event._def.extendedProps.Breakfast &&
+                arg.event._def.extendedProps.Breakfast == true ? (
+                <span style={{ marginRight: "8px", marginTop: "2px" }}>
+                  {" "}
+                  <Iconify
+                    icon="fluent:food-16-regular"
+                    width="14px"
+                  />
+                </span>
+              ) : (
+                <></>
+              )}
+              <p
                 title={arg.event.title}
                 style={{
                   display: "inline-block",
                   fontWeight: "600",
                   whiteSpace: "nowrap",
-                  overflow: "hidden",
                   textOverflow: "ellipsis",
-                  width: "100%",
+                  width: "fit-content",
                 }}
               >
                 {arg.event.title}
-              </div>
-
-              {/* Info grid */}
+              </p>
               <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "auto 1fr",
-                  gap: "6px 12px",
+                  display: "flex",
+                  justifyContent: "right",
+                  width: "100%",
+                  alignItems: "center",
+                  overflow: "hidden",
+                  marginLeft: "35px",
                 }}
+                className={
+                  isHoverEnabled ? "time-balance-container" : ""
+                }
               >
-                {arg.event._def.extendedProps.GroupCode &&
-                  arg.event._def.extendedProps.GroupCode !=
-                  "" && (
+                <div className="flex gap-3 mb-1">
+                  {/* Departure Time */}
+                  <div
+                    className="whitespace-nowrap time-info"
+                    style={{
+                      backgroundColor: "#fff",
+                      color: "#000",
+                      padding: "2px 6px",
+                      borderRadius: "4px",
+                      fontWeight: "500",
+                      display: "flex",
+                      alignItems: "center",
+                      fontSize: "11px",
+                    }}
+                  >
+                    <Iconify
+                      icon="mdi:logout"
+                      width="10px"
+                      style={{ marginRight: "2px" }}
+                    />
+                    <span>
+                      {new Date(
+                        arg.event._def.extendedProps.departureDate
+                      ).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </div>
+                  {arg.event._def.extendedProps.Balance &&
+                    arg.event._def.extendedProps.Balance !== '0' &&
+                    Number(arg.event._def.extendedProps.Balance) > 0 ? (
+                    <div
+                      className="balance-info"
+                      style={{
+                        backgroundColor: "#fff",
+                        color: "#000",
+                        padding: "2px 6px",
+                        borderRadius: "4px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {Number(
+                        arg.event._def.extendedProps.Balance
+                      ).toLocaleString()}
+                      ₮
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+
+              {arg.event._def.extendedProps.statusColor !=
+                "rgba(255, 220, 40, 0.15)" ? (
+                <Iconify
+                  icon="lsicon:drag-filled"
+                  width="14px"
+                  style={{ marginLeft: "auto", marginTop: "2px" }}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="bg-[#212B36] text-white border-none shadow-lg rounded-lg p-0 max-w-xs">
+            {arg.event._def.extendedProps.statusColor ==
+              "rgba(255, 220, 40, 0.15)" ? (
+              <div className="p-2 font-medium flex flex-row gap-1 sm:flex-row sm:items-center">
+                <span className="text-[#4a6cf7] mr-1 whitespace-nowrap">
+                  <div className="font-bold mb-0.5">
+                    Unassigned Room:{" "}
+                  </div>
+                </span>
+                <span className="overflow-hidden text-ellipsis">
+                  {arg.event.title}
+                </span>
+              </div>
+            ) : arg.event.title == "Blocked" ? (
+              <div className="flex p-2 font-medium text-[#ff4842]">
+                <Iconify
+                  icon="mdi:block-helper"
+                  width="16px"
+                  className="mr-1.5 align-text-bottom"
+                />
+                Blocked
+              </div>
+            ) : (
+              <div className="p-3 min-w-[220px] rounded-lg text-sm leading-relaxed">
+                {/* Header with name */}
+                <div
+                  title={arg.event.title}
+                  className="inline-block font-semibold whitespace-nowrap overflow-hidden text-ellipsis w-full"
+                >
+                  {arg.event.title}
+                </div>
+
+                {/* Info grid */}
+                <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5">
+                  {arg.event._def.extendedProps.GroupCode &&
+                    arg.event._def.extendedProps.GroupCode != "" && (
+                      <>
+                        <span className="flex items-center text-white/70">
+                          <Iconify
+                            icon="clarity:group-line"
+                            width="14px"
+                            className="mr-1 align-text-bottom"
+                          />
+                          Group Code:
+                        </span>
+                        <span className="font-medium">
+                          {arg.event._def.extendedProps.GroupCode}
+                        </span>
+                      </>
+                    )}
+
+                  <span className="flex items-center text-white/70">
+                    <Iconify
+                      icon="mdi:account-outline"
+                      width="14px"
+                      className="mr-1 align-text-bottom"
+                    />
+                    A/C:
+                  </span>
+                  <span className="font-medium">
+                    {arg.event._def.extendedProps.Adult}/
+                    {arg.event._def.extendedProps.Child}
+                  </span>
+
+                  {arg.event._def.extendedProps.pax && (
                     <>
-                      <span
-                        style={{
-                          display: "flex", alignItems: 'center',
-                          color: "rgba(255,255,255,0.7)",
-                        }}
-                      >
+                      <span className="flex items-center text-white/70">
                         <Iconify
-                          icon="clarity:group-line"
+                          icon="mdi:account-group-outline"
                           width="14px"
-                          style={{
-                            marginRight: "4px",
-                            verticalAlign:
-                              "text-bottom",
-                          }}
+                          className="mr-1 align-text-bottom"
                         />
-                        Group Code:
+                        Group A/C:
                       </span>
-                      <span style={{ fontWeight: 500 }}>
-                        {
-                          arg.event._def.extendedProps
-                            .GroupCode
-                        }
+                      <span className="font-medium">
+                        {arg.event._def.extendedProps.pax}
                       </span>
                     </>
                   )}
 
-                <span
-                  style={{ display: "flex", alignItems: 'center', color: "rgba(255,255,255,0.7)" }}
-                >
-                  <Iconify
-                    icon="mdi:account-outline"
-                    width="14px"
-                    style={{
-                      marginRight: "4px",
-                      verticalAlign: "text-bottom",
-                    }}
-                  />
-                  A/C:
-                </span>
-                <span style={{ fontWeight: 500 }}>
-                  {arg.event._def.extendedProps.Adult}/
-                  {arg.event._def.extendedProps.Child}
-                </span>
+                  {arg.event._def.extendedProps.Balance &&
+                    arg.event._def.extendedProps.Balance !== '0' &&
+                    Number(arg.event._def.extendedProps.Balance) > 0 ? (
+                    <>
+                      <span className="flex items-center text-white/70">
+                        <Iconify
+                          icon="vaadin:cash"
+                          width="14px"
+                          className="mr-1 align-text-bottom"
+                        />
+                        Balance:
+                      </span>
+                      <span className="font-medium">
+                        {Number(arg.event._def.extendedProps.Balance).toLocaleString()}
+                        ₮
+                      </span>
+                    </>
+                  ) : null}
 
-                {arg.event._def.extendedProps.pax && (
-                  <>
-                    <span
-                      style={{
-                        display: "flex", alignItems: 'center',
-                        color: "rgba(255,255,255,0.7)",
-                      }}
-                    >
-                      <Iconify
-                        icon="mdi:account-group-outline"
-                        width="14px"
-                        style={{
-                          marginRight: "4px",
-                          verticalAlign:
-                            "text-bottom",
-                        }}
-                      />
-                      Group A/C:
-                    </span>
-                    <span style={{ fontWeight: 500 }}>
-                      {arg.event._def.extendedProps.pax}
-                    </span>
-                  </>
-                )}
-
-                {arg.event._def.extendedProps.Balance &&
-                  arg.event._def.extendedProps.Balance !== '0' &&
-                  Number(arg.event._def.extendedProps.Balance) > 0 ? (
-                  <>
-                    <span
-                      style={{ display: "flex", alignItems: 'center', color: "rgba(255,255,255,0.7)" }}
-                    >
-                      <Iconify
-                        icon="vaadin:cash"
-                        width="14px"
-                        style={{
-                          marginRight: "4px",
-                          verticalAlign: "text-bottom",
-                        }}
-                      />
-                      Balance:
-                    </span>
-                    <span style={{ fontWeight: 500 }}>
-                      {Number(arg.event._def.extendedProps.Balance).toLocaleString()}
-                      ₮
-                    </span>
-                  </>
-                ) : null}
-
-                <span
-                  style={{ display: "flex", alignItems: 'center', color: "rgba(255,255,255,0.7)" }}
-                >
-                  <Iconify
-                    icon="fluent:food-16-regular"
-                    width="14px"
-                    style={{
-                      marginRight: "4px",
-                      verticalAlign: "text-bottom",
-                    }}
-                  />
-                  Breakfast:
-                </span>
-                <span
-                  style={{
-                    fontWeight: 500,
-                    color: arg.event._def.extendedProps
-                      .Breakfast
-                      ? "#4caf50"
-                      : "#ff9800",
-                  }}
-                >
-                  {arg.event._def.extendedProps.Breakfast
-                    ? "Yes"
-                    : "No"}
-                </span>
-              </div>
-            </div>
-          )
-        }
-        arrow
-        placement="top"
-        componentsProps={{
-          tooltip: {
-            sx: {
-              bgcolor: "#212B36",
-              "& .MuiTooltip-arrow": {
-                color: "#212B36",
-              },
-              boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
-              borderRadius: "8px",
-              p: 0,
-            },
-          },
-        }}
-      >
-        <div
-          className={`event-custom ${isHoverEnabled
-            ? arg.event._def.extendedProps.statusColor ==
-              "rgba(255, 220, 40, 0.15)"
-              ? ""
-              : "hover-enabled"
-            : ""
-            }`}
-          style={{
-            display:
-              arg.event._def.extendedProps.statusColor !=
-                "rgba(255, 220, 40, 0.15)" ||
-                arg.event.title == "Blocked"
-                ? "flex"
-                : "",
-            borderRadius:
-              arg.event._def.extendedProps.statusColor !=
-                "rgba(255, 220, 40, 0.15)"
-                ? "6px"
-                : "0px",
-            background: "none",
-            padding: "6px 8px 2px 8px",
-            overflow: "",
-            margin: "-2px -3px -2px -1px",
-            height: "100%",
-            textAlign:
-              arg.event._def.extendedProps.statusColor !=
-                "rgba(255, 220, 40, 0.15)" ||
-                arg.event.title == "Blocked"
-                ? "left"
-                : "center",
-            backgroundColor:
-              arg.event.title == "Blocked"
-                ? "#212529"
-                : arg.event._def.extendedProps.statusColor,
-            color: arg.event._def.extendedProps.statusColor
-              ? arg.event._def.extendedProps.statusColor !=
-                "rgba(255, 220, 40, 0.15)"
-                ? getContrastYIQ(
-                  arg.event._def.extendedProps.statusColor
-                )
-                : "#4a6cf7"
-              : "white",
-            border:
-              arg.event._def.extendedProps.statusColor ==
-                "rgba(255, 220, 40, 0.15)"
-                ? `1px solid rgba(74, 108, 247, 0.3)`
-                : "null",
-            fontSize: "13px",
-            fontWeight: "500",
-            alignItems: "center",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
-          }}
-        >
-          {arg.event._def.extendedProps.statusColor !=
-            "rgba(255, 220, 40, 0.15)" ? (
-            <Iconify
-              icon="lsicon:drag-filled"
-              width="14px"
-              style={{ marginRight: "8px", marginTop: "2px" }}
-            />
-          ) : (
-            ""
-          )}
-
-          {arg.event._def.extendedProps.GroupID &&
-            arg.event._def.extendedProps.GroupID != "" ? (
-            <span
-              style={{
-                marginRight: "8px",
-                marginTop: "2px",
-                color:
-                  arg.event._def.extendedProps.groupColor &&
-                    arg.event._def.extendedProps.groupColor !=
-                    ""
-                    ? arg.event._def.extendedProps
-                      .groupColor
-                    : "#495057",
-              }}
-            >
-              {arg.event._def.extendedProps.IsGroupOwner ==
-                "true" ? (
-                <Iconify
-                  icon="solar:crown-outline"
-                  width="14px"
-                />
-              ) : (
-                <Iconify
-                  icon="clarity:group-line"
-                  width="14px"
-                />
-              )}
-            </span>
-          ) : (
-            <></>
-          )}
-
-          {arg.event._def.extendedProps.Balance &&
-            arg.event._def.extendedProps.Balance !== '0' &&
-            Number(arg.event._def.extendedProps.Balance) > 0 ? (
-            <span style={{ marginRight: "8px", marginTop: "2px" }}>
-              {" "}
-              <Iconify icon="vaadin:cash" width="14px" />
-            </span>
-          ) : (
-            <></>
-          )}
-
-          {arg.event._def.extendedProps.Breakfast &&
-            arg.event._def.extendedProps.Breakfast == true ? (
-            <span style={{ marginRight: "8px", marginTop: "2px" }}>
-              {" "}
-              <Iconify
-                icon="fluent:food-16-regular"
-                width="14px"
-              />
-            </span>
-          ) : (
-            <></>
-          )}
-          <p
-            title={arg.event.title}
-            style={{
-              display: "inline-block",
-              fontWeight: "600",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-              width: "fit-content",
-            }}
-          >
-            {arg.event.title}
-          </p>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "right",
-              width: "100%",
-              alignItems: "center",
-              overflow: "hidden",
-              marginLeft: "35px",
-            }}
-            className={
-              isHoverEnabled ? "time-balance-container" : ""
-            }
-          >
-            <div className="flex gap-3 mb-1">
-              {/* Departure Time */}
-              <div
-                className="whitespace-nowrap time-info"
-                style={{
-                  backgroundColor: "#fff",
-                  color: "#000",
-                  padding: "2px 6px",
-                  borderRadius: "4px",
-                  fontWeight: "500",
-                  display: "flex",
-                  alignItems: "center",
-                  fontSize: "11px",
-                }}
-              >
-                <Iconify
-                  icon="mdi:logout"
-                  width="10px"
-                  style={{ marginRight: "2px" }}
-                />
-                <span>
-                  {new Date(
-                    arg.event._def.extendedProps.departureDate
-                  ).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
-              </div>
-              {arg.event._def.extendedProps.Balance &&
-                arg.event._def.extendedProps.Balance !== '0' &&
-                Number(arg.event._def.extendedProps.Balance) > 0 ? (
-                <div
-                  className="balance-info"
-                  style={{
-                    backgroundColor: "#fff",
-                    color: "#000",
-                    padding: "2px 6px",
-                    borderRadius: "4px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {Number(
-                    arg.event._def.extendedProps.Balance
-                  ).toLocaleString()}
-                  ₮
+                  <span className="flex items-center text-white/70">
+                    <Iconify
+                      icon="fluent:food-16-regular"
+                      width="14px"
+                      className="mr-1 align-text-bottom"
+                    />
+                    Breakfast:
+                  </span>
+                  <span
+                    className={`font-medium ${arg.event._def.extendedProps.Breakfast
+                        ? "text-green-400"
+                        : "text-orange-400"
+                      }`}
+                  >
+                    {arg.event._def.extendedProps.Breakfast ? "Yes" : "No"}
+                  </span>
                 </div>
-              ) : null}
-            </div>
-          </div>
-
-          {arg.event._def.extendedProps.statusColor !=
-            "rgba(255, 220, 40, 0.15)" ? (
-            <Iconify
-              icon="lsicon:drag-filled"
-              width="14px"
-              style={{ marginLeft: "auto", marginTop: "2px" }}
-            />
-          ) : (
-            ""
-          )}
-        </div>
-      </Tooltip>
+              </div>
+            )}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     );
   };
 
@@ -1505,17 +1402,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               </Button>
               {/* Hover Toggle */}
               <div className="flex items-center space-x-2 bg-white border border-[#804FE6] rounded-full px-3 py-2 shadow-sm cursor-pointer" onClick={() => setIsHoverEnabled(!isHoverEnabled)}>
-                <Checkbox
+                <Switch
                   checked={isHoverEnabled}
-                  onChange={handleHoverChange}
-                  sx={{
-                    padding: "0px",
-                    color: "#804fe6",
-                    "&.Mui-checked": {
-                      color: "#804fe6",
-                    },
-                    "& .MuiSvgIcon-root": { fontSize: 16 },
-                  }}
+                  onCheckedChange={setIsHoverEnabled}
+                  className="data-[state=checked]:bg-[#804fe6]"
                 />
                 <span className="text-sm font-semibold text-black">Hover</span>
               </div>
@@ -1556,12 +1446,24 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
             {/* Status Legend */}
             <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
-              <Tooltip
-                open={tooltipOpen}
-                onClose={handleTooltipClose}
-                onOpen={handleTooltipOpen}
-                title={
-                  <div className="p-4 max-w-xs">
+              <TooltipProvider>
+                <Tooltip open={tooltipOpen}>
+                  <TooltipTrigger asChild>
+                    <span
+                      className="bg-[#804FE6] hover:bg-[#6B3BC0] text-white border-[#804FE6] rounded-full px-2 py-2 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTooltipOpen(!tooltipOpen);
+                      }}
+                    >
+                      <Iconify
+                        icon="eva:info-outline"
+                        width={20}
+                        height={20}
+                      />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="left" className="bg-white text-black border border-gray-200 shadow-lg rounded-xl p-4 max-w-xs">
                     <h4 className="font-semibold text-sm mb-3 pb-2 border-b border-gray-200">
                       {intl.formatMessage({ id: "TextRoomStatus" })}
                     </h4>
@@ -1583,46 +1485,20 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         </React.Fragment>
                       ))}
                     </div>
-                  </div>
-                }
-                arrow
-                placement="left-end"
-                componentsProps={{
-                  tooltip: {
-                    sx: {
-                      bgcolor: "white",
-                      color: "black",
-                      "& .MuiTooltip-arrow": {
-                        color: "white",
-                      },
-                      boxShadow: "0 8px 16px 0 rgba(0,0,0,0.15)",
-                      borderRadius: "12px",
-                      border: "1px solid #e5e7eb",
-                    },
-                  },
-                }}
-              >
-                <span
-                  className="bg-[#804FE6] hover:bg-[#6B3BC0] text-white border-[#804FE6] rounded-full px-2 py-2"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setTooltipOpen(!tooltipOpen);
-                  }}
-                >
-                  <Iconify
-                    icon="eva:info-outline"
-                    width={20}
-                    height={20}
-                  />
-                </span>
-              </Tooltip>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               {/* View Period Controls */}
               <div className="bg-[#804FE6] rounded-full outline outline-[#804FE6] outline-2 shadow-md w-full sm:w-auto overflow-hidden">
                 <RadioGroup
-                  row
-                  value={dayCount}
-                  onChange={handleChange}
-                  defaultValue={window.innerWidth < 950 ? 7 : 15}
+                  value={dayCount.toString()}
+                  onValueChange={(value) => {
+                    if (value === "hourly") {
+                      handleChange({ target: { value: "hourly" } } as any);
+                    } else {
+                      handleChange({ target: { value: parseInt(value) } } as any);
+                    }
+                  }}
                   className="flex gap-0.5 sm:gap-1 flex-nowrap"
                 >
                   {[
@@ -1631,35 +1507,25 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                     { value: 15, label: "15 хоног" },
                     { value: 30, label: "30 хоног" },
                   ].map((period) => (
-                    <FormControlLabel
-                      key={period.value}
-                      value={period.value}
-                      control={
-                        <Radio
-                          sx={{
-                            display: "none",
-                          }}
-                        />
-                      }
-                      label={period.label}
-                      className={`
-                      px-2 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap
-                      ${(dayCount === period.value) || (period.value === "hourly" && currentView === "resourceTimelineDay")
-                          ? "bg-white text-[#804FE6] shadow-sm"
-                          : "text-white hover:bg-white/10"
-                        }
-                    `}
-                      sx={{
-                        margin: 0,
-                        minWidth: 'auto',
-                        "& .MuiTypography-root": {
-                          fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                          fontWeight: 500,
-                          whiteSpace: "nowrap",
-                          padding: 0,
-                        },
-                      }}
-                    />
+                    <div key={period.value} className="flex items-center">
+                      <RadioGroupItem
+                        value={period.value.toString()}
+                        id={`period-${period.value}`}
+                        className="sr-only"
+                      />
+                      <label
+                        htmlFor={`period-${period.value}`}
+                        className={`
+                          px-2 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap
+                          ${(dayCount === period.value) || (period.value === "hourly" && currentView === "resourceTimelineDay")
+                              ? "bg-white text-[#804FE6] shadow-sm"
+                              : "text-white hover:bg-white/10"
+                            }
+                        `}
+                      >
+                        {period.label}
+                      </label>
+                    </div>
                   ))}
                 </RadioGroup>
               </div>
@@ -1867,17 +1733,143 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                           </div>
                         </div>
                       ) : (
-                        <Tooltip
-                          title={
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection:
-                                  "column",
-                                gap: "8px",
-                                padding: "4px",
-                              }}
-                            >
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div
+                                style={{
+                                  fontSize:
+                                    dayCount > 7
+                                      ? "14px"
+                                      : "13px",
+                                  padding:
+                                    dayCount > 7
+                                      ? "2px"
+                                      : "4px",
+                                  backgroundColor:
+                                    isWeekend
+                                      ? "#fff9c4"
+                                      : "#f8f9fa",
+                                  borderRadius: "4px",
+                                  height: "100%",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <div
+                                  className="flex gap-5"
+                                  style={{
+                                    flexDirection:
+                                      dayCount > 7
+                                        ? "column"
+                                        : "row",
+                                    justifyContent:
+                                      dayCount ===
+                                        7
+                                        ? "space-between"
+                                        : "",
+                                    alignContent:
+                                      "center",
+                                    alignItems:
+                                      dayCount ===
+                                        7
+                                        ? "center"
+                                        : "",
+                                    gap:
+                                      dayCount > 7
+                                        ? "2px"
+                                        : "5px",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      fontWeight:
+                                        "500",
+                                      textAlign:
+                                        "center",
+                                      color: isWeekend
+                                        ? "#ff9800"
+                                        : "#4a6cf7",
+                                      textTransform:
+                                        "uppercase",
+                                      fontSize:
+                                        dayCount >
+                                          7
+                                          ? dayCount >
+                                            15
+                                            ? "10px"
+                                            : "14px"
+                                          : "16px",
+                                      whiteSpace:
+                                        "nowrap",
+                                      overflow:
+                                        "hidden",
+                                      textOverflow:
+                                        "ellipsis",
+                                      maxWidth:
+                                        dayCount >
+                                          7
+                                          ? "100%"
+                                          : "auto",
+                                      minWidth:
+                                        dayCount >
+                                          7
+                                          ? "100%"
+                                          : "auto",
+                                      width: "100%",
+                                      display:
+                                        "flex",
+                                      justifyContent:
+                                        dayCount ===
+                                          30 ||
+                                          dayCount ===
+                                          15
+                                          ? "center"
+                                          : "",
+                                      alignItems:
+                                        "center",
+                                    }}
+                                  >
+                                    {
+                                      arg.date
+                                        .toString()
+                                        .split(
+                                          " "
+                                        )[0]
+                                    }
+                                  </div>
+
+                                  <div
+                                    style={{
+                                      fontWeight:
+                                        "bold",
+                                      textAlign:
+                                        "center",
+                                      fontSize:
+                                        dayCount >
+                                          7
+                                          ? dayCount >
+                                            15
+                                            ? "12px"
+                                            : "14px"
+                                          : "18px",
+                                      color: "#212529",
+                                    }}
+                                  >
+                                    {arg.date.getDate()}
+                                  </div>
+                                </div>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-white text-black border border-gray-200 shadow-lg rounded-xl p-4 max-w-xs">
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection:
+                                    "column",
+                                  gap: "8px",
+                                  padding: "4px",
+                                }}
+                              >
                               {/* Occupancy Percentage */}
                               <div
                                 style={{
@@ -2458,132 +2450,10 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 }
                                 return null;
                               })()}
-                            </div>
-                          }
-                        >
-                          <div
-                            style={{
-                              fontSize:
-                                dayCount > 7
-                                  ? "14px"
-                                  : "13px",
-                              padding:
-                                dayCount > 7
-                                  ? "2px"
-                                  : "4px",
-                              backgroundColor:
-                                isWeekend
-                                  ? "#fff9c4"
-                                  : "#f8f9fa",
-                              borderRadius: "4px",
-                              height: "100%",
-                            }}
-                          >
-                            <div
-                              className="flex gap-5"
-                              style={{
-                                flexDirection:
-                                  dayCount > 7
-                                    ? "column"
-                                    : "row",
-                                justifyContent:
-                                  dayCount ===
-                                    7
-                                    ? "space-between"
-                                    : "",
-                                alignContent:
-                                  "center",
-                                alignItems:
-                                  dayCount ===
-                                    7
-                                    ? "center"
-                                    : "",
-                                gap:
-                                  dayCount > 7
-                                    ? "2px"
-                                    : "5px",
-                              }}
-                            >
-                              <div
-                                style={{
-                                  fontWeight:
-                                    "500",
-                                  textAlign:
-                                    "center",
-                                  color: isWeekend
-                                    ? "#ff9800"
-                                    : "#4a6cf7", // Different color for weekends
-                                  textTransform:
-                                    "uppercase",
-                                  fontSize:
-                                    dayCount >
-                                      7
-                                      ? dayCount >
-                                        15
-                                        ? "10px"
-                                        : "14px"
-                                      : "16px",
-                                  whiteSpace:
-                                    "nowrap",
-                                  overflow:
-                                    "hidden",
-                                  textOverflow:
-                                    "ellipsis",
-                                  maxWidth:
-                                    dayCount >
-                                      7
-                                      ? "100%"
-                                      : "auto",
-                                  minWidth:
-                                    dayCount >
-                                      7
-                                      ? "100%"
-                                      : "auto",
-                                  width: "100%",
-                                  display:
-                                    "flex",
-                                  justifyContent:
-                                    dayCount ===
-                                      30 ||
-                                      dayCount ===
-                                      15
-                                      ? "center"
-                                      : "",
-                                  alignItems:
-                                    "center",
-                                }}
-                              >
-                                {
-                                  arg.date
-                                    .toString()
-                                    .split(
-                                      " "
-                                    )[0]
-                                }
-                              </div>
-
-                              <div
-                                style={{
-                                  fontWeight:
-                                    "bold",
-                                  textAlign:
-                                    "center",
-                                  fontSize:
-                                    dayCount >
-                                      7
-                                      ? dayCount >
-                                        15
-                                        ? "12px"
-                                        : "14px"
-                                      : "18px",
-                                  color: "#212529",
-                                }}
-                              >
-                                {arg.date.getDate()}
-                              </div>
-                            </div>
-                          </div>
-                        </Tooltip>
+                               </div>
+                             </TooltipContent>
+                           </Tooltip>
+                         </TooltipProvider>
                       );
                     },
                   },
@@ -2700,7 +2570,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
             )}
         </div>
 
-        {/* Search Modal moved to dashboard navbar */}
       </>
     )
   );

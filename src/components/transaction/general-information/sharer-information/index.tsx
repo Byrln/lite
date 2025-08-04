@@ -14,6 +14,7 @@ import { useAppState } from "lib/context/app";
 import GuestNewEdit from "components/front-office/guest-database/new-edit";
 import GuestDocuments from "components/common/custom-upload";
 import NewEdit from "./new-edit";
+import GroupIcon from '@mui/icons-material/Group';
 
 const SharerInformation = ({ TransactionID }: any) => {
   const { data, error } = SharerListSWR(TransactionID);
@@ -171,8 +172,20 @@ const SharerInformation = ({ TransactionID }: any) => {
 
   return (
     <Box>
-      <Box sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-        Хамтрагчийн мэдээлэл
+      <Box sx={{ display: "flex", gap: 2, alignItems: "center", fontWeight: "bold", marginBottom: "10px" }}>
+        <Box
+          sx={{
+            p: 1.5,
+            borderRadius: 2,
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <GroupIcon sx={{ fontSize: 20 }} />
+        </Box>  Хамтрагчийн мэдээлэл
       </Box>
       {/* Debug indicator */}
       {/* <Box sx={{ backgroundColor: 'yellow', padding: 1, marginBottom: 1, fontSize: '12px' }}>

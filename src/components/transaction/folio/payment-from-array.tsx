@@ -8,7 +8,7 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import * as React from "react";
 
-import { Typography } from "@mui/material";
+import { Typography, Paper, Card, CardContent, FormControlLabel, Chip, IconButton } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import mn from "date-fns/locale/mn";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -16,6 +16,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+import SaveIcon from "@mui/icons-material/Save";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import EditIcon from "@mui/icons-material/Edit";
+import PaymentIcon from "@mui/icons-material/Payment";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 import { FrontOfficeAPI } from "lib/api/front-office";
 import axios from "lib/utils/axios";
@@ -36,276 +42,244 @@ import FolioPayment from "./payment";
 import { CurrenctAPI } from "lib/api/currency";
 
 import PaymentCustomTableData from "./payment-custom-table";
+import { useIntl } from "react-intl";
 
 export default function PaymentFormArray({
-    FolioID,
-    TransactionID,
-    handleModal,
-    Amount,
+  FolioID,
+  TransactionID,
+  handleModal,
+  Amount,
 }: any) {
-    const [workingDate, setWorkingDate] = useState(null);
-    const [newGroupCount, setNewGroupCount]: any = useState(1);
+  const intl = useIntl();
+  const [workingDate, setWorkingDate] = useState(null);
+  const [newGroupCount, setNewGroupCount]: any = useState(1);
 
-    useEffect(() => {
-        fetchDatas();
-    }, []);
+  useEffect(() => {
+    fetchDatas();
+  }, []);
 
-    const fetchDatas = async () => {
-        let response = await FrontOfficeAPI.workingDate();
-        if (response.status == 200) {
-            setWorkingDate(response.workingDate[0].WorkingDate);
-        }
-    };
+  const fetchDatas = async () => {
+    let response = await FrontOfficeAPI.workingDate();
+    if (response.status == 200) {
+      setWorkingDate(response.workingDate[0].WorkingDate);
+    }
+  };
 
-    const [setedDate, setSetedDate] = useState<Date>(
-        workingDate ? workingDate : new Date()
-    );
+  const [setedDate, setSetedDate] = useState<Date>(
+    workingDate ? workingDate : new Date()
+  );
 
-    const [enableDate, setEnableDate] = useState(true);
+  const [enableDate, setEnableDate] = useState(true);
 
-    const [chekedTrue, setChekedTrue] = useState(false);
+  const [chekedTrue, setChekedTrue] = useState(false);
 
-    const handleChekbox = () => {
-        if (chekedTrue == true) {
-            setChekedTrue(false);
-            setEnableDate(true);
-        } else {
-            setChekedTrue(true);
-            setEnableDate(false);
-        }
-    };
+  const handleChekbox = () => {
+    if (chekedTrue == true) {
+      setChekedTrue(false);
+      setEnableDate(true);
+    } else {
+      setChekedTrue(true);
+      setEnableDate(false);
+    }
+  };
 
-    const FullDetail = Yup.object().shape({
-        GroupID: Yup.string().notRequired(),
-        ItemID: Yup.string().notRequired(),
-        Amount: Yup.string().notRequired(),
-        Quantity: Yup.string().notRequired(),
-        Description: Yup.string().notRequired(),
-        PayCurrencyID: Yup.string().notRequired(),
-        ExchangeRate: Yup.string().notRequired(),
-    });
+  const FullDetail = Yup.object().shape({
+    GroupID: Yup.string().notRequired(),
+    ItemID: Yup.string().notRequired(),
+    Amount: Yup.string().notRequired(),
+    Quantity: Yup.string().notRequired(),
+    Description: Yup.string().notRequired(),
+    PayCurrencyID: Yup.string().notRequired(),
+    ExchangeRate: Yup.string().notRequired(),
+  });
 
-    const {
-        register,
-        reset,
-        resetField,
-        handleSubmit,
-        control,
-        formState: { errors },
-    } = useForm({
-        defaultValues: {
-            payment: [
-                {
-                    GroupID: null,
-                    ItemID: null,
-                    Amount: Amount ? Amount : null,
-                    Quantity: 1,
-                    Description: " ",
-                    PayCurrencyID: null,
-                },
-            ],
+  const {
+    register,
+    reset,
+    resetField,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      payment: [
+        {
+          GroupID: null,
+          ItemID: null,
+          Amount: Amount ? Amount : null,
+          Quantity: 1,
+          Description: " ",
+          PayCurrencyID: null,
         },
-        resolver: yupResolver(FullDetail),
-    });
+      ],
+    },
+    resolver: yupResolver(FullDetail),
+  });
 
-    const { fields, append, prepend, remove } = useFieldArray({
-        control,
-        name: "payment",
-    });
+  const { fields, append, prepend, remove } = useFieldArray({
+    control,
+    name: "payment",
+  });
 
-    const onSubmit = async (data: any) => {
-        for (const index in data.payment) {
-            const exchangeRate = await CurrenctAPI.exchangeRate({
-                CurrencyID: data.payment[index].PayCurrencyID,
-            });
-            data.payment[index].TransactionID = TransactionID;
-            data.payment[index].FolioID = FolioID;
-            data.payment[index].TypeID = 2;
+  const onSubmit = async (data: any) => {
+    for (const index in data.payment) {
+      const exchangeRate = await CurrenctAPI.exchangeRate({
+        CurrencyID: data.payment[index].PayCurrencyID,
+      });
+      data.payment[index].TransactionID = TransactionID;
+      data.payment[index].FolioID = FolioID;
+      data.payment[index].TypeID = 2;
 
-            await FolioAPI?.new(data.payment[index]);
-        }
-        await mutate(`/api/Folio/Items`);
-        handleModal();
-    };
+      await FolioAPI?.new(data.payment[index]);
+    }
+    await mutate(`/api/Folio/Items`);
+    handleModal();
+  };
 
-    const CustomWidthTooltip = styled(
-        ({ className, ...props }: TooltipProps) => (
-            <Tooltip {...props} classes={{ popper: className }} />
-        )
-    )({
-        [`& .${tooltipClasses.tooltip}`]: {
-            maxWidth: 500,
-            maxHeight: 400,
-            background: "white",
-            border: "rgba(0, 0, 0, .2) 1px solid",
-            overflow: "scroll",
-        },
-    });
+  const CustomWidthTooltip = styled(
+    ({ className, ...props }: TooltipProps) => (
+      <Tooltip {...props} classes={{ popper: className }} />
+    )
+  )({
+    [`& .${tooltipClasses.tooltip}`]: {
+      maxWidth: 500,
+      maxHeight: 400,
+      background: "white",
+      border: "rgba(0, 0, 0, .2) 1px solid",
+      overflow: "scroll",
+    },
+  });
 
-    return (
-        <div>
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: "100%",
-                    flexWrap: "wrap",
-                    flexDirection: "row-reverse",
-                }}
-                className="mb-1"
-            >
-                <CustomWidthTooltip
-                    title={
-                        <React.Fragment>
-                            <div>
-                                <PaymentCustomTableData FolioID={FolioID} />
-                            </div>
-                        </React.Fragment>
-                    }
-                >
-                    <Button>Нийт төлбөр</Button>
-                </CustomWidthTooltip>
+  return (
+    <Paper>
+      {/* Header Section */}
+      <Box sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+        <PaymentIcon color="primary" />
+        <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
+          Төлбөр нэмэх
+        </Typography>
+      </Box>
+
+      <LocalizationProvider
+        //@ts-ignore
+        dateAdapter={AdapterDateFns}
+        adapterLocale={mn}
+      >
+        {/* Date Selection Section */}
+        <Card sx={{ mb: 1, p: 2 }}>
+          <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+              <CalendarTodayIcon color="action" fontSize="small" />
+              <Typography variant="subtitle1" fontWeight={500}>
+                Огноо тохиргоо
+              </Typography>
             </Box>
-            <LocalizationProvider
-                //@ts-ignore
-                dateAdapter={AdapterDateFns}
-                adapterLocale={mn}
-            >
-                <Grid container spacing={1}>
-                    <Grid item xs={12} md={12} lg={12} className="mb-3">
-                        <Grid container spacing={1}>
-                            <Grid item xs={12} md={6} lg={6}>
-                                <Typography fontSize="14px" fontWeight={400}>
-                                    Date
-                                </Typography>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={12} md={8}>
+                <DateTimePicker
+                  disabled={enableDate}
+                  value={setedDate}
+                  onChange={(newValue: any) => setSetedDate(newValue)}
+                  renderInput={(params) => (
+                    <TextField
+                      size="small"
+                      {...params}
+                      fullWidth
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: 1,
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={chekedTrue}
+                      onChange={handleChekbox}
+                      size="small"
+                      icon={<EditIcon fontSize="small" />}
+                      checkedIcon={<EditIcon fontSize="small" color="primary" />}
+                    />
+                  }
+                  label={
+                    <Typography variant="body2" fontWeight={400}>
+                      Огноо өөрчлөх
+                    </Typography>
+                  }
+                />
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
 
-                                <DateTimePicker
-                                    disabled={enableDate}
-                                    value={setedDate}
-                                    onChange={(newValue: any) =>
-                                        setSetedDate(newValue)
-                                    }
-                                    renderInput={(params) => (
-                                        <TextField
-                                            size="small"
-                                            {...params}
-                                            sx={{
-                                                fontSize: "16px",
-                                                fontWeight: 400,
-                                                width: "100%",
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={6} lg={6}>
-                                <div
-                                    style={{ display: "flex" }}
-                                    className="mt-3"
-                                >
-                                    <Checkbox
-                                        checked={chekedTrue}
-                                        onChange={handleChekbox}
-                                        size="small"
-                                        sx={{
-                                            "& .MuiSvgIcon-root": {
-                                                fontSize: 16,
-                                            },
-                                        }}
-                                    />
-                                    <Typography
-                                        fontSize="12px"
-                                        className="mt-2"
-                                        fontWeight={400}
-                                    >
-                                        Огноо өөрчлөх
-                                    </Typography>
-                                </div>
-                            </Grid>
-                        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={12} lg={12} className="mb-3">
 
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <Box overflow="auto">
-                                {fields.map((field, index) => (
-                                    <>
-                                        <FolioPayment
-                                            id={index}
-                                            register={register}
-                                            remove={remove}
-                                            FolioID={FolioID}
-                                            TransactionID={TransactionID}
-                                            resetField={resetField}
-                                        />
-                                    </>
-                                ))}
-                            </Box>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {/* Payment Items Section */}
+              <Card sx={{ mb: 1 }}>
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                    <AccountBalanceWalletIcon color="primary" fontSize="small" />
+                    <Typography variant="subtitle1" fontWeight={500}>
+                      Төлбөрийн мэдээлэл
+                    </Typography>
+                  </Box>
+                  <Box overflow="auto">
+                    {fields.map((field, index) => (
+                      <Card
+                        key={field.id}
+                        sx={{
+                          boxShadow: 0
+                        }}
+                      >
+                        <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                          <FolioPayment
+                            id={index}
+                            register={register}
+                            remove={remove}
+                            FolioID={FolioID}
+                            TransactionID={TransactionID}
+                            resetField={resetField}
+                          />
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </Box>
+                </CardContent>
+              </Card>
 
-                            {/* <Stack
-                                    direction="row"
-                                    justifyContent="flex-end"
-                                    alignItems="flex-end"
-                                    spacing={0}
-                                >
-                                    <TextField
-                                        type="number"
-                                        margin="dense"
-                                        size="small"
-                                        style={{
-                                            width: "40px",
-                                        }}
-                                        value={newGroupCount}
-                                        onChange={(e: any) => {
-                                            setNewGroupCount(e.target.value);
-                                        }}
-                                    />
-
-                                    <Button
-                                        onClick={() => {
-                                            // append({
-                                            //     GroupID: null,
-                                            //     ItemID: null,
-                                            //     Amount: null,
-                                            //     Quantity: 1,
-                                            //     Description: " ",
-                                            // });
-                                            for (
-                                                let i = 0;
-                                                i < newGroupCount;
-                                                i++
-                                            ) {
-                                                append({
-                                                    GroupID: null,
-                                                    ItemID: null,
-                                                    Amount: null,
-                                                    Quantity: 1,
-                                                    Description: " ",
-                                                    PayCurrencyID: null,
-                                                });
-                                            }
-                                            setNewGroupCount(1);
-                                        }}
-                                    >
-                                        <Typography
-                                            fontSize={20}
-                                            fontWeight={700}
-                                        >
-                                            +
-                                        </Typography>
-                                    </Button>
-                                </Stack> */}
-
-                            <Stack alignItems="flex-end" mt={1}>
-                                <Button variant="contained" type="submit">
-                                    Хадгалах
-                                </Button>
-                            </Stack>
-                        </form>
-                    </Grid>
-                    {/* <Grid item xs={12} md={12} lg={12}>
+              {/* Actions Section */}
+              <Stack direction="row" spacing={2} justifyContent="flex-end">
+                <Tooltip title="Төлбөр хадгалах">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    size="large"
+                    startIcon={<SaveIcon />}
+                    sx={{
+                      minWidth: 140,
+                      borderRadius: 2,
+                      textTransform: 'none',
+                      fontWeight: 600,
+                      py: 1.5,
+                    }}
+                  >
+                    Хадгалах
+                  </Button>
+                </Tooltip>
+              </Stack>
+            </form>
+          </Grid>
+          {/* <Grid item xs={12} md={12} lg={12}>
                         <PaymentCustomTableData FolioID={FolioID} />
                     </Grid> */}
-                </Grid>
-            </LocalizationProvider>
-        </div>
-    );
+        </Grid>
+      </LocalizationProvider>
+    </Paper>
+  );
 }
