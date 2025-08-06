@@ -81,4 +81,16 @@ export const BankAccountAPI = {
             status,
         };
     },
+
+    updateStatus: async (id: any, status: boolean) => {
+        const { data, status: responseStatus } = await axios.post(`${urlPrefix}/UpdateStatus`, {
+            BankAccountID: id,
+            Status: status,
+        });
+
+        return {
+            data,
+            status: responseStatus,
+        };
+    },
 };

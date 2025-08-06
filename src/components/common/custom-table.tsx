@@ -66,6 +66,7 @@ const CustomTable = ({
   functionAfterSubmit,
   customHeight,
   modalsize = "small",
+  iconSelector,
 }: any) => {
   const intl = useIntl();
   const [state, dispatch]: any = useAppState();
@@ -419,6 +420,7 @@ const CustomTable = ({
                 })}
               </Button>
             )}
+            {iconSelector && iconSelector}
             {hasPrint && (
               <Button
                 variant="outlined"
@@ -446,7 +448,7 @@ const CustomTable = ({
             )}
             {hasDateRangePicker && (
               <DateRangePicker
-                className="rounded-lg text-primary bg-transparent hover:bg-purple-100 border-2 border-primary-light"
+                className="rounded-lg text-primary bg-transparent hover:bg-purple-100 border-1.5 border-primary-light"
                 startDate={dateRange.startDate}
                 endDate={dateRange.endDate}
                 onStartDateChange={handleStartDateChange}

@@ -1,4 +1,5 @@
 import { Box, Button, Typography, Menu, MenuItem, Card, CardContent, Collapse, IconButton, Stack, TextField, Select, FormControl, Checkbox as MuiCheckbox, FormControlLabel } from "@mui/material";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState, useEffect, useContext } from "react";
 import { format } from "date-fns";
 import { Checkbox } from "@mui/material";
@@ -232,105 +233,103 @@ const RoomCharge = ({ TransactionID }: any) => {
       {/* Main Content Container */}
       <Box sx={{ display: 'flex', gap: 2 }}>
         {/* Left Panel - Always Visible (50% width) */}
-        <Box sx={{ width: '50%' }}>
-            <Box sx={{ p: 2, height: 'fit-content' }}>
-              {/* Action Buttons */}
-              <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    setCutOpen(!cutOpen);
-                    setEditOpen(false);
-                    setDeleteOpen(false);
-                    setBillToOpen(false);
-                  }}
-                >
-                  {intl.formatMessage({ id: 'TextFolioCut' })}
-                </Button>
+        <Box sx={{ width: '30%' }}>
+          <Box sx={{ height: 'fit-content' }}>
+            {/* Action Buttons */}
+            <Box sx={{ mb: 1, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setCutOpen(!cutOpen);
+                  setEditOpen(false);
+                  setDeleteOpen(false);
+                  setBillToOpen(false);
+                }}
+              >
+                {intl.formatMessage({ id: 'TextFolioCut' })}
+              </Button>
 
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    setBillToOpen(!billToOpen);
-                    setEditOpen(false);
-                    setDeleteOpen(false);
-                    setCutOpen(false);
-                  }}
-                >
-                  {intl.formatMessage({ id: 'TextFolioBillTo' })}
-                </Button>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setBillToOpen(!billToOpen);
+                  setEditOpen(false);
+                  setDeleteOpen(false);
+                  setCutOpen(false);
+                }}
+              >
+                {intl.formatMessage({ id: 'TextFolioBillTo' })}
+              </Button>
 
-                <Box sx={{ width: "30%", minWidth: '200px' }}>
-                  <FolioSelect
-                    register={register}
-                    errors={errors}
-                    TransactionID={TransactionID}
-                    resetField={resetField}
-                    onChange={setFolioID}
-                  />
-                </Box>
-              </Box>
-
-              {/* New Edit Component in Side Panel - Always Visible */}
-              <Box sx={{ mb: 2 }}>
-                <NewEdit
+              <Box sx={{ width: "30%", minWidth: '200px' }}>
+                <FolioSelect
+                  register={register}
+                  errors={errors}
                   TransactionID={TransactionID}
-                  FolioID={FolioID}
-                  handleModal={() => setNewEditOpen(false)}
+                  resetField={resetField}
+                  onChange={setFolioID}
                 />
               </Box>
-
-              {/* Edit Component in Side Panel */}
-              {editOpen && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="subtitle1" sx={{ mb: 1 }}>Edit Transaction</Typography>
-                  <EditTransactionInline
-                    selectedRow={selectedRow}
-                    TransactionID={TransactionID}
-                    onClose={() => setEditOpen(false)}
-                  />
-                </Box>
-              )}
-
-              {/* Delete Component in Side Panel */}
-              {deleteOpen && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="subtitle1" sx={{ mb: 1 }}>Delete Transaction</Typography>
-                  <DeleteTransactionInline
-                    TransactionID={TransactionID}
-                    onClose={() => setDeleteOpen(false)}
-                  />
-                </Box>
-              )}
-
-              {/* Cut Component in Side Panel */}
-              {cutOpen && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="subtitle1" sx={{ mb: 1 }}>Cut Transaction</Typography>
-                  <CutTransactionInline
-                    TransactionID={TransactionID}
-                    FolioID={FolioID}
-                    onClose={() => setCutOpen(false)}
-                  />
-                </Box>
-              )}
-
-              {/* Bill To Component in Side Panel */}
-              {billToOpen && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="subtitle1" sx={{ mb: 1 }}>Bill To</Typography>
-                  <BillToTransactionInline
-                    TransactionID={TransactionID}
-                    FolioID={FolioID}
-                    onClose={() => setBillToOpen(false)}
-                  />
-                </Box>
-              )}
             </Box>
+            {/* Cut Component in Side Panel */}
+            {cutOpen && (
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle1" sx={{ mb: 1 }}>Cut Transaction</Typography>
+                <CutTransactionInline
+                  TransactionID={TransactionID}
+                  FolioID={FolioID}
+                  onClose={() => setCutOpen(false)}
+                />
+              </Box>
+            )}
+
+            {/* Bill To Component in Side Panel */}
+            {billToOpen && (
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle1" sx={{ mb: 1 }}>Bill To</Typography>
+                <BillToTransactionInline
+                  TransactionID={TransactionID}
+                  FolioID={FolioID}
+                  onClose={() => setBillToOpen(false)}
+                />
+              </Box>
+            )}
+            {/* New Edit Component in Side Panel - Always Visible */}
+            <Box>
+              <NewEdit
+                TransactionID={TransactionID}
+                FolioID={FolioID}
+                handleModal={() => setNewEditOpen(false)}
+              />
+            </Box>
+
+            {/* Edit Component in Side Panel */}
+            {editOpen && (
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle1" sx={{ mb: 1 }}>Edit Transaction</Typography>
+                <EditTransactionInline
+                  selectedRow={selectedRow}
+                  TransactionID={TransactionID}
+                  onClose={() => setEditOpen(false)}
+                />
+              </Box>
+            )}
+
+            {/* Delete Component in Side Panel */}
+            {deleteOpen && (
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle1" sx={{ mb: 1 }}>Delete Transaction</Typography>
+                <DeleteTransactionInline
+                  TransactionID={TransactionID}
+                  onClose={() => setDeleteOpen(false)}
+                />
+              </Box>
+            )}
           </Box>
+        </Box>
 
         {/* Right Panel - Table (50% width) */}
-        <Box sx={{ width: '50%' }}>
+        <Box sx={{ width: '70%' }}>
           <CustomTable
             columns={columns}
             data={entity ? entity : {}}
@@ -466,7 +465,6 @@ const EditTransactionInline = ({ selectedRow, TransactionID, onClose }: any) => 
   if (!selectedRow) return null;
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={mn}>
       <Stack direction="column" spacing={2}>
         <Stack direction="row" spacing={3} alignItems="center">
           <Typography>Date</Typography>
@@ -532,7 +530,6 @@ const EditTransactionInline = ({ selectedRow, TransactionID, onClose }: any) => 
           <Button variant="outlined" onClick={onClose}>Cancel</Button>
         </Box>
       </Stack>
-    </LocalizationProvider>
   );
 };
 
@@ -611,7 +608,7 @@ const CutTransactionInline = ({ FolioID, onClose }: any) => {
 
   return (
     <form onSubmit={handleSubmit(customSubmit)}>
-      <Stack spacing={2}>
+      <Stack sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 2, backgroundColor: "#f5f5f5", borderRadius: 1, px: 2, py: 1 }}>
         <FormControlLabel
           control={
             <Controller
@@ -681,40 +678,46 @@ const BillToTransactionInline = ({ TransactionID, FolioID, onClose }: any) => {
 
   return (
     <form onSubmit={handleSubmit(customSubmit)}>
-      <Stack spacing={2}>
+      <Stack sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 2, backgroundColor: "#f5f5f5", borderRadius: 1, px: 2, py: 1 }}>
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <FormControlLabel
-            control={
-              <Controller
-                name="BillToGuest1"
-                control={control}
-                render={() => (
-                  <MuiCheckbox
-                    {...register("BillToGuest1")}
-                    onChange={handleBillToGuest}
-                    checked={entity}
+          <div className="bg-[#804FE6] rounded-full outline outline-[#804FE6] outline-2 shadow-md w-full sm:w-auto overflow-hidden">
+            <RadioGroup
+              value={entity ? "guest" : entity2 ? "customer" : ""}
+              onValueChange={(value) => {
+                if (value === "guest") {
+                  handleBillToGuest({ target: { checked: true } } as any);
+                } else if (value === "customer") {
+                  handleBillToGuest2({ target: { checked: true } } as any);
+                }
+              }}
+              className="flex gap-0.5 sm:gap-1 flex-nowrap"
+            >
+              {[
+                { value: "guest", label: "Bill to Guest" },
+                { value: "customer", label: "Bill to Customer" },
+              ].map((option) => (
+                <div key={option.value} className="flex items-center">
+                  <RadioGroupItem
+                    value={option.value}
+                    id={`bill-${option.value}`}
+                    className="sr-only"
                   />
-                )}
-              />
-            }
-            label="Bill to Guest"
-          />
-          <FormControlLabel
-            control={
-              <Controller
-                name="BillToGuest2"
-                control={control}
-                render={() => (
-                  <MuiCheckbox
-                    {...register("BillToGuest2")}
-                    onChange={handleBillToGuest2}
-                    checked={entity2}
-                  />
-                )}
-              />
-            }
-            label="Bill to Customer"
-          />
+                  <label
+                    htmlFor={`bill-${option.value}`}
+                    className={`
+                      px-2 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap
+                      ${(option.value === "guest" && entity) || (option.value === "customer" && entity2)
+                        ? "bg-white text-[#804FE6] shadow-sm"
+                        : "text-white hover:bg-white/10"
+                      }
+                    `}
+                  >
+                    {option.label}
+                  </label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
         </Box>
         {entity && (
           <GuestDefaultSelect

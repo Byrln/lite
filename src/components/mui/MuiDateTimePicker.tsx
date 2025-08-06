@@ -36,7 +36,8 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   fullWidth = true,
 }) => {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider // @ts-ignore
+      dateAdapter={AdapterDateFns}>
       <MuiDateTimePicker
         label={label}
         value={value}

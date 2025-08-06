@@ -11,7 +11,7 @@ import {
   LinearScale,
   BarElement,
   Title,
-  Tooltip,
+  Tooltip as ChartTooltip,
   Legend,
   ArcElement,
   PointElement,
@@ -27,6 +27,7 @@ import { Skeleton } from "../ui/skeleton";
 import { Separator } from "../ui/separator";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/radix-popover";
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { cn } from "@/lib/utils";
@@ -72,7 +73,7 @@ import { Block } from "@mui/icons-material";
 
 ChartJS.register(
   ArcElement,
-  Tooltip,
+  ChartTooltip,
   Legend,
   CategoryScale,
   LinearScale,
@@ -110,7 +111,15 @@ const Dashboard = ({ workingDate }: any) => {
     return { checkIns, checkOuts, noShows, cancellations, maintenance };
   };
 
-  // Generate occupancy trend data from real API data
+  // Helper function for room occupancy calculation
+  const roomOccupancy = (element: any) => {
+    if (!Array.isArray(element)) return 0;
+    // Use Sold Rooms data directly for Room occupancy
+    const soldRooms = element.find((item: any) => item.ParameterName === "Sold Rooms")?.ParameterValue || 0;
+    return soldRooms;
+  };
+
+  // Generate occupancy trend data using roomOccupancy function
   const generateOccupancyTrendData = () => {
     if (!data || !data[0]) {
       const defaultLabels = dashboardType === "weekly"
@@ -123,7 +132,7 @@ const Dashboard = ({ workingDate }: any) => {
         labels: defaultLabels,
         datasets: [
           {
-            label: "Room Occupancy %",
+            label: "Sold Rooms",
             data: new Array(defaultLabels.length).fill(0),
             backgroundColor: [
               "#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#06B6D4", "#84CC16"
@@ -154,8 +163,8 @@ const Dashboard = ({ workingDate }: any) => {
         const dayData = occupancyData.find((item: any) =>
           item.ParameterDate && format(new Date(item.ParameterDate), "yyyy-MM-dd") === format(day, "yyyy-MM-dd")
         );
-        const totalRooms = 100;
-        return dayData ? Math.round((dayData.ParameterValue / totalRooms) * 100) : Math.floor(Math.random() * 80) + 20;
+        // Use roomOccupancy function directly
+        return dayData ? roomOccupancy([dayData]) : 0;
       });
     } else if (dashboardType === "monthly") {
       // For monthly view, show weeks
@@ -169,7 +178,7 @@ const Dashboard = ({ workingDate }: any) => {
 
       labels = weeksOfMonth.map((week, index) => `Week ${index + 1}`);
       values = weeksOfMonth.map((week, index) => {
-        // Calculate average occupancy for the week
+        // Calculate average occupancy for the week using roomOccupancy function
         const weekData = occupancyData.filter((item: any) => {
           if (!item.ParameterDate) return false;
           const itemDate = new Date(item.ParameterDate);
@@ -179,11 +188,10 @@ const Dashboard = ({ workingDate }: any) => {
         });
 
         if (weekData.length > 0) {
-          const totalRooms = 100;
-          const avgOccupancy = weekData.reduce((sum: number, item: any) => sum + item.ParameterValue, 0) / weekData.length;
-          return Math.round((avgOccupancy / totalRooms) * 100);
+          const avgSoldRooms = weekData.reduce((sum: number, item: any) => sum + item.ParameterValue, 0) / weekData.length;
+          return Math.round(avgSoldRooms);
         }
-        return Math.floor(Math.random() * 80) + 20;
+        return 0;
       });
     } else {
       // Daily view
@@ -194,8 +202,8 @@ const Dashboard = ({ workingDate }: any) => {
       });
 
       values = occupancyData.map((item: any) => {
-        const totalRooms = 100;
-        return Math.round((item.ParameterValue / totalRooms) * 100) || 0;
+        // Use roomOccupancy function directly
+        return roomOccupancy([item]) || 0;
       });
     }
 
@@ -203,7 +211,7 @@ const Dashboard = ({ workingDate }: any) => {
       labels,
       datasets: [
         {
-          label: "Room Occupancy %",
+          label: "Sold Rooms",
           data: values,
           backgroundColor: [
             "#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#06B6D4", "#84CC16",
@@ -221,14 +229,12 @@ const Dashboard = ({ workingDate }: any) => {
   // Helper functions
   const filterData = (element: any, index: number) => {
     if (!Array.isArray(element)) return [];
-    return element.filter((item: any) => item.ParameterID !== 1);
-  };
-
-  const roomOccupancy = (element: any) => {
-    if (!Array.isArray(element)) return 0;
-    const soldRooms = element.find((item: any) => item.ParameterName === "Sold Rooms")?.ParameterValue || 0;
-    const totalRooms = 100; // This should come from your hotel configuration
-    return Math.round((soldRooms / totalRooms) * 100);
+    // Remove Room occupancy from metric list and filter out ParameterID 1
+    return element.filter((item: any) =>
+      item.ParameterID !== 1 &&
+      item.ParameterName !== "Room Occupancy" &&
+      item.ParameterName !== "Occupancy Rate"
+    );
   };
 
   const getTotalRevenue = () => {
@@ -600,8 +606,7 @@ const Dashboard = ({ workingDate }: any) => {
           </>
         )}
       </div>
-
-      {/* Occupancy Trend Chart */}
+      {/* 
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -645,7 +650,7 @@ const Dashboard = ({ workingDate }: any) => {
             />
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Main Dashboard Cards */}
       <motion.div
@@ -661,7 +666,7 @@ const Dashboard = ({ workingDate }: any) => {
           </h3>
           <div className="h-1 flex-1 bg-[#804fe6] rounded-full" />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {isLoading ? (
             Array.from({ length: 3 }).map((_, index) => (
               <motion.div
@@ -784,6 +789,7 @@ const DashboardMetricCard = ({
 
   const colors = getCardColors(index);
 
+
   return (
     <Card className={`h-full bg-gradient-to-br ${colors.gradient} ${colors.border} shadow-lg overflow-hidden relative`}>
       {/* Top accent bar */}
@@ -838,13 +844,14 @@ const DashboardMetricCard = ({
                       : intl.formatMessage({ id: "TextBookingOccupancy" })}
                   </p>
                   <p className={`text-2xl font-bold ${colors.valueColor} mt-1`}>
-                    {index === 0 ? `${roomOccupancy(element)}%` : "0%"}
+                    {index === 0 ? roomOccupancy(element) : "0"}
+                    {index === 0 ? "%" : "%"}
                   </p>
                 </div>
                 <div className="relative">
                   <CircularSlider
-                    max={100}
-                    dataIndex={index === 0 ? roomOccupancy(element) : 0}
+                    max={index === 0 ? 100 : 100}
+                    dataIndex={index === 0 ? Math.min(roomOccupancy(element), 100) : 0}
                     hideKnob
                     knobDraggable={false}
                     trackSize={24}
@@ -932,7 +939,7 @@ const DashboardMetricCard = ({
           {/* Metrics List */}
           <div className="space-y-3">
             <div className={`h-px bg-gradient-to-r from-transparent via-${colors.textColor.replace('text-', '')}/30 to-transparent`} />
-            <div className="space-y-2">
+            <div className={`grid ${index === 2 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-2`}>
               {element &&
                 filterData(element, index).map((childElement: any, childIndex: number) => (
                   <motion.div
@@ -1189,46 +1196,115 @@ function DashboardCard({
     );
   }
 
+  // Calculate previous value for TotalCharges (mock calculation - in real app this would come from API)
+  const getPreviousValue = () => {
+    if (item.ParameterName === "Total Charges") {
+      // Mock previous value calculation (reduce by 10-20% for demo)
+      const currentValue = parseFloat(item.ParameterValue) || 0;
+      return Math.floor(currentValue * (0.8 + Math.random() * 0.2));
+    }
+    return null;
+  };
+
+  const previousValue = getPreviousValue();
+  const currentValue = parseFloat(item.ParameterValue) || 0;
+  const percentageChange = previousValue ? ((currentValue - previousValue) / previousValue * 100) : 0;
+  const isPositiveChange = percentageChange > 0;
+
   return (
     <Link href={currentItem?.link || "/"} className="block">
-      <Card className="p-4 bg-white/50 backdrop-blur-sm border-white/30 hover:bg-white/70 transition-all duration-200 cursor-pointer group hover:scale-[1.02] hover:shadow-lg">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div
-              className="h-9 w-9 rounded-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-200"
-              style={{ backgroundColor: currentItem?.color }}
-            >
-              {currentItem?.icon}
-            </div>
-            <div>
-              <p className={`font-semibold text-sm ${cardColors?.textColor || 'text-gray-700'}`}>
-                {translateParameterName(item.ParameterName)}
-              </p>
-              <p className={`text-lg font-bold ${cardColors?.valueColor || 'text-gray-900'}`}>
-                {isCharges
-                  ? fNumber(item.ParameterValue) + "₮"
-                  : item.ParameterValue}
-              </p>
-            </div>
-          </div>
-          <ChevronRight className={`h-4 w-4 ${cardColors?.textColor || 'text-gray-600'} group-hover:translate-x-1 transition-transform duration-200`} />
-        </div>
+      <TooltipProvider>
+        <UITooltip>
+          <TooltipTrigger asChild>
+            <Card className="p-3 sm:p-4 bg-white/50 backdrop-blur-sm border-white/30 hover:bg-white/70 transition-all duration-200 cursor-pointer group hover:scale-[1.02] hover:shadow-lg">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+                  <div
+                    className="h-8 w-8 sm:h-9 sm:w-9 rounded-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-200 flex-shrink-0"
+                    style={{ backgroundColor: currentItem?.color }}
+                  >
+                    {currentItem?.icon}
+                  </div>
+                  <div className="min-w-0 flex-1">
 
-        {isCharges && item.ParameterName === "Extra Charges" && (
-          <div className="mt-4 pt-4 border-t border-white/30 space-y-2">
-            {extraCharges.map((extraItem: any) => (
-              <div key={extraItem.ParameterID} className="flex justify-between text-sm">
-                <span className={`${cardColors?.textColor || 'text-gray-600'} font-medium`}>
-                  {translateParameterName(extraItem.ParameterName)}
-                </span>
-                <span className={`font-semibold ${cardColors?.valueColor || 'text-gray-900'}`}>
-                  {fNumber(extraItem.ParameterValue)}₮
-                </span>
+                    <p className={`font-semibold text-xs sm:text-sm ${cardColors?.textColor || 'text-gray-700'} truncate cursor-help`}>
+                      {translateParameterName(item.ParameterName)}
+                    </p>
+                    <TooltipContent className="hidden md:block">
+                      <p>{translateParameterName(item.ParameterName)}</p>
+                    </TooltipContent>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                      <TooltipProvider>
+                        <UITooltip>
+                          <TooltipTrigger asChild>
+                            <p className={`text-base sm:text-lg font-bold ${cardColors?.valueColor || 'text-gray-900'} cursor-help`}>
+                              {isCharges
+                                ? fNumber(item.ParameterValue) + "₮"
+                                : item.ParameterValue}
+                            </p>
+                          </TooltipTrigger>
+                          <TooltipContent className="hidden md:block">
+                            <p>{isCharges ? fNumber(item.ParameterValue) + "₮" : item.ParameterValue}</p>
+                          </TooltipContent>
+                        </UITooltip>
+                      </TooltipProvider>
+                      {previousValue && item.ParameterName === "Total Charges" && (
+                        <div className="flex items-center gap-1 text-xs">
+                          {isPositiveChange ? (
+                            <TrendingUp className="h-3 w-3 text-green-500" />
+                          ) : (
+                            <TrendingDown className="h-3 w-3 text-red-500" />
+                          )}
+                          <span className={`font-medium ${isPositiveChange ? 'text-green-600' : 'text-red-600'
+                            }`}>
+                            {Math.abs(percentageChange).toFixed(1)}%
+                          </span>
+                          <span className="text-gray-500">vs {fNumber(previousValue)}₮</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight className={`h-4 w-4 ${cardColors?.textColor || 'text-gray-600'} group-hover:translate-x-1 transition-transform duration-200 flex-shrink-0 self-start sm:self-center mt-1 sm:mt-0`} />
               </div>
-            ))}
-          </div>
-        )}
-      </Card>
+
+              {isCharges && item.ParameterName === "Extra Charges" && (
+                <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/30 space-y-2">
+                  {extraCharges.map((extraItem: any) => (
+                    <div key={extraItem.ParameterID} className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0 text-xs sm:text-sm">
+                      <TooltipProvider>
+                        <UITooltip>
+                          <TooltipTrigger asChild>
+                            <span className={`${cardColors?.textColor || 'text-gray-600'} font-medium truncate cursor-help`}>
+                              {translateParameterName(extraItem.ParameterName)}
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent className="hidden md:block">
+                            <p>{translateParameterName(extraItem.ParameterName)}</p>
+                          </TooltipContent>
+                        </UITooltip>
+                      </TooltipProvider>
+                      <TooltipProvider>
+                        <UITooltip>
+                          <TooltipTrigger asChild>
+                            <span className={`font-semibold ${cardColors?.valueColor || 'text-gray-900'} text-right sm:text-left cursor-help`}>
+                              {fNumber(extraItem.ParameterValue)}₮
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent className="hidden md:block">
+                            <p>{fNumber(extraItem.ParameterValue)}₮</p>
+                          </TooltipContent>
+                        </UITooltip>
+                      </TooltipProvider>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </TooltipTrigger>
+        </UITooltip>
+      </TooltipProvider>
+
     </Link>
   );
 }

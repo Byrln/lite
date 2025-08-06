@@ -16,6 +16,8 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 
 import Iconify from "components/iconify/iconify";
@@ -31,6 +33,8 @@ export default function FolioCharge({
   remove,
   id,
   resetField,
+  append,
+  getValues,
 }: any) {
   const { chargegroup } = useGetChargeTypeGroupAPI();
 
@@ -61,6 +65,19 @@ export default function FolioCharge({
   };
 
   const [chekedTrue, setChekedTrue] = useState(true);
+
+  const handleDuplicate = () => {
+    if (append && getValues) {
+      const currentValues = getValues(`charge.${id}`);
+      append({
+        GroupID: currentValues.GroupID || null,
+        ItemID: currentValues.ItemID || null,
+        Amount: currentValues.Amount || null,
+        Quantity: currentValues.Quantity || 1,
+        Description: currentValues.Description || " ",
+      });
+    }
+  };
 
   const handleTypeChange = (event: SelectChangeEvent) => {
     setTypePick(event.target.value as string);
@@ -225,28 +242,55 @@ export default function FolioCharge({
             style={{
               display: "flex",
               alignItems: "end",
+              gap: "8px",
             }}
           >
-            <Stack
-              borderRadius="4px"
-              border={1.5}
-              width="35px"
-              height="35px"
-              borderColor="#e0e0e0"
-              justifyContent="center"
-              alignItems="center"
-              onClick={() => remove(id)}
-              sx={{
-                "&:hover": {
-                  borderColor: "#ff0303",
-                  backgroundColor: "#f2a2a2",
-                  color: "white",
-                },
-              }}
-            >
-              <Iconify icon="bi:trash3" height="16px" />
-            </Stack>
-          </Grid>{" "}
+            {/* Duplicate Button */}
+            <Tooltip title="Хуулах" arrow>
+              <IconButton
+                size="small"
+                onClick={handleDuplicate}
+                sx={{
+                  width: "35px",
+                  height: "35px",
+                  border: "1.5px solid #e0e0e0",
+                  borderRadius: "8px",
+                  color: "#1976d2",
+                  "&:hover": {
+                    borderColor: "#1976d2",
+                    backgroundColor: "#e3f2fd",
+                    transform: "translateY(-1px)",
+                  },
+                  transition: "all 0.2s ease-in-out",
+                }}
+              >
+                <ContentCopyIcon sx={{ fontSize: "16px" }} />
+              </IconButton>
+            </Tooltip>
+
+            {/* Delete Button */}
+            <Tooltip title="Устгах" arrow>
+              <IconButton
+                size="small"
+                onClick={() => remove(id)}
+                sx={{
+                  width: "35px",
+                  height: "35px",
+                  border: "1.5px solid #e0e0e0",
+                  borderRadius: "8px",
+                  color: "#d32f2f",
+                  "&:hover": {
+                    borderColor: "#d32f2f",
+                    backgroundColor: "#ffebee",
+                    transform: "translateY(-1px)",
+                  },
+                  transition: "all 0.2s ease-in-out",
+                }}
+              >
+                <DeleteIcon sx={{ fontSize: "16px" }} />
+              </IconButton>
+            </Tooltip>
+          </Grid>
         </Grid>
       </LocalizationProvider>
       <Divider className="mt-3" />

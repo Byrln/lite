@@ -147,7 +147,7 @@ const RatePage = () => {
         defaultMessage: 'Rate Management'
       })}
     >
-      <div className="space-y-2">
+      <div className="space-y-2 py-4 px-8">
         <Box sx={{ width: '100%' }}>
           {visibleFeatures.length > 0 ? (
             <>

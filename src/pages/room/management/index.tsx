@@ -115,7 +115,7 @@ const RoomManagementPage = () => {
         defaultMessage: 'Room Management'
       })}
     >
-      <div className="space-y-6">
+      <div className="space-y-6 py-4 px-8">
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={activeTab} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">

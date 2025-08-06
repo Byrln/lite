@@ -166,7 +166,7 @@ export default function PaymentFormArray({
         adapterLocale={mn}
       >
         {/* Date Selection Section */}
-        <Card sx={{ mb: 1, p: 2 }}>
+        <Card sx={{ mb: 1, px: 2 }}>
           <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
               <CalendarTodayIcon color="action" fontSize="small" />
@@ -223,7 +223,7 @@ export default function PaymentFormArray({
               {/* Payment Items Section */}
               <Card sx={{ mb: 1 }}>
                 <CardContent>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <AccountBalanceWalletIcon color="primary" fontSize="small" />
                     <Typography variant="subtitle1" fontWeight={500}>
                       Төлбөрийн мэдээлэл
@@ -254,7 +254,7 @@ export default function PaymentFormArray({
               </Card>
 
               {/* Actions Section */}
-              <Stack direction="row" spacing={2} justifyContent="flex-end">
+              <Stack direction="row" justifyContent="center">
                 <Tooltip title="Төлбөр хадгалах">
                   <Button
                     variant="contained"
@@ -262,7 +262,7 @@ export default function PaymentFormArray({
                     size="large"
                     startIcon={<SaveIcon />}
                     sx={{
-                      minWidth: 140,
+                      width: '100%',
                       borderRadius: 2,
                       textTransform: 'none',
                       fontWeight: 600,

@@ -174,7 +174,7 @@ const PaymentPage = () => {
         defaultMessage: 'Payment & Billing'
       })}
     >
-      <div className="space-y-6">
+      <div className="space-y-6 py-4 px-8">
         <Box sx={{ width: '100%' }}>
           {visibleFeatures.length > 0 ? (
             <>

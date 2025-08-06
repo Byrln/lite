@@ -113,62 +113,123 @@ const GeneralForm = () => {
     </Grid>
   ) : (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={1}>
-          <Grid item xs={6}>
-            <TextField
-              size="small"
-              fullWidth
-              multiline
-              rows={3}
-              id="DescriptionBooking"
-              label={intl.formatMessage({ id: "TextHotelDescription" })}
-              {...register("DescriptionBooking")}
-              margin="dense"
-              error={!!errors.DescriptionBooking?.message}
-              helperText={errors.DescriptionBooking?.message as string}
-            />
+      <Box>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Box sx={{ mb: 2 }}>
+                <TextField
+                  size="small"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  id="DescriptionBooking"
+                  label={intl.formatMessage({ id: "TextHotelDescription" })}
+                  {...register("DescriptionBooking")}
+                  margin="dense"
+                  error={!!errors.DescriptionBooking?.message}
+                  helperText={errors.DescriptionBooking?.message as string}
+                  sx={{ mb: 2 }}
+                />
+              </Box>
 
-            <TextField
-              size="small"
-              fullWidth
-              multiline
-              rows={3}
-              id="HotelPolicyBooking"
-              label={intl.formatMessage({ id: "TextHotelPolicy" })}
-              {...register("HotelPolicyBooking")}
-              margin="dense"
-              error={!!errors.HotelPolicyBooking?.message}
-              helperText={errors.HotelPolicyBooking?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              multiline
-              rows={3}
-              id="CancelPolicyBooking"
-              label={intl.formatMessage({ id: "TextCancelPolicy" })}
-              {...register("CancelPolicyBooking")}
-              margin="dense"
-              error={!!errors.CancelPolicyBooking?.message}
-              helperText={errors.CancelPolicyBooking?.message as string}
-            />
+              <Box sx={{ mb: 2 }}>
+                <TextField
+                  size="small"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  id="HotelPolicyBooking"
+                  label={intl.formatMessage({ id: "TextHotelPolicy" })}
+                  {...register("HotelPolicyBooking")}
+                  margin="dense"
+                  error={!!errors.HotelPolicyBooking?.message}
+                  helperText={errors.HotelPolicyBooking?.message as string}
+                  sx={{ mb: 2 }}
+                />
+              </Box>
+
+              <Box sx={{ mb: 2 }}>
+                <TextField
+                  size="small"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  id="CancelPolicyBooking"
+                  label={intl.formatMessage({ id: "TextCancelPolicy" })}
+                  {...register("CancelPolicyBooking")}
+                  margin="dense"
+                  error={!!errors.CancelPolicyBooking?.message}
+                  helperText={errors.CancelPolicyBooking?.message as string}
+                />
+              </Box>
+              <Box sx={{ mb: 3 }}>
+                <AmenitySelect
+                  register={register}
+                  errors={errors}
+                  customRegisterName="amenity"
+                  entity={entity}
+                  setEntity={setEntity}
+                  isHotelAmenity={true}
+                />
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              {/* Logo Section */}
+              <Box sx={{ p: 2, border: '1px solid #e0e0e0', borderRadius: 2, bgcolor: '#fafafa' }}>
+                <Box sx={{ mb: 2 }}>
+                  <label style={{ fontWeight: 'bold', fontSize: '14px', color: '#333' }}>{intl.formatMessage({ id: "TextCompanyLogo" })}</label>
+                </Box>
+                <CustomUpload IsLogo={true} Layout="vertical" id="logoPic" />
+                {/* <Box sx={{ mt: 2, textAlign: 'center' }}>
+                  {data?.Logo ? (
+                    <Box sx={{
+                      width: "200px",
+                      height: "120px",
+                      border: '2px solid #e0e0e0',
+                      borderRadius: 2,
+                      overflow: 'hidden',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mx: 'auto'
+                    }}>
+                      <img
+                        src={data?.Logo}
+                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                        alt="Hotel Logo"
+                      />
+                    </Box>
+                  ) : (
+                    <Box sx={{
+                      width: "200px",
+                      height: "120px",
+                      border: '2px dashed #ccc',
+                      borderRadius: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mx: 'auto',
+                      bgcolor: '#f9f9f9'
+                    }}>
+                      <img
+                        src="/images/noimage.png"
+                        style={{ maxWidth: '80%', maxHeight: '80%', opacity: 0.5 }}
+                        alt="No Logo"
+                      />
+                    </Box>
+                  )}
+                </Box> */}
+              </Box>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <AmenitySelect
-              register={register}
-              errors={errors}
-              customRegisterName="amenity"
-              entity={entity}
-              setEntity={setEntity}
-              isHotelAmenity={true}
-            />
-          </Grid>
-        </Grid>
-        <Box>
-          <SubmitButton loading={loading} />
-        </Box>
-      </form>
+
+          <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end" }}>
+            <SubmitButton loading={loading} />
+          </Box>
+        </form>
+      </Box>
     </>
   );
 };

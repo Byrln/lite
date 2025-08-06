@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
@@ -7,18 +7,12 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
-import { Icon } from "@iconify/react";
-import plusFill from "@iconify/icons-eva/plus-fill";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { toast } from "react-toastify";
 import { RoomTypeAPI } from "lib/api/room-type";
 import { RoomAPI } from "lib/api/room";
@@ -37,10 +31,68 @@ import RoomAssignGroup from "components/reservation/room-assign-group";
 import Iconify from "components/iconify/iconify";
 import { getContrastYIQ } from "lib/utils/helpers";
 import { useIntl } from "react-intl";
-import RoomTypeCustomSelect from "components/select/room-type-custom";
-import DatePickerCustom from "../mui/MuiDatePickerCustom";
-import Image from "next/image";
-import { RoomStatusSWR } from "lib/api/room-status";
+import { useCalendarFilters } from "@/lib/context/calendar-filters";
+
+// Skeleton Loading Component
+const CalendarSkeleton = ({ progress = 0, message = 'Loading...' }: { progress?: number; message?: string }) => {
+  const intl = useIntl();
+  
+  return (
+    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      {/* Loading Progress */}
+      <div className="p-4 bg-gray-50 border-b border-gray-200">
+        <div className="flex items-center justify-center space-x-3 mb-3">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+          <span className="text-sm font-medium text-gray-700">{message}</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-2">
+          <div 
+            className="bg-blue-500 h-2 rounded-full transition-all duration-300 ease-out"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+        <div className="text-center mt-1">
+          <span className="text-xs text-gray-500">{progress}% {intl.formatMessage({ id: 'calendar.loading.complete', defaultMessage: 'Complete' })}</span>
+        </div>
+      </div>
+
+      {/* Header Skeleton */}
+      <div className="h-16 bg-gray-100 border-b border-gray-200 flex items-center px-4">
+        <div className="flex space-x-4">
+          {[...Array(7)].map((_, i) => (
+            <div key={i} className="h-8 w-20 bg-gray-300 rounded animate-pulse"></div>
+          ))}
+        </div>
+      </div>
+
+      {/* Calendar Grid Skeleton */}
+      <div className="p-4">
+        {[...Array(8)].map((_, rowIndex) => (
+          <div key={rowIndex} className="flex border-b border-gray-100 last:border-b-0">
+            {/* Resource Column */}
+            <div className="w-48 p-3 border-r border-gray-100">
+              <div className="h-6 bg-gray-300 rounded animate-pulse"></div>
+            </div>
+
+            {/* Calendar Cells */}
+            <div className="flex-1 flex">
+              {[...Array(7)].map((_, colIndex) => (
+                <div key={colIndex} className="flex-1 p-3 border-r border-gray-100 last:border-r-0 min-h-[60px]">
+                  {Math.random() > 0.6 && (
+                    <div className="h-8 bg-blue-200 rounded animate-pulse mb-1"></div>
+                  )}
+                  {Math.random() > 0.8 && (
+                    <div className="h-6 bg-green-200 rounded animate-pulse"></div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export const generateIncrementedId = (baseId: string | number, increment: number = 1, conflictChecker?: (id: string | number) => boolean): string | number => {
   if (conflictChecker) {
@@ -93,45 +145,23 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   const intl = useIntl();
   const [state, dispatch]: any = useAppState();
   const { handleModal }: any = useContext(ModalContext);
-  const [dayCount, setDayCount] = useState(15);
-  const [search, setSearch] = useState({
-    CurrDate: workingDate,
-    NumberOfDays: dayCount,
-    RoomTypeID: 0,
-  });
-  const [searchCurrDate, setSearchCurrDate] = useState(workingDate);
-  const [searchRoomTypeID, setSearchRoomTypeID] = useState(0);
-
-  const onRoomTypeChange = (rt: any) => {
-    setSearchRoomTypeID(rt ? rt.RoomTypeID : 0);
-  };
-  const [isHoverEnabled, setIsHoverEnabled] = useState(false);
-  const [tooltipOpen, setTooltipOpen] = useState(false);
+  // Use calendar filters from context
+  const {
+    dayCount,
+    setDayCount,
+    currentView,
+    setCurrentView,
+    searchRoomTypeID,
+    setSearchRoomTypeID,
+    searchCurrDate,
+    setSearchCurrDate,
+    isHoverEnabled,
+    setIsHoverEnabled,
+    rerenderKey,
+    setRerenderKey,
+  } = useCalendarFilters();
   const [reservationItems, setReservationItems] = useState<any>(null);
   const [roomBlocks, setRoomBlocks] = useState<any>(null);
-
-  // Fetch room status data
-  const { data: roomStatusData } = RoomStatusSWR({ RoomTypeID: 0 });
-
-  const handleTooltipClose = () => {
-    setTooltipOpen(false);
-  };
-
-  const handleTooltipOpen = () => {
-    setTooltipOpen(true);
-  };
-
-  useEffect(() => {
-    const hoverSetting = localStorage.getItem("isHover");
-    setIsHoverEnabled(hoverSetting === "true");
-  }, []);
-
-  const handleHoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setIsHoverEnabled(checked);
-    localStorage.setItem("isHover", checked.toString());
-  };
-
   function extractNumberFromString(str: any) {
     const parts = str.split("-");
     const firstNumber = parseInt(parts[1], 10);
@@ -231,15 +261,36 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   );
   const [resources, setResources] = useState<any>(null);
   const [itemData, setItemData] = useState<any>(null);
-  const [rerenderKey, setRerenderKey] = useState(0);
   const [customMutate, setCustomMutate] = useState(0);
-  const [isCalendarLoading, setIsCalendarLoading] = useState(false);
+  const [isCalendarLoading, setIsCalendarLoading] = useState(true);
+  const [loadingStartTime, setLoadingStartTime] = useState<number>(Date.now());
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingMessage, setLoadingMessage] = useState(intl.formatMessage({ id: 'calendar.loading.initializing', defaultMessage: 'Initializing...' }));
   const [height, setHeight] = useState<any>(null);
   const [availableRooms, setAvailableRooms] = useState<any>(null);
-  const [currentView, setCurrentView] = useState("resourceTimeline");
+
+  // Debounced loading state to prevent flickering
+  const setLoadingWithMinTime = (loading: boolean) => {
+    if (loading) {
+      setLoadingStartTime(Date.now());
+      setIsCalendarLoading(true);
+    } else {
+      const elapsed = Date.now() - loadingStartTime;
+      const minLoadingTime = 500; // Minimum 500ms loading time
+
+      if (elapsed < minLoadingTime) {
+        setTimeout(() => {
+          setIsCalendarLoading(false);
+        }, minLoadingTime - elapsed);
+      } else {
+        setIsCalendarLoading(false);
+      }
+    }
+  };
+
 
   useEffect(() => {
-    if (searchCurrDate == "Огноо алдаатай байна!") {
+    if (typeof searchCurrDate === 'string' && searchCurrDate === "Огноо алдаатай байна!") {
       setSearchCurrDate(new Date(workingDate));
 
       setTimeStart(new Date(workingDate));
@@ -262,19 +313,29 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     }
 
     const fetchDatas = async () => {
+      setLoadingWithMinTime(true);
+      setLoadingProgress(0);
+      setLoadingMessage(intl.formatMessage({ id: 'calendar.loading.reservations', defaultMessage: 'Loading reservations...' }));
+
       try {
         const items: any = await FrontOfficeAPI?.list({
           CurrDate: searchCurrDate ? searchCurrDate : workingDate,
           NumberOfDays: dayCount,
           RoomTypeID: searchRoomTypeID,
         });
+        setLoadingProgress(20);
 
+        setLoadingMessage(intl.formatMessage({ id: 'calendar.loading.roomTypes', defaultMessage: 'Loading room types...' }));
         const roomTypes: any = await RoomTypeAPI?.list({
           RoomTypeID: searchRoomTypeID,
         });
+        setLoadingProgress(40);
 
+        setLoadingMessage(intl.formatMessage({ id: 'calendar.loading.rooms', defaultMessage: 'Loading rooms...' }));
         const rooms: any = await RoomAPI?.list({});
+        setLoadingProgress(60);
 
+        setLoadingMessage(intl.formatMessage({ id: 'calendar.loading.roomBlocks', defaultMessage: 'Loading room blocks...' }));
         const roomBlocksData: any = await RoomBlockAPI?.list({
           StartDate: dateToCustomFormat(
             new Date(searchCurrDate),
@@ -290,7 +351,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
           ),
         });
         setRoomBlocks(roomBlocksData);
+        setLoadingProgress(70);
 
+        setLoadingMessage(intl.formatMessage({ id: 'calendar.loading.availableRooms', defaultMessage: 'Loading available rooms...' }));
         const availableRoomsData: any = await StayView2API?.list(
           searchCurrDate ? searchCurrDate : workingDate,
           dayCount
@@ -298,7 +361,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
         setAvailableRooms(availableRoomsData);
         setReservationItems(items);
+        setLoadingProgress(80);
 
+        setLoadingMessage(intl.formatMessage({ id: 'calendar.loading.groupReservations', defaultMessage: 'Loading group reservations...' }));
         const groupReservations: any =
           await ReservationAPI?.groupReservation({
             StartDate: dateToCustomFormat(
@@ -315,6 +380,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               "yyyy-MM-dd"
             ),
           });
+        setLoadingProgress(85);
 
         let itemDataConcated: any = [];
         let letNewEvents: any = null;
@@ -592,8 +658,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
           setResources(newRoomTypeData.concat(newData));
         }
 
+        setLoadingMessage(intl.formatMessage({ id: 'calendar.loading.finalizing', defaultMessage: 'Finalizing calendar...' }));
         setRerenderKey((prevKey) => prevKey + 1);
+        setLoadingProgress(100);
+      } catch (error) {
+        console.error('Error fetching calendar data:', error);
+        toast.error(intl.formatMessage({ id: 'calendar.error.loadFailed', defaultMessage: 'Failed to load calendar data' }));
       } finally {
+        setLoadingWithMinTime(false);
       }
     };
 
@@ -669,7 +741,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   };
 
   useEffect(() => {
-    setHeight(window.innerHeight - 90);
+    setHeight(window.innerHeight - 50);
   }, [window.innerHeight]);
 
   const handleEventClick = (info: any) => {
@@ -1048,14 +1120,14 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   : "white",
                 border:
                   arg.event._def.extendedProps.GroupID &&
-                  arg.event._def.extendedProps.GroupID != "" &&
-                  arg.event._def.extendedProps.groupColor &&
-                  arg.event._def.extendedProps.groupColor != ""
+                    arg.event._def.extendedProps.GroupID != "" &&
+                    arg.event._def.extendedProps.groupColor &&
+                    arg.event._def.extendedProps.groupColor != ""
                     ? `2px solid ${arg.event._def.extendedProps.groupColor}`
                     : arg.event._def.extendedProps.statusColor ==
                       "rgba(255, 220, 40, 0.15)"
-                    ? `1px solid rgba(74, 108, 247, 0.3)`
-                    : "null",
+                      ? `1px solid rgba(74, 108, 247, 0.3)`
+                      : "null",
                 fontSize: "13px",
                 fontWeight: "500",
                 alignItems: "center",
@@ -1325,8 +1397,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   </span>
                   <span
                     className={`font-medium ${arg.event._def.extendedProps.Breakfast
-                        ? "text-green-400"
-                        : "text-orange-400"
+                      ? "text-green-400"
+                      : "text-orange-400"
                       }`}
                   >
                     {arg.event._def.extendedProps.Breakfast ? "Yes" : "No"}
@@ -1343,13 +1415,11 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   return (
     timeStart && (
       <>
-        {/* Calendar Controls Section */}
-        <div className="mb-8 space-y-4">
-          {/* Main Actions Row */}
+
+
+        {/* <div className="mb-8 space-y-4">
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-            {/* Primary Actions Group */}
             <div className="flex flex-wrap gap-3 items-center">
-              {/* New Reservation Button */}
               <Button
                 onClick={() => {
                   dispatch({
@@ -1380,7 +1450,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 <span className="font-bold">{intl.formatMessage({ id: "FrontNewReservation" })}</span>
               </Button>
 
-              {/* Refresh Button */}
               <Button
                 onClick={() => {
                   setIsCalendarLoading(true);
@@ -1400,7 +1469,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   className="w-7 h-4"
                 />
               </Button>
-              {/* Hover Toggle */}
               <div className="flex items-center space-x-2 bg-white border border-[#804FE6] rounded-full px-3 py-2 shadow-sm cursor-pointer" onClick={() => setIsHoverEnabled(!isHoverEnabled)}>
                 <Switch
                   checked={isHoverEnabled}
@@ -1409,9 +1477,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                 />
                 <span className="text-sm font-semibold text-black">Hover</span>
               </div>
-              {/* Filters Group */}
               <div className="flex flex-wrap gap-3 items-center">
-                {/* Room Type Filter */}
                 <div className="bg-white border border-[#804FE6] rounded-full shadow-sm min-w-[160px]">
                   <RoomTypeCustomSelect
                     searchRoomTypeID={searchRoomTypeID}
@@ -1424,7 +1490,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   />
                 </div>
 
-                {/* Date Picker */}
                 <div className="bg-white border border-[#804FE6] rounded-full shadow-sm min-w-[160px]">
                   <DatePickerCustom
                     name="CurrDate"
@@ -1444,7 +1509,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
 
             </div>
 
-            {/* Status Legend */}
             <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
               <TooltipProvider>
                 <Tooltip open={tooltipOpen}>
@@ -1488,7 +1552,6 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-              {/* View Period Controls */}
               <div className="bg-[#804FE6] rounded-full outline outline-[#804FE6] outline-2 shadow-md w-full sm:w-auto overflow-hidden">
                 <RadioGroup
                   value={dayCount.toString()}
@@ -1518,9 +1581,9 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         className={`
                           px-2 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap
                           ${(dayCount === period.value) || (period.value === "hourly" && currentView === "resourceTimelineDay")
-                              ? "bg-white text-[#804FE6] shadow-sm"
-                              : "text-white hover:bg-white/10"
-                            }
+                            ? "bg-white text-[#804FE6] shadow-sm"
+                            : "text-white hover:bg-white/10"
+                          }
                         `}
                       >
                         {period.label}
@@ -1531,7 +1594,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* <CustomSearch
                         listUrl={listUrl}
                         search={search}
@@ -1562,314 +1625,316 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                         "yyyy/MM/dd "
                     )}
                 </Typography> */}
-        <div
+        {/* <div
           style={{
             borderRadius: "10px",
             overflow: "hidden",
             border: "1px solid #eff0f6",
           }}
+        > */}
+        <div className="overflow-hidden"
         >
-          {resources &&
-            dayCount &&
-            timeStart &&
-            itemData &&
-            rerenderKey && (
-              <FullCalendar
-                key={rerenderKey}
-                plugins={[
-                  resourceTimelinePlugin,
-                  interactionPlugin,
-                  timeGridPlugin,
-                ]}
-                initialView={currentView}
-                resourceOrder="SortOrder"
-                headerToolbar={{
-                  left: "",
-                  center: "",
-                  right: "",
-                }}
-                viewDidMount={(info) => {
-                  setCurrentView(info.view.type);
-                }}
-                resources={resources}
-                initialDate={timeStart}
-                events={itemData}
-                selectable={true}
-                select={handleSelect}
-                editable={true}
-                eventDrop={handleEventDrop}
-                eventResize={handleEventResize}
-                eventClick={handleEventClick}
-                now={new Date(workingDate)}
-                nowIndicator={true}
-                height={height}
-                allDaySlot={true}
-                eventContent={eventContent}
-                visibleRange={{
-                  start: timeStart,
-                  end: moment(timeStart)
-                    .add(dayCount, "days")
-                    .format("YYYY-MM-DD"),
-                }}
-                slotDuration={currentView === "resourceTimelineDay" ? "01:00:00" : "24:00:00"}
-                slotLabelInterval={currentView === "resourceTimelineDay" ? { hours: 1 } : { hours: 24 }}
-                slotMinTime={currentView === "resourceTimelineDay" ? "00:00:00" : "00:00:00"}
-                slotMaxTime={currentView === "resourceTimelineDay" ? "24:00:00" : "24:00:00"}
-                selectConstraint={{
-                  start: "00:00:00",
-                  end: "24:00:00"
-                }}
-                resourceAreaWidth={180}
-                slotMinWidth={20}
-                eventBackgroundColor="transparent"
-                eventBorderColor="transparent"
-                eventAllow={function (
-                  dropInfo: any,
-                  draggedEvent: any
-                ) {
-                  if (
-                    areDatesOnSameDay(
-                      dropInfo.start,
-                      draggedEvent._instance.range.start
-                    ) == false ||
-                    new Date(workingDate) >
+          {isCalendarLoading || !resources || !dayCount || !timeStart || !itemData || !rerenderKey ? (
+            <CalendarSkeleton progress={loadingProgress} message={loadingMessage} />
+          ) : (
+            <FullCalendar
+              key={rerenderKey}
+              plugins={[
+                resourceTimelinePlugin,
+                interactionPlugin,
+                timeGridPlugin,
+              ]}
+              initialView={currentView}
+              resourceOrder="SortOrder"
+              headerToolbar={{
+                left: "",
+                center: "",
+                right: "",
+              }}
+              viewDidMount={(info) => {
+                setCurrentView(info.view.type);
+              }}
+              resources={resources}
+              initialDate={timeStart}
+              events={itemData}
+              selectable={true}
+              select={handleSelect}
+              editable={true}
+              eventDrop={handleEventDrop}
+              eventResize={handleEventResize}
+              eventClick={handleEventClick}
+              now={new Date(workingDate)}
+              nowIndicator={true}
+              height={height}
+              scrollTime="00:00:00"
+              scrollTimeReset={false}
+              allDaySlot={true}
+              eventContent={eventContent}
+              visibleRange={{
+                start: timeStart,
+                end: moment(timeStart)
+                  .add(dayCount, "days")
+                  .format("YYYY-MM-DD"),
+              }}
+              slotDuration={currentView === "resourceTimelineDay" ? "01:00:00" : "24:00:00"}
+              slotLabelInterval={currentView === "resourceTimelineDay" ? { hours: 1 } : { hours: 24 }}
+              slotMinTime={currentView === "resourceTimelineDay" ? "00:00:00" : "00:00:00"}
+              slotMaxTime={currentView === "resourceTimelineDay" ? "24:00:00" : "24:00:00"}
+              selectConstraint={{
+                start: "00:00:00",
+                end: "24:00:00"
+              }}
+              resourceAreaWidth={180}
+              slotMinWidth={20}
+              eventBackgroundColor="transparent"
+              eventBorderColor="transparent"
+              eventAllow={function (
+                dropInfo: any,
+                draggedEvent: any
+              ) {
+                if (
+                  areDatesOnSameDay(
+                    dropInfo.start,
                     draggedEvent._instance.range.start
-                  ) {
-                    return true;
-                  }
+                  ) == false ||
+                  new Date(workingDate) >
+                  draggedEvent._instance.range.start
+                ) {
                   return true;
-                }}
-                views={{
-                  timeline: {
-                    type: "resourceTimeline",
-                    duration: { days: dayCount },
-                    dayHeaderContent: customHeader,
-                    slotLabelContent: (arg: any) => {
-                      arg.date.setHours(8);
-                      var Difference_In_Time =
-                        arg.date.getTime() -
-                        timeStart.getTime();
-                      var Difference_In_Days = Math.floor(
-                        Difference_In_Time /
-                        (1000 * 3600 * 24)
-                      );
-                      const day = arg.date.getDay();
-                      const isWeekend =
-                        day === 0 || day === 6;
-                      // Get available rooms data from backend (fallback)
-                      const availableRoomsKey = `D${Difference_In_Days + 1
-                        }`;
-                      const availableRoomsData =
-                        availableRooms &&
-                          availableRooms[0] &&
-                          availableRooms[0][
+                }
+                return true;
+              }}
+              views={{
+                timeline: {
+                  type: "resourceTimeline",
+                  duration: { days: dayCount },
+                  dayHeaderContent: customHeader,
+                  slotLabelContent: (arg: any) => {
+                    arg.date.setHours(8);
+                    var Difference_In_Time =
+                      arg.date.getTime() -
+                      timeStart.getTime();
+                    var Difference_In_Days = Math.floor(
+                      Difference_In_Time /
+                      (1000 * 3600 * 24)
+                    );
+                    const day = arg.date.getDay();
+                    const isWeekend =
+                      day === 0 || day === 6;
+                    // Get available rooms data from backend (fallback)
+                    const availableRoomsKey = `D${Difference_In_Days + 1
+                      }`;
+                    const availableRoomsData =
+                      availableRooms &&
+                        availableRooms[0] &&
+                        availableRooms[0][
+                        availableRoomsKey
+                        ]
+                        ? availableRooms[0][
                           availableRoomsKey
-                          ]
-                          ? availableRooms[0][
-                            availableRoomsKey
-                          ].split("/")
-                          : ["0", "0"];
+                        ].split("/")
+                        : ["0", "0"];
 
-                      // Calculate corrected occupancy using reservation data
-                      const currentDate = moment(arg.date).format("YYYY-MM-DD");
-                      let correctedAvailableCount = parseInt(availableRoomsData[0]) || 0;
-                      let correctedTotalCount = parseInt(availableRoomsData[1]) || 1;
+                    // Calculate corrected occupancy using reservation data
+                    const currentDate = moment(arg.date).format("YYYY-MM-DD");
+                    let correctedAvailableCount = parseInt(availableRoomsData[0]) || 0;
+                    let correctedTotalCount = parseInt(availableRoomsData[1]) || 1;
 
-                      // If we have reservation data, calculate accurate occupancy
-                      if (reservationItems && resources) {
-                        // Get all individual rooms (not room types)
-                        const allRooms = resources.filter((resource: any) => resource.parentId);
-                        correctedTotalCount = allRooms.length;
+                    // If we have reservation data, calculate accurate occupancy
+                    if (reservationItems && resources) {
+                      // Get all individual rooms (not room types)
+                      const allRooms = resources.filter((resource: any) => resource.parentId);
+                      correctedTotalCount = allRooms.length;
 
-                        // Get occupied rooms for this date from reservations
-                        const occupiedRoomsForDate = reservationItems.filter((item: any) => {
-                          const startDate = moment(item.StartDate).format("YYYY-MM-DD");
-                          const endDate = moment(item.DepartureDate).format("YYYY-MM-DD");
-                          const isInDateRange = moment(currentDate).isBetween(startDate, endDate, "day", "[)");
+                      // Get occupied rooms for this date from reservations
+                      const occupiedRoomsForDate = reservationItems.filter((item: any) => {
+                        const startDate = moment(item.StartDate).format("YYYY-MM-DD");
+                        const endDate = moment(item.DepartureDate).format("YYYY-MM-DD");
+                        const isInDateRange = moment(currentDate).isBetween(startDate, endDate, "day", "[)");
 
-                          // For day reservations (same start and departure date)
-                          if (startDate === endDate && startDate === currentDate) {
-                            // Day reservations (same arrival and departure date) should not count as occupied
-                            return false;
-                          }
+                        // For day reservations (same start and departure date)
+                        if (startDate === endDate && startDate === currentDate) {
+                          // Day reservations (same arrival and departure date) should not count as occupied
+                          return false;
+                        }
 
-                          return isInDateRange;
-                        });
+                        return isInDateRange;
+                      });
 
-                        // Get blocked rooms for this date from room blocks
-                        const blockedRoomsForDate = roomBlocks ? roomBlocks.filter((block: any) => {
-                          const startDate = moment(block.BeginDate).format("YYYY-MM-DD");
-                          const endDate = moment(block.EndDate).format("YYYY-MM-DD");
-                          return moment(currentDate).isBetween(startDate, endDate, "day", "[)");
-                        }) : [];
+                      // Get blocked rooms for this date from room blocks
+                      const blockedRoomsForDate = roomBlocks ? roomBlocks.filter((block: any) => {
+                        const startDate = moment(block.BeginDate).format("YYYY-MM-DD");
+                        const endDate = moment(block.EndDate).format("YYYY-MM-DD");
+                        return moment(currentDate).isBetween(startDate, endDate, "day", "[)");
+                      }) : [];
 
-                        // Get unique occupied room IDs (reservations + room blocks)
-                        const uniqueOccupiedRoomIds = new Set([
-                          ...occupiedRoomsForDate.map((item: any) => item.RoomID),
-                          ...blockedRoomsForDate.map((block: any) => block.RoomID)
-                        ]);
+                      // Get unique occupied room IDs (reservations + room blocks)
+                      const uniqueOccupiedRoomIds = new Set([
+                        ...occupiedRoomsForDate.map((item: any) => item.RoomID),
+                        ...blockedRoomsForDate.map((block: any) => block.RoomID)
+                      ]);
 
-                        correctedAvailableCount = correctedTotalCount - uniqueOccupiedRoomIds.size;
-                      }
+                      correctedAvailableCount = correctedTotalCount - uniqueOccupiedRoomIds.size;
+                    }
 
-                      const occupancyPercentage =
-                        Math.round(
-                          ((correctedTotalCount -
-                            correctedAvailableCount) /
-                            correctedTotalCount) *
-                          100
-                        );
+                    const occupancyPercentage =
+                      Math.round(
+                        ((correctedTotalCount -
+                          correctedAvailableCount) /
+                          correctedTotalCount) *
+                        100
+                      );
 
-                      return arg.level == 1 ? (
-                        <div
-                          style={{
-                            textAlign: "center",
-                            fontWeight: "normal",
-                            color: "#495057",
-                          }}
-                        >
-                          <div className="text-xs">
-                            {correctedAvailableCount} / {correctedTotalCount}
-                          </div>
+                    return arg.level == 1 ? (
+                      <div
+                        style={{
+                          textAlign: "center",
+                          fontWeight: "normal",
+                          color: "#495057",
+                        }}
+                      >
+                        <div className="text-xs">
+                          {correctedAvailableCount} / {correctedTotalCount}
                         </div>
-                      ) : (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
+                      </div>
+                    ) : (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div
+                              style={{
+                                fontSize:
+                                  dayCount > 7
+                                    ? "14px"
+                                    : "13px",
+                                padding:
+                                  dayCount > 7
+                                    ? "2px"
+                                    : "4px",
+                                backgroundColor:
+                                  isWeekend
+                                    ? "#fff9c4"
+                                    : "#f8f9fa",
+                                borderRadius: "4px",
+                                height: "100%",
+                                cursor: "pointer",
+                              }}
+                            >
                               <div
+                                className="flex gap-5"
                                 style={{
-                                  fontSize:
+                                  flexDirection:
                                     dayCount > 7
-                                      ? "14px"
-                                      : "13px",
-                                  padding:
+                                      ? "column"
+                                      : "row",
+                                  justifyContent:
+                                    dayCount ===
+                                      7
+                                      ? "space-between"
+                                      : "",
+                                  alignContent:
+                                    "center",
+                                  alignItems:
+                                    dayCount ===
+                                      7
+                                      ? "center"
+                                      : "",
+                                  gap:
                                     dayCount > 7
                                       ? "2px"
-                                      : "4px",
-                                  backgroundColor:
-                                    isWeekend
-                                      ? "#fff9c4"
-                                      : "#f8f9fa",
-                                  borderRadius: "4px",
-                                  height: "100%",
-                                  cursor: "pointer",
+                                      : "5px",
                                 }}
                               >
                                 <div
-                                  className="flex gap-5"
                                   style={{
-                                    flexDirection:
-                                      dayCount > 7
-                                        ? "column"
-                                        : "row",
+                                    fontWeight:
+                                      "500",
+                                    textAlign:
+                                      "center",
+                                    color: isWeekend
+                                      ? "#ff9800"
+                                      : "#4a6cf7",
+                                    textTransform:
+                                      "uppercase",
+                                    fontSize:
+                                      dayCount >
+                                        7
+                                        ? dayCount >
+                                          15
+                                          ? "10px"
+                                          : "14px"
+                                        : "16px",
+                                    whiteSpace:
+                                      "nowrap",
+                                    overflow:
+                                      "hidden",
+                                    textOverflow:
+                                      "ellipsis",
+                                    maxWidth:
+                                      dayCount >
+                                        7
+                                        ? "100%"
+                                        : "auto",
+                                    minWidth:
+                                      dayCount >
+                                        7
+                                        ? "100%"
+                                        : "auto",
+                                    width: "100%",
+                                    display:
+                                      "flex",
                                     justifyContent:
                                       dayCount ===
-                                        7
-                                        ? "space-between"
-                                        : "",
-                                    alignContent:
-                                      "center",
-                                    alignItems:
-                                      dayCount ===
-                                        7
+                                        30 ||
+                                        dayCount ===
+                                        15
                                         ? "center"
                                         : "",
-                                    gap:
-                                      dayCount > 7
-                                        ? "2px"
-                                        : "5px",
+                                    alignItems:
+                                      "center",
                                   }}
                                 >
-                                  <div
-                                    style={{
-                                      fontWeight:
-                                        "500",
-                                      textAlign:
-                                        "center",
-                                      color: isWeekend
-                                        ? "#ff9800"
-                                        : "#4a6cf7",
-                                      textTransform:
-                                        "uppercase",
-                                      fontSize:
-                                        dayCount >
-                                          7
-                                          ? dayCount >
-                                            15
-                                            ? "10px"
-                                            : "14px"
-                                          : "16px",
-                                      whiteSpace:
-                                        "nowrap",
-                                      overflow:
-                                        "hidden",
-                                      textOverflow:
-                                        "ellipsis",
-                                      maxWidth:
-                                        dayCount >
-                                          7
-                                          ? "100%"
-                                          : "auto",
-                                      minWidth:
-                                        dayCount >
-                                          7
-                                          ? "100%"
-                                          : "auto",
-                                      width: "100%",
-                                      display:
-                                        "flex",
-                                      justifyContent:
-                                        dayCount ===
-                                          30 ||
-                                          dayCount ===
-                                          15
-                                          ? "center"
-                                          : "",
-                                      alignItems:
-                                        "center",
-                                    }}
-                                  >
-                                    {
-                                      arg.date
-                                        .toString()
-                                        .split(
-                                          " "
-                                        )[0]
-                                    }
-                                  </div>
+                                  {
+                                    arg.date
+                                      .toString()
+                                      .split(
+                                        " "
+                                      )[0]
+                                  }
+                                </div>
 
-                                  <div
-                                    style={{
-                                      fontWeight:
-                                        "bold",
-                                      textAlign:
-                                        "center",
-                                      fontSize:
-                                        dayCount >
-                                          7
-                                          ? dayCount >
-                                            15
-                                            ? "12px"
-                                            : "14px"
-                                          : "18px",
-                                      color: "#212529",
-                                    }}
-                                  >
-                                    {arg.date.getDate()}
-                                  </div>
+                                <div
+                                  style={{
+                                    fontWeight:
+                                      "bold",
+                                    textAlign:
+                                      "center",
+                                    fontSize:
+                                      dayCount >
+                                        7
+                                        ? dayCount >
+                                          15
+                                          ? "12px"
+                                          : "14px"
+                                        : "18px",
+                                    color: "#212529",
+                                  }}
+                                >
+                                  {arg.date.getDate()}
                                 </div>
                               </div>
-                            </TooltipTrigger>
-                            <TooltipContent className="bg-white text-black border border-gray-200 shadow-lg rounded-xl p-4 max-w-xs">
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection:
-                                    "column",
-                                  gap: "8px",
-                                  padding: "4px",
-                                }}
-                              >
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent className="bg-white text-black border border-gray-200 shadow-lg rounded-xl p-4 max-w-xs">
+                            <div
+                              style={{
+                                display: "flex",
+                                flexDirection:
+                                  "column",
+                                gap: "8px",
+                                padding: "4px",
+                              }}
+                            >
                               {/* Occupancy Percentage */}
                               <div
                                 style={{
@@ -2450,124 +2515,124 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
                                 }
                                 return null;
                               })()}
-                               </div>
-                             </TooltipContent>
-                           </Tooltip>
-                         </TooltipProvider>
-                      );
-                    },
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    );
                   },
-                  resourceTimeline: {
-                    dayHeaderContent: customHeader,
+                },
+                resourceTimeline: {
+                  dayHeaderContent: customHeader,
+                },
+                timeGridDay: {
+                  type: "timeGrid",
+                  duration: { days: 1 },
+                  slotMinTime: "06:00:00",
+                  slotMaxTime: "24:00:00",
+                  slotDuration: "01:00:00",
+                  slotLabelInterval: "01:00:00",
+                  allDaySlot: true,
+                  nowIndicator: true,
+                },
+                resourceTimelineDay: {
+                  type: "resourceTimeline",
+                  duration: { days: 1 },
+                  slotMinTime: "00:00:00",
+                  slotMaxTime: "24:00:00",
+                  slotDuration: "01:00:00",
+                  slotLabelInterval: "01:00:00",
+                  slotLabelFormat: {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false
                   },
-                  timeGridDay: {
-                    type: "timeGrid",
-                    duration: { days: 1 },
-                    slotMinTime: "06:00:00",
-                    slotMaxTime: "24:00:00",
-                    slotDuration: "01:00:00",
-                    slotLabelInterval: "01:00:00",
-                    allDaySlot: true,
-                    nowIndicator: true,
+                  resourceAreaWidth: 180,
+                  nowIndicator: true,
+                  slotLabelContent: (arg: any) => {
+                    return (
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: "500",
+                          color: "#666",
+                          textAlign: "center",
+                          padding: "4px 2px",
+                        }}
+                      >
+                        {arg.date.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: false
+                        })}
+                      </div>
+                    );
                   },
-                  resourceTimelineDay: {
-                    type: "resourceTimeline",
-                    duration: { days: 1 },
-                    slotMinTime: "00:00:00",
-                    slotMaxTime: "24:00:00",
-                    slotDuration: "01:00:00",
-                    slotLabelInterval: "01:00:00",
-                    slotLabelFormat: {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false
-                    },
-                    resourceAreaWidth: 180,
-                    nowIndicator: true,
-                    slotLabelContent: (arg: any) => {
-                      return (
+                  dayHeaderContent: (arg: any) => {
+                    const day = arg.date.getDay();
+                    const isWeekend = day === 0 || day === 6;
+                    const monthNames = [
+                      intl.formatMessage({ id: "January" }) || "January",
+                      intl.formatMessage({ id: "February" }) || "February",
+                      intl.formatMessage({ id: "March" }) || "March",
+                      intl.formatMessage({ id: "April" }) || "April",
+                      intl.formatMessage({ id: "May" }) || "May",
+                      intl.formatMessage({ id: "June" }) || "June",
+                      intl.formatMessage({ id: "July" }) || "July",
+                      intl.formatMessage({ id: "August" }) || "August",
+                      intl.formatMessage({ id: "September" }) || "September",
+                      intl.formatMessage({ id: "October" }) || "October",
+                      intl.formatMessage({ id: "November" }) || "November",
+                      intl.formatMessage({ id: "December" }) || "December",
+                    ];
+                    const monthName = monthNames[arg.date.getMonth()];
+
+                    return (
+                      <div
+                        style={{
+                          padding: "8px",
+                          backgroundColor: isWeekend ? "#ffd700" : "#f8f9fa",
+                          borderRadius: "6px",
+                          textAlign: "center",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontSize: "14px",
+                            fontWeight: "600",
+                            color: isWeekend ? "#ff9800" : "#4a6cf7",
+                            marginBottom: "4px",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {arg.date.toLocaleDateString('en-US', { weekday: 'short' })}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: "16px",
+                            fontWeight: "bold",
+                            color: "#212529",
+                            marginBottom: "2px",
+                          }}
+                        >
+                          {arg.date.getDate()}
+                        </div>
                         <div
                           style={{
                             fontSize: "12px",
-                            fontWeight: "500",
                             color: "#666",
-                            textAlign: "center",
-                            padding: "4px 2px",
                           }}
                         >
-                          {arg.date.toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: false
-                          })}
+                          {monthName}
                         </div>
-                      );
-                    },
-                    dayHeaderContent: (arg: any) => {
-                      const day = arg.date.getDay();
-                      const isWeekend = day === 0 || day === 6;
-                      const monthNames = [
-                        intl.formatMessage({ id: "January" }) || "January",
-                        intl.formatMessage({ id: "February" }) || "February",
-                        intl.formatMessage({ id: "March" }) || "March",
-                        intl.formatMessage({ id: "April" }) || "April",
-                        intl.formatMessage({ id: "May" }) || "May",
-                        intl.formatMessage({ id: "June" }) || "June",
-                        intl.formatMessage({ id: "July" }) || "July",
-                        intl.formatMessage({ id: "August" }) || "August",
-                        intl.formatMessage({ id: "September" }) || "September",
-                        intl.formatMessage({ id: "October" }) || "October",
-                        intl.formatMessage({ id: "November" }) || "November",
-                        intl.formatMessage({ id: "December" }) || "December",
-                      ];
-                      const monthName = monthNames[arg.date.getMonth()];
-
-                      return (
-                        <div
-                          style={{
-                            padding: "8px",
-                            backgroundColor: isWeekend ? "#ffd700" : "#f8f9fa",
-                            borderRadius: "6px",
-                            textAlign: "center",
-                            boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-                          }}
-                        >
-                          <div
-                            style={{
-                              fontSize: "14px",
-                              fontWeight: "600",
-                              color: isWeekend ? "#ff9800" : "#4a6cf7",
-                              marginBottom: "4px",
-                              textTransform: "uppercase",
-                            }}
-                          >
-                            {arg.date.toLocaleDateString('en-US', { weekday: 'short' })}
-                          </div>
-                          <div
-                            style={{
-                              fontSize: "16px",
-                              fontWeight: "bold",
-                              color: "#212529",
-                              marginBottom: "2px",
-                            }}
-                          >
-                            {arg.date.getDate()}
-                          </div>
-                          <div
-                            style={{
-                              fontSize: "12px",
-                              color: "#666",
-                            }}
-                          >
-                            {monthName}
-                          </div>
-                        </div>
-                      );
-                    },
+                      </div>
+                    );
                   },
-                }}
-              />
-            )}
+                },
+              }}
+            />
+          )}
         </div>
 
       </>

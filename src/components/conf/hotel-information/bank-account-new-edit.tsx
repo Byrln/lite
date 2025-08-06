@@ -1,13 +1,11 @@
-import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField, Grid } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
 import NewEditForm from "components/common/new-edit-form";
 import { BankAccountAPI, listUrl } from "lib/api/bank-account";
 import { useAppState } from "lib/context/app";
-import LanguageSelect from "components/select/language";
-import UserRoleSelect from "components/select/user-role";
 
 const validationSchema = yup.object().shape({
   Bank: yup.string().required("Бөглөнө үү"),
@@ -15,7 +13,11 @@ const validationSchema = yup.object().shape({
   AccountName: yup.string().required("Бөглөнө үү"),
 });
 
-const NewEdit = () => {
+interface NewEditProps {
+  data?: any;
+}
+
+const NewEdit = ({ data }: NewEditProps) => {
   const intl = useIntl();
   const [state]: any = useAppState();
   const {
@@ -23,7 +25,10 @@ const NewEdit = () => {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(validationSchema) });
+  } = useForm({ 
+    resolver: yupResolver(validationSchema),
+    defaultValues: data || {}
+  });
 
   return (
     <NewEditForm

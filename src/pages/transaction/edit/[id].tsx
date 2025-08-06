@@ -161,7 +161,7 @@ const TransactionEdit = () => {
           </Box>
         ) : transaction ? (
           <Fade in={true} timeout={800}>
-            <Box>
+            <Box className="px-6 py-4">
               {/* Transaction Header Card */}
               <Card
                 sx={{
@@ -209,12 +209,12 @@ const TransactionEdit = () => {
                           onChange={handleChange}
                           aria-label="transaction tabs"
                           sx={{
-                            px: 3,
+                            px: 2,
                             '& .MuiTab-root': {
                               fontWeight: 600,
                               fontSize: '1rem',
                               textTransform: 'none',
-                              minHeight: 64,
+                              minHeight: 44,
                               transition: 'all 0.3s ease',
                               '&.Mui-selected': {
                                 color: 'primary.main',
@@ -419,24 +419,6 @@ const TransactionEdit = () => {
                               }}
                             >
                               <CardContent sx={{ p: 4 }}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                                  <Box
-                                    sx={{
-                                      p: 1.5,
-                                      borderRadius: 2,
-                                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                                      color: 'white',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'center'
-                                    }}
-                                  >
-                                    <HotelIcon sx={{ fontSize: 20 }} />
-                                  </Box>
-                                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
-                                    {intl.formatMessage({ id: 'TextRoomChargeTitle' })}
-                                  </Typography>
-                                </Box>
                                 <RoomCharge
                                   TransactionID={transaction.TransactionID}
                                   RoomTypeID={transaction.RoomTypeID}
@@ -470,24 +452,6 @@ const TransactionEdit = () => {
                               }}
                             >
                               <CardContent sx={{ p: 4 }}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                                  <Box
-                                    sx={{
-                                      p: 1.5,
-                                      borderRadius: 2,
-                                      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                                      color: 'white',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'center'
-                                    }}
-                                  >
-                                    <ReceiptIcon sx={{ fontSize: 20 }} />
-                                  </Box>
-                                  <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
-                                    {intl.formatMessage({ id: 'TextFolioTitle' })}
-                                  </Typography>
-                                </Box>
                                 <Folio
                                   TransactionID={transaction.TransactionID}
                                 />

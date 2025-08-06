@@ -15,7 +15,7 @@ import { RoomBlockSWR, RoomBlockAPI, listUrl } from "lib/api/room-block";
 import NewEdit from "./new-edit";
 
 const RoomBlockList = ({ title, workingDate }: any) => {
-  const [entity, setEntity] = useState<any>({});
+  const [entity, setEntity] = useState<any>([]);
   const intl = useIntl();
   const [rerenderKey, setRerenderKey] = useState(0);
   const [search, setSearch] = useState({
@@ -37,12 +37,41 @@ const RoomBlockList = ({ title, workingDate }: any) => {
 
 
   const onCheckboxChange = (e: any) => {
+    if (!Array.isArray(entity)) return;
     let tempEntity = [...entity];
     tempEntity.forEach(
       (element: any) => (element.isChecked = e.target.checked)
     );
     setEntity(tempEntity);
     setRerenderKey((prevKey) => prevKey + 1);
+  };
+
+  const handleUnblockSelected = async () => {
+    if (!Array.isArray(entity)) return;
+    const selectedBlocks = entity.filter((block: any) => block.isChecked);
+
+    if (selectedBlocks.length === 0) {
+      toast.warning("Please select room blocks to unblock");
+      return;
+    }
+
+    try {
+      for (const block of selectedBlocks) {
+        await RoomBlockAPI.updateStatus({
+          RoomBlockID: block.RoomBlockID,
+          Status: false // false means unblock
+        });
+      }
+
+      toast.success(`Successfully unblocked ${selectedBlocks.length} room block(s)`);
+
+      // Refresh the data
+      mutate([listUrl, JSON.stringify(search)]);
+
+    } catch (error) {
+      console.error("Error unblocking rooms:", error);
+      toast.error("Failed to unblock selected rooms");
+    }
   };
 
   const columns = [
@@ -67,11 +96,12 @@ const RoomBlockList = ({ title, workingDate }: any) => {
           <Checkbox
             key={rerenderKey}
             checked={
-              entity &&
+              Array.isArray(entity) &&
               entity[dataIndex] &&
               entity[dataIndex].isChecked
             }
             onChange={(e: any) => {
+              if (!Array.isArray(entity)) return;
               let tempEntity = [...entity];
               tempEntity[dataIndex].isChecked = e.target.checked;
               setEntity(tempEntity);
@@ -114,8 +144,6 @@ const RoomBlockList = ({ title, workingDate }: any) => {
 
   return (
     <>
-      {/* {moment(workingDate).format("YYYY-MM-DD") + " - " + moment(workingDate).add(1, "days").format("YYYY-MM-DD")} */}
-
       <CustomTable
         columns={columns}
         data={data}
@@ -133,6 +161,20 @@ const RoomBlockList = ({ title, workingDate }: any) => {
           // Explicitly mutate the data to ensure immediate refresh
           mutate([listUrl, JSON.stringify(newSearch)]);
         }}
+        additionalButtons={
+          <>
+            <Box sx={{ display: 'flex', mx: 2 }}>
+              <Button
+                variant="outlined"
+                color="warning"
+                onClick={handleUnblockSelected}
+                disabled={!Array.isArray(entity) || entity.length === 0 || !entity.some((block: any) => block.isChecked)}
+              >
+                {intl.formatMessage({ id: "TextUnblockSelected" })}
+              </Button>
+            </Box>
+          </>
+        }
         //hasUpdate={true}
         //hasDelete={true}
         id="RoomBlockID"

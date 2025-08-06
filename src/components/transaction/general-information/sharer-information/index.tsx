@@ -172,21 +172,6 @@ const SharerInformation = ({ TransactionID }: any) => {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", gap: 2, alignItems: "center", fontWeight: "bold", marginBottom: "10px" }}>
-        <Box
-          sx={{
-            p: 1.5,
-            borderRadius: 2,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <GroupIcon sx={{ fontSize: 20 }} />
-        </Box>  Хамтрагчийн мэдээлэл
-      </Box>
       {/* Debug indicator */}
       {/* <Box sx={{ backgroundColor: 'yellow', padding: 1, marginBottom: 1, fontSize: '12px' }}>
         DEBUG: SharerInformation component is rendering. TransactionID: {TransactionID}, Data length: {data?.length || 0}

@@ -21,12 +21,16 @@ import { useAppState } from "lib/context/app"
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs"
 // import NotificationBell from "./notification-bell"
 import { CommandPalette, useCommandPalette } from "./command-palette"
-import { Search, Command, Home } from "lucide-react"
+import { Search, Command, Home, Settings } from "lucide-react"
 import Link from "next/link"
 import { useIntl } from "react-intl";
+import CalendarControlsModal from "@/components/common/calendar-controls-modal";
+import { CalendarFiltersProvider, useCalendarFilters } from "@/lib/context/calendar-filters";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { FilterList } from "@mui/icons-material"
 
 
-// Utility function to get the appropriate modifier key based on OS
 const getModifierKey = () => {
   if (typeof window !== 'undefined') {
     return navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? '⌘' : 'Ctrl'
@@ -34,7 +38,7 @@ const getModifierKey = () => {
   return 'Ctrl'
 }
 
-export default function DashboardLayout({ children }: any) {
+function DashboardContent({ children }: any) {
   const { data, error } = GetPrivilegesSWR()
   const [sideBarData, setSideBarData] = useState<any[] | undefined>(undefined)
   const [lastValidSideBarData, setLastValidSideBarData] = useState<any[] | undefined>(undefined)
@@ -42,11 +46,43 @@ export default function DashboardLayout({ children }: any) {
   const breadcrumbs = useBreadcrumbs(sideBarData)
   const { open, setOpen } = useCommandPalette()
   const [modifierKey, setModifierKey] = useState('Ctrl')
+  const [calendarModalOpen, setCalendarModalOpen] = useState(false)
+  const [isCalendarLoading, setIsCalendarLoading] = useState(false)
+
+  const router = useRouter()
   const intl = useIntl();
 
+  const {
+    dayCount,
+    setDayCount,
+    currentView,
+    setCurrentView,
+    searchRoomTypeID,
+    setSearchRoomTypeID,
+    searchCurrDate,
+    setSearchCurrDate,
+    isHoverEnabled,
+    setIsHoverEnabled,
+    rerenderKey,
+    setRerenderKey,
+  } = useCalendarFilters()
+
+  const isHandsontablePage = router.pathname.includes('/handsontable')
 
   useEffect(() => {
     setModifierKey(getModifierKey())
+  }, [])
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === 'b' && e.altKey) {
+        e.preventDefault()
+        setCalendarModalOpen((open) => !open)
+      }
+    }
+
+    document.addEventListener('keydown', down)
+    return () => document.removeEventListener('keydown', down)
   }, [])
 
   function filterMenu(menu: any, uniqueMenuLinks: any) {
@@ -146,6 +182,44 @@ export default function DashboardLayout({ children }: any) {
             </Breadcrumb>
           </div>
           <div className="flex items-center gap-2 px-4">
+            {/* Refresh Button - Only visible on handsontable pages */}
+            {isHandsontablePage && (
+              <div className="flex gap-2 items-center">
+                <Button
+                  onClick={() => {
+                    setIsCalendarLoading(true);
+                    setRerenderKey((prevKey) => prevKey + 1);
+                    setTimeout(() => {
+                      setIsCalendarLoading(false);
+                    }, 1000);
+                  }}
+                  disabled={isCalendarLoading}
+                  variant="ghost"
+                  size="sm"
+                  className="relative h-8 xl:h-9 w-full px-2 border border-[#804FE6] bg-input hover:bg-[#804FE6] hover:text-white transition-all duration-200 transform hover:scale-105"
+                >
+                  <Image
+                    src="/images/logo_sm.png"
+                    alt="Refresh"
+                    width={20}
+                    height={20}
+                    className="w-5 h-3"
+                  />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setCalendarModalOpen(true)}
+                  className="flex items-center h-8 xl:h-9 w-full px-2 border border-gray-300 bg-input hover:bg-muted/80 transition-colors"
+                >
+                  <FilterList className="h-4 w-4" />
+                  <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex">
+                    <span className="text-xs">Alt</span>B
+                  </kbd>
+                </Button>
+              </div>
+            )}
+
             <Button
               variant="ghost"
               size="sm"
@@ -163,13 +237,35 @@ export default function DashboardLayout({ children }: any) {
             {/* <NotificationBell /> */}
           </div>
         </header>
-        <div className="flex-1 overflow-auto p-4">
-          <div className="max-w-full">
+        <div className="flex-1 overflow-auto">
+          <div className="max-w-full h-full">
             {children}
           </div>
         </div>
       </SidebarInset>
       <CommandPalette open={open} setOpen={setOpen} />
+      <CalendarControlsModal
+        open={calendarModalOpen}
+        onOpenChange={setCalendarModalOpen}
+        dayCount={dayCount}
+        currentView={currentView}
+        searchRoomTypeID={searchRoomTypeID}
+        searchCurrDate={searchCurrDate}
+        isHoverEnabled={isHoverEnabled}
+        onDayCountChange={setDayCount}
+        onCurrentViewChange={setCurrentView}
+        onSearchRoomTypeIDChange={setSearchRoomTypeID}
+        onSearchCurrDateChange={setSearchCurrDate}
+        onHoverEnabledChange={setIsHoverEnabled}
+      />
     </SidebarProvider>
+  )
+}
+
+export default function DashboardLayout({ children }: any) {
+  return (
+    <CalendarFiltersProvider>
+      <DashboardContent>{children}</DashboardContent>
+    </CalendarFiltersProvider>
   )
 }

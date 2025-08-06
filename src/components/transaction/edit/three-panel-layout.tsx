@@ -61,7 +61,8 @@ const ThreePanelLayout: React.FC<ThreePanelLayoutProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          p: 2,
+          px: 2,
+          py: 1,
           border: '1px solid rgba(0,0,0,0.04)'
         }}
       >

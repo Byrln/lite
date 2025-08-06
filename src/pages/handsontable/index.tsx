@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Grid, Container } from "@mui/material";
 import Head from "next/head";
 
-import Page from "components/page";
 import MyCalendar from "components/new-calendar/test2";
 import { FrontOfficeAPI } from "lib/api/front-office";
 import { RoomStatus1SWR } from "lib/api/room-status";
@@ -31,7 +30,7 @@ const Index = () => {
         <title>{title}</title>
       </Head>
 
-      <Page>
+      <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
         {workingDate && (
           <MyCalendar //@ts-ignore
             workingDate={workingDate}
@@ -39,8 +38,9 @@ const Index = () => {
         )}
 
         {/* {workingDate && <HandsOnTable workingDate={workingDate} />} */}
+      </div>
 
-        {/* <Grid container direction="row" className="mt-2">
+      {/* <Grid container direction="row" className="mt-2">
                         <Grid
                             item
                             xs={12}
@@ -94,7 +94,6 @@ const Index = () => {
                                 ))}
                         </Grid>
                     </Grid> */}
-      </Page>
     </>
   );
 };

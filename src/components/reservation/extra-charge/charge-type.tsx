@@ -1,7 +1,9 @@
-import { Checkbox, TextField } from "@mui/material";
+import { Checkbox, TextField, IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useIntl } from "react-intl";
 import { Box } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import { listUrl } from "lib/api/front-office";
 import { formatNumber } from "lib/utils/helpers";
@@ -158,35 +160,64 @@ const ExtraCharge = ({ entity, setEntity, register, errors, chargeType }: any) =
         element: any,
         dataIndex: any
       ) {
+        const handleQuantityChange = (newValue: number) => {
+          let tempEntity = [...entity];
+          tempEntity[dataIndex].BaseRate = Math.max(0, newValue);
+          tempEntity[dataIndex].Total =
+            tempEntity[dataIndex].RoomChargeTypeRate *
+            tempEntity[dataIndex].BaseRate;
+          setEntity(tempEntity);
+        };
+
         return (
-          <TextField
-            size="small"
-            fullWidth
-            disabled={
-              entity &&
-              entity[dataIndex] &&
-              !entity[dataIndex].isChecked
-            }
-            value={
-              entity &&
-              entity[dataIndex] &&
-              formatNumber(entity[dataIndex].BaseRate)
-            }
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="dense"
-            onChange={(evt: any) => {
-              let tempEntity = [...entity];
-              tempEntity[dataIndex].BaseRate = parseFloat(
-                evt.target.value.replace(/[^0-9.]/g, "")
-              );
-              tempEntity[dataIndex].Total =
-                tempEntity[dataIndex].RoomChargeTypeRate *
-                tempEntity[dataIndex].BaseRate;
-              setEntity(tempEntity);
-            }}
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton
+              size="small"
+              disabled={
+                entity &&
+                entity[dataIndex] &&
+                (!entity[dataIndex].isChecked || entity[dataIndex].BaseRate <= 0)
+              }
+              onClick={() => handleQuantityChange((entity[dataIndex]?.BaseRate || 0) - 1)}
+            >
+              <RemoveIcon fontSize="small" />
+            </IconButton>
+            <TextField
+              size="small"
+              sx={{ width: '80px' }}
+              disabled={
+                entity &&
+                entity[dataIndex] &&
+                !entity[dataIndex].isChecked
+              }
+              value={
+                entity &&
+                entity[dataIndex] &&
+                formatNumber(entity[dataIndex].BaseRate)
+              }
+              InputLabelProps={{
+                shrink: true,
+              }}
+              margin="dense"
+              onChange={(evt: any) => {
+                const newValue = parseFloat(
+                  evt.target.value.replace(/[^0-9.]/g, "")
+                );
+                handleQuantityChange(isNaN(newValue) ? 0 : newValue);
+              }}
+            />
+            <IconButton
+              size="small"
+              disabled={
+                entity &&
+                entity[dataIndex] &&
+                !entity[dataIndex].isChecked
+              }
+              onClick={() => handleQuantityChange((entity[dataIndex]?.BaseRate || 0) + 1)}
+            >
+              <AddIcon fontSize="small" />
+            </IconButton>
+          </Box>
         );
       },
     },

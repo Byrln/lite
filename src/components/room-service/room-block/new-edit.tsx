@@ -1,17 +1,18 @@
 import { Controller, useForm } from "react-hook-form";
-import { FormControlLabel, TextField, Grid, Checkbox } from "@mui/material";
+import { FormControlLabel, TextField, Grid, Checkbox, Box } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState, useEffect } from "react";
 import moment from "moment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useIntl } from "react-intl";
+import { toast } from "react-toastify";
+import { mutate } from "swr";
 import NewEditForm from "components/common/new-edit-form";
 import { RoomBlockAPI, listUrl } from "lib/api/room-block";
 import { useAppState } from "lib/context/app";
-import RoomSelect from "components/select/room";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ReasonSelect from "components/select/reason";
 import RoomTypeSelect from "components/select/room-type";
 import { dateToSimpleFormat } from "lib/utils/format-time";
@@ -19,10 +20,9 @@ import { RoomAPI } from "lib/api/room";
 import SubmitButton from "components/common/submit-button";
 
 const validationSchema = yup.object().shape({
-  // RoomID: yup.string().required("Бөглөнө үү"),
-  BeginDate: yup.string().required("Бөглөнө үү"),
-  EndDate: yup.string().required("Бөглөнө үү"),
-  ReasonID: yup.string().required("Бөглөнө үү"),
+  BeginDate: yup.date().required("Begin date is required"),
+  EndDate: yup.date().required("End date is required"),
+  ReasonID: yup.number().required("Reason is required"),
   RoomTypeID: yup.number().nullable().notRequired(),
 });
 
@@ -42,103 +42,108 @@ const NewEdit = ({ workingDate }: any) => {
     handleSubmit,
     control,
     formState: { errors },
-    resetField,
+    setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      BeginDate: moment(defaultStartDate).format("YYYY-MM-DD"),
-      EndDate: moment(defaultEndDate).format("YYYY-MM-DD")
+      BeginDate: defaultStartDate,
+      EndDate: defaultEndDate,
+      ReasonID: null,
+      RoomTypeID: null,
     }
   });
 
-  const [baseStay, setBaseStay]: any = useState({
-    TransactionID: 0,
-    roomType: {
-      RoomTypeID: 0
-    },
-    dateStart: defaultStartDate,
-    dateEnd: defaultEndDate,
-    nights: 1,
-    room: {
-      RoomID: null,
-    },
-  });
+  const watchedBeginDate = watch("BeginDate");
+  const watchedEndDate = watch("EndDate");
 
-  const onRoomChange = (r: any, index?: any) => {
-    setBaseStay({
-      ...baseStay,
-      room: r,
-    });
-  };
+  const [selectedRoomType, setSelectedRoomType] = useState<any>(null);
+  const [selectedRooms, setSelectedRooms] = useState<{[key: number]: boolean}>({});
 
-  const onRoomTypeChange = (rt: any, index?: number) => {
-    setBaseStay({
-      ...baseStay,
-      roomType: rt,
-    });
+  const onRoomTypeChange = (roomTypeId: number) => {
+    setSelectedRoomType(roomTypeId);
+    setValue("RoomTypeID", roomTypeId as any);
+    setSelectedRooms({}); // Clear selected rooms when room type changes
   };
 
   const fetchRooms = async () => {
-    if (
-      !(
-        baseStay &&
-        baseStay.roomType &&
-        baseStay.dateStart &&
-        baseStay.dateEnd
-      )
-    ) {
+    if (!selectedRoomType || !watchedBeginDate || !watchedEndDate) {
+      setData([]);
       return;
     }
-    var values = {
-      TransactionID: baseStay.TransactionID,
-      RoomTypeID:
-        baseStay.roomType?.RoomTypeID === 0 || baseStay.roomType?.RoomTypeID === "all"
-          ? 0
-          : baseStay.roomType?.RoomTypeID || 0,
-      StartDate: dateToSimpleFormat(baseStay.dateStart),
-      EndDate: dateToSimpleFormat(baseStay.dateEnd),
-    };
-    var d = await RoomAPI.listAvailable(values);
-    setData(d);
+    
+    try {
+      const values = {
+        TransactionID: 0,
+        RoomTypeID: selectedRoomType === "all" ? 0 : selectedRoomType,
+        StartDate: dateToSimpleFormat(watchedBeginDate),
+        EndDate: dateToSimpleFormat(watchedEndDate),
+      };
+      const roomData = await RoomAPI.listAvailable(values);
+      setData(roomData || []);
+    } catch (error) {
+      console.error("Error fetching rooms:", error);
+      setData([]);
+    }
   };
 
   useEffect(() => {
     fetchRooms();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [baseStay.roomType, baseStay.dateStart, baseStay.dateEnd]);
+  }, [selectedRoomType, watchedBeginDate, watchedEndDate]);
 
   const customSubmit = async (values: any) => {
+    setLoading(true);
     try {
-      // Process room blocks sequentially to avoid database deadlocks
-      if (data && data.length > 0) {
-        for (const room of data) {
-          const isChecked = values.RoomID && values.RoomID[room.RoomID];
-          if (isChecked) {
-            const tempValues = {
-              RoomID: room.RoomID,
-              BeginDate: values.BeginDate,
-              EndDate: values.EndDate,
-              ReasonID: values.ReasonID,
-            };
-            await RoomBlockAPI.new(tempValues);
-          }
+      const selectedRoomIds = Object.keys(selectedRooms).filter(roomId => selectedRooms[parseInt(roomId)]);
+      
+      if (selectedRoomIds.length === 0) {
+        toast.error("Please select at least one room");
+        return;
+      }
+
+      // Process room blocks sequentially according to Lite API specification
+      for (const roomId of selectedRoomIds) {
+        const blockData = {
+          RoomID: parseInt(roomId),
+          BeginDate: dateToSimpleFormat(values.BeginDate),
+          EndDate: dateToSimpleFormat(values.EndDate),
+          ReasonID: values.ReasonID,
+        };
+        
+        const response = await RoomBlockAPI.new(blockData);
+        
+        if (response.status !== 200 || !response.data.Status) {
+          toast.error(`Failed to block room: ${response.data.Message || 'Unknown error'}`);
+          return;
         }
       }
+      
+      toast.success(`Successfully blocked ${selectedRoomIds.length} room(s)`);
+      
+      // Refresh the room block list
+      mutate([listUrl, JSON.stringify({
+        StartDate: dateToSimpleFormat(values.BeginDate),
+        EndDate: dateToSimpleFormat(values.EndDate),
+        RoomBlockID: 0,
+        RoomID: 0
+      })]);
+      
+      // Reset form
+      reset();
+      setSelectedRooms({});
+      setData([]);
+      
+    } catch (error) {
+      console.error("Error creating room blocks:", error);
+      toast.error("Failed to create room blocks");
     } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <NewEditForm
-      api={RoomBlockAPI}
-      listUrl={listUrl}
-      additionalValues={{
-        RoomBlockID: state.editId,
-      }}
-      reset={reset}
-      handleSubmit={handleSubmit}
-      customSubmit={customSubmit}
-    >
+    <Box component="form" onSubmit={handleSubmit(customSubmit)}>
       <LocalizationProvider // @ts-ignore
         dateAdapter={AdapterDateFns} // @ts-ignore
       >
@@ -156,36 +161,24 @@ const NewEdit = ({ workingDate }: any) => {
             <Controller
               name="BeginDate"
               control={control}
-              defaultValue={moment(defaultStartDate).format("YYYY-MM-DD")}
               render={({ field: { onChange, value } }) => (
                 <DatePicker
                   label={intl.formatMessage({
                     id: "RowHeaderBeginDate",
                   })}
                   value={value}
-                  maxDate={baseStay.dateEnd || undefined}
-                  onChange={(value) => {
-                    const formattedDate = moment(value).format("YYYY-MM-DD");
-                    onChange(formattedDate);
-                    setBaseStay({
-                      ...baseStay,
-                      dateStart: value
-                    });
+                  maxDate={watchedEndDate || undefined}
+                  onChange={(newValue) => {
+                    onChange(newValue);
                   }}
                   renderInput={(params) => (
                     <TextField
                       size="small"
-                      id="RowHeaderBeginDate"
-                      label={intl.formatMessage({
-                        id: "RowHeaderBeginDate",
-                      })}
-                      {...register("BeginDate")}
                       margin="dense"
                       fullWidth
                       {...params}
-                      error={!!errors.BeginDate?.message}
-                      helperText={
-                        errors.BeginDate?.message as string}
+                      error={!!errors.BeginDate}
+                      helperText={errors.BeginDate?.message as string}
                     />
                   )}
                 />
@@ -196,32 +189,23 @@ const NewEdit = ({ workingDate }: any) => {
             <Controller
               name="EndDate"
               control={control}
-              defaultValue={moment(defaultEndDate).format("YYYY-MM-DD")}
               render={({ field: { onChange, value } }) => (
                 <DatePicker
                   label={intl.formatMessage({
                     id: "RowHeaderEndDate",
                   })}
-                  {...register("EndDate")}
                   value={value}
-                  minDate={baseStay.dateStart || undefined}
-                  onChange={(value) => {
-                    const formattedDate = moment(value).format("YYYY-MM-DD");
-                    onChange(formattedDate);
-                    setBaseStay({
-                      ...baseStay,
-                      dateEnd: value
-                    });
+                  minDate={watchedBeginDate || undefined}
+                  onChange={(newValue) => {
+                    onChange(newValue);
                   }}
                   renderInput={(params) => (
                     <TextField
                       size="small"
-                      id="EndDate"
-                      {...register("EndDate")}
                       margin="dense"
                       fullWidth
                       {...params}
-                      error={!!errors.EndDate?.message}
+                      error={!!errors.EndDate}
                       helperText={errors.EndDate?.message as string}
                     />
                   )}
@@ -239,43 +223,46 @@ const NewEdit = ({ workingDate }: any) => {
         </Grid>
         <Grid item xs={12}>
           <RoomTypeSelect
-            searchRoomTypeID={baseStay?.roomType?.RoomTypeID || 0}
-            setSearchRoomTypeID={(id) => {
-              const roomType = { RoomTypeID: id };
-              setBaseStay((prev: any) => ({
-                ...prev,
-                roomType
-              }));
-              onRoomTypeChange && onRoomTypeChange(roomType);
-            }}
+            searchRoomTypeID={selectedRoomType || 0}
+            setSearchRoomTypeID={onRoomTypeChange}
           />
         </Grid>
+        {data && data.length > 0 && (
+          <Grid item xs={12}>
+            <Box sx={{ mt: 2, mb: 1 }}>
+              <strong>Available Rooms:</strong>
+            </Box>
+          </Grid>
+        )}
         {data &&
-          data.map((room: any, index: any) => {
+          data.map((room: any) => {
             return (
-              <Grid item xs={6} sm={3} key={room.RoomID}>
+              <Grid item xs={6} sm={4} md={3} key={room.RoomID}>
                 <FormControlLabel
                   control={
-                    <Controller
-                      name={`RoomID.${room.RoomID}` as any}
-                      control={control}
-                      render={({ field: { onChange, value } }) => (
-                        <Checkbox
-                          key={`RoomID.${room.RoomID}`}
-                          checked={value || false}
-                          onChange={onChange}
-                        />
-                      )}
+                    <Checkbox
+                      checked={selectedRooms[room.RoomID] || false}
+                      onChange={(e) => {
+                        setSelectedRooms(prev => ({
+                          ...prev,
+                          [room.RoomID]: e.target.checked
+                        }));
+                      }}
                     />
                   }
-                  label={room.RoomFullName}
+                  label={room.RoomFullName || room.RoomNo}
                 />
               </Grid>
             );
           })}
         </Grid>
+        <Grid item xs={12}>
+          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+            <SubmitButton loading={loading} />
+          </Box>
+        </Grid>
       </LocalizationProvider>
-    </NewEditForm>
+    </Box>
   );
 };
 

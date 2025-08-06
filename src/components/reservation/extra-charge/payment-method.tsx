@@ -1,7 +1,9 @@
-import { Checkbox, TextField, Box } from "@mui/material";
+import { Checkbox, TextField, Box, IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
 import { listUrl } from "lib/api/front-office";
 import { useIntl } from "react-intl";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 import { formatNumber } from "lib/utils/helpers";
 import { PaymentMethodAPI } from "lib/api/payment-method";
@@ -140,32 +142,39 @@ const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
         element: any,
         dataIndex: any
       ) {
+        const handleAmountChange = (newValue: number) => {
+          let tempEntity = [...entity];
+          tempEntity[dataIndex].Amount = Math.max(0, newValue);
+          setEntity(tempEntity);
+        };
+
         return (
-          <TextField
-            size="small"
-            fullWidth
-            disabled={
-              entity &&
-              entity[dataIndex] &&
-              !entity[dataIndex].isChecked
-            }
-            value={
-              entity &&
-              entity[dataIndex] &&
-              formatNumber(entity[dataIndex].Amount)
-            }
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="dense"
-            onChange={(evt: any) => {
-              let tempEntity = [...entity];
-              tempEntity[dataIndex].Amount = parseFloat(
-                evt.target.value.replace(/[^0-9.]/g, "")
-              );
-              setEntity(tempEntity);
-            }}
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <TextField
+              size="small"
+              sx={{ width: '120px' }}
+              disabled={
+                entity &&
+                entity[dataIndex] &&
+                !entity[dataIndex].isChecked
+              }
+              value={
+                entity &&
+                entity[dataIndex] &&
+                formatNumber(entity[dataIndex].Amount)
+              }
+              InputLabelProps={{
+                shrink: true,
+              }}
+              margin="dense"
+              onChange={(evt: any) => {
+                const newValue = parseFloat(
+                  evt.target.value.replace(/[^0-9.]/g, "")
+                );
+                handleAmountChange(isNaN(newValue) ? 0 : newValue);
+              }}
+            />
+          </Box>
         );
       },
     },
@@ -184,30 +193,8 @@ const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
         datagrid={false}
         hasPrint={false}
         hasExcel={false}
-        customHeight="651px"
+        customHeight="395px"
       />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          flexWrap: "wrap",
-          flexDirection: "row-reverse",
-        }}
-        className="mb-1"
-      >
-        <div className="px-3">
-          Нийт:
-          {entity &&
-            formatPrice(
-              entity.reduce(
-                (acc: any, obj: any) =>
-                  acc + (obj.Amount ? obj.Amount : 0),
-                0
-              )
-            )}
-        </div>
-      </Box>
     </>
   );
 };

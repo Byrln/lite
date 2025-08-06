@@ -89,6 +89,7 @@ export default function ChargeFormArray({
     resetField,
     handleSubmit,
     control,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -137,7 +138,7 @@ export default function ChargeFormArray({
             </Typography>
           </Box>
 
-          <Card elevation={1} sx={{ mb: 3 }}>
+          <Card elevation={1} sx={{ mb: 2 }}>
             <CardContent sx={{ pb: 2 }}>
               <Grid container spacing={3} alignItems="center">
                 <Grid item xs={12} sm={6}>
@@ -172,19 +173,15 @@ export default function ChargeFormArray({
                         <Checkbox
                           checked={chekedTrue}
                           onChange={handleChekbox}
-                          sx={{
-                            '& .MuiSvgIcon-root': { fontSize: 20 },
-                            color: 'primary.main',
-                          }}
+                          size="small"
+                          icon={<EditIcon fontSize="small" />}
+                          checkedIcon={<EditIcon fontSize="small" color="primary" />}
                         />
                       }
                       label={
-                        <Stack direction="row" spacing={1} alignItems="center">
-                          <EditIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
-                          <Typography variant="body2" fontWeight={500}>
-                            Огноо өөрчлөх
-                          </Typography>
-                        </Stack>
+                        <Typography variant="body2" fontWeight={400}>
+                          Огноо өөрчлөх
+                        </Typography>
                       }
                     />
                   </Box>
@@ -227,6 +224,8 @@ export default function ChargeFormArray({
                       FolioID={FolioID}
                       TransactionID={TransactionID}
                       resetField={resetField}
+                      append={append}
+                      getValues={getValues}
                     />
                   </CardContent>
                 </Card>

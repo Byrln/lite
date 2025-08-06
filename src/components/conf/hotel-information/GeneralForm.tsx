@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { Box, Grid, TextField, CircularProgress } from "@mui/material";
+import { Box, Grid, TextField, CircularProgress, Typography, Paper, Divider } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,6 +9,7 @@ import { useIntl } from "react-intl";
 import { HotelAPI } from "lib/api/hotel";
 import SubmitButton from "components/common/submit-button";
 import ReferenceSelect from "components/select/reference";
+import HotelRatingSelect from "components/select/hotel-rating";
 import CustomTab from "components/common/custom-tab";
 import CustomUpload from "components/common/custom-upload";
 
@@ -37,8 +38,56 @@ const GeneralForm = ({ setHasData = null }: any) => {
   const [loadingData, setLoadingData] = useState(true);
   const [data, setData] = useState({ Logo: null });
   const [loading, setLoading] = useState(false);
+
+  const textFieldSx = {
+    mb: 2,
+    '& .MuiOutlinedInput-root': {
+      borderRadius: 2,
+      '&:hover fieldset': {
+        borderColor: '#1976d2',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#1976d2',
+      },
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: '#1976d2',
+    },
+  };
+
+  const textAreaSx = {
+    '& .MuiOutlinedInput-root': {
+      borderRadius: 2,
+      '&:hover fieldset': {
+        borderColor: '#1976d2',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#1976d2',
+      },
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: '#1976d2',
+    },
+  };
+
+  const selectSx = {
+    mb: 2,
+    '& .MuiOutlinedInput-root': {
+      borderRadius: 2,
+      '&:hover fieldset': {
+        borderColor: '#1976d2',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#1976d2',
+      },
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: '#1976d2',
+    },
+  };
   const {
     register,
+    control,
     reset,
     handleSubmit,
     formState: { errors },
@@ -87,229 +136,247 @@ const GeneralForm = ({ setHasData = null }: any) => {
       <CircularProgress color="info" />
     </Grid>
   ) : (
-    <>
+    <Box sx={{ p: 4, backgroundColor: '#f8f9fa' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={1}>
-          <Grid item xs={4}>
-            <TextField
-              size="small"
-              disabled
-              fullWidth
-              id="HotelCode"
-              label={intl.formatMessage({ id: "HotelCode" })}
-              {...register("HotelCode")}
-              margin="dense"
-              error={!!errors.HotelCode?.message}
-              helperText={errors.HotelCode?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="HotelName"
-              label={intl.formatMessage({ id: "MsgHotelName" })}
-              {...register("HotelName")}
-              margin="dense"
-              error={!!errors.HotelName?.message}
-              helperText={errors.HotelName?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="CompanyName"
-              label={intl.formatMessage({
-                id: "TextCompanyName",
-              })}
-              {...register("CompanyName")}
-              margin="dense"
-              error={!!errors.CompanyName?.message}
-              helperText={errors.CompanyName?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="RegistryNo"
-              label={intl.formatMessage({ id: "TextRegisterNo" })}
-              {...register("RegistryNo")}
-              margin="dense"
-              error={!!errors.RegistryNo?.message}
-              helperText={errors.RegistryNo?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="ReceptionPhone"
-              label={intl.formatMessage({
-                id: "RowHeaderReceptionPhone",
-              })}
-              {...register("ReceptionPhone")}
-              margin="dense"
-              error={!!errors.ReceptionPhone?.message}
-              helperText={errors.ReceptionPhone?.message as string}
-            />
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={4}>
+            <Paper elevation={2} sx={{ p: 3, height: 'fit-content', borderRadius: 2 }}>
+              <Typography variant="h6" sx={{
+                mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center'
+              }}>
+                Basic Information
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+              <TextField
+                size="small"
+                disabled
+                fullWidth
+                id="HotelCode"
+                label={intl.formatMessage({ id: "HotelCode" })}
+                {...register("HotelCode")}
+                margin="dense"
+                error={!!errors.HotelCode?.message}
+                helperText={errors.HotelCode?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="HotelName"
+                label={intl.formatMessage({ id: "MsgHotelName" })}
+                {...register("HotelName")}
+                margin="dense"
+                error={!!errors.HotelName?.message}
+                helperText={errors.HotelName?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="CompanyName"
+                label={intl.formatMessage({
+                  id: "TextCompanyName",
+                })}
+                {...register("CompanyName")}
+                margin="dense"
+                error={!!errors.CompanyName?.message}
+                helperText={errors.CompanyName?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="RegistryNo"
+                label={intl.formatMessage({ id: "TextRegisterNo" })}
+                {...register("RegistryNo")}
+                margin="dense"
+                error={!!errors.RegistryNo?.message}
+                helperText={errors.RegistryNo?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="ReceptionPhone"
+                label={intl.formatMessage({
+                  id: "RowHeaderReceptionPhone",
+                })}
+                {...register("ReceptionPhone")}
+                margin="dense"
+                error={!!errors.ReceptionPhone?.message}
+                helperText={errors.ReceptionPhone?.message as string}
+                sx={textFieldSx}
+              />
+            </Paper>
           </Grid>
-          <Grid item xs={4}>
-            <TextField
-              size="small"
-              fullWidth
-              id="Address1"
-              label={intl.formatMessage({ id: "TextAddress1" })}
-              {...register("Address1")}
-              margin="dense"
-              error={!!errors.Address1?.message}
-              helperText={errors.Address1?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="Address2"
-              label={intl.formatMessage({ id: "TextAddress2" })}
-              {...register("Address2")}
-              margin="dense"
-              error={!!errors.Address2?.message}
-              helperText={errors.Address2?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="City"
-              label={intl.formatMessage({ id: "TextCity" })}
-              {...register("City")}
-              margin="dense"
-              error={!!errors.City?.message}
-              helperText={errors.City?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="State"
-              label={intl.formatMessage({
-                id: "TextState",
-              })}
-              {...register("State")}
-              margin="dense"
-              error={!!errors.State?.message}
-              helperText={errors.State?.message as string}
-            />
-            <ReferenceSelect
-              register={register}
-              errors={errors}
-              type="Country"
-              label={intl.formatMessage({ id: "ReportCountry" })}
-              {...register("ReportCountry")}
-              optionValue="CountryID"
-              optionLabel="CountryName"
-            />
+          <Grid item xs={12} md={4}>
+            <Paper elevation={2} sx={{ p: 3, height: 'fit-content', borderRadius: 2 }}>
+              <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center' }}>
+                Address Information
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+              <TextField
+                size="small"
+                fullWidth
+                id="Address1"
+                label={intl.formatMessage({ id: "TextAddress1" })}
+                {...register("Address1")}
+                margin="dense"
+                error={!!errors.Address1?.message}
+                helperText={errors.Address1?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="Address2"
+                label={intl.formatMessage({ id: "TextAddress2" })}
+                {...register("Address2")}
+                margin="dense"
+                error={!!errors.Address2?.message}
+                helperText={errors.Address2?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="City"
+                label={intl.formatMessage({ id: "TextCity" })}
+                {...register("City")}
+                margin="dense"
+                error={!!errors.City?.message}
+                helperText={errors.City?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="State"
+                label={intl.formatMessage({
+                  id: "TextState",
+                })}
+                {...register("State")}
+                margin="dense"
+                error={!!errors.State?.message}
+                helperText={errors.State?.message as string}
+                sx={textFieldSx}
+              />
+              <ReferenceSelect
+                register={register}
+                errors={errors}
+                type="Country"
+                label={intl.formatMessage({ id: "ReportCountry" })}
+                name="CountryID"
+                optionValue="CountryID"
+                optionLabel="CountryName"
+              />
+            </Paper>
           </Grid>
-          <Grid item xs={4}>
-            <TextField
-              size="small"
-              fullWidth
-              id="ReservePhone"
-              label={intl.formatMessage({ id: "ReservePhone" })}
-              {...register("ReservePhone")}
-              margin="dense"
-              error={!!errors.ReservePhone?.message}
-              helperText={errors.ReservePhone?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="ReserveEmail"
-              label={intl.formatMessage({ id: "ReportEmail" })}
-              {...register("ReserveEmail")}
-              margin="dense"
-              error={!!errors.ReserveEmail?.message}
-              helperText={errors.ReserveEmail?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="HotelType"
-              label={intl.formatMessage({ id: "HotelType" })}
-              {...register("HotelType")}
-              margin="dense"
-              error={!!errors.HotelType?.message}
-              helperText={errors.HotelType?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="Website"
-              label={intl.formatMessage({ id: "Website" })}
-              {...register("Website")}
-              margin="dense"
-              error={!!errors.Website?.message}
-              helperText={errors.Website?.message as string}
-            />
-            <TextField
-              size="small"
-              fullWidth
-              id="HotelRating"
-              label={intl.formatMessage({ id: "HotelRating" })}
-              {...register("HotelRating")}
-              margin="dense"
-              error={!!errors.HotelRating?.message}
-              helperText={errors.HotelRating?.message as string}
-            />
-            {/* HotelRatingID */}
+          <Grid item xs={12} md={4}>
+            <Paper elevation={2} sx={{ p: 3, height: 'fit-content', borderRadius: 2 }}>
+              <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center' }}>
+                Contact & Details
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+              <TextField
+                size="small"
+                fullWidth
+                id="ReservePhone"
+                label={intl.formatMessage({ id: "ReservePhone" })}
+                {...register("ReservePhone")}
+                margin="dense"
+                error={!!errors.ReservePhone?.message}
+                helperText={errors.ReservePhone?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="ReserveEmail"
+                label={intl.formatMessage({ id: "ReportEmail" })}
+                {...register("ReserveEmail")}
+                margin="dense"
+                error={!!errors.ReserveEmail?.message}
+                helperText={errors.ReserveEmail?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="HotelType"
+                label={intl.formatMessage({ id: "HotelType" })}
+                {...register("HotelType")}
+                margin="dense"
+                error={!!errors.HotelType?.message}
+                helperText={errors.HotelType?.message as string}
+                sx={textFieldSx}
+              />
+              <TextField
+                size="small"
+                fullWidth
+                id="Website"
+                label={intl.formatMessage({ id: "Website" })}
+                {...register("Website")}
+                margin="dense"
+                error={!!errors.Website?.message}
+                helperText={errors.Website?.message as string}
+                sx={textFieldSx}
+              />
+              <HotelRatingSelect
+                control={control}
+                errors={errors}
+                sx={selectSx}
+              />
+            </Paper>
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              size="small"
-              fullWidth
-              multiline
-              rows={10}
-              id="HotelPolicy"
-              label={intl.formatMessage({ id: "HotelPolicy" })}
-              {...register("HotelPolicy")}
-              margin="dense"
-              error={!!errors.HotelPolicy?.message}
-              helperText={errors.HotelPolicy?.message as string}
-            />
+          <Grid item xs={12} md={6}>
+            <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
+              <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center' }}>
+                Hotel Policy
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+              <TextField
+                size="small"
+                fullWidth
+                multiline
+                rows={12}
+                id="HotelPolicy"
+                label={intl.formatMessage({ id: "HotelPolicy" })}
+                {...register("HotelPolicy")}
+                margin="dense"
+                error={!!errors.HotelPolicy?.message}
+                helperText={errors.HotelPolicy?.message as string}
+                sx={textAreaSx}
+              />
+            </Paper>
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              size="small"
-              fullWidth
-              multiline
-              rows={10}
-              id="CancelPolicy"
-              label={intl.formatMessage({ id: "CancelPolicy" })}
-              {...register("CancelPolicy")}
-              margin="dense"
-              error={!!errors.CancelPolicy?.message}
-              helperText={errors.CancelPolicy?.message as string}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            {/* <CustomUpload
-                                    IsLogo={true}
-                                    Layout="vertical"
-                                    id="logoPic"
-                                /> */}
+          <Grid item xs={12} md={6}>
+            <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
+              <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center' }}>
+                Cancellation Policy
+              </Typography>
+              <Divider sx={{ mb: 3 }} />
+              <TextField
+                size="small"
+                fullWidth
+                multiline
+                rows={12}
+                id="CancelPolicy"
+                label={intl.formatMessage({ id: "CancelPolicy" })}
+                {...register("CancelPolicy")}
+                margin="dense"
+                error={!!errors.CancelPolicy?.message}
+                helperText={errors.CancelPolicy?.message as string}
+                sx={textAreaSx}
+              />
+            </Paper>
           </Grid>
         </Grid>
-        <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, height: "70px", mb: 2 }}>
           <SubmitButton loading={loading} fullWidth={false} />
-        </div>
+        </Box>
       </form>
-      <br />
-      <Box sx={{ width: "100%" }}>
-        <label>Компаний лого</label>
-        <CustomUpload IsLogo={true} Layout="vertical" id="logoPic" />
-        {data?.Logo ? (
-          <Box sx={{ width: "80%" }}>
-            <img //@ts-ignore
-              src={data?.Logo} //@ts-ignore
-            />
-          </Box>
-        ) : (
-          <Box sx={{ width: "80%" }}>
-            <img src={"/images/noimage.png"} />
-          </Box>
-        )}
-      </Box>
-    </>
+    </Box >
   );
 };
 
