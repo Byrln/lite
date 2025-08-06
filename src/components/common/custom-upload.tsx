@@ -251,7 +251,7 @@ const CustomUpload = ({
 
             {errors.file && (
               <Alert severity="error" sx={{ mt: 2, textAlign: 'left' }}>
-                {errors.file.message}
+                {String(typeof errors.file === 'string' ? errors.file : errors.file.message || 'File upload error')}
               </Alert>
             )}
           </CardContent>

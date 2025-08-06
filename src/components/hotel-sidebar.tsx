@@ -9,6 +9,7 @@ import { Icon } from "@iconify/react"
 import type { IconifyProps } from "@/components/iconify/types"
 
 import { NavMain } from "@/components/nav-main"
+import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
@@ -24,7 +25,7 @@ import sidebarConfig from "@/components/layouts/dashboard/sidebar-config"
 
 function transformSidebarConfig(config: any[], intl: any) {
   const locale = intl.locale || 'mon'
-  
+
   return config.map((item) => {
     // item.icon is now an object with name and color from getIcon function
     const iconData = item.icon || { name: "lucide:square-terminal", color: undefined }
@@ -60,9 +61,26 @@ export function HotelSidebar({ sideBarData, ...props }: HotelSidebarProps) {
   const intl = useIntl()
   const router = useRouter()
   const { data: session } = useSession()
+  const [sidebarMode, setSidebarMode] = React.useState<'front-office' | 'configuration'>('front-office')
 
   const configToUse = sideBarData || sidebarConfig
-  const navItems = transformSidebarConfig(configToUse, intl)
+
+  // Filter sidebar items based on current mode
+  const filteredConfig = React.useMemo(() => {
+    if (sidebarMode === 'configuration') {
+      // Show only configuration items
+      return configToUse.filter(item =>
+        item.titleEn === 'Configuration' || item.title === 'тохиргоо'
+      )
+    } else {
+      // Show all items except configuration
+      return configToUse.filter(item =>
+        item.titleEn !== 'Configuration' && item.title !== 'тохиргоо'
+      )
+    }
+  }, [configToUse, sidebarMode])
+
+  const navItems = transformSidebarConfig(filteredConfig, intl)
 
   const username = React.useMemo(() => {
     if (typeof window !== 'undefined') {
@@ -98,13 +116,16 @@ export function HotelSidebar({ sideBarData, ...props }: HotelSidebarProps) {
       <SidebarHeader className="bg-[#1a1f38] text-white">
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
-      <SidebarContent className="bg-[#1a1f38] text-white border-t-2 border-gray-500">
+      <SidebarContent className="bg-[#1a1f38] text-white border-t-2 border-gray-500 flex flex-col justify-between">
         <NavMain items={navItems} />
+        <NavSecondary
+          currentMode={sidebarMode}
+          onModeChange={setSidebarMode}
+        />
       </SidebarContent>
       <SidebarFooter className="bg-[#1a1f38] text-white border-t-2 border-gray-500">
         <NavUser user={data.user} />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   )
 }

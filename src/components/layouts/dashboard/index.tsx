@@ -69,6 +69,36 @@ function DashboardContent({ children }: any) {
 
   const isHandsontablePage = router.pathname.includes('/handsontable')
 
+  // Refresh function for handsontable pages
+  const handleRefresh = () => {
+    if (isHandsontablePage && !isCalendarLoading) {
+      setIsCalendarLoading(true)
+      setRerenderKey((prevKey) => prevKey + 1)
+      setTimeout(() => {
+        setIsCalendarLoading(false)
+      }, 1000)
+    }
+  }
+
+  // Keyboard shortcut for refresh (Ctrl/Cmd + R) - only on handsontable pages
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        isHandsontablePage &&
+        event.key === 'r' &&
+        (event.metaKey || event.ctrlKey) &&
+        !event.shiftKey &&
+        !event.altKey
+      ) {
+        event.preventDefault()
+        handleRefresh()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isHandsontablePage, isCalendarLoading])
+
   useEffect(() => {
     setModifierKey(getModifierKey())
   }, [])
@@ -186,17 +216,11 @@ function DashboardContent({ children }: any) {
             {isHandsontablePage && (
               <div className="flex gap-2 items-center">
                 <Button
-                  onClick={() => {
-                    setIsCalendarLoading(true);
-                    setRerenderKey((prevKey) => prevKey + 1);
-                    setTimeout(() => {
-                      setIsCalendarLoading(false);
-                    }, 1000);
-                  }}
+                  onClick={handleRefresh}
                   disabled={isCalendarLoading}
                   variant="ghost"
                   size="sm"
-                  className="relative h-8 xl:h-9 w-full px-2 border border-[#804FE6] bg-input hover:bg-[#804FE6] hover:text-white transition-all duration-200 transform hover:scale-105"
+                  className="relative h-8 xl:h-9 w-full px-3 border border-[#804FE6] bg-input hover:bg-[#804FE6] hover:text-white transition-all duration-200 transform hover:scale-105"
                 >
                   <Image
                     src="/images/logo_sm.png"
@@ -205,6 +229,9 @@ function DashboardContent({ children }: any) {
                     height={20}
                     className="w-5 h-3"
                   />
+                  <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex ml-2">
+                    <span className="text-xs">{getModifierKey()}</span>R
+                  </kbd>
                 </Button>
                 <Button
                   variant="ghost"

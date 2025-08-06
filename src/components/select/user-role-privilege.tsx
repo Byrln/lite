@@ -40,10 +40,13 @@ const UserRolePrivilegeSelect = ({
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    mutate(`/api/UserRole/GetPrivileges`, {
-      UserRoleID: UserRoleID,
-      ActionGroupType: 0,
-    });
+    // Only revalidate if UserRoleID is provided and valid
+    if (UserRoleID && UserRoleID > 0) {
+      mutate(`/api/UserRole/GetPrivileges`, {
+        UserRoleID: UserRoleID,
+        ActionGroupType: 0,
+      });
+    }
   }, [UserRoleID]);
 
   if (!error && !data)
@@ -101,28 +104,68 @@ const UserRolePrivilegeSelect = ({
       <FormGroup>
         <Grid container spacing={1}>
           {permissions &&
-            permissions.map(
-              (element: any, index: number) =>
-                element &&
-                element.GroupType === type && (
-                  <Grid item xs={6} sm={4} md={3}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          ref={title}
-                          {...register("ActionID")}
-                          checked={element.Status}
-                          onChange={handleToggle(
-                            element
-                          )}
-                          value={element.ActionID}
-                        />
-                      }
-                      label={element.ActionName}
-                    />
-                  </Grid>
-                )
-            )}
+            permissions
+              .filter((element: any) => {
+                // List of items to hide based on the image
+                const hiddenItems = [
+                  'Night Audit',
+                  'Departure List',
+                  'House Keeping',
+                  'Edit Checked Out',
+                  'House Status',
+                  'In House Groups',
+                  'Departed Groups',
+                  'Inclusion',
+                  'Merge Guest',
+                  'Accounting',
+                  'Closing Date',
+                  'Group Reservations List',
+                  'Work Order',
+                  'Folio Operation',
+                  'Edit Group',
+                  'Bulk Night Audit',
+                  'Reverse Night Audit',
+                  'User Role',
+                  'Door Lock',
+                  'Accounting',
+                  'Seasons',
+                  'Document Settings',
+                  'Hotel Settings',
+                  'Hotel Configuration',
+                  'Day End Report',
+                  'Notifications',
+                  'History and Forecast',
+                  'Weekly Occupancy',
+                  'Nights report (Monthly)',
+                  'Guest By Country',
+                  'Weekly Reservations',
+                  'Monthly Revenue by Source',
+                  'Arrival or Departure (Daily)'
+                ];
+                return !hiddenItems.includes(element.ActionName);
+              })
+              .map(
+                (element: any, index: number) =>
+                  element &&
+                  element.GroupType === type && (
+                    <Grid item xs={6} sm={4} md={3} key={index}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            ref={title}
+                            {...register("ActionID")}
+                            checked={element.Status}
+                            onChange={handleToggle(
+                              element
+                            )}
+                            value={element.ActionID}
+                          />
+                        }
+                        label={element.ActionName}
+                      />
+                    </Grid>
+                  )
+              )}
         </Grid>
       </FormGroup>
       <FormHelperText error>{errors.ActionID?.message}</FormHelperText>

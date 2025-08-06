@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
-import { Box, Grid, TextField, CircularProgress, Typography, Paper, Divider } from "@mui/material";
+import { useEffect, useState, useContext } from "react";
+import { Box, Grid, TextField, CircularProgress, Typography, Paper, Divider, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,6 +12,11 @@ import ReferenceSelect from "components/select/reference";
 import HotelRatingSelect from "components/select/hotel-rating";
 import CustomTab from "components/common/custom-tab";
 import CustomUpload from "components/common/custom-upload";
+import { ModalContext } from "lib/context/modal";
+import EmailList from "../email/list";
+import NewEdit from "../email/new-edit";
+import ChangePassword from "../email/change-password";
+import { Email, Settings, Lock, Add } from "@mui/icons-material";
 
 const validationSchemaHotel = yup.object().shape({
   HotelCode: yup.string().required("Бөглөнө үү"),
@@ -35,6 +40,7 @@ const validationSchemaHotel = yup.object().shape({
 
 const GeneralForm = ({ setHasData = null }: any) => {
   const intl = useIntl();
+  const { handleModal }: any = useContext(ModalContext);
   const [loadingData, setLoadingData] = useState(true);
   const [data, setData] = useState({ Logo: null });
   const [loading, setLoading] = useState(false);
@@ -144,7 +150,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
               <Typography variant="h6" sx={{
                 mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center'
               }}>
-                Basic Information
+                {intl.formatMessage({ id: "TextBasicInformation" })}
               </Typography>
               <Divider sx={{ mb: 3 }} />
               <TextField
@@ -212,7 +218,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
           <Grid item xs={12} md={4}>
             <Paper elevation={2} sx={{ p: 3, height: 'fit-content', borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center' }}>
-                Address Information
+                {intl.formatMessage({ id: "TextAddressInformation" })}
               </Typography>
               <Divider sx={{ mb: 3 }} />
               <TextField
@@ -275,7 +281,8 @@ const GeneralForm = ({ setHasData = null }: any) => {
           <Grid item xs={12} md={4}>
             <Paper elevation={2} sx={{ p: 3, height: 'fit-content', borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center' }}>
-                Contact & Details
+                {intl.formatMessage({ id: "TextContactAndDetails" })}
+
               </Typography>
               <Divider sx={{ mb: 3 }} />
               <TextField
@@ -332,7 +339,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
           <Grid item xs={12} md={6}>
             <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center' }}>
-                Hotel Policy
+                {intl.formatMessage({ id: "TextHotelPolicy" })}
               </Typography>
               <Divider sx={{ mb: 3 }} />
               <TextField
@@ -353,7 +360,7 @@ const GeneralForm = ({ setHasData = null }: any) => {
           <Grid item xs={12} md={6}>
             <Paper elevation={2} sx={{ p: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold', color: '#804fe6', display: 'flex', alignItems: 'center' }}>
-                Cancellation Policy
+                {intl.formatMessage({ id: "TextCancellationPolicy" })}
               </Typography>
               <Divider sx={{ mb: 3 }} />
               <TextField
@@ -369,6 +376,92 @@ const GeneralForm = ({ setHasData = null }: any) => {
                 helperText={errors.CancelPolicy?.message as string}
                 sx={textAreaSx}
               />
+            </Paper>
+          </Grid>
+          <Grid item xs={20}>
+
+            <Paper className="p-4">
+              {/* Email Management Section */}
+              <Box>
+                <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 'bold', color: '#804fe6' }}>
+                  {intl.formatMessage({ id: "TextEmailConfiguration" })}
+                </Typography>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      startIcon={<Email />}
+                      onClick={() => {
+                        handleModal(
+                          true,
+                          intl.formatMessage({ id: "TextEmailConfigurationList" }),
+                          <EmailList title={intl.formatMessage({ id: "TextEmailConfiguration" })} />
+                        );
+                      }}
+                      sx={{
+                        mb: 1,
+                        borderColor: '#804fe6',
+                        color: '#804fe6',
+                        '&:hover': {
+                          borderColor: '#6a3fb8',
+                          backgroundColor: 'rgba(128, 79, 230, 0.04)'
+                        }
+                      }}
+                    >
+                      {intl.formatMessage({ id: "TextEmailConfigurationList" })}
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      startIcon={<Add />}
+                      onClick={() => {
+                        handleModal(
+                          true,
+                          intl.formatMessage({ id: "TextAddNewEmailConfiguration" }),
+                          <NewEdit />
+                        );
+                      }}
+                      sx={{
+                        borderColor: '#28a745',
+                        color: '#28a745',
+                        '&:hover': {
+                          borderColor: '#218838',
+                          backgroundColor: 'rgba(40, 167, 69, 0.04)'
+                        }
+                      }}
+                    >
+                      {intl.formatMessage({ id: "TextAddNewEmailConfiguration" })}
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      startIcon={<Lock />}
+                      onClick={() => {
+                        handleModal(
+                          true,
+                          intl.formatMessage({ id: "TextChangeEmailPassword" }),
+                          <ChangePassword id={1} />
+                        );
+                      }}
+                      sx={{
+                        borderColor: '#dc3545',
+                        color: '#dc3545',
+                        '&:hover': {
+                          borderColor: '#c82333',
+                          backgroundColor: 'rgba(220, 53, 69, 0.04)'
+                        }
+                      }}
+                    >
+                      {intl.formatMessage({ id: "TextChangeEmailPassword" })}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
             </Paper>
           </Grid>
         </Grid>

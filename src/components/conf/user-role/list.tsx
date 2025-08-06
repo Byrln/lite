@@ -82,6 +82,7 @@ const UserRoleList = ({ title, setHasData = null }: any) => {
                 modalTitle={title}
                 modalContent={<NewEdit />}
                 excelName={title}
+                modalsize="large"
                 search={
                     <CustomSearch
                         listUrl={listUrl}

@@ -429,29 +429,22 @@ const sidebarConfig = [
     icon: getIcon("lucide:settings"),
     children: [
       {
+        title: "зочид буудлын мэдээлэл",
+        titleEn: "Hotel Information",
+        icon: getIcon("lucide:building-2", "#3b82f6"),
+        path: "/conf/hotel-information",
+        oldPath: "",
+      },
+      {
         title: "Ерөнхий тохиргоо",
         titleEn: "General Settings",
         icon: getIcon("lucide:settings-2", "#3b82f6"),
         children: [
           {
-            title: "зочид буудлын мэдээлэл",
-            titleEn: "Hotel Information",
-            icon: getIcon("lucide:building-2", "#3b82f6"),
-            path: "/conf/hotel-information",
-            oldPath: "",
-          },
-          {
             title: "зочид буудлын тохиргоо",
             titleEn: "Hotel Settings",
             icon: getIcon("lucide:settings", "#10b981"),
             path: "/conf/hotel-setting",
-            oldPath: "",
-          },
-          {
-            title: "э-шуудан тохиргоо",
-            titleEn: "Email Configuration",
-            icon: getIcon("lucide:mail", "#f59e0b"),
-            path: "/conf/email",
             oldPath: "",
           },
           // {

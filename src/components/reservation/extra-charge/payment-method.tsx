@@ -48,11 +48,6 @@ const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
 
   const columns = [
     {
-      title: "№",
-      key: "test",
-      dataIndex: "test",
-    },
-    {
       title: "",
       key: "check",
       dataIndex: "check",
@@ -194,6 +189,7 @@ const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
         hasPrint={false}
         hasExcel={false}
         customHeight="395px"
+        showRowNumbers={false}
       />
     </>
   );

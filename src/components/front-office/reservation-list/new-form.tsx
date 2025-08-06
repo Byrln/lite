@@ -117,81 +117,102 @@ const NewEdit = ({
     }
   }, [ArrivalDate, DepartureDate]);
 
-  // Auto-fill all form fields when useDefaultValues changes
   useEffect(() => {
     if (useDefaultValues) {
-      // Set Adult and Child values
+      const currentValues = getValues();
+      const currentDetail = currentValues?.TransactionDetail?.[id];
       const adultValue = RoomType?.BaseAdult || BaseAdult || 1;
       const childValue = RoomType?.BaseChild || BaseChild || 0;
 
-      setSelectedAdult(adultValue);
-      setSelectedChild(childValue);
+      if (!currentDetail?.Adult || currentDetail.Adult === 0) {
+        setSelectedAdult(adultValue);
+        if (typeof setValue === 'function') {
+          setValue(`TransactionDetail[${id}].Adult`, adultValue);
+        }
+      }
 
-      // Update form values
+      if (!currentDetail?.Child || currentDetail.Child === 0) {
+        setSelectedChild(childValue);
+        if (typeof setValue === 'function') {
+          setValue(`TransactionDetail[${id}].Child`, childValue);
+        }
+      }
+
       if (typeof setValue === 'function') {
-        setValue(`TransactionDetail[${id}].Adult`, adultValue);
-        setValue(`TransactionDetail[${id}].Child`, childValue);
-
-        const generateUniqueGuestId = () => {
-          // For the first guest (id=0), return empty string to show just "Зочин"
-          // For subsequent guests, start numbering from 2
-          if (id === 0) {
-            // Check if "Зочин" (without number) already exists
-            try {
-              const allValues = getValues();
-              if (allValues && allValues.TransactionDetail) {
-                for (let i = 0; i < allValues.TransactionDetail.length; i++) {
-                  if (i !== id && allValues.TransactionDetail[i]?.Name === "Зочин") {
-                    // If "Зочин" exists, start numbering from 2
-                    return generateIncrementedId(2, 0, (proposedId) => {
-                      // Use the proposed ID directly without slicing
-                      const proposedName = `Зочин ${proposedId}`;
-                      for (let j = 0; j < allValues.TransactionDetail.length; j++) {
-                        if (j !== id && allValues.TransactionDetail[j]?.Name === proposedName) {
-                          return true;
-                        }
-                      }
-                      return false;
-                    });
-                  }
-                }
-              }
-            } catch (error) {
-              return "";
-            }
-            return ""; // Return empty string for first guest
-          } else {
-            // For subsequent guests, start from 2
-            return generateIncrementedId(2, 0, (proposedId) => {
-              // Use the proposed ID directly without slicing
-              const proposedName = `Зочин ${proposedId}`;
+        if (!currentDetail?.Name) {
+          const generateUniqueGuestId = () => {
+            if (id === 0) {
               try {
                 const allValues = getValues();
                 if (allValues && allValues.TransactionDetail) {
                   for (let i = 0; i < allValues.TransactionDetail.length; i++) {
-                    if (i !== id && allValues.TransactionDetail[i]?.Name === proposedName) {
-                      return true;
+                    if (i !== id && allValues.TransactionDetail[i]?.Name === "Зочин") {
+                      return generateIncrementedId(2, 0, (proposedId) => {
+                        const proposedName = `Зочин ${proposedId}`;
+                        for (let j = 0; j < allValues.TransactionDetail.length; j++) {
+                          if (j !== id && allValues.TransactionDetail[j]?.Name === proposedName) {
+                            return true;
+                          }
+                        }
+                        return false;
+                      });
                     }
                   }
                 }
               } catch (error) {
-                return false;
+                return "";
               }
-              return false;
-            });
-          }
-        };
-        const uniqueGuestId = generateUniqueGuestId();
-        setValue(`TransactionDetail[${id}].Name`, uniqueGuestId === "" ? "Зочин" : `Зочин ${uniqueGuestId}`);
-        setValue(`TransactionDetail[${id}].GuestDetail.Email`, '');
-        setValue(`TransactionDetail[${id}].GuestDetail.Mobile`, '');
-        setValue(`TransactionDetail[${id}].GuestDetail.Name`, 'Guest');
-        setValue(`TransactionDetail[${id}].GuestDetail.Surname`, '');
-        setValue(`TransactionDetail[${id}].GuestDetail.CountryID`, 0);
-        setValue(`TransactionDetail[${id}].GuestDetail.VipStatusID`, 0);
-        setValue(`TransactionDetail[${id}].GuestDetail.GuestTitleID`, 0);
-        setValue(`TransactionDetail[${id}].GuestDetail.GenderID`, 0);
-        setValue(`TransactionDetail[${id}].GuestDetail.RegistryNo`, '');
+              return ""; // Return empty string for first guest
+            } else {
+              return generateIncrementedId(2, 0, (proposedId) => {
+                const proposedName = `Зочин ${proposedId}`;
+                try {
+                  const allValues = getValues();
+                  if (allValues && allValues.TransactionDetail) {
+                    for (let i = 0; i < allValues.TransactionDetail.length; i++) {
+                      if (i !== id && allValues.TransactionDetail[i]?.Name === proposedName) {
+                        return true;
+                      }
+                    }
+                  }
+                } catch (error) {
+                  return false;
+                }
+                return false;
+              });
+            }
+          };
+          const uniqueGuestId = generateUniqueGuestId();
+          setValue(`TransactionDetail[${id}].Name`, uniqueGuestId === "" ? "Зочин" : `Зочин ${uniqueGuestId}`);
+        }
+
+        if (!currentDetail?.GuestDetail?.Email) {
+          setValue(`TransactionDetail[${id}].GuestDetail.Email`, '');
+        }
+        if (!currentDetail?.GuestDetail?.Mobile) {
+          setValue(`TransactionDetail[${id}].GuestDetail.Mobile`, '');
+        }
+        if (!currentDetail?.GuestDetail?.Name) {
+          setValue(`TransactionDetail[${id}].GuestDetail.Name`, 'Guest');
+        }
+        if (!currentDetail?.GuestDetail?.Surname) {
+          setValue(`TransactionDetail[${id}].GuestDetail.Surname`, '');
+        }
+        if (!currentDetail?.GuestDetail?.CountryID) {
+          setValue(`TransactionDetail[${id}].GuestDetail.CountryID`, 0);
+        }
+        if (!currentDetail?.GuestDetail?.VipStatusID) {
+          setValue(`TransactionDetail[${id}].GuestDetail.VipStatusID`, 0);
+        }
+        if (!currentDetail?.GuestDetail?.GuestTitleID) {
+          setValue(`TransactionDetail[${id}].GuestDetail.GuestTitleID`, 0);
+        }
+        if (!currentDetail?.GuestDetail?.GenderID) {
+          setValue(`TransactionDetail[${id}].GuestDetail.GenderID`, 0);
+        }
+        if (!currentDetail?.GuestDetail?.RegistryNo) {
+          setValue(`TransactionDetail[${id}].GuestDetail.RegistryNo`, '');
+        }
       }
     }
   }, [useDefaultValues, RoomType, BaseAdult, BaseChild, id, setValue, getValues]);

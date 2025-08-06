@@ -43,11 +43,6 @@ const ExtraCharge = ({ entity, setEntity, register, errors, chargeType }: any) =
 
   const columns = [
     {
-      title: "№",
-      key: "test",
-      dataIndex: "test",
-    },
-    {
       title: "",
       key: "check",
       dataIndex: "check",
@@ -171,20 +166,9 @@ const ExtraCharge = ({ entity, setEntity, register, errors, chargeType }: any) =
 
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <IconButton
-              size="small"
-              disabled={
-                entity &&
-                entity[dataIndex] &&
-                (!entity[dataIndex].isChecked || entity[dataIndex].BaseRate <= 0)
-              }
-              onClick={() => handleQuantityChange((entity[dataIndex]?.BaseRate || 0) - 1)}
-            >
-              <RemoveIcon fontSize="small" />
-            </IconButton>
             <TextField
               size="small"
-              sx={{ width: '80px' }}
+              sx={{ width: '45px' }}
               disabled={
                 entity &&
                 entity[dataIndex] &&
@@ -206,17 +190,6 @@ const ExtraCharge = ({ entity, setEntity, register, errors, chargeType }: any) =
                 handleQuantityChange(isNaN(newValue) ? 0 : newValue);
               }}
             />
-            <IconButton
-              size="small"
-              disabled={
-                entity &&
-                entity[dataIndex] &&
-                !entity[dataIndex].isChecked
-              }
-              onClick={() => handleQuantityChange((entity[dataIndex]?.BaseRate || 0) + 1)}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
           </Box>
         );
       },
@@ -260,31 +233,10 @@ const ExtraCharge = ({ entity, setEntity, register, errors, chargeType }: any) =
         datagrid={false}
         hasPrint={false}
         hasExcel={false}
-        customHeight="650px"
+        customHeight="400px"
         size="small"
+        showRowNumbers={false}
       />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          flexWrap: "wrap",
-          flexDirection: "row-reverse",
-        }}
-        className="mb-1"
-      >
-        <div className="px-4">
-          Нийт:
-          {entity &&
-            formatPrice(
-              entity.reduce(
-                (acc: any, obj: any) =>
-                  acc + (obj.Total ? obj.Total : 0),
-                0
-              )
-            )}
-        </div>
-      </Box>
     </>
   );
 };

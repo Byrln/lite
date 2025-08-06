@@ -4,6 +4,7 @@ import { TextField, Grid } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useIntl } from "react-intl";
+import { mutate } from "swr";
 import NewEditForm from "components/common/new-edit-form";
 import { UserRoleAPI, listUrl } from "lib/api/user-role";
 import { useAppState } from "lib/context/app";
@@ -29,16 +30,29 @@ const NewEdit = () => {
         handleSubmit,
         formState: { errors },
     } = useForm({ resolver: yupResolver(validationSchema) });
+
+    // Custom submit function to prevent affecting current user's session
+    const customSubmit = async (values: any) => {
+        if (state.editId) {
+            await UserRoleAPI.update(values);
+        } else {
+            await UserRoleAPI.new(values);
+        }
+        
+        // Only invalidate the user role list, not user privileges
+        await mutate(listUrl);
+    };
     return (
         <NewEditForm
             api={UserRoleAPI}
-            listUrl={listUrl}
+            listUrl={null} // Prevent automatic cache invalidation
             additionalValues={{
                 UserRoleID: state.editId,
             }}
             reset={reset}
             handleSubmit={handleSubmit}
             setEntity={setEntity}
+            customSubmit={customSubmit}
         >
             <Grid container spacing={1}>
                 <Grid item xs={6}>
