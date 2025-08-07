@@ -100,9 +100,9 @@ export default function LoginForm() {
           router.replace(
             companyDatabase && companyDatabase.length > 0
               ? isHaveDashBoard
-                ? "/mon/"
-                : "/mon/report/daily"
-              : "/mon/front-office/guide"
+                ? "/"
+                : "/report/daily"
+              : "/front-office/guide"
           );
         } else {
           axios.defaults.headers.common["Authorization"] = "";

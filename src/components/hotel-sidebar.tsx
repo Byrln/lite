@@ -68,14 +68,44 @@ export function HotelSidebar({ sideBarData, ...props }: HotelSidebarProps) {
   // Filter sidebar items based on current mode
   const filteredConfig = React.useMemo(() => {
     if (sidebarMode === 'configuration') {
-      // Show only configuration items
+      // Show only configuration items (items with paths starting with /conf/ or /mini-bar/)
       return configToUse.filter(item =>
-        item.titleEn === 'Configuration' || item.title === 'тохиргоо'
+        item.path?.startsWith('/conf/') || 
+        item.path?.startsWith('/mini-bar/') ||
+        item.titleEn === 'Accounting' ||
+        item.titleEn === 'Pos Api Config' ||
+        item.titleEn === 'Hotel Information' ||
+        item.titleEn === 'Hotel Settings' ||
+        item.titleEn === 'User Role' ||
+        item.titleEn === 'User' ||
+        item.titleEn === 'Reason' ||
+        item.titleEn === 'Reservation Source' ||
+        item.titleEn === 'Vip Status' ||
+        item.titleEn === 'Customer Group' ||
+        item.titleEn === 'Promotions' ||
+        item.titleEn === 'Packages' ||
+        item.titleEn === 'Mini Bar Groups' ||
+        item.titleEn === 'Mini Bar Items'
       )
     } else {
-      // Show all items except configuration
+      // Show all items except configuration items
       return configToUse.filter(item =>
-        item.titleEn !== 'Configuration' && item.title !== 'тохиргоо'
+        !(item.path?.startsWith('/conf/') || 
+          item.path?.startsWith('/mini-bar/') ||
+          item.titleEn === 'Accounting' ||
+          item.titleEn === 'Pos Api Config' ||
+          item.titleEn === 'Hotel Information' ||
+          item.titleEn === 'Hotel Settings' ||
+          item.titleEn === 'User Role' ||
+          item.titleEn === 'User' ||
+          item.titleEn === 'Reason' ||
+          item.titleEn === 'Reservation Source' ||
+          item.titleEn === 'Vip Status' ||
+          item.titleEn === 'Customer Group' ||
+          item.titleEn === 'Promotions' ||
+          item.titleEn === 'Packages' ||
+          item.titleEn === 'Mini Bar Groups' ||
+          item.titleEn === 'Mini Bar Items')
       )
     }
   }, [configToUse, sidebarMode])

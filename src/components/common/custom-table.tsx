@@ -605,7 +605,7 @@ const CustomTable = ({
                     px: 3,
                     py: 1,
                     borderColor: theme.palette.success.main,
-                    color: theme.palette.success.main,
+                    color: "green",
                     '&:hover': {
                       borderColor: theme.palette.success.dark,
                       bgcolor: alpha(theme.palette.success.main, 0.1),
