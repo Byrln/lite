@@ -23,6 +23,8 @@ import en from "i18n/en.json";
 import mon from "i18n/mon.json";
 import enDashboard from "i18n/en-dashboard.json";
 import monDashboard from "i18n/mon-dashboard.json";
+import enShortcuts from "i18n/en-shortcuts.json";
+import monShortcuts from "i18n/mon-shortcuts.json";
 import { useAppState } from "lib/context/app";
 import NewReservation from "components/front-office/reservation-list/new";
 import ShortcutsHelp from "components/common/shortcuts-help";
@@ -77,8 +79,8 @@ const GlobalKeyboardShortcuts = () => {
 export default function MyApp({ Component, pageProps }: AppProps) {
   const { locale }: any = useRouter();
   const messages: any = {
-    en: { ...en, ...enDashboard },
-    mon: { ...mon, ...monDashboard }
+    en: { ...en, ...enDashboard, ...enShortcuts },
+    mon: { ...mon, ...monDashboard, ...monShortcuts }
   };
 
   Router.events.on("routeChangeStart", () => NProgress.start());

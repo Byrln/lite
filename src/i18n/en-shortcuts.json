@@ -1,0 +1,295 @@
+{
+  "shortcuts": {
+    "pages": [
+      {
+        "route": "/handsontable",
+        "title": "Calendar Guide",
+        "carousel": {
+          "slides": [
+            {
+              "title": "Navigate Calendar Cells",
+              "description": "Use arrow keys to move between calendar cells",
+              "shortcut": "Arrow Keys",
+              "image": "/static/illustrations/calendar-navigation.png"
+            },
+            {
+              "title": "Change Day Count",
+              "description": "Cycle through different day views",
+              "shortcut": "Ctrl + D",
+              "image": "/static/illustrations/day-count-switch.png"
+            },
+            {
+              "title": "Focus Search",
+              "description": "Quickly focus on search input",
+              "shortcut": "Ctrl + F",
+              "image": "/static/illustrations/search-focus.png"
+            },
+            {
+              "title": "Create New Reservation",
+              "description": "Start a new reservation from calendar",
+              "shortcut": "F2",
+              "image": "/static/illustrations/new-reservation.png"
+            },
+            {
+              "title": "Refresh Calendar",
+              "description": "Reload calendar data",
+              "shortcut": "Ctrl + R",
+              "image": "/static/illustrations/calendar-refresh.png"
+            }
+          ],
+          "slideCounter": "Slide {{current}} / {{total}}",
+          "tryExample": "Try Example",
+          "fullscreen": "Fullscreen",
+          "closeFullscreen": "Close Fullscreen"
+        },
+        "tips": {
+          "title": "Calendar Tips",
+          "content": "Use **Ctrl + D** to quickly switch between 7, 14, 30, and 60-day views. **Arrow keys** help you navigate efficiently through calendar cells. Press **F2** to create a new reservation directly from the calendar view. **Ctrl + R** refreshes the calendar data when needed."
+        }
+      },
+      {
+        "route": "/rate",
+        "title": "Rate Management Guide",
+        "carousel": {
+          "slides": [
+            {
+              "title": "Switch Between Tabs",
+              "description": "Navigate rate management sections",
+              "shortcut": "Ctrl + 1-6",
+              "image": "/static/illustrations/tab-switching.png"
+            },
+            {
+              "title": "Go to Overview",
+              "description": "Return to the overview tab",
+              "shortcut": "Ctrl + O",
+              "image": "/static/illustrations/overview-tab.png"
+            },
+            {
+              "title": "Next Tab",
+              "description": "Move to the next tab",
+              "shortcut": "Ctrl + T",
+              "image": "/static/illustrations/next-tab.png"
+            },
+            {
+              "title": "Previous Tab",
+              "description": "Move to the previous tab",
+              "shortcut": "Ctrl + Shift + T",
+              "image": "/static/illustrations/previous-tab.png"
+            }
+          ],
+          "slideCounter": "Slide {{current}} / {{total}}",
+          "tryExample": "Try Example",
+          "fullscreen": "Fullscreen",
+          "closeFullscreen": "Close Fullscreen"
+        },
+        "tips": {
+          "title": "Rate Management Tips",
+          "content": "Use **Ctrl + 1-6** to quickly jump to specific rate management tabs. **Ctrl + O** always takes you back to the overview. Navigate efficiently with **Ctrl + T** and **Ctrl + Shift + T** to move between tabs sequentially."
+        }
+      }
+    ],
+    "title": "Shortcuts Guide",
+    "carousel": {
+      "slides": [
+        {
+          "title": "Open Shortcut Helper",
+          "description": "Quickly open this helper using",
+          "shortcut": "Alt + H"
+        },
+        {
+          "title": "Open Command Palette",
+          "description": "Launch the command palette using",
+          "shortcut": "Ctrl + K"
+        },
+        {
+          "title": "Create New Reservation",
+          "description": "Start a new reservation using",
+          "shortcut": "F2"
+        },
+        {
+          "title": "Save Current Form",
+          "description": "Save the current form data using",
+          "shortcut": "Ctrl + S"
+        },
+        {
+          "title": "Quick Search",
+          "description": "Open quick search dialog using",
+          "shortcut": "Ctrl + F"
+        },
+        {
+          "title": "Navigate Back",
+          "description": "Go back to previous page using",
+          "shortcut": "Alt + Left"
+        }
+      ],
+      "slideCounter": "Slide {{current}} / {{total}}",
+      "tryExample": "Try Example",
+      "fullscreen": "Fullscreen",
+      "closeFullscreen": "Close Fullscreen"
+    },
+    "tips": {
+      "title": "Tips",
+      "content": "Use keyboard shortcuts to speed up frequent workflows. Open this helper with **Alt + H**. Use **Ctrl + K** to open the command palette when searching for actions. Press **F2** to quickly start a new reservation in front-office flows. Most shortcuts work globally across the application."
+    },
+    "table": {
+      "title": "All Shortcuts",
+      "headers": {
+        "shortcut": "Shortcut",
+        "action": "Action",
+        "description": "Description"
+      },
+      "shortcuts": [
+        {
+          "shortcut": "Alt + H",
+          "action": "Open Shortcut Helper",
+          "description": "Display this shortcuts guide modal"
+        },
+        {
+          "shortcut": "Alt + H",
+          "action": "Гарын авлага нээх",
+          "description": "Товчлуурын гарын авлагын цонхыг харуулах"
+        },
+        {
+          "shortcut": "Ctrl + K",
+          "action": "Open Command Palette",
+          "description": "Quick access to all application commands"
+        },
+        {
+          "shortcut": "Ctrl + 1-6",
+          "action": "Switch Tabs",
+          "description": "Switch between rate management tabs (Rate pages)"
+        },
+        {
+          "shortcut": "Ctrl + O",
+          "action": "Overview Tab",
+          "description": "Go to overview tab (Rate pages)"
+        },
+        {
+          "shortcut": "Ctrl + T",
+          "action": "Next Tab",
+          "description": "Switch to next tab (Rate pages)"
+        },
+        {
+          "shortcut": "Ctrl + Shift + T",
+          "action": "Previous Tab",
+          "description": "Switch to previous tab (Rate pages)"
+        },
+        {
+          "shortcut": "Ctrl + D",
+          "action": "Change Day Count",
+          "description": "Cycle through day counts: 7, 14, 30, 60 (Calendar/Handsontable)"
+        },
+        {
+          "shortcut": "Ctrl + F",
+          "action": "Focus Search",
+          "description": "Focus on search input field (Calendar/Handsontable)"
+        },
+        {
+          "shortcut": "Arrow Keys",
+          "action": "Navigate Cells",
+          "description": "Navigate between cells in the calendar grid (Calendar/Handsontable)"
+        },
+        {
+          "shortcut": "Enter",
+          "action": "Edit Cell",
+          "description": "Edit selected cell content (Calendar/Handsontable)"
+        },
+        {
+          "shortcut": "Tab",
+          "action": "Next Cell",
+          "description": "Move to next cell (Calendar/Handsontable)"
+        },
+        {
+          "shortcut": "F2",
+          "action": "Create New Reservation",
+          "description": "Start a new reservation workflow"
+        },
+        {
+          "shortcut": "Ctrl + S",
+          "action": "Save Current Form",
+          "description": "Save the currently active form"
+        },
+        {
+          "shortcut": "Esc",
+          "action": "Close Modal/Cancel Action",
+          "description": "Close the current modal or cancel ongoing action"
+        },
+        {
+          "shortcut": "Ctrl + F",
+          "action": "Quick Search",
+          "description": "Open search dialog for current page"
+        },
+        {
+          "shortcut": "Alt + Left",
+          "action": "Navigate Back",
+          "description": "Go back to the previous page"
+        },
+        {
+          "shortcut": "Alt + Right",
+          "action": "Navigate Forward",
+          "description": "Go forward to the next page"
+        },
+        {
+          "shortcut": "Ctrl + R",
+          "action": "Refresh Page",
+          "description": "Reload the current page data"
+        },
+        {
+          "shortcut": "Ctrl + N",
+          "action": "New Item",
+          "description": "Create a new item in the current context"
+        },
+        {
+          "shortcut": "Ctrl + E",
+          "action": "Edit Selected",
+          "description": "Edit the currently selected item"
+        },
+        {
+          "shortcut": "Delete",
+          "action": "Delete Selected",
+          "description": "Delete the currently selected item"
+        },
+        {
+          "shortcut": "Ctrl + P",
+          "action": "Print",
+          "description": "Print the current page or selected content"
+        },
+        {
+          "shortcut": "F5",
+          "action": "Refresh",
+          "description": "Refresh the current view"
+        },
+        {
+          "shortcut": "Ctrl + Z",
+          "action": "Undo",
+          "description": "Undo the last action"
+        },
+        {
+          "shortcut": "Ctrl + Y",
+          "action": "Redo",
+          "description": "Redo the last undone action"
+        },
+        {
+          "shortcut": "Tab",
+          "action": "Next Field",
+          "description": "Move to the next form field"
+        },
+        {
+          "shortcut": "Shift + Tab",
+          "action": "Previous Field",
+          "description": "Move to the previous form field"
+        },
+        {
+          "shortcut": "Enter",
+          "action": "Submit/Confirm",
+          "description": "Submit form or confirm action"
+        },
+        {
+          "shortcut": "Ctrl + A",
+          "action": "Select All",
+          "description": "Select all items in the current view"
+        }
+      ]
+    }
+  }
+}

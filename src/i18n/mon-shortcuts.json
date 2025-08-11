@@ -1,0 +1,215 @@
+{
+  "shortcuts": {
+    "pages": [
+      {
+        "route": "/handsontable",
+        "title": "Календарийн гарын авлага",
+        "carousel": {
+          "slides": [
+            {
+               "title": "Календарийн нүднүүдээр шилжих",
+               "description": "Календарийн нүднүүдийн хооронд шилжихийн тулд сум товчнуудыг ашиглана уу",
+               "shortcut": "Сум товчнууд",
+               "image": "/static/illustrations/calendar-navigation.png"
+             },
+             {
+               "title": "Өдрийн тоо солих",
+               "description": "Өөр өөр өдрийн харагдацын хооронд солих",
+               "shortcut": "Ctrl + D",
+               "image": "/static/illustrations/day-count-switch.png"
+             },
+             {
+               "title": "Хайлт төвлөрүүлэх",
+               "description": "Хайлтын талбар дээр хурдан төвлөрүүлэх",
+               "shortcut": "Ctrl + F",
+               "image": "/static/illustrations/search-focus.png"
+             },
+             {
+               "title": "Шинэ захиалга үүсгэх",
+               "description": "Календараас шинэ захиалга эхлүүлэх",
+               "shortcut": "F2",
+               "image": "/static/illustrations/new-reservation.png"
+             },
+             {
+               "title": "Календар сэргээх",
+               "description": "Календарийн өгөгдлийг дахин ачаалах",
+               "shortcut": "Ctrl + R",
+               "image": "/static/illustrations/calendar-refresh.png"
+             }
+          ],
+          "slideCounter": "Слайд {{current}} / {{total}}",
+          "tryExample": "Жишээ турших",
+          "fullscreen": "Бүтэн дэлгэц",
+          "closeFullscreen": "Бүтэн дэлгэц хаах"
+        },
+        "tips": {
+          "title": "Календарийн зөвлөгөө",
+          "content": "7, 14, 30, 60 өдрийн харагдацын хооронд хурдан солихын тулд **Ctrl + D** товчийг ашиглана уу. **Сум товчнууд** нь календарийн нүднүүдээр үр дүнтэй шилжихэд тусална. Календарийн харагдацаас шууд шинэ захиалга үүсгэхийн тулд **F2** товчийг дарна уу. Шаардлагатай үед **Ctrl + R** товчоор календарийн өгөгдлийг сэргээнэ үү."
+        }
+      },
+      {
+        "route": "/rate",
+        "title": "Үнийн удирдлагын гарын авлага",
+        "carousel": {
+          "slides": [
+            {
+               "title": "Табуудын хооронд солих",
+               "description": "Үнийн удирдлагын хэсгүүдээр шилжих",
+               "shortcut": "Ctrl + 1-6",
+               "image": "/static/illustrations/tab-switching.png"
+             },
+             {
+               "title": "Ерөнхий хэсэг рүү очих",
+               "description": "Ерөнхий таб руу буцах",
+               "shortcut": "Ctrl + O",
+               "image": "/static/illustrations/overview-tab.png"
+             },
+             {
+               "title": "Дараагийн таб",
+               "description": "Дараагийн таб руу шилжих",
+               "shortcut": "Ctrl + T",
+               "image": "/static/illustrations/next-tab.png"
+             },
+             {
+               "title": "Өмнөх таб",
+               "description": "Өмнөх таб руу шилжих",
+               "shortcut": "Ctrl + Shift + T",
+               "image": "/static/illustrations/previous-tab.png"
+             }
+          ],
+          "slideCounter": "Слайд {{current}} / {{total}}",
+          "tryExample": "Жишээ турших",
+          "fullscreen": "Бүтэн дэлгэц",
+          "closeFullscreen": "Бүтэн дэлгэц хаах"
+        },
+        "tips": {
+          "title": "Үнийн удирдлагын зөвлөгөө",
+          "content": "Тодорхой үнийн удирдлагын таб руу хурдан үсрэхийн тулд **Ctrl + 1-6** товчийг ашиглана уу. **Ctrl + O** товч таныг үргэлж ерөнхий хэсэг рүү аваачна. **Ctrl + T** болон **Ctrl + Shift + T** товчоор табуудын хооронд дарааллаар үр дүнтэй шилжинэ үү."
+        }
+      }
+    ],
+    "title": "Гарын авлага",
+    "carousel": {
+      "slides": [
+        {
+          "title": "Гарын авлага нээх",
+          "description": "Энэ тусламжийг хурдан нээхийн тулд",
+          "shortcut": "Alt + H"
+        },
+        {
+          "title": "Команд цэс нээх",
+          "description": "Команд цэсийг нээхийн тулд",
+          "shortcut": "Ctrl + K"
+        },
+        {
+          "title": "Шинэ захиалга үүсгэх",
+          "description": "Шинэ захиалга эхлүүлэхийн тулд",
+          "shortcut": "F2"
+        },
+        {
+          "title": "Одоогийн формыг хадгалах",
+          "description": "Одоогийн формын өгөгдлийг хадгалахын тулд",
+          "shortcut": "Ctrl + S"
+        },
+        {
+          "title": "Хурдан хайлт",
+          "description": "Хурдан хайлтын цонхыг нээхийн тулд",
+          "shortcut": "Ctrl + F"
+        },
+        {
+          "title": "Буцах",
+          "description": "Өмнөх хуудас руу буцахын тулд",
+          "shortcut": "Alt + Left"
+        }
+      ],
+      "slideCounter": "Слайд {{current}} / {{total}}",
+      "tryExample": "Жишээ турших",
+      "fullscreen": "Бүтэн дэлгэц",
+      "closeFullscreen": "Бүтэн дэлгэц хаах"
+    },
+    "tips": {
+      "title": "Зөвлөгөө",
+      "content": "Байнга хэрэглэгддэг ажлын урсгалыг хурдасгахын тулд гарын товчлуурыг ашиглана уу. **Alt + H** товчоор энэ тусламжийг нээнэ үү. Үйлдлүүдийг хайхдаа **Ctrl + K** товчоор команд цэсийг нээнэ үү. Фронт офисын урсгалд шинэ захиалга эхлүүлэхийн тулд **F2** товчийг дарна уу. Ихэнх товчлуурууд програмын бүх хэсэгт ажилладаг."
+    },
+    "table": {
+      "title": "Бүх товчлуурууд",
+      "headers": {
+        "shortcut": "Товчлуур",
+        "action": "Үйлдэл",
+        "description": "Тайлбар"
+      },
+      "shortcuts": [
+        {
+          "shortcut": "Alt + H",
+          "action": "Гарын авлага нээх",
+          "description": "Товчлуурын гарын авлагын цонхыг харуулах"
+        },
+        {
+          "shortcut": "Alt + B",
+          "action": "Бүх програмын үйлдлүүдийг харуулах",
+          "description": "Бүх програмын үйлдлүүдийг харуулах"
+        },
+        {
+          "shortcut": "Ctrl + K",
+          "action": "Команд цэс нээх",
+          "description": "Бүх програмын командуудад хурдан хандах"
+        },
+        {
+          "shortcut": "Ctrl + 1-6",
+          "action": "Таб солих",
+          "description": "Үнийн удирдлагын табуудын хооронд солих (Үнийн хуудас)"
+        },
+        {
+          "shortcut": "Ctrl + O",
+          "action": "Ерөнхий таб",
+          "description": "Ерөнхий таб руу очих (Үнийн хуудас)"
+        },
+        {
+          "shortcut": "Ctrl + T",
+          "action": "Дараагийн таб",
+          "description": "Дараагийн таб руу шилжих (Үнийн хуудас)"
+        },
+        {
+          "shortcut": "Ctrl + Shift + T",
+          "action": "Өмнөх таб",
+          "description": "Өмнөх таб руу шилжих (Үнийн хуудас)"
+        },
+        {
+          "shortcut": "Ctrl + D",
+          "action": "Өдрийн тоо солих",
+          "description": "Өдрийн тоог эргүүлэх: 7, 14, 30, 60 (Календарь/Handsontable)"
+        },
+        {
+          "shortcut": "Ctrl + F",
+          "action": "Хайлт төвлөрүүлэх",
+          "description": "Хайлтын талбар дээр төвлөрүүлэх (Календарь/Handsontable)"
+        },
+        {
+          "shortcut": "Сум товчнууд",
+          "action": "Нүд шилжих",
+          "description": "Календарийн торон дахь нүднүүдийн хооронд шилжих (Календарь/Handsontable)"
+        },
+        {
+          "shortcut": "Enter",
+          "action": "Нүд засах",
+          "description": "Сонгосон нүдний агуулгыг засах (Календарь/Handsontable)"
+        },
+        {
+          "shortcut": "Tab",
+          "action": "Дараагийн нүд",
+          "description": "Дараагийн нүд рүү шилжих (Календарь/Handsontable)"
+        },
+        {
+          "shortcut": "F2",
+          "action": "Шинэ захиалга үүсгэх",
+          "description": "Шинэ захиалгын ажлын урсгал эхлүүлэх"
+        },
+        {
+          "shortcut": "Ctrl + R",
+          "action": "Хуудас сэргээх",
+          "description": "Одоогийн хуудасны өгөгдлийг дахин ачаалах"
+        }
+      ]
+    }
+  }
+}

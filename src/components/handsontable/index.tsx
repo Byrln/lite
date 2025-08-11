@@ -146,6 +146,73 @@ const TimelineTable = ({ props, workingDate }: any) => {
         setDayCount(value);
     };
 
+    // Handsontable-specific keyboard shortcuts
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            // Prevent shortcuts when user is typing in input fields or handsontable cells
+            if (
+                event.target instanceof HTMLInputElement ||
+                event.target instanceof HTMLTextAreaElement ||
+                event.target instanceof HTMLSelectElement ||
+                (event.target as HTMLElement)?.closest('.handsontable')
+            ) {
+                return;
+            }
+
+            // Ctrl + D: Change day count
+            if (
+                (event.key === 'd' || event.key === 'D') &&
+                (event.metaKey || event.ctrlKey) &&
+                !event.shiftKey &&
+                !event.altKey
+            ) {
+                event.preventDefault();
+                // Cycle through day counts: 7, 14, 30, 60
+                const dayCounts = ['7', '14', '30', '60'];
+                const currentIndex = dayCounts.indexOf(dayCount);
+                const nextIndex = (currentIndex + 1) % dayCounts.length;
+                setDayCount(dayCounts[nextIndex]);
+            }
+
+            // Ctrl + F: Focus search
+            if (
+                (event.key === 'f' || event.key === 'F') &&
+                (event.metaKey || event.ctrlKey) &&
+                !event.shiftKey &&
+                !event.altKey
+            ) {
+                event.preventDefault();
+                // Focus on search input if available
+                const searchInput = document.querySelector('input[type="search"]') as HTMLInputElement;
+                if (searchInput) {
+                    searchInput.focus();
+                }
+            }
+
+            // F2: Create new reservation
+            if (event.key === 'F2' && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                event.preventDefault();
+                handleModal({
+                    body: <NewReservation />,
+                    isOpen: true,
+                    title: intl.formatMessage({ id: "NewReservation" }),
+                });
+            }
+
+            // Arrow keys for navigation (when not in handsontable)
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+                // Let handsontable handle its own navigation
+                if ((event.target as HTMLElement)?.closest('.handsontable')) {
+                    return;
+                }
+                // Custom navigation logic for other elements can be added here
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [dayCount, intl, handleModal]);
+
     useEffect(() => {
         (async () => {
             setTimeStart(new Date(search.CurrDate));

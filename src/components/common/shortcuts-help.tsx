@@ -1,199 +1,110 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogTitle,
-  TextField,
-  InputAdornment,
   Fade,
-  Slide
+  Slide,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton
 } from '@mui/material';
-import { Box, Typography, Grid, Chip, Divider, Card, CardContent } from '@mui/material';
+import { Box, Typography, Grid, Chip, Card, CardContent } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import { useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
-import KeyboardIcon from '@mui/icons-material/Keyboard';
-import CloseIcon from '@mui/icons-material/Close';
-import SearchIcon from '@mui/icons-material/Search';
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
-import SpeedIcon from '@mui/icons-material/Speed';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import IconButton from '@mui/material/IconButton';
 
 interface ShortcutsHelpProps {
   open: boolean;
   onClose: () => void;
 }
 
-interface Shortcut {
-  keys: string[];
-  descriptionKey: string;
-  categoryKey: string;
-  icon?: React.ReactNode;
-  highlight?: boolean;
-}
-
 const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
   const intl = useIntl();
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [spotlightTarget, setSpotlightTarget] = useState<DOMRect | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Get page-specific shortcuts based on current route
-  const getPageSpecificShortcuts = (): Shortcut[] => {
-    const currentPath = router.pathname;
+  // Get current route and find matching page data
+  const currentRoute = router.pathname;
+  const pagesData = intl.messages?.shortcuts?.pages || [];
+  const currentPageData = pagesData.find((page: any) => page.route === currentRoute);
+  
+  // Get slides data from current page or fallback to general shortcuts
+  const slidesData = currentPageData?.carousel?.slides || intl.messages?.shortcuts?.carousel?.slides || [];
+  const pageTitle = currentPageData?.title || intl.messages?.shortcuts?.title || 'Shortcuts Guide';
+  const tipsData = currentPageData?.tips || intl.messages?.shortcuts?.tips;
+  
+  // Check if current route has specific shortcuts
+  const hasRouteSpecificShortcuts = !!currentPageData;
+  
+  // Carousel navigation
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slidesData.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slidesData.length) % slidesData.length);
+  
+  // Fullscreen functionality
+  const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
+  const closeFullscreen = () => setIsFullscreen(false);
 
-    // Global shortcuts available on all pages
-    const globalShortcuts: Shortcut[] = [
-      {
-        keys: ['Alt', 'H'],
-        descriptionKey: 'shortcuts.help.show',
-        categoryKey: 'shortcuts.category.global',
-        icon: <KeyboardIcon sx={{ fontSize: 16, color: '#804fe6' }} />,
-        highlight: true
-      },
-      {
-        keys: ['Ctrl', 'K'],
-        descriptionKey: 'shortcuts.commandPalette.open',
-        categoryKey: 'shortcuts.category.global',
-        icon: <RocketLaunchIcon sx={{ fontSize: 16, color: '#ff6b35' }} />,
-        highlight: true
-      },
-      {
-        keys: ['Esc'],
-        descriptionKey: 'shortcuts.general.close',
-        categoryKey: 'shortcuts.category.global',
-        icon: <CloseIcon sx={{ fontSize: 16, color: '#666' }} />
-      },
-      {
-        keys: ['F2'],
-        descriptionKey: 'shortcuts.reservation.new',
-        categoryKey: 'shortcuts.category.global',
-        icon: <AutoAwesomeIcon sx={{ fontSize: 16, color: '#4caf50' }} />,
-        highlight: true
-      }
-    ];
-
-    // Page-specific shortcuts
-    let pageShortcuts: Shortcut[] = [];
-
-    if (currentPath.includes('/handsontable')) {
-      pageShortcuts = [
-        {
-          keys: ['Ctrl', 'R'],
-          descriptionKey: 'shortcuts.calendar.refresh',
-          categoryKey: 'shortcuts.category.calendar',
-          icon: <SpeedIcon sx={{ fontSize: 16, color: '#2196f3' }} />
-        },
-        {
-          keys: ['Alt', 'B'],
-          descriptionKey: 'shortcuts.calendar.toggleModal',
-          categoryKey: 'shortcuts.category.calendar',
-          icon: <AutoAwesomeIcon sx={{ fontSize: 16, color: '#9c27b0' }} />
-        },
-        {
-          keys: ['Arrow Keys'],
-          descriptionKey: 'shortcuts.calendar.navigate',
-          categoryKey: 'shortcuts.category.calendar'
-        },
-        {
-          keys: ['Enter'],
-          descriptionKey: 'shortcuts.calendar.edit',
-          categoryKey: 'shortcuts.category.calendar'
-        },
-        {
-          keys: ['Tab'],
-          descriptionKey: 'shortcuts.calendar.nextCell',
-          categoryKey: 'shortcuts.category.calendar'
-        },
-        {
-          keys: ['Shift', 'Tab'],
-          descriptionKey: 'shortcuts.calendar.prevCell',
-          categoryKey: 'shortcuts.category.calendar'
-        }
-      ];
-    } else if (currentPath.includes('/dashboard')) {
-      pageShortcuts = [
-        {
-          keys: ['Ctrl', 'R'],
-          descriptionKey: 'shortcuts.dashboard.refresh',
-          categoryKey: 'shortcuts.category.dashboard',
-          icon: <SpeedIcon sx={{ fontSize: 16, color: '#2196f3' }} />
-        },
-        {
-          keys: ['Alt', 'B'],
-          descriptionKey: 'shortcuts.dashboard.toggleCalendar',
-          categoryKey: 'shortcuts.category.dashboard',
-          icon: <AutoAwesomeIcon sx={{ fontSize: 16, color: '#9c27b0' }} />
-        }
-      ];
-    } else if (currentPath.includes('/front-office')) {
-      pageShortcuts = [
-        {
-          keys: ['Ctrl', 'N'],
-          descriptionKey: 'shortcuts.frontOffice.newGuest',
-          categoryKey: 'shortcuts.category.frontOffice'
-        },
-        {
-          keys: ['Ctrl', 'F'],
-          descriptionKey: 'shortcuts.frontOffice.findGuest',
-          categoryKey: 'shortcuts.category.frontOffice'
-        }
-      ];
-    } else if (currentPath.includes('/reservation')) {
-      pageShortcuts = [
-        {
-          keys: ['Ctrl', 'S'],
-          descriptionKey: 'shortcuts.reservation.save',
-          categoryKey: 'shortcuts.category.reservations'
-        },
-        {
-          keys: ['Ctrl', 'D'],
-          descriptionKey: 'shortcuts.reservation.duplicate',
-          categoryKey: 'shortcuts.category.reservations'
-        }
-      ];
+  // Spotlight functionality
+  const handleTryExample = useCallback((targetSelector: string) => {
+    const element = document.querySelector(targetSelector);
+    if (element) {
+      const rect = element.getBoundingClientRect();
+      setSpotlightTarget(rect);
     }
+  }, []);
 
-    return [...globalShortcuts, ...pageShortcuts];
-  };
+  const closeSpotlight = useCallback(() => {
+    setSpotlightTarget(null);
+  }, []);
 
-  const shortcuts: Shortcut[] = getPageSpecificShortcuts();
+  // Keyboard navigation
+  useEffect(() => {
+    if (!open) return;
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'Escape') {
+        if (isFullscreen) {
+          closeFullscreen();
+        } else if (spotlightTarget) {
+          closeSpotlight();
+        } else {
+          onClose();
+        }
+      }
+    };
 
-  // Filter shortcuts based on search term
-  const filteredShortcuts = useMemo(() => {
-    if (!searchTerm) return shortcuts;
-    return shortcuts.filter(shortcut => {
-      const description = intl.formatMessage({ id: shortcut.descriptionKey, defaultMessage: shortcut.descriptionKey });
-      const category = intl.formatMessage({ id: shortcut.categoryKey, defaultMessage: shortcut.categoryKey });
-      return description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        shortcut.keys.some(key => key.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        category.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-  }, [searchTerm, shortcuts, intl]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, spotlightTarget, isFullscreen, onClose, closeSpotlight]);
 
-  const categories = Array.from(new Set(filteredShortcuts.map(s => s.categoryKey)));
-
-  const renderKeyChip = (key: string, isHighlighted = false) => (
+  const renderKeyChip = (shortcut: string) => (
     <Chip
-      key={key}
-      label={key}
+      label={shortcut}
       size="small"
       sx={{
-        backgroundColor: isHighlighted ? 'linear-gradient(45deg, #804fe6, #ff6b35)' : '#f8f9fa',
-        color: isHighlighted ? '#fff' : '#333',
+        backgroundColor: '#667eea',
+        color: '#fff',
         fontFamily: 'SF Mono, Monaco, Consolas, monospace',
         fontWeight: '600',
         fontSize: '0.75rem',
         height: '28px',
-        border: isHighlighted ? 'none' : '1px solid #e0e0e0',
         borderRadius: '6px',
-        margin: '0 3px',
-        boxShadow: isHighlighted ? '0 2px 8px rgba(128, 79, 230, 0.3)' : '0 1px 3px rgba(0,0,0,0.1)',
-        transition: 'all 0.2s ease',
-        '&:hover': {
-          transform: 'translateY(-1px)',
-          boxShadow: isHighlighted ? '0 4px 12px rgba(128, 79, 230, 0.4)' : '0 2px 6px rgba(0,0,0,0.15)'
-        }
+        boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)'
       }}
     />
   );
@@ -202,305 +113,281 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="lg"
+      maxWidth="md"
       fullWidth
       TransitionComponent={Slide}
       TransitionProps={{ direction: 'up' } as any}
       PaperProps={{
         sx: {
           borderRadius: 3,
-          maxHeight: '90vh',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          boxShadow: '0 20px 50px rgba(0,0,0,0.2)'
         }
       }}
     >
-      {/* Header with gradient background */}
-      <Box sx={{ 
-        background: 'rgba(255,255,255,0.1)', 
-        backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid rgba(255,255,255,0.2)',
-        p: 3
-      }}>
+      <Box sx={{ p: { xs: 2, md: 3 }, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Box sx={{
-              background: 'linear-gradient(45deg, #ff6b35, #f7931e)',
-              borderRadius: '50%',
-              p: 1.5,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <RocketLaunchIcon sx={{ color: 'white', fontSize: 28 }} />
-            </Box>
-            <Box>
-              <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
-                {intl.formatMessage({ id: 'shortcuts.title', defaultMessage: 'Keyboard Shortcuts' })}
-              </Typography>
-              <Typography variant="body1" sx={{ opacity: 0.9 }}>
-                {intl.formatMessage({ id: 'shortcuts.subtitle', defaultMessage: 'Master your workflow with these powerful shortcuts' })}
-              </Typography>
-            </Box>
-          </Box>
-          <IconButton 
-            onClick={onClose} 
-            sx={{ 
-              color: 'white',
-              backgroundColor: 'rgba(255,255,255,0.1)',
-              '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' }
-            }}
-          >
+          <Typography variant="h5" sx={{ fontWeight: 800 }}>
+            {pageTitle}
+          </Typography>
+          <IconButton onClick={onClose} sx={{ color: 'white' }}>
             <CloseIcon />
           </IconButton>
         </Box>
       </Box>
 
-      <DialogContent sx={{ 
-        background: 'white',
-        color: '#333',
-        p: 4,
-        minHeight: '60vh'
-      }}>
-        {/* Welcome message with animation */}
-        <Fade in={open} timeout={800}>
-          <Box sx={{ mb: 4, textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, color: '#333', mb: 1 }}>
-              {intl.formatMessage({ id: 'shortcuts.welcome', defaultMessage: '🚀 Boost Your Productivity!' })}
+      <DialogContent sx={{ p: { xs: 2, md: 3 }, background: 'white' }}>
+        {!hasRouteSpecificShortcuts ? (
+          // Coming Soon message for routes without specific shortcuts
+          <Box sx={{ textAlign: 'center', py: 8 }}>
+            <Typography variant="h4" sx={{ fontWeight: 700, color: '#667eea', mb: 2 }}>
+              Coming Soon
             </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
-              {intl.formatMessage({ id: 'shortcuts.description', defaultMessage: 'Master these keyboard shortcuts to navigate faster and work more efficiently. Your fingers will thank you!' })}
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              Page-specific shortcuts for this route are coming soon!
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              In the meantime, you can use the global shortcuts available throughout the application.
             </Typography>
           </Box>
-        </Fade>
+        ) : (
+          <>
+            {/* Carousel */}
+            <Box sx={{ position: 'relative', borderRadius: 3, overflow: 'hidden', border: '1px solid #eee', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', mb: 3 }}>
+              {slidesData.length > 0 && (
+                <Fade in key={currentSlide} timeout={400}>
+                  <Grid container>
+                    <Grid item xs={12} md={6} sx={{ background: '#f8f9fc', position: 'relative' }}>
+                      <Box sx={{ height: { xs: 180, md: 240 }, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Box 
+                          component="img" 
+                          src={slidesData[currentSlide]?.image || '/static/preview.png'} 
+                          alt={slidesData[currentSlide]?.title} 
+                          sx={{ maxWidth: '90%', maxHeight: '100%', borderRadius: 2, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }} 
+                        />
+                      </Box>
+                  {/* Fullscreen button */}
+                  <IconButton
+                    onClick={toggleFullscreen}
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      background: 'rgba(255,255,255,0.9)',
+                      '&:hover': { background: 'rgba(255,255,255,1)' },
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    <FullscreenIcon fontSize="small" />
+                  </IconButton>
+                </Grid>
+                <Grid item xs={12} md={6} sx={{ p: { xs: 2, md: 3 } }}>
+                  <Typography variant="subtitle2" sx={{ color: '#667eea', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>
+                    {currentPageData?.carousel?.slideCounter?.replace('{{current}}', (currentSlide + 1).toString()).replace('{{total}}', slidesData.length.toString()) || `Slide ${currentSlide + 1} / ${slidesData.length}`}
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 800, mt: 1, mb: 1 }}>
+                    {slidesData[currentSlide]?.title}
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
+                    {slidesData[currentSlide]?.description} <b>{slidesData[currentSlide]?.shortcut}</b>
+                  </Typography>
 
-        {/* Current page indicator */}
-        <Card sx={{ 
-          mb: 3, 
-          background: 'linear-gradient(45deg, #667eea, #764ba2)',
-          color: 'white',
-          borderRadius: 2
-        }}>
-          <CardContent sx={{ p: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <SpeedIcon sx={{ color: '#fff' }} />
-              <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                {intl.formatMessage({ id: 'shortcuts.currentPage', defaultMessage: 'Current Page' })}: 
-                <span style={{ marginLeft: 8, fontWeight: 700 }}>
-                  {router.pathname.includes('/handsontable') ? 
-                    intl.formatMessage({ id: 'shortcuts.page.calendar', defaultMessage: 'Calendar/Handsontable' }) :
-                    router.pathname.includes('/dashboard') ? 
-                    intl.formatMessage({ id: 'shortcuts.page.dashboard', defaultMessage: 'Dashboard' }) :
-                    router.pathname.includes('/front-office') ? 
-                    intl.formatMessage({ id: 'shortcuts.page.frontOffice', defaultMessage: 'Front Office' }) :
-                    router.pathname.includes('/reservation') ? 
-                    intl.formatMessage({ id: 'shortcuts.page.reservations', defaultMessage: 'Reservations' }) : 
-                    intl.formatMessage({ id: 'shortcuts.page.general', defaultMessage: 'General' })}
-                </span>
-              </Typography>
-            </Box>
-            <Typography variant="body2" sx={{ opacity: 0.9, mt: 0.5 }}>
-              {intl.formatMessage({ id: 'shortcuts.pageDescription', defaultMessage: 'Shortcuts are contextual and adapt to your current workspace' })}
-            </Typography>
-          </CardContent>
-        </Card>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Button variant="contained" startIcon={<PlayArrowIcon />} onClick={() => handleTryExample('#shortcut-helper-button')} sx={{
+                      background: 'linear-gradient(45deg, #667eea, #764ba2)',
+                      boxShadow: '0 8px 20px rgba(118,75,162,0.3)'
+                    }}>
+                      {currentPageData?.carousel?.tryExample || 'Try Example'}
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Fade>
+          )}
 
-        {/* Enhanced Search Field */}
-        <TextField
-          fullWidth
-          placeholder={intl.formatMessage({ id: 'shortcuts.search.placeholder', defaultMessage: '🔍 Search shortcuts, keys, or descriptions...' })}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ 
-            mb: 4,
-            '& .MuiOutlinedInput-root': {
-              borderRadius: 3,
-              backgroundColor: '#f8f9fa',
-              '&:hover': {
-                backgroundColor: '#e9ecef'
-              },
-              '&.Mui-focused': {
-                backgroundColor: 'white',
-                boxShadow: '0 0 0 3px rgba(128, 79, 230, 0.1)'
-              }
+
+          {/* Prev / Next */}
+          <IconButton onClick={prevSlide} sx={{ position: 'absolute', top: '50%', left: 8, transform: 'translateY(-50%)', background: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+            <ArrowBackIosIcon fontSize="small" />
+          </IconButton>
+          <IconButton onClick={nextSlide} sx={{ position: 'absolute', top: '50%', right: 8, transform: 'translateY(-50%)', background: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+            <ArrowForwardIosIcon fontSize="small" />
+          </IconButton>
+        </Box>
+
+            {/* Tips Section */}
+            {tipsData && (
+              <Card sx={{ mb: 3, borderRadius: 3, border: '1px solid #eee' }}>
+                <CardContent>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+                    {tipsData.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {tipsData.content}
+                  </Typography>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Summary Table */}
+            <TableContainer component={Paper} sx={{ borderRadius: 3, boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 700 }}>
+                      Shortcut
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>
+                      Action
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>
+                      Description
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {slidesData.map((slide: any, index: number) => (
+                    <TableRow key={slide.shortcut || index} hover>
+                      <TableCell>{renderKeyChip(slide.shortcut)}</TableCell>
+                      <TableCell>{slide.title}</TableCell>
+                      <TableCell sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>{slide.description}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </>
+        )}
+      </DialogContent>
+
+      {/* Spotlight overlay */}
+      {spotlightTarget && <SpotlightOverlay targetRect={spotlightTarget} onClose={closeSpotlight} />}
+      
+      {/* Fullscreen Image Modal */}
+      {isFullscreen && (
+        <Dialog
+          open={isFullscreen}
+          onClose={closeFullscreen}
+          maxWidth={false}
+          fullScreen
+          PaperProps={{
+            sx: {
+              backgroundColor: 'rgba(0,0,0,0.9)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }
           }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: '#804fe6' }} />
-              </InputAdornment>
-            ),
-          }}
-        />
-
-        {filteredShortcuts.length === 0 ? (
-          <Fade in={true} timeout={600}>
-            <Box sx={{ textAlign: 'center', py: 6 }}>
-              <SearchIcon sx={{ fontSize: 64, color: '#e0e0e0', mb: 2 }} />
-              <Typography variant="h5" color="text.secondary" sx={{ mb: 1, fontWeight: 600 }}>
-                {intl.formatMessage({ id: 'shortcuts.noResults.title', defaultMessage: 'No shortcuts found' })}
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                {intl.formatMessage({ id: 'shortcuts.noResults.description', defaultMessage: 'Try searching with different keywords or browse all available shortcuts' })}
-              </Typography>
-            </Box>
-          </Fade>
-        ) : (
-          <Grid container spacing={3}>
-            {categories.map((categoryKey, categoryIndex) => (
-              <Grid item xs={12} md={6} key={categoryKey}>
-                <Fade in={true} timeout={800 + categoryIndex * 200}>
-                  <Card sx={{ 
-                    height: '100%',
-                    borderRadius: 3,
-                    border: '1px solid #e0e0e0',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
-                    }
-                  }}>
-                    <CardContent sx={{ p: 3 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-                        <Box sx={{
-                          background: 'linear-gradient(45deg, #804fe6, #667eea)',
-                          borderRadius: '50%',
-                          p: 1,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}>
-                          <KeyboardIcon sx={{ color: 'white', fontSize: 20 }} />
-                        </Box>
-                        <Typography
-                          variant="h6"
-                          sx={{
-                            fontSize: '1.1rem',
-                            fontWeight: 700,
-                            color: '#333'
-                          }}
-                        >
-                          {intl.formatMessage({ id: categoryKey, defaultMessage: categoryKey })}
-                        </Typography>
-                      </Box>
-
-                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        {filteredShortcuts
-                          .filter(shortcut => shortcut.categoryKey === categoryKey)
-                          .map((shortcut, index) => (
-                            <Card
-                              key={index}
-                              sx={{
-                                background: shortcut.highlight ? 
-                                  'linear-gradient(45deg, rgba(128, 79, 230, 0.05), rgba(255, 107, 53, 0.05))' : 
-                                  '#fafafa',
-                                border: shortcut.highlight ? 
-                                  '2px solid rgba(128, 79, 230, 0.2)' : 
-                                  '1px solid #f0f0f0',
-                                borderRadius: 2,
-                                transition: 'all 0.2s ease',
-                                '&:hover': {
-                                  transform: 'translateX(4px)',
-                                  boxShadow: shortcut.highlight ? 
-                                    '0 4px 12px rgba(128, 79, 230, 0.2)' : 
-                                    '0 2px 8px rgba(0,0,0,0.1)'
-                                }
-                              }}
-                            >
-                              <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                                <Box sx={{
-                                  display: 'flex',
-                                  justifyContent: 'space-between',
-                                  alignItems: 'center',
-                                  gap: 2
-                                }}>
-                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1 }}>
-                                    {shortcut.icon && (
-                                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        {shortcut.icon}
-                                      </Box>
-                                    )}
-                                    <Typography
-                                      variant="body1"
-                                      sx={{
-                                        fontSize: '0.9rem',
-                                        color: '#333',
-                                        fontWeight: shortcut.highlight ? 600 : 400
-                                      }}
-                                    >
-                                      {intl.formatMessage({ id: shortcut.descriptionKey, defaultMessage: shortcut.descriptionKey })}
-                                    </Typography>
-                                  </Box>
-
-                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
-                                    {shortcut.keys.map((key, keyIndex) => (
-                                      <React.Fragment key={keyIndex}>
-                                        {keyIndex > 0 && (
-                                          <Typography
-                                            variant="body2"
-                                            sx={{
-                                              mx: 0.5,
-                                              color: '#999',
-                                              fontSize: '0.75rem',
-                                              fontWeight: 600
-                                            }}
-                                          >
-                                            +
-                                          </Typography>
-                                        )}
-                                        {renderKeyChip(key, shortcut.highlight)}
-                                      </React.Fragment>
-                                    ))}
-                                  </Box>
-                                </Box>
-                              </CardContent>
-                            </Card>
-                          ))
-                        }
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Fade>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-
-        {/* Enhanced footer with tips */}
-        <Fade in={true} timeout={1200}>
-          <Card sx={{ 
-            mt: 4, 
-            background: 'linear-gradient(45deg, #f8f9fa, #e9ecef)',
-            borderRadius: 3,
-            border: '1px solid #e0e0e0'
-          }}>
-            <CardContent sx={{ p: 3, textAlign: 'center' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 2 }}>
-                <AutoAwesomeIcon sx={{ color: '#804fe6', fontSize: 24 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, color: '#333' }}>
-                  {intl.formatMessage({ id: 'shortcuts.tips.title', defaultMessage: 'Pro Tips' })}
-                </Typography>
-              </Box>
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-                {intl.formatMessage({ 
-                  id: 'shortcuts.tips.altH', 
-                  defaultMessage: '💡 Press Alt + H anytime to quickly access this shortcuts guide' 
-                })}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {intl.formatMessage({ 
-                  id: 'shortcuts.tips.practice', 
-                  defaultMessage: '🎯 Practice these shortcuts daily to boost your productivity by up to 40%!' 
-                })}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Fade>
-      </DialogContent>
+        >
+          <Box sx={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box
+              component="img"
+              src={slidesData[currentSlide]?.image || '/static/preview.png'}
+              alt={slidesData[currentSlide]?.title}
+              sx={{
+                maxWidth: '90%',
+                maxHeight: '90%',
+                objectFit: 'contain',
+                borderRadius: 2,
+                boxShadow: '0 20px 60px rgba(0,0,0,0.5)'
+              }}
+            />
+            <IconButton
+              onClick={closeFullscreen}
+              sx={{
+                position: 'absolute',
+                top: 20,
+                right: 20,
+                backgroundColor: 'rgba(255,255,255,0.1)',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: 'rgba(255,255,255,0.2)'
+                }
+              }}
+            >
+              <FullscreenExitIcon />
+            </IconButton>
+          </Box>
+        </Dialog>
+      )}
     </Dialog>
   );
 };
 
 export default ShortcutsHelp;
+
+// Spotlight overlay component
+const SpotlightOverlay: React.FC<{
+  targetRect: DOMRect | null;
+  onClose: () => void;
+}> = ({ targetRect, onClose }) => {
+  const [viewport, setViewport] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const update = () => setViewport({ width: window.innerWidth, height: window.innerHeight });
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  if (!targetRect) return null;
+
+  const padding = 12; // breathing space around target
+  const r = {
+    top: Math.max(0, targetRect.top - padding),
+    left: Math.max(0, targetRect.left - padding),
+    width: Math.min(viewport.width, targetRect.width + padding * 2),
+    height: Math.min(viewport.height, targetRect.height + padding * 2)
+  };
+
+  return (
+    <Fade in={!!targetRect} timeout={250}>
+      <Box
+        onClick={onClose}
+        sx={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 2000,
+          pointerEvents: 'auto'
+        }}
+      >
+        {/* Dark backdrop */}
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(0,0,0,0.6)',
+            backdropFilter: 'blur(1px)'
+          }}
+        />
+
+        {/* Spotlight hole using clipPath */}
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            WebkitClipPath: `path('M0,0 H${viewport.width} V${viewport.height} H0 Z M${r.left},${r.top} h${r.width} v${r.height} h-${r.width} Z')`,
+            clipPath: `path('M0,0 H${viewport.width} V${viewport.height} H0 Z M${r.left},${r.top} h${r.width} v${r.height} h-${r.width} Z')`,
+            background: 'rgba(0,0,0,0.6)',
+            transition: 'clip-path 250ms ease, -webkit-clip-path 250ms ease',
+          }}
+        />
+
+        {/* Highlight ring */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: r.top,
+            left: r.left,
+            width: r.width,
+            height: r.height,
+            borderRadius: 2,
+            boxShadow: '0 0 0 2px #fff, 0 0 0 6px rgba(255,255,255,0.3)',
+            pointerEvents: 'none',
+            transition: 'all 250ms ease',
+          }}
+        />
+      </Box>
+    </Fade>
+  );
+};
