@@ -15,184 +15,186 @@ import { PaymentMethodAPI } from "lib/api/payment-method";
 import { CurrencySWR } from "lib/api/currency";
 
 import Iconify from "components/iconify/iconify";
+import { useIntl } from "react-intl";
 
 export default function FolioPayment({
-    FolioID,
-    TransactionID,
-    register,
-    remove,
-    id,
-    resetField,
+  FolioID,
+  TransactionID,
+  register,
+  remove,
+  id,
+  resetField,
 }: any) {
-    const { paymentgroup } = useGetPaymentMethodGroupAPI();
+  const intl = useIntl()
+  const { paymentgroup } = useGetPaymentMethodGroupAPI();
 
-    const { data } = CurrencySWR();
+  const { data } = CurrencySWR();
 
-    const exhcangechoice = data;
+  const exhcangechoice = data;
 
-    const [groupPick, setGroupPick] = useState("");
-    const [typePick, setTypePick] = useState("");
+  const [groupPick, setGroupPick] = useState("");
+  const [typePick, setTypePick] = useState("");
 
-    const [exchangeRatePick, setExchangeRatePick] = useState("154");
+  const [exchangeRatePick, setExchangeRatePick] = useState("154");
 
-    const [newchargeType, setNewChargeType] = useState<any>(null);
+  const [newchargeType, setNewChargeType] = useState<any>(null);
 
-    const [chekedTrue, setChekedTrue] = useState(true);
+  const [chekedTrue, setChekedTrue] = useState(true);
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setGroupPick(event.target.value as string);
-        resetField(`payment.${id}.Groupid`, {
-            defaultValue: event.target.value as string,
-        });
-        setChekedTrue(false);
-    };
+  const handleChange = (event: SelectChangeEvent) => {
+    setGroupPick(event.target.value as string);
+    resetField(`payment.${id}.Groupid`, {
+      defaultValue: event.target.value as string,
+    });
+    setChekedTrue(false);
+  };
 
-    const handleExchangePick = (event: SelectChangeEvent) => {
-        setExchangeRatePick(event.target.value as string);
-        resetField(`payment.${id}.PayCurrencyID`, {
-            defaultValue: event.target.value as string,
-        });
-    };
+  const handleExchangePick = (event: SelectChangeEvent) => {
+    setExchangeRatePick(event.target.value as string);
+    resetField(`payment.${id}.PayCurrencyID`, {
+      defaultValue: event.target.value as string,
+    });
+  };
 
-    const fetchTest = async () => {
-        const chargetype = await PaymentMethodAPI.get({
-            PaymentMethodGroupID: groupPick,
-        });
+  const fetchTest = async () => {
+    const chargetype = await PaymentMethodAPI.get({
+      PaymentMethodGroupID: groupPick,
+    });
 
-        let tempfiltered = chargetype?.filter(
-            (obj: { PaymentMethodGroupID: any }) =>
-                obj.PaymentMethodGroupID == groupPick
-        );
+    let tempfiltered = chargetype?.filter(
+      (obj: { PaymentMethodGroupID: any }) =>
+        obj.PaymentMethodGroupID == groupPick
+    );
 
-        setNewChargeType(tempfiltered);
+    setNewChargeType(tempfiltered);
 
-        setTypePick("");
-    };
+    setTypePick("");
+  };
 
-    const handleTypeChange = (event: SelectChangeEvent) => {
-        setTypePick(event.target.value as string);
-    };
+  const handleTypeChange = (event: SelectChangeEvent) => {
+    setTypePick(event.target.value as string);
+  };
 
-    useEffect(() => {
-        fetchTest();
-    }, [groupPick]);
+  useEffect(() => {
+    fetchTest();
+  }, [groupPick]);
 
-    return (
-        <div>
-            <LocalizationProvider
-                //@ts-ignore
-                dateAdapter={AdapterDateFns}
-                adapterLocale={mn}
+  return (
+    <div>
+      <LocalizationProvider
+        //@ts-ignore
+        dateAdapter={AdapterDateFns}
+        adapterLocale={mn}
+      >
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6}>
+            <Typography fontSize={14} fontWeight={400}>
+              {intl.formatMessage({ id: 'TextType' })}
+            </Typography>
+            <Select
+              value={groupPick}
+              {...register(`payment.${id}.GroupID`)}
+              onChange={handleChange}
+              fullWidth
+              size="small"
             >
-                <Grid container spacing={1}>
-                    <Grid item xs={12} sm={6}>
-                        <Typography fontSize={14} fontWeight={400}>
-                            Төрөл
-                        </Typography>
-                        <Select
-                            value={groupPick}
-                            {...register(`payment.${id}.GroupID`)}
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
-                        >
-                            {paymentgroup?.map((element: any) => {
-                                return (
-                                    <MenuItem
-                                        key={element.PaymentMethodGroupID}
-                                        value={element.PaymentMethodGroupID}
-                                    >
-                                        {element.PaymentMethodGroupName}
-                                    </MenuItem>
-                                );
-                            })}
-                        </Select>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Typography fontSize={14} fontWeight={400}>
-                            Төлбөрийн хэрэгсэл
-                        </Typography>
-                        <Select
-                            value={typePick}
-                            {...register(`payment.${id}.ItemID`)}
-                            onChange={handleTypeChange}
-                            fullWidth
-                            disabled={chekedTrue}
-                            size="small"
-                        >
-                            {newchargeType?.map((element: any) => {
-                                return (
-                                    <MenuItem
-                                        key={element.PaymentMethodID}
-                                        value={element.PaymentMethodID}
-                                    >
-                                        {element.PaymentMethodName}
-                                    </MenuItem>
-                                );
-                            })}
-                        </Select>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Typography fontSize={14} fontWeight={400}>
-                            Валют
-                        </Typography>
+              {paymentgroup?.map((element: any) => {
+                return (
+                  <MenuItem
+                    key={element.PaymentMethodGroupID}
+                    value={element.PaymentMethodGroupID}
+                  >
+                    {element.PaymentMethodGroupName}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography fontSize={14} fontWeight={400}>
+              {intl.formatMessage({ id: 'TextPaymentMethod' })}
+            </Typography>
+            <Select
+              value={typePick}
+              {...register(`payment.${id}.ItemID`)}
+              onChange={handleTypeChange}
+              fullWidth
+              disabled={chekedTrue}
+              size="small"
+            >
+              {newchargeType?.map((element: any) => {
+                return (
+                  <MenuItem
+                    key={element.PaymentMethodID}
+                    value={element.PaymentMethodID}
+                  >
+                    {element.PaymentMethodName}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography fontSize={14} fontWeight={400}>
+              {intl.formatMessage({ id: 'TextCurrency' })}
+            </Typography>
 
-                        <Select
-                            value={exchangeRatePick}
-                            {...register(`payment.${id}.PayCurrencyID`)}
-                            onChange={handleExchangePick}
-                            fullWidth
-                            size="small"
-                        >
-                            {exhcangechoice?.map((element: any) => {
-                                return (
-                                    <MenuItem
-                                        key={element.CurrencyID}
-                                        value={element.CurrencyID}
-                                    >
-                                        {element.CurrencyCode}
-                                    </MenuItem>
-                                );
-                            })}
-                        </Select>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        {" "}
-                        <Typography fontSize={14} fontWeight={400}>
-                            Төлөх дүн
-                        </Typography>
-                        <TextField
-                            type="number"
-                            min={0}
-                            {...register(`payment.${id}.Amount`)}
-                            name={`payment.${id}.Amount`}
-                            fullWidth
-                            size="small"
-                            onFocus={(e) =>
-                                e.target.addEventListener(
-                                    "wheel",
-                                    function (e) {
-                                        e.preventDefault();
-                                    },
-                                    { passive: false }
-                                )
-                            }
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        {" "}
-                        <Typography>Тайлбар</Typography>
-                        <TextField
-                            fullWidth
-                            {...register(`payment.${id}.Description`)}
-                            name={`payment.${id}.Description`}
-                            multiline
-                            size="small"
-                        />
-                    </Grid>
-                </Grid>
+            <Select
+              value={exchangeRatePick}
+              {...register(`payment.${id}.PayCurrencyID`)}
+              onChange={handleExchangePick}
+              fullWidth
+              size="small"
+            >
+              {exhcangechoice?.map((element: any) => {
+                return (
+                  <MenuItem
+                    key={element.CurrencyID}
+                    value={element.CurrencyID}
+                  >
+                    {element.CurrencyCode}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {" "}
+            <Typography fontSize={14} fontWeight={400}>
+              {intl.formatMessage({ id: 'TextAmount' })}
+            </Typography>
+            <TextField
+              type="number"
+              min={0}
+              {...register(`payment.${id}.Amount`)}
+              name={`payment.${id}.Amount`}
+              fullWidth
+              size="small"
+              onFocus={(e) =>
+                e.target.addEventListener(
+                  "wheel",
+                  function (e) {
+                    e.preventDefault();
+                  },
+                  { passive: false }
+                )
+              }
+            />
+          </Grid>
+          <Grid item xs={12}>
+            {" "}
+            <Typography>{intl.formatMessage({ id: 'TextDescription' })}</Typography>
+            <TextField
+              fullWidth
+              {...register(`payment.${id}.Description`)}
+              name={`payment.${id}.Description`}
+              multiline
+              size="small"
+            />
+          </Grid>
+        </Grid>
 
-                {/* <Stack
+        {/* <Stack
                             direction="column"
                             spacing={1}
                             justifyContent="flex-end"
@@ -216,8 +218,8 @@ export default function FolioPayment({
                             </Stack>
                         </Stack> */}
 
-                <Divider />
-            </LocalizationProvider>
-        </div>
-    );
+        <Divider />
+      </LocalizationProvider>
+    </div>
+  );
 }

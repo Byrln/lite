@@ -1,9 +1,11 @@
 import { Box } from "@mui/material";
+import { useIntl } from "react-intl";
 
 import { ChargeSummarySWR } from "lib/api/charge";
 import { formatPrice } from "lib/utils/helpers";
 
 const Summary = ({ TransactionID }: any) => {
+  const intl = useIntl();
   const { data, error } = ChargeSummarySWR(TransactionID);
 
   return data && data[0] ? (
@@ -17,7 +19,7 @@ const Summary = ({ TransactionID }: any) => {
         }}
         className="mb-1"
       >
-        <div>Өрөөний тооцоо : </div>
+        <div>{intl.formatMessage({ id: 'transaction.summary.roomCharges' })} : </div>
         <div style={{ fontWeight: "600" }}>
           {formatPrice(data[0].RoomCharges)}
         </div>
@@ -31,7 +33,7 @@ const Summary = ({ TransactionID }: any) => {
         }}
         className="mb-1"
       >
-        <div>Нэмэлт үйлчилгээ : </div>
+        <div>{intl.formatMessage({ id: 'transaction.summary.extraCharges' })} : </div>
         <div style={{ fontWeight: "600" }}>
           {formatPrice(data[0].ExtraCharges)}
         </div>
@@ -45,7 +47,7 @@ const Summary = ({ TransactionID }: any) => {
         }}
         className="mb-1"
       >
-        <div>Мини бар : </div>
+        <div>{intl.formatMessage({ id: 'transaction.summary.miniBarCharges' })} : </div>
         <div style={{ fontWeight: "600" }}>
           {formatPrice(data[0].MiniBarCharges)}
         </div>
@@ -59,7 +61,7 @@ const Summary = ({ TransactionID }: any) => {
         }}
         className="mb-1"
       >
-        <div>Нийт дүн : </div>
+        <div>{intl.formatMessage({ id: 'transaction.summary.totalCharges' })} : </div>
         <div style={{ fontWeight: "600" }}>
           {formatPrice(data[0].TotalCharges)}
         </div>
@@ -73,7 +75,7 @@ const Summary = ({ TransactionID }: any) => {
         }}
         className="mb-1"
       >
-        <div>Төлсөн : </div>
+        <div>{intl.formatMessage({ id: 'transaction.summary.totalPayments' })} : </div>
         <div style={{ fontWeight: "600" }}>
           {formatPrice(data[0].TotalPayments)}
         </div>
@@ -86,14 +88,14 @@ const Summary = ({ TransactionID }: any) => {
           flexWrap: "wrap",
         }}
       >
-        <div>Үлдэгдэл : </div>
+        <div>{intl.formatMessage({ id: 'transaction.summary.balance' })} : </div>
         <div style={{ fontWeight: "600" }}>
           {formatPrice(data[0].Balance)}
         </div>
       </Box>
     </Box>
   ) : (
-    <Box>Summary</Box>
+    <Box>{intl.formatMessage({ id: 'transaction.summary.title' })}</Box>
   );
 };
 

@@ -17,6 +17,7 @@ import GuestInformation from 'components/transaction/guest-information';
 import GuestReplace from '../../../pages/transaction/edit/guest-replace';
 import GuestNewEdit from 'components/front-office/guest-database/new-edit';
 import GuestDocuments from 'components/common/custom-upload';
+import { useIntl } from 'react-intl';
 
 interface GuestPanelProps {
   transaction: any;
@@ -37,6 +38,7 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
   dispatch,
   router
 }) => {
+  const intl = useIntl();
   return (
     <Grid item xs={12} md={4}>
       <Zoom in={true} timeout={600}>
@@ -99,14 +101,20 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
                       mb: 0.5
                     }}
                   >
-                    Зочны мэдээлэл
+                    {intl.formatMessage({
+                      id: "TextGuestDetail",
+                    })}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Зочдын дэлгэрэнгүй мэдээлэл
+                    {intl.formatMessage({
+                      id: "TextGuestDetailDescription",
+                    })}
                   </Typography>
                 </Box>
               </Box>
-              <Tooltip title="Зочны үйлдлүүд">
+              <Tooltip title={intl.formatMessage({
+                id: "TextGuestActions",
+              })}>
                 <IconButton
                   onClick={handleGuestClick}
                   sx={{
@@ -134,21 +142,27 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
                   onClick={() => {
                     handleModal(
                       true,
-                      "Зочин солих",
+                      intl.formatMessage({
+                        id: "transaction.guest.replaceGuest",
+                      }),
                       <GuestReplace
                         TransactionID={router.query.id}
                       />
                     );
                   }}
                 >
-                  Зочин солих
+                  {intl.formatMessage({
+                    id: "transaction.guest.replaceGuest",
+                  })}
                 </MenuItem>
                 <MenuItem
                   key={`guestDetails`}
                   onClick={() => {
                     handleModal(
                       true,
-                      "Зочны мэдээлэл",
+                      intl.formatMessage({
+                        id: "TextGuestDetailEdit",
+                      }),
                       <GuestNewEdit />
                     );
                     dispatch({
@@ -161,14 +175,18 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
                     });
                   }}
                 >
-                  Зочны мэдээлэл харах
+                  {intl.formatMessage({
+                    id: "TextGuestDetailEdit",
+                  })}
                 </MenuItem>
                 <MenuItem
                   key={`guestEdit`}
                   onClick={() => {
                     handleModal(
                       true,
-                      "Зочны мэдээлэл засах",
+                      intl.formatMessage({
+                        id: "TextGuestDetailView",
+                      }),
                       <GuestNewEdit />
                     );
                     dispatch({
@@ -181,28 +199,36 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
                     });
                   }}
                 >
-                  Зочны мэдээлэл засах
+                  {intl.formatMessage({
+                    id: "TextGuestDetailView",
+                  })}
                 </MenuItem>
                 <MenuItem
                   key={`guestPictureImport`}
                   onClick={() => {
                     handleModal(
                       true,
-                      "Зочны мэдээлэл засах",
+                      intl.formatMessage({
+                        id: "TextUploadPicture",
+                      }),
                       <GuestDocuments
                         GuestID={transaction.GuestID}
                       />
                     );
                   }}
                 >
-                  Зураг оруулах
+                  {intl.formatMessage({
+                    id: "TextUploadPicture",
+                  })}
                 </MenuItem>
                 <MenuItem
                   key={`guestDocumentImport`}
                   onClick={() => {
                     handleModal(
                       true,
-                      "Зочны мэдээлэл засах",
+                      intl.formatMessage({
+                        id: "TextUploadDocument",
+                      }),
                       <GuestDocuments
                         GuestID={transaction.GuestID}
                         IsDocument={true}
@@ -210,7 +236,9 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
                     );
                   }}
                 >
-                  Бичиг баримт хуулах
+                  {intl.formatMessage({
+                    id: "TextUploadDocument",
+                  })}
                 </MenuItem>
               </Menu>
             </Box>

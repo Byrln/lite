@@ -11,8 +11,61 @@ export const ReservationSWR = (search: any) => {
 
     console.log("API call with search parameters:", search);
 
-    const fetcher = async (url: any) =>
-        await axios.post(url, search).then((res: any) => res.data.JsonData);
+    const fetcher = async (url: any) => {
+        // Fetch reservation data
+        const reservationRes = await axios.post(url, search);
+        const reservations = reservationRes.data.JsonData;
+        
+        if (!reservations || reservations.length === 0) {
+            return reservations;
+        }
+        
+        // Get unique guest IDs
+        const guestIds = Array.from(new Set(reservations.map((r: any) => r.GuestID).filter((id: any) => id)));
+        
+        if (guestIds.length === 0) {
+            return reservations;
+        }
+        
+        try {
+            // Fetch guest data for all unique guest IDs
+            const guestRes = await axios.post('/api/Guest/List', {
+                GuestID: 0,
+                GuestName: "",
+                CountryID: "0",
+                IdentityValue: "",
+                Phone: "",
+                TransactionID: "",
+                IsMainOnly: false
+            });
+            const guests = guestRes.data.JsonData;
+            
+            // Create a map of guest data by GuestID
+            const guestMap = new Map();
+            guests.forEach((guest: any) => {
+                guestMap.set(guest.GuestID, guest);
+            });
+            
+            // Enhance reservation data with guest contact information
+            const enhancedReservations = reservations.map((reservation: any) => {
+                const guest = guestMap.get(reservation.GuestID);
+                return {
+                    ...reservation,
+                    GuestPhone: guest?.Phone || guest?.Mobile || guest?.PhoneOrMobile || "",
+                    GuestEmail: guest?.Email || "",
+                    Phone: guest?.Phone || "",
+                    Mobile: guest?.Mobile || "",
+                    Email: guest?.Email || ""
+                };
+            });
+            
+            return enhancedReservations;
+        } catch (error) {
+            console.error('Error fetching guest data:', error);
+            // Return original data if guest fetch fails
+            return reservations;
+        }
+    };
 
     return useSWR(listUrl, fetcher);
 };

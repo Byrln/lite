@@ -294,7 +294,9 @@ const ItemDetail = ({
                 <TableBody>
                   <TableRow>
                     <TableCell>
-                      <b>Өрөөний тооцоо</b>
+                      <b>{intl.formatMessage({
+                        id: "TextRoomCharges",
+                      })}</b>
                     </TableCell>
                     <TableCell style={{ display: "flex" }}>
                       <div>
@@ -352,7 +354,11 @@ const ItemDetail = ({
 
                   <TableRow>
                     <TableCell>
-                      <b>Нэмэлт үйлчилгээ</b>
+                      <b>
+                        {intl.formatMessage({
+                          id: "TextExtraCharges",
+                        })}
+                      </b>
                     </TableCell>
                     <TableCell>
                       {formatPrice(summary.ExtraCharges)}
@@ -361,7 +367,11 @@ const ItemDetail = ({
 
                   <TableRow>
                     <TableCell>
-                      <b>Нийт дүн</b>
+                      <b>
+                        {intl.formatMessage({
+                          id: "TextTotalCharges",
+                        })}
+                      </b>
                     </TableCell>
                     <TableCell>
                       {formatPrice(summary.TotalCharges)}
@@ -369,7 +379,11 @@ const ItemDetail = ({
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <b>Урьдчилгаа</b>
+                      <b>
+                        {intl.formatMessage({
+                          id: "TextTotalPayments",
+                        })}
+                      </b>
                     </TableCell>
                     <TableCell>
                       {formatPrice(summary.TotalPayments)}
@@ -377,7 +391,11 @@ const ItemDetail = ({
                   </TableRow>
                   <TableRow>
                     <TableCell>
-                      <b>Үлдэгдэл</b>
+                      <b>
+                        {intl.formatMessage({
+                          id: "TextBalance",
+                        })}
+                      </b>
                     </TableCell>
                     <TableCell>
                       {formatPrice(summary.Balance)}
@@ -422,7 +440,9 @@ const ItemDetail = ({
                   );
                 }}
               >
-                Нэх.хэвлэх
+                {intl.formatMessage({
+                  id: "PrintInvoice",
+                })}
               </Button>
               <Button
                 variant={"text"}
@@ -440,7 +460,9 @@ const ItemDetail = ({
                   );
                 }}
               >
-                Е-Баримт хэвлэх
+                {intl.formatMessage({
+                  id: "PrintEbarimt",
+                })}
               </Button>
             </Grid>
             <Grid

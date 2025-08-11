@@ -1,5 +1,5 @@
 import { useForm, useFieldArray } from "react-hook-form";
-import { TextField, Grid, Button, IconButton, Box, Typography } from "@mui/material";
+import { TextField, Grid, Button, IconButton, Box, Typography, MenuItem } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon, ContentCopy as DuplicateIcon } from "@mui/icons-material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,6 +9,7 @@ import NewEditForm from "components/common/new-edit-form";
 import { RoomAPI, RoomSWR, listUrl } from "lib/api/room";
 import RoomTypeSelect from "components/select/room-type";
 import FloorSelect from "components/select/floor";
+import RoomSelect from "components/select/room-select";
 import { useAppState } from "lib/context/app";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
@@ -27,6 +28,11 @@ const validationSchema = yup.object().shape({
   RoomNo: yup.string().when('$isEditMode', {
     is: true,
     then: (schema) => schema.required("Бөглөнө үү"),
+    otherwise: (schema) => schema.notRequired()
+  }),
+  RoomID: yup.number().when('$isEditMode', {
+    is: true,
+    then: (schema) => schema.required("Бөглөнө үү").typeError("Бөглөнө үү"),
     otherwise: (schema) => schema.notRequired()
   }),
   RoomTypeID: yup.number().when('$isEditMode', {
@@ -82,6 +88,7 @@ const NewEdit = () => {
     defaultValues: {
       rooms: [{
         RoomNo: "",
+        RoomID: 0,
         RoomTypeID: 0,
         FloorID: 0,
         SortOrder: isEditMode ? 1 : getNextSortOrder(),
@@ -90,6 +97,32 @@ const NewEdit = () => {
       }]
     }
   });
+
+  // Fetch current room data for edit mode
+  const { data: currentRoomData } = RoomSWR({
+    RoomID: isEditMode ? state.editId : 0,
+    RoomTypeID: 0,
+    FloorID: 0,
+    SearchStr: "",
+    EmptyRow: false,
+  });
+
+  // Auto-populate form when editing
+  useEffect(() => {
+    if (isEditMode && currentRoomData && currentRoomData.length > 0) {
+      const roomToEdit = currentRoomData[0];
+      
+      // Reset form with the room data
+      reset({
+        // Top-level fields for backward compatibility
+        ...roomToEdit,
+        // Nested array structure for edit mode form fields
+        rooms: [roomToEdit],
+       });
+      
+      console.log('Form reset completed with room data');
+    }
+  }, [isEditMode, currentRoomData, reset, state.editId]);
 
   // Update sort order when room data changes
   useEffect(() => {
@@ -113,6 +146,7 @@ const NewEdit = () => {
     append({
       ...roomToDuplicate,
       RoomNo: "", // Clear room number for duplicate
+      RoomID: 0, // Clear room ID for duplicate
       SortOrder: getNextSortOrder() + fields.length,
     });
   };
@@ -154,13 +188,33 @@ const NewEdit = () => {
             <TextField
               size="small"
               fullWidth
-              id="TextRoomNo"
+              id="RoomSelect"
               label={intl.formatMessage({ id: "TextRoomNo" })}
-              {...register("rooms.0.RoomNo")}
+              select
               margin="dense"
-              error={!!errors.rooms?.[0]?.RoomNo?.message}
-              helperText={errors.rooms?.[0]?.RoomNo?.message as string}
-            />
+              error={!!errors.rooms?.[0]?.RoomID?.message}
+              helperText={errors.rooms?.[0]?.RoomID?.message as string}
+              value={watch("rooms.0.RoomID") || 0}
+              onChange={(evt: any) => {
+                const selectedRoomId = parseInt(evt.target.value);
+                const selectedRoom = roomData?.find((room: any) => room.RoomID === selectedRoomId);
+                if (selectedRoom) {
+                  setValue('rooms.0.RoomID', selectedRoom.RoomID, { shouldValidate: true });
+                  setValue('rooms.0.RoomNo', selectedRoom.RoomNo, { shouldValidate: true });
+                  setValue('rooms.0.RoomTypeID', selectedRoom.RoomTypeID, { shouldValidate: true });
+                  setValue('rooms.0.FloorID', selectedRoom.FloorID, { shouldValidate: true });
+                }
+              }}
+            >
+              <MenuItem value={0}>
+                {intl.formatMessage({ id: "TextSelectRoom" })}
+              </MenuItem>
+              {roomData?.map((room: any) => (
+                <MenuItem key={room.RoomID} value={room.RoomID}>
+                  {room.RoomNo} - {room.RoomTypeName}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           <Grid item xs={4}>
             <RoomTypeSelect
@@ -238,6 +292,7 @@ const NewEdit = () => {
             startIcon={<AddIcon />}
             onClick={() => append({
               RoomNo: "",
+              RoomID: 0,
               RoomTypeID: 0,
               FloorID: 0,
               SortOrder: getNextSortOrder() + fields.length,

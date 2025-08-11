@@ -15,6 +15,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import { MoreVerticalIcon } from 'lucide-react';
 import OtherInformation from 'components/transaction/other-information';
 import CustomerReplace from '../../../pages/transaction/edit/customer-replace';
+import { useIntl } from 'react-intl';
 
 interface OtherPanelProps {
   transaction: any;
@@ -33,6 +34,7 @@ const OtherPanel: React.FC<OtherPanelProps> = ({
   handleModal,
   router
 }) => {
+  const intl = useIntl();
   return (
     <Grid item xs={12} md={4}>
       <Zoom in={true} timeout={1000}>
@@ -93,15 +95,15 @@ const OtherPanel: React.FC<OtherPanelProps> = ({
                       mb: 0.5
                     }}
                   >
-                    Бусад мэдээлэл
+                    {intl.formatMessage({ id: 'transaction.other.title' })}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Нэмэлт мэдээлэл
+                    {intl.formatMessage({ id: 'transaction.other.subtitle' })}
                   </Typography>
                 </Box>
               </Box>
               <Box>
-                <Tooltip title="Бусад үйлдлүүд">
+                <Tooltip title={intl.formatMessage({ id: 'transaction.other.actions' })}>
                   <IconButton
                     onClick={handleCustomerClick}
                     sx={{
@@ -129,14 +131,14 @@ const OtherPanel: React.FC<OtherPanelProps> = ({
                     onClick={() => {
                       handleModal(
                         true,
-                        "Бусад засвар",
+                        intl.formatMessage({ id: 'transaction.other.edit' }),
                         <CustomerReplace
                           TransactionID={router.query.id}
                         />
                       );
                     }}
                   >
-                    Бусад засвар
+                    {intl.formatMessage({ id: 'transaction.other.edit' })}
                   </MenuItem>
                 </Menu>
               </Box>

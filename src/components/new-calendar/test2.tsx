@@ -928,6 +928,12 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
         departureTime = moment(info.event._instance.range.end).format("HH:mm");
       }
 
+      // Check if newResource and _resource exist to prevent null reference errors
+      if (!info.newResource || !info.newResource._resource) {
+        toast("Invalid room selection. Please try again.");
+        return;
+      }
+
       const newEventObject = {
         title: "New Event",
         ArrivalDate: info.event._instance.range.start,
@@ -954,7 +960,7 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
           event.id != info.event._def.extendedProps.transactionID &&
           new Date(event.start) <=
           new Date(info.oldEvent._def.extendedProps.endDate) &&
-          new Date(event.end) >
+          new Date(event.end) > 
           new Date(info.oldEvent._def.extendedProps.startDate)
       );
 
@@ -1053,6 +1059,12 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
       editId: "",
     });
 
+    // Check if resource and _resource exist to prevent null reference errors
+    if (!info.resource || !info.resource._resource) {
+      toast("Invalid room selection. Please try again.");
+      return;
+    }
+
     let filteredItemData = itemData.filter(
       (event: any) =>
         event.roomTypeID ==
@@ -1084,10 +1096,10 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
         info.resource._resource.extendedProps.roomTypeId
       ),
       roomID: Number(info.resource._resource.id),
-      BaseAdult: Number(info.resource._resource.extendedProps.BaseAdult),
-      BaseChild: Number(info.resource._resource.extendedProps.BaseChild),
-      MaxAdult: Number(info.resource._resource.extendedProps.MaxAdult),
-      MaxChild: Number(info.resource._resource.extendedProps.MaxChild),
+      BaseAdult: Number(info.resource._resource.extendedProps.BaseAdult || 0),
+      BaseChild: Number(info.resource._resource.extendedProps.BaseChild || 0),
+      MaxAdult: Number(info.resource._resource.extendedProps.MaxAdult || 0),
+      MaxChild: Number(info.resource._resource.extendedProps.MaxChild || 0),
     };
 
     if (newEventObject.roomID) {

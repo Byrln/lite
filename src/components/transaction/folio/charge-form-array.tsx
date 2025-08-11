@@ -37,12 +37,14 @@ import FolioCharge from "./charge";
 import { FolioAPI } from "lib/api/folio";
 import { mutate } from "swr";
 import { Add } from "@mui/icons-material";
+import { useIntl } from "react-intl";
 
 export default function ChargeFormArray({
   FolioID,
   TransactionID,
   handleModal,
 }: any) {
+  const intl = useIntl()
   const [workingDate, setWorkingDate] = useState(null);
   const [newGroupCount, setNewGroupCount]: any = useState(1);
 
@@ -134,7 +136,7 @@ export default function ChargeFormArray({
           <Box sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
             <Add color="primary" />
             <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Тооцоо нэмэх
+              {intl.formatMessage({ id: 'TextAddCharge' })}
             </Typography>
           </Box>
 
@@ -145,7 +147,7 @@ export default function ChargeFormArray({
                   <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
                     <CalendarTodayIcon sx={{ fontSize: 18, color: 'primary.main' }} />
                     <Typography variant="subtitle2" fontWeight={500}>
-                      Огноо
+                      {intl.formatMessage({ id: 'TextDate' })}
                     </Typography>
                   </Stack>
                   <DateTimePicker
@@ -180,7 +182,7 @@ export default function ChargeFormArray({
                       }
                       label={
                         <Typography variant="body2" fontWeight={400}>
-                          Огноо өөрчлөх
+                          {intl.formatMessage({ id: 'TextChangeDate' })}
                         </Typography>
                       }
                     />
@@ -196,10 +198,10 @@ export default function ChargeFormArray({
           <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
             <Iconify icon="mdi:receipt-text" sx={{ fontSize: 20, color: 'primary.main' }} />
             <Typography variant="subtitle1" fontWeight={600}>
-              Тооцооны зүйлүүд
+              {intl.formatMessage({ id: 'TextChargeItems' })}
             </Typography>
             <Chip
-              label={`${fields.length} зүйл`}
+              label={`${fields.length} ${intl.formatMessage({ id: 'TextItem' })}`}
               size="small"
               color="primary"
               variant="outlined"
@@ -243,7 +245,7 @@ export default function ChargeFormArray({
                 >
                   {/* Add Items Section */}
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Tooltip title="Шинэ тооцоо нэмэх">
+                    <Tooltip title={intl.formatMessage({ id: 'TextAddCharge' })}>
                       <IconButton
                         color="primary"
                         onClick={() => {
@@ -273,7 +275,7 @@ export default function ChargeFormArray({
                     <TextField
                       type="number"
                       size="small"
-                      label="Тоо ширхэг"
+                      label={intl.formatMessage({ id: 'TextQuantity' })}
                       value={newGroupCount}
                       onChange={(e: any) => {
                         setNewGroupCount(e.target.value);
@@ -283,7 +285,7 @@ export default function ChargeFormArray({
                     />
 
                     <Typography variant="body2" color="text.secondary">
-                      {newGroupCount > 1 ? `${newGroupCount} зүйл нэмэх` : '1 зүйл нэмэх'}
+                      {newGroupCount > 1 ? `${newGroupCount} ${intl.formatMessage({ id: 'TextItem' })} ${intl.formatMessage({ id: 'TextAdd' })}` : `1 ${intl.formatMessage({ id: 'TextAddItem' })}`}
                     </Typography>
                   </Stack>
 
@@ -301,7 +303,7 @@ export default function ChargeFormArray({
                       py: 1.5,
                     }}
                   >
-                    Хадгалах
+                    {intl.formatMessage({ id: 'TextSave' })}
                   </Button>
                 </Stack>
               </CardContent>

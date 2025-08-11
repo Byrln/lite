@@ -15,129 +15,136 @@ import Stack from "@mui/material/Stack";
 import FolioCharge from "./charge";
 import ChargeFormArray from "./charge-form-array";
 import PaymentFormArray from "./payment-from-array";
+import { useIntl } from "react-intl";
 
 const NewEditTest = ({ FolioID, TransactionID, handleModal }: any) => {
-    const [workingDate, setWorkingDate] = useState(null);
-    const [entity, setEntity] = useState<any>({});
-    const [rerenderKey, setRerenderKey] = useState(0);
+  const intl = useIntl()
+  const [workingDate, setWorkingDate] = useState(null);
+  const [entity, setEntity] = useState<any>({});
+  const [rerenderKey, setRerenderKey] = useState(0);
+  const [currentTab, setCurrentTab] = useState('');
+  const [scrollableTab, setScrollableTab] = useState('');
 
-    const { data, error } = FolioItemSWR(FolioID);
+  const { data, error } = FolioItemSWR(FolioID);
 
-    useEffect(() => {
-        if (data) {
-            setEntity(data);
-        }
-    }, [data]);
+  useEffect(() => {
+    if (data) {
+      setEntity(data);
+    }
+  }, [data]);
 
-    const onCheckboxChange = (e: any) => {
-        let tempEntity = [...entity];
-        tempEntity.forEach(
-            (element: any) => (element.isChecked = e.target.checked)
-        );
-        setEntity(tempEntity);
-        setRerenderKey((prevKey) => prevKey + 1);
-    };
+  useEffect(() => {
+    // Initialize tab values after intl is available
+    const paymentTab = intl.formatMessage({ id: 'TextPayment' });
+    setCurrentTab(paymentTab);
+    setScrollableTab(paymentTab);
+  }, [intl]);
 
-    useEffect(() => {
-        fetchDatas();
-    }, []);
-
-    const fetchDatas = async () => {
-        let response = await FrontOfficeAPI.workingDate();
-        if (response.status == 200) {
-            setWorkingDate(response.workingDate[0].WorkingDate);
-        }
-    };
-
-    const [currentTab, setCurrentTab] = useState("Төлбөр");
-
-    const [scrollableTab, setScrollableTab] = useState("Төлбөр");
-
-    const handleChangeTab = useCallback(
-        (event: React.SyntheticEvent, newValue: string) => {
-            setCurrentTab(newValue);
-        },
-        []
+  const onCheckboxChange = (e: any) => {
+    let tempEntity = [...entity];
+    tempEntity.forEach(
+      (element: any) => (element.isChecked = e.target.checked)
     );
+    setEntity(tempEntity);
+    setRerenderKey((prevKey) => prevKey + 1);
+  };
 
-    const handleChangeScrollableTab = useCallback(
-        (event: React.SyntheticEvent, newValue: string) => {
-            setScrollableTab(newValue);
-        },
-        []
-    );
+  useEffect(() => {
+    fetchDatas();
+  }, []);
 
-    const TABS = [
-        {
-            value: "Төлбөр",
-            label: (
-                <PaymentFormArray
-                    FolioID={FolioID}
-                    TransactionID={TransactionID}
-                    handleModal={handleModal}
-                />
-            ),
-        },
-        {
-            value: "Тооцоо",
-            label: (
-                <ChargeFormArray
-                    FolioID={FolioID}
-                    TransactionID={TransactionID}
-                    handleModal={handleModal}
-                />
-            ),
-        },
-    ];
+  const fetchDatas = async () => {
+    let response = await FrontOfficeAPI.workingDate();
+    if (response.status == 200) {
+      setWorkingDate(response.workingDate[0].WorkingDate);
+    }
+  };
 
-    return (
-        <div>
-            <LocalizationProvider
-                //@ts-ignore
-                dateAdapter={AdapterDateFns}
-                adapterLocale={mn}
-            >
-                <Stack direction="column" spacing={2}>
-                    <Tabs
-                        value={currentTab}
-                        onChange={handleChangeTab}
-                        TabIndicatorProps={{
-                            style: {
-                                backgroundColor: "secondary",
-                            },
-                        }}
-                        orientation="horizontal"
-                    >
-                        {TABS.slice(0, 2).map((tab) => (
-                            <Tab
-                                key={tab.value}
-                                value={tab.value}
-                                label={tab.value}
-                                sx={{
-                                    fontSize: "14px",
-                                    justifyContent: "start",
-                                }}
-                            />
-                        ))}
-                    </Tabs>
+  const handleChangeTab = useCallback(
+    (event: React.SyntheticEvent, newValue: string) => {
+      setCurrentTab(newValue);
+    },
+    []
+  );
 
-                    {TABS.slice(0, 5).map(
-                        (tab) =>
-                            tab.value === currentTab && (
-                                <Box
-                                    key={tab.value}
-                                    sx={{
-                                        borderRadius: 1,
-                                    }}
-                                >
-                                    {tab.label}
-                                </Box>
-                            )
-                    )}
-                </Stack>
-            </LocalizationProvider>
-        </div>
-    );
+  const handleChangeScrollableTab = useCallback(
+    (event: React.SyntheticEvent, newValue: string) => {
+      setScrollableTab(newValue);
+    },
+    []
+  );
+
+  const TABS = [
+    {
+      value: intl.formatMessage({ id: 'TextPayment' }),
+      label: (
+        <PaymentFormArray
+          FolioID={FolioID}
+          TransactionID={TransactionID}
+          handleModal={handleModal}
+        />
+      ),
+    },
+    {
+      value: intl.formatMessage({ id: 'TextCharge' }),
+      label: (
+        <ChargeFormArray
+          FolioID={FolioID}
+          TransactionID={TransactionID}
+          handleModal={handleModal}
+        />
+      ),
+    },
+  ];
+
+  return (
+    <div>
+      <LocalizationProvider
+        //@ts-ignore
+        dateAdapter={AdapterDateFns}
+        adapterLocale={mn}
+      >
+        <Stack direction="column" spacing={2}>
+          <Tabs
+            value={currentTab}
+            onChange={handleChangeTab}
+            TabIndicatorProps={{
+              style: {
+                backgroundColor: "secondary",
+              },
+            }}
+            orientation="horizontal"
+          >
+            {TABS.slice(0, 2).map((tab) => (
+              <Tab
+                key={tab.value}
+                value={tab.value}
+                label={tab.value}
+                sx={{
+                  fontSize: "14px",
+                  justifyContent: "start",
+                }}
+              />
+            ))}
+          </Tabs>
+
+          {TABS.slice(0, 5).map(
+            (tab) =>
+              tab.value === currentTab && (
+                <Box
+                  key={tab.value}
+                  sx={{
+                    borderRadius: 1,
+                  }}
+                >
+                  {tab.label}
+                </Box>
+              )
+          )}
+        </Stack>
+      </LocalizationProvider>
+    </div>
+  );
 };
 
 export default NewEditTest;

@@ -156,7 +156,7 @@ export default function PaymentFormArray({
       <Box sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
         <PaymentIcon color="primary" />
         <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
-          Төлбөр нэмэх
+          {intl.formatMessage({ id: 'TextAddPayment' })}
         </Typography>
       </Box>
 
@@ -171,7 +171,7 @@ export default function PaymentFormArray({
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
               <CalendarTodayIcon color="action" fontSize="small" />
               <Typography variant="subtitle1" fontWeight={500}>
-                Огноо тохиргоо
+                {intl.formatMessage({ id: 'TextDate' })}
               </Typography>
             </Box>
             <Grid container spacing={2} alignItems="center">
@@ -207,7 +207,7 @@ export default function PaymentFormArray({
                   }
                   label={
                     <Typography variant="body2" fontWeight={400}>
-                      Огноо өөрчлөх
+                      {intl.formatMessage({ id: 'TextChangeDate' })}
                     </Typography>
                   }
                 />
@@ -226,7 +226,7 @@ export default function PaymentFormArray({
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <AccountBalanceWalletIcon color="primary" fontSize="small" />
                     <Typography variant="subtitle1" fontWeight={500}>
-                      Төлбөрийн мэдээлэл
+                      {intl.formatMessage({ id: 'TextPaymentInfo' })}
                     </Typography>
                   </Box>
                   <Box overflow="auto">
@@ -255,7 +255,7 @@ export default function PaymentFormArray({
 
               {/* Actions Section */}
               <Stack direction="row" justifyContent="center">
-                <Tooltip title="Төлбөр хадгалах">
+                <Tooltip title={intl.formatMessage({ id: 'TextSave' })}>
                   <Button
                     variant="contained"
                     type="submit"
@@ -269,7 +269,7 @@ export default function PaymentFormArray({
                       py: 1.5,
                     }}
                   >
-                    Хадгалах
+                    {intl.formatMessage({ id: 'TextSave' })}
                   </Button>
                 </Tooltip>
               </Stack>

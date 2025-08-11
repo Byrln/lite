@@ -25,6 +25,7 @@ import { useGetPaymentMethodGroupAPI } from "lib/api/payment-method-group";
 import { useGetChargeTypeGroupAPI } from "lib/api/charge-type-group";
 import { useGetChargeTypeAPI, ChargeTypeAPI } from "lib/api/charge-type";
 import { AnyMxRecord } from "dns";
+import { useIntl } from "react-intl";
 
 export default function FolioCharge({
   FolioID,
@@ -36,6 +37,7 @@ export default function FolioCharge({
   append,
   getValues,
 }: any) {
+  const intl = useIntl()
   const { chargegroup } = useGetChargeTypeGroupAPI();
 
   const [groupPick, setGroupPick] = useState("");
@@ -123,7 +125,7 @@ export default function FolioCharge({
         <Grid container spacing={1}>
           <Grid item xs={6} sm={3} md={2}>
             <Typography fontSize={14} fontWeight={400}>
-              Төрөл
+              {intl.formatMessage({ id: 'TextType' })}
             </Typography>
 
             <Select
@@ -147,7 +149,7 @@ export default function FolioCharge({
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
             <Typography fontSize={14} fontWeight={400}>
-              Тооцоо
+              {intl.formatMessage({ id: 'TextFolio' })}
             </Typography>
             <Select
               disabled={chekedTrue}
@@ -171,7 +173,7 @@ export default function FolioCharge({
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
             <Typography fontSize={14} fontWeight={400}>
-              Үнэ
+              {intl.formatMessage({ id: 'TextAmount' })}
             </Typography>
 
             <TextField
@@ -199,7 +201,7 @@ export default function FolioCharge({
           </Grid>
           <Grid item xs={6} sm={3} md={2}>
             <Typography fontSize={14} fontWeight={400}>
-              Ширхэг
+              {intl.formatMessage({ id: 'TextQuantity' })}
             </Typography>
 
             <TextField
@@ -224,7 +226,7 @@ export default function FolioCharge({
           <Grid item xs={6} sm={6} md={2}>
             {" "}
             <Typography fontSize={14} fontWeight={400}>
-              Тайлбар
+              {intl.formatMessage({ id: 'TextDescription' })}
             </Typography>
             <TextField
               {...register(`charge.${id}.Description`)}
@@ -246,7 +248,7 @@ export default function FolioCharge({
             }}
           >
             {/* Duplicate Button */}
-            <Tooltip title="Хуулах" arrow>
+            <Tooltip title={intl.formatMessage({ id: 'TextDuplicate' })} arrow>
               <IconButton
                 size="small"
                 onClick={handleDuplicate}
@@ -269,7 +271,7 @@ export default function FolioCharge({
             </Tooltip>
 
             {/* Delete Button */}
-            <Tooltip title="Устгах" arrow>
+            <Tooltip title={intl.formatMessage({ id: 'TextDelete' })} arrow>
               <IconButton
                 size="small"
                 onClick={() => remove(id)}

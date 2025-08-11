@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { Box, Alert, Skeleton, Menu, MenuItem, Button } from "@mui/material";
 import { mutate } from "swr";
+import { useIntl } from "react-intl";
 
 import {
   SharerListSWR,
@@ -17,6 +18,7 @@ import NewEdit from "./new-edit";
 import GroupIcon from '@mui/icons-material/Group';
 
 const SharerInformation = ({ TransactionID }: any) => {
+  const intl = useIntl();
   const { data, error } = SharerListSWR(TransactionID);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRow, setSelectedRow] = useState<any>(null);
@@ -24,7 +26,7 @@ const SharerInformation = ({ TransactionID }: any) => {
   const [state, dispatch]: any = useAppState();
 
   const deleteSharer = async () => {
-    if (!confirm("Are you sure?")) {
+    if (!confirm(intl.formatMessage({ id: 'common.confirmDelete' }))) {
       return;
     }
 
@@ -67,17 +69,17 @@ const SharerInformation = ({ TransactionID }: any) => {
       },
     },
     {
-      title: "Зочны нэр",
+      title: intl.formatMessage({ id: 'transaction.sharer.guestName' }),
       key: "GuestName",
       dataIndex: "GuestName",
     },
     {
-      title: "Хүйс",
+      title: intl.formatMessage({ id: 'transaction.sharer.gender' }),
       key: "Gender",
       dataIndex: "Gender",
     },
     {
-      title: "Нэмэлт үйлдэл",
+      title: intl.formatMessage({ id: 'transaction.sharer.actions' }),
       key: "Action",
       dataIndex: "Action",
       width: 250,
@@ -92,7 +94,7 @@ const SharerInformation = ({ TransactionID }: any) => {
               size="small"
               onClick={(e) => handleClick(e, element)}
             >
-              Үйлдэл
+              {intl.formatMessage({ id: 'common.actions' })}
             </Button>
 
             <Menu
@@ -107,7 +109,7 @@ const SharerInformation = ({ TransactionID }: any) => {
                   onClick={() => {
                     handleModal(
                       true,
-                      "Зочны мэдээлэл засах",
+                      intl.formatMessage({ id: 'transaction.sharer.editGuest' }),
                       <GuestNewEdit />
                     );
                     dispatch({
@@ -121,14 +123,14 @@ const SharerInformation = ({ TransactionID }: any) => {
                     handleClose();
                   }}
                 >
-                  Зочны мэдээлэл засах
+                  {intl.formatMessage({ id: 'transaction.sharer.editGuest' })}
                 </MenuItem>
                 <MenuItem
                   key={`guestPictureImport`}
                   onClick={() => {
                     handleModal(
                       true,
-                      "Зочны мэдээлэл засах",
+                      intl.formatMessage({ id: 'transaction.sharer.uploadPhoto' }),
                       <GuestDocuments
                         GuestID={selectedRow.GuestID}
                       />
@@ -136,14 +138,14 @@ const SharerInformation = ({ TransactionID }: any) => {
                     handleClose();
                   }}
                 >
-                  Зураг оруулах
+                  {intl.formatMessage({ id: 'transaction.sharer.uploadPhoto' })}
                 </MenuItem>
                 <MenuItem
                   key={`guestDocumentImport`}
                   onClick={() => {
                     handleModal(
                       true,
-                      "Зочны мэдээлэл засах",
+                      intl.formatMessage({ id: 'transaction.sharer.uploadDocument' }),
                       <GuestDocuments
                         GuestID={selectedRow.GuestID}
                         IsDocument={true}
@@ -152,7 +154,7 @@ const SharerInformation = ({ TransactionID }: any) => {
                     handleClose();
                   }}
                 >
-                  Бичиг баримт хуулах
+                  {intl.formatMessage({ id: 'transaction.sharer.uploadDocument' })}
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
@@ -160,7 +162,7 @@ const SharerInformation = ({ TransactionID }: any) => {
                     handleClose();
                   }}
                 >
-                  Устгах
+                  {intl.formatMessage({ id: 'common.delete' })}
                 </MenuItem>
               </>
             </Menu>
@@ -180,8 +182,8 @@ const SharerInformation = ({ TransactionID }: any) => {
         columns={columns}
         data={data}
         error={error}
-        modalTitle="Хамтрагч"
-        excelName="Хамтрагч"
+        modalTitle={intl.formatMessage({ id: 'transaction.sharer.title' })}
+        excelName={intl.formatMessage({ id: 'transaction.sharer.title' })}
         hasNew={true}
         pagination={false}
         datagrid={false}

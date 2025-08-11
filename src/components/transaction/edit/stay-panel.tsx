@@ -15,6 +15,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { MoreVerticalIcon } from 'lucide-react';
 import StayInformation from 'components/transaction/stay-information';
 import AmendStayForm from 'components/reservation/amend-stay';
+import { useIntl } from 'react-intl';
 
 interface StayPanelProps {
   transaction: any;
@@ -31,6 +32,7 @@ const StayPanel: React.FC<StayPanelProps> = ({
   handleStayClose,
   handleModal
 }) => {
+  const intl = useIntl();
   return (
     <Grid item xs={12} md={4}>
       <Zoom in={true} timeout={800}>
@@ -91,14 +93,14 @@ const StayPanel: React.FC<StayPanelProps> = ({
                       mb: 0.5
                     }}
                   >
-                    Хоногийн мэдээлэл
+                    {intl.formatMessage({ id: 'transaction.stay.title' })}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Буудлагын хугацаа
+                    {intl.formatMessage({ id: 'transaction.stay.subtitle' })}
                   </Typography>
                 </Box>
               </Box>
-              <Tooltip title="Хоногийн үйлдлүүд">
+              <Tooltip title={intl.formatMessage({ id: 'transaction.stay.actions' })}>
                 <IconButton
                   onClick={handleStayClick}
                   sx={{
@@ -126,7 +128,7 @@ const StayPanel: React.FC<StayPanelProps> = ({
                   onClick={() => {
                     handleModal(
                       true,
-                      "Хоног засах",
+                      intl.formatMessage({ id: 'transaction.stay.amendStay' }),
                       <AmendStayForm
                         transactionInfo={{
                           TransactionID: transaction.TransactionID,
@@ -142,7 +144,7 @@ const StayPanel: React.FC<StayPanelProps> = ({
                     );
                   }}
                 >
-                  Хоног засах
+                  {intl.formatMessage({ id: 'transaction.stay.amendStay' })}
                 </MenuItem>
               </Menu>
             </Box>
@@ -153,10 +155,10 @@ const StayPanel: React.FC<StayPanelProps> = ({
               departureDate={transaction.DepartureDate}
               pax={
                 (transaction.Adult > 0
-                  ? transaction.Adult + " насанд хүрэгч "
+                  ? transaction.Adult + " " + intl.formatMessage({ id: 'transaction.stay.adult' }) + " "
                   : "") +
                 (transaction.Child > 0
-                  ? transaction.Child + " хүүхэд"
+                  ? transaction.Child + " " + intl.formatMessage({ id: 'transaction.stay.child' })
                   : "")
               }
             />

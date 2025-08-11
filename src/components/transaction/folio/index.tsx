@@ -119,7 +119,7 @@ const RoomCharge = ({ TransactionID }: any) => {
     //     },
     // },
     {
-      title: "Огноо",
+      title: intl.formatMessage({ id: 'folio.date' }),
       key: "CurrDate",
       dataIndex: "CurrDate",
       __ignore__: true,
@@ -132,17 +132,17 @@ const RoomCharge = ({ TransactionID }: any) => {
       },
     },
     {
-      title: "Өрөө",
+      title: intl.formatMessage({ id: 'folio.room' }),
       key: "RoomFullName",
       dataIndex: "RoomFullName",
     },
     {
-      title: "Хэлбэр",
+      title: intl.formatMessage({ id: 'folio.itemName' }),
       key: "ItemName",
       dataIndex: "ItemName",
     },
     {
-      title: "Дүн",
+      title: intl.formatMessage({ id: 'folio.amount' }),
       key: "Amount2",
       dataIndex: "Amount2",
       __ignore__: true,
@@ -153,17 +153,17 @@ const RoomCharge = ({ TransactionID }: any) => {
     },
 
     {
-      title: "Тайлбар",
+      title: intl.formatMessage({ id: 'folio.description' }),
       key: "Description",
       dataIndex: "Description",
     },
     {
-      title: "Хэрэглэгч",
+      title: intl.formatMessage({ id: 'folio.user' }),
       key: "Username",
       dataIndex: "Username",
     },
     {
-      title: "Үйлдэл",
+      title: intl.formatMessage({ id: 'common.actions' }),
       key: "Action",
       dataIndex: "Action",
       render: function render(id: any, value: any, entity: any) {
@@ -175,7 +175,7 @@ const RoomCharge = ({ TransactionID }: any) => {
               size="small"
               onClick={(e) => handleClick(e, entity)}
             >
-              Үйлдэл
+              {intl.formatMessage({ id: 'common.actions' })}
             </Button>
             <Menu
               id={`menu${entity.CurrID}`}
@@ -192,7 +192,7 @@ const RoomCharge = ({ TransactionID }: any) => {
                       handleClose();
                     }}
                   >
-                    Засах
+                    {intl.formatMessage({ id: 'common.edit' })}
                   </MenuItem>
                   <MenuItem
                     key={`delete${selectedRow.CurrID}`}
@@ -201,7 +201,7 @@ const RoomCharge = ({ TransactionID }: any) => {
                       handleClose();
                     }}
                   >
-                    Устгах
+                    {intl.formatMessage({ id: 'common.delete' })}
                   </MenuItem>
                 </>
               )}
@@ -232,7 +232,7 @@ const RoomCharge = ({ TransactionID }: any) => {
 
       {/* Main Content Container */}
       <Box sx={{ display: 'flex', gap: 2 }}>
-        {/* Left Panel - Always Visible (50% width) */}
+        {/* Left Panel - Always Visible (30% width) */}
         <Box sx={{ width: '30%' }}>
           <Box sx={{ height: 'fit-content' }}>
             {/* Action Buttons */}
@@ -274,7 +274,9 @@ const RoomCharge = ({ TransactionID }: any) => {
             {/* Cut Component in Side Panel */}
             {cutOpen && (
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1" sx={{ mb: 1 }}>Cut Transaction</Typography>
+                <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                  {intl.formatMessage({ id: 'TextFolioCut' })}
+                </Typography>
                 <CutTransactionInline
                   TransactionID={TransactionID}
                   FolioID={FolioID}
@@ -286,7 +288,9 @@ const RoomCharge = ({ TransactionID }: any) => {
             {/* Bill To Component in Side Panel */}
             {billToOpen && (
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1" sx={{ mb: 1 }}>Bill To</Typography>
+                <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                  {intl.formatMessage({ id: 'TextBillTo' })}
+                </Typography>
                 <BillToTransactionInline
                   TransactionID={TransactionID}
                   FolioID={FolioID}
@@ -306,7 +310,9 @@ const RoomCharge = ({ TransactionID }: any) => {
             {/* Edit Component in Side Panel */}
             {editOpen && (
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1" sx={{ mb: 1 }}>Edit Transaction</Typography>
+                <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                  {intl.formatMessage({ id: 'TextEditTransaction' })}
+                </Typography>
                 <EditTransactionInline
                   selectedRow={selectedRow}
                   TransactionID={TransactionID}
@@ -318,7 +324,9 @@ const RoomCharge = ({ TransactionID }: any) => {
             {/* Delete Component in Side Panel */}
             {deleteOpen && (
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1" sx={{ mb: 1 }}>Delete Transaction</Typography>
+                <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                  {intl.formatMessage({ id: 'TextDeleteTransaction' })}
+                </Typography>
                 <DeleteTransactionInline
                   TransactionID={TransactionID}
                   onClose={() => setDeleteOpen(false)}
@@ -328,14 +336,14 @@ const RoomCharge = ({ TransactionID }: any) => {
           </Box>
         </Box>
 
-        {/* Right Panel - Table (50% width) */}
+        {/* Right Panel - Table (_0% width) */}
         <Box sx={{ width: '70%' }}>
           <CustomTable
             columns={columns}
             data={entity ? entity : {}}
             error={error}
-            modalTitle="Өрөөний тооцоо"
-            excelName="Өрөөний тооцоо"
+            modalTitle={intl.formatMessage({ id: 'TextFolioTitle' })}
+            excelName={intl.formatMessage({ id: 'TextFolioTitle' })}
             pagination={false}
             datagrid={false}
             hasPrint={false}
@@ -354,7 +362,7 @@ const RoomCharge = ({ TransactionID }: any) => {
             }}
           >
             <Typography variant="subtitle1">
-              Үлдэгдэл{" "}
+              {intl.formatMessage({ id: 'TextTotalAmount' })}{" "}
               {entity && entity.length > 0
                 ? formatPrice(
                   entity.reduce(
@@ -594,6 +602,7 @@ const DeleteTransactionInline = ({ selectedRow, TransactionID, onClose }: any) =
 
 // Inline Cut Transaction Component
 const CutTransactionInline = ({ FolioID, onClose }: any) => {
+  const intl = useIntl();
   const { register, handleSubmit, control } = useForm();
 
   const customSubmit = async (values: any) => {
@@ -612,27 +621,27 @@ const CutTransactionInline = ({ FolioID, onClose }: any) => {
         <FormControlLabel
           control={
             <Controller
-              name="CheckRC"
+              name={intl.formatMessage({ id: 'TextRoomCharge' })}
               control={control}
               render={() => <MuiCheckbox {...register("CheckRC")} />}
             />
           }
-          label="Room Charge"
+          label={intl.formatMessage({ id: 'TextRoomCharge' })}
         />
         <FormControlLabel
           control={
             <Controller
-              name="CheckEC"
+              name={intl.formatMessage({ id: 'TextExtraCharge' })}
               control={control}
               render={() => <MuiCheckbox {...register("CheckEC")} />}
             />
           }
-          label="Extra Charge"
+          label={intl.formatMessage({ id: 'TextExtraCharge' })}
         />
         <input type="hidden" {...register("FolioID")} value={FolioID} />
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button type="submit" variant="contained">Submit</Button>
-          <Button variant="outlined" onClick={onClose}>Cancel</Button>
+          <Button type="submit" variant="contained">{intl.formatMessage({ id: 'TextSubmit' })}</Button>
+          <Button variant="outlined" onClick={onClose}>{intl.formatMessage({ id: 'TextCancel' })}</Button>
         </Box>
       </Stack>
     </form>
@@ -641,6 +650,7 @@ const CutTransactionInline = ({ FolioID, onClose }: any) => {
 
 // Inline Bill To Transaction Component
 const BillToTransactionInline = ({ TransactionID, FolioID, onClose }: any) => {
+  const intl = useIntl();
   const [entity, setEntity] = useState(true);
   const [entity2, setEntity2] = useState(false);
   const [guest, setGuest] = useState();
@@ -678,7 +688,7 @@ const BillToTransactionInline = ({ TransactionID, FolioID, onClose }: any) => {
 
   return (
     <form onSubmit={handleSubmit(customSubmit)}>
-      <Stack sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 2, backgroundColor: "#f5f5f5", borderRadius: 1, px: 2, py: 1 }}>
+      <Stack sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, backgroundColor: "#f5f5f5", borderRadius: 1, px: 2, py: 1 }}>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <div className="bg-[#804FE6] rounded-full outline outline-[#804FE6] outline-2 shadow-md w-full sm:w-auto overflow-hidden">
             <RadioGroup
@@ -693,8 +703,8 @@ const BillToTransactionInline = ({ TransactionID, FolioID, onClose }: any) => {
               className="flex gap-0.5 sm:gap-1 flex-nowrap"
             >
               {[
-                { value: "guest", label: "Bill to Guest" },
-                { value: "customer", label: "Bill to Customer" },
+                { value: "guest", label: intl.formatMessage({ id: 'TextBillToGuest' }) },
+                { value: "customer", label: intl.formatMessage({ id: 'TextBillToCustomer' }) },
               ].map((option) => (
                 <div key={option.value} className="flex items-center">
                   <RadioGroupItem
@@ -719,25 +729,29 @@ const BillToTransactionInline = ({ TransactionID, FolioID, onClose }: any) => {
             </RadioGroup>
           </div>
         </Box>
-        {entity && (
-          <GuestDefaultSelect
-            register={register}
-            errors={{}}
-            entity={guest}
-            setEntity={setGuest}
-            search={{ TransactionID: TransactionID }}
-          />
-        )}
-        {entity2 && (
-          <CustomerSelect
-            register={register}
-            errors={{}}
-            isCustomSelect={true}
-          />
-        )}
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button type="submit" variant="contained">Submit</Button>
-          <Button variant="outlined" onClick={onClose}>Cancel</Button>
+        <Box className="flex items-center mr-24 gap-3">
+          <Box className="w-full">
+            {entity && (
+              <GuestDefaultSelect
+                register={register}
+                errors={{}}
+                entity={guest}
+                setEntity={setGuest}
+                search={{ TransactionID: TransactionID }}
+              />
+            )}
+            {entity2 && (
+              <CustomerSelect
+                register={register}
+                errors={{}}
+                isCustomSelect={true}
+              />
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', gap: 2, width: '10%' }}>
+            <Button type="submit" variant="contained">{intl.formatMessage({ id: 'TextSubmit' })}</Button>
+            <Button variant="outlined" onClick={onClose}>{intl.formatMessage({ id: 'TextCancel' })}</Button>
+          </Box>
         </Box>
       </Stack>
     </form>

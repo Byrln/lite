@@ -17,247 +17,268 @@ import ReservationEdit from "components/front-office/reservation-list/edit";
 import { ModalContext } from "lib/context/modal";
 
 const DeparturedListList = ({ title, workingDate }: any) => {
-    const router = useRouter();
-    const { StatusGroup, StartDate, EndDate, ReservationTypeID } = router.query;
-    const [rerenderKey, setRerenderKey] = useState(0);
+  const router = useRouter();
+  const { StatusGroup, StartDate, EndDate, ReservationTypeID } = router.query;
+  const [rerenderKey, setRerenderKey] = useState(0);
 
-    console.log("workingDate", workingDate);
+  console.log("workingDate", workingDate);
 
-    // Create a Date object
-    const date = new Date(workingDate);
+  // Create a Date object
+  const date = new Date(workingDate);
 
-    // Add 15 days
-    date.setDate(date.getDate() + 15);
+  // Add 15 days
+  date.setDate(date.getDate() + 15);
 
-    // Format to YYYY-MM-DD
-    const result = date.toISOString().split("T")[0];
+  // Format to YYYY-MM-DD
+  const result = date.toISOString().split("T")[0];
 
-    useEffect(() => {
-        setRerenderKey((prevKey) => prevKey + 1);
-    }, [StatusGroup, StartDate, EndDate, ReservationTypeID]);
+  useEffect(() => {
+    setRerenderKey((prevKey) => prevKey + 1);
+  }, [StatusGroup, StartDate, EndDate, ReservationTypeID]);
 
-    const intl = useIntl();
+  const intl = useIntl();
 
-    const { handleModal }: any = useContext(ModalContext);
+  const { handleModal }: any = useContext(ModalContext);
 
-    const columns = [
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderReservationNo",
-            }),
-            key: "ReservationNo",
-            dataIndex: "ReservationNo",
-        },
+  const columns = [
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderReservationNo",
+      }),
+      key: "ReservationNo",
+      dataIndex: "ReservationNo",
+    },
 
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderArrival",
-            }),
-            key: "ArrivalDate",
-            dataIndex: "ArrivalDate",
-            renderCell: (element: any) => {
-                return format(
-                    new Date(element.row.ArrivalDate.replace(/ /g, "T")),
-                    "MM/dd/yyyy"
-                );
-            },
-        },
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderDeparture",
-            }),
-            key: "DepartureDate",
-            dataIndex: "DepartureDate",
-            renderCell: (element: any) => {
-                return format(
-                    new Date(element.row.DepartureDate.replace(/ /g, "T")),
-                    "MM/dd/yyyy"
-                );
-            },
-        },
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderGuest",
-            }),
-            key: "GuestName",
-            dataIndex: "GuestName",
-        },
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderRoom",
-            }),
-            key: "RoomFullName",
-            dataIndex: "RoomFullName",
-        },
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderCompany",
-            }),
-            key: "CustomerName",
-            dataIndex: "CustomerName",
-        },
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderTotalAmount",
-            }),
-            key: "TotalAmount",
-            dataIndex: "TotalAmount",
-        },
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderBalance",
-            }),
-            key: "CurrentBalance",
-            dataIndex: "CurrentBalance",
-        },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderArrival",
+      }),
+      key: "ArrivalDate",
+      dataIndex: "ArrivalDate",
+      renderCell: (element: any) => {
+        return format(
+          new Date(element.row.ArrivalDate.replace(/ /g, "T")),
+          "MM/dd/yyyy"
+        );
+      },
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderDeparture",
+      }),
+      key: "DepartureDate",
+      dataIndex: "DepartureDate",
+      renderCell: (element: any) => {
+        return format(
+          new Date(element.row.DepartureDate.replace(/ /g, "T")),
+          "MM/dd/yyyy"
+        );
+      },
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderGuest",
+      }),
+      key: "GuestName",
+      dataIndex: "GuestName",
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderUserPhone",
+      }),
+      key: "GuestPhone",
+      dataIndex: "GuestPhone",
+      renderCell: (element: any) => {
+        // Display guest phone if available, otherwise show empty
+        return element.row.GuestPhone || element.row.Phone || element.row.Mobile || "";
+      },
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderUserEmail",
+      }),
+      key: "GuestEmail",
+      dataIndex: "GuestEmail",
+      renderCell: (element: any) => {
+        return element.row.GuestEmail || element.row.Email || "";
+      },
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderRoom",
+      }),
+      key: "RoomFullName",
+      dataIndex: "RoomFullName",
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderCompany",
+      }),
+      key: "CustomerName",
+      dataIndex: "CustomerName",
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderTotalAmount",
+      }),
+      key: "TotalAmount",
+      dataIndex: "TotalAmount",
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderBalance",
+      }),
+      key: "CurrentBalance",
+      dataIndex: "CurrentBalance",
+    },
 
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderReservationType",
-            }),
-            key: "ReservationTypeName",
-            dataIndex: "ReservationTypeName",
-        },
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderUserName",
-            }),
-            key: "UserName",
-            dataIndex: "UserName",
-        },
-        {
-            title: intl.formatMessage({
-                id: "RowHeaderAction",
-            }),
-            key: "Action",
-            dataIndex: "Action",
-            renderCell: (element: any) => {
-                return (
-                    <Button
-                        key={element.id}
-                        onClick={() =>
-                            handleModal(
-                                true,
-                                `${intl.formatMessage({
-                                    id: "ButtonEdit",
-                                })}`,
-                                <ReservationEdit
-                                    transactionID={element.id}
-                                    extendedProps={{
-                                        GroupID: element.GroupID
-                                            ? element.GroupID
-                                            : null,
-                                    }}
-                                />,
-                                null,
-                                "large"
-                            )
-                        }
-                    >
-                        {intl.formatMessage({
-                            id: "ButtonEdit",
-                        })}
-                    </Button>
-                );
-            },
-        },
-    ];
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderReservationType",
+      }),
+      key: "ReservationTypeName",
+      dataIndex: "ReservationTypeName",
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderUserName",
+      }),
+      key: "UserName",
+      dataIndex: "UserName",
+    },
+    {
+      title: intl.formatMessage({
+        id: "RowHeaderAction",
+      }),
+      key: "Action",
+      dataIndex: "Action",
+      renderCell: (element: any) => {
+        return (
+          <Button
+            key={element.id}
+            onClick={() =>
+              handleModal(
+                true,
+                `${intl.formatMessage({
+                  id: "ButtonEdit",
+                })}`,
+                <ReservationEdit
+                  transactionID={element.id}
+                  extendedProps={{
+                    GroupID: element.GroupID
+                      ? element.GroupID
+                      : null,
+                  }}
+                />,
+                null,
+                "large"
+              )
+            }
+          >
+            {intl.formatMessage({
+              id: "ButtonEdit",
+            })}
+          </Button>
+        );
+      },
+    },
+  ];
 
-    const validationSchema = yup.object().shape({
-        StartDate: yup.date().nullable(),
-        EndDate: yup.date().nullable(),
-        ReservationTypeID: yup.string().nullable(),
-        ReservationSourceID: yup.string().nullable(),
-        StatusGroup: yup.string().nullable(),
-        GuestName: yup.string(),
-        GuestPhone: yup.string(),
-        GuestEmail: yup.string(),
-        CustomerID: yup.string(),
-    });
-    console.log("workingdate", StartDate ? StartDate : workingDate);
-    const formOptions = {
-        defaultValues: {
-            StatusGroup: StatusGroup ? StatusGroup : "1",
-            StartDate: StartDate ? StartDate : workingDate,
-            EndDate: EndDate ? EndDate : result,
-            ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
-        },
-        resolver: yupResolver(validationSchema),
-    };
-    const {
-        reset,
-        register,
-        handleSubmit,
-        formState: { errors },
-        control,
-    } = useForm(formOptions);
+  const validationSchema = yup.object().shape({
+    StartDate: yup.date().nullable(),
+    EndDate: yup.date().nullable(),
+    ReservationTypeID: yup.string().nullable(),
+    ReservationSourceID: yup.string().nullable(),
+    StatusGroup: yup.string().nullable(),
+    GuestName: yup.string(),
+    GuestPhone: yup.string(),
+    GuestEmail: yup.string(),
+    CustomerID: yup.string(),
+  });
+  console.log("workingdate", StartDate ? StartDate : workingDate);
+  const formOptions = {
+    defaultValues: {
+      StatusGroup: StatusGroup ? StatusGroup : "1",
+      StartDate: StartDate ? StartDate : workingDate,
+      EndDate: EndDate ? EndDate : result,
+      ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
+    },
+    resolver: yupResolver(validationSchema),
+  };
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm(formOptions);
 
-    const [search, setSearch] = useState({
-        StatusGroup: StatusGroup ? StatusGroup : "1",
-        StartDate: StartDate ? StartDate : workingDate.split("T")[0],
-        EndDate: EndDate ? EndDate : result,
-        ReservationTypeID: ReservationTypeID ? ReservationTypeID : 1,
-    });
+  const [search, setSearch] = useState({
+    StatusGroup: StatusGroup ? StatusGroup : "1",
+    StartDate: StartDate ? StartDate : workingDate.split("T")[0],
+    EndDate: EndDate ? EndDate : result,
+    ReservationTypeID: ReservationTypeID ? ReservationTypeID : 1,
+  });
 
-    // useEffect(() => {
-    //     setSearch({
-    //         StatusGroup: StatusGroup ? StatusGroup : "1",
-    //         StartDate: StartDate ? StartDate : workingDate.split("T")[0],
-    //         EndDate: EndDate ? EndDate : null,
-    //         ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
-    //     });
-    // }, [workingDate]);
+  // useEffect(() => {
+  //     setSearch({
+  //         StatusGroup: StatusGroup ? StatusGroup : "1",
+  //         StartDate: StartDate ? StartDate : workingDate.split("T")[0],
+  //         EndDate: EndDate ? EndDate : null,
+  //         ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
+  //     });
+  // }, [workingDate]);
 
-    const { data, error } = ReservationSWR(search);
+  const { data, error } = ReservationSWR(search);
 
-    return (
-        <>
-            {rerenderKey && (
-                <CustomTable
-                    columns={columns}
-                    data={data}
-                    error={error}
-                    api={ReservationAPI}
-                    hasNew={true}
-                    hasUpdate={false}
-                    hasDelete={false}
-                    hasShow={false}
-                    id="TransactionID"
-                    listUrl={listUrl}
-                    modalTitle={title}
-                    modalContent={<NewEdit workingDate={workingDate} />}
-                    excelName={title}
-                    search={
-                        <CustomSearch
-                            listUrl={listUrl}
-                            search={search}
-                            setSearch={setSearch}
-                            handleSubmit={handleSubmit}
-                            reset={reset}
-                            searchInitialState={{
-                                StatusGroup: StatusGroup ? StatusGroup : "1",
-                                StartDate: StartDate
-                                    ? StartDate
-                                    : workingDate.split("T")[0],
-                                EndDate: EndDate ? EndDate : result,
-                                ReservationTypeID: ReservationTypeID
-                                    ? ReservationTypeID
-                                    : 1,
-                            }}
-                        >
-                            <Search
-                                register={register}
-                                errors={errors}
-                                control={control}
-                                reset={reset}
-                            />
-                        </CustomSearch>
-                    }
-                    modalsize="medium"
-                />
-            )}
-        </>
-    );
+  return (
+    <>
+      {rerenderKey && (
+        <CustomTable
+          columns={columns}
+          data={data}
+          error={error}
+          api={ReservationAPI}
+          hasNew={true}
+          hasUpdate={false}
+          hasDelete={false}
+          hasShow={false}
+          id="TransactionID"
+          listUrl={listUrl}
+          modalTitle={title}
+          modalContent={<NewEdit workingDate={workingDate} />}
+          excelName={title}
+          search={
+            <CustomSearch
+              listUrl={listUrl}
+              search={search}
+              setSearch={setSearch}
+              handleSubmit={handleSubmit}
+              reset={reset}
+              searchInitialState={{
+                StatusGroup: StatusGroup ? StatusGroup : "1",
+                StartDate: StartDate
+                  ? StartDate
+                  : workingDate.split("T")[0],
+                EndDate: EndDate ? EndDate : result,
+                ReservationTypeID: ReservationTypeID
+                  ? ReservationTypeID
+                  : 1,
+              }}
+            >
+              <Search
+                register={register}
+                errors={errors}
+                control={control}
+                reset={reset}
+              />
+            </CustomSearch>
+          }
+          modalsize="medium"
+        />
+      )}
+    </>
+  );
 };
 
 export default DeparturedListList;

@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { mutate } from "swr";
+import { useIntl } from "react-intl";
 
 import NewEditForm from "components/common/new-edit-form";
 import { CustomerGroupAPI } from "lib/api/customer-group";
@@ -14,11 +15,13 @@ import VipStatusSelect from "components/select/vip-status";
 import { GuestAPI } from "lib/api/guest";
 import { SharerListAPI, listUrl } from "lib/api/reservation-sharer";
 
-const validationSchema = yup.object().shape({
-    GuestName: yup.string().required("Бөглөнө үү"),
-});
-
 const NewEdit = ({ TransactionID }: any) => {
+    const intl = useIntl();
+    
+    const validationSchema = yup.object().shape({
+        GuestName: yup.string().required(intl.formatMessage({ id: 'validation.required' })),
+    });
+
     const [state]: any = useAppState();
     const {
         register,
@@ -90,7 +93,7 @@ const NewEdit = ({ TransactionID }: any) => {
                                 size="small"
                                 fullWidth
                                 id="Name"
-                                label="Нэр"
+                                label={intl.formatMessage({ id: 'guest.name' })}
                                 {...register(`Name`)}
                                 margin="dense"
                             />
@@ -101,7 +104,7 @@ const NewEdit = ({ TransactionID }: any) => {
                                 size="small"
                                 fullWidth
                                 id="Surname"
-                                label="Овог"
+                                label={intl.formatMessage({ id: 'guest.surname' })}
                                 {...register(`Surname`)}
                                 margin="dense"
                             />
@@ -112,7 +115,7 @@ const NewEdit = ({ TransactionID }: any) => {
                                 size="small"
                                 fullWidth
                                 id="Email"
-                                label="Имэйл"
+                                label={intl.formatMessage({ id: 'guest.email' })}
                                 type="email"
                                 {...register(`Email`)}
                                 margin="dense"
@@ -124,7 +127,7 @@ const NewEdit = ({ TransactionID }: any) => {
                                 size="small"
                                 fullWidth
                                 id="Mobile"
-                                label="Гар утас"
+                                label={intl.formatMessage({ id: 'guest.mobile' })}
                                 {...register(`Mobile`)}
                                 margin="dense"
                             />
@@ -152,7 +155,7 @@ const NewEdit = ({ TransactionID }: any) => {
                                 size="small"
                                 fullWidth
                                 id="RegistryNo"
-                                label="Регистрийн дугаар"
+                                label={intl.formatMessage({ id: 'guest.registryNo' })}
                                 {...register("RegistryNo")}
                                 margin="dense"
                             />

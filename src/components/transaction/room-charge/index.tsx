@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Box, Menu, MenuItem } from "@mui/material";
 import Button from "@mui/material/Button";
 import { format } from "date-fns";
+import { useIntl } from "react-intl";
 
 import CustomTable from "components/common/custom-table";
 import { RoomChargeSWR } from "lib/api/charge";
@@ -12,6 +13,7 @@ import UpdatePox from "./update-pox";
 import UpdateRate from "./update-rate";
 
 const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
+    const intl = useIntl();
     const { handleModal }: any = useContext(ModalContext);
     const { data, error } = RoomChargeSWR({ TransactionID: TransactionID });
     const [anchorEl, setAnchorEl] = useState(null);
@@ -34,7 +36,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
             dataIndex: "№",
         },
         {
-            title: "Огноо",
+            title: intl.formatMessage({ id: 'roomCharge.date' }),
             key: "StayDate",
             dataIndex: "StayDate",
             __ignore__: true,
@@ -44,22 +46,22 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
             },
         },
         {
-            title: "Өрөө",
+            title: intl.formatMessage({ id: 'roomCharge.room' }),
             key: "RoomFullNo",
             dataIndex: "RoomFullNo",
         },
         {
-            title: "Тарифын төрөл",
+            title: intl.formatMessage({ id: 'roomCharge.rateType' }),
             key: "RateTypeName",
             dataIndex: "RateTypeName",
         },
         {
-            title: "Хүний тоо",
+            title: intl.formatMessage({ id: 'roomCharge.pax' }),
             key: "Pax",
             dataIndex: "Pax",
         },
         {
-            title: "Тооцоо",
+            title: intl.formatMessage({ id: 'roomCharge.charge' }),
             key: "Charge",
             dataIndex: "Charge",
             __ignore__: true,
@@ -69,7 +71,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
             },
         },
         {
-            title: "Татвар",
+            title: intl.formatMessage({ id: 'roomCharge.tax' }),
             key: "Tax",
             dataIndex: "Tax",
             render: (id: any, value: any, element: any, dataIndex: any) => {
@@ -77,7 +79,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
             },
         },
         {
-            title: "Нийлбэр дүн",
+            title: intl.formatMessage({ id: 'roomCharge.totalAmount' }),
             key: "RateAmount",
             dataIndex: "RateAmount",
             render: (id: any, value: any, element: any, dataIndex: any) => {
@@ -85,12 +87,12 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
             },
         },
         {
-            title: "Хэрэглэгч",
+            title: intl.formatMessage({ id: 'roomCharge.user' }),
             key: "UserName",
             dataIndex: "UserName",
         },
         {
-            title: "Нэмэлт үйлдэл",
+            title: intl.formatMessage({ id: 'roomCharge.actions' }),
             key: "Action",
             dataIndex: "Action",
             width: 250,
@@ -106,7 +108,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                 size="small"
                                 onClick={(e) => handleClick(e, element)}
                             >
-                                Үйлдэл
+                                {intl.formatMessage({ id: 'common.actions' })}
                             </Button>
                         )}
                         <Menu
@@ -121,7 +123,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                     onClick={() => {
                                         handleModal(
                                             true,
-                                            `Тариф өөрчлөх`,
+                                            intl.formatMessage({ id: 'roomCharge.updateRateType' }),
                                             <UpdateRateType
                                                 element={selectedRow}
                                                 RoomTypeID={RoomTypeID}
@@ -132,14 +134,14 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                         handleClose();
                                     }}
                                 >
-                                    Тариф өөрчлөх
+                                    {intl.formatMessage({ id: 'roomCharge.updateRateType' })}
                                 </MenuItem>
                                 <MenuItem
                                     key={`updatePox${id}`}
                                     onClick={() => {
                                         handleModal(
                                             true,
-                                            `Хүний тоо өөрчлөх`,
+                                            intl.formatMessage({ id: 'roomCharge.updatePax' }),
                                             <UpdatePox
                                                 element={selectedRow}
                                                 RoomTypeID={RoomTypeID}
@@ -150,7 +152,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                         handleClose();
                                     }}
                                 >
-                                    Хүний тоо өөрчлөх
+                                    {intl.formatMessage({ id: 'roomCharge.updatePax' })}
                                 </MenuItem>
 
                                 <MenuItem
@@ -158,7 +160,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                     onClick={() => {
                                         handleModal(
                                             true,
-                                            `Үнэ өөрчлөх`,
+                                            intl.formatMessage({ id: 'roomCharge.updateRate' }),
                                             <UpdateRate
                                                 element={selectedRow}
                                                 RoomTypeID={RoomTypeID}
@@ -169,7 +171,7 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                                         handleClose();
                                     }}
                                 >
-                                    Үнэ өөрчлөх
+                                    {intl.formatMessage({ id: 'roomCharge.updateRate' })}
                                 </MenuItem>
                             </>
                         </Menu>
@@ -185,8 +187,8 @@ const RoomCharge = ({ TransactionID, RoomTypeID }: any) => {
                 columns={columns}
                 data={data}
                 error={error}
-                modalTitle="Өрөөний тооцоо"
-                excelName="Өрөөний тооцоо"
+                modalTitle={intl.formatMessage({ id: 'roomCharge.title' })}
+                excelName={intl.formatMessage({ id: 'roomCharge.title' })}
                 pagination={false}
                 datagrid={false}
                 hasPrint={false}

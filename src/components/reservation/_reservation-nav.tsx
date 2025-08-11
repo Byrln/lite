@@ -495,7 +495,9 @@ const ReservationNav = ({
             );
           }}
         >
-          Хяналт
+          {intl.formatMessage({
+            id: "ButtonAuditTrail",
+          })}
         </Button>
       )}
       {reservation.GroupID ? (
@@ -519,7 +521,9 @@ const ReservationNav = ({
             )
           }
         >
-          Өрөө нэмэх
+          {intl.formatMessage({
+            id: "ButtonAddNewGuest",
+          })}
         </Button>
       ) : (
         ""
