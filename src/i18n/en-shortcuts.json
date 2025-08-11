@@ -131,6 +131,11 @@
       "title": "Tips",
       "content": "Use keyboard shortcuts to speed up frequent workflows. Open this helper with **Alt + H**. Use **Ctrl + K** to open the command palette when searching for actions. Press **F2** to quickly start a new reservation in front-office flows. Most shortcuts work globally across the application."
     },
+    "comingSoon": {
+      "title": "Coming Soon",
+      "subtitle": "Page-specific shortcuts for this route are coming soon!",
+      "description": "In the meantime, you can use the global shortcuts available throughout the application."
+    },
     "table": {
       "title": "All Shortcuts",
       "headers": {

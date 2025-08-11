@@ -140,16 +140,60 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
       <DialogContent sx={{ p: { xs: 2, md: 3 }, background: 'white' }}>
         {!hasRouteSpecificShortcuts ? (
           // Coming Soon message for routes without specific shortcuts
-          <Box sx={{ textAlign: 'center', py: 8 }}>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: '#667eea', mb: 2 }}>
-              Coming Soon
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-              Page-specific shortcuts for this route are coming soon!
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              In the meantime, you can use the global shortcuts available throughout the application.
-            </Typography>
+          <Box 
+            sx={{ 
+              textAlign: 'center', 
+              py: 8,
+              position: 'relative',
+              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+              borderRadius: 3,
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: `
+                  radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 80%, rgba(102, 126, 234, 0.08) 0%, transparent 50%)
+                `,
+                filter: 'blur(40px)',
+                zIndex: 1
+              },
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: `
+                  repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(102, 126, 234, 0.02) 2px,
+                    rgba(102, 126, 234, 0.02) 4px
+                  )
+                `,
+                zIndex: 2
+              }
+            }}
+          >
+            <Box sx={{ position: 'relative', zIndex: 3 }}>
+              <Typography variant="h4" sx={{ fontWeight: 700, color: '#667eea', mb: 2 }}>
+                {shortcuts?.comingSoon?.title || 'Coming Soon'}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+                {shortcuts?.comingSoon?.subtitle || 'Page-specific shortcuts for this route are coming soon!'}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {shortcuts?.comingSoon?.description || 'In the meantime, you can use the global shortcuts available throughout the application.'}
+              </Typography>
+            </Box>
           </Box>
         ) : (
           <>

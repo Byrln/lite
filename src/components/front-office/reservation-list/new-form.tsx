@@ -654,7 +654,7 @@ const NewEdit = ({
               `TransactionDetail.${id}.GuestDetail.GuestTitleID`
             )}
             name={`TransactionDetail.${id}.GuestDetail.GuestTitleID`}
-            value={0}
+            value={null}
           />
           <input
             type="hidden"
@@ -662,7 +662,7 @@ const NewEdit = ({
               `TransactionDetail.${id}.GuestDetail.GenderID`
             )}
             name={`TransactionDetail.${id}.GuestDetail.GenderID`}
-            value={0}
+            value={null}
           />
           <input
             type="hidden"
@@ -670,7 +670,7 @@ const NewEdit = ({
               `TransactionDetail.${id}.GuestDetail.CountryID`
             )}
             name={`TransactionDetail.${id}.GuestDetail.CountryID`}
-            value={0}
+            value={country?.CountryID || null}
           />
           <input
             type="hidden"
@@ -678,7 +678,7 @@ const NewEdit = ({
               `TransactionDetail.${id}.GuestDetail.VipStatusID`
             )}
             name={`TransactionDetail.${id}.GuestDetail.VipStatusID`}
-            value={0}
+            value={vip?.VipStatusID || null}
           />
         </div>
         <Grid item xs={12}>
@@ -781,7 +781,7 @@ const NewEdit = ({
                 numberMax={
                   RoomType?.MaxAdult
                     ? RoomType?.MaxAdult
-                    : 0
+                    : 10
                 }
                 defaultValue={useDefaultValues ? (RoomType?.BaseAdult || BaseAdult) : RoomType?.BaseAdult}
                 value={selectedAdult}
@@ -817,9 +817,9 @@ const NewEdit = ({
                 numberMax={
                   RoomType?.MaxChild
                     ? RoomType?.MaxChild
-                    : 0
+                    : 5
                 }
-                defaultValue={useDefaultValues ? (RoomType?.BaseChild || BaseChild) : 0}
+                defaultValue={useDefaultValues ? (RoomType?.BaseChild || BaseChild || 0) : (RoomType?.BaseChild || 0)}
                 value={selectedChild}
                 nameKey={`TransactionDetail.${id}.Child`}
                 register={register}

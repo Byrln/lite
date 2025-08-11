@@ -320,16 +320,16 @@ const NewEdit = () => {
                   label={intl.formatMessage({ id: "TextRoomNo" })}
                   {...register(`rooms.${index}.RoomNo`)}
                   margin="dense"
-                  error={!!errors.rooms?.[index]?.RoomNo?.message}
-                  helperText={errors.rooms?.[index]?.RoomNo?.message as string}
+                  error={!!(errors.rooms as any)?.[index]?.RoomNo?.message}
+                  helperText={(errors.rooms as any)?.[index]?.RoomNo?.message as string}
                 />
               </Grid>
               <Grid item xs={4}>
                 <RoomTypeSelect
                   searchRoomTypeID={watch(`rooms.${index}.RoomTypeID`) || 0}
                   setSearchRoomTypeID={(id: number) => handleRoomTypeChange(id, index)}
-                  error={!!errors.rooms?.[index]?.RoomTypeID}
-                  helperText={errors.rooms?.[index]?.RoomTypeID?.message as string}
+                  error={!!(errors.rooms as any)?.[index]?.RoomTypeID}
+                  helperText={(errors.rooms as any)?.[index]?.RoomTypeID?.message as string}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -340,8 +340,8 @@ const NewEdit = () => {
                   {...register(`rooms.${index}.SortOrder`)}
                   margin="dense"
                   type="number"
-                  error={!!errors.rooms?.[index]?.SortOrder?.message}
-                  helperText={errors.rooms?.[index]?.SortOrder?.message as string}
+                  error={!!(errors.rooms as any)?.[index]?.SortOrder?.message}
+                  helperText={(errors.rooms as any)?.[index]?.SortOrder?.message as string}
                 />
               </Grid>
               <Grid item xs={4}>

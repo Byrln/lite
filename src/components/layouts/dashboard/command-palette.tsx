@@ -22,6 +22,8 @@ import ReservationEdit from "components/front-office/reservation-list/edit"
 import { FrontOfficeAPI } from "lib/api/front-office"
 import { useIntl } from "react-intl"
 import { DoorBackOutlined, Payment } from "@mui/icons-material"
+import { getContrastYIQ } from "lib/utils/helpers"
+import Iconify from "components/iconify/iconify"
 
 const getModifierKey = () => {
   if (typeof window !== 'undefined') {
@@ -45,6 +47,14 @@ interface ReservationItemType {
   GuestName: string;
   RoomNo: string;
   GroupCode?: string;
+  GroupColor?: string;
+  StatusColor?: string;
+  IsGroupOwner?: boolean;
+  Phone?: string;
+  Email?: string;
+  ArrivalDate?: string;
+  DepartureDate?: string;
+  IsBreakfast?: boolean;
   RoomTypeName?: string;
   CustomerName?: string;
   Adult?: number;
@@ -87,45 +97,186 @@ const SearchItem: React.FC<SearchItemProps> = ({ item }) => (
 const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, onClick }) => {
   const intl = useIntl()
 
+  // Default status color if not provided
+  const statusColor = reservation.StatusColor ? `#${reservation.StatusColor}` : '#4a6cf7'
+  const textColor = getContrastYIQ(statusColor)
+  const groupColor = reservation.GroupColor || null
+
   return (
     <li
-      className="flex items-center w-full p-3 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-100 dark:border-blue-800 hover:border-blue-200 dark:hover:border-blue-700 transition-all duration-200 cursor-pointer hover:scale-[1.02]"
+      className="flex items-center w-full transition-all duration-200 cursor-pointer hover:scale-[1.02]"
       onClick={() => onClick(reservation)}
+      style={{
+        padding: '8px 12px',
+        borderRadius: '6px',
+        backgroundColor: statusColor,
+        color: textColor,
+        border: (reservation.GroupCode && groupColor) ? `3px solid ${groupColor}` : 'none',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+        margin: '2px 0'
+      }}
     >
-      <div className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center mr-3">
-        <DoorBackOutlined className="h-4 w-4 text-blue-600 dark:text-blue-300" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between mb-1">
-          <span className="font-semibold text-gray-900 dark:text-gray-100 truncate">
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        {/* Drag icon */}
+        <Iconify
+          icon="lsicon:drag-filled"
+          width="14px"
+          style={{ marginRight: '8px', marginTop: '2px' }}
+        />
+
+        {/* Group icon if applicable */}
+        {(reservation.GroupCode || reservation.GroupColor) && (
+          <span
+            style={{
+              marginRight: '8px',
+              marginTop: '2px',
+              color: groupColor || '#495057'
+            }}
+          >
+            {reservation.IsGroupOwner ? (
+              <Iconify
+                icon="solar:crown-outline"
+                width="14px"
+              />
+            ) : (
+              <Iconify
+                icon="clarity:group-line"
+                width="14px"
+              />
+            )}
+          </span>
+        )}
+
+        {/* Balance icon if applicable */}
+        {reservation.Balance != null && Number(reservation.Balance) > 0 && (
+          <span style={{ marginRight: '8px', marginTop: '2px' }}>
+            <Iconify icon="vaadin:cash" width="14px" />
+          </span>
+        )}
+
+        {/* Breakfast icon if included */}
+        {reservation.IsBreakfast && (
+          <span style={{ marginRight: '8px', marginTop: '2px' }}>
+            <Iconify icon="mdi:food" width="14px" />
+          </span>
+        )}
+
+        {/* Guest name with phone and email */}
+        <div style={{ display: 'flex', flexDirection: 'column', minWidth: '0', flex: '1' }}>
+          <p
+            title={reservation.GuestName || intl.formatMessage({ id: 'CommandPalette.NoGuestName' })}
+            style={{
+              fontWeight: '600',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              margin: '0',
+              lineHeight: '1.2'
+            }}
+          >
             {reservation.GuestName || intl.formatMessage({ id: 'CommandPalette.NoGuestName' })}
-          </span>
-          <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded-full">
-            #{reservation.TransactionID}
-          </span>
+          </p>
+          {(reservation.Phone || reservation.Email) && (
+            <div style={{
+              display: "flex",
+              fontSize: '10px',
+              opacity: '0.8',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              lineHeight: '1.2',
+              marginTop: '1px'
+            }}>
+              {reservation.Phone && <span>{reservation.Phone}</span>}
+              {reservation.Phone && reservation.Email && <span> • </span>}
+              {reservation.Email && <span>{reservation.Email}</span>}
+            </div>
+          )}
         </div>
-        <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-          <div className="flex items-center gap-1">
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-6a1 1 0 00-1-1H9a1 1 0 00-1 1v6a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd" />
-            </svg>
-            <span>{intl.formatMessage({ id: 'CommandPalette.Room' })} {reservation.RoomNo || intl.formatMessage({ id: 'CommandPalette.NA' })}</span>
+
+        {/* Right side info */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            overflow: 'hidden',
+            marginLeft: '20px',
+            gap: '8px'
+          }}
+        >
+          {/* Arrival -> Departure dates */}
+          {(reservation.ArrivalDate || reservation.DepartureDate) && (
+            <div
+              style={{
+                backgroundColor: '#fff',
+                color: '#000',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                fontWeight: '500',
+                fontSize: '10px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              {reservation.ArrivalDate ? new Date(reservation.ArrivalDate).toLocaleDateString('dd-mm', { day: '2-digit', month: '2-digit' }) : 'N/A'} → {reservation.DepartureDate ? new Date(reservation.DepartureDate).toLocaleDateString('dd-mm', { day: '2-digit', month: '2-digit' }) : 'N/A'}
+            </div>
+          )}
+
+          {/* Room info */}
+          <div
+            style={{
+              backgroundColor: '#fff',
+              color: '#000',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              fontWeight: '500',
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: '11px',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            <DoorBackOutlined style={{ width: '10px', height: '10px', marginRight: '2px' }} />
+            <span>{reservation.RoomNo || intl.formatMessage({ id: 'CommandPalette.NA' })}</span>
           </div>
-          {reservation.Adult && (
-            <div className="flex items-center gap-1">
-              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
-              <span>{reservation.Adult}/{reservation.Child || 0}</span>
-            </div>
-          )}
-          {reservation.Balance && Number(reservation.Balance) > 0 && (
-            <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
-              <Payment className="w-3 h-3" />
-              <span>{Number(reservation.Balance).toLocaleString()}₮</span>
+
+          {/* Transaction ID */}
+          <div
+            style={{
+              backgroundColor: '#fff',
+              color: '#000',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              fontWeight: '500',
+              fontSize: '11px'
+            }}
+          >
+            #{reservation.TransactionID}
+          </div>
+
+          {/* Balance if applicable - only show if greater than 0 */}
+          {reservation.Balance != null && Number(reservation.Balance) > 0 && (
+            <div
+              style={{
+                backgroundColor: '#fff',
+                color: '#000',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                fontWeight: '500',
+                fontSize: '11px'
+              }}
+            >
+              {Number(reservation.Balance).toLocaleString()}₮
             </div>
           )}
         </div>
+
+        {/* Drag icon on the right */}
+        <Iconify
+          icon="lsicon:drag-filled"
+          width="14px"
+          style={{ marginLeft: 'auto', marginTop: '2px' }}
+        />
       </div>
     </li>
   )
@@ -320,7 +471,9 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
       item.GroupCode?.toLowerCase().includes(searchLower) ||
       item.TransactionID?.toString().includes(searchLower) ||
       item.RoomTypeName?.toLowerCase().includes(searchLower) ||
-      item.CustomerName?.toLowerCase().includes(searchLower)
+      item.CustomerName?.toLowerCase().includes(searchLower) ||
+      item.Phone?.toLowerCase().includes(searchLower) ||
+      item.Email?.toLowerCase().includes(searchLower)
     )
   }).slice(0, 5)
 
