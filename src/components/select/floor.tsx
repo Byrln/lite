@@ -4,44 +4,46 @@ import Skeleton from "@mui/material/Skeleton";
 
 import CustomSelect from "components/common/custom-select";
 import { FloorSWR } from "lib/api/floor";
+import { useIntl } from "react-intl";
 
 const FloorSelect = ({
-    register,
-    errors,
-    customField,
-    isFloorIdIsValue = true,
-    multiple = false,
+  register,
+  errors,
+  customField,
+  isFloorIdIsValue = true,
+  multiple = false,
 }: any) => {
-    const { data, error } = FloorSWR();
+  const intl = useIntl();
+  const { data, error } = FloorSWR();
 
-    if (error) return <Alert severity="error">{error.message}</Alert>;
+  if (error) return <Alert severity="error">{error.message}</Alert>;
 
-    if (!error && !data)
-        return (
-            <Box sx={{ width: "100%" }}>
-                <Skeleton />
-                <Skeleton animation="wave" />
-            </Box>
-        );
-
-    const sortedData = data ? [...data].sort((b, a) => {
-        const aFloorNo = parseInt(a.FloorNo) || 0;
-        const bFloorNo = parseInt(b.FloorNo) || 0;
-        return aFloorNo - bFloorNo;
-    }) : [];
-
+  if (!error && !data)
     return (
-        <CustomSelect
-            register={register}
-            errors={errors}
-            field={customField ? customField : "FloorID"}
-            label="Давхар"
-            options={sortedData}
-            optionValue={isFloorIdIsValue ? "FloorID" : "FloorNo"}
-            optionLabel="FloorNo"
-            multiple={multiple}
-        />
+      <Box sx={{ width: "100%" }}>
+        <Skeleton />
+        <Skeleton animation="wave" />
+      </Box>
     );
+
+  const sortedData = data ? [...data].sort((a, b) => {
+    const aFloorNo = parseInt(a.FloorNo) || 0;
+    const bFloorNo = parseInt(b.FloorNo) || 0;
+    return aFloorNo - bFloorNo;
+  }) : [];
+
+  return (
+    <CustomSelect
+      register={register}
+      errors={errors}
+      field={customField ? customField : "FloorID"}
+      label={intl.formatMessage({ id: "TextFloor" })}
+      options={sortedData}
+      optionValue={isFloorIdIsValue ? "FloorID" : "FloorNo"}
+      optionLabel="FloorNo"
+      multiple={multiple}
+    />
+  );
 };
 
 export default FloorSelect;

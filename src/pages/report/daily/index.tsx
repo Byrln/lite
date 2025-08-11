@@ -72,7 +72,7 @@ const Index = () => {
         <title>{title}</title>
       </Head>
 
-      <Page>
+      <Page className="py-3 px-2">
         <Container maxWidth="xl">
           <Box sx={{ pb: 1 }}>
             <Typography variant="h6">{title}</Typography>
@@ -94,8 +94,8 @@ const Index = () => {
                 onChange={handleChange}
                 aria-label="Өдрийн тайлан"
               >
-                <Tab label="Хувилбар 1" {...a11yProps(0)} />
-                <Tab label="Хувилбар 2" {...a11yProps(1)} />
+                <Tab label={intl.formatMessage({ id: "TextVariant" })} {...a11yProps(0)} />
+                <Tab label={intl.formatMessage({ id: "TextVariant2" })} {...a11yProps(1)} />
               </Tabs>
 
               <TabPanel value={value} index={0}>

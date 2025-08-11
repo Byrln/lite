@@ -16,7 +16,8 @@ import { mutate } from "swr";
 import { useContext } from "react";
 import { ModalContext } from "lib/context/modal";
 
-const validationSchema = yup.object().shape({
+// Validation schema for create mode (multi-room)
+const createValidationSchema = yup.object().shape({
   rooms: yup.array().of(
     yup.object().shape({
       RoomNo: yup.string().required("Бөглөнө үү"),
@@ -24,27 +25,17 @@ const validationSchema = yup.object().shape({
       SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
     })
   ),
-  // For single room edit mode
-  RoomNo: yup.string().when('$isEditMode', {
-    is: true,
-    then: (schema) => schema.required("Бөглөнө үү"),
-    otherwise: (schema) => schema.notRequired()
-  }),
-  RoomID: yup.number().when('$isEditMode', {
-    is: true,
-    then: (schema) => schema.required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    otherwise: (schema) => schema.notRequired()
-  }),
-  RoomTypeID: yup.number().when('$isEditMode', {
-    is: true,
-    then: (schema) => schema.required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    otherwise: (schema) => schema.notRequired()
-  }),
-  SortOrder: yup.number().when('$isEditMode', {
-    is: true,
-    then: (schema) => schema.required("Бөглөнө үү").typeError("Бөглөнө үү"),
-    otherwise: (schema) => schema.notRequired()
-  }),
+});
+
+// Validation schema for edit mode (single room)
+const editValidationSchema = yup.object().shape({
+  RoomNo: yup.string().required("Бөглөнө үү"),
+  RoomID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+  RoomTypeID: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+  SortOrder: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+  FloorID: yup.number().nullable(),
+  RoomPhone: yup.string().nullable(),
+  Description: yup.string().nullable(),
 });
 
 const baseStayDefault = {
@@ -83,15 +74,22 @@ const NewEdit = () => {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(validationSchema),
-    context: { isEditMode },
-    defaultValues: {
+    resolver: yupResolver(isEditMode ? editValidationSchema : createValidationSchema),
+    defaultValues: isEditMode ? {
+      RoomNo: "",
+      RoomID: 0,
+      RoomTypeID: 0,
+      FloorID: null,
+      SortOrder: 1,
+      RoomPhone: "",
+      Description: ""
+    } : {
       rooms: [{
         RoomNo: "",
         RoomID: 0,
         RoomTypeID: 0,
         FloorID: 0,
-        SortOrder: isEditMode ? 1 : getNextSortOrder(),
+        SortOrder: getNextSortOrder(),
         RoomPhone: "",
         Description: ""
       }]
@@ -112,15 +110,18 @@ const NewEdit = () => {
     if (isEditMode && currentRoomData && currentRoomData.length > 0) {
       const roomToEdit = currentRoomData[0];
       
-      // Reset form with the room data
+      // Reset form with the room data using top-level fields for edit mode
       reset({
-        // Top-level fields for backward compatibility
-        ...roomToEdit,
-        // Nested array structure for edit mode form fields
-        rooms: [roomToEdit],
+        RoomNo: roomToEdit.RoomNo || "",
+        RoomID: roomToEdit.RoomID || 0,
+        RoomTypeID: roomToEdit.RoomTypeID || 0,
+        FloorID: roomToEdit.FloorID || null,
+        SortOrder: roomToEdit.SortOrder || 1,
+        RoomPhone: roomToEdit.RoomPhone || "",
+        Description: roomToEdit.Description || "",
        });
       
-      console.log('Form reset completed with room data');
+      console.log('Form reset completed with room data:', roomToEdit);
     }
   }, [isEditMode, currentRoomData, reset, state.editId]);
 
@@ -178,7 +179,9 @@ const NewEdit = () => {
       <NewEditForm
         api={RoomAPI}
         listUrl={listUrl}
-        additionalValues={{}}
+        additionalValues={{
+          RoomID: state.editId,
+        }}
         reset={reset}
         handleSubmit={handleSubmit}
         setEntity={setBaseStay}
@@ -188,69 +191,49 @@ const NewEdit = () => {
             <TextField
               size="small"
               fullWidth
-              id="RoomSelect"
+              id="RoomNo"
               label={intl.formatMessage({ id: "TextRoomNo" })}
-              select
+              {...register("RoomNo")}
               margin="dense"
-              error={!!errors.rooms?.[0]?.RoomID?.message}
-              helperText={errors.rooms?.[0]?.RoomID?.message as string}
-              value={watch("rooms.0.RoomID") || 0}
-              onChange={(evt: any) => {
-                const selectedRoomId = parseInt(evt.target.value);
-                const selectedRoom = roomData?.find((room: any) => room.RoomID === selectedRoomId);
-                if (selectedRoom) {
-                  setValue('rooms.0.RoomID', selectedRoom.RoomID, { shouldValidate: true });
-                  setValue('rooms.0.RoomNo', selectedRoom.RoomNo, { shouldValidate: true });
-                  setValue('rooms.0.RoomTypeID', selectedRoom.RoomTypeID, { shouldValidate: true });
-                  setValue('rooms.0.FloorID', selectedRoom.FloorID, { shouldValidate: true });
-                }
-              }}
-            >
-              <MenuItem value={0}>
-                {intl.formatMessage({ id: "TextSelectRoom" })}
-              </MenuItem>
-              {roomData?.map((room: any) => (
-                <MenuItem key={room.RoomID} value={room.RoomID}>
-                  {room.RoomNo} - {room.RoomTypeName}
-                </MenuItem>
-              ))}
-            </TextField>
+              error={!!errors.RoomNo?.message}
+              helperText={errors.RoomNo?.message as string}
+            />
           </Grid>
           <Grid item xs={4}>
             <RoomTypeSelect
-              searchRoomTypeID={watch("rooms.0.RoomTypeID") || 0}
-              setSearchRoomTypeID={(id: number) => handleRoomTypeChange(id)}
-              error={!!errors.rooms?.[0]?.RoomTypeID}
-              helperText={errors.rooms?.[0]?.RoomTypeID?.message as string}
+              searchRoomTypeID={watch("RoomTypeID") || 0}
+              setSearchRoomTypeID={(id: number) => setValue('RoomTypeID', id)}
+              error={!!errors.RoomTypeID}
+              helperText={errors.RoomTypeID?.message as string}
             />
           </Grid>
           <Grid item xs={4}>
-            <FloorSelect register={register} errors={errors} />
+            <FloorSelect register={register} errors={errors} fieldName="FloorID" />
           </Grid>
           <Grid item xs={4}>
             <TextField
               size="small"
               fullWidth
-              id="TextRoomPhone"
+              id="RoomPhone"
               label={intl.formatMessage({ id: "TextRoomPhone" })}
-              {...register("rooms.0.RoomPhone")}
+              {...register("RoomPhone")}
               margin="dense"
-              error={!!errors.rooms?.[0]?.RoomPhone?.message}
-              helperText={errors.rooms?.[0]?.RoomPhone?.message as string}
+              error={!!errors.RoomPhone?.message}
+              helperText={errors.RoomPhone?.message as string}
             />
           </Grid>
           <Grid item xs={4}>
             <TextField
               size="small"
               fullWidth
-              id="RowHeaderDescription"
+              id="Description"
               label={intl.formatMessage({
                 id: "RowHeaderDescription",
               })}
-              {...register("rooms.0.Description")}
+              {...register("Description")}
               margin="dense"
-              error={!!errors.rooms?.[0]?.Description?.message}
-              helperText={errors.rooms?.[0]?.Description?.message as string}
+              error={!!errors.Description?.message}
+              helperText={errors.Description?.message as string}
             />
           </Grid>
           <Grid item xs={4}>
@@ -260,11 +243,10 @@ const NewEdit = () => {
               fullWidth
               id="SortOrder"
               label={intl.formatMessage({ id: "SortOrder" })}
-              {...register("rooms.0.SortOrder")}
-              defaultValue={1}
+              {...register("SortOrder")}
               margin="dense"
-              error={!!errors.rooms?.[0]?.SortOrder?.message}
-              helperText={errors.rooms?.[0]?.SortOrder?.message as string}
+              error={!!errors.SortOrder?.message}
+              helperText={errors.SortOrder?.message as string}
             />
           </Grid>
         </Grid>

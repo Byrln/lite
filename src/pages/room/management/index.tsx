@@ -67,14 +67,6 @@ const RoomManagementPage = () => {
 
   const roomFeatures = [
     {
-      id: 'rooms',
-      title: intl.formatMessage({ id: 'RoomManagementRooms', defaultMessage: 'Rooms' }),
-      description: intl.formatMessage({ id: 'RoomManagementRoomsDesc', defaultMessage: 'Manage hotel rooms and their configurations' }),
-      icon: <Bed className="h-6 w-6" />,
-      color: 'bg-emerald-500',
-      component: <RoomList />
-    },
-    {
       id: 'amenities',
       title: intl.formatMessage({ id: 'RoomManagementAmenities', defaultMessage: 'Amenities' }),
       description: intl.formatMessage({ id: 'RoomManagementAmenitiesDesc', defaultMessage: 'Configure room amenities and features' }),
@@ -83,20 +75,28 @@ const RoomManagementPage = () => {
       component: <AmenityList />
     },
     {
-      id: 'status',
-      title: intl.formatMessage({ id: 'RoomManagementStatus', defaultMessage: 'Status' }),
-      description: intl.formatMessage({ id: 'RoomManagementStatusDesc', defaultMessage: 'Monitor and update room status' }),
-      icon: <Activity className="h-6 w-6" />,
-      color: 'bg-cyan-500',
-      component: <RoomStatusList />
-    },
-    {
       id: 'types',
       title: intl.formatMessage({ id: 'RoomManagementTypes', defaultMessage: 'Types' }),
       description: intl.formatMessage({ id: 'RoomManagementTypesDesc', defaultMessage: 'Manage different room types and categories' }),
       icon: <Grid3X3 className="h-6 w-6" />,
       color: 'bg-purple-500',
       component: <RoomTypeList />
+    },
+    {
+      id: 'rooms',
+      title: intl.formatMessage({ id: 'RoomManagementRooms', defaultMessage: 'Rooms' }),
+      description: intl.formatMessage({ id: 'RoomManagementRoomsDesc', defaultMessage: 'Manage hotel rooms and their configurations' }),
+      icon: <Bed className="h-6 w-6" />,
+      color: 'bg-emerald-500',
+      component: <RoomList />
+    },
+    {
+      id: 'status',
+      title: intl.formatMessage({ id: 'RoomManagementStatus', defaultMessage: 'Status' }),
+      description: intl.formatMessage({ id: 'RoomManagementStatusDesc', defaultMessage: 'Monitor and update room status' }),
+      icon: <Activity className="h-6 w-6" />,
+      color: 'bg-cyan-500',
+      component: <RoomStatusList />
     },
     {
       id: 'block',
