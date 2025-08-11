@@ -465,71 +465,71 @@ const EditTransactionInline = ({ selectedRow, TransactionID, onClose }: any) => 
   if (!selectedRow) return null;
 
   return (
-      <Stack direction="column" spacing={2}>
-        <Stack direction="row" spacing={3} alignItems="center">
-          <Typography>Date</Typography>
-          <Typography>{workingDate}</Typography>
-        </Stack>
-        <Stack direction="row" spacing={3} alignItems="center">
-          <Typography>Name</Typography>
-          <Typography>{iName}</Typography>
-        </Stack>
-        {tType == 1 ? (
-          <Stack direction="row" spacing={3}>
-            <Typography>Quantity</Typography>
-            <TextField
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              size="small"
-            />
-          </Stack>
-        ) : (
-          <Select value={currencyID} onChange={handleExchangePick} size="small">
-            {data?.map((element: any) => (
-              <MenuItem key={element.CurrencyID} value={element.CurrencyID}>
-                {element.CurrencyCode}
-              </MenuItem>
-            ))}
-          </Select>
-        )}
-        <Stack direction="row" spacing={3} alignItems="center">
-          <Typography>Amount</Typography>
+    <Stack direction="column" spacing={2}>
+      <Stack direction="row" spacing={3} alignItems="center">
+        <Typography>Date</Typography>
+        <Typography>{workingDate}</Typography>
+      </Stack>
+      <Stack direction="row" spacing={3} alignItems="center">
+        <Typography>Name</Typography>
+        <Typography>{iName}</Typography>
+      </Stack>
+      {tType == 1 ? (
+        <Stack direction="row" spacing={3}>
+          <Typography>Quantity</Typography>
           <TextField
             type="number"
-            disabled={!EditableRate}
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
             size="small"
           />
-          {tType == 1 && <Typography>{currency}</Typography>}
-          {amount != amount2 && (
-            <Typography>{amount2.toLocaleString()}{currency2}</Typography>
-          )}
         </Stack>
+      ) : (
+        <Select value={currencyID} onChange={handleExchangePick} size="small">
+          {data?.map((element: any) => (
+            <MenuItem key={element.CurrencyID} value={element.CurrencyID}>
+              {element.CurrencyCode}
+            </MenuItem>
+          ))}
+        </Select>
+      )}
+      <Stack direction="row" spacing={3} alignItems="center">
+        <Typography>Amount</Typography>
         <TextField
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          fullWidth
-          multiline
-          rows={3}
+          type="number"
+          disabled={!EditableRate}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
           size="small"
         />
-        <Stack direction="row" alignItems="center" spacing={3}>
-          <Typography>Date</Typography>
-          <MuiCheckbox checked={chekedTrue} onChange={handleChekbox} />
-          <DateTimePicker
-            disabled={enableDate}
-            value={setedDate}
-            onChange={(newValue: any) => setSetedDate(newValue)}
-            renderInput={(params) => <TextField {...params} size="small" />}
-          />
-        </Stack>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button variant="contained" onClick={handleSubmit}>Save</Button>
-          <Button variant="outlined" onClick={onClose}>Cancel</Button>
-        </Box>
+        {tType == 1 && <Typography>{currency}</Typography>}
+        {amount != amount2 && (
+          <Typography>{amount2.toLocaleString()}{currency2}</Typography>
+        )}
       </Stack>
+      <TextField
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        fullWidth
+        multiline
+        rows={3}
+        size="small"
+      />
+      <Stack direction="row" alignItems="center" spacing={3}>
+        <Typography>Date</Typography>
+        <MuiCheckbox checked={chekedTrue} onChange={handleChekbox} />
+        <DateTimePicker
+          disabled={enableDate}
+          value={setedDate}
+          onChange={(newValue: any) => setSetedDate(newValue)}
+          renderInput={(params) => <TextField {...params} size="small" />}
+        />
+      </Stack>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <Button variant="contained" onClick={handleSubmit}>Save</Button>
+        <Button variant="outlined" onClick={onClose}>Cancel</Button>
+      </Box>
+    </Stack>
   );
 };
 

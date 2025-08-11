@@ -100,7 +100,11 @@ const ReservationsList = ({ title, workingDate }: any) => {
         handleSubmit,
         formState: { errors },
         control,
+        watch,
+        setValue,
     } = useForm(formOptions);
+
+    const watchedReservationTypeID = watch("ReservationTypeID");
 
     const [search, setSearch] = useState({
         StatusGroup: StatusGroup ? StatusGroup : "1",
@@ -111,7 +115,20 @@ const ReservationsList = ({ title, workingDate }: any) => {
             ? EndDate
             : moment(workingDate).endOf("month").format("YYYY-MM-DD"),
         ReservationTypeID: ReservationTypeID ? ReservationTypeID : null,
+        ReservationSourceID: null,
+        CustomerID: null,
+        GuestName: "",
+        GuestPhone: "",
+        GuestEmail: "",
     });
+
+    // Update search state when form values change
+    useEffect(() => {
+        setSearch(prev => ({
+            ...prev,
+            ReservationTypeID: watchedReservationTypeID
+        }));
+    }, [watchedReservationTypeID]);
 
     const { data, error } = ReservationListSWR(search);
 
@@ -135,11 +152,14 @@ const ReservationsList = ({ title, workingDate }: any) => {
                     reset={reset}
                 >
                     <Search
-                        register={register}
-                        errors={errors}
-                        control={control}
-                        reset={reset}
-                    />
+                            register={register}
+                            errors={errors}
+                            control={control}
+                            reset={reset}
+                            ReservationTypeID={watchedReservationTypeID}
+                            setReservationTypeID={(value: any) => setValue("ReservationTypeID", value)}
+                            setValue={setValue}
+                        />
                 </CustomSearch>
             </div>
 

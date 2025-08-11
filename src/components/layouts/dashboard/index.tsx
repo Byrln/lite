@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { GetPrivilegesSWR } from "lib/api/user"
 import sidebarConfig from "components/layouts/dashboard/sidebar-config"
 import { HotelSidebar } from "@/components/hotel-sidebar"
@@ -21,7 +21,7 @@ import { useAppState } from "lib/context/app"
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs"
 // import NotificationBell from "./notification-bell"
 import { CommandPalette, useCommandPalette } from "./command-palette"
-import { Search, Command, Home, Settings } from "lucide-react"
+import { Search, Command, Home, Settings, Grid3X3, Calendar } from "lucide-react"
 import Link from "next/link"
 import { useIntl } from "react-intl";
 import CalendarControlsModal from "@/components/common/calendar-controls-modal";
@@ -29,6 +29,8 @@ import { CalendarFiltersProvider, useCalendarFilters } from "@/lib/context/calen
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FilterList } from "@mui/icons-material"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 
 
 const getModifierKey = () => {
@@ -65,6 +67,8 @@ function DashboardContent({ children }: any) {
     setIsHoverEnabled,
     rerenderKey,
     setRerenderKey,
+    isGridView,
+    setIsGridView,
   } = useCalendarFilters()
 
   const isHandsontablePage = router.pathname.includes('/handsontable')
@@ -85,7 +89,7 @@ function DashboardContent({ children }: any) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
         isHandsontablePage &&
-        event.key === 'r' &&
+        (event.key === 'r' || event.key === 'R') &&
         (event.metaKey || event.ctrlKey) &&
         !event.shiftKey &&
         !event.altKey
@@ -105,7 +109,7 @@ function DashboardContent({ children }: any) {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === 'b' && e.altKey) {
+      if ((e.key === 'b' || e.key === 'B') && e.altKey) {
         e.preventDefault()
         setCalendarModalOpen((open) => !open)
       }
@@ -220,7 +224,7 @@ function DashboardContent({ children }: any) {
                   disabled={isCalendarLoading}
                   variant="ghost"
                   size="sm"
-                  className="relative h-8 xl:h-9 w-full px-3 border border-[#804FE6] bg-input hover:bg-[#804FE6] hover:text-white transition-all duration-200 transform hover:scale-105"
+                  className="relative h-8 xl:h-9 w-full px-3 border border-[#804FE6] bg-input hover:bg-[#804FE6] transition-all duration-200 transform hover:scale-105"
                 >
                   <Image
                     src="/images/logo_sm.png"
@@ -230,7 +234,7 @@ function DashboardContent({ children }: any) {
                     className="w-5 h-3"
                   />
                   <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex ml-2">
-                    <span className="text-xs">{getModifierKey()}</span>R
+                    <span className="text-xs">{getModifierKey()}</span><span className="text-sm">R</span>
                   </kbd>
                 </Button>
                 <Button
@@ -241,9 +245,24 @@ function DashboardContent({ children }: any) {
                 >
                   <FilterList className="h-4 w-4" />
                   <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 xl:flex">
-                    <span className="text-xs">Alt</span>B
+                    <span className="text-xs">Alt</span><span className="text-sm">B</span>
                   </kbd>
                 </Button>
+
+                {/* Grid View Toggle */}
+                {/* <div className="flex items-center gap-2 px-2 py-1 border border-gray-300 bg-input rounded-md">
+                  <Calendar className="h-4 w-4 text-gray-600" />
+                  <Switch
+                    id="grid-view-toggle"
+                    checked={isGridView}
+                    onCheckedChange={setIsGridView}
+                    className="data-[state=checked]:bg-[#804FE6]"
+                  />
+                  <Grid3X3 className="h-4 w-4 text-gray-600" />
+                  <Label htmlFor="grid-view-toggle" className="text-xs text-gray-600 cursor-pointer">
+                    Grid
+                  </Label>
+                </div> */}
               </div>
             )}
 

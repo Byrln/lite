@@ -88,7 +88,7 @@ const RatePage = () => {
     },
     {
       id: 'rates',
-      title: intl.formatMessage({ id: 'menu.Тариф', defaultMessage: 'Rate' }),
+      title: intl.formatMessage({ id: 'menu.тариф', defaultMessage: 'Rate' }),
       description: intl.formatMessage({ id: 'RateDesc', defaultMessage: 'Manage room rates and pricing' }),
       icon: <DollarSign className="h-6 w-6" />,
       color: 'bg-emerald-500',

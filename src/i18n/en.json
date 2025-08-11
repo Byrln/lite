@@ -299,8 +299,10 @@
   "TextReady": "Ready",
   "TextSo": "So",
   "TextDo": "Do",
+  "TextRoomPhone": "Room Phone",
   "TextFolioCut": "Folio cut",
   "TextFolioBillTo": "Bill to",
+  "TextCalendarControls": "Calendar's Controls",
   "TextTransactionDetail": "Transaction detail",
   "OCC/GuestName": "OCC/Guest Name",
   "TextExtraBed": "Extra Bed",
@@ -1310,5 +1312,11 @@
   "TextVisualContentManagement": "Visual Content Management",
   "TextVisualContentManagementDescription": "Manage hotel images, banners, and visual content for your property",
   "TextBookingEngineConfiguration": "Booking Engine Configuration",
-  "TextBookingEngineConfigurationDescription": "Configure and customize your online booking engine settings"
+  "TextBookingEngineConfigurationDescription": "Configure and customize your online booking engine settings",
+  "TextTotalReservations": "Total Reservations",
+  "TextCheckInsToday": "Check-ins Today",
+  "TextCheckOutsToday": "Check-outs Today",
+  "TextOccupancyRate": "Occupancy Rate",
+  "TextSearchReservations": "Search reservations...",
+  "TextRoomNo": "Room No."
 }

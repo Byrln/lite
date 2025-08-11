@@ -86,13 +86,6 @@ const MiniBarGroupList = ({ title }: any) => {
         modalTitle={title}
         modalContent={<NewEdit />}
         excelName={title}
-        iconSelector={
-          <IconPicker
-            onIconSelect={handleIconSelect}
-            selectedIcon={selectedIcon}
-            buttonText="Select Icon"
-          />
-        }
         search={
           <CustomSearch
             listUrl={listUrl}

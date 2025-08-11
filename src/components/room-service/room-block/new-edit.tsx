@@ -58,7 +58,7 @@ const NewEdit = ({ workingDate }: any) => {
   const watchedEndDate = watch("EndDate");
 
   const [selectedRoomType, setSelectedRoomType] = useState<any>(null);
-  const [selectedRooms, setSelectedRooms] = useState<{[key: number]: boolean}>({});
+  const [selectedRooms, setSelectedRooms] = useState<{ [key: number]: boolean }>({});
 
   const onRoomTypeChange = (roomTypeId: number) => {
     setSelectedRoomType(roomTypeId);
@@ -71,7 +71,7 @@ const NewEdit = ({ workingDate }: any) => {
       setData([]);
       return;
     }
-    
+
     try {
       const values = {
         TransactionID: 0,
@@ -96,7 +96,7 @@ const NewEdit = ({ workingDate }: any) => {
     setLoading(true);
     try {
       const selectedRoomIds = Object.keys(selectedRooms).filter(roomId => selectedRooms[parseInt(roomId)]);
-      
+
       if (selectedRoomIds.length === 0) {
         toast.error("Please select at least one room");
         return;
@@ -110,17 +110,17 @@ const NewEdit = ({ workingDate }: any) => {
           EndDate: dateToSimpleFormat(values.EndDate),
           ReasonID: values.ReasonID,
         };
-        
+
         const response = await RoomBlockAPI.new(blockData);
-        
+
         if (response.status !== 200 || !response.data.Status) {
           toast.error(`Failed to block room: ${response.data.Message || 'Unknown error'}`);
           return;
         }
       }
-      
+
       toast.success(`Successfully blocked ${selectedRoomIds.length} room(s)`);
-      
+
       // Refresh the room block list
       mutate([listUrl, JSON.stringify({
         StartDate: dateToSimpleFormat(values.BeginDate),
@@ -128,12 +128,12 @@ const NewEdit = ({ workingDate }: any) => {
         RoomBlockID: 0,
         RoomID: 0
       })]);
-      
+
       // Reset form
       reset();
       setSelectedRooms({});
       setData([]);
-      
+
     } catch (error) {
       console.error("Error creating room blocks:", error);
       toast.error("Failed to create room blocks");
@@ -213,48 +213,48 @@ const NewEdit = ({ workingDate }: any) => {
               )}
             />
           </Grid>
-        <Grid item xs={4}>
-          <ReasonSelect
-            register={register}
-            errors={errors}
-            ReasonTypeID={3}
-            nameKey={"ReasonID"}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <RoomTypeSelect
-            searchRoomTypeID={selectedRoomType || 0}
-            setSearchRoomTypeID={onRoomTypeChange}
-          />
-        </Grid>
-        {data && data.length > 0 && (
-          <Grid item xs={12}>
-            <Box sx={{ mt: 2, mb: 1 }}>
-              <strong>Available Rooms:</strong>
-            </Box>
+          <Grid item xs={4}>
+            <ReasonSelect
+              register={register}
+              errors={errors}
+              ReasonTypeID={3}
+              nameKey={"ReasonID"}
+            />
           </Grid>
-        )}
-        {data &&
-          data.map((room: any) => {
-            return (
-              <Grid item xs={6} sm={4} md={3} key={room.RoomID}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRooms[room.RoomID] || false}
-                      onChange={(e) => {
-                        setSelectedRooms(prev => ({
-                          ...prev,
-                          [room.RoomID]: e.target.checked
-                        }));
-                      }}
-                    />
-                  }
-                  label={room.RoomFullName || room.RoomNo}
-                />
-              </Grid>
-            );
-          })}
+          <Grid item xs={12}>
+            <RoomTypeSelect
+              searchRoomTypeID={selectedRoomType || 0}
+              setSearchRoomTypeID={onRoomTypeChange}
+            />
+          </Grid>
+          {data && data.length > 0 && (
+            <Grid item xs={12}>
+              <Box sx={{ mt: 2, mb: 1 }}>
+                <strong>Available Rooms:</strong>
+              </Box>
+            </Grid>
+          )}
+          {data &&
+            data.map((room: any) => {
+              return (
+                <Grid item xs={6} sm={4} md={3} key={room.RoomID}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={selectedRooms[room.RoomID] || false}
+                        onChange={(e) => {
+                          setSelectedRooms(prev => ({
+                            ...prev,
+                            [room.RoomID]: e.target.checked
+                          }));
+                        }}
+                      />
+                    }
+                    label={room.RoomFullName || room.RoomNo}
+                  />
+                </Grid>
+              );
+            })}
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

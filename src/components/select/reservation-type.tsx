@@ -14,6 +14,7 @@ const ReservationTypeSelect = ({
     customRegisterName,
     ReservationTypeID,
     setReservationTypeID,
+    setValue,
 }: any) => {
     const intl = useIntl();
     const { data, error } = ReservationTypeSWR();
@@ -25,7 +26,9 @@ const ReservationTypeSelect = ({
     // }, [data]);
 
     const onChange = (evt: any) => {
-        setReservationTypeID && setReservationTypeID(evt.target.value);
+        const value = evt.target.value;
+        setReservationTypeID && setReservationTypeID(value);
+        setValue && setValue(customRegisterName ? customRegisterName : "ReservationTypeID", value);
     };
 
     if (error) return <Alert severity="error">{error.message}</Alert>;

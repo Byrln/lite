@@ -19,6 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import Image from "next/image"
+import Link from "next/link"
 
 export function TeamSwitcher({
   teams,
@@ -29,9 +30,10 @@ export function TeamSwitcher({
     plan: string
   }[]
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile, state } = useSidebar()
   const router = useRouter()
   const [activeTeam, setActiveTeam] = React.useState(teams[0])
+  const isCollapsed = state === 'collapsed'
 
   const handleDemoCalendar = () => {
     // Set demo mode in localStorage
@@ -46,15 +48,47 @@ export function TeamSwitcher({
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
+      <SidebarMenuItem className={`py-1 px-2 rounded-lg ${isCollapsed ? '' : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'}`}>
+
+        <Link href="/"
+          className={`flex items-center data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${isCollapsed ? 'justify-center' : ''}`}
+
+        >
+          <div className={`flex mt-1 aspect-square size-8 items-center justify-center rounded-lg bg-gray-200 text-sidebar-primary-foreground ${isCollapsed ? 'mx-auto' : 'mr-2'}`}>
+            {/* <activeTeam.logo className="size-4" /> */}
+            <Image
+              src="/images/logo_sm.png"
+              alt="logo"
+              width={64}
+              height={64}
+              className="w-6 h-4"
+            />
+          </div>
+          {!isCollapsed && (
+            <div className="flex flex-col text-left text-sm leading-tight">
+              <div className="flex text-lg"><span className="truncate font-semibold">
+                Ho
+              </span>
+                <span className="truncate font-semibold">
+                  Re
+                </span>
+                <span className="truncate font-semibold">
+                  Ca
+                </span>
+                <span className="truncate font-semibold">
+                  Soft
+                </span></div>
+              <span className="truncate text-[8px]">Hotel, Resort, Camp Software</span>
+            </div>
+          )}
+        </Link>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
               className="items-center data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="flex mt-1 aspect-square size-8 items-center justify-center rounded-lg bg-gray-200 text-sidebar-primary-foreground">
-                {/* <activeTeam.logo className="size-4" /> */}
                 <Image
                   src="/images/logo_sm.png"
                   alt="logo"
@@ -117,7 +151,7 @@ export function TeamSwitcher({
               <div className="font-medium text-muted-foreground">Add test</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </SidebarMenuItem>
     </SidebarMenu>
   )

@@ -13,15 +13,21 @@ const SearchModalStyle = styled(Paper)(({ theme }: any) => ({
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "90%",
-  maxWidth: 600,
-  padding: theme.spacing(3),
-  borderRadius: theme.spacing(1),
+  width: "95%",
+  maxWidth: 900,
+  maxHeight: "90vh",
+  overflow: "auto",
+  padding: theme.spacing(4),
+  borderRadius: theme.spacing(2),
   boxShadow: theme.shadows[24],
   outline: "none",
   [theme.breakpoints.up("md")]: {
-    width: "70%",
-    padding: theme.spacing(4),
+    width: "85%",
+    padding: theme.spacing(5),
+  },
+  [theme.breakpoints.up("lg")]: {
+    width: "80%",
+    maxWidth: 1200,
   },
 }));
 

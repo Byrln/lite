@@ -31,6 +31,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useIntl } from "react-intl";
 import { toast } from "react-toastify";
 import { alpha, useTheme } from "@mui/material/styles";
+import { mutate } from "swr";
 
 import { getCurrentDate } from "lib/utils/helpers";
 
@@ -73,6 +74,7 @@ const CustomTable = ({
   hasNew,
   hasUpdate,
   hasDelete,
+  hasMultipleDelete = false,
   hasPrint = true,
   hasExcel = true,
   hasShow = true,
@@ -104,6 +106,7 @@ const CustomTable = ({
   // const [excelColumns, setExcelColumns]: any = useState(null);
   const { handleModal }: any = useContext(ModalContext);
   const componentRef: any = useRef<HTMLDivElement>(null);
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
 
   // Add Floors Modal state
   const [openFloorsModal, setOpenFloorsModal] = useState(false);
@@ -134,6 +137,31 @@ const CustomTable = ({
 
   const valuetext = (value: number) => {
     return `${value}`;
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedRows.length === 0) {
+      toast("Устгах өгөгдөл сонгоно уу.");
+      return;
+    }
+
+    if (window.confirm(`Та ${selectedRows.length} өгөгдлийг устгахдаа итгэлтэй байна уу?`)) {
+      try {
+        for (const rowId of selectedRows) {
+          await api.delete(rowId);
+        }
+        // Mutate to refresh the data
+        await mutate(listUrl, undefined, { revalidate: true });
+        toast(`${selectedRows.length} өгөгдөл амжилттай устгагдлаа.`);
+        setSelectedRows([]);
+        // Refresh the data
+        if (functionAfterSubmit) {
+          functionAfterSubmit();
+        }
+      } catch (error) {
+        toast("Устгахад алдаа гарлаа.");
+      }
+    }
   };
 
   const handleAddFloors = async () => {
@@ -563,6 +591,32 @@ const CustomTable = ({
               </Tooltip>
             )}
             {iconSelector && iconSelector}
+            {hasMultipleDelete && selectedRows.length > 0 && (
+              <Tooltip title={`${selectedRows.length} өгөгдөл устгах`} arrow>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={handleBulkDelete}
+                  startIcon={<Icon icon="mdi:delete" />}
+                  sx={{
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    px: 3,
+                    py: 1,
+                    background: `linear-gradient(45deg, ${theme.palette.error.main}, ${theme.palette.error.dark})`,
+                    boxShadow: theme.shadows[3],
+                    '&:hover': {
+                      boxShadow: theme.shadows[6],
+                      transform: 'translateY(-1px)'
+                    },
+                    transition: 'all 0.2s ease-in-out'
+                  }}
+                >
+                  {selectedRows.length} устгах
+                </Button>
+              </Tooltip>
+            )}
             {hasPrint && (
               <Tooltip title={intl.formatMessage({ id: "ButtonPrint" })} arrow>
                 <Button
@@ -670,10 +724,13 @@ const CustomTable = ({
           >
             {datagrid ? (
               <DataGrid
-                checkboxSelection={false}
+                checkboxSelection={hasMultipleDelete}
                 rows={data}
                 density="compact"
                 columns={customizedColumns}
+                onRowSelectionModelChange={(newSelection) => {
+                  setSelectedRows(newSelection);
+                }}
                 initialState={
                   pagination
                     ? {

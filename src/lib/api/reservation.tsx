@@ -9,6 +9,8 @@ export const ReservationSWR = (search: any) => {
         search.ReservationTypeID = 1;
     }
 
+    console.log("API call with search parameters:", search);
+
     const fetcher = async (url: any) =>
         await axios.post(url, search).then((res: any) => res.data.JsonData);
 

@@ -295,7 +295,7 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+      if ((event.metaKey || event.ctrlKey) && (event.key === 'k' || event.key === 'K')) {
         event.preventDefault()
         setOpen(!open)
         if (!open) {

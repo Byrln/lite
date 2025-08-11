@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
@@ -32,11 +32,12 @@ import Iconify from "components/iconify/iconify";
 import { getContrastYIQ } from "lib/utils/helpers";
 import { useIntl } from "react-intl";
 import { useCalendarFilters } from "@/lib/context/calendar-filters";
+import GridViewList from "@/components/common/grid-view-list";
 
 // Skeleton Loading Component
 const CalendarSkeleton = ({ progress = 0, message = 'Loading...' }: { progress?: number; message?: string }) => {
   const intl = useIntl();
-  
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       {/* Loading Progress */}
@@ -46,7 +47,7 @@ const CalendarSkeleton = ({ progress = 0, message = 'Loading...' }: { progress?:
           <span className="text-sm font-medium text-gray-700">{message}</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
+          <div
             className="bg-blue-500 h-2 rounded-full transition-all duration-300 ease-out"
             style={{ width: `${progress}%` }}
           ></div>
@@ -141,7 +142,11 @@ export const generateIncrementedId = (baseId: string | number, increment: number
   return `${baseId}_${increment}`;
 };
 
-const MyCalendar: React.FC = ({ workingDate }: any) => {
+interface MyCalendarProps {
+  workingDate: any;
+}
+
+const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
   const intl = useIntl();
   const [state, dispatch]: any = useAppState();
   const { handleModal }: any = useContext(ModalContext);
@@ -159,6 +164,8 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
     setIsHoverEnabled,
     rerenderKey,
     setRerenderKey,
+    isGridView,
+    setIsGridView,
   } = useCalendarFilters();
   const [reservationItems, setReservationItems] = useState<any>(null);
   const [roomBlocks, setRoomBlocks] = useState<any>(null);
@@ -269,6 +276,48 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
   const [height, setHeight] = useState<any>(null);
   const [availableRooms, setAvailableRooms] = useState<any>(null);
 
+  // Calculate summary data for grid view
+  const summaryData = useMemo(() => {
+    if (!itemData || !Array.isArray(itemData)) return {};
+
+    // Filter only guest reservations (items with transactionID and not blocks)
+    const guestReservations = itemData.filter(item => item.transactionID && !item.block && !item.unassignedRoom);
+    const totalReservations = guestReservations.length;
+    const totalGuests = guestReservations.reduce((sum, item) => sum + (item.Adult || 0) + (item.Child || 0), 0);
+    const totalRevenue = guestReservations.reduce((sum, item) => {
+      const balance = parseFloat(item.Balance) || 0;
+      return sum + Math.abs(balance);
+    }, 0);
+
+    const today = moment();
+    const checkInsToday = guestReservations.filter(item =>
+      moment(item.start).isSame(today, 'day')
+    ).length;
+    const checkOutsToday = guestReservations.filter(item =>
+      moment(item.end).isSame(today, 'day')
+    ).length;
+
+    // Calculate occupancy rate based on available rooms
+    const totalRooms = resources ? resources.filter((r: any) => r.parentId).length : 0;
+    const occupiedRooms = guestReservations.filter(item =>
+      moment(item.start).isSameOrBefore(today, 'day') &&
+      moment(item.end).isAfter(today, 'day')
+    ).length;
+    const occupancyRate = totalRooms > 0 ? (occupiedRooms / totalRooms) * 100 : 0;
+
+    return {
+      totalReservations,
+      totalGuests,
+      totalRevenue,
+      checkInsToday,
+      checkOutsToday,
+      occupancyRate
+    };
+  }, [itemData, resources]);
+
+  // Store roomTypes data for grid view filters
+  const [roomTypesData, setRoomTypesData] = useState<any>(null);
+
   // Debounced loading state to prevent flickering
   const setLoadingWithMinTime = (loading: boolean) => {
     if (loading) {
@@ -329,6 +378,7 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         const roomTypes: any = await RoomTypeAPI?.list({
           RoomTypeID: searchRoomTypeID,
         });
+        setRoomTypesData(roomTypes);
         setLoadingProgress(40);
 
         setLoadingMessage(intl.formatMessage({ id: 'calendar.loading.rooms', defaultMessage: 'Loading rooms...' }));
@@ -1634,8 +1684,28 @@ const MyCalendar: React.FC = ({ workingDate }: any) => {
         > */}
         <div className="overflow-hidden"
         >
+
           {isCalendarLoading || !resources || !dayCount || !timeStart || !itemData || !rerenderKey ? (
             <CalendarSkeleton progress={loadingProgress} message={loadingMessage} />
+          ) : isGridView ? (
+            <div className="p-6">
+              <GridViewList
+                data={itemData ? itemData.filter((item: any) => item.transactionID && !item.block && !item.unassignedRoom) : []}
+                onItemClick={(item) => handleEventClick({ event: item })}
+                emptyMessage="No guest reservations found for the selected period"
+                showFilters={true}
+                showSummary={true}
+                filterOptions={{
+                  searchFilter: true,
+                  statusFilter: true,
+                  roomTypeFilter: true,
+                  dateFilter: true
+                }}
+                summaryData={summaryData}
+                roomTypesData={roomTypesData}
+                className="space-y-4"
+              />
+            </div>
           ) : (
             <FullCalendar
               key={rerenderKey}

@@ -403,6 +403,34 @@ const sidebarConfig = [
     ],
   },
   {
+    title: "өрөө үйлчилгээ",
+    titleEn: "House Keeping",
+    icon: getIcon("lucide:home"),
+    children: [
+      {
+        title: "house keeping",
+        titleEn: "House Keeping",
+        icon: getIcon("lucide:brush-cleaning", "#10b981"),
+        path: "/room-service/house-keeping",
+        oldPath: "",
+      },
+      {
+        title: "өрөөний төлөв",
+        titleEn: "House Status",
+        icon: getIcon("lucide:clipboard-check", "#3b82f6"),
+        path: "/room-service/house-status",
+        oldPath: "",
+      },
+      {
+        title: "ажлын даалгавар",
+        titleEn: "Work Order",
+        icon: getIcon("lucide:clipboard-list", "#f59e0b"),
+        path: "/room-service/work-order",
+        oldPath: "",
+      },
+    ],
+  },
+  {
     title: "холболт",
     titleEn: "Connect",
     icon: getIcon("lucide:link"),
@@ -527,34 +555,6 @@ const sidebarConfig = [
     icon: getIcon("lucide:plug-zap", "#06b6d4"),
     path: "/conf/pos-api",
     oldPath: "",
-  },
-  {
-    title: "өрөө үйлчилгээ",
-    titleEn: "House Keeping",
-    icon: getIcon("lucide:home"),
-    children: [
-      {
-        title: "house keeping",
-        titleEn: "House Keeping",
-        icon: getIcon("lucide:brush-cleaning", "#10b981"),
-        path: "/room-service/house-keeping",
-        oldPath: "",
-      },
-      {
-        title: "өрөөний төлөв",
-        titleEn: "House Status",
-        icon: getIcon("lucide:clipboard-check", "#3b82f6"),
-        path: "/room-service/house-status",
-        oldPath: "",
-      },
-      {
-        title: "ажлын даалгавар",
-        titleEn: "Work Order",
-        icon: getIcon("lucide:clipboard-list", "#f59e0b"),
-        path: "/room-service/work-order",
-        oldPath: "",
-      },
-    ],
   },
 ];
 

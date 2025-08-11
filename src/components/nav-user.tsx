@@ -123,12 +123,12 @@ export function NavUser({
                 <CreditCard />
                 Billing
               </DropdownMenuItem> */}
-              <Link href="/faq" className="gap-2">
+              {/* <Link href="/faq" className="gap-2">
                 <DropdownMenuItem className="flex items-center cursor-pointer">
                   <QuestionMarkOutlined />
                   <span className="pl-2">FAQ</span>
                 </DropdownMenuItem>
-              </Link>
+              </Link> */}
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger className="flex items-center gap-3 cursor-pointer hover:bg-sidebar-accent">
                   <Languages className="h-4 w-4" />

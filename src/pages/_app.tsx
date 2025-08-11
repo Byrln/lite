@@ -8,7 +8,7 @@ import { Slide, ToastContainer } from "react-toastify";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { IntlProvider } from "react-intl";
-import { useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 
 import "styles/tailwind.css";
 import "styles/globals.scss";
@@ -25,14 +25,17 @@ import enDashboard from "i18n/en-dashboard.json";
 import monDashboard from "i18n/mon-dashboard.json";
 import { useAppState } from "lib/context/app";
 import NewReservation from "components/front-office/reservation-list/new";
+import ShortcutsHelp from "components/common/shortcuts-help";
 
 // Global keyboard shortcuts component
 const GlobalKeyboardShortcuts = () => {
   const { handleModal }: any = useContext(ModalContext);
   const [state, dispatch]: any = useAppState();
+  const [shortcutsOpen, setShortcutsOpen] = React.useState(false);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // F2 - New Reservation
       if (event.key === 'F2') {
         event.preventDefault();
         dispatch({
@@ -47,6 +50,12 @@ const GlobalKeyboardShortcuts = () => {
           "medium"
         );
       }
+
+      // Alt + H - Show Shortcuts Help (case insensitive)
+      if (event.altKey && (event.key === 'h' || event.key === 'H')) {
+        event.preventDefault();
+        setShortcutsOpen(true);
+      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
@@ -56,7 +65,12 @@ const GlobalKeyboardShortcuts = () => {
     };
   }, [handleModal, dispatch]);
 
-  return null;
+  return (
+    <ShortcutsHelp
+      open={shortcutsOpen}
+      onClose={() => setShortcutsOpen(false)}
+    />
+  );
 };
 
 

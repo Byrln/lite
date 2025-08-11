@@ -1,4 +1,4 @@
-import { TextField, Grid, FormControlLabel, FormGroup } from "@mui/material";
+import { TextField, Grid, FormControlLabel, FormGroup, Typography, Box, Divider } from "@mui/material";
 import { useState, useEffect } from "react";
 
 import { Controller } from "react-hook-form";
@@ -9,92 +9,147 @@ import moment from "moment";
 import { FloorSWR } from "lib/api/floor";
 
 const Search = ({ register, errors, control, search }: any) => {
-    const { data, error } = FloorSWR();
-    const [floors, setFloors]: any = useState([]);
+  const { data, error } = FloorSWR();
+  const [floors, setFloors]: any = useState([]);
 
-    useEffect(() => {
-        if (search && search.Floors) {
-            setFloors(search.Floors);
-        }
-    }, [search]);
+  useEffect(() => {
+    if (search && search.Floors) {
+      setFloors(search.Floors);
+    }
+  }, [search]);
 
-    const handleToggle = (element: any) => (e: any) => {
-        let tempValue = [...floors];
-        if (tempValue && tempValue.includes(String(element.FloorID))) {
-            tempValue.splice(tempValue.indexOf(element.FloorID), 1);
-        } else {
-            tempValue.push(String(element.FloorID));
-        }
-        setFloors(tempValue);
-    };
-    return (
-        <Grid container spacing={1}>
-            <Grid item xs={3}>
-                <Controller
-                    name="CurrDate"
-                    control={control}
-                    defaultValue={null}
-                    render={({ field: { onChange, value } }) => (
-                        <DatePicker
-                            label="Огноо"
-                            value={value}
-                            onChange={(value) =>
-                                onChange(moment(value, "YYYY-MM-DD"))
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    size="small"
-                                    id="CurrDate"
-                                    {...register("CurrDate")}
-                                    margin="dense"
-                                    fullWidth
-                                    {...params}
-                                    error={!!errors.CurrDate?.message}
-                                    helperText={errors.CurrDate?.message as string}
-                                />
-                            )}
-                        />
-                    )}
-                />
-            </Grid>
-            <Grid item xs={9}></Grid>
-            <Grid item xs={12}>
-                <FormGroup>
-                    <Grid container spacing={2}>
-                        {data &&
-                            data.map((element: any) => (
-                                <Grid
-                                    key={element.FloorID}
-                                    item
-                                    xs={4}
-                                    sm={2}
-                                    md={1}
-                                >
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={
-                                                    floors &&
-                                                    floors.includes(
-                                                        String(element.FloorID)
-                                                    )
-                                                        ? true
-                                                        : false
-                                                }
-                                                {...register("Floors")}
-                                                value={element.FloorID}
-                                                onChange={handleToggle(element)}
-                                            />
-                                        }
-                                        label={`${element.FloorNo} давхар`}
-                                    />
-                                </Grid>
-                            ))}
-                    </Grid>
-                </FormGroup>
-            </Grid>
+  const handleToggle = (element: any) => (e: any) => {
+    let tempValue = [...floors];
+    if (tempValue && tempValue.includes(String(element.FloorID))) {
+      tempValue.splice(tempValue.indexOf(element.FloorID), 1);
+    } else {
+      tempValue.push(String(element.FloorID));
+    }
+    setFloors(tempValue);
+  };
+  return (
+    <Box sx={{ p: 2 }}>
+      <Grid container spacing={3}>
+        {/* Date Selection Section */}
+        <Grid item xs={12}>
+          <Typography variant="h6" gutterBottom sx={{ mb: 2, fontWeight: 600 }}>
+            Хайлтын нөхцөл
+          </Typography>
         </Grid>
-    );
+        
+        <Grid item xs={12} md={4}>
+          <Controller
+            name="CurrDate"
+            control={control}
+            defaultValue={null}
+            render={({ field: { onChange, value } }) => (
+              <DatePicker
+                label="Огноо"
+                value={value}
+                onChange={(value) =>
+                  onChange(moment(value, "YYYY-MM-DD"))
+                }
+                renderInput={(params) => (
+                  <TextField
+                    size="medium"
+                    id="CurrDate"
+                    {...register("CurrDate")}
+                    margin="normal"
+                    fullWidth
+                    {...params}
+                    error={!!errors.CurrDate?.message}
+                    helperText={errors.CurrDate?.message as string}
+                  />
+                )}
+              />
+            )}
+          />
+        </Grid>
+        
+        <Grid item xs={12}>
+          <Divider sx={{ my: 2 }} />
+        </Grid>
+        
+        {/* Floor Selection Section */}
+        <Grid item xs={12}>
+          <Typography variant="h6" gutterBottom sx={{ mb: 3, fontWeight: 600 }}>
+            Давхар сонгох
+          </Typography>
+          
+          <Box sx={{ 
+            bgcolor: 'grey.50', 
+            borderRadius: 2, 
+            p: 3,
+            border: '1px solid',
+            borderColor: 'grey.200'
+          }}>
+            <FormGroup>
+               <Grid container spacing={2}>
+                 {data &&
+                   data
+                     .sort((a: any, b: any) => parseInt(a.FloorNo) - parseInt(b.FloorNo))
+                     .map((element: any) => (
+                    <Grid
+                      key={element.FloorID}
+                      item
+                      xs={6}
+                      sm={4}
+                      md={3}
+                      lg={2}
+                    >
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={
+                              floors &&
+                                floors.includes(
+                                  String(element.FloorID)
+                                )
+                                ? true
+                                : false
+                            }
+                            {...register("Floors")}
+                            value={element.FloorID}
+                            onChange={handleToggle(element)}
+                            sx={{
+                              '&.Mui-checked': {
+                                color: 'primary.main',
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {element.FloorNo} давхар
+                          </Typography>
+                        }
+                        sx={{
+                          m: 0,
+                          width: '100%',
+                          '& .MuiFormControlLabel-label': {
+                            fontSize: '0.875rem',
+                          },
+                        }}
+                      />
+                    </Grid>
+                  ))}
+              </Grid>
+            </FormGroup>
+            
+            {(!data || data.length === 0) && (
+              <Typography 
+                variant="body2" 
+                color="text.secondary" 
+                sx={{ textAlign: 'center', py: 2 }}
+              >
+                Давхарын мэдээлэл олдсонгүй
+              </Typography>
+            )}
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
+  );
 };
 
 export default Search;

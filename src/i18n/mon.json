@@ -531,6 +531,8 @@
   "TextFolioCut": "Тооцоо салгах",
   "TextFolioBillTo": "Тооцоо хийх",
   "TextTransactionDetail": "Тооцооны дэлгэрэнгүй",
+  "TextCalendarControls": "Календарын шүүлтүүр",
+  "TextRoomPhone": "Өрөөний утас",
   "TextDo": "Хийх",
   "TextHotelSales": "Буудлын борлуулалт",
   "ReportExtraChargesbySession": "Нэмэлт үйлчилгээ",
@@ -1688,5 +1690,11 @@
   "TextVisualContentManagement": "Харааны контент удирдлага",
   "TextVisualContentManagementDescription": "Зочид буудлын зураг, баннер болон харааны контентыг удирдах",
   "TextBookingEngineConfiguration": "Захиалгын системийн тохиргоо",
-  "TextBookingEngineConfigurationDescription": "Онлайн захиалгын системийн тохиргоог өөрчлөх"
+  "TextBookingEngineConfigurationDescription": "Онлайн захиалгын системийн тохиргоог өөрчлөх",
+  "TextTotalReservations": "Нийт захиалга",
+  "TextCheckInsToday": "Өнөөдрийн ирэлт",
+  "TextCheckOutsToday": "Өнөөдрийн явалт",
+  "TextOccupancyRate": "Ачаалалын хувь",
+  "TextSearchReservations": "Захиалга хайх...",
+  "TextRoomNo": "Өрөөний дугаар"
 }

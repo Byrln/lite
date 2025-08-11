@@ -9,7 +9,7 @@ import ReservationSourceSelect from "components/select/reservation-source";
 import { dateStringToObj } from "lib/utils/helpers";
 import CustomerSelect from "components/select/customer";
 
-const Search = ({ register, errors, control, reset }: any) => {
+const Search = ({ register, errors, control, reset, ReservationTypeID, setReservationTypeID, setValue }: any) => {
     const intl = useIntl();
 
     return (
@@ -95,6 +95,9 @@ const Search = ({ register, errors, control, reset }: any) => {
                     register={register}
                     errors={errors}
                     reset={reset}
+                    ReservationTypeID={ReservationTypeID}
+                    setReservationTypeID={setReservationTypeID}
+                    setValue={setValue}
                 />
             </Grid>
 

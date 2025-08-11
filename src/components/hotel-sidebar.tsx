@@ -70,7 +70,7 @@ export function HotelSidebar({ sideBarData, ...props }: HotelSidebarProps) {
     if (sidebarMode === 'configuration') {
       // Show only configuration items (items with paths starting with /conf/ or /mini-bar/)
       return configToUse.filter(item =>
-        item.path?.startsWith('/conf/') || 
+        item.path?.startsWith('/conf/') ||
         item.path?.startsWith('/mini-bar/') ||
         item.titleEn === 'Accounting' ||
         item.titleEn === 'Pos Api Config' ||
@@ -90,7 +90,7 @@ export function HotelSidebar({ sideBarData, ...props }: HotelSidebarProps) {
     } else {
       // Show all items except configuration items
       return configToUse.filter(item =>
-        !(item.path?.startsWith('/conf/') || 
+        !(item.path?.startsWith('/conf/') ||
           item.path?.startsWith('/mini-bar/') ||
           item.titleEn === 'Accounting' ||
           item.titleEn === 'Pos Api Config' ||

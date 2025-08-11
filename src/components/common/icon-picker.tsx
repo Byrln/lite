@@ -203,11 +203,10 @@ const IconPicker: React.FC<IconPickerProps> = ({
         endIcon={<Icon icon="mdi:chevron-down" />}
         sx={{
           textTransform: 'none',
-          borderRadius: 1,
+          borderRadius: 2,
           px: 2,
           py: 1,
-          mr: 1.8,
-          border: '1px solid #bda4ee',
+          border: '2px solid #bda4ee',
           '&:hover': {
             border: '1px solid #8854e4',
           }

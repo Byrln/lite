@@ -154,16 +154,22 @@ export function removeParams(sParam: any) {
 }
 
 export function dateStringToObj(date: any) {
-  // return new Date(date.replace(/ /g, "T")).setTime(
-  //     new Date(date.replace(/ /g, "T")).getTime() +
-  //         new Date(date.replace(/ /g, "T")).getTimezoneOffset() * 60 * 1000
-  // );
-
   // Check if date is null, undefined, or not a string
   if (!date || typeof date !== 'string') {
     return new Date(); // Return current date as fallback
   }
 
+  // Parse the date string and create a date object without timezone conversion
+  // This ensures the date stays as intended (e.g., "2024-07-08" remains July 8th)
+  const parts = date.split('-');
+  if (parts.length === 3) {
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+    const day = parseInt(parts[2], 10);
+    return new Date(year, month, day);
+  }
+
+  // Fallback to original method if date format is unexpected
   return new Date(date.replace(/ /g, "T"));
 }
 

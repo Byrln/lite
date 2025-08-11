@@ -32,7 +32,7 @@ const Index = () => {
 
       <div style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
         {workingDate && (
-          <MyCalendar //@ts-ignore
+          <MyCalendar
             workingDate={workingDate}
           />
         )}

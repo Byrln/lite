@@ -164,13 +164,6 @@ const PackageList = ({ title }: any) => {
 
   return (
     <>
-      <Box sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
-        <IconPicker
-          onIconSelect={handleIconSelect}
-          selectedIcon={selectedIcon}
-          buttonText="📎 Select Icon"
-        />
-      </Box>
       <CustomTable
         columns={columns}
         data={data}
@@ -182,6 +175,13 @@ const PackageList = ({ title }: any) => {
         listUrl={listUrl}
         modalTitle={title}
         modalContent={<NewEdit />}
+        iconSelector={
+          <IconPicker
+            onIconSelect={handleIconSelect}
+            selectedIcon={selectedIcon}
+            buttonText="Select Icon"
+          />
+        }
         excelName={title}
         search={
           <CustomSearch

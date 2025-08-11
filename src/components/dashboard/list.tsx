@@ -114,9 +114,9 @@ const Dashboard = ({ workingDate }: any) => {
   // Helper function for room occupancy calculation
   const roomOccupancy = (element: any) => {
     if (!Array.isArray(element)) return 0;
-    // Use Sold Rooms data directly for Room occupancy
-    const soldRooms = element.find((item: any) => item.ParameterName === "Sold Rooms")?.ParameterValue || 0;
-    return soldRooms;
+    // Use Room Occupancy data for room occupancy percentage
+    const roomOccupancyValue = element.find((item: any) => item.ParameterName === "Room Occupancy")?.ParameterValue || 0;
+    return roomOccupancyValue;
   };
 
   // Generate occupancy trend data using roomOccupancy function
@@ -233,7 +233,8 @@ const Dashboard = ({ workingDate }: any) => {
     return element.filter((item: any) =>
       item.ParameterID !== 1 &&
       item.ParameterName !== "Room Occupancy" &&
-      item.ParameterName !== "Occupancy Rate"
+      item.ParameterName !== "Occupancy Rate" &&
+      item.ParameterName !== "Deleted Bookings"
     );
   };
 
@@ -1057,19 +1058,6 @@ function DashboardCard({
           icon: <LogOut {...iconProps} />,
           color: "#8b5cf6",
           link: `/front-office/reservation-list?StatusGroup=2&StartDate=${moment(
-            workingDate
-          ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
-            .add(
-              dashboardType == "weekly" ? 7 : 1,
-              dashboardType == "monthly" ? "month" : "day"
-            )
-            .format("YYYY-MM-DD")}`,
-        };
-      case "Deleted Bookings":
-        return {
-          icon: <Trash2 {...iconProps} />,
-          color: "#dc2626",
-          link: `/front-office/reservation-list?StatusGroup=0&StartDate=${moment(
             workingDate
           ).format("YYYY-MM-DD")}&EndDate=${moment(workingDate)
             .add(

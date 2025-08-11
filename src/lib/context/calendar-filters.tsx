@@ -13,6 +13,8 @@ interface CalendarFiltersContextType {
   setIsHoverEnabled: (enabled: boolean) => void;
   rerenderKey: number;
   setRerenderKey: (key: number | ((prevKey: number) => number)) => void;
+  isGridView: boolean;
+  setIsGridView: (enabled: boolean) => void;
 }
 
 const CalendarFiltersContext = createContext<CalendarFiltersContextType | undefined>(undefined);
@@ -32,6 +34,7 @@ interface CalendarFiltersProviderProps {
   initialSearchRoomTypeID?: number;
   initialSearchCurrDate?: Date;
   initialIsHoverEnabled?: boolean;
+  initialIsGridView?: boolean;
 }
 
 export const CalendarFiltersProvider: React.FC<CalendarFiltersProviderProps> = ({
@@ -41,6 +44,7 @@ export const CalendarFiltersProvider: React.FC<CalendarFiltersProviderProps> = (
   initialSearchRoomTypeID = 0,
   initialSearchCurrDate = new Date(),
   initialIsHoverEnabled = true,
+  initialIsGridView = false,
 }) => {
   // Initialize hover setting from localStorage
   const getInitialHoverSetting = () => {
@@ -51,11 +55,21 @@ export const CalendarFiltersProvider: React.FC<CalendarFiltersProviderProps> = (
     return initialIsHoverEnabled;
   };
 
+  // Initialize grid view setting from localStorage
+  const getInitialGridViewSetting = () => {
+    if (typeof window !== 'undefined') {
+      const gridViewSetting = localStorage.getItem("isGridView");
+      return gridViewSetting === "true";
+    }
+    return initialIsGridView;
+  };
+
   const [dayCount, setDayCount] = useState(initialDayCount);
   const [currentView, setCurrentView] = useState(initialCurrentView);
   const [searchRoomTypeID, setSearchRoomTypeID] = useState(initialSearchRoomTypeID);
   const [searchCurrDate, setSearchCurrDate] = useState(initialSearchCurrDate);
   const [isHoverEnabled, setIsHoverEnabled] = useState(getInitialHoverSetting);
+  const [isGridView, setIsGridView] = useState(getInitialGridViewSetting);
   const [rerenderKey, setRerenderKey] = useState(0);
 
   // Save hover setting to localStorage when it changes
@@ -63,6 +77,14 @@ export const CalendarFiltersProvider: React.FC<CalendarFiltersProviderProps> = (
     setIsHoverEnabled(enabled);
     if (typeof window !== 'undefined') {
       localStorage.setItem("isHover", enabled.toString());
+    }
+  };
+
+  // Save grid view setting to localStorage when it changes
+  const handleSetIsGridView = (enabled: boolean) => {
+    setIsGridView(enabled);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("isGridView", enabled.toString());
     }
   };
 
@@ -79,6 +101,8 @@ export const CalendarFiltersProvider: React.FC<CalendarFiltersProviderProps> = (
     setIsHoverEnabled: handleSetIsHoverEnabled,
     rerenderKey,
     setRerenderKey,
+    isGridView,
+    setIsGridView: handleSetIsGridView,
   };
 
   return (

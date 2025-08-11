@@ -38,7 +38,7 @@
   "calendar.loading.groupReservations": "Бүлгийн захиалгууд ачаалж байна...",
   "calendar.loading.finalizing": "Хуанли дуусгаж байна...",
   "calendar.error.loadFailed": "Хуанлийн өгөгдөл ачаалахад алдаа гарлаа",
-  "TextVoidBookings": "Хүчингүй захиалгууд",
+  "TextVoidBookings": "Устгагдсан захиалгууд",
   "TextCancelledBookings": "Цуцлагдсан захиалгууд",
   "TextNoShow": "Ирээгүй",
   "TextBlocked": "Хаагдсан",
