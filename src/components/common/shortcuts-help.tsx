@@ -38,13 +38,14 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
 
   // Get current route and find matching page data
   const currentRoute = router.pathname;
-  const pagesData = intl.messages?.shortcuts?.pages || [];
+  const shortcuts = intl.messages?.shortcuts as any;
+  const pagesData = shortcuts?.pages || [];
   const currentPageData = pagesData.find((page: any) => page.route === currentRoute);
   
   // Get slides data from current page or fallback to general shortcuts
-  const slidesData = currentPageData?.carousel?.slides || intl.messages?.shortcuts?.carousel?.slides || [];
-  const pageTitle = currentPageData?.title || intl.messages?.shortcuts?.title || 'Shortcuts Guide';
-  const tipsData = currentPageData?.tips || intl.messages?.shortcuts?.tips;
+  const slidesData = currentPageData?.carousel?.slides || shortcuts?.carousel?.slides || [];
+  const pageTitle = currentPageData?.title || shortcuts?.title || 'Shortcuts Guide';
+  const tipsData = currentPageData?.tips || shortcuts?.tips;
   
   // Check if current route has specific shortcuts
   const hasRouteSpecificShortcuts = !!currentPageData;

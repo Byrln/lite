@@ -318,7 +318,7 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
             className="mt-3 "
             fullWidth
           >
-            Хадгалах
+            {intl.formatMessage({ id: "TextSave" })}
           </LoadingButton>
         </Grid>
         <Grid item xs={5}></Grid>
