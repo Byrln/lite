@@ -399,6 +399,11 @@ const NewEdit = ({
                 `TransactionDetail.${id}.GuestDetail.Name`
               )}
               margin="dense"
+              onChange={(e) =>
+                resetField(`TransactionDetail.${id}.GuestDetail.Name`, {
+                  defaultValue: e.target.value,
+                })
+              }
             />
           </Grid>
 
@@ -413,6 +418,11 @@ const NewEdit = ({
                 `TransactionDetail.${id}.GuestDetail.Email`
               )}
               margin="dense"
+              onChange={(e) =>
+                resetField(`TransactionDetail.${id}.GuestDetail.Email`, {
+                  defaultValue: e.target.value,
+                })
+              }
             />
           </Grid>
 
@@ -426,6 +436,11 @@ const NewEdit = ({
                 `TransactionDetail.${id}.GuestDetail.Mobile`
               )}
               margin="dense"
+              onChange={(e) =>
+                resetField(`TransactionDetail.${id}.GuestDetail.Mobile`, {
+                  defaultValue: e.target.value,
+                })
+              }
             />
           </Grid>
         </>

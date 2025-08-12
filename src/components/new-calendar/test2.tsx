@@ -960,7 +960,7 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
           event.id != info.event._def.extendedProps.transactionID &&
           new Date(event.start) <=
           new Date(info.oldEvent._def.extendedProps.endDate) &&
-          new Date(event.end) > 
+          new Date(event.end) >
           new Date(info.oldEvent._def.extendedProps.startDate)
       );
 
@@ -1737,6 +1737,7 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
                 setCurrentView(info.view.type);
               }}
               resources={resources}
+              resourceAreaHeaderContent={intl.formatMessage({ id: "TextResources", defaultMessage: "Resources" })}
               initialDate={timeStart}
               events={itemData}
               selectable={true}
@@ -1977,11 +1978,18 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
                                   }}
                                 >
                                   {
-                                    arg.date
-                                      .toString()
-                                      .split(
-                                        " "
-                                      )[0]
+                                    (() => {
+                                      const dayNames = [
+                                        intl.formatMessage({ id: "TextSun" }),
+                                        intl.formatMessage({ id: "TextMon" }),
+                                        intl.formatMessage({ id: "TextTue" }),
+                                        intl.formatMessage({ id: "TextWed" }),
+                                        intl.formatMessage({ id: "TextThu" }),
+                                        intl.formatMessage({ id: "TextFri" }),
+                                        intl.formatMessage({ id: "TextSat" })
+                                      ];
+                                      return dayNames[arg.date.getDay()];
+                                    })()
                                   }
                                 </div>
 
@@ -2604,114 +2612,9 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
                     );
                   },
                 },
-                resourceTimeline: {
-                  dayHeaderContent: customHeader,
-                },
-                timeGridDay: {
-                  type: "timeGrid",
-                  duration: { days: 1 },
-                  slotMinTime: "06:00:00",
-                  slotMaxTime: "24:00:00",
-                  slotDuration: "01:00:00",
-                  slotLabelInterval: "01:00:00",
-                  allDaySlot: true,
-                  nowIndicator: true,
-                },
-                resourceTimelineDay: {
-                  type: "resourceTimeline",
-                  duration: { days: 1 },
-                  slotMinTime: "00:00:00",
-                  slotMaxTime: "24:00:00",
-                  slotDuration: "01:00:00",
-                  slotLabelInterval: "01:00:00",
-                  slotLabelFormat: {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false
-                  },
-                  resourceAreaWidth: 180,
-                  nowIndicator: true,
-                  slotLabelContent: (arg: any) => {
-                    return (
-                      <div
-                        style={{
-                          fontSize: "12px",
-                          fontWeight: "500",
-                          color: "#666",
-                          textAlign: "center",
-                          padding: "4px 2px",
-                        }}
-                      >
-                        {arg.date.toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          hour12: false
-                        })}
-                      </div>
-                    );
-                  },
-                  dayHeaderContent: (arg: any) => {
-                    const day = arg.date.getDay();
-                    const isWeekend = day === 0 || day === 6;
-                    const monthNames = [
-                      intl.formatMessage({ id: "January" }) || "January",
-                      intl.formatMessage({ id: "February" }) || "February",
-                      intl.formatMessage({ id: "March" }) || "March",
-                      intl.formatMessage({ id: "April" }) || "April",
-                      intl.formatMessage({ id: "May" }) || "May",
-                      intl.formatMessage({ id: "June" }) || "June",
-                      intl.formatMessage({ id: "July" }) || "July",
-                      intl.formatMessage({ id: "August" }) || "August",
-                      intl.formatMessage({ id: "September" }) || "September",
-                      intl.formatMessage({ id: "October" }) || "October",
-                      intl.formatMessage({ id: "November" }) || "November",
-                      intl.formatMessage({ id: "December" }) || "December",
-                    ];
-                    const monthName = monthNames[arg.date.getMonth()];
-
-                    return (
-                      <div
-                        style={{
-                          padding: "8px",
-                          backgroundColor: isWeekend ? "#ffd700" : "#f8f9fa",
-                          borderRadius: "6px",
-                          textAlign: "center",
-                          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: "600",
-                            color: isWeekend ? "#ff9800" : "#4a6cf7",
-                            marginBottom: "4px",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          {arg.date.toLocaleDateString('en-US', { weekday: 'short' })}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: "16px",
-                            fontWeight: "bold",
-                            color: "#212529",
-                            marginBottom: "2px",
-                          }}
-                        >
-                          {arg.date.getDate()}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: "12px",
-                            color: "#666",
-                          }}
-                        >
-                          {monthName}
-                        </div>
-                      </div>
-                    );
-                  },
-                },
+                // resourceTimeline: {
+                //   dayHeaderContent: customHeader,
+                // },
               }}
             />
           )}

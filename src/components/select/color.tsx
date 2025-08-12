@@ -58,7 +58,8 @@ const ColorPicker = ({ onColorChange }: any) => {
         popover: {
             position: "absolute",
             zIndex: "2",
-            bottom: "80px",
+            top: "40px",
+            left: "0px",
             backgroundColor: "white",
         },
         cover: {
@@ -72,7 +73,7 @@ const ColorPicker = ({ onColorChange }: any) => {
 
     return (
         <Box
-            style={{ height: "34px", marginBottom: "4px", marginRight: "10px" }}
+            style={{ height: "34px", marginBottom: "4px", marginRight: "10px", position: "relative" }}
         >
             <Box sx={styles.swatch} onClick={handleClick}>
                 <Box sx={styles.color} />

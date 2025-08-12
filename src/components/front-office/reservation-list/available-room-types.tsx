@@ -121,7 +121,32 @@ const NewEdit = ({ ArrivalDate, DepartureDate }: any) => {
   };
 
   return (
-    <Box className="absolute top-0 ml-3 z-[1002]">
+    <Box
+      className="absolute top-0 ml-3 z-[1002]"
+      sx={{
+        width: '370px',
+        maxHeight: '400px',
+        overflowY: 'auto',
+        '@media (max-width: 768px)': {
+          width: '100%',
+          maxWidth: '350px',
+          maxHeight: '350px'
+        },
+        '@media (max-width: 480px)': {
+          width: '100%',
+          maxWidth: '280px',
+          maxHeight: '300px'
+        },
+        '@media (min-width: 1200px)': {
+          width: '350px',
+          maxHeight: '450px'
+        },
+        '@media (min-width: 1920px)': {
+          width: '540px',
+          maxHeight: '500px'
+        }
+      }}
+    >
       {renderTooltipContent()}
       {/* <CustomWidthTooltip
                 title={renderTooltipContent()}

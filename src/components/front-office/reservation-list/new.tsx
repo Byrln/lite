@@ -5,7 +5,6 @@ import { useIntl } from "react-intl";
 import {
   Card,
   CardContent,
-  Button,
   Grid,
   TextField,
   Typography,
@@ -34,7 +33,6 @@ import { listUrl } from "lib/api/front-office";
 import { dateStringToObj } from "lib/utils/helpers";
 import PaymentMethodSelect from "components/select/payment-method";
 import CurrencySelect from "components/select/currency";
-import RoomTypeSelect from "components/select/room-type";
 import { formatPrice } from "lib/utils/helpers";
 import { countNights } from "lib/utils/format-time";
 import ReferenceSelect from "components/select/reference";
@@ -42,7 +40,13 @@ import NewForm from "./new-form";
 import CustomerSelect from "components/select/customer";
 import AvailableRoomTypes from "./available-room-types";
 import { RateTypeSWR } from "lib/api/rate-type";
-import DraggableDialog from "components/mui/MuiDraggableDialog";
+import Iconify from "@/components/iconify";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const validationSchema = yup.object().shape({
   ArrivalDate: yup.string().required("Ирэх огноо сонгоно уу!"),
@@ -75,7 +79,7 @@ const NewEdit = ({
   customRerender,
   ArrivalTime: propArrivalTime,
   DepartureTime: propDepartureTime,
-}: any) => {
+}: any): JSX.Element => {
   const intl = useIntl();
   const [CustomerID, setCustomerID]: any = useState(0);
   const [ArrivalDate, setArrivalDate]: any = useState(
@@ -94,7 +98,7 @@ const NewEdit = ({
       ? "18:00"
       : "12:00")
   );
-  const { data: rateTypeData, error: rateTypeError } = RateTypeSWR({});
+  const { data: rateTypeData } = RateTypeSWR({});
   const [DepartureDate, setDepartureDate]: any = useState(
     dateEnd
       ? dateEnd
@@ -105,8 +109,6 @@ const NewEdit = ({
   const [ReservationSourceChecked, setReservationSourceChecked]: any =
     useState(false);
   const [ReservationTypeID, setReservationTypeID]: any = useState(1);
-  const [newGroupCount, setNewGroupCount]: any = useState(1);
-  const [newRoomTypeID, setNewRoomTypeID]: any = useState<any>(null);
   const [nights, setNights]: any = useState<any>(1);
   const [totalAmount, setTotalAmount]: any = useState<any>(0);
   const [billingInfo, setBillingInfo]: any = useState<any>(null);
@@ -114,8 +116,6 @@ const NewEdit = ({
   const [isGuide, setIsGuide]: any = useState<any>(false);
   const [groupColor, setGroupColor]: any = useState("#0033ff");
   const [Currency, setCurrency]: any = useState("");
-  const [helpDialogOpen, setHelpDialogOpen]: any = useState(false);
-  const [dialogPosition, setDialogPosition] = useState<{ x: number | null, y: number | null }>({ x: null, y: null });
   const [useDefaultValues, setUseDefaultValues]: any = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('useDefaultValues');
@@ -386,14 +386,349 @@ const NewEdit = ({
   };
 
   const appBarComponent = (
-    <div className="bg-purple-600 shadow-md flex items-center justify-between px-4">
-      <div className="flex items-center">
+    <div className="">
+      <div className="flex items-center flex-1">
         {ArrivalDate && DepartureDate && (
           <AvailableRoomTypes
             ArrivalDate={ArrivalDate}
             DepartureDate={DepartureDate}
           />
         )}
+      </div>
+
+      {/* Visualization Component */}
+      <div className="absolute flex-shrink-0 right-0">
+        <Card
+          elevation={0}
+          sx={{
+            background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+            borderRadius: "16px",
+            border: '1px solid rgba(148, 163, 184, 0.1)',
+            boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.08), 0px 4px 8px rgba(0, 0, 0, 0.04)",
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            width: '370px',
+            '@media (max-width: 768px)': {
+              width: '100%',
+              maxWidth: '350px'
+            },
+            '@media (max-width: 480px)': {
+              width: '100%',
+              maxWidth: '280px'
+            },
+            '@media (min-width: 1200px)': {
+              width: '370px'
+            },
+            '@media (min-width: 1920px)': {
+              width: '540px'
+            },
+            maxHeight: '600px',
+            overflow: 'auto'
+          }}
+        >
+          <CardContent sx={{ padding: "16px" }}>
+            <Box sx={{ display: "flex", alignItems: "center", marginBottom: "12px" }}>
+              <div style={{
+                width: "28px",
+                height: "28px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "#804fe6",
+                borderRadius: "14px",
+                color: "#ffffff",
+                boxShadow: "0px 4px 12px rgba(102, 126, 234, 0.25)"
+              }}>
+                <ReceiptIcon sx={{ fontSize: "16px" }} />
+              </div>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  marginLeft: "12px",
+                  fontWeight: 600,
+                  color: "#1e293b",
+                  fontSize: "0.875rem"
+                }}
+              >
+                {intl.formatMessage({ id: "TextReservationPreview" })}
+              </Typography>
+            </Box>
+
+            {/* Reservation Preview */}
+            {getValues()?.TransactionDetail?.map((reservation, index) => {
+              // Each item uses its own data
+              const displayReservation = reservation;
+              const transactionLength = getValues()?.TransactionDetail?.length || 0;
+
+              // Skip rendering if no transaction details
+              if (transactionLength === 0) {
+                return null;
+              }
+
+              return (
+                <TooltipProvider key={index}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div style={{
+                        display: 'flex',
+                        padding: '8px',
+                        borderRadius: '8px',
+                        backgroundColor: '#0ce437',
+                        color: '#ffffff',
+                        border: `2px solid ${groupColor}`,
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                        margin: '4px 0',
+                        justifyContent: 'space-between'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: "6px", marginBottom: '6px' }}>
+                          {/* Icons with conditional rendering */}
+                          <Iconify
+                            icon="lsicon:drag-filled"
+                            width="14px"
+                          />
+                          <div style={{
+                            display: 'flex',
+                            gap: '2px',
+                          }}>
+                            <Iconify
+                              color={groupColor}
+                              icon="solar:crown-outline"
+                              width="14px"
+                            />
+                            <Iconify
+                              color={groupColor}
+                              icon="clarity:group-line"
+                              width="14px"
+                            />
+                            <Iconify
+                              icon="fluent:food-16-regular"
+                              width="14px"
+                            />
+                            {(displayReservation as any)?.CurrencyAmount > 0 && (
+                              <Iconify icon="vaadin:cash" width="12px" />
+                            )}
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                            <p style={{
+                              fontWeight: '600',
+                              margin: '0',
+                              lineHeight: '1.2',
+                              fontSize: '12px'
+                            }}>
+                              {
+                                displayReservation?.GuestDetail?.Name ||
+                                displayReservation?.GuestDetail?.Email}
+                            </p>
+                            {displayReservation?.GuestDetail?.Mobile && (
+                              <div style={{
+                                fontSize: '10px',
+                                opacity: '0.9',
+                                lineHeight: '1.2',
+                                marginTop: '1px'
+                              }}>
+                                {displayReservation?.GuestDetail?.Mobile}
+                              </div>
+                            )}
+                            {displayReservation?.GuestDetail?.Email && (
+                              <div style={{
+                                fontSize: '10px',
+                                opacity: '0.9',
+                                lineHeight: '1.2',
+                                marginTop: '1px'
+                              }}>
+                                {displayReservation?.GuestDetail?.Email}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1">
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            flexWrap: 'wrap',
+                            marginBottom: '6px'
+                          }}>
+                            {/* Dates */}
+                            {DepartureDate && (
+                              <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                backgroundColor: '#fff',
+                                color: '#000',
+                                padding: '2px 6px',
+                                borderRadius: '4px',
+                                fontWeight: '500',
+                                fontSize: '9px',
+                                whiteSpace: 'nowrap'
+                              }}>
+                                <Iconify
+                                  icon="mdi:logout"
+                                  width="10px"
+                                  style={{ marginRight: "2px" }}
+                                />
+                                <span>
+                                  {new Date(DepartureDate).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Balance */}
+                          {(displayReservation as any)?.CurrencyAmount > 0 && (
+                            <div style={{
+                              backgroundColor: '#fff',
+                              color: '#000',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              fontWeight: '500',
+                              fontSize: '9px',
+                              whiteSpace: 'nowrap'
+                            }}>
+                              {formatPrice((displayReservation as any)?.CurrencyAmount)}₮
+                            </div>
+                          )}
+
+                          <Iconify
+                            icon="lsicon:drag-filled"
+                            width="14px"
+                            style={{ marginBottom: "6px" }}
+                          />
+                        </div>
+                      </div>
+                    </TooltipTrigger>
+
+                    <TooltipContent side="bottom" className="bg-[#212B36] text-white border-none shadow-lg rounded-lg p-3 max-w-xs z-[9999]">
+                      <div className="min-w-[220px] rounded-lg text-sm leading-relaxed">
+                        {/* Header */}
+                        <div className="font-semibold mb-2">
+                          {intl.formatMessage({ id: "tooltip.reservationDetails" })}
+                        </div>
+
+                        {/* Info flex */}
+                        <div className="flex flex-col gap-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <span className="flex items-center text-white/70">
+                              <Iconify
+                                color={groupColor}
+                                icon="solar:crown-outline"
+                                width="14px"
+                                className="mr-1 align-text-bottom"
+                              />
+                              :
+                            </span>
+                            <span className="font-medium text-yellow-400">
+                              {intl.formatMessage({ id: "tooltip.groupowner" })}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <span className="flex items-center text-white/70">
+                              <Iconify
+                                color={groupColor}
+                                icon="clarity:group-line"
+                                width="14px"
+                                className="mr-1 align-text-bottom"
+                              />
+                              :
+                            </span>
+                            <span className="font-medium">
+                              {intl.formatMessage({ id: "tooltip.groupReservation" })}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <span className="flex items-center text-white/70">
+                              <Iconify
+                                icon="fluent:food-16-regular"
+                                width="14px"
+                                className="mr-1 align-text-bottom"
+                              />
+                              :
+                            </span>
+                            <span className="font-medium text-green-400">
+                              {intl.formatMessage({ id: "tooltip.mealPlan" })}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <span className="flex items-center text-white/70">
+                              <Iconify
+                                icon="vaadin:cash"
+                                width="14px"
+                                className="mr-1 align-text-bottom"
+                              />
+                              :
+                            </span>
+                            <span className="font-medium text-orange-400">
+                              {intl.formatMessage({ id: "TextBalance" })}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <span className="flex items-center text-white/70">
+                              <Iconify
+                                icon="mdi:logout"
+                                width="14px"
+                                className="mr-1 align-text-bottom"
+                              />
+                              {intl.formatMessage({ id: "tooltip.departure" })}:
+                            </span>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              backgroundColor: '#fff',
+                              color: '#000',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              fontWeight: '500',
+                              fontSize: '9px',
+                              whiteSpace: 'nowrap'
+                            }}>
+                              <Iconify
+                                icon="mdi:logout"
+                                width="10px"
+                                style={{ marginRight: "2px" }}
+                              />
+                              <span>
+                                {new Date(DepartureDate).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <span className="flex items-center whitespace-nowrap w-14 text-xs text-white/70">
+                              {intl.formatMessage({ id: "tooltip.balance" })}:
+                            </span>
+                            {(displayReservation as any)?.CurrencyAmount > 0 && (
+                              <div style={{
+                                backgroundColor: '#fff',
+                                color: '#000',
+                                padding: '2px 6px',
+                                borderRadius: '4px',
+                                fontWeight: '500',
+                                fontSize: '9px',
+                                whiteSpace: 'nowrap'
+                              }}>
+                                {formatPrice((displayReservation as any)?.CurrencyAmount)}₮
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
@@ -415,716 +750,718 @@ const NewEdit = ({
       <LocalizationProvider // @ts-ignore
         dateAdapter={AdapterDateFns}
       >
-        <Card className="mb-4" elevation={0} sx={{
-          background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
-          borderRadius: "24px",
-          border: '1px solid rgba(148, 163, 184, 0.1)',
-          boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          '&:hover': {
-            boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
-            transform: 'translateY(-2px)'
-          }
-        }}
-        >
-          <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                marginBottom: "20px",
-                flexDirection: { xs: "column", sm: "row" },
-                gap: { xs: 2, sm: 0 }
-              }}
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={16}>
+            <Card elevation={0} sx={{
+              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+              borderRadius: "24px",
+              border: '1px solid rgba(148, 163, 184, 0.1)',
+              boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              '&:hover': {
+                boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
+                transform: 'translateY(-2px)'
+              }
+            }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    width: "36px",
-                    height: "36px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "#804fe6",
-                    borderRadius: "18px",
-                    color: "#ffffff",
-                    boxShadow: "0px 8px 24px rgba(102, 126, 234, 0.25), 0px 4px 12px rgba(118, 75, 162, 0.15)"
-                  }}
-                >
-                  <InfoIcon
-                    sx={{ fontSize: "28px" }}
-                  />
-                </div>
-                <Typography
-                  variant="h5"
+              <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
+                <Box
                   sx={{
-                    marginLeft: { xs: "0px", sm: "20px" },
-                    marginTop: { xs: "8px", sm: "0px" },
-                    fontWeight: 700,
-                    color: "#1e293b",
-                    fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                    letterSpacing: "-0.025em",
-                    textAlign: { xs: "center", sm: "left" }
-                  }}
-                >
-                  {intl.formatMessage({ id: "TextGeneral" })}
-                </Typography>
-              </div>
-            </Box>
-            <Grid container spacing={0}>
-              <Grid
-                item
-                xs={12}
-                style={{
-                  transition: "all 0.3s ease",
-                }}
-              >
-                <Grid key="dates" container spacing={{ xs: 2, sm: 3 }}>
-                  <Grid item xs={12} sm={6} md={3}>
-                    <Controller
-                      name={`ArrivalDate`}
-                      control={control}
-                      render={({
-                        field: { onChange, value },
-                      }) => (
-                        <DatePicker
-                          label={intl.formatMessage({
-                            id: "TextArrivalDate",
-                          })}
-                          value={value}
-                          onChange={(value) => {
-                            onChange(
-                              moment(
-                                value
-                              ).format(
-                                "YYYY-MM-DD"
-                              )
-                            );
-                            setArrivalDate(
-                              moment(
-                                value
-                              ).format(
-                                "YYYY-MM-DD"
-                              )
-                            );
-                            if (
-                              new Date(
-                                moment(
-                                  value
-                                ).format(
-                                  "YYYY-MM-DD"
-                                )
-                              ) >
-                              new Date(
-                                DepartureDate
-                              )
-                            ) {
-                              setDepartureDate(
-                                moment(value)
-                                  .add(
-                                    1,
-                                    "days"
-                                  )
-                                  .format(
-                                    "YYYY-MM-DD"
-                                  )
-                              );
-                              setValue(
-                                "DepartureDate",
-                                moment(value)
-                                  .add(
-                                    1,
-                                    "days"
-                                  )
-                                  .format(
-                                    "YYYY-MM-DD"
-                                  )
-                              );
-                            }
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              size="small"
-                              id={`ArrivalDate`}
-                              {...register(
-                                `ArrivalDate`
-                              )}
-                              margin="dense"
-                              fullWidth
-                              {...params}
-                              error={
-                                !!errors
-                                  .ArrivalDate
-                                  ?.message
-                              }
-                              helperText={
-                                errors
-                                  .ArrivalDate
-                                  ?.message
-                              }
-                              sx={{
-                                '& .MuiOutlinedInput-root': {
-                                  borderRadius: '12px',
-                                  transition: 'all 0.2s ease-in-out',
-                                  '&:hover': {
-                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                                  },
-                                  '&.Mui-focused': {
-                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
-                                  }
-                                }
-                              }}
-                            />
-                          )}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
-                    {" "}
-                    <TextField
-                      id="ArrivalTime"
-                      label={intl.formatMessage({
-                        id: "TextArrivalTime",
-                      })}
-                      type="time"
-                      margin="dense"
-                      {...register("ArrivalTime")}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      sx={{
-                        width: "100%",
-                        '& .MuiOutlinedInput-root': {
-                          borderRadius: '12px',
-                          transition: 'all 0.2s ease-in-out',
-                          '&:hover': {
-                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                          },
-                          '&.Mui-focused': {
-                            boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
-                          }
-                        }
-                      }}
-                      size="small"
-                      value={ArrivalTime}
-                      onChange={(value) =>
-                        setArrivalTime(
-                          value.target.value
-                        )
-                      }
-                      onKeyDown={(e) => {
-                        // Prevent the Delete key from clearing the time picker
-                        if (e.key === "Delete") {
-                          e.preventDefault();
-                        }
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
-                    {" "}
-                    <Controller
-                      name={`DepartureDate`}
-                      control={control}
-                      render={({
-                        field: { onChange, value },
-                      }) => (
-                        <DatePicker
-                          label={intl.formatMessage({
-                            id: "TextDepartureDate",
-                          })}
-                          value={value}
-                          minDate={
-                            new Date(ArrivalDate)
-                          }
-                          onChange={(value) => (
-                            moment(ArrivalDate).set(
-                              {
-                                hour: 0,
-                                minute: 0,
-                                second: 0,
-                              }
-                            ) >
-                              moment(value).set({
-                                hour: 0,
-                                minute: 0,
-                                second: 0,
-                              })
-                              ? null
-                              : onChange(
-                                moment(
-                                  value
-                                ).format(
-                                  "YYYY-MM-DD"
-                                )
-                                // moment(
-                                //     dateStringToObj(
-                                //         moment(
-                                //             value
-                                //         ).format(
-                                //             "YYYY-MM-DD"
-                                //         )
-                                //     ),
-                                //     "YYYY-MM-DD"
-                                // )
-                                // moment(value, "YYYY-MM-DD")
-                              ),
-                            moment(ArrivalDate).set(
-                              {
-                                hour: 0,
-                                minute: 0,
-                                second: 0,
-                              }
-                            ) >
-                              moment(value).set({
-                                hour: 0,
-                                minute: 0,
-                                second: 0,
-                              })
-                              ? null
-                              : setDepartureDate(
-                                moment(
-                                  value
-                                ).format(
-                                  "YYYY-MM-DD"
-                                )
-                              ),
-                            moment(
-                              ArrivalDate
-                            ).format(
-                              "yyyy-MM-DD"
-                            ) ==
-                            moment(
-                              value
-                            ).format(
-                              "yyyy-MM-DD"
-                            ) &&
-                            setDepartureTime(
-                              ArrivalTime
-                            )
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              size="small"
-                              id={`DepartureDate`}
-                              {...register(
-                                `DepartureDate`
-                              )}
-                              margin="dense"
-                              fullWidth
-                              {...params}
-                              error={
-                                !!errors
-                                  .DepartureDate
-                                  ?.message
-                              }
-                              sx={{
-                                width: "100%",
-                                '& .MuiOutlinedInput-root': {
-                                  borderRadius: '12px',
-                                  transition: 'all 0.2s ease-in-out',
-                                  '&:hover': {
-                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                                  },
-                                  '&.Mui-focused': {
-                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
-                                  }
-                                }
-                              }}
-                              helperText={
-                                errors
-                                  .DepartureDate
-                                  ?.message
-                              }
-                            />
-                          )}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  {DepartureTime && (
-                    <Grid item xs={12} sm={6} md={3}>
-                      {" "}
-                      <TextField
-                        id="DepartureTime"
-                        label={intl.formatMessage({
-                          id: "TextDepartureTime",
-                        })}
-                        inputProps={{
-                          min:
-                            moment(ArrivalDate).set(
-                              {
-                                hour: 0,
-                                minute: 0,
-                                second: 0,
-                              }
-                            ) ==
-                              moment(
-                                DepartureDate
-                              ).set({
-                                hour: 0,
-                                minute: 0,
-                                second: 0,
-                              })
-                              ? ArrivalTime
-                              : "9:00",
-                        }}
-                        type="time"
-                        margin="dense"
-                        {...register("DepartureTime")}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        size="small"
-                        value={DepartureTime}
-                        onChange={(value) =>
-                          moment(ArrivalDate).format(
-                            "yyyy-MM-DD"
-                          ) ==
-                            moment(
-                              DepartureDate
-                            ).format("yyyy-MM-DD")
-                            ? value.target.value <
-                              ArrivalTime
-                              ? ""
-                              : setDepartureTime(
-                                value.target
-                                  .value
-                              )
-                            : setDepartureTime(
-                              value.target.value
-                            )
-                        }
-                        sx={{
-                          width: "100%",
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: '12px',
-                            transition: 'all 0.2s ease-in-out',
-                            '&:hover': {
-                              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                            },
-                            '&.Mui-focused': {
-                              boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
-                            }
-                          }
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Delete") {
-                            e.preventDefault();
-                          }
-                          if (e.key === "Backspace") {
-                            e.preventDefault();
-                          }
-                        }}
-                      />
-                    </Grid>
-                  )}
-                </Grid>
-              </Grid>
-
-              <Grid
-                item
-                xs={12}
-                style={{
-                  height: "100%",
-                  transition: "all 0.3s ease"
-                }}
-              >
-                <Grid key="otherSettings" container spacing={{ xs: 1, sm: 2 }}>
-                  <Grid item xs={12}>
-                    <CustomerSelect
-                      register={register}
-                      errors={errors}
-                      setEntity={setCustomerID}
-                      isCustomSelect={true}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Controller
-                          name={`IsBooker`}
-                          control={control}
-                          render={(props: any) => (
-                            <Checkbox
-                              checked={
-                                isBooker == true
-                                  ? true
-                                  : false
-                              }
-                              onChange={(e) =>
-                                setIsBooker(
-                                  e.target
-                                    .checked
-                                )
-                              }
-                              sx={{
-                                color: '#667eea',
-                                '&.Mui-checked': {
-                                  color: '#667eea',
-                                },
-                                '&:hover': {
-                                  backgroundColor: 'rgba(102, 126, 234, 0.04)',
-                                },
-                                borderRadius: '8px',
-                              }}
-                            />
-                          )}
-                        />
-                      }
-                      label={intl.formatMessage({
-                        id: "TextBookerInformation",
-                      })}
-                      sx={{
-                        '& .MuiFormControlLabel-label': {
-                          fontWeight: 500,
-                          color: '#374151',
-                        }
-                      }}
-                    />
-                  </Grid>
-                  {isBooker ? (
-                    <>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          size="small"
-                          fullWidth
-                          id="BookerName"
-                          label={intl.formatMessage({
-                            id: "TextName",
-                          })}
-                          {...register(`BookerName`)}
-                          margin="dense"
-                          autoFocus
-                          sx={{
-                            '& .MuiOutlinedInput-root': {
-                              borderRadius: '12px',
-                              transition: 'all 0.2s ease-in-out',
-                              '&:hover': {
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                              },
-                              '&.Mui-focused': {
-                                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
-                              }
-                            }
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          size="small"
-                          fullWidth
-                          id="BookerPhone"
-                          label={intl.formatMessage({
-                            id: "TextPhone",
-                          })}
-                          {...register(`BookerPhone`)}
-                          margin="dense"
-                          sx={{
-                            '& .MuiOutlinedInput-root': {
-                              borderRadius: '12px',
-                              transition: 'all 0.2s ease-in-out',
-                              '&:hover': {
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                              },
-                              '&.Mui-focused': {
-                                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
-                              }
-                            }
-                          }}
-                        />
-                      </Grid>
-                    </>
-                  ) : null}
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Controller
-                          name={`IsGuide`}
-                          control={control}
-                          render={(props: any) => (
-                            <Checkbox
-                              checked={
-                                isGuide == true
-                                  ? true
-                                  : false
-                              }
-                              onChange={(e) =>
-                                setIsGuide(
-                                  e.target
-                                    .checked
-                                )
-                              }
-                              sx={{
-                                color: '#667eea',
-                                '&.Mui-checked': {
-                                  color: '#667eea',
-                                },
-                                '&:hover': {
-                                  backgroundColor: 'rgba(102, 126, 234, 0.04)',
-                                },
-                                borderRadius: '8px',
-                              }}
-                            />
-                          )}
-                        />
-                      }
-                      label={intl.formatMessage({
-                        id: "TextGuideInformation",
-                      })}
-                      sx={{
-                        '& .MuiFormControlLabel-label': {
-                          fontWeight: 500,
-                          color: '#374151',
-                        }
-                      }}
-                    />
-                  </Grid>
-
-                  {isGuide ? (
-                    <>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          size="small"
-                          fullWidth
-                          id="GuideName"
-                          label={intl.formatMessage({
-                            id: "TextName",
-                          })}
-                          {...register(`GuideName`)}
-                          margin="dense"
-                          sx={{
-                            '& .MuiOutlinedInput-root': {
-                              borderRadius: '12px',
-                              transition: 'all 0.2s ease-in-out',
-                              '&:hover': {
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                              },
-                              '&.Mui-focused': {
-                                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
-                              }
-                            }
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          size="small"
-                          fullWidth
-                          id="GuidePhone"
-                          label={intl.formatMessage({
-                            id: "TextPhone",
-                          })}
-                          {...register(`GuidePhone`)}
-                          margin="dense"
-                          sx={{
-                            '& .MuiOutlinedInput-root': {
-                              borderRadius: '12px',
-                              transition: 'all 0.2s ease-in-out',
-                              '&:hover': {
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                              },
-                              '&.Mui-focused': {
-                                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
-                              }
-                            }
-                          }}
-                        />
-                      </Grid>
-                    </>
-                  ) : null}
-                </Grid>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      </LocalizationProvider>
-      <Grid container spacing={{ xs: 2, sm: 3 }}>
-        <Grid item xs={12}>
-          <Card className="mb-4" elevation={0} sx={{
-            background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
-            borderRadius: "24px",
-            border: '1px solid rgba(148, 163, 184, 0.1)',
-            boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            '&:hover': {
-              boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
-              transform: 'translateY(-2px)'
-            }
-          }}>
-            <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  marginBottom: "20px",
-                  flexDirection: { xs: "column", sm: "row" },
-                  gap: { xs: 2, sm: 0 }
-                }}
-              >
-                <div
-                  style={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    marginBottom: "20px",
+                    flexDirection: { xs: "column", sm: "row" },
+                    gap: { xs: 2, sm: 0 }
                   }}
                 >
                   <div
                     style={{
-                      width: "36px",
-                      height: "36px",
                       display: "flex",
-                      justifyContent: "center",
                       alignItems: "center",
-                      background: "#804fe6",
-                      borderRadius: "18px",
-                      color: "#ffffff",
-                      boxShadow: "0px 8px 24px rgba(240, 147, 251, 0.25), 0px 4px 12px rgba(245, 87, 108, 0.15)"
                     }}
                   >
-                    <CheckroomIcon
-                      sx={{ fontSize: "28px" }}
+                    <div
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: "#804fe6",
+                        borderRadius: "18px",
+                        color: "#ffffff",
+                        boxShadow: "0px 8px 24px rgba(102, 126, 234, 0.25), 0px 4px 12px rgba(118, 75, 162, 0.15)"
+                      }}
+                    >
+                      <InfoIcon
+                        sx={{ fontSize: "28px" }}
+                      />
+                    </div>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginLeft: { xs: "0px", sm: "20px" },
+                        marginTop: { xs: "8px", sm: "0px" },
+                        fontWeight: 700,
+                        color: "#1e293b",
+                        fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                        letterSpacing: "-0.025em",
+                        textAlign: { xs: "center", sm: "left" }
+                      }}
+                    >
+                      {intl.formatMessage({ id: "TextGeneral" })}
+                    </Typography>
+                  </div>
+                </Box>
+                <Grid container spacing={0}>
+                  <Grid
+                    item
+                    xs={12}
+                    style={{
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    <Grid key="dates" container spacing={{ xs: 2, sm: 3 }}>
+                      <Grid item xs={12} sm={6} md={3}>
+                        <Controller
+                          name={`ArrivalDate`}
+                          control={control}
+                          render={({
+                            field: { onChange, value },
+                          }) => (
+                            <DatePicker
+                              label={intl.formatMessage({
+                                id: "TextArrivalDate",
+                              })}
+                              value={value}
+                              onChange={(value) => {
+                                onChange(
+                                  moment(
+                                    value
+                                  ).format(
+                                    "YYYY-MM-DD"
+                                  )
+                                );
+                                setArrivalDate(
+                                  moment(
+                                    value
+                                  ).format(
+                                    "YYYY-MM-DD"
+                                  )
+                                );
+                                if (
+                                  new Date(
+                                    moment(
+                                      value
+                                    ).format(
+                                      "YYYY-MM-DD"
+                                    )
+                                  ) >
+                                  new Date(
+                                    DepartureDate
+                                  )
+                                ) {
+                                  setDepartureDate(
+                                    moment(value)
+                                      .add(
+                                        1,
+                                        "days"
+                                      )
+                                      .format(
+                                        "YYYY-MM-DD"
+                                      )
+                                  );
+                                  setValue(
+                                    "DepartureDate",
+                                    moment(value)
+                                      .add(
+                                        1,
+                                        "days"
+                                      )
+                                      .format(
+                                        "YYYY-MM-DD"
+                                      )
+                                  );
+                                }
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  size="small"
+                                  id={`ArrivalDate`}
+                                  {...register(
+                                    `ArrivalDate`
+                                  )}
+                                  margin="dense"
+                                  fullWidth
+                                  {...params}
+                                  error={
+                                    !!errors
+                                      .ArrivalDate
+                                      ?.message
+                                  }
+                                  helperText={
+                                    errors
+                                      .ArrivalDate
+                                      ?.message
+                                  }
+                                  sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                      borderRadius: '12px',
+                                      transition: 'all 0.2s ease-in-out',
+                                      '&:hover': {
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                      },
+                                      '&.Mui-focused': {
+                                        boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                                      }
+                                    }
+                                  }}
+                                />
+                              )}
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={3}>
+                        {" "}
+                        <TextField
+                          id="ArrivalTime"
+                          label={intl.formatMessage({
+                            id: "TextArrivalTime",
+                          })}
+                          type="time"
+                          margin="dense"
+                          {...register("ArrivalTime")}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          sx={{
+                            width: "100%",
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '12px',
+                              transition: 'all 0.2s ease-in-out',
+                              '&:hover': {
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                              },
+                              '&.Mui-focused': {
+                                boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                              }
+                            }
+                          }}
+                          size="small"
+                          value={ArrivalTime}
+                          onChange={(value) =>
+                            setArrivalTime(
+                              value.target.value
+                            )
+                          }
+                          onKeyDown={(e) => {
+                            // Prevent the Delete key from clearing the time picker
+                            if (e.key === "Delete") {
+                              e.preventDefault();
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={3}>
+                        {" "}
+                        <Controller
+                          name={`DepartureDate`}
+                          control={control}
+                          render={({
+                            field: { onChange, value },
+                          }) => (
+                            <DatePicker
+                              label={intl.formatMessage({
+                                id: "TextDepartureDate",
+                              })}
+                              value={value}
+                              minDate={
+                                new Date(ArrivalDate)
+                              }
+                              onChange={(value) => (
+                                moment(ArrivalDate).set(
+                                  {
+                                    hour: 0,
+                                    minute: 0,
+                                    second: 0,
+                                  }
+                                ) >
+                                  moment(value).set({
+                                    hour: 0,
+                                    minute: 0,
+                                    second: 0,
+                                  })
+                                  ? null
+                                  : onChange(
+                                    moment(
+                                      value
+                                    ).format(
+                                      "YYYY-MM-DD"
+                                    )
+                                    // moment(
+                                    //     dateStringToObj(
+                                    //         moment(
+                                    //             value
+                                    //         ).format(
+                                    //             "YYYY-MM-DD"
+                                    //         )
+                                    //     ),
+                                    //     "YYYY-MM-DD"
+                                    // )
+                                    // moment(value, "YYYY-MM-DD")
+                                  ),
+                                moment(ArrivalDate).set(
+                                  {
+                                    hour: 0,
+                                    minute: 0,
+                                    second: 0,
+                                  }
+                                ) >
+                                  moment(value).set({
+                                    hour: 0,
+                                    minute: 0,
+                                    second: 0,
+                                  })
+                                  ? null
+                                  : setDepartureDate(
+                                    moment(
+                                      value
+                                    ).format(
+                                      "YYYY-MM-DD"
+                                    )
+                                  ),
+                                moment(
+                                  ArrivalDate
+                                ).format(
+                                  "yyyy-MM-DD"
+                                ) ==
+                                moment(
+                                  value
+                                ).format(
+                                  "yyyy-MM-DD"
+                                ) &&
+                                setDepartureTime(
+                                  ArrivalTime
+                                )
+                              )}
+                              renderInput={(params) => (
+                                <TextField
+                                  size="small"
+                                  id={`DepartureDate`}
+                                  {...register(
+                                    `DepartureDate`
+                                  )}
+                                  margin="dense"
+                                  fullWidth
+                                  {...params}
+                                  error={
+                                    !!errors
+                                      .DepartureDate
+                                      ?.message
+                                  }
+                                  sx={{
+                                    width: "100%",
+                                    '& .MuiOutlinedInput-root': {
+                                      borderRadius: '12px',
+                                      transition: 'all 0.2s ease-in-out',
+                                      '&:hover': {
+                                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                      },
+                                      '&.Mui-focused': {
+                                        boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                                      }
+                                    }
+                                  }}
+                                  helperText={
+                                    errors
+                                      .DepartureDate
+                                      ?.message
+                                  }
+                                />
+                              )}
+                            />
+                          )}
+                        />
+                      </Grid>
+                      {DepartureTime && (
+                        <Grid item xs={12} sm={6} md={3}>
+                          {" "}
+                          <TextField
+                            id="DepartureTime"
+                            label={intl.formatMessage({
+                              id: "TextDepartureTime",
+                            })}
+                            inputProps={{
+                              min:
+                                moment(ArrivalDate).set(
+                                  {
+                                    hour: 0,
+                                    minute: 0,
+                                    second: 0,
+                                  }
+                                ) ==
+                                  moment(
+                                    DepartureDate
+                                  ).set({
+                                    hour: 0,
+                                    minute: 0,
+                                    second: 0,
+                                  })
+                                  ? ArrivalTime
+                                  : "9:00",
+                            }}
+                            type="time"
+                            margin="dense"
+                            {...register("DepartureTime")}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            size="small"
+                            value={DepartureTime}
+                            onChange={(value) =>
+                              moment(ArrivalDate).format(
+                                "yyyy-MM-DD"
+                              ) ==
+                                moment(
+                                  DepartureDate
+                                ).format("yyyy-MM-DD")
+                                ? value.target.value <
+                                  ArrivalTime
+                                  ? ""
+                                  : setDepartureTime(
+                                    value.target
+                                      .value
+                                  )
+                                : setDepartureTime(
+                                  value.target.value
+                                )
+                            }
+                            sx={{
+                              width: "100%",
+                              '& .MuiOutlinedInput-root': {
+                                borderRadius: '12px',
+                                transition: 'all 0.2s ease-in-out',
+                                '&:hover': {
+                                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                },
+                                '&.Mui-focused': {
+                                  boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                                }
+                              }
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "Delete") {
+                                e.preventDefault();
+                              }
+                              if (e.key === "Backspace") {
+                                e.preventDefault();
+                              }
+                            }}
+                          />
+                        </Grid>
+                      )}
+                    </Grid>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs={12}
+                    style={{
+                      height: "100%",
+                      transition: "all 0.3s ease"
+                    }}
+                  >
+                    <Grid key="otherSettings" container spacing={{ xs: 1, sm: 2 }}>
+                      <Grid item xs={12}>
+                        <CustomerSelect
+                          register={register}
+                          errors={errors}
+                          setEntity={setCustomerID}
+                          isCustomSelect={true}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          control={
+                            <Controller
+                              name={`IsBooker`}
+                              control={control}
+                              render={(props: any) => (
+                                <Checkbox
+                                  checked={
+                                    isBooker == true
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={(e) =>
+                                    setIsBooker(
+                                      e.target
+                                        .checked
+                                    )
+                                  }
+                                  sx={{
+                                    color: '#667eea',
+                                    '&.Mui-checked': {
+                                      color: '#667eea',
+                                    },
+                                    '&:hover': {
+                                      backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                    },
+                                    borderRadius: '8px',
+                                  }}
+                                />
+                              )}
+                            />
+                          }
+                          label={intl.formatMessage({
+                            id: "TextBookerInformation",
+                          })}
+                          sx={{
+                            '& .MuiFormControlLabel-label': {
+                              fontWeight: 500,
+                              color: '#374151',
+                            }
+                          }}
+                        />
+                      </Grid>
+                      {isBooker ? (
+                        <>
+                          <Grid item xs={12} sm={6}>
+                            <TextField
+                              size="small"
+                              fullWidth
+                              id="BookerName"
+                              label={intl.formatMessage({
+                                id: "TextName",
+                              })}
+                              {...register(`BookerName`)}
+                              margin="dense"
+                              autoFocus
+                              sx={{
+                                '& .MuiOutlinedInput-root': {
+                                  borderRadius: '12px',
+                                  transition: 'all 0.2s ease-in-out',
+                                  '&:hover': {
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                  },
+                                  '&.Mui-focused': {
+                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                                  }
+                                }
+                              }}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <TextField
+                              size="small"
+                              fullWidth
+                              id="BookerPhone"
+                              label={intl.formatMessage({
+                                id: "TextPhone",
+                              })}
+                              {...register(`BookerPhone`)}
+                              margin="dense"
+                              sx={{
+                                '& .MuiOutlinedInput-root': {
+                                  borderRadius: '12px',
+                                  transition: 'all 0.2s ease-in-out',
+                                  '&:hover': {
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                  },
+                                  '&.Mui-focused': {
+                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                                  }
+                                }
+                              }}
+                            />
+                          </Grid>
+                        </>
+                      ) : null}
+                      <Grid item xs={12}>
+                        <FormControlLabel
+                          control={
+                            <Controller
+                              name={`IsGuide`}
+                              control={control}
+                              render={(props: any) => (
+                                <Checkbox
+                                  checked={
+                                    isGuide == true
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={(e) =>
+                                    setIsGuide(
+                                      e.target
+                                        .checked
+                                    )
+                                  }
+                                  sx={{
+                                    color: '#667eea',
+                                    '&.Mui-checked': {
+                                      color: '#667eea',
+                                    },
+                                    '&:hover': {
+                                      backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                    },
+                                    borderRadius: '8px',
+                                  }}
+                                />
+                              )}
+                            />
+                          }
+                          label={intl.formatMessage({
+                            id: "TextGuideInformation",
+                          })}
+                          sx={{
+                            '& .MuiFormControlLabel-label': {
+                              fontWeight: 500,
+                              color: '#374151',
+                            }
+                          }}
+                        />
+                      </Grid>
+
+                      {isGuide ? (
+                        <>
+                          <Grid item xs={12} sm={6}>
+                            <TextField
+                              size="small"
+                              fullWidth
+                              id="GuideName"
+                              label={intl.formatMessage({
+                                id: "TextName",
+                              })}
+                              {...register(`GuideName`)}
+                              margin="dense"
+                              sx={{
+                                '& .MuiOutlinedInput-root': {
+                                  borderRadius: '12px',
+                                  transition: 'all 0.2s ease-in-out',
+                                  '&:hover': {
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                  },
+                                  '&.Mui-focused': {
+                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                                  }
+                                }
+                              }}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <TextField
+                              size="small"
+                              fullWidth
+                              id="GuidePhone"
+                              label={intl.formatMessage({
+                                id: "TextPhone",
+                              })}
+                              {...register(`GuidePhone`)}
+                              margin="dense"
+                              sx={{
+                                '& .MuiOutlinedInput-root': {
+                                  borderRadius: '12px',
+                                  transition: 'all 0.2s ease-in-out',
+                                  '&:hover': {
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                                  },
+                                  '&.Mui-focused': {
+                                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.2)'
+                                  }
+                                }
+                              }}
+                            />
+                          </Grid>
+                        </>
+                      ) : null}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Visualization Component */}
+          <Grid item xs={12} md={16}>
+            <Card elevation={0} sx={{
+              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+              borderRadius: "24px",
+              border: '1px solid rgba(148, 163, 184, 0.1)',
+              boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              height: 'fit-content',
+              position: 'sticky',
+              top: '20px'
+            }}>
+              <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    marginBottom: "20px",
+                    flexDirection: { xs: "column", sm: "row" },
+                    gap: { xs: 2, sm: 0 }
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: "#804fe6",
+                        borderRadius: "18px",
+                        color: "#ffffff",
+                        boxShadow: "0px 8px 24px rgba(240, 147, 251, 0.25), 0px 4px 12px rgba(245, 87, 108, 0.15)"
+                      }}
+                    >
+                      <CheckroomIcon
+                        sx={{ fontSize: "28px" }}
+                      />
+                    </div>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginLeft: { xs: "0px", sm: "20px" },
+                        marginTop: { xs: "8px", sm: "0px" },
+                        fontWeight: 700,
+                        color: "#1e293b",
+                        fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                        letterSpacing: "-0.025em",
+                        textAlign: { xs: "center", sm: "left" }
+                      }}
+                    >
+                      {intl.formatMessage({
+                        id: "TextRoomInformation",
+                      })}
+                    </Typography>
+                  </div>
+                  {/* Default Values Switcher */}
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm text-slate-600">
+                      Auto Fill
+                    </p>
+                    <Switch
+                      id="default-values-switch"
+                      checked={useDefaultValues}
+                      onCheckedChange={setUseDefaultValues}
+                      className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:#804fe6 data-[state=checked]:#804fe6 data-[state=unchecked]:bg-slate-200 h-7 w-12"
                     />
                   </div>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      marginLeft: { xs: "0px", sm: "20px" },
-                      marginTop: { xs: "8px", sm: "0px" },
-                      fontWeight: 700,
-                      color: "#1e293b",
-                      fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                      letterSpacing: "-0.025em",
-                      textAlign: { xs: "center", sm: "left" }
-                    }}
-                  >
-                    {intl.formatMessage({
-                      id: "TextRoomInformation",
-                    })}
-                  </Typography>
-                </div>
-                {/* Default Values Switcher */}
-                <div className="flex items-center gap-2">
-                  <p className="text-sm text-slate-600">
-                    Auto Fill
-                  </p>
-                  <Switch
-                    id="default-values-switch"
-                    checked={useDefaultValues}
-                    onCheckedChange={setUseDefaultValues}
-                    className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:#804fe6 data-[state=checked]:#804fe6 data-[state=unchecked]:bg-slate-200 h-7 w-12"
-                  />
-                </div>
-              </Box>
-              {/* 
+                </Box>
+                {/* 
             <div
               style={{
                 display: "flex",
@@ -1161,7 +1498,7 @@ const NewEdit = ({
                 }}
               />
               {/* ColorPicker moved to new-form.tsx */}
-              {/*<Button
+                {/*<Button
                 variant="contained"
                 onClick={() =>
                 //@ts-ignore
@@ -1211,458 +1548,461 @@ const NewEdit = ({
               </Button>
             </div> */}
 
-              {fields.map((field, index) => {
-                // console.log('In new.tsx - resetField type:', typeof resetField);
-                // console.log('In new.tsx - resetField value:', resetField);
-                // console.log('In new.tsx - resetField properties:', Object.keys(resetField || {}));
-                // console.log('In new.tsx - useForm methods:', { register, reset, handleSubmit, control, getValues, setValue, resetField });
-                return (
-                  <div key={index}>
-                    <Divider sx={{ my: 2 }} />
-                    <NewForm
-                      id={index}
-                      register={register}
-                      control={control}
-                      errors={errors}
-                      getValues={getValues}
-                      resetField={resetField}
-                      setValue={setValue}
-                      reset={reset}
-                      field={field}
-                      BaseAdult={BaseAdult}
-                      BaseChild={BaseChild}
-                      MaxAdult={MaxAdult}
-                      MaxChild={MaxChild}
-                      workingDate={workingDate}
-                      remove={remove}
-                      append={append}
-                      BreakfastIncluded={BreakfastIncluded}
-                      TaxIncluded={TaxIncluded}
-                      setBreakfastIncluded={setBreakfastIncluded}
-                      setTaxIncluded={setTaxIncluded}
-                      ArrivalDate={ArrivalDate}
-                      setArrivalDate={setArrivalDate}
-                      DepartureDate={DepartureDate}
-                      setDepartureDate={setDepartureDate}
-                      CustomerID={CustomerID}
-                      rateTypeData={rateTypeData}
-                      setCurrency={setCurrency}
-                      Currency={Currency}
-                      useDefaultValues={useDefaultValues}
-                    />
-                  </div>
-                );
-              })}
-            </CardContent>
-          </Card>
-        </Grid>
+                {fields.map((field, index) => {
+                  // console.log('In new.tsx - resetField type:', typeof resetField);
+                  // console.log('In new.tsx - resetField value:', resetField);
+                  // console.log('In new.tsx - resetField properties:', Object.keys(resetField || {}));
+                  // console.log('In new.tsx - useForm methods:', { register, reset, handleSubmit, control, getValues, setValue, resetField });
+                  return (
+                    <div key={index}>
+                      <Divider sx={{ my: 2 }} />
+                      <NewForm
+                        id={index}
+                        register={register}
+                        control={control}
+                        errors={errors}
+                        getValues={getValues}
+                        resetField={resetField}
+                        setValue={setValue}
+                        reset={reset}
+                        field={field}
+                        BaseAdult={BaseAdult}
+                        BaseChild={BaseChild}
+                        MaxAdult={MaxAdult}
+                        MaxChild={MaxChild}
+                        workingDate={workingDate}
+                        remove={remove}
+                        append={append}
+                        BreakfastIncluded={BreakfastIncluded}
+                        TaxIncluded={TaxIncluded}
+                        setBreakfastIncluded={setBreakfastIncluded}
+                        setTaxIncluded={setTaxIncluded}
+                        ArrivalDate={ArrivalDate}
+                        setArrivalDate={setArrivalDate}
+                        DepartureDate={DepartureDate}
+                        setDepartureDate={setDepartureDate}
+                        CustomerID={CustomerID}
+                        rateTypeData={rateTypeData}
+                        setCurrency={setCurrency}
+                        Currency={Currency}
+                        useDefaultValues={useDefaultValues}
+                      />
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          </Grid>
 
-        <Grid item xs={12}>
-          <Card className="mb-4" elevation={0} sx={{
-            borderRadius: "24px",
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            boxShadow: "0px 20px 40px rgba(102, 126, 234, 0.15), 0px 8px 16px rgba(118, 75, 162, 0.1)",
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            '&:hover': {
-              boxShadow: "0px 24px 48px rgba(102, 126, 234, 0.2), 0px 12px 24px rgba(118, 75, 162, 0.15)",
-              transform: 'translateY(-2px)'
-            }
-          }}>
-            {/* <Card className="fixed right-4 top-6 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"> */}
-            <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
-              <Grid container spacing={{ xs: 2, sm: 3 }}>
-                <Grid item xs={12} sm={4} md={4}>
-                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
-                    <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
-                      {intl.formatMessage({
-                        id: "TextNights",
-                      })}
-                    </Typography>
-                    <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
-                      {nights}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={4} md={4}>
-                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid rgba(255, 255, 255, 0.2)" }, borderRight: { md: "1px solid rgba(255, 255, 255, 0.2)" } }}>
-                    <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
-                      {intl.formatMessage({
-                        id: "ReportTotalRooms",
-                      })}
-                    </Typography>
-                    <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
-                      {fields.length}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={4} md={4}>
-                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
-                    <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
-                      {intl.formatMessage({
-                        id: "ReportTotalCharge",
-                      })}
-                    </Typography>
-                    <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
-                      {formatPrice(totalAmount)}₮
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Card
-            className="mb-4"
-            key={"Payment"}
-            elevation={0}
-            sx={{
-              display: "none",
+          <Grid item xs={12}>
+            <Card className="mb-4" elevation={0} sx={{
               borderRadius: "24px",
-              background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
-              border: '1px solid rgba(148, 163, 184, 0.1)',
-              boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              boxShadow: "0px 20px 40px rgba(102, 126, 234, 0.15), 0px 8px 16px rgba(118, 75, 162, 0.1)",
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               '&:hover': {
-                boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
+                boxShadow: "0px 24px 48px rgba(102, 126, 234, 0.2), 0px 12px 24px rgba(118, 75, 162, 0.15)",
                 transform: 'translateY(-2px)'
               }
-            }}
-          >
-            <CardContent sx={{ padding: "32px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
+            }}>
+              {/* <Card className="fixed right-4 top-6 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"> */}
+              <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
+                <Grid container spacing={{ xs: 2, sm: 3 }}>
+                  <Grid item xs={12} sm={4} md={4}>
+                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
+                        {intl.formatMessage({
+                          id: "TextNights",
+                        })}
+                      </Typography>
+                      <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
+                        {nights}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} sm={4} md={4}>
+                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid rgba(255, 255, 255, 0.2)" }, borderRight: { md: "1px solid rgba(255, 255, 255, 0.2)" } }}>
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
+                        {intl.formatMessage({
+                          id: "ReportTotalRooms",
+                        })}
+                      </Typography>
+                      <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
+                        {fields.length}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} sm={4} md={4}>
+                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
+                        {intl.formatMessage({
+                          id: "ReportTotalCharge",
+                        })}
+                      </Typography>
+                      <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
+                        {formatPrice(totalAmount)}₮
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Card
+              className="mb-4"
+              key={"Payment"}
+              elevation={0}
+              sx={{
+                display: "none",
+                borderRadius: "24px",
+                background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
+                border: '1px solid rgba(148, 163, 184, 0.1)',
+                boxShadow: "0px 20px 40px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.04)",
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                '&:hover': {
+                  boxShadow: "0px 24px 48px rgba(0, 0, 0, 0.12), 0px 12px 24px rgba(0, 0, 0, 0.06)",
+                  transform: 'translateY(-2px)'
+                }
+              }}
+            >
+              <CardContent sx={{ padding: "32px" }}>
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "space-between",
                   }}
                 >
                   <div
                     style={{
-                      width: "56px",
-                      height: "56px",
                       display: "flex",
-                      justifyContent: "center",
                       alignItems: "center",
-                      background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-                      borderRadius: "18px",
-                      color: "#ffffff",
-                      boxShadow: "0px 8px 24px rgba(79, 172, 254, 0.25), 0px 4px 12px rgba(0, 242, 254, 0.15)"
                     }}
                   >
-                    <ReceiptIcon
-                      sx={{ fontSize: "28px" }}
-                    />
+                    <div
+                      style={{
+                        width: "56px",
+                        height: "56px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                        borderRadius: "18px",
+                        color: "#ffffff",
+                        boxShadow: "0px 8px 24px rgba(79, 172, 254, 0.25), 0px 4px 12px rgba(0, 242, 254, 0.15)"
+                      }}
+                    >
+                      <ReceiptIcon
+                        sx={{ fontSize: "28px" }}
+                      />
+                    </div>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        marginLeft: { xs: "0px", sm: "20px" },
+                        marginTop: { xs: "8px", sm: "0px" },
+                        fontWeight: 700,
+                        color: "#1e293b",
+                        fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                        letterSpacing: "-0.025em",
+                        textAlign: { xs: "center", sm: "left" }
+                      }}
+                    >
+                      {intl.formatMessage({
+                        id: "TextPayment",
+                      })}
+                    </Typography>
                   </div>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      marginLeft: { xs: "0px", sm: "20px" },
-                      marginTop: { xs: "8px", sm: "0px" },
-                      fontWeight: 700,
-                      color: "#1e293b",
-                      fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                      letterSpacing: "-0.025em",
-                      textAlign: { xs: "center", sm: "left" }
-                    }}
-                  >
-                    {intl.formatMessage({
-                      id: "TextPayment",
-                    })}
-                  </Typography>
                 </div>
-              </div>
-              <br />
-              <Grid key="Payment" container spacing={{ xs: 1, sm: 2 }}>
-                <Grid item xs={12} sm={6}>
-                  <div
-                    style={{
-                      padding: "32px",
-                      borderRadius: "20px",
-                      gap: "50px",
-                      border: "1px solid rgba(148, 163, 184, 0.15)",
-                      boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.08), 0px 4px 8px rgba(0, 0, 0, 0.04)",
-                      height: "100%",
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                      background: "linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)"
-                    }}
-                  >
-                    <Grid container spacing={{ xs: 1, sm: 2 }}>
-                      <Grid item xs={12}>
-                        <ReservationTypeSelect
-                          register={register}
-                          errors={errors}
-                          reset={reset}
-                          customRegisterName={`ReservationTypeID`}
-                          ReservationTypeID={
-                            ReservationTypeID
-                          }
-                          setReservationTypeID={
-                            setReservationTypeID
-                          }
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FormControlLabel
-                          control={
-                            <Controller
-                              name={`BreakfastIncluded`}
-                              control={control}
-                              render={(
-                                props: any
-                              ) => (
-                                <Checkbox
-                                  {...register(
-                                    `BreakfastIncluded`
-                                  )}
-                                  checked={
-                                    BreakfastIncluded ==
-                                      true
-                                      ? true
-                                      : false
-                                  }
-                                  onChange={(e) =>
-                                    setBreakfastIncluded(
-                                      e.target
-                                        .checked
-                                    )
-                                  }
-                                  sx={{
-                                    color: '#667eea',
-                                    '&.Mui-checked': {
-                                      color: '#667eea',
-                                    },
-                                    '&:hover': {
-                                      backgroundColor: 'rgba(102, 126, 234, 0.04)',
-                                    },
-                                    borderRadius: '8px',
-                                  }}
-                                />
-                              )}
-                            />
-                          }
-                          label={intl.formatMessage({
-                            id: "RowHeaderBreakfastIncluded",
-                          })}
-                          sx={{
-                            '& .MuiFormControlLabel-label': {
-                              fontWeight: 500,
-                              color: '#374151',
-                            }
-                          }}
-                        />
-                        <FormControlLabel
-                          control={
-                            <Controller
-                              name={`TaxIncluded`}
-                              control={control}
-                              render={(
-                                props: any
-                              ) => (
-                                <Checkbox
-                                  {...register(
-                                    `TaxIncluded`
-                                  )}
-                                  checked={
-                                    TaxIncluded ==
-                                      true
-                                      ? true
-                                      : false
-                                  }
-                                  onChange={(e) =>
-                                    setTaxIncluded(
-                                      e.target
-                                        .checked
-                                    )
-                                  }
-                                  sx={{
-                                    color: '#667eea',
-                                    '&.Mui-checked': {
-                                      color: '#667eea',
-                                    },
-                                    '&:hover': {
-                                      backgroundColor: 'rgba(102, 126, 234, 0.04)',
-                                    },
-                                    borderRadius: '8px',
-                                  }}
-                                />
-                              )}
-                            />
-                          }
-                          label={intl.formatMessage({
-                            id: "TextTaxIncluded",
-                          })}
-                          sx={{
-                            '& .MuiFormControlLabel-label': {
-                              fontWeight: 500,
-                              color: '#374151',
-                            }
-                          }}
-                        />
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <FormControlLabel
-                          control={
-                            <Controller
-                              name={`ReservationSourceChecked`}
-                              control={control}
-                              render={(
-                                props: any
-                              ) => (
-                                <Checkbox
-                                  checked={
-                                    ReservationSourceChecked ==
-                                      true
-                                      ? true
-                                      : false
-                                  }
-                                  onChange={(e) =>
-                                    setReservationSourceChecked(
-                                      e.target
-                                        .checked
-                                    )
-                                  }
-                                />
-                              )}
-                            />
-                          }
-                          label={intl.formatMessage({
-                            id: "TextReservationSource",
-                          })}
-                        />
-                      </Grid>
-
-                      {ReservationSourceChecked ? (
+                <br />
+                <Grid key="Payment" container spacing={{ xs: 1, sm: 2 }}>
+                  <Grid item xs={12} sm={6}>
+                    <div
+                      style={{
+                        padding: "32px",
+                        borderRadius: "20px",
+                        gap: "50px",
+                        border: "1px solid rgba(148, 163, 184, 0.15)",
+                        boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.08), 0px 4px 8px rgba(0, 0, 0, 0.04)",
+                        height: "100%",
+                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                        background: "linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)"
+                      }}
+                    >
+                      <Grid container spacing={{ xs: 1, sm: 2 }}>
                         <Grid item xs={12}>
-                          <ReservationSourceSelect
+                          <ReservationTypeSelect
                             register={register}
                             errors={errors}
-                            ChannelID={2}
+                            reset={reset}
+                            customRegisterName={`ReservationTypeID`}
+                            ReservationTypeID={
+                              ReservationTypeID
+                            }
+                            setReservationTypeID={
+                              setReservationTypeID
+                            }
                           />
                         </Grid>
-                      ) : (
-                        <></>
-                      )}
+                        <Grid item xs={12}>
+                          <FormControlLabel
+                            control={
+                              <Controller
+                                name={`BreakfastIncluded`}
+                                control={control}
+                                render={(
+                                  props: any
+                                ) => (
+                                  <Checkbox
+                                    {...register(
+                                      `BreakfastIncluded`
+                                    )}
+                                    checked={
+                                      BreakfastIncluded ==
+                                        true
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={(e) =>
+                                      setBreakfastIncluded(
+                                        e.target
+                                          .checked
+                                      )
+                                    }
+                                    sx={{
+                                      color: '#667eea',
+                                      '&.Mui-checked': {
+                                        color: '#667eea',
+                                      },
+                                      '&:hover': {
+                                        backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                      },
+                                      borderRadius: '8px',
+                                    }}
+                                  />
+                                )}
+                              />
+                            }
+                            label={intl.formatMessage({
+                              id: "RowHeaderBreakfastIncluded",
+                            })}
+                            sx={{
+                              '& .MuiFormControlLabel-label': {
+                                fontWeight: 500,
+                                color: '#374151',
+                              }
+                            }}
+                          />
+                          <FormControlLabel
+                            control={
+                              <Controller
+                                name={`TaxIncluded`}
+                                control={control}
+                                render={(
+                                  props: any
+                                ) => (
+                                  <Checkbox
+                                    {...register(
+                                      `TaxIncluded`
+                                    )}
+                                    checked={
+                                      TaxIncluded ==
+                                        true
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={(e) =>
+                                      setTaxIncluded(
+                                        e.target
+                                          .checked
+                                      )
+                                    }
+                                    sx={{
+                                      color: '#667eea',
+                                      '&.Mui-checked': {
+                                        color: '#667eea',
+                                      },
+                                      '&:hover': {
+                                        backgroundColor: 'rgba(102, 126, 234, 0.04)',
+                                      },
+                                      borderRadius: '8px',
+                                    }}
+                                  />
+                                )}
+                              />
+                            }
+                            label={intl.formatMessage({
+                              id: "TextTaxIncluded",
+                            })}
+                            sx={{
+                              '& .MuiFormControlLabel-label': {
+                                fontWeight: 500,
+                                color: '#374151',
+                              }
+                            }}
+                          />
+                        </Grid>
 
-                      <Grid item xs={12} sm={4} md={4}>
-                        <Typography
-                          variant="caption"
-                          gutterBottom
-                        >
-                          {intl.formatMessage({
-                            id: "TextNights",
-                          })}
-                          : {nights}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} sm={4} md={4}>
-                        <Typography
-                          variant="caption"
-                          gutterBottom
-                        >
-                          {intl.formatMessage({
-                            id: "ReportTotalRooms",
-                          })}
-                          : {fields.length}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} sm={4} md={4}>
-                        <Typography
-                          variant="caption"
-                          gutterBottom
-                        >
-                          {intl.formatMessage({
-                            id: "ReportTotalCharge",
-                          })}
-                          : {formatPrice(totalAmount)}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </div>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={{ xs: 1, sm: 2 }}>
-                    <Grid item xs={12} sm={6}>
-                      <PaymentMethodSelect
-                        register={register}
-                        errors={errors}
-                        customRegisterName={`PaymentMethodID`}
-                        PaymentMethodID={
-                          PaymentMethodID
-                        }
-                        setPaymentMethodID={
-                          setPaymentMethodID
-                        }
-                      />
-                    </Grid>
+                        <Grid item xs={12}>
+                          <FormControlLabel
+                            control={
+                              <Controller
+                                name={`ReservationSourceChecked`}
+                                control={control}
+                                render={(
+                                  props: any
+                                ) => (
+                                  <Checkbox
+                                    checked={
+                                      ReservationSourceChecked ==
+                                        true
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={(e) =>
+                                      setReservationSourceChecked(
+                                        e.target
+                                          .checked
+                                      )
+                                    }
+                                  />
+                                )}
+                              />
+                            }
+                            label={intl.formatMessage({
+                              id: "TextReservationSource",
+                            })}
+                          />
+                        </Grid>
 
-                    <Grid item xs={12} sm={6}>
-                      <CurrencySelect
-                        register={register}
-                        errors={errors}
-                        nameKey={`PayCurrencyID`}
-                      />
-                    </Grid>
+                        {ReservationSourceChecked ? (
+                          <Grid item xs={12}>
+                            <ReservationSourceSelect
+                              register={register}
+                              errors={errors}
+                              ChannelID={2}
+                            />
+                          </Grid>
+                        ) : (
+                          <></>
+                        )}
 
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        id={`PayAmount`}
-                        label={intl.formatMessage({
-                          id: "TextAmount",
-                        })}
-                        type="number"
-                        {...register(`PayAmount`)}
-                        margin="dense"
-                        size="small"
-                        style={{
-                          width: "100%",
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <ReferenceSelect
-                        register={register}
-                        errors={errors}
-                        type="BillingInfo"
-                        label={intl.formatMessage({
-                          id: "TextBillingInformation",
-                        })}
-                        optionValue="BillingID"
-                        optionLabel="BillingName"
-                        customField="GroupBillTo"
-                        entity={billingInfo}
-                        setEntity={setBillingInfo}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        size="small"
-                        fullWidth
-                        id="Remarks"
-                        label={intl.formatMessage({
-                          id: "TextSetMessage",
-                        })}
-                        {...register(`Remarks`)}
-                        margin="dense"
-                        multiline
-                        maxRows={3}
-                      />
+                        <Grid item xs={12} sm={4} md={4}>
+                          <Typography
+                            variant="caption"
+                            gutterBottom
+                          >
+                            {intl.formatMessage({
+                              id: "TextNights",
+                            })}
+                            : {nights}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={4} md={4}>
+                          <Typography
+                            variant="caption"
+                            gutterBottom
+                          >
+                            {intl.formatMessage({
+                              id: "ReportTotalRooms",
+                            })}
+                            : {fields.length}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={4} md={4}>
+                          <Typography
+                            variant="caption"
+                            gutterBottom
+                          >
+                            {intl.formatMessage({
+                              id: "ReportTotalCharge",
+                            })}
+                            : {formatPrice(totalAmount)}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </div>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid container spacing={{ xs: 1, sm: 2 }}>
+                      <Grid item xs={12} sm={6}>
+                        <PaymentMethodSelect
+                          register={register}
+                          errors={errors}
+                          customRegisterName={`PaymentMethodID`}
+                          PaymentMethodID={
+                            PaymentMethodID
+                          }
+                          setPaymentMethodID={
+                            setPaymentMethodID
+                          }
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} sm={6}>
+                        <CurrencySelect
+                          register={register}
+                          errors={errors}
+                          nameKey={`PayCurrencyID`}
+                        />
+                      </Grid>
+
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          id={`PayAmount`}
+                          label={intl.formatMessage({
+                            id: "TextAmount",
+                          })}
+                          type="number"
+                          {...register(`PayAmount`)}
+                          margin="dense"
+                          size="small"
+                          style={{
+                            width: "100%",
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <ReferenceSelect
+                          register={register}
+                          errors={errors}
+                          type="BillingInfo"
+                          label={intl.formatMessage({
+                            id: "TextBillingInformation",
+                          })}
+                          optionValue="BillingID"
+                          optionLabel="BillingName"
+                          customField="GroupBillTo"
+                          entity={billingInfo}
+                          setEntity={setBillingInfo}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          size="small"
+                          fullWidth
+                          id="Remarks"
+                          label={intl.formatMessage({
+                            id: "TextSetMessage",
+                          })}
+                          {...register(`Remarks`)}
+                          margin="dense"
+                          multiline
+                          maxRows={3}
+                        />
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </Grid>
+
+
         </Grid>
-      </Grid>
+      </LocalizationProvider>
     </NewEditForm>
   );
 };

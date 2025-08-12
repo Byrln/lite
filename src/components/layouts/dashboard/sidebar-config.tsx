@@ -43,6 +43,13 @@ const sidebarConfig = [
     icon: getIcon("lucide:shopping-cart"),
   },
   {
+    title: "өдрийн өндөрлөгөө",
+    titleEn: "Night Audit",
+    path: "/front-office/night-audit",
+    oldPath: "FrontOffice/NightAudit.aspx",
+    icon: getIcon("lucide:moon"),
+  },
+  {
     title: "Бүлэг",
     titleEn: "Groups",
     icon: getIcon("lucide:users"),

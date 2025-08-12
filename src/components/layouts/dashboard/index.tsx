@@ -28,6 +28,7 @@ import CalendarControlsModal from "@/components/common/calendar-controls-modal";
 import { CalendarFiltersProvider, useCalendarFilters } from "@/lib/context/calendar-filters";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { mutate } from "swr";
 import { FilterList } from "@mui/icons-material"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -74,13 +75,28 @@ function DashboardContent({ children }: any) {
   const isHandsontablePage = router.pathname.includes('/handsontable')
 
   // Refresh function for handsontable pages
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     if (isHandsontablePage && !isCalendarLoading) {
       setIsCalendarLoading(true)
-      setRerenderKey((prevKey) => prevKey + 1)
-      setTimeout(() => {
-        setIsCalendarLoading(false)
-      }, 1000)
+
+      try {
+        // Mutate all handsontable-related SWR caches
+        const endpoints = ['/FrontOffice', '/RoomType', '/Room', '/StayView2', '/RoomBlock', '/WorkingDate'];
+        await Promise.all(
+          endpoints.map(endpoint =>
+            mutate((key: string) => key.includes(endpoint))
+          )
+        );
+
+        // Also update the rerender key for any components that depend on it
+        setRerenderKey((prevKey) => prevKey + 1)
+      } catch (error) {
+        console.error('Error refreshing handsontable data:', error)
+      } finally {
+        setTimeout(() => {
+          setIsCalendarLoading(false)
+        }, 500)
+      }
     }
   }
 

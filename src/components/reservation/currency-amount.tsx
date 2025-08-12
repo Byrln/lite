@@ -67,19 +67,21 @@ const CurrencyAmount = ({
         resetField(`TransactionDetail.${id}.Amount`, {
           defaultValue: rates[0].BaseRate,
         });
-        amount = rates[0].BaseRate * Nights;
+        // Handle day reservations: treat 0 nights as 1 night for billing
+        const billingNights = Nights === 0 ? 1 : Nights;
+        amount = rates[0].BaseRate * billingNights;
         if (rates[0].BaseAdult < selectedAdult) {
           amount =
             (selectedAdult - rates[0].BaseAdult) *
             rates[0].ExtraAdult *
-            Nights +
+            billingNights +
             amount;
         }
         if (rates[0].BaseChild < selectedChild) {
           amount =
             (selectedChild - rates[0].BaseChild) *
             rates[0].ExtraChild *
-            Nights +
+            billingNights +
             amount;
         }
       } else {

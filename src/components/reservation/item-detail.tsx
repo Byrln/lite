@@ -240,6 +240,19 @@ const ItemDetail = ({
                       {reservation.RoomFullNo}
                     </TableCell>
                   </TableRow>
+                  
+                  <TableRow>
+                    <TableCell>
+                      <b>
+                        {intl.formatMessage({
+                          id: "TextRateType",
+                        })}
+                      </b>
+                    </TableCell>
+                    <TableCell>
+                      {reservation.RateTypeName || 'N/A'}
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
               <Button
