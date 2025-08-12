@@ -23,6 +23,8 @@
   "TextGuestDetailView": "Guest Detail View",
   "TextUploadPicture": "Upload Picture",
   "TextBillToGuest": "Bill To Guest",
+  "TextAction": "Action",
+  "TextShortCut": "Shortcut",
   "TextAddPayment": "Add Payment",
   "TextChangeDate": "Change Date",
   "TextCurrency": "Currency",
@@ -1800,5 +1802,8 @@
   "OCCUPIED": "Occupied",
   "VACANT": "Vacant",
   "RESERVED": "Reserved",
-  "BLOCKED": "Blocked"
+  "BLOCKED": "Blocked",
+  "Duration_Daily": "Daily",
+  "Duration_Weekly": "Weekly",
+  "Duration_Monthly": "Monthly"
 }

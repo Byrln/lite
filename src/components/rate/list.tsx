@@ -67,12 +67,12 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
       dataIndex: "test",
     },
     {
-      title: intl.formatMessage({ id: "ConfigRoomType" }),
+      title: intl.formatMessage({ id: "TextRateType" }),
       key: "RateTypeName",
       dataIndex: "RateTypeName",
     },
     {
-      title: intl.formatMessage({ id: "RoomTypeName" }),
+      title: intl.formatMessage({ id: "TextRoomType" }),
       key: "RoomTypeName",
       dataIndex: "RoomTypeName",
     },
@@ -95,6 +95,18 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
       title: intl.formatMessage({ id: "RowHeaderDuration" }),
       key: "DurationName",
       dataIndex: "DurationName",
+      renderCell: (element: any) => {
+        return intl.formatMessage(
+          { id: `${element.row.DurationName}` },
+          { defaultMessage: element.row.DurationName }
+        );
+      },
+      // render: (value: string) => {
+      //   return intl.formatMessage(
+      //     { id: `${value}` },
+      //     { defaultMessage: value }
+      //   );
+      // },
     },
     {
       title: intl.formatMessage({ id: "BaseRate" }),

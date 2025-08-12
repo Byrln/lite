@@ -7,35 +7,23 @@
         "carousel": {
           "slides": [
             {
-               "title": "Календарийн нүднүүдээр шилжих",
-               "description": "Календарийн нүднүүдийн хооронд шилжихийн тулд сум товчнуудыг ашиглана уу",
-               "shortcut": "Сум товчнууд",
-               "image": "/static/illustrations/calendar-navigation.png"
-             },
-             {
-               "title": "Өдрийн тоо солих",
-               "description": "Өөр өөр өдрийн харагдацын хооронд солих",
-               "shortcut": "Ctrl + D",
-               "image": "/static/illustrations/day-count-switch.png"
-             },
-             {
-               "title": "Хайлт төвлөрүүлэх",
-               "description": "Хайлтын талбар дээр хурдан төвлөрүүлэх",
-               "shortcut": "Ctrl + F",
-               "image": "/static/illustrations/search-focus.png"
-             },
-             {
-               "title": "Шинэ захиалга үүсгэх",
-               "description": "Календараас шинэ захиалга эхлүүлэх",
-               "shortcut": "F2",
-               "image": "/static/illustrations/new-reservation.png"
-             },
-             {
-               "title": "Календар сэргээх",
-               "description": "Календарийн өгөгдлийг дахин ачаалах",
-               "shortcut": "Ctrl + R",
-               "image": "/static/illustrations/calendar-refresh.png"
-             }
+              "title": "Шинэ захиалга үүсгэх",
+              "description": "Календараас шинэ захиалга эхлүүлэх",
+              "shortcut": "F2",
+              "image": "/static/illustrations/new-reservation.png"
+            },
+            {
+              "title": "Календар сэргээх",
+              "description": "Календарийн өгөгдлийг дахин ачаалах",
+              "shortcut": "Ctrl + R",
+              "image": "/static/illustrations/calendar-refresh.png"
+            },
+            {
+              "title": "Календарын шүүлтүүр",
+              "description": "Календарийн өгөгдлийг шүүлтүүрээр хайх",
+              "shortcut": "Alt + B",
+              "image": "/static/illustrations/calendar-refresh.png"
+            }
           ],
           "slideCounter": "Слайд {{current}} / {{total}}",
           "tryExample": "Жишээ турших",
@@ -44,7 +32,7 @@
         },
         "tips": {
           "title": "Календарийн зөвлөгөө",
-          "content": "7, 14, 30, 60 өдрийн харагдацын хооронд хурдан солихын тулд **Ctrl + D** товчийг ашиглана уу. **Сум товчнууд** нь календарийн нүднүүдээр үр дүнтэй шилжихэд тусална. Календарийн харагдацаас шууд шинэ захиалга үүсгэхийн тулд **F2** товчийг дарна уу. Шаардлагатай үед **Ctrl + R** товчоор календарийн өгөгдлийг сэргээнэ үү."
+          "content": "7, 14, 30 болон өдрийн харагдацын хооронд хурдан солихын тулд **ALT + B** товчийг ашиглана уу. Календарийн харагдацаас шууд шинэ захиалга үүсгэхийн тулд **F2** товчийг дарна уу. Шаардлагатай үед **Ctrl + R** товчоор календарийн өгөгдлийг сэргээнэ үү."
         }
       },
       {
@@ -53,29 +41,29 @@
         "carousel": {
           "slides": [
             {
-               "title": "Табуудын хооронд солих",
-               "description": "Үнийн удирдлагын хэсгүүдээр шилжих",
-               "shortcut": "Ctrl + 1-6",
-               "image": "/static/illustrations/tab-switching.png"
-             },
-             {
-               "title": "Ерөнхий хэсэг рүү очих",
-               "description": "Ерөнхий таб руу буцах",
-               "shortcut": "Ctrl + O",
-               "image": "/static/illustrations/overview-tab.png"
-             },
-             {
-               "title": "Дараагийн таб",
-               "description": "Дараагийн таб руу шилжих",
-               "shortcut": "Ctrl + T",
-               "image": "/static/illustrations/next-tab.png"
-             },
-             {
-               "title": "Өмнөх таб",
-               "description": "Өмнөх таб руу шилжих",
-               "shortcut": "Ctrl + Shift + T",
-               "image": "/static/illustrations/previous-tab.png"
-             }
+              "title": "Табуудын хооронд солих",
+              "description": "Үнийн удирдлагын хэсгүүдээр шилжих",
+              "shortcut": "Ctrl + 1-6",
+              "image": "/static/illustrations/tab-switching.png"
+            },
+            {
+              "title": "Ерөнхий хэсэг рүү очих",
+              "description": "Ерөнхий таб руу буцах",
+              "shortcut": "Ctrl + O",
+              "image": "/static/illustrations/overview-tab.png"
+            },
+            {
+              "title": "Дараагийн таб",
+              "description": "Дараагийн таб руу шилжих",
+              "shortcut": "Ctrl + T",
+              "image": "/static/illustrations/next-tab.png"
+            },
+            {
+              "title": "Өмнөх таб",
+              "description": "Өмнөх таб руу шилжих",
+              "shortcut": "Ctrl + Shift + T",
+              "image": "/static/illustrations/previous-tab.png"
+            }
           ],
           "slideCounter": "Слайд {{current}} / {{total}}",
           "tryExample": "Жишээ турших",

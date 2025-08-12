@@ -20,10 +20,12 @@ import { useAppState } from "lib/context/app"
 import NewReservation from "components/front-office/reservation-list/new"
 import ReservationEdit from "components/front-office/reservation-list/edit"
 import { FrontOfficeAPI } from "lib/api/front-office"
+import { ReservationAPI } from "lib/api/reservation"
 import { useIntl } from "react-intl"
 import { DoorBackOutlined, Payment } from "@mui/icons-material"
 import { getContrastYIQ } from "lib/utils/helpers"
 import Iconify from "components/iconify/iconify"
+import axios from "lib/utils/axios"
 
 const getModifierKey = () => {
   if (typeof window !== 'undefined') {
@@ -104,7 +106,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, onClick 
 
   return (
     <li
-      className="flex items-center w-full transition-all duration-200 cursor-pointer hover:scale-[1.02]"
+      className="flex items-center justify-between w-full transition-all duration-200 cursor-pointer hover:scale-[1.02]"
       onClick={() => onClick(reservation)}
       style={{
         padding: '8px 12px',
@@ -113,56 +115,55 @@ const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, onClick 
         color: textColor,
         border: (reservation.GroupCode && groupColor) ? `3px solid ${groupColor}` : 'none',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-        margin: '2px 0'
+        margin: '4px 0'
       }}
     >
-      <div className="flex items-center gap-2 flex-1 min-w-0">
-        {/* Drag icon */}
-        <Iconify
-          icon="lsicon:drag-filled"
-          width="14px"
-          style={{ marginRight: '8px', marginTop: '2px' }}
-        />
-
-        {/* Group icon if applicable */}
-        {(reservation.GroupCode || reservation.GroupColor) && (
-          <span
-            style={{
-              marginRight: '8px',
-              marginTop: '2px',
-              color: groupColor || '#495057'
-            }}
-          >
-            {reservation.IsGroupOwner ? (
-              <Iconify
-                icon="solar:crown-outline"
-                width="14px"
-              />
-            ) : (
-              <Iconify
-                icon="clarity:group-line"
-                width="14px"
-              />
-            )}
-          </span>
-        )}
-
-        {/* Balance icon if applicable */}
-        {reservation.Balance != null && Number(reservation.Balance) > 0 && (
-          <span style={{ marginRight: '8px', marginTop: '2px' }}>
-            <Iconify icon="vaadin:cash" width="14px" />
-          </span>
-        )}
-
-        {/* Breakfast icon if included */}
-        {reservation.IsBreakfast && (
-          <span style={{ marginRight: '8px', marginTop: '2px' }}>
-            <Iconify icon="mdi:food" width="14px" />
-          </span>
-        )}
-
+      <div className="flex items-center gap-2 w-full justify-between">
         {/* Guest name with phone and email */}
-        <div style={{ display: 'flex', flexDirection: 'column', minWidth: '0', flex: '1' }}>
+        <div className="flex items-center">
+          {/* Drag icon */}
+          <Iconify
+            icon="lsicon:drag-filled"
+            width="14px"
+            style={{ marginRight: '8px', marginTop: '2px' }}
+          />
+
+          {/* Group icon if applicable */}
+          {(reservation.GroupCode || reservation.GroupColor) && (
+            <span
+              style={{
+                marginRight: '8px',
+                marginTop: '2px',
+                color: groupColor || '#495057'
+              }}
+            >
+              {reservation.IsGroupOwner ? (
+                <Iconify
+                  icon="solar:crown-outline"
+                  width="14px"
+                />
+              ) : (
+                <Iconify
+                  icon="clarity:group-line"
+                  width="14px"
+                />
+              )}
+            </span>
+          )}
+
+          {/* Balance icon if applicable */}
+          {reservation.Balance != null && Number(reservation.Balance) > 0 && (
+            <span style={{ marginRight: '8px', marginTop: '2px' }}>
+              <Iconify icon="vaadin:cash" width="14px" />
+            </span>
+          )}
+
+          {/* Breakfast icon if included */}
+          {reservation.IsBreakfast && (
+            <span style={{ marginRight: '8px', marginTop: '2px' }}>
+              <Iconify icon="mdi:food" width="14px" />
+            </span>
+          )}
           <p
             title={reservation.GuestName || intl.formatMessage({ id: 'CommandPalette.NoGuestName' })}
             style={{
@@ -175,35 +176,40 @@ const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, onClick 
             }}
           >
             {reservation.GuestName || intl.formatMessage({ id: 'CommandPalette.NoGuestName' })}
+            {(reservation.Phone || reservation.Email) && (
+              <div style={{
+                display: "flex",
+                alignItems: 'center',
+                fontSize: '11px',
+                opacity: '0.9',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                lineHeight: '1.2',
+                marginTop: '2px',
+                fontWeight: '500',
+                gap: '4px'
+              }}>
+                {reservation.Email && (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                    <Iconify icon="mdi:email" width="10px" />
+                    {reservation.Email}
+                  </span>
+                )}
+                {reservation.Phone && reservation.Email && <span>•</span>}
+                {reservation.Phone && (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                    <Iconify icon="mdi:phone" width="10px" />
+                    {reservation.Phone}
+                  </span>
+                )}
+              </div>
+            )}
           </p>
-          {(reservation.Phone || reservation.Email) && (
-            <div style={{
-              display: "flex",
-              fontSize: '10px',
-              opacity: '0.8',
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-              lineHeight: '1.2',
-              marginTop: '1px'
-            }}>
-              {reservation.Phone && <span>{reservation.Phone}</span>}
-              {reservation.Phone && reservation.Email && <span> • </span>}
-              {reservation.Email && <span>{reservation.Email}</span>}
-            </div>
-          )}
         </div>
 
         {/* Right side info */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            overflow: 'hidden',
-            marginLeft: '20px',
-            gap: '8px'
-          }}
+        <div className="flex items-center gap-2"
         >
           {/* Arrival -> Departure dates */}
           {(reservation.ArrivalDate || reservation.DepartureDate) && (
@@ -218,7 +224,7 @@ const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, onClick 
                 whiteSpace: 'nowrap'
               }}
             >
-              {reservation.ArrivalDate ? new Date(reservation.ArrivalDate).toLocaleDateString('dd-mm', { day: '2-digit', month: '2-digit' }) : 'N/A'} → {reservation.DepartureDate ? new Date(reservation.DepartureDate).toLocaleDateString('dd-mm', { day: '2-digit', month: '2-digit' }) : 'N/A'}
+              {reservation.ArrivalDate ? new Date(reservation.ArrivalDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : 'N/A'}  → {reservation.DepartureDate ? new Date(reservation.DepartureDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : 'N/A'}
             </div>
           )}
 
@@ -269,14 +275,13 @@ const ReservationItem: React.FC<ReservationItemProps> = ({ reservation, onClick 
               {Number(reservation.Balance).toLocaleString()}₮
             </div>
           )}
+          {/* Drag icon on the right */}
+          <Iconify
+            icon="lsicon:drag-filled"
+            width="14px"
+            style={{ marginLeft: 'auto', marginTop: '2px' }}
+          />
         </div>
-
-        {/* Drag icon on the right */}
-        <Iconify
-          icon="lsicon:drag-filled"
-          width="14px"
-          style={{ marginLeft: 'auto', marginTop: '2px' }}
-        />
       </div>
     </li>
   )
@@ -410,12 +415,59 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
         const currentWorkingDate = workingDateResponse.workingDate[0].WorkingDate
         setWorkingDate(currentWorkingDate)
 
+        // Use ReservationAPI to get enhanced data with guest contact information
         const items = await FrontOfficeAPI.list({
           CurrDate: currentWorkingDate,
           NumberOfDays: 30,
           RoomTypeID: 0,
         })
-        setReservationItems(items || [])
+
+        // Enhance the data with guest contact information
+        if (items && items.length > 0) {
+          // Get unique guest IDs
+          const guestIds = Array.from(new Set(items.map((r: any) => r.GuestID).filter((id: any) => id)))
+
+          if (guestIds.length > 0) {
+            try {
+              // Fetch guest data for all unique guest IDs
+              const guestRes = await axios.post('/api/Guest/List', {
+                GuestID: 0,
+                GuestName: "",
+                CountryID: "0",
+                IdentityValue: "",
+                Phone: "",
+                TransactionID: "",
+                IsMainOnly: false
+              })
+              const guests = guestRes.data.JsonData
+
+              // Create a map of guest data by GuestID
+              const guestMap = new Map()
+              guests.forEach((guest: any) => {
+                guestMap.set(guest.GuestID, guest)
+              })
+
+              // Enhance reservation data with guest contact information
+              const enhancedItems = items.map((reservation: any) => {
+                const guest = guestMap.get(reservation.GuestID)
+                return {
+                  ...reservation,
+                  Phone: guest?.Phone || guest?.Mobile || guest?.PhoneOrMobile || "",
+                  Email: guest?.Email || ""
+                }
+              })
+
+              setReservationItems(enhancedItems)
+            } catch (guestError) {
+              console.error('Error fetching guest data:', guestError)
+              setReservationItems(items || [])
+            }
+          } else {
+            setReservationItems(items || [])
+          }
+        } else {
+          setReservationItems([])
+        }
       }
     } catch (error) {
       console.error('Error fetching reservation data:', error)
@@ -465,6 +517,7 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
   // Filter functions
   const filteredReservations = reservationItems.filter(item => {
     const searchLower = searchTerm.toLowerCase()
+
     return (
       item.GuestName?.toLowerCase().includes(searchLower) ||
       item.RoomNo?.toLowerCase().includes(searchLower) ||
@@ -501,6 +554,7 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
               type="text"
               placeholder={intl.formatMessage({ id: 'CommandPalette.SearchPlaceholder' })}
               value={searchTerm}
+              autoFocus
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-3 py-1 text-lg text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 bg-transparent focus:outline-none flex-1 min-w-0"
             />

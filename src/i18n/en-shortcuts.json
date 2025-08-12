@@ -7,24 +7,6 @@
         "carousel": {
           "slides": [
             {
-              "title": "Navigate Calendar Cells",
-              "description": "Use arrow keys to move between calendar cells",
-              "shortcut": "Arrow Keys",
-              "image": "/static/illustrations/calendar-navigation.png"
-            },
-            {
-              "title": "Change Day Count",
-              "description": "Cycle through different day views",
-              "shortcut": "Ctrl + D",
-              "image": "/static/illustrations/day-count-switch.png"
-            },
-            {
-              "title": "Focus Search",
-              "description": "Quickly focus on search input",
-              "shortcut": "Ctrl + F",
-              "image": "/static/illustrations/search-focus.png"
-            },
-            {
               "title": "Create New Reservation",
               "description": "Start a new reservation from calendar",
               "shortcut": "F2",
@@ -35,6 +17,12 @@
               "description": "Reload calendar data",
               "shortcut": "Ctrl + R",
               "image": "/static/illustrations/calendar-refresh.png"
+            },
+            {
+              "title": "Calendar Filter",
+              "description": "Filter for specific dates or events",
+              "shortcut": "Alt + B",
+              "image": "/static/illustrations/calendar-search.png"
             }
           ],
           "slideCounter": "Slide {{current}} / {{total}}",

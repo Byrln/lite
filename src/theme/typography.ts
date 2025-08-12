@@ -16,7 +16,7 @@ function responsiveFontSizes({ sm, md, lg }: any) {
     };
 }
 
-const FONT_PRIMARY = "'Public Sans', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'Liberation Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif";
+const FONT_PRIMARY = "'Public Sans', 'Noto Sans Mongolian', 'Noto Sans', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Liberation Sans', 'Hiragino Sans GB', 'Microsoft YaHei', 'SimSun', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif";
 
 const typography = {
     fontFamily: FONT_PRIMARY,

@@ -90,6 +90,8 @@
   "TextLoadingIcons": "Icon ачаалж байна...",
   "TextNoIconsFound": "Icon олдсонгүй. Өөр түлхүүр үг оруулна уу.",
   "TextReservationPreview": "Урьдчилан харагдац",
+  "TextAction": "Үйлдэл",
+  "TextShortCut": "Товчлуур",
   "ButtonCutFolio": "Тооцоо салгах",
   "ButtonDelete": "Устгах",
   "ButtonEdit": "Засах",
@@ -2112,5 +2114,8 @@
   "OCCUPIED": "Эзэгдсэн",
   "VACANT": "Хоосон",
   "RESERVED": "Захиалсан",
-  "BLOCKED": "Хаагдсан"
+  "BLOCKED": "Хаагдсан",
+  "Daily": "Өдөр тутам",
+  "Weekly": "Долоо хоног тутам",
+  "Monthly": "Сар тутам"
 }

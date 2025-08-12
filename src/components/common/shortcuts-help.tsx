@@ -4,7 +4,6 @@ import {
   DialogContent,
   Fade,
   Slide,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -18,11 +17,11 @@ import { Box, Typography, Grid, Chip, Card, CardContent } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import { useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
+import Iconify from '../iconify';
 
 interface ShortcutsHelpProps {
   open: boolean;
@@ -41,19 +40,19 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
   const shortcuts = intl.messages?.shortcuts as any;
   const pagesData = shortcuts?.pages || [];
   const currentPageData = pagesData.find((page: any) => page.route === currentRoute);
-  
+
   // Get slides data from current page or fallback to general shortcuts
   const slidesData = currentPageData?.carousel?.slides || shortcuts?.carousel?.slides || [];
   const pageTitle = currentPageData?.title || shortcuts?.title || 'Shortcuts Guide';
   const tipsData = currentPageData?.tips || shortcuts?.tips;
-  
+
   // Check if current route has specific shortcuts
   const hasRouteSpecificShortcuts = !!currentPageData;
-  
+
   // Carousel navigation
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slidesData.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slidesData.length) % slidesData.length);
-  
+
   // Fullscreen functionality
   const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
   const closeFullscreen = () => setIsFullscreen(false);
@@ -100,7 +99,7 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
       sx={{
         backgroundColor: '#667eea',
         color: '#fff',
-        fontFamily: 'SF Mono, Monaco, Consolas, monospace',
+        fontFamily: "'Public Sans', 'Noto Sans Mongolian', 'Noto Sans', 'SF Mono', 'Monaco', 'Consolas', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', monospace",
         fontWeight: '600',
         fontSize: '0.75rem',
         height: '28px',
@@ -128,7 +127,7 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
     >
       <Box sx={{ p: { xs: 2, md: 3 }, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant="h5" sx={{ fontWeight: 800 }}>
+          <Typography variant="h5" className='font-semibold font-sans'>
             {pageTitle}
           </Typography>
           <IconButton onClick={onClose} sx={{ color: 'white' }}>
@@ -140,9 +139,9 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
       <DialogContent sx={{ p: { xs: 2, md: 3 }, background: 'white' }}>
         {!hasRouteSpecificShortcuts ? (
           // Coming Soon message for routes without specific shortcuts
-          <Box 
-            sx={{ 
-              textAlign: 'center', 
+          <Box
+            sx={{
+              textAlign: 'center',
               py: 8,
               position: 'relative',
               background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
@@ -203,71 +202,72 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
                 <Fade in key={currentSlide} timeout={400}>
                   <Grid container>
                     <Grid item xs={12} md={6} sx={{ background: '#f8f9fc', position: 'relative' }}>
-                      <Box sx={{ height: { xs: 180, md: 240 }, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Box 
-                          component="img" 
-                          src={slidesData[currentSlide]?.image || '/static/preview.png'} 
-                          alt={slidesData[currentSlide]?.title} 
-                          sx={{ maxWidth: '90%', maxHeight: '100%', borderRadius: 2, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }} 
+                      <Box sx={{ height: { xs: 180, md: 290 }, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Box
+                          component="img"
+                          src={slidesData[currentSlide]?.image || '/static/preview.png'}
+                          alt={slidesData[currentSlide]?.title}
+                          sx={{ maxWidth: '90%', maxHeight: '100%', borderRadius: 2, boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}
                         />
                       </Box>
-                  {/* Fullscreen button */}
-                  <IconButton
-                    onClick={toggleFullscreen}
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      background: 'rgba(255,255,255,0.9)',
-                      '&:hover': { background: 'rgba(255,255,255,1)' },
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                    }}
-                  >
-                    <FullscreenIcon fontSize="small" />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={12} md={6} sx={{ p: { xs: 2, md: 3 } }}>
-                  <Typography variant="subtitle2" sx={{ color: '#667eea', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>
-                    {currentPageData?.carousel?.slideCounter?.replace('{{current}}', (currentSlide + 1).toString()).replace('{{total}}', slidesData.length.toString()) || `Slide ${currentSlide + 1} / ${slidesData.length}`}
-                  </Typography>
-                  <Typography variant="h6" sx={{ fontWeight: 800, mt: 1, mb: 1 }}>
-                    {slidesData[currentSlide]?.title}
-                  </Typography>
-                  <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
-                    {slidesData[currentSlide]?.description} <b>{slidesData[currentSlide]?.shortcut}</b>
-                  </Typography>
+                      {/* Fullscreen button */}
+                      <IconButton
+                        onClick={toggleFullscreen}
+                        sx={{
+                          position: 'absolute',
+                          top: 8,
+                          right: 8,
+                          background: 'rgba(255,255,255,0.9)',
+                          '&:hover': { background: 'rgba(255,255,255,1)' },
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                        }}
+                      >
+                        <FullscreenIcon fontSize="small" />
+                      </IconButton>
+                    </Grid>
+                    <Grid item xs={12} md={6} sx={{ p: { xs: 2, md: 3 } }}>
+                      <Typography variant="subtitle2" sx={{ color: '#667eea', fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }} className='font-sans'>
+                        {currentPageData?.carousel?.slideCounter?.replace('{{current}}', (currentSlide + 1).toString()).replace('{{total}}', slidesData.length.toString()) || `Slide ${currentSlide + 1} / ${slidesData.length}`}
+                      </Typography>
+                      <Typography variant="h6" className='font-bold font-sans my-2'>
+                        {slidesData[currentSlide]?.title}
+                      </Typography>
+                      <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
+                        {slidesData[currentSlide]?.description} <b>{slidesData[currentSlide]?.shortcut}</b>
+                      </Typography>
 
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Button variant="contained" startIcon={<PlayArrowIcon />} onClick={() => handleTryExample('#shortcut-helper-button')} sx={{
-                      background: 'linear-gradient(45deg, #667eea, #764ba2)',
-                      boxShadow: '0 8px 20px rgba(118,75,162,0.3)'
-                    }}>
-                      {currentPageData?.carousel?.tryExample || 'Try Example'}
-                    </Button>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Fade>
-          )}
+                      {/* <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button variant="contained" startIcon={<PlayArrowIcon />} onClick={() => handleTryExample('#shortcut-helper-button')} sx={{
+                          background: 'linear-gradient(45deg, #667eea, #764ba2)',
+                          boxShadow: '0 8px 20px rgba(118,75,162,0.3)'
+                        }}>
+                          {currentPageData?.carousel?.tryExample || 'Try Example'}
+                        </Button>
+                      </Box> */}
+                    </Grid>
+                  </Grid>
+                </Fade>
+              )}
 
 
-          {/* Prev / Next */}
-          <IconButton onClick={prevSlide} sx={{ position: 'absolute', top: '50%', left: 8, transform: 'translateY(-50%)', background: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-            <ArrowBackIosIcon fontSize="small" />
-          </IconButton>
-          <IconButton onClick={nextSlide} sx={{ position: 'absolute', top: '50%', right: 8, transform: 'translateY(-50%)', background: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-            <ArrowForwardIosIcon fontSize="small" />
-          </IconButton>
-        </Box>
+              {/* Prev / Next */}
+              <IconButton onClick={prevSlide} sx={{ position: 'absolute', top: '50%', left: 8, transform: 'translateY(-50%)', background: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                <ArrowBackIosIcon fontSize="small" />
+              </IconButton>
+              <IconButton onClick={nextSlide} sx={{ position: 'absolute', top: '50%', right: 8, transform: 'translateY(-50%)', background: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                <ArrowForwardIosIcon fontSize="small" />
+              </IconButton>
+            </Box>
 
             {/* Tips Section */}
             {tipsData && (
               <Card sx={{ mb: 3, borderRadius: 3, border: '1px solid #eee' }}>
                 <CardContent>
-                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }} className='flex items-center gap-2'>
+                    <Iconify icon="humbleicons:bulb" className='w-7 h-7 mb-2 text-primary-light' />
                     {tipsData.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" className='indent-8'>
                     {tipsData.content}
                   </Typography>
                 </CardContent>
@@ -280,13 +280,13 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 700 }}>
-                      Shortcut
+                      {intl.formatMessage({ id: "TextShortCut" })}
                     </TableCell>
                     <TableCell sx={{ fontWeight: 700 }}>
-                      Action
+                      {intl.formatMessage({ id: "TextAction" })}
                     </TableCell>
                     <TableCell sx={{ fontWeight: 700 }}>
-                      Description
+                      {intl.formatMessage({ id: "TextDescription" })}
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -307,7 +307,7 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
 
       {/* Spotlight overlay */}
       {spotlightTarget && <SpotlightOverlay targetRect={spotlightTarget} onClose={closeSpotlight} />}
-      
+
       {/* Fullscreen Image Modal */}
       {isFullscreen && (
         <Dialog
