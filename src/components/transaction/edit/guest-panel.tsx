@@ -161,7 +161,7 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
                     handleModal(
                       true,
                       intl.formatMessage({
-                        id: "TextGuestDetailEdit",
+                        id: "TextGuestDetailView",
                       }),
                       <GuestNewEdit />
                     );
@@ -176,7 +176,7 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
                   }}
                 >
                   {intl.formatMessage({
-                    id: "TextGuestDetailEdit",
+                    id: "TextGuestDetailView",
                   })}
                 </MenuItem>
                 <MenuItem
@@ -185,7 +185,7 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
                     handleModal(
                       true,
                       intl.formatMessage({
-                        id: "TextGuestDetailView",
+                        id: "TextGuestDetailEdit",
                       }),
                       <GuestNewEdit />
                     );
@@ -200,7 +200,7 @@ const GuestPanel: React.FC<GuestPanelProps> = ({
                   }}
                 >
                   {intl.formatMessage({
-                    id: "TextGuestDetailView",
+                    id: "TextGuestDetailEdit",
                   })}
                 </MenuItem>
                 <MenuItem

@@ -81,11 +81,28 @@ function DashboardContent({ children }: any) {
 
       try {
         // Mutate all handsontable-related SWR caches
-        const endpoints = ['/FrontOffice', '/RoomType', '/Room', '/StayView2', '/RoomBlock', '/WorkingDate'];
+        const endpoints = [
+          '/api/FrontOffice/ReservationDetailsByDate',
+          '/api/RoomType/List',
+          '/api/Room/List',
+          '/api/FrontOffice/StayView2',
+          '/api/RoomBlock/List',
+          '/api/FrontOffice/WorkingDate'
+        ];
+        
         await Promise.all(
-          endpoints.map(endpoint =>
-            mutate((key: string) => key.includes(endpoint))
-          )
+          endpoints.map(endpoint => {
+            // Handle both simple string keys and array keys [url, params]
+            return mutate((key: any) => {
+              if (typeof key === 'string') {
+                return key === endpoint;
+              }
+              if (Array.isArray(key) && key.length > 0) {
+                return key[0] === endpoint;
+              }
+              return false;
+            });
+          })
         );
 
         // Also update the rerender key for any components that depend on it

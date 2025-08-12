@@ -284,7 +284,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
                                                         scope="row"
                                                     >
                                                         {" "}
-                                                        {entity.GuestCountry}
+                                                        {intl.formatMessage({id: `${entity.GuestCountry}`}, {defaultMessage: entity.GuestCountry})}
                                                     </TableCell>
                                                     <TableCell
                                                         component="th"
@@ -297,7 +297,7 @@ const ReservationsList = ({ title, workingDate }: any) => {
                                                         scope="row"
                                                     >
                                                         {
-                                                            entity.RoomStatusDescription
+                                                            intl.formatMessage({id: `${entity.RoomStatusDescription}`}, {defaultMessage: entity.RoomStatusDescription})
                                                         }
                                                     </TableCell>
                                                     <TableCell
