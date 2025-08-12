@@ -586,6 +586,7 @@ const NewEdit = ({
                               borderRadius: '4px',
                               fontWeight: '500',
                               fontSize: '9px',
+                              marginBottom: '6px',
                               whiteSpace: 'nowrap'
                             }}>
                               {formatPrice((displayReservation as any)?.CurrencyAmount)}₮
