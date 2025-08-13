@@ -24,6 +24,7 @@ import RateTypeList from '@/components/rate/type/list';
 import ExtraChargeGroupList from '@/components/rate/extra-charge-group/list';
 import ExtraChargeList from '@/components/rate/extra-charge/list';
 import TaxList from '@/components/rate/tax/list';
+import { TaxSWR } from '@/lib/api/tax';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -62,6 +63,7 @@ const RatePage = () => {
   const intl = useIntl();
   const [activeTab, setActiveTab] = useState('overview');
   const { hasPrivilege } = usePrivilegeChecker();
+  const { data: taxData } = TaxSWR();
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setActiveTab(newValue);
@@ -93,7 +95,7 @@ const RatePage = () => {
       icon: <DollarSign className="h-6 w-6" />,
       color: 'bg-emerald-500',
       privilege: RATE_PRIVILEGES.RATES,
-      component: <RateList />
+      component: <RateList taxData={taxData} />
     },
     {
       id: 'extra-charge-groups',

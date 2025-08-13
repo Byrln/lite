@@ -193,7 +193,7 @@ const NewEdit = ({
           setValue(`TransactionDetail[${id}].GuestDetail.Mobile`, '');
         }
         if (!currentDetail?.GuestDetail?.Name) {
-          setValue(`TransactionDetail[${id}].GuestDetail.Name`, 'Guest');
+          setValue(`TransactionDetail[${id}].GuestDetail.Name`, '');
         }
         if (!currentDetail?.GuestDetail?.Surname) {
           setValue(`TransactionDetail[${id}].GuestDetail.Surname`, '');
@@ -983,7 +983,6 @@ const NewEdit = ({
               window.parent.postMessage({ type: 'COLOR_CHANGE', color }, '*');
             }
           }} />
-
         </Grid>
 
         {selectedGuest &&

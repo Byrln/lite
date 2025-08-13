@@ -337,7 +337,7 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
       id: 6,
       name: intl.formatMessage({ id: 'CommandPalette.Calendar' }),
       icon: <Calendar className="w-5 h-5" />,
-      // notification: `${modifierKey}+C`,
+      notification: `ALT + C`,
       color: '#06B6D4',
       action: () => {
         setOpen(false)

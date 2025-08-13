@@ -166,6 +166,7 @@ const NewEdit = ({
     control,
     getValues,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -225,6 +226,7 @@ const NewEdit = ({
             CountryID: "",
             VipStatusID: ""
           },
+          Name: null,
           Adult: 1,
           Child: 0
         }
@@ -263,6 +265,7 @@ const NewEdit = ({
           CountryID: "",
           VipStatusID: ""
         },
+        Name: null,
         Adult: 1,
         Child: 0
       });
@@ -281,6 +284,14 @@ const NewEdit = ({
       );
     }
   }, [getValues()]);
+
+  // Watch for changes in guest details to update preview in real-time
+  const watchedTransactionDetail = watch('TransactionDetail');
+
+  useEffect(() => {
+    // This effect will trigger whenever any field in TransactionDetail changes
+    // The reservation preview will automatically re-render with updated data
+  }, [watchedTransactionDetail]);
 
   const customResetEvent = (data: any) => {
     reset({
@@ -454,10 +465,10 @@ const NewEdit = ({
             </Box>
 
             {/* Reservation Preview */}
-            {getValues()?.TransactionDetail?.map((reservation, index) => {
+            {watchedTransactionDetail?.map((reservation, index) => {
               // Each item uses its own data
               const displayReservation = reservation;
-              const transactionLength = getValues()?.TransactionDetail?.length || 0;
+              const transactionLength = watchedTransactionDetail?.length || 0;
 
               // Skip rendering if no transaction details
               if (transactionLength === 0) {
@@ -514,9 +525,8 @@ const NewEdit = ({
                               lineHeight: '1.2',
                               fontSize: '12px'
                             }}>
-                              {
-                                displayReservation?.GuestDetail?.Name ||
-                                displayReservation?.GuestDetail?.Email}
+                              {displayReservation?.Name || intl.formatMessage({ id: "TextGuest" })}
+
                             </p>
                             {displayReservation?.GuestDetail?.Mobile && (
                               <div style={{
@@ -771,7 +781,6 @@ const NewEdit = ({
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    flexWrap: "wrap",
                     marginBottom: "20px",
                     flexDirection: { xs: "column", sm: "row" },
                     gap: { xs: 2, sm: 0 }

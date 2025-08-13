@@ -183,22 +183,22 @@ const PackageList = ({ title }: any) => {
           />
         }
         excelName={title}
-        search={
-          <CustomSearch
-            listUrl={listUrl}
-            search={search}
-            setSearch={setSearch}
-            handleSubmit={handleSubmit}
-            reset={reset}
-          >
-            <Search
-              register={register}
-              errors={errors}
-              control={control}
-              reset={reset}
-            />
-          </CustomSearch>
-        }
+      // search={
+      //   <CustomSearch
+      //     listUrl={listUrl}
+      //     search={search}
+      //     setSearch={setSearch}
+      //     handleSubmit={handleSubmit}
+      //     reset={reset}
+      //   >
+      //     <Search
+      //       register={register}
+      //       errors={errors}
+      //       control={control}
+      //       reset={reset}
+      //     />
+      //   </CustomSearch>
+      // }
       />
     </>
   );

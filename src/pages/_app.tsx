@@ -34,6 +34,7 @@ const GlobalKeyboardShortcuts = () => {
   const { handleModal }: any = useContext(ModalContext);
   const [state, dispatch]: any = useAppState();
   const [shortcutsOpen, setShortcutsOpen] = React.useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -58,6 +59,12 @@ const GlobalKeyboardShortcuts = () => {
         event.preventDefault();
         setShortcutsOpen(true);
       }
+
+      // Alt + C - Navigate to Calendar (case insensitive)
+      if (event.altKey && (event.key === 'c' || event.key === 'C' || event.key === 'ё' || event.key === 'Ё')) {
+        event.preventDefault();
+        router.push('/handsontable');
+      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
@@ -65,7 +72,7 @@ const GlobalKeyboardShortcuts = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleModal, dispatch]);
+  }, [handleModal, dispatch, router]);
 
   return (
     <ShortcutsHelp

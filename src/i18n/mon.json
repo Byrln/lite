@@ -1,5 +1,5 @@
 {
-  "Amenity_AmenityNameIsRequired": "Өрөний онцлогийг оруулна уу",
+  "Amenity_AmenityNameIsRequired": "Өрөөний онцлогийг оруулна уу",
   "ButtonExcel": "Excel татах",
   "ButtonActivityLog": "Activity Log",
   "ButtonAddAccount": "Данс нэмэх",
@@ -92,6 +92,7 @@
   "TextReservationPreview": "Урьдчилан харагдац",
   "TextAction": "Үйлдэл",
   "TextShortCut": "Товчлуур",
+  "TextGuestActions": "Зочин үйлдэл",
   "ButtonCutFolio": "Тооцоо салгах",
   "ButtonDelete": "Устгах",
   "ButtonEdit": "Засах",
@@ -1196,7 +1197,7 @@
   "TextLastName": "Овог",
   "TextLink": "Холбоос",
   "TextLocation": "Байршил",
-  "AllRoomTypes": "Бүх Өрөний Төрөл",
+  "AllRoomTypes": "Бүх Өрөөний Төрөл",
   "TextLoginName": "Нэвтрэх нэр",
   "TextLogo": "Лого",
   "TextMain": "Үндсэн",

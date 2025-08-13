@@ -295,10 +295,12 @@ const RateList = ({ title, taxData, setHasData = null }: any) => {
         />
       </LoadingButton>
       {intl.formatMessage({ id: "RateTaxIncluded" })}{" "}
+      {console.log('Tax Data:', taxData)}
       {taxData &&
         taxData
           .filter((item: any) => item.Status === true)
           .map((item: any) => {
+            console.log('Tax Item:', item);
             return (
               <span key={item.TaxID}>
                 {item.TaxID != 1 && "+"}

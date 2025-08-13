@@ -144,9 +144,13 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
               textAlign: 'center',
               py: 8,
               position: 'relative',
-              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '2px solid rgba(147, 51, 234, 0.3)',
               borderRadius: 3,
               overflow: 'hidden',
+              boxShadow: '0 8px 32px rgba(147, 51, 234, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
               '&::before': {
                 content: '""',
                 position: 'absolute',
@@ -155,11 +159,11 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
                 right: 0,
                 bottom: 0,
                 background: `
-                  radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 40% 80%, rgba(102, 126, 234, 0.08) 0%, transparent 50%)
+                  radial-gradient(circle at 20% 50%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 80%, rgba(139, 69, 219, 0.1) 0%, transparent 50%)
                 `,
-                filter: 'blur(40px)',
+                filter: 'blur(60px)',
                 zIndex: 1
               },
               '&::after': {
@@ -170,14 +174,26 @@ const ShortcutsHelp: React.FC<ShortcutsHelpProps> = ({ open, onClose }) => {
                 right: 0,
                 bottom: 0,
                 background: `
+                  url('/images/grain.jpg'),
                   repeating-linear-gradient(
                     45deg,
                     transparent,
-                    transparent 2px,
-                    rgba(102, 126, 234, 0.02) 2px,
-                    rgba(102, 126, 234, 0.02) 4px
-                  )
+                    transparent 1px,
+                    rgba(147, 51, 234, 0.05) 1px,
+                    rgba(147, 51, 234, 0.05) 2px
+                  ),
+                  repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(168, 85, 247, 0.03) 1px,
+                    rgba(168, 85, 247, 0.03) 2px
+                  ),
+                  radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.02) 0%, transparent 70%)
                 `,
+                backgroundSize: '200px 200px, auto, auto, auto',
+                backgroundBlendMode: 'overlay, normal, normal, normal',
+                opacity: 0.09,
                 zIndex: 2
               }
             }}
