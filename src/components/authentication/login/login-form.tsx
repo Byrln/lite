@@ -101,7 +101,7 @@ export default function LoginForm() {
             companyDatabase && companyDatabase.length > 0
               ? isHaveDashBoard
                 ? "/"
-                : "/report/daily"
+                : "/handsontable"
               : "/front-office/guide"
           );
         } else {
