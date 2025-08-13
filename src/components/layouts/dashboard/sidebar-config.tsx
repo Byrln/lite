@@ -515,13 +515,6 @@ const sidebarConfig = [
     oldPath: "",
   },
   {
-    title: "харилцагчийн бүлэг",
-    titleEn: "Customer Group",
-    icon: getIcon("lucide:users-2", "#8b5cf6"),
-    path: "/conf/customer-group",
-    oldPath: "",
-  },
-  {
     title: "урамшуулал",
     titleEn: "Promotions",
     icon: getIcon("lucide:gift", "#ef4444"),

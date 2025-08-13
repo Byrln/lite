@@ -163,16 +163,15 @@ const RoomBlockList = ({ title, workingDate }: any) => {
         }}
         additionalButtons={
           <>
-            <Box sx={{ display: 'flex', mx: 2 }}>
-              <Button
-                variant="outlined"
-                color="warning"
-                onClick={handleUnblockSelected}
-                disabled={!Array.isArray(entity) || entity.length === 0 || !entity.some((block: any) => block.isChecked)}
-              >
-                {intl.formatMessage({ id: "TextUnblockSelected" })}
-              </Button>
-            </Box>
+            <Button
+              variant="outlined"
+              color="warning"
+              onClick={handleUnblockSelected}
+              className="py-2 rounded-xl"
+              disabled={!Array.isArray(entity) || entity.length === 0 || !entity.some((block: any) => block.isChecked)}
+            >
+              {intl.formatMessage({ id: "TextUnblockSelected" })}
+            </Button>
           </>
         }
         //hasUpdate={true}

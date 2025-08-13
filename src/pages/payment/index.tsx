@@ -12,7 +12,8 @@ import {
   DollarSign,
   Building2,
   Calculator,
-  Wallet
+  Wallet,
+  Users
 } from 'lucide-react';
 import { usePrivilegeChecker, PAYMENT_PRIVILEGES } from 'lib/utils/privilege-checker';
 
@@ -21,6 +22,7 @@ import PaymentMethodList from '@/components/rate/payment-method/list';
 import ExchangeRate from '@/components/payment/exchange-rate/list';
 import CompanyDatabase from '@/components/payment/company-database/list';
 import CashierList from '@/components/payment/cashier/list';
+import CustomerGroupList from 'components/conf/customer-group/list';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -139,6 +141,15 @@ const PaymentPage = () => {
       color: 'bg-purple-500',
       privilege: PAYMENT_PRIVILEGES.COMPANY_DATABASE,
       component: <CompanyDatabase title={intl.formatMessage({ id: 'PageTitleCompanyDatabase', defaultMessage: 'Company Database' })} />
+    },
+    {
+      id: 'customer-group',
+      title: intl.formatMessage({ id: 'menu.CustomerGroup', defaultMessage: 'Customer Group' }),
+      description: intl.formatMessage({ id: 'CustomerGroupDesc', defaultMessage: 'Manage customer groups and categories' }),
+      icon: <Users className="h-6 w-6" />,
+      color: 'bg-purple-500',
+      privilege: PAYMENT_PRIVILEGES.CUSTOMER_GROUP,
+      component: <CustomerGroupList title={intl.formatMessage({ id: 'PageTitleCustomerGroup', defaultMessage: 'Customer Group' })} />
     },
     {
       id: 'cashier',

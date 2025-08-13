@@ -41,5 +41,6 @@ export const PAYMENT_PRIVILEGES = {
   PAYMENT_METHODS: 'ConfigPaymentMethod',
   EXCHANGE_RATE: 'FrontExchangeRate',
   COMPANY_DATABASE: 'FrontCompanyDatabase',
+  CUSTOMER_GROUP: 'ConfigCustomerGroup',
   CASHIER: 'FrontCashier'
 };

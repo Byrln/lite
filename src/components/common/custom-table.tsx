@@ -680,7 +680,7 @@ const CustomTable = ({
             )}
             {hasDateRangePicker && (
               <DateRangePicker
-                className="rounded-lg text-primary bg-transparent hover:bg-purple-100 border-1.5 border-primary-light"
+                className="rounded-xl text-primary bg-transparent hover:bg-purple-100 ring-1.5 ring-primary-main"
                 startDate={dateRange.startDate}
                 endDate={dateRange.endDate}
                 onStartDateChange={handleStartDateChange}
@@ -695,13 +695,13 @@ const CustomTable = ({
                 }}
                 onClear={() => {
                   setDateRange({
-                    startDate: defaultStartDate,
-                    endDate: defaultEndDate,
+                    startDate: undefined,
+                    endDate: undefined,
                   });
                   if (onDateRangeChange) {
                     onDateRangeChange({
-                      startDate: defaultStartDate,
-                      endDate: defaultEndDate,
+                      startDate: undefined,
+                      endDate: undefined,
                     });
                   }
                 }}

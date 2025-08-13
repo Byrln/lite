@@ -36,6 +36,7 @@ export default function DateRangePicker({
   ...props
 }: DateRangePickerProps) {
   const intl = useIntl();
+  const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: startDate || addDays(new Date(), -20),
     to: endDate || new Date(),
@@ -43,20 +44,20 @@ export default function DateRangePicker({
 
   React.useEffect(() => {
     setDate({
-      from: startDate,
-      to: endDate,
+      from: startDate || undefined,
+      to: endDate || undefined,
     })
   }, [startDate, endDate])
 
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             id="date"
             variant="outline"
             className={cn(
-              "justify-start text-left font-normal hover:text-primary-main",
+              "justify-start bg-transparent border-[1.9px] border-primary-main text-left font-normal hover:text-primary-main",
               !date && "text-muted-foreground"
             )}
           >
@@ -93,9 +94,16 @@ export default function DateRangePicker({
               size="sm"
               onClick={() => {
                 setDate({ from: undefined, to: undefined })
+                if (onStartDateChange) {
+                  onStartDateChange(undefined)
+                }
+                if (onEndDateChange) {
+                  onEndDateChange(undefined)
+                }
                 if (onClear) {
                   onClear()
                 }
+                setOpen(false)
               }}
               className="flex-1 border-purple-500 text-purple-600 hover:text-primary-main"
             >
@@ -114,6 +122,7 @@ export default function DateRangePicker({
                 if (date?.to && onEndDateChange) {
                   onEndDateChange(date.to)
                 }
+                setOpen(false)
               }}
               className="flex-1"
             >
