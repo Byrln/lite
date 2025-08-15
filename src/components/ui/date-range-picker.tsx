@@ -3,7 +3,8 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/radix-popover"
+import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import { addDays, format } from "date-fns"
@@ -37,6 +38,8 @@ export default function DateRangePicker({
 }: DateRangePickerProps) {
   const intl = useIntl();
   const [open, setOpen] = React.useState(false);
+  
+
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: startDate || addDays(new Date(), -20),
     to: endDate || new Date(),
@@ -76,7 +79,7 @@ export default function DateRangePicker({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto p-0 z-[9999] bg-white border shadow-lg" align="start">
           <Calendar
             autoFocus
             mode="range"

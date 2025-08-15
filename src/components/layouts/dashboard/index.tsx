@@ -21,7 +21,7 @@ import { useAppState } from "lib/context/app"
 import { useBreadcrumbs } from "@/hooks/use-breadcrumbs"
 // import NotificationBell from "./notification-bell"
 import { CommandPalette, useCommandPalette } from "./command-palette"
-import { Search, Command, Home, Settings, Grid3X3, Calendar } from "lucide-react"
+import { Search, Command, Home, Settings, Grid3X3, Calendar, CalendarDays } from "lucide-react"
 import Link from "next/link"
 import { useIntl } from "react-intl";
 import CalendarControlsModal from "@/components/common/calendar-controls-modal";
@@ -32,6 +32,9 @@ import { mutate } from "swr";
 import { FilterList } from "@mui/icons-material"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { FrontOfficeAPI } from "lib/api/front-office"
+import { format } from "date-fns"
+import { getCurrentDate } from "lib/utils/helpers"
 
 
 const getModifierKey = () => {
@@ -51,6 +54,8 @@ function DashboardContent({ children }: any) {
   const [modifierKey, setModifierKey] = useState('Ctrl')
   const [calendarModalOpen, setCalendarModalOpen] = useState(false)
   const [isCalendarLoading, setIsCalendarLoading] = useState(false)
+  const [workingDate, setWorkingDate] = useState<string | null>(null)
+  const [isNavigating, setIsNavigating] = useState(false)
 
   const router = useRouter()
   const intl = useIntl();
@@ -89,7 +94,7 @@ function DashboardContent({ children }: any) {
           '/api/RoomBlock/List',
           '/api/FrontOffice/WorkingDate'
         ];
-        
+
         await Promise.all(
           endpoints.map(endpoint => {
             // Handle both simple string keys and array keys [url, params]
@@ -138,11 +143,45 @@ function DashboardContent({ children }: any) {
 
   useEffect(() => {
     setModifierKey(getModifierKey())
+    fetchWorkingDate()
   }, [])
 
+  const fetchWorkingDate = async () => {
+    try {
+      const response = await FrontOfficeAPI.workingDate()
+      if (response.status === 200 && response.workingDate && response.workingDate.length > 0) {
+        setWorkingDate(response.workingDate[0].WorkingDate)
+      } else {
+        // Fallback to current date if API response is invalid
+        setWorkingDate(new Date().toISOString().split('T')[0])
+      }
+    } catch (error) {
+      // Fallback to current date if API fails
+      setWorkingDate(new Date().toISOString().split('T')[0])
+    }
+  }
+
+  const navigateToToday = async () => {
+    setIsNavigating(true)
+    try {
+      const today = new Date(getCurrentDate())
+      setSearchCurrDate(today)
+      setRerenderKey(prev => prev + 1)
+      // Add a small delay to show loading state
+      await new Promise(resolve => setTimeout(resolve, 300))
+    } finally {
+      setIsNavigating(false)
+    }
+  }
+
+  // Keyboard shortcut for calendar modal (Alt + B) - only on handsontable pages
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if ((e.key === 'b' || e.key === 'B') && e.altKey) {
+      if (
+        isHandsontablePage &&
+        (e.key === 'b' || e.key === 'B') &&
+        e.altKey
+      ) {
         e.preventDefault()
         setCalendarModalOpen((open) => !open)
       }
@@ -150,7 +189,7 @@ function DashboardContent({ children }: any) {
 
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
-  }, [])
+  }, [isHandsontablePage])
 
   function filterMenu(menu: any, uniqueMenuLinks: any) {
     return menu.reduce((filteredMenu: any, item: any) => {
@@ -249,6 +288,32 @@ function DashboardContent({ children }: any) {
             </Breadcrumb>
           </div>
           <div className="flex items-center gap-2 px-4">
+            {/* Working Date Display */}
+            {workingDate && (
+              <div
+                className={`flex items-center gap-2 px-3 py-1 border border-blue-200 bg-blue-50 rounded-md shadow-sm transition-all duration-200 ${isNavigating
+                    ? 'opacity-70 cursor-wait'
+                    : 'cursor-pointer hover:bg-blue-100'
+                  }`}
+                onClick={!isNavigating ? navigateToToday : undefined}
+                title={isNavigating ? "Navigating..." : "Click to go to today"}
+              >
+                <CalendarDays className={`h-4 w-4 text-blue-600 transition-transform duration-200 ${isNavigating ? 'animate-spin' : ''
+                  }`} />
+                <span className="text-sm font-medium text-blue-800">
+                  {intl.formatMessage({ id: "WorkingDate" }, { defaultMessage: "Working Date" })}
+                </span>
+                <span className="text-sm font-semibold text-blue-900">
+                  {format(new Date(workingDate.replace(/ /g, "T")), "MMM dd, yyyy")}
+                </span>
+                {isNavigating && (
+                  <span className="text-xs text-blue-600 animate-pulse">
+                    Loading...
+                  </span>
+                )}
+              </div>
+            )}
+
             {/* Refresh Button - Only visible on handsontable pages */}
             {isHandsontablePage && (
               <div className="flex gap-2 items-center">

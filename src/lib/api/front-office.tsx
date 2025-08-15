@@ -23,7 +23,7 @@ export const FrontOfficeSWR = (search: any) => {
 
 export const WorkingDateSWR = () => {
     const fetcher = async (url: any) =>
-        await axios.post(url).then((res: any) => {
+        await axios.get(url).then((res: any) => {
             let workingDate = res.data.JsonData;
             return workingDate;
         });

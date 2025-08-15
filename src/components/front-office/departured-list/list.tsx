@@ -1,7 +1,8 @@
 import { format } from "date-fns";
+import { useIntl } from "react-intl";
 
 import CustomTable from "components/common/custom-table";
-import { DepartedListSWR, ReservationAPI, listUrl } from "lib/api/reservation";
+import { DepartedListSWR, GroupReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
 import NewEdit from "./new-edit";
 
 const columns = [
@@ -70,6 +71,8 @@ const columns = [
 ];
 
 const DeparturedListList = ({ title }: any) => {
+    const intl = useIntl();
+
     const { data, error } = DepartedListSWR();
 
     return (
@@ -86,6 +89,8 @@ const DeparturedListList = ({ title }: any) => {
             modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}
+            additionalButtons={null}
+            datagrid={false}
         />
     );
 };

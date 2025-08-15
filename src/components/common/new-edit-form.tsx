@@ -40,37 +40,41 @@ const NewEditForm = ({
 
                 try {
                     const arr: any = await api?.get(state.editId);
-                    if (dateKeys) {
-                        if (Array.isArray(dateKeys)) {
-                            for (const key of dateKeys) {
-                                if (arr[0][key]) {
-                                    arr[0][key] = format(
+                    
+                    // Check if arr exists and has at least one element
+                    if (arr && arr.length > 0) {
+                        if (dateKeys) {
+                            if (Array.isArray(dateKeys)) {
+                                for (const key of dateKeys) {
+                                    if (arr[0][key]) {
+                                        arr[0][key] = format(
+                                            new Date(
+                                                arr[0][key].replace(/ /g, "T")
+                                            ),
+                                            "yyyy-MM-dd"
+                                        );
+                                    }
+                                }
+                            } else {
+                                if (arr[0][dateKeys]) {
+                                    arr[0][dateKeys] = format(
                                         new Date(
-                                            arr[0][key].replace(/ /g, "T")
+                                            arr[0][dateKeys].replace(/ /g, "T")
                                         ),
                                         "yyyy-MM-dd"
                                     );
                                 }
                             }
-                        } else {
-                            if (arr[0][dateKeys]) {
-                                arr[0][dateKeys] = format(
-                                    new Date(
-                                        arr[0][dateKeys].replace(/ /g, "T")
-                                    ),
-                                    "yyyy-MM-dd"
-                                );
-                            }
                         }
-                    }
 
-                    if (setEntity) {
-                        setEntity(arr[0]);
-                    }
-                    if (customResetEvent) {
-                        customResetEvent(arr);
-                    } else {
-                        reset(arr[0]);
+                        if (setEntity) {
+                            setEntity(arr[0]);
+                        }
+                        if (customResetEvent) {
+                            customResetEvent(arr);
+                        } else {
+                            reset(arr[0]);
+                        }
                     }
                 } finally {
                     setLoadingData(false);

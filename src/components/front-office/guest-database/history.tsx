@@ -76,6 +76,7 @@ const GuestHistory = ({ title }: any) => {
             modalTitle={title}
             modalContent={<NewEdit />}
             excelName={title}
+            datagrid={false}
         />
     );
 };

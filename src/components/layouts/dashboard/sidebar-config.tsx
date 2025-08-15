@@ -40,7 +40,7 @@ const sidebarConfig = [
     titleEn: "Reservation List",
     path: "/front-office/reservation-list",
     oldPath: "FrontOffice/ReservationList.aspx",
-    icon: getIcon("lucide:shopping-cart"),
+    icon: getIcon("lucide:book-user"),
   },
   {
     title: "өдрийн өндөрлөгөө",
@@ -83,27 +83,6 @@ const sidebarConfig = [
     path: "/handsontable",
     icon: getIcon("lucide:calendar"),
     oldPath: "FrontOffice/StayView.aspx",
-  },
-  {
-    title: "Тариф",
-    titleEn: "Rate",
-    icon: getIcon("lucide:tag"),
-    path: "/rate",
-    oldPath: "Configuration/Rates.aspx",
-  },
-  {
-    title: "Төлбөр, тооцоо",
-    titleEn: "Payment",
-    icon: getIcon("lucide:credit-card"),
-    path: "/payment",
-    oldPath: "FrontOffice/CurrencyRate.aspx",
-  },
-  {
-    title: "өрөөний удирдлага",
-    titleEn: "Room Management",
-    icon: getIcon("lucide:home"),
-    path: "/room/management",
-    oldPath: "Configuration/Rooms.aspx",
   },
   {
     title: "тайлан",
@@ -492,6 +471,29 @@ const sidebarConfig = [
     icon: getIcon("lucide:user", "#06b6d4"),
     path: "/conf/user",
     oldPath: "",
+  },
+  {
+    title: "Тариф",
+    titleEn: "Rate",
+    icon: getIcon("lucide:tag", "#fc032c"),
+
+    path: "/rate",
+    oldPath: "Configuration/Rates.aspx",
+  },
+  {
+    title: "Төлбөр, тооцоо",
+    titleEn: "Payment",
+    icon: getIcon("lucide:credit-card", "#a9fc03"),
+    path: "/payment",
+    oldPath: "FrontOffice/CurrencyRate.aspx",
+  },
+  {
+    title: "өрөөний удирдлага",
+    titleEn: "Room Management",
+    icon: getIcon("lucide:home", "#fc9003"),
+
+    path: "/room/management",
+    oldPath: "Configuration/Rooms.aspx",
   },
   {
     title: "шалтгаан",

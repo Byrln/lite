@@ -36,4 +36,13 @@ export const TransactionAPI = {
         }
         return item;
     },
+    
+    getByGroupID: async (groupID: any) => {
+        const values = {
+            GroupID: groupID,
+            TransactionID: null,
+        };
+        const res = await axios.post(listUrl, values);
+        return res.data.JsonData || [];
+    },
 };

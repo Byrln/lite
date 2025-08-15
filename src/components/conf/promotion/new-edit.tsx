@@ -15,11 +15,14 @@ import moment from "moment";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useIntl } from "react-intl";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { mutate } from "swr";
+import { toast } from "react-toastify";
 
 import NewEditForm from "components/common/new-edit-form";
 import { PromotionAPI, listUrl } from "lib/api/promotion";
 import { useAppState } from "lib/context/app";
+import { ModalContext } from "lib/context/modal";
 import PromotionTypeSelect from "components/select/promotion-type";
 import CustomSelect from "components/common/custom-select";
 import ReservationSourceSelect from "components/select/booking-source-check";
@@ -36,11 +39,13 @@ const validationSchema = yup.object().shape({
     BeginDate: yup.date().required("Бөглөнө үү"),
     EndDate: yup.date().required("Бөглөнө үү"),
     AvailableOn: yup.number().required("Бөглөнө үү").typeError("Бөглөнө үү"),
+    Loyalty: yup.boolean().default(false),
 });
 
 const NewEdit = () => {
     const intl = useIntl();
     const [state]: any = useAppState();
+    const { handleModal }: any = useContext(ModalContext);
     const {
         register,
         reset,
@@ -65,23 +70,29 @@ const NewEdit = () => {
 
     const customSubmit = async (values: any) => {
         try {
+            console.log('Starting customSubmit with values:', values);
+            
             if (!state.editId) {
                 delete values.PromotionID;
             }
 
-            values.BeginDate = moment(values.BeginData).format("YYYY-MM-DD");
+            values.BeginDate = moment(values.BeginDate).format("YYYY-MM-DD");
             values.EndDate = moment(values.EndDate).format("YYYY-MM-DD");
 
             let RoomTypeIDs: any = [];
-            values.RoomTypeIDs.forEach((RoomType: any) => {
-                RoomTypeIDs.push({ ItemID: Number(RoomType) });
-            });
+            if (values.RoomTypeIDs && Array.isArray(values.RoomTypeIDs)) {
+                values.RoomTypeIDs.forEach((RoomType: any) => {
+                    RoomTypeIDs.push({ ItemID: Number(RoomType) });
+                });
+            }
             values.RoomTypeIDs = RoomTypeIDs;
 
             let SourceIDs: any = [];
-            values.SourceIDs.forEach((SourceID: any) => {
-                SourceIDs.push({ ItemID: Number(SourceID) });
-            });
+            if (values.SourceIDs && Array.isArray(values.SourceIDs)) {
+                values.SourceIDs.forEach((SourceID: any) => {
+                    SourceIDs.push({ ItemID: Number(SourceID) });
+                });
+            }
             values.SourceIDs = SourceIDs;
             values.Rates = [];
 
@@ -168,13 +179,32 @@ const NewEdit = () => {
 
             values.AllRoomType = roomAllCheck;
             values.AllSource = sourceAllCheck;
+            values.Loyalty = values.Loyalty || false;
 
+            console.log('Final values before API call:', values);
+            
             if (state.editId) {
+                console.log('Updating promotion with ID:', state.editId);
                 await PromotionAPI?.update(values);
+                toast.success('Promotion updated successfully!');
             } else {
+                console.log('Creating new promotion');
                 await PromotionAPI?.new(values);
+                toast.success('Promotion created successfully!');
             }
-        } finally {
+            
+            console.log('Save operation completed successfully');
+            
+            // Refresh the promotion list data
+            await mutate(listUrl);
+            
+            // Close the modal
+            handleModal();
+            
+        } catch (error) {
+            console.error('Error in customSubmit:', error);
+            toast.error('Failed to save promotion. Please try again.');
+            throw error;
         }
     };
 
@@ -209,6 +239,7 @@ const NewEdit = () => {
             PromotionTypeID: data[0].PromotionTypeID,
             Description: data[0].Description,
             AvailableOn: data[0].AvailableOn,
+            Loyalty: data[0].Loyalty || false,
             Rate:
                 data.filter(
                     (item: any) =>
@@ -518,6 +549,18 @@ const NewEdit = () => {
                             ]}
                             optionValue="key"
                             optionLabel="value"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    {...register("Loyalty")}
+                                    color="primary"
+                                />
+                            }
+                            label={intl.formatMessage({
+                                id: "TextLoyalty",
+                                defaultMessage: "Loyalty Program"
+                            })}
                         />
                         <div style={{ width: "100%" }}>
                             <ReservationSourceSelect

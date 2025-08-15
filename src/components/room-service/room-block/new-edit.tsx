@@ -4,9 +4,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState, useEffect } from "react";
 import moment from "moment";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DateRangePicker from "@/components/ui/date-range-picker";
+
 import { useIntl } from "react-intl";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
@@ -57,7 +56,7 @@ const NewEdit = ({ workingDate }: any) => {
   const watchedBeginDate = watch("BeginDate");
   const watchedEndDate = watch("EndDate");
 
-  const [selectedRoomType, setSelectedRoomType] = useState<any>(null);
+  const [selectedRoomType, setSelectedRoomType] = useState<any>(0); // Default to 0 (All room types)
   const [selectedRooms, setSelectedRooms] = useState<{ [key: number]: boolean }>({});
 
   const onRoomTypeChange = (roomTypeId: number) => {
@@ -67,7 +66,7 @@ const NewEdit = ({ workingDate }: any) => {
   };
 
   const fetchRooms = async () => {
-    if (!selectedRoomType || !watchedBeginDate || !watchedEndDate) {
+    if (!watchedBeginDate || !watchedEndDate) {
       setData([]);
       return;
     }
@@ -75,7 +74,7 @@ const NewEdit = ({ workingDate }: any) => {
     try {
       const values = {
         TransactionID: 0,
-        RoomTypeID: selectedRoomType === "all" ? 0 : selectedRoomType,
+        RoomTypeID: selectedRoomType, // 0 means All room types, other numbers are specific room types
         StartDate: dateToSimpleFormat(watchedBeginDate),
         EndDate: dateToSimpleFormat(watchedEndDate),
       };
@@ -144,76 +143,22 @@ const NewEdit = ({ workingDate }: any) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit(customSubmit)}>
-      <LocalizationProvider // @ts-ignore
-        dateAdapter={AdapterDateFns} // @ts-ignore
-      >
-        <Grid container spacing={1}>
-          {/* <Grid item xs={3}>
-                        <RoomSelect
-                            register={register}
-                            errors={errors}
-                            baseStay={baseStay}
-                            onRoomChange={onRoomChange}
-                            customRegisterName="RoomID"
-                        />
-                    </Grid> */}
-          <Grid item xs={4}>
-            <Controller
-              name="BeginDate"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <DatePicker
-                  label={intl.formatMessage({
-                    id: "RowHeaderBeginDate",
-                  })}
-                  value={value}
-                  maxDate={watchedEndDate || undefined}
-                  onChange={(newValue) => {
-                    onChange(newValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      size="small"
-                      margin="dense"
-                      fullWidth
-                      {...params}
-                      error={!!errors.BeginDate}
-                      helperText={errors.BeginDate?.message as string}
-                    />
-                  )}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <Controller
-              name="EndDate"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <DatePicker
-                  label={intl.formatMessage({
-                    id: "RowHeaderEndDate",
-                  })}
-                  value={value}
-                  minDate={watchedBeginDate || undefined}
-                  onChange={(newValue) => {
-                    onChange(newValue);
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      size="small"
-                      margin="dense"
-                      fullWidth
-                      {...params}
-                      error={!!errors.EndDate}
-                      helperText={errors.EndDate?.message as string}
-                    />
-                  )}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={4}>
+      <Grid container spacing={1}>
+        <Grid item xs={8}>
+          <DateRangePicker
+            startDate={watchedBeginDate}
+            endDate={watchedEndDate}
+            onStartDateChange={(date) => {
+              setValue("BeginDate", date || new Date());
+            }}
+            onEndDateChange={(date) => {
+              setValue("EndDate", date || new Date());
+            }}
+            startLabel={intl.formatMessage({ id: "RowHeaderBeginDate" })}
+            endLabel={intl.formatMessage({ id: "RowHeaderEndDate" })}
+          />
+        </Grid>
+        <Grid item xs={4}>
             <ReasonSelect
               register={register}
               errors={errors}
@@ -255,13 +200,12 @@ const NewEdit = ({ workingDate }: any) => {
                 </Grid>
               );
             })}
-        </Grid>
         <Grid item xs={12}>
           <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
             <SubmitButton loading={loading} />
           </Box>
         </Grid>
-      </LocalizationProvider>
+      </Grid>
     </Box>
   );
 };

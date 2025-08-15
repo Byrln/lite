@@ -72,6 +72,9 @@ export function HotelSidebar({ sideBarData, ...props }: HotelSidebarProps) {
       return configToUse.filter(item =>
         item.path?.startsWith('/conf/') ||
         item.path?.startsWith('/mini-bar/') ||
+        item.path?.startsWith('/payment') ||
+        item.path?.startsWith('/rate') ||
+        item.path?.startsWith('/room/management') ||
         item.titleEn === 'Accounting' ||
         item.titleEn === 'Pos Api Config' ||
         item.titleEn === 'Hotel Information' ||
@@ -92,6 +95,9 @@ export function HotelSidebar({ sideBarData, ...props }: HotelSidebarProps) {
       return configToUse.filter(item =>
         !(item.path?.startsWith('/conf/') ||
           item.path?.startsWith('/mini-bar/') ||
+          item.path?.startsWith('/payment') ||
+          item.path?.startsWith('/rate') ||
+          item.path?.startsWith('/room/management') ||
           item.titleEn === 'Accounting' ||
           item.titleEn === 'Pos Api Config' ||
           item.titleEn === 'Hotel Information' ||

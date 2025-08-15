@@ -228,7 +228,7 @@ const ReservationNav = ({
       )}
       <a
         href={
-          locale == "mon"
+          locale == "/"
             ? `/transaction/edit/${reservation.TransactionID}`
             : `/en/transaction/edit/${reservation.TransactionID}`
         }
@@ -295,20 +295,9 @@ const ReservationNav = ({
               href="https://youtu.be/Sy-JD06vChY"
               passHref
               target="_blank"
-              style={{
-                paddingLeft: "6px",
-                paddingRight: "6px",
-                paddingTop: "3px",
-              }}
-              legacyBehavior>
+            >
 
               <YouTube height={24} className="text-[#FF0000] cursor-pointer mx-2 size-5" />
-              {/* <Icon
-                                  icon="material-symbols:youtube"
-                                  color="#1877F2"
-                                  height={16}
-                              /> */}
-
             </Link>
           </Tooltip>
         </div>
@@ -344,7 +333,7 @@ const ReservationNav = ({
               href="https://youtu.be/rvXMlvBKgfI"
               passHref
               target="_blank"
-              legacyBehavior>
+            >
 
               <YouTube height={24} className="text-[#FF0000] cursor-pointer mx-2 size-5" />
 
@@ -382,13 +371,7 @@ const ReservationNav = ({
             <Link
               href="https://youtu.be/0Qa_qgWXlvM?si=lMb9Qyq4m9IwFyRX"
               passHref
-              target="_blank"
-              style={{
-                paddingLeft: "6px",
-                paddingRight: "6px",
-                paddingTop: "3px",
-              }}
-              legacyBehavior>
+              target="_blank">
 
               <YouTube height={24} className="text-[#FF0000] cursor-pointer mx-2 size-5" />
 
@@ -426,13 +409,7 @@ const ReservationNav = ({
             <Link
               href="https://youtu.be/-BIFndvkXRo?si=RmQ_k9OzLk3YQamM"
               passHref
-              target="_blank"
-              style={{
-                paddingLeft: "6px",
-                paddingRight: "6px",
-                paddingTop: "3px",
-              }}
-              legacyBehavior>
+              target="_blank">
 
               <YouTube height={24} className="text-[#FF0000] cursor-pointer mx-2 size-5" />
 

@@ -1,9 +1,10 @@
+import { format } from "date-fns";
 import { useState } from "react";
 import { ToggleButton, ToggleButtonGroup, Tooltip, alpha, useTheme } from "@mui/material";
 import { useIntl } from "react-intl";
 
 import CustomTable from "components/common/custom-table";
-import { DepartureSWR, GroupReservationSWR, ReservationAPI, listUrl } from "lib/api/reservation";
+import { InHouseListSWR, ReservationAPI, listUrl } from "lib/api/reservation";
 import NewEdit from "./new-edit";
 
 const columns = [
@@ -16,11 +17,23 @@ const columns = [
     title: "Arrival",
     key: "ArrivalDate",
     dataIndex: "ArrivalDate",
+    render: function render(id: any, value: any) {
+      return (value && format(
+        new Date(value.replace(/ /g, "T")),
+        "MM/dd/yyyy"
+      ));
+    },
   },
   {
     title: "Departure",
     key: "DepartureDate",
     dataIndex: "DepartureDate",
+    render: function render(id: any, value: any) {
+      return (value && format(
+        new Date(value.replace(/ /g, "T")),
+        "MM/dd/yyyy"
+      ));
+    },
   },
   {
     title: "Guest",
@@ -33,7 +46,7 @@ const columns = [
     dataIndex: "RoomFullName",
   },
   {
-    title: "company",
+    title: "Company",
     key: "CustomerName",
     dataIndex: "CustomerName",
   },
@@ -59,48 +72,56 @@ const columns = [
   },
 ];
 
-const DepartureListList = ({ title }: any) => {
+const InHouseListList = ({ title }: any) => {
   const [dateFilter, setDateFilter] = useState<'today' | 'tomorrow' | 'weekly'>('today');
   const intl = useIntl();
   const theme = useTheme();
 
-  // Calculate date range based on filter
   const getDateRange = () => {
     const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const weekEnd = new Date(today);
+    weekEnd.setDate(today.getDate() + 7);
 
-    if (dateFilter === 'today') {
-      const todayStr = today.toISOString().split('T')[0];
-      return { startDate: todayStr, endDate: todayStr };
-    } else if (dateFilter === 'tomorrow') {
-      const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-      const tomorrowStr = tomorrow.toISOString().split('T')[0];
-      return { startDate: tomorrowStr, endDate: tomorrowStr };
-    } else if (dateFilter === 'weekly') {
-      const todayStr = today.toISOString().split('T')[0];
-      const weekLater = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-      const weekLaterStr = weekLater.toISOString().split('T')[0];
-      return { startDate: todayStr, endDate: weekLaterStr };
-    } else {
-      // Default: today only
-      const todayStr = today.toISOString().split('T')[0];
-      return { startDate: todayStr, endDate: todayStr };
+    switch (dateFilter) {
+      case 'today':
+        return {
+          startDate: today.toISOString().split('T')[0],
+          endDate: today.toISOString().split('T')[0]
+        };
+      case 'tomorrow':
+        return {
+          startDate: tomorrow.toISOString().split('T')[0],
+          endDate: tomorrow.toISOString().split('T')[0]
+        };
+      case 'weekly':
+        return {
+          startDate: today.toISOString().split('T')[0],
+          endDate: weekEnd.toISOString().split('T')[0]
+        };
+      default:
+        return {
+          startDate: today.toISOString().split('T')[0],
+          endDate: today.toISOString().split('T')[0]
+        };
     }
   };
 
   const { startDate, endDate } = getDateRange();
 
-  // Prepare search parameters for DepartureList API
-  const departureSearchParams = {
+  // For single reservations, we'll use a modified search that filters for individual reservations
+  const searchParams = {
     StartDate: startDate,
     EndDate: endDate,
     GroupID: 0,
     GroupInReserv: false,
-    GroupInHouse: false,
+    GroupInHouse: true,
     GroupDeparted: false,
     GroupCode: ""
   };
 
-  const { data, error } = DepartureSWR(departureSearchParams);
+  const { data, error } = InHouseListSWR(searchParams);
 
   const handleDateFilterChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -143,18 +164,17 @@ const DepartureListList = ({ title }: any) => {
           },
         }}
       >
-        <Tooltip title="Today's departures" arrow>
+        <Tooltip title="Today's in-house guests" arrow>
           <ToggleButton value="today" aria-label="today">
             {intl.formatMessage({ id: "TextToday" })}
           </ToggleButton>
         </Tooltip>
-        <Tooltip title="Tomorrow's departures" arrow>
+        <Tooltip title="Tomorrow's in-house guests" arrow>
           <ToggleButton value="tomorrow" aria-label="tomorrow">
             {intl.formatMessage({ id: "TextTomorrow" })}
-
           </ToggleButton>
         </Tooltip>
-        <Tooltip title="Weekly departures" arrow>
+        <Tooltip title="Weekly in-house guests" arrow>
           <ToggleButton value="weekly" aria-label="weekly">
             {intl.formatMessage({ id: "TextWeekly" })}
           </ToggleButton>
@@ -174,11 +194,12 @@ const DepartureListList = ({ title }: any) => {
       hasNew={false}
       hasUpdate={false}
       hasDelete={false}
-      id="DeparturedListID"
+      id="TransactionID"
       listUrl={listUrl}
       modalTitle={title}
       modalContent={<NewEdit />}
       excelName={title}
+      datagrid={false}
       additionalButtons={
         <div className="flex items-center">
           <DateFilterButtons />
@@ -188,4 +209,4 @@ const DepartureListList = ({ title }: any) => {
   );
 };
 
-export default DepartureListList;
+export default InHouseListList;

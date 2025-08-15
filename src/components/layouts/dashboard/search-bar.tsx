@@ -1,12 +1,14 @@
 import { Icon } from "@iconify/react";
-import { useState } from "react";
-import searchFill from "@iconify/icons-eva/search-fill";
+import { useState, useEffect } from "react";
+import filterFill from "@iconify/icons-eva/funnel-fill";
 import { styled, alpha } from "@mui/material/styles";
 import {
   Modal,
   IconButton,
   Paper,
+  Tooltip,
 } from "@mui/material";
+import { useIntl } from "react-intl";
 
 const SearchModalStyle = styled(Paper)(({ theme }: any) => ({
   position: "absolute",
@@ -33,6 +35,7 @@ const SearchModalStyle = styled(Paper)(({ theme }: any) => ({
 
 export default function Searchbar({ children }: any) {
   const [isOpen, setOpen] = useState(false);
+  const intl = useIntl();
 
   const handleOpen = () => {
     setOpen((prev) => !prev);
@@ -42,11 +45,27 @@ export default function Searchbar({ children }: any) {
     setOpen(false);
   };
 
+  // Add keyboard shortcut for Alt+B
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.altKey && event.key.toLowerCase() === 'b') {
+        event.preventDefault();
+        handleOpen();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <>
-      <IconButton onClick={handleOpen}>
-        <Icon icon={searchFill} width={20} height={20} />
-      </IconButton>
+      <Tooltip title={intl.formatMessage({ id: "TooltipFilter" })} arrow>
+        <IconButton onClick={handleOpen} className="rounded-full bg-primary-main hover:bg-primary-dark">
+
+          <Icon icon={filterFill} className="text-white" width={20} height={20} />
+        </IconButton>
+      </Tooltip>
 
       <Modal
         open={isOpen}

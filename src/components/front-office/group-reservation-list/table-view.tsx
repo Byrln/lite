@@ -1,9 +1,10 @@
 // import { format } from "date-fns";
+
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Tooltip, alpha, useTheme, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Button, ToggleButton, ToggleButtonGroup, Tooltip, alpha, useTheme, Box } from "@mui/material";
 import { format } from "date-fns";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/router";
@@ -18,12 +19,15 @@ import { ModalContext } from "lib/context/modal";
 interface ReservationListProps {
   title: string;
   workingDate: string;
-  viewMode?: 'arrival' | 'group';
-  onViewModeChange?: (mode: 'arrival' | 'group') => void;
+  groupColor?: string;
+  viewMode?: 'table' | 'card';
+  onViewModeChange?: (mode: 'table' | 'card') => void;
+  externalViewMode?: 'arrival' | 'group';
+  onExternalViewModeChange?: (event: React.MouseEvent<HTMLElement>, newView: 'arrival' | 'group') => void;
   dateFilter?: 'today' | 'tomorrow' | 'weekly';
 }
 
-const DeparturedListList = ({ title, workingDate, viewMode = 'arrival', onViewModeChange, dateFilter }: ReservationListProps) => {
+const GroupReservationTablelist = ({ title, workingDate, groupColor, viewMode = 'table', onViewModeChange, externalViewMode = 'arrival', onExternalViewModeChange, dateFilter }: ReservationListProps) => {
   const router = useRouter();
   const { StatusGroup, StartDate, EndDate, ReservationTypeID } = router.query;
   const [rerenderKey, setRerenderKey] = useState(0);
@@ -343,8 +347,8 @@ const DeparturedListList = ({ title, workingDate, viewMode = 'arrival', onViewMo
     },
   ];
 
-  // Use appropriate columns based on view mode
-  const columns = viewMode === 'arrival' ? singleColumns : groupColumns;
+  // Use appropriate columns based on external view mode
+  const columns = externalViewMode === 'arrival' ? singleColumns : groupColumns;
 
   const validationSchema = yup.object().shape({
     StartDate: yup.date().nullable(),
@@ -423,14 +427,16 @@ const DeparturedListList = ({ title, workingDate, viewMode = 'arrival', onViewMo
     setRerenderKey(prev => prev + 1);
   }, [StatusGroup, StartDate, EndDate, ReservationTypeID, currentDateFilter]);
 
-  // Use different API endpoints based on view mode
-  const { data: singleData, error: singleError } = ReservationSWR(viewMode === 'arrival' ? search : null);
-  const { data: groupData, error: groupError } = GroupReservationSWR(viewMode === 'group' ? groupSearch : null);
+  // Use different API endpoints based on external view mode
+  const { data: singleData, error: singleError } = ReservationSWR(externalViewMode === 'arrival' ? search : undefined);
+  const { data: groupData, error: groupError } = GroupReservationSWR(externalViewMode === 'group' ? groupSearch : undefined);
 
-  // Filter data to show only non-group operations (GroupOperation: false)
-  const rawData = viewMode === 'arrival' ? singleData : groupData;
-  const data = rawData ? rawData.filter((item: any) => item.GroupOperation === false) : rawData;
-  const error = viewMode === 'arrival' ? singleError : groupError;
+  // Filter data to show only group operations (GroupOperation: true)
+  const rawData = externalViewMode === 'arrival' ? singleData : groupData;
+  const data = rawData ? rawData.filter((item: any) => item.GroupOperation === true) : rawData;
+  const error = externalViewMode === 'arrival' ? singleError : groupError;
+
+
 
   const handleDateFilterChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -481,18 +487,27 @@ const DeparturedListList = ({ title, workingDate, viewMode = 'arrival', onViewMo
         <Tooltip title="Tomorrow's reservations" arrow>
           <ToggleButton value="tomorrow" aria-label="tomorrow">
             {intl.formatMessage({ id: "TextTomorrow" })}
-
           </ToggleButton>
         </Tooltip>
         <Tooltip title="Weekly reservations" arrow>
           <ToggleButton value="weekly" aria-label="weekly">
             {intl.formatMessage({ id: "TextWeekly" })}
-
           </ToggleButton>
         </Tooltip>
       </ToggleButtonGroup>
     </div>
   );
+
+  const handleViewChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newView: 'table' | 'card'
+  ) => {
+    if (newView !== null && onViewModeChange) {
+      onViewModeChange(newView);
+    }
+  };
+
+
 
 
 
@@ -508,8 +523,7 @@ const DeparturedListList = ({ title, workingDate, viewMode = 'arrival', onViewMo
           hasUpdate={false}
           hasDelete={false}
           hasShow={false}
-          id={viewMode === 'arrival' ? "TransactionID" : "GroupID"}
-          datagrid={false}
+          id={externalViewMode === 'arrival' ? "TransactionID" : "GroupID"}
           listUrl={listUrl}
           modalTitle={title}
           modalContent={<NewEdit workingDate={workingDate} />}
@@ -522,11 +536,11 @@ const DeparturedListList = ({ title, workingDate, viewMode = 'arrival', onViewMo
           search={
             <CustomSearch
               listUrl={listUrl}
-              search={viewMode === 'arrival' ? search : groupSearch}
-              setSearch={viewMode === 'arrival' ? setSearch : setGroupSearch}
+              search={externalViewMode === 'arrival' ? search : groupSearch}
+              setSearch={externalViewMode === 'arrival' ? setSearch : setGroupSearch}
               handleSubmit={handleSubmit}
               reset={reset}
-              searchInitialState={viewMode === 'arrival' ? {
+              searchInitialState={externalViewMode === 'arrival' ? {
                 StatusGroup: StatusGroup ? StatusGroup : "1",
                 StartDate: StartDate
                   ? StartDate
@@ -562,4 +576,4 @@ const DeparturedListList = ({ title, workingDate, viewMode = 'arrival', onViewMo
   );
 };
 
-export default DeparturedListList;
+export default GroupReservationTablelist;
