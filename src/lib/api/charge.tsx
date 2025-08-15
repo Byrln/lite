@@ -19,7 +19,7 @@ export const ChargeSummarySWR = (TransactionID: any) => {
             .post(`${urlPrefix}/Summary`, { TransactionID: TransactionID })
             .then((res: any) => res.data.JsonData);
 
-    return useSWR(`${urlPrefix}/Summary`, fetcher);
+    return useSWR([`${urlPrefix}/Summary`, TransactionID], fetcher);
 };
 
 export const RoomChargeSWR = (search: any) => {

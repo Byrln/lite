@@ -11,10 +11,23 @@ const title = "Календар";
 
 const Index = () => {
     const [workingDate, setWorkingDate]: any = useState(null);
+    const [calendarMutate, setCalendarMutate] = useState<(() => void) | null>(null);
 
     useEffect(() => {
         fetchDatas();
     }, []);
+
+    // Expose calendar mutate function globally
+    useEffect(() => {
+        if (calendarMutate && typeof window !== 'undefined') {
+            (window as any).mutateCalendar = calendarMutate;
+        }
+        return () => {
+            if (typeof window !== 'undefined') {
+                delete (window as any).mutateCalendar;
+            }
+        };
+    }, [calendarMutate]);
 
     const fetchDatas = async () => {
         let response = await FrontOfficeAPI.workingDate();
@@ -34,6 +47,7 @@ const Index = () => {
                     {workingDate && (
                         <MyScheduler //@ts-ignore
                             workingDate={workingDate}
+                            onMutate={setCalendarMutate}
                         />
                     )}
                 </Container>

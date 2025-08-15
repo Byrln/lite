@@ -6,93 +6,93 @@ import { DepartedListSWR, GroupReservationSWR, ReservationAPI, listUrl } from "l
 import NewEdit from "./new-edit";
 
 const columns = [
-    {
-        title: "Check In",
-        key: "CheckIn",
-        dataIndex: "CheckIn",
+  {
+    title: "TransactionID",
+    key: "TransactionID",
+    dataIndex: "TransactionID",
+  },
+  {
+    title: "CheckedInDate",
+    key: "CheckedInDate",
+    dataIndex: "CheckedInDate",
+    render: function render(id: any, value: any) {
+      return (value && format(
+        new Date(value.replace(/ /g, "T")),
+        "yyyy-MM-dd"
+      ));
     },
-    {
-        title: "Arrival",
-        key: "ArrivalDate",
-        dataIndex: "ArrivalDate",
-        render: function render(id: any, value: any) {
-            return (value && format(
-                new Date(value.replace(/ /g, "T")),
-                "MM/dd/yyyy hh:mm:ss a"
-            ));
-        },
+  },
+  {
+    title: "CheckedOutDate",
+    key: "CheckedOutDate",
+    dataIndex: "CheckedOutDate",
+    render: function render(id: any, value: any) {
+      return (value && format(
+        new Date(value.replace(/ /g, "T")),
+        "MM/dd/yyyy hh:mm:ss a"
+      ));
     },
-    {
-        title: "Departure",
-        key: "DepartureDate",
-        dataIndex: "DepartureDate",
-        render: function render(id: any, value: any) {
-            return (value && format(
-                new Date(value.replace(/ /g, "T")),
-                "MM/dd/yyyy hh:mm:ss a"
-            ));
-        },
-    },
-    {
-        title: "Guest",
-        key: "GuestName",
-        dataIndex: "GuestName",
-    },
-    {
-        title: "Room",
-        key: "RoomFullName",
-        dataIndex: "RoomFullName",
-    },
-    {
-        title: "Company",
-        key: "CustomerName",
-        dataIndex: "CustomerName",
-    },
-    {
-        title: "Total",
-        key: "TotalAmount",
-        dataIndex: "TotalAmount",
-    },
-    {
-        title: "Paid",
-        key: "Deposit",
-        dataIndex: "Deposit",
-    },
-    {
-        title: "Balance",
-        key: "CurrentBalance",
-        dataIndex: "CurrentBalance",
-    },
-    {
-        title: "User",
-        key: "UserName",
-        dataIndex: "UserName",
-    },
+  },
+  {
+    title: "Guest",
+    key: "GuestName",
+    dataIndex: "GuestName",
+  },
+  {
+    title: "RoomNo",
+    key: "RoomFullNo",
+    dataIndex: "RoomFullNo  ",
+  },
+  {
+    title: "Company",
+    key: "CustomerName",
+    dataIndex: "CustomerName",
+  },
+  {
+    title: "Total",
+    key: "TotalAmount",
+    dataIndex: "TotalAmount",
+  },
+  {
+    title: "Paid",
+    key: "Deposit",
+    dataIndex: "Deposit",
+  },
+  // {
+  //   title: "Balance",
+  //   key: "CurrentBalance",
+  //   dataIndex: "CurrentBalance",
+  // },
+  {
+    title: "User",
+    key: "UserName",
+    dataIndex: "UserName",
+  },
 ];
 
 const DeparturedListList = ({ title }: any) => {
-    const intl = useIntl();
+  const intl = useIntl();
 
-    const { data, error } = DepartedListSWR();
+  const { data, error } = DepartedListSWR();
 
-    return (
-        <CustomTable
-            columns={columns}
-            data={data}
-            error={error}
-            api={ReservationAPI}
-            hasNew={true}
-            hasUpdate={true}
-            //hasDelete={true}
-            id="TransactionID"
-            listUrl={listUrl}
-            modalTitle={title}
-            modalContent={<NewEdit />}
-            excelName={title}
-            additionalButtons={null}
-            datagrid={false}
-        />
-    );
+  return (
+    <CustomTable
+      columns={columns}
+      data={data}
+      error={error}
+      api={ReservationAPI}
+      hasNew={true}
+      hasUpdate={true}
+      //hasDelete={true}
+      id="TransactionID"
+      listUrl={listUrl}
+      modalTitle={title}
+      modalContent={<NewEdit />}
+      excelName={title}
+      additionalButtons={null}
+      datagrid={true}
+    />
+  );
 };
 
 export default DeparturedListList;

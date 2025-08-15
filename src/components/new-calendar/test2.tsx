@@ -144,9 +144,10 @@ export const generateIncrementedId = (baseId: string | number, increment: number
 
 interface MyCalendarProps {
   workingDate: any;
+  onMutate?: (mutateFunction: () => void) => void;
 }
 
-const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
+const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate, onMutate }) => {
   const intl = useIntl();
   const [state, dispatch]: any = useAppState();
   const { handleModal }: any = useContext(ModalContext);
@@ -275,6 +276,15 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ workingDate }) => {
   const [loadingMessage, setLoadingMessage] = useState(intl.formatMessage({ id: 'calendar.loading.initializing', defaultMessage: 'Initializing...' }));
   const [height, setHeight] = useState<any>(null);
   const [availableRooms, setAvailableRooms] = useState<any>(null);
+
+  // Expose mutate function to parent component
+  useEffect(() => {
+    if (onMutate) {
+      onMutate(() => {
+        setCustomMutate((prevKey) => prevKey + 1);
+      });
+    }
+  }, [onMutate]);
 
   // Calculate summary data for grid view
   const summaryData = useMemo(() => {

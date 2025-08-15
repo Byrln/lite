@@ -45,15 +45,29 @@ const ExtraCharge = ({
       .filter((ct: any) => ct.isChecked)
       .reduce((sum: number, ct: any) => sum + (parseFloat(ct.Total) || 0), 0);
 
+    const currentPaymentMethodsTotal = paymentMethods
+      ? paymentMethods
+          .filter((pm: any) => pm.isChecked)
+          .reduce((sum: number, pm: any) => sum + (parseFloat(pm.Amount) || 0), 0)
+      : 0;
+
     const apiExtraCharges = chargeSummaryData && chargeSummaryData[0] ? chargeSummaryData[0].ExtraCharges || 0 : 0;
     const extraCharges = apiExtraCharges + currentChargeTypesTotal;
 
     const roomCharges = chargeSummaryData && chargeSummaryData[0] ? chargeSummaryData[0].RoomCharges || 0 : 0;
+    const totalCharges = extraCharges + roomCharges;
+
+    const apiTotalPayments = chargeSummaryData && chargeSummaryData[0] ? chargeSummaryData[0].TotalPayments || 0 : 0;
+    const totalPayments = apiTotalPayments + currentPaymentMethodsTotal;
+
+    const balance = totalCharges - totalPayments;
 
     return {
       extraCharges,
       roomCharges,
-      totalCharges: extraCharges + roomCharges
+      totalCharges,
+      totalPayments,
+      balance
     };
   };
 
@@ -179,8 +193,15 @@ const ExtraCharge = ({
       await mutate("/api/Folio/Details");
       await mutate("/api/Folio/DetailsByStatus");
       await mutate("/api/FrontOffice/TransactionInfo");
+      // Invalidate charge summary with correct key format
+      await mutate(["/api/Charge/Summary", transactionInfo?.TransactionID || reservation?.TransactionID]);
       // Invalidate all SWR caches to ensure UI refresh
       await mutate(() => true);
+      
+      // Trigger calendar refresh if available
+      if (typeof window !== 'undefined' && (window as any).mutateCalendar) {
+        (window as any).mutateCalendar();
+      }
       if (additionalMutateUrl) {
         await mutate(additionalMutateUrl);
       }
@@ -197,6 +218,11 @@ const ExtraCharge = ({
 
       reset();
       handleModal();
+      
+      // Refresh the page to ensure calendar updates
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       setLoading(false);
       setChargeTypes([]);
@@ -297,33 +323,43 @@ const ExtraCharge = ({
             }}>
               <CardContent sx={{ padding: { xs: "16px", sm: "24px", md: "32px" } }}>
                 <Grid container spacing={{ xs: 2, sm: 3 }}>
-                  <Grid item xs={12} sm={4} md={4}>
+                  <Grid item xs={12} sm={6} md={3}>
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
                       <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
                         {intl.formatMessage({ id: "TextExtraCharge" })}
                       </Typography>
-                      <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
+                      <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "1.5rem" }}>
                         {formatPrice(realTimeTotals.extraCharges)}
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid item xs={12} sm={4} md={4}>
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid rgba(255, 255, 255, 0.2)" }, borderRight: { md: "1px solid rgba(255, 255, 255, 0.2)" } }}>
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid rgba(255, 255, 255, 0.2)" } }}>
                       <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
                         {intl.formatMessage({ id: "TextRoomCharge" })}
                       </Typography>
-                      <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
+                      <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "1.5rem" }}>
                         {formatPrice(realTimeTotals.roomCharges)}
                       </Typography>
                     </Box>
                   </Grid>
-                  <Grid item xs={12} sm={4} md={4}>
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1 }}>
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid rgba(255, 255, 255, 0.2)" } }}>
                       <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
-                        {intl.formatMessage({ id: "ReportTotalCharge" })}
+                        {intl.formatMessage({ id: "TextPayment" })}
                       </Typography>
-                      <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "2rem" }}>
-                        {formatPrice(realTimeTotals.totalCharges)}
+                      <Typography variant="h4" sx={{ fontWeight: 800, color: "#ffffff", fontSize: "1.5rem" }}>
+                        {formatPrice(realTimeTotals.totalPayments)}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 1, borderLeft: { md: "1px solid rgba(255, 255, 255, 0.2)" } }}>
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: "rgba(255, 255, 255, 0.9)", mb: 1, fontSize: "0.875rem", letterSpacing: "0.05em" }}>
+                        {intl.formatMessage({ id: "TextBalance" })}
+                      </Typography>
+                      <Typography variant="h4" sx={{ fontWeight: 800, color: realTimeTotals.balance >= 0 ? "#ffffff" : "#ffcdd2", fontSize: "1.5rem" }}>
+                        {formatPrice(realTimeTotals.balance)}
                       </Typography>
                     </Box>
                   </Grid>

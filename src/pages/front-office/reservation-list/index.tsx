@@ -11,6 +11,9 @@ import DepartureList from "components/front-office/depature-list/list";
 import DeparturedList from "components/front-office/departured-list/list";
 import InHouseListList from "components/front-office/in-house-list/list";
 import GroupReservationList from "components/front-office/group-reservation-list";
+import GroupDepartureList from "components/front-office/group-reservation-list/departure-list";
+import GroupDeparturedList from "components/front-office/group-reservation-list/departured-list";
+import GroupInHouseListList from "components/front-office/group-reservation-list/inhouse-list";
 import { FrontOfficeAPI } from "lib/api/front-office";
 
 interface TabPanelProps {
@@ -223,19 +226,31 @@ const Index = () => {
           />
         );
       case 'departure':
-        return (
+        return isGroup ? (
+          <GroupDepartureList
+            title={intl.formatMessage({ id: "TextDepartureList" })}
+          />
+        ) : (
           <DepartureList
             title={intl.formatMessage({ id: "TextDepartureList" })}
           />
         );
       case 'departured':
-        return (
+        return isGroup ? (
+          <GroupDeparturedList
+            title={intl.formatMessage({ id: "TextDeparturedList" })}
+          />
+        ) : (
           <DeparturedList
             title={intl.formatMessage({ id: "TextDeparturedList" })}
           />
         );
       case 'inhouse':
-        return (
+        return isGroup ? (
+          <GroupInHouseListList
+            title={intl.formatMessage({ id: "TextInHouseListing" })}
+          />
+        ) : (
           <InHouseListList
             title={intl.formatMessage({ id: "TextInHouseListing" })}
           />

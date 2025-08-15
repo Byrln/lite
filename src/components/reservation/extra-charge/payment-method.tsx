@@ -4,33 +4,37 @@ import { listUrl } from "lib/api/front-office";
 import { useIntl } from "react-intl";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { mutate } from "swr";
 
 import { formatNumber } from "lib/utils/helpers";
-import { PaymentMethodAPI } from "lib/api/payment-method";
+import { PaymentMethodAPI, PaymentMethodSWR } from "lib/api/payment-method";
 import CustomTable from "components/common/custom-table";
 import CurrencySelect from "components/select/currency";
 import { formatPrice } from "lib/utils/helpers";
 
-const PaymentMethod = ({ entity, setEntity, register, errors }: any) => {
+const PaymentMethod = ({ entity, setEntity, register, errors, onMutate }: any) => {
   const intl = useIntl();
   const [rerenderKey, setRerenderKey] = useState(0);
+  const { data, error, mutate: mutatePaymentMethod } = PaymentMethodSWR();
 
-  const fetchDatas = async () => {
-    try {
-      const arr: any = await PaymentMethodAPI.list({});
-      if (arr) {
-        setEntity(arr);
-      }
-    } finally {
+  // Expose mutate function to parent component
+  useEffect(() => {
+    if (onMutate && mutatePaymentMethod) {
+      onMutate(mutatePaymentMethod);
     }
-  };
+  }, [onMutate, mutatePaymentMethod]);
 
   useEffect(() => {
-    // Only fetch data if entity is empty or undefined
-    if (!entity || entity.length === 0) {
-      fetchDatas();
+    // Set entity from SWR data if entity is empty or undefined
+    if (data && (!entity || entity.length === 0)) {
+      setEntity(data);
     }
-  }, [entity]);
+  }, [data, entity, setEntity]);
+
+  // Function to refresh payment method data
+  const refreshData = async () => {
+    await mutatePaymentMethod();
+  };
 
   const onCheckboxChange = (e: any) => {
     let tempEntity = [...entity];

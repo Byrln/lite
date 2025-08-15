@@ -8,7 +8,7 @@ export const ReservationSWR = (search: any) => {
   if (!search) {
     return { data: undefined, error: undefined };
   }
-  
+
   if (!search.ReservationTypeID) {
     search.ReservationTypeID = 1;
   }
@@ -103,13 +103,8 @@ export const ReservationLogSWR = (id: any, groupID: any) => {
 
 export const DepartureSWR = (values: any) => {
   const searchParams = values || {
-    StartDate: new Date().toISOString().split('T')[0],
-    EndDate: new Date().toISOString().split('T')[0],
-    GroupID: 0,
-    GroupInReserv: false,
-    GroupInHouse: false,
-    GroupDeparted: false,
-    GroupCode: ""
+    ArrivalDate: new Date().toISOString().split('T')[0],
+    DepartureDate: new Date().toISOString().split('T')[0],
   };
 
   const fetcher = async (url: any) =>
@@ -117,13 +112,13 @@ export const DepartureSWR = (values: any) => {
       .get(`${urlPrefix}/DepartureList`, { params: searchParams })
       .then((res: any) => res.data.JsonData);
 
-  return useSWR([`${urlPrefix}/DepartureList`, searchParams], fetcher);
+  return useSWR(`${urlPrefix}/DepartureList`, fetcher);
 };
 
 export const DepartedListSWR = (values?: any) => {
   const fetcher = async (url: any) =>
     await axios
-      .get(`${urlPrefix}/DepartedList`)
+      .post(`${urlPrefix}/DepartedList`, values)
       .then((res: any) => res.data.JsonData);
 
   return useSWR(`${urlPrefix}/DepartedList`, fetcher);
@@ -133,7 +128,7 @@ export const GroupReservationSWR = (search: any) => {
   if (!search) {
     return { data: undefined, error: undefined };
   }
-  
+
   const fetcher = async (url: any) => {
     // First, get the group list
     const groupListRes = await axios.post(`${urlPrefix}/GroupList`, search);

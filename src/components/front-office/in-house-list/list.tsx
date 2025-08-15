@@ -9,9 +9,9 @@ import NewEdit from "./new-edit";
 
 const columns = [
   {
-    title: "Res No",
-    key: "ReservationNo",
-    dataIndex: "ReservationNo",
+    title: "TransactionID",
+    key: "TransactionID",
+    dataIndex: "TransactionID",
   },
   {
     title: "Arrival",
@@ -42,8 +42,8 @@ const columns = [
   },
   {
     title: "Room",
-    key: "RoomFullName",
-    dataIndex: "RoomFullName",
+    key: "RoomFullNo",
+    dataIndex: "RoomFullNo",
   },
   {
     title: "Company",
@@ -54,16 +54,17 @@ const columns = [
     title: "Total",
     key: "TotalAmount",
     dataIndex: "TotalAmount",
+    render: function render(id: any, value: any) {
+      return (value && value.toFixed(2));
+    },
   },
   {
     title: "Paid",
     key: "CurrentBalance",
     dataIndex: "CurrentBalance",
-  },
-  {
-    title: "ResType",
-    key: "ReservationTypeName",
-    dataIndex: "ReservationTypeName",
+    render: function render(id: any, value: any) {
+      return (value && value.toFixed(2));
+    },
   },
   {
     title: "User",
@@ -199,7 +200,7 @@ const InHouseListList = ({ title }: any) => {
       modalTitle={title}
       modalContent={<NewEdit />}
       excelName={title}
-      datagrid={false}
+      datagrid={true}
       additionalButtons={
         <div className="flex items-center">
           <DateFilterButtons />
