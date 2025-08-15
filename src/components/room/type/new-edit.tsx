@@ -9,6 +9,8 @@ import {
   Card,
   CardContent,
   Typography,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { TextField } from "@mui/material";
@@ -19,6 +21,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
 import SaveIcon from "@mui/icons-material/Save";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 import RoomAmenitySelect from "components/select/room-amenity";
 import AmenitySelect from "components/select/amenity";
@@ -346,7 +350,7 @@ const NewEdit = () => {
                 helperText={errors.MaxChild?.message as string}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={2.1}>
               <TextField
                 size="small"
                 type="number"
@@ -354,7 +358,7 @@ const NewEdit = () => {
                 id="SortOrder"
                 label={intl.formatMessage({ id: "SortOrder" })}
                 {...register("SortOrder")}
-                defaultValue={1}
+                defaultValue={0}
                 margin="dense"
                 value={
                   entity &&
@@ -366,6 +370,42 @@ const NewEdit = () => {
                     ...entity,
                     SortOrder: evt.target.value,
                   });
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          const currentValue = parseInt(entity?.SortOrder || 0);
+                          const newValue = Math.max(0, currentValue - 1);
+                          setEntity({
+                            ...entity,
+                            SortOrder: newValue,
+                          });
+                        }}
+                      >
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          const currentValue = parseInt(entity?.SortOrder || 0);
+                          const newValue = currentValue + 1;
+                          setEntity({
+                            ...entity,
+                            SortOrder: newValue,
+                          });
+                        }}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
                 InputLabelProps={{
                   shrink:
@@ -721,7 +761,7 @@ const NewEdit = () => {
                         errors.MaxChild?.message as string}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={2.1}>
                     <TextField
                       size="small"
                       type="number"
@@ -743,6 +783,42 @@ const NewEdit = () => {
                           ...entity,
                           SortOrder: evt.target.value,
                         });
+                      }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <IconButton
+                              size="small"
+                              onClick={() => {
+                                const currentValue = parseInt(entity?.SortOrder || 1);
+                                const newValue = Math.max(0, currentValue - 1);
+                                setEntity({
+                                  ...entity,
+                                  SortOrder: newValue,
+                                });
+                              }}
+                            >
+                              <RemoveIcon fontSize="small" />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              size="small"
+                              onClick={() => {
+                                const currentValue = parseInt(entity?.SortOrder || 1);
+                                const newValue = currentValue + 1;
+                                setEntity({
+                                  ...entity,
+                                  SortOrder: newValue,
+                                });
+                              }}
+                            >
+                              <AddIcon fontSize="small" />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
                       }}
                       InputLabelProps={{
                         shrink: true,
