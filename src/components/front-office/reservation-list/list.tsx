@@ -509,7 +509,7 @@ const DeparturedListList = ({ title, workingDate, viewMode = 'arrival', onViewMo
           hasDelete={false}
           hasShow={false}
           id={viewMode === 'arrival' ? "TransactionID" : "GroupID"}
-          datagrid={false}
+          datagrid={true}
           listUrl={listUrl}
           modalTitle={title}
           modalContent={<NewEdit workingDate={workingDate} />}
